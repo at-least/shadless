@@ -152,7 +152,14 @@ func (r *Runner) Run(plan []Node) (ran, skipped, failed, violations int) {
 			stop = true
 			return
 		}
-		if skippable && r.recorded(id) == key && !r.force {
+		fresh := skippable && r.recorded(id) == key && !r.force
+		if fresh {
+			if present, missing := OutputsPresent(r.root, n); !present {
+				fmt.Printf("  %s: key matches but %s is missing — rebuilding\n", id, missing)
+				fresh = false
+			}
+		}
+		if fresh {
 			skipped++
 			done[id] = true
 			for _, d := range dependents[id] {

@@ -159,14 +159,14 @@ var Nodes = []Node{
 		Needs:    []NodeID{NDemoBuild},
 		Run:      [][]string{{"node", "tools/example-oracle.mjs"}},
 		Inputs:   []string{"tools/example-oracle.mjs", "src/docs/theme-prepaint.mjs", "src/registry/tiers.json", "src/runtime/components/**", "docs/catalog.json", "tools/oracle-lib.mjs", "tools/contracts/stubs/**", "tools/resolve-skins.mjs", "src/registry/pin.json", "src/registry/upstream-snapshot/exemptions.json", "package-lock.json"},
-		Produces: []string{"docs/demos/*.html", "!docs/demos/*-rtl-*.html", "build/example-oracle", "docs/example-oracle.json", "docs/example-fixture-targets.json"},
+		Produces: []string{"docs/demos/*.html", "!docs/demos/*-rtl-*.html", "docs/example-oracle.json", "docs/example-fixture-targets.json"},
 	},
 	{
 		ID: NExampleFixture, Kind: "build", Tier: "full",
 		Needs:    []NodeID{NExampleOracle},
 		Run:      [][]string{{"node", "tools/example-fixture.mjs"}},
 		Inputs:   []string{"tools/example-fixture.mjs", "tools/contracts/oracle-build.mjs", "tools/contracts/components/**", "tools/fixture-families.mjs", "src/docs/theme-prepaint.mjs", "docs/example-fixture-targets.json", "dist/js/**", "tools/oracle-lib.mjs", "tools/contracts/stubs/**", "tools/resolve-skins.mjs", "src/registry/pin.json", "package-lock.json"},
-		Produces: []string{"build/example-fixture", "docs/demos/*.html", "!docs/demos/*-rtl-*.html"},
+		Produces: []string{"docs/demos/*.html", "!docs/demos/*-rtl-*.html"},
 	},
 	{
 		ID: NDemoRtl, Kind: "build", Tier: "medium",

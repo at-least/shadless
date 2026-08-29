@@ -94,11 +94,44 @@ needs demo-css -> demo -> contract-fixture. The narrow input set on each
 arrives through the dependency key, which is exactly what the one rule is
 supposed to do.
 
-Still missing before it can replace wireit: output caching across machines
-(wireit has local + GitHub Actions caching), and moving the node definitions
-themselves into Go — `gates/registry.mjs` is still the source of truth and
-`export-graph.mjs` derives from it, which is what keeps the reconciliation
-honest while both runners exist.
+## Cold clones
+
+wireit carries a content-addressed output cache (local + GitHub Actions) so a
+fresh checkout does not rebuild everything. This runner needs a much smaller
+mechanism, because almost every output here is already committed — dist/,
+docs/, src/registry/ir are in git. What a clone lacks is not the outputs but
+the record of which inputs produced them, so `pipeline/stamps.json` is TRACKED.
+
+A stamp is safe to commit because it is verified rather than trusted: the key
+hashes the actual contents of every declared input, so it cannot match a tree
+whose sources differ, and `reproducible` — which never goes fresh — is the
+backstop against a committed output that does not match its inputs.
+
+The second half is that a matching key is necessary but not sufficient: the
+node's declared outputs have to still exist. On a clean checkout every stamp
+matches while the gitignored half of the outputs is absent, and checking the
+key alone would skip the work and hand the next node an empty directory.
+
+Measured, `build/` deleted with everything else committed — 16 of 41 nodes run
+instead of 41, and the two most expensive builds are not among them:
+
+    convert     STALE (output missing: build/resolved-ui)     0.4s
+    emit        STALE (output missing: build/emit)            1.0s
+    demo-rtl    STALE (output missing: build/rtl-langs.json)  0.1s
+    oracle-css, the three parity gates, the docs chain, …     (inputs gone)
+
+    example-oracle   fresh   (105s saved — its pages are committed)
+    example-fixture  fresh   (~300s saved — same)
+    contracts:*      fresh   (29 nodes)
+
+Two nodes used to declare a scratch directory as an output — `build/example-oracle`
+is empty after every run and `build/example-fixture` is a `const TMP` — which
+made both look unbuildable on a clean checkout. Removing those declarations is
+what moves them into the skipped column.
+
+Still missing before it can replace wireit: the node definitions are generated
+from `gates/registry.mjs`, which stays the source of truth while both runners
+exist — that is what keeps the reconciliation honest.
 
 ## Where the definitions live
 

@@ -18,7 +18,17 @@ import (
 	"time"
 )
 
-const stampFile = "build/pipeline-stamps.json"
+// TRACKED, not under build/. The outputs this pipeline produces are committed
+// (dist/, docs/, src/registry/ir), so a fresh clone already holds them — what
+// it lacks is the record of which inputs produced them. Committing that record
+// is what makes a clone warm: on a clean checkout only the nodes whose outputs
+// are gitignored have to run.
+//
+// Safe to commit because a stamp is verified, not trusted: the key is a hash
+// over the actual contents of every declared input, so it cannot match a tree
+// whose sources differ, and `reproducible` (which never goes fresh) is the
+// backstop against a committed output that does not match its inputs.
+const stampFile = "pipeline/stamps.json"
 
 type stamps map[NodeID]string // node id -> recorded key
 
@@ -33,9 +43,6 @@ func loadStamps(root string) stamps {
 }
 
 func saveStamps(root string, s stamps) error {
-	if err := os.MkdirAll(root+"/build", 0o755); err != nil {
-		return err
-	}
 	b, err := json.MarshalIndent(s, "", " ")
 	if err != nil {
 		return err
@@ -118,6 +125,10 @@ func main() {
 			case !skippable:
 				fmt.Printf("%-22s NEVER-FRESH\n", n.ID)
 			case rec[n.ID] == key:
+				if present, missing := OutputsPresent(root, n); !present {
+					fmt.Printf("%-22s STALE (output missing: %s)\n", n.ID, missing)
+					continue
+				}
 				fmt.Printf("%-22s fresh\n", n.ID)
 			default:
 				fmt.Printf("%-22s STALE\n", n.ID)

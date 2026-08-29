@@ -201,7 +201,12 @@ export const NODES = [
          "1:1 with upstream by construction, not by hand-mirroring",
     // rtl language variants are demo-rtl's: output sets must be DISJOINT between
     // nodes that can run in parallel, or wireit's output manifests race
-    produces: ["docs/demos/*.html", "!docs/demos/*-rtl-*.html", "build/example-oracle", "docs/example-oracle.json", "docs/example-fixture-targets.json"],
+    // build/example-oracle is SCRATCH, not an output: each render harness is
+    // rmSync'd after use and the directory ends up empty, nothing declares it
+    // as an input. Declaring it made the node look unproducible on a clean
+    // checkout, where its real outputs (the pages + both manifests) are all
+    // committed and need no rebuild.
+    produces: ["docs/demos/*.html", "!docs/demos/*-rtl-*.html", "docs/example-oracle.json", "docs/example-fixture-targets.json"],
     // a build node with a mutation: the ownership manifest is a gate input,
     // so "the build swallowed a render failure" is a gate-level lie
     mutations: ["example-oracle-render-failure"],
@@ -216,7 +221,8 @@ export const NODES = [
              "src/registry/pin.json", "package-lock.json"],
     why: "kernel-tier examples as INTERACTIVE fixtures harvested from the oracle; " +
          "the oracle alone emits static snapshots with dead buttons",
-    produces: ["build/example-fixture", "docs/demos/*.html", "!docs/demos/*-rtl-*.html"],
+    // build/example-fixture likewise: tools/example-fixture.mjs:39 `const TMP`
+    produces: ["docs/demos/*.html", "!docs/demos/*-rtl-*.html"],
   }),
   node({
     id: "demo-rtl", kind: "build", tier: "medium", needs: ["example-oracle"],

@@ -12,6 +12,12 @@ package main
 //
 // A node with no declared input set (Inputs == nil) judges state outside the
 // tree, so it has no key, and neither does anything downstream of it.
+//
+// A matching key is necessary but not sufficient: the node's declared outputs
+// have to still BE there. On a fresh clone every stamp could match — the
+// inputs are all committed — while the gitignored half of the outputs does not
+// exist yet. Checking the key alone would skip the work and hand the next node
+// an empty directory.
 
 import (
 	"crypto/sha256"
@@ -227,4 +233,22 @@ func (k *Keyer) Key(id NodeID) (string, bool, error) {
 	key := hex.EncodeToString(h.Sum(nil))
 	k.memo[id] = key
 	return key, true, nil
+}
+
+// OutputsPresent reports whether everything the node claims to produce is on
+// disk. Checked against the literal prefix of each pattern rather than an
+// exact file list: the question is "did this get built", not "is every file
+// byte-for-byte what it was", which is `reproducible`'s job.
+func OutputsPresent(root string, n Node) (bool, string) {
+	for _, pat := range n.Produces {
+		if strings.HasPrefix(pat, "!") {
+			continue
+		}
+		if p := literalPrefix(pat); p != "" {
+			if _, err := os.Stat(filepath.Join(root, p)); err != nil {
+				return false, p
+			}
+		}
+	}
+	return true, ""
 }

@@ -463,7 +463,6 @@
       "output": [
         "docs/demos/*.html",
         "!docs/demos/*-rtl-*.html",
-        "build/example-oracle/**",
         "docs/example-oracle.json",
         "docs/example-fixture-targets.json"
       ],
@@ -488,7 +487,6 @@
         "w:example-oracle"
       ],
       "output": [
-        "build/example-fixture/**",
         "docs/demos/*.html",
         "!docs/demos/*-rtl-*.html"
       ],
