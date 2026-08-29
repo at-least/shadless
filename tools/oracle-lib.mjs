@@ -17,7 +17,7 @@
 // an error.
 import { build } from "esbuild"
 import { writeFileSync, mkdirSync, readFileSync, existsSync, readdirSync } from "node:fs"
-import { resolve, join } from "node:path"
+import { resolve, join, relative } from "node:path"
 import { createHash } from "node:crypto"
 
 // Bundle cache: esbuild output for a demo is a pure function of (upstream
@@ -26,11 +26,24 @@ import { createHash } from "node:crypto"
 // ~1-2s per-demo esbuild pass is skippable when nothing it reads has moved.
 // Keyed on: pin commit (upstream tree identity), the example file, the
 // stubs dir, resolve-skins (regenerates the resolved tree) and this module
-// itself (entry template + alias matrix live here).
+// itself (entry template + alias matrix live here), plus package-lock.json
+// (react/radix/esbuild versions) now that the cache is shared and restored
+// across CI runs.
+//
+// Where the bundles live: a CACHE path, not the tracked tree. The bundles
+// are ~7 MB of React each and a pure function of their inputs; kept under
+// probes/out/ they were committed through reproducible's GENERATED list
+// (500 MB of a 670 MB checkout). node_modules/.cache is gitignored,
+// survives between runs, and is shared by every oracle consumer
+// (example-oracle, example-fixture, example-golden, contracts) — one build
+// per demo instead of one per tool. Override with SHADLESS_CACHE.
+export const CACHE_DIR = process.env.SHADLESS_CACHE ?? "node_modules/.cache/shadless/oracle"
+
 function bundleCacheKey(name) {
   const h = createHash("sha256")
   const pin = JSON.parse(readFileSync("src/registry/pin.json", "utf8"))
   h.update(pin.shadcn_ui.commit + "\n")
+  h.update(readFileSync("package-lock.json"))
   h.update(readFileSync(join(".upstream/shadcn-ui/apps/v4/examples/radix", `${name}.tsx`)))
   for (const f of readdirSync("tools/contracts/stubs").sort())
     h.update(f).update(readFileSync(join("tools/contracts/stubs", f)))
@@ -80,8 +93,9 @@ function aliases() {
 // never from the DOM).
 export async function buildOracle(name, { tmp } = { tmp: "probes/out/example-oracle" }) {
   mkdirSync(tmp, { recursive: true })
+  mkdirSync(CACHE_DIR, { recursive: true })
   const dir = /-rtl$/.test(name) ? "rtl" : "ltr"
-  const entry = join(tmp, `.entry-${name}.mjs`)
+  const entry = join(CACHE_DIR, `.entry-${name}.mjs`)
   writeFileSync(entry, `
 import * as React from "react"
 import { createRoot } from "react-dom/client"
@@ -100,8 +114,8 @@ try {
   window.__done = true
 } catch (e) { window.__err = String(e?.message ?? e) }
 `)
-  const outfile = join(tmp, `bundle-${name}.js`)
-  const keyFile = join(tmp, `.key-${name}`)
+  const outfile = join(CACHE_DIR, `bundle-${name}.js`)
+  const keyFile = join(CACHE_DIR, `.key-${name}`)
   const key = bundleCacheKey(name)
   if (!(existsSync(outfile) && existsSync(keyFile) && readFileSync(keyFile, "utf8") === key)) {
     await build({
@@ -117,7 +131,7 @@ try {
   }
   const htmlFile = join(tmp, `oracle-${name}.html`)
   writeFileSync(htmlFile, `<!doctype html><html${dir === "rtl" ? ' dir="rtl"' : ""}><head><meta charset="utf-8"></head>
-<body><div id="root"></div><script src="file://${resolve(outfile)}"></script></body></html>`)
+<body><div id="root"></div><script src="${relative(tmp, outfile)}"></script></body></html>`)
   return { htmlFile }
 }
 

@@ -3,7 +3,8 @@
 // generates the shadless fixture pages FROM this render).
 import { build } from "esbuild"
 import { writeFileSync, mkdirSync } from "node:fs"
-import { resolve } from "node:path"
+import { resolve, basename, relative } from "node:path"
+import { CACHE_DIR } from "../oracle-lib.mjs"
 
 export async function buildContractOracle(def, OUT, recorder = "") {
   const entry = `
@@ -17,11 +18,16 @@ const render = () => root.render((${def.usage}));
 window.__setOpen = (o) => { window.__open = o; render(); };
 render();
 `
+  // the ~7 MB bundle goes to the cache dir (see CACHE_DIR); OUT keeps only
+  // the small review surfaces (oracle.html, shadless.html, result.json)
   mkdirSync(OUT, { recursive: true })
-  writeFileSync(`${OUT}/.oracle-entry.mjs`, entry)
+  mkdirSync(CACHE_DIR, { recursive: true })
+  const entryFile = `${CACHE_DIR}/.contract-entry-${basename(OUT)}.mjs`
+  const bundle = resolve(`${CACHE_DIR}/contract-${basename(OUT)}.js`)
+  writeFileSync(entryFile, entry)
   await build({
-    entryPoints: [`${OUT}/.oracle-entry.mjs`], bundle: true, format: "iife",
-    outfile: `${OUT}/oracle.js`, logLevel: "error",
+    entryPoints: [entryFile], bundle: true, format: "iife",
+    outfile: bundle, logLevel: "error",
     alias: {
       // resolved tree (tools/resolve-skins.mjs): cn-* already expanded —
       // the oracle and shadless compare against identical class semantics
@@ -40,5 +46,5 @@ render();
     jsx: "automatic",
   })
   writeFileSync(`${OUT}/oracle.html`,
-    `<!doctype html><html><head>${def.oracleCss ? `<style>${def.oracleCss}</style>` : ""}</head><body><div id="root"></div><script src="oracle.js"></script></body></html>`)
+    `<!doctype html><html><head>${def.oracleCss ? `<style>${def.oracleCss}</style>` : ""}</head><body><div id="root"></div><script src="${relative(resolve(OUT), bundle)}"></script></body></html>`)
 }

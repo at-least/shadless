@@ -104,7 +104,7 @@ serve:
 	cd docs/site && $(PYTHON) -m http.server $(PORT)
 
 clean:
-	rm -rf dist gates/out
+	rm -rf dist gates/out node_modules/.cache/shadless
 	rm -rf docs/catalog.json docs/site/rtl-langs.json
 	rm -f  docs/site/site.css docs/site/site.js docs/site/highlight.js docs/site/out.css docs/site/fonts.css
 	rm -rf docs/site/assets docs/site/components docs/site/js
