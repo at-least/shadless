@@ -9,7 +9,7 @@ export default {
   apply() {
     edit(F, (s) => {
       const j = JSON.parse(s)
-      j.units["glue:sheet"].hash = "0".repeat(64)
+      j.units["behavior:sheet"].hash = "0".repeat(64)
       return JSON.stringify(j, null, 2) + "\n"
     })
   },

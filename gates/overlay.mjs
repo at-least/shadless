@@ -356,8 +356,9 @@ async function tasks() {
   const buckets = await audit({ strict: false })
   rmSync(TASKS, { recursive: true, force: true }); mkdirSync(TASKS, { recursive: true })
   const manifest = existsSync(MANIFEST) ? JSON.parse(readFileSync(MANIFEST, "utf8")) : { commit: null }
-  const gateFor = (u) => u.id.startsWith("glue:") || u.id.startsWith("kernel-fixture:") ? "contracts, style-parity, interactivity-sweep"
-    : u.id.startsWith("contract:") ? "contracts, style-parity" : u.id.startsWith("demo:") ? "example-gate, docs-smoke, interactivity-sweep"
+  // manifest unit prefixes: behavior:* (src/runtime/components), runtime:core, demo:*
+  const gateFor = (u) => u.id.startsWith("behavior:") ? "contracts, style-parity, interactivity-sweep"
+    : u.id.startsWith("demo:") ? "example-gate, docs-smoke, interactivity-sweep"
     : u.id.startsWith("runtime:") ? "contracts, demo-smoke" : "the full tier"
   let n = 0
   for (const bucket of ["stale", "orphaned", "conflict"]) for (const u of buckets[bucket]) {
