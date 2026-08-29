@@ -105,6 +105,14 @@ export function renderFn(tree, markers = {}, defaultInner = "", defaultBySlot = 
 // Keys are validated at emit time: component names must exist in the static
 // set and fn names must be exported fns of that IR (a stale key previously
 // survived silently, e.g. the old AlertAction entry).
+//
+// Inline styles reference theme tokens as `var(--x)`, NEVER `hsl(var(--x))`.
+// The theme ships oklch() values (dist/globals.css `--muted: oklch(...)`), so
+// `hsl(oklch(...))` is an invalid color and the whole declaration is dropped
+// by the parser — 51 such declarations were live in 12 dist/components pages,
+// styling nothing. Nothing gates inline style, so this is the only place the
+// rule is written down. Token/opacity uses color-mix(in oklab, …), tailwind
+// v4's own spelling, not the `/alpha` slash form (also hsl-only).
 export const DEFAULT_CONTENT = {
   badge: { Badge: "Badge" },
   button: { Button: "Button" },
@@ -125,9 +133,9 @@ export const DEFAULT_CONTENT = {
     AlertDescription: "You can add components to your app using the cli.",
   },
   attachment: {
-    Attachment: { html: '<div data-slot="attachment-media" style="display:flex;align-items:center;justify-content:center;width:2.5rem;height:2.5rem;border-radius:0.5rem;background:hsl(var(--muted))"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:1.25rem;height:1.25rem" aria-hidden="true"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg></div><div data-slot="attachment-content" style="display:flex;flex-direction:column;gap:0.125rem"><span data-slot="attachment-title" style="font-weight:500">document.pdf</span><span data-slot="attachment-description" style="font-size:0.75rem;color:hsl(var(--muted-foreground))">2.4 MB</span></div>' },
-    AttachmentMedia: { html: '<div style="display:flex;align-items:center;justify-content:center;width:2.5rem;height:2.5rem;border-radius:0.5rem;background:hsl(var(--muted))"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:1.25rem;height:1.25rem" aria-hidden="true"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg></div>' },
-    AttachmentContent: { html: '<span data-slot="attachment-title" style="font-weight:500">document.pdf</span><span data-slot="attachment-description" style="font-size:0.75rem;color:hsl(var(--muted-foreground))">2.4 MB</span>' },
+    Attachment: { html: '<div data-slot="attachment-media" style="display:flex;align-items:center;justify-content:center;width:2.5rem;height:2.5rem;border-radius:0.5rem;background:var(--muted)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:1.25rem;height:1.25rem" aria-hidden="true"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg></div><div data-slot="attachment-content" style="display:flex;flex-direction:column;gap:0.125rem"><span data-slot="attachment-title" style="font-weight:500">document.pdf</span><span data-slot="attachment-description" style="font-size:0.75rem;color:var(--muted-foreground)">2.4 MB</span></div>' },
+    AttachmentMedia: { html: '<div style="display:flex;align-items:center;justify-content:center;width:2.5rem;height:2.5rem;border-radius:0.5rem;background:var(--muted)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:1.25rem;height:1.25rem" aria-hidden="true"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg></div>' },
+    AttachmentContent: { html: '<span data-slot="attachment-title" style="font-weight:500">document.pdf</span><span data-slot="attachment-description" style="font-size:0.75rem;color:var(--muted-foreground)">2.4 MB</span>' },
     AttachmentTitle: "document.pdf",
     AttachmentDescription: "2.4 MB",
     AttachmentActions: null,
@@ -135,7 +143,7 @@ export const DEFAULT_CONTENT = {
     AttachmentGroup: null,
   },
   breadcrumb: {
-    Breadcrumb: { html: '<ol data-slot="breadcrumb-list"><li data-slot="breadcrumb-item"><a data-slot="breadcrumb-link" href="#" style="transition:color;hover:{color:hsl(var(--foreground))}">Home</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" style="display:inline-flex;align-items:center;color:hsl(var(--muted-foreground))"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:0.875rem;height:0.875rem"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item"><a data-slot="breadcrumb-link" href="#">Components</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" style="display:inline-flex;align-items:center;color:hsl(var(--muted-foreground))"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:0.875rem;height:0.875rem"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item"><span data-slot="breadcrumb-page" style="font-weight:normal;color:hsl(var(--foreground))">Breadcrumb</span></li></ol>' },
+    Breadcrumb: { html: '<ol data-slot="breadcrumb-list"><li data-slot="breadcrumb-item"><a data-slot="breadcrumb-link" href="#" style="transition:color;hover:{color:var(--foreground)}">Home</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" style="display:inline-flex;align-items:center;color:var(--muted-foreground)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:0.875rem;height:0.875rem"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item"><a data-slot="breadcrumb-link" href="#">Components</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" style="display:inline-flex;align-items:center;color:var(--muted-foreground)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:0.875rem;height:0.875rem"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item"><span data-slot="breadcrumb-page" style="font-weight:normal;color:var(--foreground)">Breadcrumb</span></li></ol>' },
     BreadcrumbList: { html: '<li data-slot="breadcrumb-item"><a data-slot="breadcrumb-link" href="#">Home</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true">/</li><li data-slot="breadcrumb-item"><span data-slot="breadcrumb-page">Current</span></li>' },
     BreadcrumbItem: { html: '<a data-slot="breadcrumb-link" href="#">Home</a>' },
     BreadcrumbLink: "Home",
@@ -145,13 +153,13 @@ export const DEFAULT_CONTENT = {
   },
   bubble: {
     BubbleGroup: null,
-    Bubble: { html: '<div data-slot="bubble-content" style="display:inline-block;border-radius:1rem;padding:0.5rem 0.75rem;background:hsl(var(--muted))">Did you remove the stale route?</div>' },
+    Bubble: { html: '<div data-slot="bubble-content" style="display:inline-block;border-radius:1rem;padding:0.5rem 0.75rem;background:var(--muted)">Did you remove the stale route?</div>' },
     BubbleContent: "Did you remove the stale route?",
     BubbleReactions: null,
   },
   card: {
-    Card: { html: '<div data-slot="card-header"><div data-slot="card-title" style="font-weight:600">Create project</div><div data-slot="card-description" style="font-size:0.875rem;color:hsl(var(--muted-foreground))">Deploy your new project in one-click.</div></div><div data-slot="card-content" style="margin-top:1rem"><p>Set up your project with our intuitive wizard.</p></div><div data-slot="card-footer" style="display:flex;justify-content:space-between;align-items:center;margin-top:1rem"><button>Cancel</button><button style="background:hsl(var(--primary));color:hsl(var(--primary-foreground));padding:0.375rem 0.75rem;border-radius:0.375rem">Deploy</button></div>' },
-    CardHeader: { html: '<div data-slot="card-title" style="font-weight:600">Title</div><div data-slot="card-description" style="font-size:0.875rem;color:hsl(var(--muted-foreground))">Description</div>' },
+    Card: { html: '<div data-slot="card-header"><div data-slot="card-title" style="font-weight:600">Create project</div><div data-slot="card-description" style="font-size:0.875rem;color:var(--muted-foreground)">Deploy your new project in one-click.</div></div><div data-slot="card-content" style="margin-top:1rem"><p>Set up your project with our intuitive wizard.</p></div><div data-slot="card-footer" style="display:flex;justify-content:space-between;align-items:center;margin-top:1rem"><button>Cancel</button><button style="background:var(--primary);color:var(--primary-foreground);padding:0.375rem 0.75rem;border-radius:0.375rem">Deploy</button></div>' },
+    CardHeader: { html: '<div data-slot="card-title" style="font-weight:600">Title</div><div data-slot="card-description" style="font-size:0.875rem;color:var(--muted-foreground)">Description</div>' },
     CardTitle: "Title",
     CardDescription: "Description",
     CardAction: null,
@@ -163,15 +171,15 @@ export const DEFAULT_CONTENT = {
     DirectionProvider: null,
   },
   empty: {
-    Empty: { html: '<div data-slot="empty-header"><div data-slot="empty-icon" style="display:flex;align-items:center;justify-content:center;width:2.5rem;height:2.5rem;border-radius:0.5rem;background:hsl(var(--muted));margin-bottom:0.75rem"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:1.25rem;height:1.25rem" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></div><div data-slot="empty-title" style="font-weight:600">No results</div><div data-slot="empty-description" style="font-size:0.875rem;color:hsl(var(--muted-foreground))">Try adjusting your search or filters.</div></div><div data-slot="empty-content" style="margin-top:0.75rem"><button style="background:hsl(var(--primary));color:hsl(var(--primary-foreground));padding:0.375rem 0.75rem;border-radius:0.375rem">Clear filters</button></div>' },
-    EmptyHeader: { html: '<div data-slot="empty-icon" style="display:flex;align-items:center;justify-content:center;width:2.5rem;height:2.5rem;border-radius:0.5rem;background:hsl(var(--muted));margin-bottom:0.5rem">⌕</div><div data-slot="empty-title" style="font-weight:600">No results</div><div data-slot="empty-description" style="font-size:0.875rem;color:hsl(var(--muted-foreground))">Adjust your search.</div>' },
+    Empty: { html: '<div data-slot="empty-header"><div data-slot="empty-icon" style="display:flex;align-items:center;justify-content:center;width:2.5rem;height:2.5rem;border-radius:0.5rem;background:var(--muted);margin-bottom:0.75rem"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:1.25rem;height:1.25rem" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></div><div data-slot="empty-title" style="font-weight:600">No results</div><div data-slot="empty-description" style="font-size:0.875rem;color:var(--muted-foreground)">Try adjusting your search or filters.</div></div><div data-slot="empty-content" style="margin-top:0.75rem"><button style="background:var(--primary);color:var(--primary-foreground);padding:0.375rem 0.75rem;border-radius:0.375rem">Clear filters</button></div>' },
+    EmptyHeader: { html: '<div data-slot="empty-icon" style="display:flex;align-items:center;justify-content:center;width:2.5rem;height:2.5rem;border-radius:0.5rem;background:var(--muted);margin-bottom:0.5rem">⌕</div><div data-slot="empty-title" style="font-weight:600">No results</div><div data-slot="empty-description" style="font-size:0.875rem;color:var(--muted-foreground)">Adjust your search.</div>' },
     EmptyMedia: "⌕",
     EmptyTitle: "No results",
     EmptyDescription: "Try adjusting your search or filters.",
     EmptyContent: "Content",
   },
   "input-group": {
-    InputGroup: { html: '<div data-slot="input-group-addon" style="display:flex;align-items:center;padding:0 0.75rem;border:1px solid hsl(var(--input));border-right:0;border-radius:0.375rem 0 0 0.375rem;background:hsl(var(--muted));color:hsl(var(--muted-foreground))">@</div><input data-slot="input-group-control" placeholder="Username" style="border-radius:0;border-left:0;border-right:0"><div data-slot="input-group-addon" style="display:flex;align-items:center;padding:0 0.75rem;border:1px solid hsl(var(--input));border-left:0;border-radius:0 0.375rem 0.375rem 0;background:hsl(var(--muted));color:hsl(var(--muted-foreground))">@example.com</div>' },
+    InputGroup: { html: '<div data-slot="input-group-addon" style="display:flex;align-items:center;padding:0 0.75rem;border:1px solid var(--input);border-right:0;border-radius:0.375rem 0 0 0.375rem;background:var(--muted);color:var(--muted-foreground)">@</div><input data-slot="input-group-control" placeholder="Username" style="border-radius:0;border-left:0;border-right:0"><div data-slot="input-group-addon" style="display:flex;align-items:center;padding:0 0.75rem;border:1px solid var(--input);border-left:0;border-radius:0 0.375rem 0.375rem 0;background:var(--muted);color:var(--muted-foreground)">@example.com</div>' },
     InputGroupAddon: "@",
     InputGroupButton: "Button",
     InputGroupText: "Text",
@@ -181,9 +189,9 @@ export const DEFAULT_CONTENT = {
   item: {
     ItemGroup: null,
     ItemSeparator: null,
-    Item: { html: '<div data-slot="item-media" style="display:flex;align-items:center;justify-content:center;width:2.5rem;height:2.5rem;border-radius:0.5rem;background:hsl(var(--muted))"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:1.25rem;height:1.25rem" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle></svg></div><div data-slot="item-content" style="display:flex;flex-direction:column;gap:0.125rem"><div data-slot="item-title" style="font-weight:500">Item title</div><p data-slot="item-description" style="font-size:0.875rem;color:hsl(var(--muted-foreground));margin:0">Item description.</p></div><div data-slot="item-actions" style="display:flex;align-items:center;gap:0.25rem"><button style="padding:0.25rem 0.5rem;border-radius:0.375rem;font-size:0.875rem">Edit</button></div>' },
-    ItemMedia: { html: '<div style="display:flex;align-items:center;justify-content:center;width:2.5rem;height:2.5rem;border-radius:0.5rem;background:hsl(var(--muted))"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:1.25rem;height:1.25rem"><circle cx="12" cy="12" r="10"></circle></svg></div>' },
-    ItemContent: { html: '<div data-slot="item-title" style="font-weight:500">Title</div><p data-slot="item-description" style="font-size:0.875rem;color:hsl(var(--muted-foreground));margin:0">Description</p>' },
+    Item: { html: '<div data-slot="item-media" style="display:flex;align-items:center;justify-content:center;width:2.5rem;height:2.5rem;border-radius:0.5rem;background:var(--muted)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:1.25rem;height:1.25rem" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle></svg></div><div data-slot="item-content" style="display:flex;flex-direction:column;gap:0.125rem"><div data-slot="item-title" style="font-weight:500">Item title</div><p data-slot="item-description" style="font-size:0.875rem;color:var(--muted-foreground);margin:0">Item description.</p></div><div data-slot="item-actions" style="display:flex;align-items:center;gap:0.25rem"><button style="padding:0.25rem 0.5rem;border-radius:0.375rem;font-size:0.875rem">Edit</button></div>' },
+    ItemMedia: { html: '<div style="display:flex;align-items:center;justify-content:center;width:2.5rem;height:2.5rem;border-radius:0.5rem;background:var(--muted)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:1.25rem;height:1.25rem"><circle cx="12" cy="12" r="10"></circle></svg></div>' },
+    ItemContent: { html: '<div data-slot="item-title" style="font-weight:500">Title</div><p data-slot="item-description" style="font-size:0.875rem;color:var(--muted-foreground);margin:0">Description</p>' },
     ItemTitle: "Title",
     ItemDescription: "Description",
     ItemActions: null,
@@ -195,7 +203,7 @@ export const DEFAULT_CONTENT = {
     KbdGroup: { html: '<kbd data-slot="kbd">⌘</kbd><kbd data-slot="kbd">⇧</kbd><kbd data-slot="kbd">K</kbd>' },
   },
   marker: {
-    Marker: { html: '<span data-slot="marker-icon" style="display:inline-flex;align-items:center;justify-content:center;width:1.25rem;height:1.25rem;border-radius:9999px;background:hsl(var(--destructive));color:white;font-size:0.75rem">1</span><span data-slot="marker-content">New</span>' },
+    Marker: { html: '<span data-slot="marker-icon" style="display:inline-flex;align-items:center;justify-content:center;width:1.25rem;height:1.25rem;border-radius:9999px;background:var(--destructive);color:white;font-size:0.75rem">1</span><span data-slot="marker-content">New</span>' },
     MarkerIcon: "1",
     MarkerContent: "New",
   },
@@ -220,11 +228,11 @@ export const DEFAULT_CONTENT = {
     PaginationEllipsis: "…",
   },
   table: {
-    Table: { html: '<table data-slot="table" style="width:100%;caption-side:bottom;font-size:0.875rem"><thead data-slot="table-header"><tr data-slot="table-row"><th data-slot="table-head" style="text-align:left;padding:0.5rem;border-bottom:1px solid hsl(var(--border))">Name</th><th data-slot="table-head" style="text-align:left;padding:0.5rem;border-bottom:1px solid hsl(var(--border))">Status</th><th data-slot="table-head" style="text-align:right;padding:0.5rem;border-bottom:1px solid hsl(var(--border))">Amount</th></tr></thead><tbody data-slot="table-body"><tr data-slot="table-row"><td data-slot="table-cell" style="padding:0.5rem;border-bottom:1px solid hsl(var(--border))">Alice</td><td data-slot="table-cell" style="padding:0.5rem;border-bottom:1px solid hsl(var(--border))">Active</td><td data-slot="table-cell" style="text-align:right;padding:0.5rem;border-bottom:1px solid hsl(var(--border))">$250</td></tr><tr data-slot="table-row"><td data-slot="table-cell" style="padding:0.5rem;border-bottom:1px solid hsl(var(--border))">Bob</td><td data-slot="table-cell" style="padding:0.5rem;border-bottom:1px solid hsl(var(--border))">Inactive</td><td data-slot="table-cell" style="text-align:right;padding:0.5rem;border-bottom:1px solid hsl(var(--border))">$150</td></tr></tbody></table>' },
-    TableHeader: { html: '<tr data-slot="table-row"><th data-slot="table-head" style="text-align:left;padding:0.5rem;border-bottom:1px solid hsl(var(--border))">Header</th></tr>' },
-    TableBody: { html: '<tr data-slot="table-row"><td data-slot="table-cell" style="padding:0.5rem;border-bottom:1px solid hsl(var(--border))">Cell</td></tr>' },
+    Table: { html: '<table data-slot="table" style="width:100%;caption-side:bottom;font-size:0.875rem"><thead data-slot="table-header"><tr data-slot="table-row"><th data-slot="table-head" style="text-align:left;padding:0.5rem;border-bottom:1px solid var(--border)">Name</th><th data-slot="table-head" style="text-align:left;padding:0.5rem;border-bottom:1px solid var(--border)">Status</th><th data-slot="table-head" style="text-align:right;padding:0.5rem;border-bottom:1px solid var(--border)">Amount</th></tr></thead><tbody data-slot="table-body"><tr data-slot="table-row"><td data-slot="table-cell" style="padding:0.5rem;border-bottom:1px solid var(--border)">Alice</td><td data-slot="table-cell" style="padding:0.5rem;border-bottom:1px solid var(--border)">Active</td><td data-slot="table-cell" style="text-align:right;padding:0.5rem;border-bottom:1px solid var(--border)">$250</td></tr><tr data-slot="table-row"><td data-slot="table-cell" style="padding:0.5rem;border-bottom:1px solid var(--border)">Bob</td><td data-slot="table-cell" style="padding:0.5rem;border-bottom:1px solid var(--border)">Inactive</td><td data-slot="table-cell" style="text-align:right;padding:0.5rem;border-bottom:1px solid var(--border)">$150</td></tr></tbody></table>' },
+    TableHeader: { html: '<tr data-slot="table-row"><th data-slot="table-head" style="text-align:left;padding:0.5rem;border-bottom:1px solid var(--border)">Header</th></tr>' },
+    TableBody: { html: '<tr data-slot="table-row"><td data-slot="table-cell" style="padding:0.5rem;border-bottom:1px solid var(--border)">Cell</td></tr>' },
     TableFooter: { html: '<tr data-slot="table-row"><td data-slot="table-cell" style="padding:0.5rem">Footer</td></tr>' },
-    TableRow: { html: '<td data-slot="table-cell" style="padding:0.5rem;border-bottom:1px solid hsl(var(--border))">Cell</td>' },
+    TableRow: { html: '<td data-slot="table-cell" style="padding:0.5rem;border-bottom:1px solid var(--border)">Cell</td>' },
     TableHead: "Header",
     TableCell: "Cell",
     TableCaption: "Caption",
@@ -232,24 +240,24 @@ export const DEFAULT_CONTENT = {
   "button-group": {
     // Plain <button>s (no data-slot="button") — the IR has no Button slot pair
     // inside ButtonGroup, so any data-slot would trip the jsdom slot-tree gate.
-    ButtonGroup: { html: '<button style="display:inline-flex;align-items:center;border:1px solid hsl(var(--border));border-radius:0.375rem;padding:0.25rem 0.75rem;font-size:0.875rem;background:transparent">Text</button><div data-slot="button-group-separator" style="display:inline-block;width:1px;height:1.25rem;background:hsl(var(--input))"></div><button style="display:inline-flex;align-items:center;justify-content:center;width:2.25rem;height:2.25rem;border:1px solid hsl(var(--border));border-radius:0.375rem;background:transparent" aria-label="Add">+</button>' },
+    ButtonGroup: { html: '<button style="display:inline-flex;align-items:center;border:1px solid var(--border);border-radius:0.375rem;padding:0.25rem 0.75rem;font-size:0.875rem;background:transparent">Text</button><div data-slot="button-group-separator" style="display:inline-block;width:1px;height:1.25rem;background:var(--input)"></div><button style="display:inline-flex;align-items:center;justify-content:center;width:2.25rem;height:2.25rem;border:1px solid var(--border);border-radius:0.375rem;background:transparent" aria-label="Add">+</button>' },
     ButtonGroupText: "Text",
     ButtonGroupSeparator: null,
   },
   message: {
     MessageGroup: null,
-    Message: { html: '<div data-slot="message-avatar" style="display:flex;align-items:flex-start;gap:0.75rem"><span style="display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:9999px;background:hsl(var(--muted));font-size:0.875rem;font-weight:500">CN</span></div><div data-slot="message-content" style="display:flex;flex-direction:column;gap:0.25rem"><div data-slot="message-header" style="font-size:0.875rem;font-weight:600">Header</div><div data-slot="message-footer" style="font-size:0.75rem;color:hsl(var(--muted-foreground))">Footer</div></div>' },
-    MessageAvatar: { html: '<span style="display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:9999px;background:hsl(var(--muted));font-size:0.875rem;font-weight:500">CN</span>' },
-    MessageContent: { html: '<div data-slot="message-header" style="font-weight:600">Header</div><div data-slot="message-footer" style="font-size:0.75rem;color:hsl(var(--muted-foreground))">Footer</div>' },
+    Message: { html: '<div data-slot="message-avatar" style="display:flex;align-items:flex-start;gap:0.75rem"><span style="display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:9999px;background:var(--muted);font-size:0.875rem;font-weight:500">CN</span></div><div data-slot="message-content" style="display:flex;flex-direction:column;gap:0.25rem"><div data-slot="message-header" style="font-size:0.875rem;font-weight:600">Header</div><div data-slot="message-footer" style="font-size:0.75rem;color:var(--muted-foreground)">Footer</div></div>' },
+    MessageAvatar: { html: '<span style="display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:9999px;background:var(--muted);font-size:0.875rem;font-weight:500">CN</span>' },
+    MessageContent: { html: '<div data-slot="message-header" style="font-weight:600">Header</div><div data-slot="message-footer" style="font-size:0.75rem;color:var(--muted-foreground)">Footer</div>' },
     MessageHeader: "Header",
     MessageFooter: "Footer",
   },
   "message-scroller": {
     MessageScrollerProvider: null,
-    MessageScroller: { html: '<div data-slot="message-scroller-viewport" style="height:160px;overflow:hidden;border:1px solid hsl(var(--border));border-radius:0.5rem;padding:0.75rem;background:hsl(var(--muted)/0.3)"><div data-slot="message-scroller-content"><div data-slot="message-scroller-item" style="margin-bottom:0.5rem">Top message</div><div data-slot="message-scroller-item" style="margin-bottom:0.5rem;margin-top:3rem">Middle message</div><div data-slot="message-scroller-item" style="margin-top:6rem">Bottom message</div></div></div>' },
+    MessageScroller: { html: '<div data-slot="message-scroller-viewport" style="height:160px;overflow:hidden;border:1px solid var(--border);border-radius:0.5rem;padding:0.75rem;background:color-mix(in oklab, var(--muted) 30%, transparent)"><div data-slot="message-scroller-content"><div data-slot="message-scroller-item" style="margin-bottom:0.5rem">Top message</div><div data-slot="message-scroller-item" style="margin-bottom:0.5rem;margin-top:3rem">Middle message</div><div data-slot="message-scroller-item" style="margin-top:6rem">Bottom message</div></div></div>' },
     MessageScrollerViewport: { html: '<div style="padding:0.75rem">Scrollable content</div>' },
     MessageScrollerContent: { html: '<div style="padding:0.75rem">Item content</div>' },
-    MessageScrollerItem: { html: '<div style="padding:0.5rem;border:1px solid hsl(var(--border));border-radius:0.375rem">Item</div>' },
+    MessageScrollerItem: { html: '<div style="padding:0.5rem;border:1px solid var(--border);border-radius:0.375rem">Item</div>' },
     MessageScrollerButton: { html: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:1rem;height:1rem"><path d="M12 5v14M5 12l7 7 7-7"></path></svg>' },
   },
 }
