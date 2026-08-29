@@ -20,7 +20,7 @@ import (
 
 const stampFile = "build/pipeline-stamps.json"
 
-type stamps map[string]string // node id -> recorded key
+type stamps map[NodeID]string // node id -> recorded key
 
 func loadStamps(root string) stamps {
 	s := stamps{}
@@ -50,7 +50,11 @@ func resolveTargets(g *Graph, args []string) ([]Node, error) {
 			return g.PlanTier(args[0])
 		}
 	}
-	return g.Plan(args)
+	ids := make([]NodeID, len(args))
+	for i, a := range args {
+		ids[i] = NodeID(a)
+	}
+	return g.Plan(ids)
 }
 
 func die(err error) {
@@ -73,7 +77,7 @@ func main() {
 	root, err := os.Getwd()
 	die(err)
 
-	g, err := LoadGraph("pipeline/graph.json")
+	g, err := LoadGraph()
 	die(err)
 	plan, err := resolveTargets(g, args)
 	die(err)

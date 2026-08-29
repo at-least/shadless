@@ -69,10 +69,11 @@ tree byte-identical afterwards. A warm `run full` is 0.8s — one node
 
 ## Fan-out
 
-`pipeline/export-graph.mjs` may give the Go runner a FINER view than the
-registry: a node whose work is really N independent jobs becomes N nodes, each
+`fanout.go` may give the runner a FINER view than the registry: a node whose work is really N independent jobs becomes N nodes, each
 with its own key. Only legal when the jobs are genuinely independent —
-separate outputs, no shared mutable state, each failing on its own.
+separate outputs, no shared mutable state, each failing on its own. It lives in
+Go rather than the generator so the split stays live: adding a contract def
+adds a node without regenerating anything.
 
 `contracts` is the one that pays for the exercise. It was a single node running
 29 components serially, 46% of the full tier, already spawning a child process
@@ -99,5 +100,19 @@ themselves into Go — `gates/registry.mjs` is still the source of truth and
 `export-graph.mjs` derives from it, which is what keeps the reconciliation
 honest while both runners exist.
 
-`graph.json` is generated from `gates/registry.mjs`, which stays the single
-source of truth until the reconciliation is finished.
+## Where the definitions live
+
+`pipeline/nodes.go` — generated from `gates/registry.mjs` by
+`export-graph.mjs`, checked with `--check` the way the wireit config is.
+
+They are Go source, not JSON, on purpose. JSON arrives through
+`encoding/json`, which silently ignores unknown fields and zero-fills missing
+ones — so the 41 node declarations, the part most worth checking, would be the
+one part no type ever saw. As typed literals with `Needs []NodeID` referencing
+generated constants, a typo in a dependency is a compile error:
+
+    ./nodes.go:89:22: undefined: NDemoCsss
+
+Generated rather than hand-written because transcribing 41 nodes by hand is
+how a gate goes quietly missing. `gates/registry.mjs` stays the source of truth
+while wireit still executes the graph.

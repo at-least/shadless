@@ -12,20 +12,16 @@ package main
 // file is simply an input of the node that reads it, and its key flows
 // downstream from there.
 
-import (
-	"encoding/json"
-	"fmt"
-	"os"
-)
+import "fmt"
 
 type Node struct {
-	ID       string     `json:"id"`
-	Kind     string     `json:"kind"`
-	Tier     string     `json:"tier"`
-	Needs    []string   `json:"needs"`
-	Run      [][]string `json:"run"`
-	Inputs   []string   `json:"inputs"` // nil = judges state outside the tree, never fresh
-	Produces []string   `json:"produces"`
+	ID       NodeID
+	Kind     string
+	Tier     string
+	Needs    []NodeID
+	Run      [][]string
+	Inputs   []string // nil = judges state outside the tree, never fresh
+	Produces []string
 }
 
 // NeverFresh reports whether the node declares no input set. Such a node
@@ -33,20 +29,18 @@ type Node struct {
 func (n Node) NeverFresh() bool { return n.Inputs == nil }
 
 type Graph struct {
-	nodes map[string]Node
-	order []string // declaration order, for stable output
+	nodes map[NodeID]Node
+	order []NodeID // declaration order, for stable output
 }
 
-func LoadGraph(path string) (*Graph, error) {
-	b, err := os.ReadFile(path)
+// LoadGraph builds the graph from the generated Nodes, expanding any node the
+// fan-out table splits into independent per-item nodes.
+func LoadGraph() (*Graph, error) {
+	list, err := expandFanout(Nodes)
 	if err != nil {
 		return nil, err
 	}
-	var list []Node
-	if err := json.Unmarshal(b, &list); err != nil {
-		return nil, err
-	}
-	g := &Graph{nodes: make(map[string]Node, len(list))}
+	g := &Graph{nodes: make(map[NodeID]Node, len(list))}
 	for _, n := range list {
 		if _, dup := g.nodes[n.ID]; dup {
 			return nil, fmt.Errorf("duplicate node id: %s", n.ID)
@@ -64,17 +58,17 @@ func LoadGraph(path string) (*Graph, error) {
 	return g, nil
 }
 
-func (g *Graph) Node(id string) (Node, bool) { n, ok := g.nodes[id]; return n, ok }
-func (g *Graph) IDs() []string               { return g.order }
+func (g *Graph) Node(id NodeID) (Node, bool) { n, ok := g.nodes[id]; return n, ok }
+func (g *Graph) IDs() []NodeID               { return g.order }
 
 // Plan returns the transitive closure of targets, topologically sorted.
 // Cycles are an authoring error and are reported with the path that closed them.
-func (g *Graph) Plan(targets []string) ([]Node, error) {
-	seen := map[string]bool{}
-	visiting := map[string]bool{}
+func (g *Graph) Plan(targets []NodeID) ([]Node, error) {
+	seen := map[NodeID]bool{}
+	visiting := map[NodeID]bool{}
 	var out []Node
-	var visit func(id string, path []string) error
-	visit = func(id string, path []string) error {
+	var visit func(id NodeID, path []NodeID) error
+	visit = func(id NodeID, path []NodeID) error {
 		if seen[id] {
 			return nil
 		}
@@ -118,10 +112,10 @@ func tierRank(t string) int {
 // EffectiveTier is the most expensive tier in a node's dependency closure,
 // not the tier it declares: a "fast" gate that can only run after a browser
 // build is not fast.
-func (g *Graph) EffectiveTier(id string) string {
-	memo := map[string]int{}
-	var walk func(string) int
-	walk = func(id string) int {
+func (g *Graph) EffectiveTier(id NodeID) string {
+	memo := map[NodeID]int{}
+	var walk func(NodeID) int
+	walk = func(id NodeID) int {
 		if r, ok := memo[id]; ok {
 			return r
 		}
@@ -143,7 +137,7 @@ func (g *Graph) EffectiveTier(id string) string {
 // builds those gates need.
 func (g *Graph) PlanTier(tier string) ([]Node, error) {
 	max := tierRank(tier)
-	var targets []string
+	var targets []NodeID
 	for _, id := range g.order {
 		if g.nodes[id].Kind == "gate" && tierRank(g.EffectiveTier(id)) <= max {
 			targets = append(targets, id)

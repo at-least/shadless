@@ -171,16 +171,16 @@ func hashFile(path string) (string, error) {
 type Keyer struct {
 	root  string
 	graph *Graph
-	memo  map[string]string // id -> key, "" = never fresh
+	memo  map[NodeID]string // id -> key, "" = never fresh
 }
 
 func NewKeyer(root string, g *Graph) *Keyer {
-	return &Keyer{root: root, graph: g, memo: map[string]string{}}
+	return &Keyer{root: root, graph: g, memo: map[NodeID]string{}}
 }
 
 // Key returns the node's content key, or ok=false when the node (or anything
 // upstream of it) declares no input set and therefore can never be skipped.
-func (k *Keyer) Key(id string) (string, bool, error) {
+func (k *Keyer) Key(id NodeID) (string, bool, error) {
 	if v, seen := k.memo[id]; seen {
 		return v, v != "", nil
 	}
@@ -198,8 +198,8 @@ func (k *Keyer) Key(id string) (string, bool, error) {
 		fmt.Fprintf(h, "run\x00%s\n", strings.Join(cmd, "\x00"))
 	}
 
-	deps := append([]string(nil), n.Needs...)
-	sort.Strings(deps)
+	deps := append([]NodeID(nil), n.Needs...)
+	sort.Slice(deps, func(i, j int) bool { return deps[i] < deps[j] })
 	for _, d := range deps {
 		dk, ok, err := k.Key(d)
 		if err != nil {

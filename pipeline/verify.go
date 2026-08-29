@@ -51,7 +51,7 @@ func inputUniverse(root string, g *Graph) (map[string]string, error) {
 
 type Violation struct {
 	Path    string
-	Readers []string // nodes declaring Path as an input
+	Readers []NodeID // nodes declaring Path as an input
 }
 
 // undeclaredWrites reports files that changed across a node's run, are read by
@@ -91,7 +91,7 @@ func undeclaredWrites(root string, g *Graph, n Node, before, after map[string]st
 		if covered(path) {
 			continue
 		}
-		var readers []string
+		var readers []NodeID
 		for _, id := range g.IDs() {
 			m, _ := g.Node(id)
 			if m.NeverFresh() {
@@ -117,7 +117,7 @@ func undeclaredWrites(root string, g *Graph, n Node, before, after map[string]st
 	return out, nil
 }
 
-func reportViolations(id string, vs []Violation) {
+func reportViolations(id NodeID, vs []Violation) {
 	if len(vs) == 0 {
 		return
 	}

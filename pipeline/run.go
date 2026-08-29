@@ -41,21 +41,21 @@ type Runner struct {
 	stamps stamps
 }
 
-func (r *Runner) record(id, key string) {
+func (r *Runner) record(id NodeID, key string) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	r.stamps[id] = key
 	_ = saveStamps(r.root, r.stamps)
 }
 
-func (r *Runner) forget(id string) {
+func (r *Runner) forget(id NodeID) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	delete(r.stamps, id)
 	_ = saveStamps(r.root, r.stamps)
 }
 
-func (r *Runner) recorded(id string) string {
+func (r *Runner) recorded(id NodeID) string {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	return r.stamps[id]
@@ -107,11 +107,11 @@ func (r *Runner) runOne(n Node, key string, skippable bool) result {
 // Run dispatches the plan, honouring `needs`, and returns the number of nodes
 // run, skipped, failed and the undeclared writes seen.
 func (r *Runner) Run(plan []Node) (ran, skipped, failed, violations int) {
-	inPlan := map[string]bool{}
+	inPlan := map[NodeID]bool{}
 	for _, n := range plan {
 		inPlan[n.ID] = true
 	}
-	pending := map[string]int{} // id -> unfinished deps still in this plan
+	pending := map[NodeID]int{} // id -> unfinished deps still in this plan
 	for _, n := range plan {
 		for _, d := range n.Needs {
 			if inPlan[d] {
@@ -119,8 +119,8 @@ func (r *Runner) Run(plan []Node) (ran, skipped, failed, violations int) {
 			}
 		}
 	}
-	done := map[string]bool{}
-	dependents := map[string][]string{}
+	done := map[NodeID]bool{}
+	dependents := map[NodeID][]NodeID{}
 	for _, n := range plan {
 		for _, d := range n.Needs {
 			if inPlan[d] {
@@ -128,8 +128,8 @@ func (r *Runner) Run(plan []Node) (ran, skipped, failed, violations int) {
 			}
 		}
 	}
-	byID := map[string]Node{}
-	var ready []string
+	byID := map[NodeID]Node{}
+	var ready []NodeID
 	for _, n := range plan {
 		byID[n.ID] = n
 		if pending[n.ID] == 0 {
@@ -142,7 +142,7 @@ func (r *Runner) Run(plan []Node) (ran, skipped, failed, violations int) {
 	inflight := 0
 	stop := false
 
-	dispatch := func(id string) {
+	dispatch := func(id NodeID) {
 		n := byID[id]
 		// the key must be computed here: every dependency has finished, so
 		// their stamps are final
