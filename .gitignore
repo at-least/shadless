@@ -13,3 +13,6 @@ tools/contracts/out/*/.oracle-entry.mjs
 tools/contracts/out/*/oracle.html
 # wireit's fingerprints + local output cache
 .wireit/
+
+# Go pipeline runner (build artifact)
+/build/pipeline
