@@ -83,9 +83,15 @@ per component:
 
 Per-component durations sum to 353s, matching the serial baseline, so the win
 is scheduling and not a measurement error; the longest single component
-(dropdown-menu, 24.7s) is the floor. The other half of the win does not show up
-in a timing: editing tools/contracts/components/dialog.mjs now marks
-`contracts:dialog` stale and nothing else, instead of re-running all 29.
+(dropdown-menu, 24.7s) is the floor.
+
+The win is parallelism ONLY. Editing one contract def still invalidates all 29,
+and correctly so: `contract-fixture` declares `tools/contracts/components/**`
+because it generates the kernel fixtures from every def, and `contracts:*`
+needs demo-css -> demo -> contract-fixture. The narrow input set on each
+`contracts:<component>` node does not help while that edge exists — the cascade
+arrives through the dependency key, which is exactly what the one rule is
+supposed to do.
 
 Still missing before it can replace wireit: output caching across machines
 (wireit has local + GitHub Actions caching), and moving the node definitions
