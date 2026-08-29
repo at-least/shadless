@@ -43,10 +43,14 @@ Reconciled so far:
   `coverage` and nothing else.
 - Whole-graph `status` costs 0.2s.
 
-Still missing before it can replace wireit: parallel execution, output
-caching across machines (wireit has local + GitHub Actions caching), and
-verification that a node writes only what it declares in `produces` — the
-`convert` node currently writes `src/kernel/*.html` without declaring it.
+`run` also checks, after each node, that it wrote nothing outside its declared
+`produces` — narrowed to the files some node declares as an input, since a
+write nobody reads cannot affect freshness. wireit is structurally blind to
+this: it manages declared outputs and cannot see the others. No violation has
+been found yet; the check is the guarantee, not a fix for a known bug.
+
+Still missing before it can replace wireit: parallel execution and output
+caching across machines (wireit has local + GitHub Actions caching).
 
 `graph.json` is generated from `gates/registry.mjs`, which stays the single
 source of truth until the reconciliation is finished.

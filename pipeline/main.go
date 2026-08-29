@@ -66,6 +66,10 @@ func main() {
 		os.Exit(2)
 	}
 	cmd, args := os.Args[1], os.Args[2:]
+	force := false
+	if len(args) > 0 && args[0] == "--force" {
+		force, args = true, args[1:]
+	}
 	root, err := os.Getwd()
 	die(err)
 
@@ -119,16 +123,18 @@ func main() {
 	case "run":
 		k := NewKeyer(root, g)
 		rec := loadStamps(root)
-		ran, skipped := 0, 0
+		ran, skipped, violations := 0, 0, 0
 		start := time.Now()
 		for _, n := range plan {
 			key, skippable, err := k.Key(n.ID)
 			die(err)
-			if skippable && rec[n.ID] == key {
+			if skippable && rec[n.ID] == key && !force {
 				skipped++
 				continue
 			}
 			fmt.Printf("→ %s\n", n.ID)
+			before, err := inputUniverse(root, g)
+			die(err)
 			for _, argv := range n.Run {
 				c := exec.Command(argv[0], argv[1:]...)
 				c.Dir, c.Stdout, c.Stderr = root, os.Stdout, os.Stderr
@@ -141,6 +147,12 @@ func main() {
 				}
 			}
 			ran++
+			if after, err := inputUniverse(root, g); err == nil {
+				if vs, err := undeclaredWrites(root, g, n, before, after); err == nil {
+					reportViolations(n.ID, vs)
+					violations += len(vs)
+				}
+			}
 			if skippable {
 				// recompute: the node's own run may have changed files that
 				// feed its key (a build whose output is also its input)
@@ -160,6 +172,11 @@ func main() {
 		}
 		sort.Strings(ids)
 		fmt.Printf("ran %d, skipped %d in %.1fs\n", ran, skipped, time.Since(start).Seconds())
+		if violations > 0 {
+			fmt.Fprintf(os.Stderr, "\n%d undeclared write(s): a node is driving the graph's freshness "+
+				"through a file it does not admit to producing. Fix `produces`, or stop writing there.\n", violations)
+			os.Exit(1)
+		}
 	default:
 		fmt.Fprintln(os.Stderr, "unknown command:", cmd)
 		os.Exit(2)
