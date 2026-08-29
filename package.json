@@ -280,6 +280,10 @@
     },
     "w:dist-complete": {
       "command": "node gates/dist-complete.mjs",
+      "dependencies": [
+        "w:demo-css",
+        "w:product-css"
+      ],
       "output": [],
       "clean": false,
       "files": [
@@ -290,6 +294,10 @@
     },
     "w:pack": {
       "command": "node gates/pack.mjs",
+      "dependencies": [
+        "w:build-js",
+        "w:product-build"
+      ],
       "output": [],
       "clean": false,
       "files": [
@@ -362,6 +370,7 @@
       ],
       "output": [
         "dist/components/*.html",
+        "!dist/components/*-rtl-*.html",
         "dist/shadless.css",
         "build/emit/**"
       ],
@@ -435,7 +444,8 @@
         "w:emit"
       ],
       "output": [
-        "dist/components/*-demo.html"
+        "dist/components/*-demo.html",
+        "!dist/components/*-rtl-*.html"
       ],
       "clean": false,
       "files": [
@@ -449,11 +459,11 @@
         "w:demo-build"
       ],
       "output": [
-        "docs/demos/**",
+        "docs/demos/*.html",
+        "!docs/demos/*-rtl-*.html",
         "build/example-oracle/**",
         "docs/example-oracle.json",
-        "docs/example-fixture-targets.json",
-        "build/example-oracle/**"
+        "docs/example-fixture-targets.json"
       ],
       "clean": false,
       "files": [
@@ -476,7 +486,8 @@
       ],
       "output": [
         "build/example-fixture/**",
-        "docs/demos/*.html"
+        "docs/demos/*.html",
+        "!docs/demos/*-rtl-*.html"
       ],
       "clean": false,
       "files": [
@@ -523,7 +534,8 @@
       "output": [
         "dist/globals.css",
         "dist/demo-index.html",
-        "dist/components/*.html"
+        "dist/components/*.html",
+        "!dist/components/*-rtl-*.html"
       ],
       "clean": false,
       "files": [
@@ -570,9 +582,12 @@
         "tools/tw.mjs",
         "dist/globals.css",
         "dist/components/**",
+        "dist/js/**",
         "docs/demos/**",
+        "docs/content/**",
         "src/kernel/**",
         "tools/contracts/out/**",
+        "src/registry/ir/**",
         "probes/t7/**",
         "probes/t8/**"
       ]
@@ -927,9 +942,7 @@
         "w:pin",
         "w:unit",
         "w:ledger",
-        "w:wireit-sync",
-        "w:dist-complete",
-        "w:pack"
+        "w:wireit-sync"
       ]
     },
     "w:medium": {
@@ -938,8 +951,6 @@
         "w:unit",
         "w:ledger",
         "w:wireit-sync",
-        "w:dist-complete",
-        "w:pack",
         "w:convert",
         "w:coverage",
         "w:overlay",

@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import "tailwindcss" source(none);
 @import "tw-animate-css";
 /* === begin inlined shadcn/tailwind.css === */
 @theme inline {
@@ -1062,57 +1062,15 @@
   }
 }
 
-@source "./components/accordion.html";
-@source "./components/alert.html";
-@source "./components/alert-dialog.html";
-@source "./components/aspect-ratio.html";
-@source "./components/attachment.html";
-@source "./components/avatar.html";
-@source "./components/badge.html";
-@source "./components/breadcrumb.html";
-@source "./components/bubble.html";
-@source "./components/button.html";
-@source "./components/button-group.html";
-@source "./components/card.html";
-@source "./components/carousel.html";
-@source "./components/checkbox.html";
-@source "./components/collapsible.html";
-@source "./components/context-menu.html";
-@source "./components/dialog.html";
-@source "./components/direction.html";
-@source "./components/dropdown-menu.html";
-@source "./components/empty.html";
-@source "./components/field.html";
-@source "./components/hover-card.html";
-@source "./components/input.html";
-@source "./components/input-group.html";
-@source "./components/item.html";
-@source "./components/kbd.html";
-@source "./components/label.html";
-@source "./components/marker.html";
-@source "./components/menubar.html";
-@source "./components/message.html";
-@source "./components/message-scroller.html";
-@source "./components/native-select.html";
-@source "./components/navigation-menu.html";
-@source "./components/pagination.html";
-@source "./components/popover.html";
-@source "./components/progress.html";
-@source "./components/radio-group.html";
-@source "./components/scroll-area.html";
-@source "./components/select.html";
-@source "./components/separator.html";
-@source "./components/sheet.html";
-@source "./components/skeleton.html";
-@source "./components/slider.html";
-@source "./components/spinner.html";
-@source "./components/switch.html";
-@source "./components/table.html";
-@source "./components/tabs.html";
-@source "./components/textarea.html";
-@source "./components/toggle.html";
-@source "./components/toggle-group.html";
-@source "./components/tooltip.html";
+@source "./components";
+@source "./js";
+@source "../docs/demos";
+@source "../docs/content";
+@source "../src/kernel";
+@source "../tools/contracts/out";
+@source "../src/registry/ir";
+@source "../probes/t7";
+@source "../probes/t8";
 
 
 

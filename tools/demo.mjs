@@ -54,17 +54,32 @@ for (const ir of irAll) {
   if (!css.rules.length) continue
   cssParts.push(wrapComponentCss(ir.name, css))
 }
-// NOTE on the repo-wide auto-scan (out.css compiles from the repo root):
-// it is LOAD-BEARING for the docs site — authored docs/demos/*.html pages
-// load out.css in iframes and their utilities are only picked up by that
-// scan. `@source not` cannot carve tool/source dirs out of it: any
-// `@source not` disables automatic detection entirely (empirically verified
-// 2026-08-26 — the -4041-line out.css regression). The residual coupling —
-// utility-like STRING literals in tracked files surface as unused rules —
-// is why tools/unit fixtures concatenate their tokens at runtime.
-const sources = names.map((n) => `@source "./components/${n}.html";`).join("\n")
+// out.css's content scan is EXPLICIT. It used to be tailwind's automatic
+// repo-wide detection (compile from the repo root), which was load-bearing
+// — authored docs/demos pages, kernel fixtures and contract pages all load
+// out.css — but also nondeterministic: the scanner's ignore handling let
+// gitignored React bundles under build/ and build/gates/oracle.css leak
+// utilities in some runs and not others (2026-08-30: --ease-in/--ease-out
+// flipping between two otherwise identical full runs; before that 68 junk
+// rules scraped from committed bundles). `source(none)` turns detection
+// off; every directory whose pages load out.css is listed here, relative
+// to dist/globals.css. This list == the `demo-css` inputs in
+// gates/registry.mjs — keep them in step.
+// ./js: the runtime injects utility classes at wire time (navigation-menu's
+// viewport, portal wrappers) — they exist in no page's markup
+// ../src/registry/ir: the IR's raw upstream class strings. Load-bearing
+// twice over — the docs describe out.css as "utilities precompiled" (the
+// no-build story), and the shipped pages carry arbitrary variants with an
+// HTML-escaped '>' (has-[&gt;svg]:gap-x-2) that the scanner cannot read
+// from markup at all; only the IR's unescaped copy compiles them.
+// ../docs/content: the guides teach utilities "already precompiled in
+// out.css" (typography maps roles to text-5xl etc.) — the mdx is the source.
+const SOURCES = ["./components", "./js", "../docs/demos", "../docs/content", "../src/kernel",
+                 "../tools/contracts/out", "../src/registry/ir", "../probes/t7", "../probes/t8"]
+const sources = SOURCES.map((d) => `@source "${d}";`).join("\n")
 writeFileSync(`${DIST}/globals.css`,
-  base + "\n" + sources + "\n\n" + SHADLESS_CSS_FIXES + "\n\n" + cssParts.join("\n\n") +
+  base.replace('@import "tailwindcss";', '@import "tailwindcss" source(none);') +
+  "\n" + sources + "\n\n" + SHADLESS_CSS_FIXES + "\n\n" + cssParts.join("\n\n") +
   "\n@layer base { body { @apply bg-background text-foreground p-8; } }\n")
 
 // ---- 2. copy shared assets into dist/ --------------------------------------

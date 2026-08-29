@@ -120,7 +120,11 @@ function main() {
   const globalsPath = existsSync(path.join(ROOT, "dist/globals.css"))
     ? path.join(ROOT, "dist/globals.css")
     : path.join(ROOT, "probes/h4/globals.css")
+  // the demo entry turns tailwind's automatic content detection off
+  // (source(none) + explicit @source, see tools/demo.mjs); the CONSUMER's
+  // build must keep detection on — their pasted markup is what it scans
   const globals = readFileSync(globalsPath, "utf8")
+    .replace('@import "tailwindcss" source(none);', '@import "tailwindcss";')
 
   if (process.argv.includes("--verify")) {
     const full = readFileSync(path.join(ROOT, "dist/shadless.full.css"), "utf8")

@@ -77,7 +77,8 @@ export const NODES = [
     mutations: ["wireit-drift"],
   }),
   node({
-    id: "dist-complete", kind: "gate", tier: "fast", needs: [],
+    // reads dist/out.css + dist/css — must not race their producers under the parallel runner
+    id: "dist-complete", kind: "gate", tier: "fast", needs: ["demo-css", "product-css"],
     run: [["node", "gates/dist-complete.mjs"]],
     inputs: ["gates/dist-complete.mjs", "dist/css/**", "dist/out.css"],
     why: "the tracked no-build dist/out.css must carry every slot selector its per-component " +
@@ -86,7 +87,8 @@ export const NODES = [
     mutations: ["dist-complete-drop-component"],
   }),
   node({
-    id: "pack", kind: "gate", tier: "fast", needs: [],
+    // reads dist/ — must not race build-js / product-build under the parallel runner
+    id: "pack", kind: "gate", tier: "fast", needs: ["build-js", "product-build"],
     run: [["node", "gates/pack.mjs"]],
     inputs: ["gates/pack.mjs", "package.json", "README.md", "dist/**"],
     why: "the npm surface — exports map, tarball contents, README specifiers, an empty " +
@@ -139,7 +141,7 @@ export const NODES = [
              "src/registry/tiers.json", "src/registry/pin.json", "probes/h4/globals.css",
              "tools/tw.mjs"],
     why: "static-tier emit: IR -> component html + per-slot css",
-    produces: ["dist/components/*.html", "dist/shadless.css", "build/emit"],
+    produces: ["dist/components/*.html", "!dist/components/*-rtl-*.html", "dist/shadless.css", "build/emit"],
   }),
   node({
     id: "emit-smoke", kind: "gate", tier: "medium", needs: ["emit"],
@@ -178,7 +180,7 @@ export const NODES = [
     run: [["node", "tools/build-demo.mjs"]],
     inputs: ["tools/build-demo.mjs", "src/docs/theme-prepaint.mjs"],
     why: "single-demo compositions from the upstream examples",
-    produces: ["dist/components/*-demo.html"],
+    produces: ["dist/components/*-demo.html", "!dist/components/*-rtl-*.html"],
   }),
   node({
     id: "example-oracle", kind: "build", tier: "full", needs: ["demo-build"],
@@ -189,7 +191,9 @@ export const NODES = [
              "package-lock.json"],
     why: "upstream examples rendered by real React+chromium BECOME the demo pages — " +
          "1:1 with upstream by construction, not by hand-mirroring",
-    produces: ["docs/demos", "build/example-oracle", "docs/example-oracle.json", "docs/example-fixture-targets.json", "build/example-oracle"],
+    // rtl language variants are demo-rtl's: output sets must be DISJOINT between
+    // nodes that can run in parallel, or wireit's output manifests race
+    produces: ["docs/demos/*.html", "!docs/demos/*-rtl-*.html", "build/example-oracle", "docs/example-oracle.json", "docs/example-fixture-targets.json"],
   }),
   node({
     id: "example-fixture", kind: "build", tier: "full", needs: ["example-oracle"],
@@ -201,7 +205,7 @@ export const NODES = [
              "src/registry/pin.json", "package-lock.json"],
     why: "kernel-tier examples as INTERACTIVE fixtures harvested from the oracle; " +
          "the oracle alone emits static snapshots with dead buttons",
-    produces: ["build/example-fixture", "docs/demos/*.html"],
+    produces: ["build/example-fixture", "docs/demos/*.html", "!docs/demos/*-rtl-*.html"],
   }),
   node({
     id: "demo-rtl", kind: "build", tier: "medium", needs: ["example-oracle"],
@@ -218,7 +222,7 @@ export const NODES = [
              "src/docs/theme-prepaint.mjs", "src/registry/tiers.json", "src/registry/ir/**",
              "src/kernel/**", "probes/h4/globals.css", "probes/t7/**", "probes/t8/**"],
     why: "unified globals.css (slot rules folded in) + the demo index",
-    produces: ["dist/globals.css", "dist/demo-index.html", "dist/components/*.html"],
+    produces: ["dist/globals.css", "dist/demo-index.html", "dist/components/*.html", "!dist/components/*-rtl-*.html"],
   }),
 
   // ------------------------------------------------------------ css builds
@@ -234,8 +238,10 @@ export const NODES = [
     // repo-root cwd: the repo-wide content scan is load-bearing for the
     // docs/demos iframes (@source not excludes tool fixtures — see tools/demo.mjs)
     run: [["node", "tools/tw.mjs", "dist/globals.css", "dist/out.css", "--cwd", "."]],
-    inputs: ["tools/tw.mjs", "dist/globals.css", "dist/components/**", "docs/demos/**",
-             "src/kernel/**", "tools/contracts/out/**", "probes/t7/**", "probes/t8/**"],
+    // == the @source list in tools/demo.mjs (explicit scan, no auto-detection)
+    inputs: ["tools/tw.mjs", "dist/globals.css", "dist/components/**", "dist/js/**", "docs/demos/**",
+             "docs/content/**", "src/kernel/**", "tools/contracts/out/**", "src/registry/ir/**",
+             "probes/t7/**", "probes/t8/**"],
     why: "the stylesheet every demo page and contract fixture actually loads",
     produces: ["dist/out.css"],
   }),
