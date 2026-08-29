@@ -45,8 +45,12 @@ const CHECK = process.argv.includes("--check")
 // new upstream examples flow in with zero tool edits. mode-toggle is a
 // shadless-own guide demo (no upstream file) and stays hand-authored.
 // Ownership is recorded in docs/example-oracle.json; --check only gates
-// owned pages, so a render failure keeps the previous hand-authored file
-// (loudly reported) instead of breaking the build.
+// owned pages. A render failure is FATAL: the run writes nothing (pages
+// or manifests) and exits 1. It used to be survivable — a failed render
+// printed KEEP and the manifest was rewritten to whatever *did* render,
+// so a broken run silently shrank the owned set (once to zero pages) and
+// every downstream gate that reads the manifest went green over an empty
+// surface.
 const MANIFEST = "docs/example-oracle.json"
 function loadTargets() {
   const catalog = JSON.parse(readFileSync("docs/catalog.json", "utf8"))
@@ -150,11 +154,15 @@ const FIXTURE_FAMILIES = {
 }
 const FIXTURE_TARGETS = "docs/example-fixture-targets.json"
 const fixtureTargets = []
-let emitted = 0
-const owned = []
+const rendered = []
+const failures = []
+// Phase 1 — render everything, write nothing. The run is ALL-OR-NOTHING:
+// a partial emit leaves the tree half-generated and, worse, rewrites the
+// two manifests to describe only the pages that happened to survive, which
+// is indistinguishable downstream from "those pages were never ours".
 for (const t of TARGETS) {
   const tsx = `${EXAMPLES}/${t.name}.tsx`
-  if (!existsSync(tsx)) { console.error(`FAIL [${t.name}]: ${tsx} missing`); process.exit(1) }
+  if (!existsSync(tsx)) { failures.push(`${t.name}: ${tsx} missing`); continue }
   try {
     const { htmlFile } = await buildOracle(t.name)
     await awaitOracle(page, htmlFile)
@@ -163,18 +171,26 @@ for (const t of TARGETS) {
     const trivial = await page.evaluate((sels) => Object.entries(sels).filter(([, sel]) => document.querySelector("#root " + sel)).map(([c]) => c), TRIVIAL_SEL)
     rmSync(htmlFile)
     if (families.length && t.out.startsWith("docs/demos/")) { fixtureTargets.push({ name: t.name, families, trivial }); continue }
-    const attr = t.bodyStyle ? `style="${t.bodyStyle}"` : undefined
-    writeFileSync(t.out, pageHtml(t.name, dom.trim(), attr, trivial))
-    owned.push(t)
-    emitted++
+    rendered.push({ t, dom: dom.trim(), trivial })
   } catch (err) {
-    console.error(`KEEP [${t.name}]: oracle render failed (${err.message.split("\n")[0]}) — hand-authored file retained`)
+    failures.push(`${t.name}: oracle render failed (${err.message.split("\n")[0]})`)
   }
 }
 await browser.close()
-writeFileSync(MANIFEST, JSON.stringify(owned.map(({ name, out }) => ({ name, out })), null, 1) + "\n")
+
+if (failures.length) {
+  for (const f of failures) console.error(`FAIL [${f.split(":")[0]}]: ${f.slice(f.indexOf(":") + 2)}`)
+  console.error(`FAIL  example-oracle (${failures.length}/${TARGETS.length} examples did not render) — ` +
+    `nothing written; ${MANIFEST} and ${FIXTURE_TARGETS} keep their previous contents`)
+  process.exit(1)
+}
+
+// Phase 2 — every target rendered; commit pages and manifests together.
+for (const { t, dom, trivial } of rendered) {
+  const attr = t.bodyStyle ? `style="${t.bodyStyle}"` : undefined
+  writeFileSync(t.out, pageHtml(t.name, dom, attr, trivial))
+}
+writeFileSync(MANIFEST, JSON.stringify(rendered.map(({ t }) => ({ name: t.name, out: t.out })), null, 1) + "\n")
 writeFileSync(FIXTURE_TARGETS, JSON.stringify(fixtureTargets.sort((a, b) => a.name.localeCompare(b.name)), null, 1) + "\n")
 console.log(`example-oracle: ${fixtureTargets.length} pages carry kernel families — handed to tools/example-fixture.mjs (${FIXTURE_TARGETS})`)
-const failed = TARGETS.length - emitted
-console.log(`example-oracle: ${emitted} pages emitted from React oracle, ${failed} kept hand-authored`)
-if (failed > 0 && process.argv.includes("--strict")) process.exit(1)
+console.log(`example-oracle: ${rendered.length} pages emitted from React oracle (${TARGETS.length} targets, 0 failures)`)

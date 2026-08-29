@@ -98,7 +98,11 @@ export const NODES = [
     mutations: ["pack-broken-export"],
   }),
   node({
-    id: "coverage", kind: "gate", tier: "fast", needs: ["convert"],
+    // needs example-oracle: the ownership manifest this gate counts cells
+    // from is example-oracle's output. Without the edge it judged whatever
+    // the PREVIOUS run left behind — a full run could regenerate the
+    // manifest after coverage had already passed over the old one.
+    id: "coverage", kind: "gate", tier: "fast", needs: ["convert", "example-oracle"],
     run: [["node", "gates/coverage.mjs", "--check"]],
     inputs: ["gates/coverage.mjs", "gates/ledger.json", "src/registry/tiers.json",
              "src/registry/ir/**", "docs/example-oracle.json", "docs/demos/**",
@@ -109,7 +113,11 @@ export const NODES = [
     mutations: ["coverage-drop-contract"],
   }),
   node({
-    id: "overlay", kind: "gate", tier: "fast", needs: ["convert"],
+    // needs example-oracle: same stale-manifest problem as coverage —
+    // "is this authored file still needed?" is answered from
+    // docs/example-oracle.json + docs/example-fixture-targets.json, both
+    // written by example-oracle.
+    id: "overlay", kind: "gate", tier: "fast", needs: ["convert", "example-oracle"],
     run: [["node", "gates/overlay.mjs", "--audit"]],
     inputs: ["gates/overlay.mjs", "overlays/**", "src/**", "tools/**/*.mjs",
              "docs/example-oracle.json", "docs/example-fixture-targets.json", "docs/demos/**",
@@ -194,6 +202,9 @@ export const NODES = [
     // rtl language variants are demo-rtl's: output sets must be DISJOINT between
     // nodes that can run in parallel, or wireit's output manifests race
     produces: ["docs/demos/*.html", "!docs/demos/*-rtl-*.html", "build/example-oracle", "docs/example-oracle.json", "docs/example-fixture-targets.json"],
+    // a build node with a mutation: the ownership manifest is a gate input,
+    // so "the build swallowed a render failure" is a gate-level lie
+    mutations: ["example-oracle-render-failure"],
   }),
   node({
     id: "example-fixture", kind: "build", tier: "full", needs: ["example-oracle"],

@@ -310,7 +310,8 @@
     "w:coverage": {
       "command": "node gates/coverage.mjs --check",
       "dependencies": [
-        "w:convert"
+        "w:convert",
+        "w:example-oracle"
       ],
       "output": [],
       "clean": false,
@@ -328,7 +329,8 @@
     "w:overlay": {
       "command": "node gates/overlay.mjs --audit",
       "dependencies": [
-        "w:convert"
+        "w:convert",
+        "w:example-oracle"
       ],
       "output": [],
       "clean": false,
@@ -952,8 +954,6 @@
         "w:ledger",
         "w:wireit-sync",
         "w:convert",
-        "w:coverage",
-        "w:overlay",
         "w:emit",
         "w:emit-smoke"
       ]
