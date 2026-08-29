@@ -1,0 +1,97 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "scroll-area",
+ "tier": "kernel",
+ "imports": [
+  "react",
+  "radix-ui",
+  "@/registry/bases/radix/lib/utils"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "ScrollArea",
+   "export": true,
+   "elements": [
+    {
+     "tag": "ScrollAreaPrimitive.Root",
+     "slot": "scroll-area",
+     "classes": [
+      "relative"
+     ],
+     "spread": true,
+     "children": [
+      "<ScrollAreaPrimitive.Viewport slot=scroll-area-viewport class=[1]>",
+      "<ScrollBar>",
+      "<ScrollAreaPrimitive.Corner>"
+     ]
+    },
+    {
+     "tag": "ScrollAreaPrimitive.Viewport",
+     "slot": "scroll-area-viewport",
+     "classes": [
+      "size-full rounded-[inherit] transition-[color,box-shadow] outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1"
+     ],
+     "spread": false,
+     "children": [
+      "{children}"
+     ]
+    },
+    {
+     "tag": "ScrollBar",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": []
+    },
+    {
+     "tag": "ScrollAreaPrimitive.Corner",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "ScrollBar",
+   "export": true,
+   "elements": [
+    {
+     "tag": "ScrollAreaPrimitive.ScrollAreaScrollbar",
+     "slot": "scroll-area-scrollbar",
+     "classes": [
+      "data-horizontal:h-2.5 data-horizontal:flex-col data-horizontal:border-t data-horizontal:border-t-transparent data-vertical:h-full data-vertical:w-2.5 data-vertical:border-l data-vertical:border-l-transparent flex touch-none p-px transition-colors select-none"
+     ],
+     "spread": true,
+     "children": [
+      "<ScrollAreaPrimitive.ScrollAreaThumb slot=scroll-area-thumb class=[1]>"
+     ]
+    },
+    {
+     "tag": "ScrollAreaPrimitive.ScrollAreaThumb",
+     "slot": "scroll-area-thumb",
+     "classes": [
+      "rounded-full relative flex-1 bg-border"
+     ],
+     "spread": false,
+     "children": []
+    }
+   ]
+  }
+ ],
+ "conditionals": [],
+ "cvaRefs": [],
+ "tagHints": {
+  "ScrollAreaPrimitive.Root": "div",
+  "ScrollAreaPrimitive.Viewport": "div",
+  "ScrollBar": "div",
+  "ScrollAreaPrimitive.Corner": "div",
+  "ScrollAreaPrimitive.ScrollAreaScrollbar": "div",
+  "ScrollAreaPrimitive.ScrollAreaThumb": "div"
+ }
+}

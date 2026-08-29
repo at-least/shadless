@@ -1,0 +1,109 @@
+{
+  "oracleOpen": {
+    "step": "oracle",
+    "accordion": {
+      "tag": "div",
+      "data-slot": "accordion",
+      "id": "ac",
+      "data-orientation": "vertical",
+      "text": "FirstSecond"
+    },
+    "accordion-item": {
+      "tag": "div",
+      "data-state": "closed",
+      "data-orientation": "vertical",
+      "data-slot": "accordion-item",
+      "text": "First"
+    },
+    "accordion-trigger": {
+      "tag": "button",
+      "type": "button",
+      "aria-controls": "radix-_r_1_",
+      "aria-expanded": "false",
+      "data-state": "closed",
+      "data-orientation": "vertical",
+      "id": "d1-at1",
+      "data-slot": "accordion-trigger",
+      "data-radix-collection-item": "",
+      "text": "First"
+    },
+    "accordion-content": {
+      "tag": "div",
+      "data-state": "closed",
+      "id": "radix-_r_1_",
+      "hidden": "",
+      "role": "region",
+      "aria-labelledby": "radix-_r_0_",
+      "data-orientation": "vertical",
+      "data-slot": "accordion-content",
+      "style": "--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);",
+      "text": ""
+    },
+    "activeElement": "body",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "shadlessOpen": {
+    "step": "shadless",
+    "accordion": {
+      "tag": "div",
+      "data-slot": "accordion",
+      "id": "ac",
+      "data-orientation": "vertical",
+      "text": "FirstBody1SecondBody2"
+    },
+    "accordion-item": {
+      "tag": "div",
+      "data-slot": "accordion-item",
+      "data-state": "closed",
+      "data-orientation": "vertical",
+      "text": "FirstBody1"
+    },
+    "accordion-trigger": {
+      "tag": "button",
+      "data-slot": "accordion-trigger",
+      "id": "d1-at1",
+      "type": "button",
+      "aria-expanded": "false",
+      "data-state": "closed",
+      "data-orientation": "vertical",
+      "aria-controls": "d1-acc1",
+      "text": "First"
+    },
+    "accordion-content": {
+      "tag": "div",
+      "data-slot": "accordion-content",
+      "id": "d1-acc1",
+      "data-state": "closed",
+      "hidden": "",
+      "role": "region",
+      "aria-labelledby": "d1-at1",
+      "data-orientation": "vertical",
+      "text": "Body1"
+    },
+    "activeElement": "body",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "oracle": {
+    "click:#d1-at1": "open/true/open/s|closed/false/closed/h|ae=d1-at1",
+    "click:#d1-at1+click:#d1-at2": "closed/false/closed/h|open/true/open/s|ae=d1-at2",
+    "click:#d1-at2+click:#d1-at2": "closed/false/closed/h|closed/false/closed/h|ae=d1-at2",
+    "click:#d1-at1+key:ArrowDown": "open/true/open/s|closed/false/closed/h|ae=d1-at2",
+    "focus:#d1-at1+key:End": "closed/false/closed/h|closed/false/closed/h|ae=d1-at2",
+    "focus:#d1-at2+key:Home": "closed/false/closed/h|closed/false/closed/h|ae=d1-at1"
+  },
+  "shadless": {
+    "click:#d1-at1": "open/true/open/s|closed/false/closed/h|ae=d1-at1",
+    "click:#d1-at1+click:#d1-at2": "closed/false/closed/h|open/true/open/s|ae=d1-at2",
+    "click:#d1-at2+click:#d1-at2": "closed/false/closed/h|closed/false/closed/h|ae=d1-at2",
+    "click:#d1-at1+key:ArrowDown": "open/true/open/s|closed/false/closed/h|ae=d1-at2",
+    "focus:#d1-at1+key:End": "closed/false/closed/h|closed/false/closed/h|ae=d1-at2",
+    "focus:#d1-at2+key:Home": "closed/false/closed/h|closed/false/closed/h|ae=d1-at1"
+  },
+  "pass": true
+}

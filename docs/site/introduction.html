@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Introduction — shadless docs</title>
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="fonts.css">
+<script>(function(){try{var k="shadless-docs-theme";var apply=function(d){document.documentElement.classList.toggle("dark",!!d)};var s=localStorage.getItem(k);var d=s?s==="dark":matchMedia("(prefers-color-scheme: dark)").matches;apply(d);addEventListener("storage",function(e){if(e.key===k)apply(e.newValue==="dark")});}catch(e){}})();</script>
+</head>
+<body>
+<header class="mobile-topbar">
+    <button type="button" class="sidebar-toggle" data-sidebar-toggle aria-controls="sidebar" aria-expanded="false" aria-label="Open navigation">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
+    </button>
+    <a class="brand" href="index.html">shadless docs</a>
+  </header>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand-row">
+      <a class="brand" href="index.html">shadless docs</a>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+    </svg>
+    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+    </svg>
+  </button>
+    </div>
+    <nav aria-label="Components and guides">
+      <ul>
+      <li><a href="introduction.html">Introduction</a></li>
+      <li><a href="accordion.html">accordion</a></li>
+      <li><a href="alert.html">alert</a></li>
+      <li><a href="alert-dialog.html">alert-dialog</a></li>
+      <li><a href="aspect-ratio.html">aspect-ratio</a></li>
+      <li><a href="attachment.html">attachment</a></li>
+      <li><a href="avatar.html">avatar</a></li>
+      <li><a href="badge.html">badge</a></li>
+      <li><a href="breadcrumb.html">breadcrumb</a></li>
+      <li><a href="bubble.html">bubble</a></li>
+      <li><a href="button.html">button</a></li>
+      <li><a href="button-group.html">button-group</a></li>
+      <li><a href="card.html">card</a></li>
+      <li><a href="carousel.html">carousel</a></li>
+      <li><a href="checkbox.html">checkbox</a></li>
+      <li><a href="collapsible.html">collapsible</a></li>
+      <li><a href="context-menu.html">context-menu</a></li>
+      <li><a href="dialog.html">dialog</a></li>
+      <li><a href="direction.html">direction</a></li>
+      <li><a href="dropdown-menu.html">dropdown-menu</a></li>
+      <li><a href="empty.html">empty</a></li>
+      <li><a href="field.html">field</a></li>
+      <li><a href="hover-card.html">hover-card</a></li>
+      <li><a href="input.html">input</a></li>
+      <li><a href="input-group.html">input-group</a></li>
+      <li><a href="item.html">item</a></li>
+      <li><a href="kbd.html">kbd</a></li>
+      <li><a href="label.html">label</a></li>
+      <li><a href="marker.html">marker</a></li>
+      <li><a href="menubar.html">menubar</a></li>
+      <li><a href="message.html">message</a></li>
+      <li><a href="message-scroller.html">message-scroller</a></li>
+      <li><a href="native-select.html">native-select</a></li>
+      <li><a href="navigation-menu.html">navigation-menu</a></li>
+      <li><a href="pagination.html">pagination</a></li>
+      <li><a href="popover.html">popover</a></li>
+      <li><a href="progress.html">progress</a></li>
+      <li><a href="radio-group.html">radio-group</a></li>
+      <li><a href="scroll-area.html">scroll-area</a></li>
+      <li><a href="select.html">select</a></li>
+      <li><a href="separator.html">separator</a></li>
+      <li><a href="sheet.html">sheet</a></li>
+      <li><a href="skeleton.html">skeleton</a></li>
+      <li><a href="slider.html">slider</a></li>
+      <li><a href="spinner.html">spinner</a></li>
+      <li><a href="switch.html">switch</a></li>
+      <li><a href="table.html">table</a></li>
+      <li><a href="tabs.html">tabs</a></li>
+      <li><a href="textarea.html">textarea</a></li>
+      <li><a href="toggle.html">toggle</a></li>
+      <li><a href="toggle-group.html">toggle-group</a></li>
+      <li><a href="tooltip.html">tooltip</a></li>
+      <li class="sidebar-group">Not available</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">calendar</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">chart</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">combobox</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">command</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">data-table</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">date-picker</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">drawer</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">form</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">input-otp</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">questionnaire</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">resizable</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">sidebar</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">sonner</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">toast</li>
+      <li class="sidebar-unavailable" title="No component in shadless — see Typography guide">typography <a href="typography.html" class="greyed-guide-link" title="Open Typography guide">→</a></li>
+      <li class="sidebar-group">Guides</li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="dark-mode.html">Dark Mode</a></li>
+      <li><a href="rtl.html">RTL</a></li>
+      <li><a href="shimmer.html">shimmer</a></li>
+      <li><a href="scroll-fade.html">scroll-fade</a></li>
+      <li><a href="ai-sdk.html">AI SDK</a></li>
+      <li><a href="tanstack-ai.html">TanStack AI</a></li>
+      <li><a href="typography.html">Typography</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="main">
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><span>Getting started</span><span class="sep" aria-hidden="true">›</span><span>Introduction</span></nav>
+    <header class="page-header">
+      <div class="header-row">
+        <h1>Introduction</h1>
+        <div class="docs-nav"><a href="installation.html" aria-label="Next page" title="Next"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 5 7 7-7 7"/><path d="M5 12h14"/></svg></a></div>
+      </div>
+      <p class="lead">shadless is the shadcn/ui component registry, mechanically converted to no-React artifacts — same markup and styling, vanilla HTML + CSS + JS.</p>
+
+    </header>
+    <div class="columns">
+      <article data-page="introduction" class="typeset">
+<p><strong>This is not a component library. It is how you build your component library.</strong></p>
+<p>shadless ships shadcn/ui's radix-line components as compiled HTML, CSS, and JS artifacts you copy into your project — no CLI, no React, no framework. You get the same components, the same design tokens, and the same <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>data-slot
+</span></code> convention; you skip the build-time JSX→JS step that shadcn's CLI handles for React projects.</p>
+<h2 id="open-code">Open Code</h2>
+<p>shadless hands you the actual component markup. <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>dist/components/&lt;name&gt;.html
+</span></code> is the source of truth — the same JSX shadcn generates, just without the JSX wrappers and React hooks. Adapt any part to fit your design and functionality requirements.</p>
+<ul>
+<li><strong>Full Transparency:</strong> The HTML, the CSS, and the JS runtime are all on disk. Nothing is hidden behind a build step.</li>
+<li><strong>Easy Customization:</strong> Edit the markup directly. Slots are marked with <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>data-slot=&quot;…&quot;
+</span></code>; keep them and the shipped styles apply unchanged.</li>
+<li><strong>AI Integration:</strong> Plain HTML is the most LLM-friendly format there is. Models read it, write it, and transform it without a JSX → DOM mental model.</li>
+</ul>
+<h2 id="composition">Composition</h2>
+<p>Every component in shadless shares a common, composable interface — the same one shadcn defines. <strong>If a component does not exist, we bring it in as a slot-based composition</strong>, and adjust its style to match and work with the rest of the design system.</p>
+<p><em>The radix-line variants (49 components) compose consistently. Where shadcn defines a base-nova or aria variant on the same slot, shadless implements the radix version and links to the registry page for the other style lines.</em></p>
+<h2 id="distribution">Distribution</h2>
+<p>shadless is a code distribution system. It takes the pinned shadcn-ui registry, runs every component through a contract-tested AST→IR→emit pipeline, and emits:</p>
+<ul>
+<li><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>dist/components/&lt;name&gt;.html
+</span></code> — one demo page per component, the markup to copy</li>
+<li><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>dist/shadless-core.css
+</span></code> + <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>dist/css/&lt;name&gt;.css
+</span></code> (npm: <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>shadless
+</span></code> + <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>shadless/&lt;name&gt;.css
+</span></code>) — the primary consume path: import them into your Tailwind v4 build and only the components you use are emitted</li>
+<li><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>dist/shadless.full.css
+</span></code> / <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>.full.min.css
+</span></code> (npm: <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>shadless/full.css
+</span></code>) — every component precompiled (no-build path)</li>
+<li><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>dist/shadless.js
+</span></code> (npm: <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>shadless/runtime
+</span></code>) — the JS base: delegation engine + registry + theme, with the vendored radix kernel inside</li>
+<li><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>dist/js/&lt;name&gt;.js
+</span></code> (npm: <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>shadless/js/&lt;name&gt;
+</span></code>) — one behavior file per interactive component; carousel bundles the vendored embla engine</li>
+</ul>
+<p>Every component has been validated against a real-browser recording of the shadcn React original (Wave T6 / T7 acceptance). The oracle is the upstream code, not our re-implementation.</p>
+<h2 id="beautiful-defaults">Beautiful Defaults</h2>
+<p>shadless comes with the same carefully chosen default styles as shadcn/ui — a clean, minimal look out of the box, with consistent design across components. Override the theme tokens (<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>--background
+</span></code>, <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>--foreground
+</span></code>, <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>--primary
+</span></code>, …) in your own CSS to re-theme the whole library without touching component markup.</p>
+<h2 id="ai-ready">AI-Ready</h2>
+<p>Plain HTML + a slot convention is what LLMs already operate on. shadless components carry the same <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>data-slot
+</span></code> markers shadcn uses — models trained on shadcn output naturally produce shadless-compatible markup. No React, no JSX, no build step in the loop.</p>
+<h2 id="open-questions-answered">Open questions, answered</h2>
+<div data-slot="accordion" id="acc-intro-0"><div data-slot="accordion-item" data-state="closed" class="border-none"><h3 class="flex"><button data-slot="accordion-trigger" type="button" aria-expanded="false" data-state="closed">How is this different from a CDN-loaded component library?</button></h3><div data-slot="accordion-content" data-state="closed" hidden class="flex flex-col gap-4"><p><p>CDN libraries ship a fixed set of styles and behaviors. shadless ships the
+source — you copy it into your project and edit it. The runtime (<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>shadless.js
+</span></code>)
+is generic slot-dispatched event delegation; if you want to extend a component,
+you edit the markup directly, not a framework wrapper.</p></p><p><p>The topmost layer (your markup) is open for modification; the runtime/kernel
+are vendor-pinned.</p></p></div></div><div data-slot="accordion-item" data-state="closed" class="border-none"><h3 class="flex"><button data-slot="accordion-trigger" type="button" aria-expanded="false" data-state="closed">Can I use this with React / Vue / Svelte / Astro?</button></h3><div data-slot="accordion-content" data-state="closed" hidden class="flex flex-col gap-4"><p><p>Yes — shadless output is plain HTML and works in any framework that renders
+HTML. In React, render the markup via <code>dangerouslySetInnerHTML</code> or
+import the static HTML. In Astro/SSR frameworks, include the markup directly.</p></p><p><p>The included <code>shadless.js</code> runtime attaches DOM event listeners,
+which works regardless of how the markup got there.</p></p></div></div><div data-slot="accordion-item" data-state="closed" class="border-none"><h3 class="flex"><button data-slot="accordion-trigger" type="button" aria-expanded="false" data-state="closed">Where does the &quot;no React&quot; come from?</button></h3><div data-slot="accordion-content" data-state="closed" hidden class="flex flex-col gap-4"><p><p>shadcn/ui components are React JSX. shadless converts them via an AST
+pipeline (babel → IR → emit) that drops the JSX wrappers, inlines cva
+branches, and rewrites event handlers to attach through vanilla DOM.
+Contract tests replay real-browser recordings of the original React
+components against the emitted pages, so behavior parity is proven,
+not assumed.</p></p></div></div></div>
+      </article>
+      <nav class="toc" aria-label="On this page"><strong>On this page</strong>
+      <ul><li class="toc-2"><a href="#open-code">Open Code</a></li><li class="toc-2"><a href="#composition">Composition</a></li><li class="toc-2"><a href="#distribution">Distribution</a></li><li class="toc-2"><a href="#beautiful-defaults">Beautiful Defaults</a></li><li class="toc-2"><a href="#ai-ready">AI-Ready</a></li><li class="toc-2"><a href="#open-questions-answered">Open questions, answered</a></li></ul></nav>
+    </div>
+<nav class="page-prev-next" aria-label="Page navigation"><span></span><a class="pn-next" href="installation.html"><span>Installation</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 5 7 7-7 7"/><path d="M5 12h14"/></svg></a></nav>
+  </div>
+</div>
+<div class="sidebar-backdrop" data-sidebar-backdrop aria-hidden="true"></div>
+<script src="site.js"></script>
+</body>
+</html>

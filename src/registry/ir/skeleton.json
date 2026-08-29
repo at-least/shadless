@@ -1,0 +1,33 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "skeleton",
+ "tier": "static",
+ "imports": [
+  "@/registry/bases/radix/lib/utils"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "Skeleton",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "skeleton",
+     "classes": [
+      "bg-muted rounded-md animate-pulse"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  }
+ ],
+ "conditionals": [],
+ "cvaRefs": [],
+ "tagHints": {}
+}

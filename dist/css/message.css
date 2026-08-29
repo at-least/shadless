@@ -1,0 +1,9 @@
+/* message */
+@layer components {
+  [data-slot="message-group"] { @apply gap-2 flex min-w-0 flex-col; }
+  [data-slot="message"] { @apply text-sm gap-2 relative flex w-full min-w-0 data-[align=end]:flex-row-reverse; }
+  [data-slot="message-avatar"] { @apply min-w-8 group-has-data-[slot=message-footer]/message:-translate-y-8 flex w-fit shrink-0 items-center justify-center self-end overflow-hidden rounded-full bg-muted; }
+  [data-slot="message-content"] { @apply gap-2.5 group-data-[align=end]/message:*:data-slot:self-end flex w-full min-w-0 flex-col wrap-break-word; }
+  [data-slot="message-header"] { @apply text-xs font-medium text-muted-foreground px-3 group-has-data-[variant=ghost]/message:px-0 flex max-w-full min-w-0 items-center; }
+  [data-slot="message-footer"] { @apply text-xs font-medium text-muted-foreground px-3 group-has-data-[variant=ghost]/message:px-0 flex max-w-full min-w-0 items-center group-data-[align=end]/message:justify-end; }
+}

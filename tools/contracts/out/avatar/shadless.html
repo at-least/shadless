@@ -1,0 +1,15 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>shadless avatar</title></head>
+<body>
+  <span data-slot="avatar" id="av1" data-size="default">
+    <img data-slot="avatar-image" id="avimg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Crect width='16' height='16' fill='red'/%3E%3C/svg%3E">
+    <span data-slot="avatar-fallback" id="avfb">CN</span>
+  </span>
+  <span data-slot="avatar" id="av2" data-size="default">
+    <img data-slot="avatar-image" id="avimg2" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUg">
+    <span data-slot="avatar-fallback" id="avfb2">XX</span>
+  </span>
+  <script src="/home/newlix/github/at-least/shadless/probes/t7/../../dist/shadless.js"></script>
+  <script src="/home/newlix/github/at-least/shadless/probes/t7/../../dist/js/avatar.js"></script>
+  <script>shadless.initAll()</script>
+</body></html>

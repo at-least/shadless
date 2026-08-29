@@ -1,0 +1,121 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "input-otp",
+ "tier": "external",
+ "imports": [
+  "react",
+  "input-otp",
+  "@/registry/bases/radix/lib/utils",
+  "@/app/(create)/components/icon-placeholder"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "InputOTP",
+   "export": true,
+   "elements": [
+    {
+     "tag": "OTPInput",
+     "slot": "input-otp",
+     "classes": [
+      "disabled:cursor-not-allowed"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "InputOTPGroup",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "input-otp-group",
+     "classes": [
+      "has-aria-invalid:ring-destructive/20 dark:has-aria-invalid:ring-destructive/40 has-aria-invalid:border-destructive rounded-lg has-aria-invalid:ring-3 flex items-center"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "InputOTPSlot",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "input-otp-slot",
+     "classes": [
+      "dark:bg-input/30 border-input data-[active=true]:border-ring data-[active=true]:ring-ring/50 data-[active=true]:aria-invalid:ring-destructive/20 dark:data-[active=true]:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[active=true]:aria-invalid:border-destructive size-8 border-y border-r text-sm transition-all outline-none first:rounded-l-lg first:border-l last:rounded-r-lg data-[active=true]:ring-3 relative flex items-center justify-center data-[active=true]:z-10"
+     ],
+     "spread": true,
+     "children": [
+      "{char}",
+      "OPT?"
+     ]
+    },
+    {
+     "tag": "div",
+     "slot": null,
+     "classes": [
+      "pointer-events-none absolute inset-0 flex items-center justify-center"
+     ],
+     "spread": false,
+     "children": [
+      "<div class=[1]>"
+     ]
+    },
+    {
+     "tag": "div",
+     "slot": null,
+     "classes": [
+      "animate-caret-blink bg-foreground h-4 w-px duration-1000"
+     ],
+     "spread": false,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "InputOTPSeparator",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "input-otp-separator",
+     "classes": [
+      "[&_svg:not([class*='size-'])]:size-4 flex items-center"
+     ],
+     "spread": true,
+     "children": [
+      "<IconPlaceholder>"
+     ]
+    },
+    {
+     "tag": "IconPlaceholder",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": []
+    }
+   ]
+  }
+ ],
+ "conditionals": [
+  {
+   "kind": "child-cond",
+   "fn": "InputOTPSlot",
+   "parent": "div"
+  }
+ ],
+ "cvaRefs": [],
+ "tagHints": {
+  "IconPlaceholder": "svg"
+ }
+}

@@ -1,0 +1,308 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "chart",
+ "tier": "external",
+ "imports": [
+  "react",
+  "recharts",
+  "recharts",
+  "@/registry/bases/radix/lib/utils"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "useChart",
+   "export": false,
+   "elements": []
+  },
+  {
+   "fn": "ChartContainer",
+   "export": true,
+   "elements": [
+    {
+     "tag": "ChartContext.Provider",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": [
+      "<div slot=chart class=[1]>"
+     ]
+    },
+    {
+     "tag": "div",
+     "slot": "chart",
+     "classes": [
+      "flex aspect-video justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-hidden [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border [&_.recharts-sector]:outline-hidden [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-surface]:outline-hidden"
+     ],
+     "spread": true,
+     "children": [
+      "<ChartStyle>",
+      "<RechartsPrimitive.ResponsiveContainer>"
+     ]
+    },
+    {
+     "tag": "ChartStyle",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": []
+    },
+    {
+     "tag": "RechartsPrimitive.ResponsiveContainer",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": [
+      "{children}"
+     ]
+    }
+   ]
+  },
+  {
+   "fn": "ChartTooltipContent",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": null,
+     "classes": [
+      "font-medium"
+     ],
+     "spread": false,
+     "children": [
+      "expr"
+     ]
+    },
+    {
+     "tag": "div",
+     "slot": null,
+     "classes": [
+      "font-medium"
+     ],
+     "spread": false,
+     "children": [
+      "{value}"
+     ]
+    },
+    {
+     "tag": "div",
+     "slot": null,
+     "classes": [
+      "border-border/50 bg-background gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs shadow-xl grid min-w-32 items-start"
+     ],
+     "spread": false,
+     "children": [
+      "OPT?",
+      "<div class=[1]>"
+     ]
+    },
+    {
+     "tag": "div",
+     "slot": null,
+     "classes": [
+      "grid gap-1.5"
+     ],
+     "spread": false,
+     "children": [
+      "expr"
+     ]
+    },
+    {
+     "tag": "div",
+     "slot": null,
+     "classes": [
+      "flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground",
+      "items-center"
+     ],
+     "spread": false,
+     "children": [
+      "OPT?"
+     ]
+    },
+    {
+     "tag": "itemConfig.icon",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": []
+    },
+    {
+     "tag": "div",
+     "slot": null,
+     "classes": [
+      "shrink-0 rounded-[2px] border-(--color-border) bg-(--color-bg)"
+     ],
+     "spread": false,
+     "children": []
+    },
+    {
+     "tag": "div",
+     "slot": null,
+     "classes": [
+      "flex flex-1 justify-between leading-none",
+      "items-end",
+      "items-center"
+     ],
+     "spread": false,
+     "children": [
+      "<div class=[1]>",
+      "OPT?"
+     ]
+    },
+    {
+     "tag": "div",
+     "slot": null,
+     "classes": [
+      "grid gap-1.5"
+     ],
+     "spread": false,
+     "children": [
+      "OPT?",
+      "<span class=[1]>"
+     ]
+    },
+    {
+     "tag": "span",
+     "slot": null,
+     "classes": [
+      "text-muted-foreground"
+     ],
+     "spread": false,
+     "children": [
+      "OPT?"
+     ]
+    },
+    {
+     "tag": "span",
+     "slot": null,
+     "classes": [
+      "font-mono font-medium text-foreground tabular-nums"
+     ],
+     "spread": false,
+     "children": [
+      "OPT?"
+     ]
+    }
+   ]
+  },
+  {
+   "fn": "ChartLegendContent",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": null,
+     "classes": [
+      "flex items-center justify-center gap-4",
+      "pb-3",
+      "pt-3"
+     ],
+     "spread": false,
+     "children": [
+      "expr"
+     ]
+    },
+    {
+     "tag": "div",
+     "slot": null,
+     "classes": [
+      "flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground"
+     ],
+     "spread": false,
+     "children": [
+      "OPT?",
+      "expr"
+     ]
+    },
+    {
+     "tag": "itemConfig.icon",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": []
+    },
+    {
+     "tag": "div",
+     "slot": null,
+     "classes": [
+      "h-2 w-2 shrink-0 rounded-[2px]"
+     ],
+     "spread": false,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "getPayloadConfigFromPayload",
+   "export": false,
+   "elements": []
+  }
+ ],
+ "conditionals": [
+  {
+   "kind": "child-cond",
+   "fn": "ChartTooltipContent",
+   "parent": "div"
+  },
+  {
+   "kind": "child-cond",
+   "fn": "ChartTooltipContent",
+   "parent": "div"
+  },
+  {
+   "kind": "child-cond",
+   "fn": "ChartTooltipContent",
+   "parent": "div"
+  },
+  {
+   "kind": "class-cond",
+   "fn": "ChartTooltipContent",
+   "slot": null,
+   "then": "items-end",
+   "else": "items-center"
+  },
+  {
+   "kind": "child-cond",
+   "fn": "ChartTooltipContent",
+   "parent": "div"
+  },
+  {
+   "kind": "child-cond",
+   "fn": "ChartTooltipContent",
+   "parent": "span"
+  },
+  {
+   "kind": "child-cond",
+   "fn": "ChartTooltipContent",
+   "parent": "span"
+  },
+  {
+   "kind": "class-cond",
+   "fn": "ChartLegendContent",
+   "slot": null,
+   "then": "pb-3",
+   "else": "pt-3",
+   "test": {
+    "name": "verticalAlign",
+    "op": "===",
+    "value": "top",
+    "default": "bottom"
+   }
+  },
+  {
+   "kind": "child-cond",
+   "fn": "ChartLegendContent",
+   "parent": "div"
+  }
+ ],
+ "cvaRefs": [],
+ "tagHints": {
+  "ChartContext.Provider": "div",
+  "RechartsPrimitive.ResponsiveContainer": "div",
+  "itemConfig.icon": "div"
+ }
+}

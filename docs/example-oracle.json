@@ -1,0 +1,910 @@
+[
+ {
+  "name": "alert-demo",
+  "out": "dist/components/alert-demo.html"
+ },
+ {
+  "name": "accordion-demo",
+  "out": "docs/demos/accordion-demo.html"
+ },
+ {
+  "name": "accordion-basic",
+  "out": "docs/demos/accordion-basic.html"
+ },
+ {
+  "name": "accordion-multiple",
+  "out": "docs/demos/accordion-multiple.html"
+ },
+ {
+  "name": "accordion-disabled",
+  "out": "docs/demos/accordion-disabled.html"
+ },
+ {
+  "name": "accordion-borders",
+  "out": "docs/demos/accordion-borders.html"
+ },
+ {
+  "name": "accordion-card",
+  "out": "docs/demos/accordion-card.html"
+ },
+ {
+  "name": "accordion-rtl",
+  "out": "docs/demos/accordion-rtl.html"
+ },
+ {
+  "name": "alert-basic",
+  "out": "docs/demos/alert-basic.html"
+ },
+ {
+  "name": "alert-destructive",
+  "out": "docs/demos/alert-destructive.html"
+ },
+ {
+  "name": "alert-action",
+  "out": "docs/demos/alert-action.html"
+ },
+ {
+  "name": "alert-colors",
+  "out": "docs/demos/alert-colors.html"
+ },
+ {
+  "name": "alert-rtl",
+  "out": "docs/demos/alert-rtl.html"
+ },
+ {
+  "name": "aspect-ratio-demo",
+  "out": "docs/demos/aspect-ratio-demo.html"
+ },
+ {
+  "name": "aspect-ratio-square",
+  "out": "docs/demos/aspect-ratio-square.html"
+ },
+ {
+  "name": "aspect-ratio-portrait",
+  "out": "docs/demos/aspect-ratio-portrait.html"
+ },
+ {
+  "name": "aspect-ratio-rtl",
+  "out": "docs/demos/aspect-ratio-rtl.html"
+ },
+ {
+  "name": "attachment-demo",
+  "out": "docs/demos/attachment-demo.html"
+ },
+ {
+  "name": "attachment-image",
+  "out": "docs/demos/attachment-image.html"
+ },
+ {
+  "name": "attachment-states",
+  "out": "docs/demos/attachment-states.html"
+ },
+ {
+  "name": "attachment-sizes",
+  "out": "docs/demos/attachment-sizes.html"
+ },
+ {
+  "name": "attachment-group",
+  "out": "docs/demos/attachment-group.html"
+ },
+ {
+  "name": "avatar-demo",
+  "out": "docs/demos/avatar-demo.html"
+ },
+ {
+  "name": "avatar-basic",
+  "out": "docs/demos/avatar-basic.html"
+ },
+ {
+  "name": "avatar-badge",
+  "out": "docs/demos/avatar-badge.html"
+ },
+ {
+  "name": "avatar-badge-icon",
+  "out": "docs/demos/avatar-badge-icon.html"
+ },
+ {
+  "name": "avatar-group",
+  "out": "docs/demos/avatar-group.html"
+ },
+ {
+  "name": "avatar-group-count",
+  "out": "docs/demos/avatar-group-count.html"
+ },
+ {
+  "name": "avatar-group-count-icon",
+  "out": "docs/demos/avatar-group-count-icon.html"
+ },
+ {
+  "name": "avatar-size",
+  "out": "docs/demos/avatar-size.html"
+ },
+ {
+  "name": "avatar-rtl",
+  "out": "docs/demos/avatar-rtl.html"
+ },
+ {
+  "name": "badge-demo",
+  "out": "docs/demos/badge-demo.html"
+ },
+ {
+  "name": "badge-variants",
+  "out": "docs/demos/badge-variants.html"
+ },
+ {
+  "name": "badge-icon",
+  "out": "docs/demos/badge-icon.html"
+ },
+ {
+  "name": "badge-spinner",
+  "out": "docs/demos/badge-spinner.html"
+ },
+ {
+  "name": "badge-link",
+  "out": "docs/demos/badge-link.html"
+ },
+ {
+  "name": "badge-colors",
+  "out": "docs/demos/badge-colors.html"
+ },
+ {
+  "name": "badge-rtl",
+  "out": "docs/demos/badge-rtl.html"
+ },
+ {
+  "name": "breadcrumb-basic",
+  "out": "docs/demos/breadcrumb-basic.html"
+ },
+ {
+  "name": "breadcrumb-separator",
+  "out": "docs/demos/breadcrumb-separator.html"
+ },
+ {
+  "name": "breadcrumb-ellipsis",
+  "out": "docs/demos/breadcrumb-ellipsis.html"
+ },
+ {
+  "name": "breadcrumb-link",
+  "out": "docs/demos/breadcrumb-link.html"
+ },
+ {
+  "name": "bubble-demo",
+  "out": "docs/demos/bubble-demo.html"
+ },
+ {
+  "name": "bubble-variants",
+  "out": "docs/demos/bubble-variants.html"
+ },
+ {
+  "name": "bubble-alignment",
+  "out": "docs/demos/bubble-alignment.html"
+ },
+ {
+  "name": "bubble-group-demo",
+  "out": "docs/demos/bubble-group-demo.html"
+ },
+ {
+  "name": "bubble-link-button",
+  "out": "docs/demos/bubble-link-button.html"
+ },
+ {
+  "name": "bubble-reactions",
+  "out": "docs/demos/bubble-reactions.html"
+ },
+ {
+  "name": "bubble-collapsible",
+  "out": "docs/demos/bubble-collapsible.html"
+ },
+ {
+  "name": "button-group-orientation",
+  "out": "docs/demos/button-group-orientation.html"
+ },
+ {
+  "name": "button-group-size",
+  "out": "docs/demos/button-group-size.html"
+ },
+ {
+  "name": "button-group-separator",
+  "out": "docs/demos/button-group-separator.html"
+ },
+ {
+  "name": "button-group-split",
+  "out": "docs/demos/button-group-split.html"
+ },
+ {
+  "name": "button-group-input",
+  "out": "docs/demos/button-group-input.html"
+ },
+ {
+  "name": "button-demo",
+  "out": "docs/demos/button-demo.html"
+ },
+ {
+  "name": "button-size",
+  "out": "docs/demos/button-size.html"
+ },
+ {
+  "name": "button-default",
+  "out": "docs/demos/button-default.html"
+ },
+ {
+  "name": "button-outline",
+  "out": "docs/demos/button-outline.html"
+ },
+ {
+  "name": "button-secondary",
+  "out": "docs/demos/button-secondary.html"
+ },
+ {
+  "name": "button-ghost",
+  "out": "docs/demos/button-ghost.html"
+ },
+ {
+  "name": "button-destructive",
+  "out": "docs/demos/button-destructive.html"
+ },
+ {
+  "name": "button-link",
+  "out": "docs/demos/button-link.html"
+ },
+ {
+  "name": "button-icon",
+  "out": "docs/demos/button-icon.html"
+ },
+ {
+  "name": "button-with-icon",
+  "out": "docs/demos/button-with-icon.html"
+ },
+ {
+  "name": "button-rounded",
+  "out": "docs/demos/button-rounded.html"
+ },
+ {
+  "name": "button-spinner",
+  "out": "docs/demos/button-spinner.html"
+ },
+ {
+  "name": "button-aschild",
+  "out": "docs/demos/button-aschild.html"
+ },
+ {
+  "name": "button-rtl",
+  "out": "docs/demos/button-rtl.html"
+ },
+ {
+  "name": "card-demo",
+  "out": "docs/demos/card-demo.html"
+ },
+ {
+  "name": "card-small",
+  "out": "docs/demos/card-small.html"
+ },
+ {
+  "name": "card-spacing",
+  "out": "docs/demos/card-spacing.html"
+ },
+ {
+  "name": "card-edge-to-edge",
+  "out": "docs/demos/card-edge-to-edge.html"
+ },
+ {
+  "name": "card-image",
+  "out": "docs/demos/card-image.html"
+ },
+ {
+  "name": "card-rtl",
+  "out": "docs/demos/card-rtl.html"
+ },
+ {
+  "name": "checkbox-demo",
+  "out": "docs/demos/checkbox-demo.html"
+ },
+ {
+  "name": "checkbox-invalid",
+  "out": "docs/demos/checkbox-invalid.html"
+ },
+ {
+  "name": "checkbox-basic",
+  "out": "docs/demos/checkbox-basic.html"
+ },
+ {
+  "name": "checkbox-description",
+  "out": "docs/demos/checkbox-description.html"
+ },
+ {
+  "name": "checkbox-disabled",
+  "out": "docs/demos/checkbox-disabled.html"
+ },
+ {
+  "name": "checkbox-group",
+  "out": "docs/demos/checkbox-group.html"
+ },
+ {
+  "name": "checkbox-table",
+  "out": "docs/demos/checkbox-table.html"
+ },
+ {
+  "name": "checkbox-rtl",
+  "out": "docs/demos/checkbox-rtl.html"
+ },
+ {
+  "name": "collapsible-demo",
+  "out": "docs/demos/collapsible-demo.html"
+ },
+ {
+  "name": "collapsible-basic",
+  "out": "docs/demos/collapsible-basic.html"
+ },
+ {
+  "name": "collapsible-settings",
+  "out": "docs/demos/collapsible-settings.html"
+ },
+ {
+  "name": "collapsible-rtl",
+  "out": "docs/demos/collapsible-rtl.html"
+ },
+ {
+  "name": "empty-demo",
+  "out": "docs/demos/empty-demo.html"
+ },
+ {
+  "name": "empty-outline",
+  "out": "docs/demos/empty-outline.html"
+ },
+ {
+  "name": "empty-background",
+  "out": "docs/demos/empty-background.html"
+ },
+ {
+  "name": "empty-avatar",
+  "out": "docs/demos/empty-avatar.html"
+ },
+ {
+  "name": "empty-avatar-group",
+  "out": "docs/demos/empty-avatar-group.html"
+ },
+ {
+  "name": "empty-input-group",
+  "out": "docs/demos/empty-input-group.html"
+ },
+ {
+  "name": "empty-rtl",
+  "out": "docs/demos/empty-rtl.html"
+ },
+ {
+  "name": "field-input",
+  "out": "docs/demos/field-input.html"
+ },
+ {
+  "name": "field-textarea",
+  "out": "docs/demos/field-textarea.html"
+ },
+ {
+  "name": "field-fieldset",
+  "out": "docs/demos/field-fieldset.html"
+ },
+ {
+  "name": "field-checkbox",
+  "out": "docs/demos/field-checkbox.html"
+ },
+ {
+  "name": "field-radio",
+  "out": "docs/demos/field-radio.html"
+ },
+ {
+  "name": "field-switch",
+  "out": "docs/demos/field-switch.html"
+ },
+ {
+  "name": "field-choice-card",
+  "out": "docs/demos/field-choice-card.html"
+ },
+ {
+  "name": "field-group",
+  "out": "docs/demos/field-group.html"
+ },
+ {
+  "name": "field-responsive",
+  "out": "docs/demos/field-responsive.html"
+ },
+ {
+  "name": "input-group-demo",
+  "out": "docs/demos/input-group-demo.html"
+ },
+ {
+  "name": "input-group-inline-start",
+  "out": "docs/demos/input-group-inline-start.html"
+ },
+ {
+  "name": "input-group-inline-end",
+  "out": "docs/demos/input-group-inline-end.html"
+ },
+ {
+  "name": "input-group-block-start",
+  "out": "docs/demos/input-group-block-start.html"
+ },
+ {
+  "name": "input-group-block-end",
+  "out": "docs/demos/input-group-block-end.html"
+ },
+ {
+  "name": "input-group-icon",
+  "out": "docs/demos/input-group-icon.html"
+ },
+ {
+  "name": "input-group-text",
+  "out": "docs/demos/input-group-text.html"
+ },
+ {
+  "name": "input-group-kbd",
+  "out": "docs/demos/input-group-kbd.html"
+ },
+ {
+  "name": "input-group-spinner",
+  "out": "docs/demos/input-group-spinner.html"
+ },
+ {
+  "name": "input-group-textarea",
+  "out": "docs/demos/input-group-textarea.html"
+ },
+ {
+  "name": "input-group-custom",
+  "out": "docs/demos/input-group-custom.html"
+ },
+ {
+  "name": "input-group-rtl",
+  "out": "docs/demos/input-group-rtl.html"
+ },
+ {
+  "name": "input-demo",
+  "out": "docs/demos/input-demo.html"
+ },
+ {
+  "name": "input-basic",
+  "out": "docs/demos/input-basic.html"
+ },
+ {
+  "name": "input-field",
+  "out": "docs/demos/input-field.html"
+ },
+ {
+  "name": "input-fieldgroup",
+  "out": "docs/demos/input-fieldgroup.html"
+ },
+ {
+  "name": "input-disabled",
+  "out": "docs/demos/input-disabled.html"
+ },
+ {
+  "name": "input-invalid",
+  "out": "docs/demos/input-invalid.html"
+ },
+ {
+  "name": "input-file",
+  "out": "docs/demos/input-file.html"
+ },
+ {
+  "name": "input-inline",
+  "out": "docs/demos/input-inline.html"
+ },
+ {
+  "name": "input-grid",
+  "out": "docs/demos/input-grid.html"
+ },
+ {
+  "name": "input-required",
+  "out": "docs/demos/input-required.html"
+ },
+ {
+  "name": "input-badge",
+  "out": "docs/demos/input-badge.html"
+ },
+ {
+  "name": "input-input-group",
+  "out": "docs/demos/input-input-group.html"
+ },
+ {
+  "name": "input-button-group",
+  "out": "docs/demos/input-button-group.html"
+ },
+ {
+  "name": "input-rtl",
+  "out": "docs/demos/input-rtl.html"
+ },
+ {
+  "name": "item-demo",
+  "out": "docs/demos/item-demo.html"
+ },
+ {
+  "name": "item-variant",
+  "out": "docs/demos/item-variant.html"
+ },
+ {
+  "name": "item-size",
+  "out": "docs/demos/item-size.html"
+ },
+ {
+  "name": "item-icon",
+  "out": "docs/demos/item-icon.html"
+ },
+ {
+  "name": "item-avatar",
+  "out": "docs/demos/item-avatar.html"
+ },
+ {
+  "name": "item-image",
+  "out": "docs/demos/item-image.html"
+ },
+ {
+  "name": "item-group",
+  "out": "docs/demos/item-group.html"
+ },
+ {
+  "name": "item-header",
+  "out": "docs/demos/item-header.html"
+ },
+ {
+  "name": "item-link",
+  "out": "docs/demos/item-link.html"
+ },
+ {
+  "name": "item-rtl",
+  "out": "docs/demos/item-rtl.html"
+ },
+ {
+  "name": "kbd-demo",
+  "out": "docs/demos/kbd-demo.html"
+ },
+ {
+  "name": "kbd-group",
+  "out": "docs/demos/kbd-group.html"
+ },
+ {
+  "name": "kbd-button",
+  "out": "docs/demos/kbd-button.html"
+ },
+ {
+  "name": "kbd-input-group",
+  "out": "docs/demos/kbd-input-group.html"
+ },
+ {
+  "name": "kbd-rtl",
+  "out": "docs/demos/kbd-rtl.html"
+ },
+ {
+  "name": "label-demo",
+  "out": "docs/demos/label-demo.html"
+ },
+ {
+  "name": "label-rtl",
+  "out": "docs/demos/label-rtl.html"
+ },
+ {
+  "name": "marker-demo",
+  "out": "docs/demos/marker-demo.html"
+ },
+ {
+  "name": "marker-variants",
+  "out": "docs/demos/marker-variants.html"
+ },
+ {
+  "name": "marker-status",
+  "out": "docs/demos/marker-status.html"
+ },
+ {
+  "name": "marker-shimmer",
+  "out": "docs/demos/marker-shimmer.html"
+ },
+ {
+  "name": "marker-separator",
+  "out": "docs/demos/marker-separator.html"
+ },
+ {
+  "name": "marker-border",
+  "out": "docs/demos/marker-border.html"
+ },
+ {
+  "name": "marker-icon",
+  "out": "docs/demos/marker-icon.html"
+ },
+ {
+  "name": "marker-link-button",
+  "out": "docs/demos/marker-link-button.html"
+ },
+ {
+  "name": "message-demo",
+  "out": "docs/demos/message-demo.html"
+ },
+ {
+  "name": "message-avatar",
+  "out": "docs/demos/message-avatar.html"
+ },
+ {
+  "name": "message-group",
+  "out": "docs/demos/message-group.html"
+ },
+ {
+  "name": "message-header-footer",
+  "out": "docs/demos/message-header-footer.html"
+ },
+ {
+  "name": "message-actions",
+  "out": "docs/demos/message-actions.html"
+ },
+ {
+  "name": "message-attachment",
+  "out": "docs/demos/message-attachment.html"
+ },
+ {
+  "name": "native-select-demo",
+  "out": "docs/demos/native-select-demo.html"
+ },
+ {
+  "name": "native-select-groups",
+  "out": "docs/demos/native-select-groups.html"
+ },
+ {
+  "name": "native-select-disabled",
+  "out": "docs/demos/native-select-disabled.html"
+ },
+ {
+  "name": "native-select-invalid",
+  "out": "docs/demos/native-select-invalid.html"
+ },
+ {
+  "name": "native-select-rtl",
+  "out": "docs/demos/native-select-rtl.html"
+ },
+ {
+  "name": "pagination-demo",
+  "out": "docs/demos/pagination-demo.html"
+ },
+ {
+  "name": "pagination-simple",
+  "out": "docs/demos/pagination-simple.html"
+ },
+ {
+  "name": "pagination-rtl",
+  "out": "docs/demos/pagination-rtl.html"
+ },
+ {
+  "name": "progress-demo",
+  "out": "docs/demos/progress-demo.html"
+ },
+ {
+  "name": "progress-label",
+  "out": "docs/demos/progress-label.html"
+ },
+ {
+  "name": "progress-rtl",
+  "out": "docs/demos/progress-rtl.html"
+ },
+ {
+  "name": "radio-group-demo",
+  "out": "docs/demos/radio-group-demo.html"
+ },
+ {
+  "name": "radio-group-description",
+  "out": "docs/demos/radio-group-description.html"
+ },
+ {
+  "name": "radio-group-choice-card",
+  "out": "docs/demos/radio-group-choice-card.html"
+ },
+ {
+  "name": "radio-group-fieldset",
+  "out": "docs/demos/radio-group-fieldset.html"
+ },
+ {
+  "name": "radio-group-disabled",
+  "out": "docs/demos/radio-group-disabled.html"
+ },
+ {
+  "name": "radio-group-invalid",
+  "out": "docs/demos/radio-group-invalid.html"
+ },
+ {
+  "name": "radio-group-rtl",
+  "out": "docs/demos/radio-group-rtl.html"
+ },
+ {
+  "name": "separator-demo",
+  "out": "docs/demos/separator-demo.html"
+ },
+ {
+  "name": "separator-vertical",
+  "out": "docs/demos/separator-vertical.html"
+ },
+ {
+  "name": "separator-menu",
+  "out": "docs/demos/separator-menu.html"
+ },
+ {
+  "name": "separator-list",
+  "out": "docs/demos/separator-list.html"
+ },
+ {
+  "name": "separator-rtl",
+  "out": "docs/demos/separator-rtl.html"
+ },
+ {
+  "name": "skeleton-demo",
+  "out": "docs/demos/skeleton-demo.html"
+ },
+ {
+  "name": "skeleton-avatar",
+  "out": "docs/demos/skeleton-avatar.html"
+ },
+ {
+  "name": "skeleton-card",
+  "out": "docs/demos/skeleton-card.html"
+ },
+ {
+  "name": "skeleton-text",
+  "out": "docs/demos/skeleton-text.html"
+ },
+ {
+  "name": "skeleton-form",
+  "out": "docs/demos/skeleton-form.html"
+ },
+ {
+  "name": "skeleton-table",
+  "out": "docs/demos/skeleton-table.html"
+ },
+ {
+  "name": "skeleton-rtl",
+  "out": "docs/demos/skeleton-rtl.html"
+ },
+ {
+  "name": "spinner-demo",
+  "out": "docs/demos/spinner-demo.html"
+ },
+ {
+  "name": "spinner-custom",
+  "out": "docs/demos/spinner-custom.html"
+ },
+ {
+  "name": "spinner-size",
+  "out": "docs/demos/spinner-size.html"
+ },
+ {
+  "name": "spinner-button",
+  "out": "docs/demos/spinner-button.html"
+ },
+ {
+  "name": "spinner-badge",
+  "out": "docs/demos/spinner-badge.html"
+ },
+ {
+  "name": "spinner-input-group",
+  "out": "docs/demos/spinner-input-group.html"
+ },
+ {
+  "name": "spinner-empty",
+  "out": "docs/demos/spinner-empty.html"
+ },
+ {
+  "name": "spinner-rtl",
+  "out": "docs/demos/spinner-rtl.html"
+ },
+ {
+  "name": "switch-demo",
+  "out": "docs/demos/switch-demo.html"
+ },
+ {
+  "name": "switch-description",
+  "out": "docs/demos/switch-description.html"
+ },
+ {
+  "name": "switch-choice-card",
+  "out": "docs/demos/switch-choice-card.html"
+ },
+ {
+  "name": "switch-disabled",
+  "out": "docs/demos/switch-disabled.html"
+ },
+ {
+  "name": "switch-invalid",
+  "out": "docs/demos/switch-invalid.html"
+ },
+ {
+  "name": "switch-sizes",
+  "out": "docs/demos/switch-sizes.html"
+ },
+ {
+  "name": "switch-rtl",
+  "out": "docs/demos/switch-rtl.html"
+ },
+ {
+  "name": "table-demo",
+  "out": "docs/demos/table-demo.html"
+ },
+ {
+  "name": "table-footer",
+  "out": "docs/demos/table-footer.html"
+ },
+ {
+  "name": "table-rtl",
+  "out": "docs/demos/table-rtl.html"
+ },
+ {
+  "name": "textarea-demo",
+  "out": "docs/demos/textarea-demo.html"
+ },
+ {
+  "name": "textarea-field",
+  "out": "docs/demos/textarea-field.html"
+ },
+ {
+  "name": "textarea-disabled",
+  "out": "docs/demos/textarea-disabled.html"
+ },
+ {
+  "name": "textarea-invalid",
+  "out": "docs/demos/textarea-invalid.html"
+ },
+ {
+  "name": "textarea-button",
+  "out": "docs/demos/textarea-button.html"
+ },
+ {
+  "name": "textarea-rtl",
+  "out": "docs/demos/textarea-rtl.html"
+ },
+ {
+  "name": "toggle-group-demo",
+  "out": "docs/demos/toggle-group-demo.html"
+ },
+ {
+  "name": "toggle-group-outline",
+  "out": "docs/demos/toggle-group-outline.html"
+ },
+ {
+  "name": "toggle-group-sizes",
+  "out": "docs/demos/toggle-group-sizes.html"
+ },
+ {
+  "name": "toggle-group-spacing",
+  "out": "docs/demos/toggle-group-spacing.html"
+ },
+ {
+  "name": "toggle-group-vertical",
+  "out": "docs/demos/toggle-group-vertical.html"
+ },
+ {
+  "name": "toggle-group-disabled",
+  "out": "docs/demos/toggle-group-disabled.html"
+ },
+ {
+  "name": "toggle-group-font-weight-selector",
+  "out": "docs/demos/toggle-group-font-weight-selector.html"
+ },
+ {
+  "name": "toggle-group-rtl",
+  "out": "docs/demos/toggle-group-rtl.html"
+ },
+ {
+  "name": "toggle-demo",
+  "out": "docs/demos/toggle-demo.html"
+ },
+ {
+  "name": "toggle-outline",
+  "out": "docs/demos/toggle-outline.html"
+ },
+ {
+  "name": "toggle-text",
+  "out": "docs/demos/toggle-text.html"
+ },
+ {
+  "name": "toggle-sizes",
+  "out": "docs/demos/toggle-sizes.html"
+ },
+ {
+  "name": "toggle-disabled",
+  "out": "docs/demos/toggle-disabled.html"
+ },
+ {
+  "name": "toggle-rtl",
+  "out": "docs/demos/toggle-rtl.html"
+ }
+]

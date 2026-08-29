@@ -1,0 +1,10 @@
+<!doctype html>
+<html><head>
+<link rel="stylesheet" href="../out.css"><meta charset="utf-8"><title>shadless progress</title><script>(function(){try{var k="shadless-docs-theme";var apply=function(d){document.documentElement.classList.toggle("dark",!!d)};var s=localStorage.getItem(k);var d=s?s==="dark":matchMedia("(prefers-color-scheme: dark)").matches;apply(d);addEventListener("storage",function(e){if(e.key===k)apply(e.newValue==="dark")});}catch(e){}})();</script><link rel="stylesheet" href="../fonts.css"></head>
+<body>
+  <div data-slot="progress" id="pg" role="progressbar" aria-valuemax="100" aria-valuemin="0" data-state="indeterminate" data-max="100">
+    <div data-slot="progress-indicator" data-state="indeterminate" data-max="100" style="transform: translateX(-58%);"></div>
+  </div>
+  <script src="../shadless.js"></script>
+  <script>shadless.initAll()</script>
+</body></html>

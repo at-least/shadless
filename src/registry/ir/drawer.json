@@ -1,0 +1,202 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "drawer",
+ "tier": "external",
+ "imports": [
+  "react",
+  "vaul",
+  "@/registry/bases/radix/lib/utils"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "Drawer",
+   "export": true,
+   "elements": [
+    {
+     "tag": "DrawerPrimitive.Root",
+     "slot": "drawer",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "DrawerTrigger",
+   "export": true,
+   "elements": [
+    {
+     "tag": "DrawerPrimitive.Trigger",
+     "slot": "drawer-trigger",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "DrawerPortal",
+   "export": true,
+   "elements": [
+    {
+     "tag": "DrawerPrimitive.Portal",
+     "slot": "drawer-portal",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "DrawerClose",
+   "export": true,
+   "elements": [
+    {
+     "tag": "DrawerPrimitive.Close",
+     "slot": "drawer-close",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "DrawerOverlay",
+   "export": true,
+   "elements": [
+    {
+     "tag": "DrawerPrimitive.Overlay",
+     "slot": "drawer-overlay",
+     "classes": [
+      "bg-black/10 supports-backdrop-filter:backdrop-blur-xs fixed inset-0 z-50 data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "DrawerContent",
+   "export": true,
+   "elements": [
+    {
+     "tag": "DrawerPortal",
+     "slot": "drawer-portal",
+     "classes": [],
+     "spread": false,
+     "children": [
+      "<DrawerOverlay>",
+      "<DrawerPrimitive.Content slot=drawer-content class=[1]>"
+     ]
+    },
+    {
+     "tag": "DrawerOverlay",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": []
+    },
+    {
+     "tag": "DrawerPrimitive.Content",
+     "slot": "drawer-content",
+     "classes": [
+      "bg-popover text-popover-foreground flex h-auto flex-col text-sm data-[vaul-drawer-direction=bottom]:rounded-t-xl data-[vaul-drawer-direction=bottom]:border-t data-[vaul-drawer-direction=left]:rounded-r-xl data-[vaul-drawer-direction=left]:border-r data-[vaul-drawer-direction=right]:rounded-l-xl data-[vaul-drawer-direction=right]:border-l data-[vaul-drawer-direction=top]:rounded-b-xl data-[vaul-drawer-direction=top]:border-b group/drawer-content fixed z-50 data-[vaul-drawer-direction=bottom]:inset-x-0 data-[vaul-drawer-direction=bottom]:bottom-0 data-[vaul-drawer-direction=bottom]:mt-24 data-[vaul-drawer-direction=bottom]:max-h-[80vh] data-[vaul-drawer-direction=left]:inset-y-0 data-[vaul-drawer-direction=left]:left-0 data-[vaul-drawer-direction=left]:w-3/4 data-[vaul-drawer-direction=right]:inset-y-0 data-[vaul-drawer-direction=right]:right-0 data-[vaul-drawer-direction=right]:w-3/4 data-[vaul-drawer-direction=top]:inset-x-0 data-[vaul-drawer-direction=top]:top-0 data-[vaul-drawer-direction=top]:mb-24 data-[vaul-drawer-direction=top]:max-h-[80vh] data-[vaul-drawer-direction=left]:sm:max-w-sm data-[vaul-drawer-direction=right]:sm:max-w-sm"
+     ],
+     "spread": true,
+     "children": [
+      "<div class=[1]>",
+      "{children}"
+     ]
+    },
+    {
+     "tag": "div",
+     "slot": null,
+     "classes": [
+      "bg-muted mt-4 h-1 w-[100px] rounded-full mx-auto hidden shrink-0 group-data-[vaul-drawer-direction=bottom]/drawer-content:block"
+     ],
+     "spread": false,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "DrawerHeader",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "drawer-header",
+     "classes": [
+      "gap-0.5 p-4 md:gap-0.5 md:text-left flex flex-col group-data-[vaul-drawer-direction=bottom]/drawer-content:text-center group-data-[vaul-drawer-direction=top]/drawer-content:text-center"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "DrawerFooter",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "drawer-footer",
+     "classes": [
+      "gap-2 p-4 mt-auto flex flex-col"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "DrawerTitle",
+   "export": true,
+   "elements": [
+    {
+     "tag": "DrawerPrimitive.Title",
+     "slot": "drawer-title",
+     "classes": [
+      "text-foreground text-base font-medium cn-font-heading"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "DrawerDescription",
+   "export": true,
+   "elements": [
+    {
+     "tag": "DrawerPrimitive.Description",
+     "slot": "drawer-description",
+     "classes": [
+      "text-muted-foreground text-sm"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  }
+ ],
+ "conditionals": [],
+ "cvaRefs": [],
+ "tagHints": {
+  "DrawerPrimitive.Root": "div",
+  "DrawerPrimitive.Trigger": "button",
+  "DrawerPrimitive.Portal": "div",
+  "DrawerPrimitive.Close": "div",
+  "DrawerPrimitive.Overlay": "div",
+  "DrawerPortal": "div",
+  "DrawerOverlay": "div",
+  "DrawerPrimitive.Content": "div",
+  "DrawerPrimitive.Title": "div",
+  "DrawerPrimitive.Description": "div"
+ }
+}

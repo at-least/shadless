@@ -1,0 +1,251 @@
+{
+  "source": {
+    "repo": "shadcn-ui",
+    "commit": "c06da1d0",
+    "path": "apps/v4/registry/new-york-v4/ui"
+  },
+  "button": {
+    "variants": {
+      "base": "inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+      "variants": {
+        "variant": {
+          "default": "bg-primary text-primary-foreground hover:bg-primary/90",
+          "destructive": "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40",
+          "outline": "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
+          "secondary": "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "ghost": "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
+          "link": "text-primary underline-offset-4 hover:underline"
+        },
+        "size": {
+          "default": "h-9 px-4 py-2 has-[>svg]:px-3",
+          "xs": "h-6 gap-1 rounded-md px-2 text-xs has-[>svg]:px-1.5 [&_svg:not([class*='size-'])]:size-3",
+          "sm": "h-8 gap-1.5 rounded-md px-3 has-[>svg]:px-2.5",
+          "lg": "h-10 rounded-md px-6 has-[>svg]:px-4",
+          "icon": "size-9",
+          "undefined": "size-10"
+        }
+      },
+      "defaults": {
+        "variant": "default",
+        "size": "default"
+      }
+    },
+    "comp": {
+      "fn": "Button",
+      "elements": [
+        {
+          "tag": "Comp",
+          "slot": "button",
+          "classes": [],
+          "spread": true,
+          "children": []
+        }
+      ]
+    }
+  },
+  "dialog": [
+    {
+      "fn": "Dialog",
+      "elements": [
+        {
+          "tag": "DialogPrimitive.Root",
+          "slot": "dialog",
+          "classes": [],
+          "spread": true,
+          "children": []
+        }
+      ]
+    },
+    {
+      "fn": "DialogTrigger",
+      "elements": [
+        {
+          "tag": "DialogPrimitive.Trigger",
+          "slot": "dialog-trigger",
+          "classes": [],
+          "spread": true,
+          "children": []
+        }
+      ]
+    },
+    {
+      "fn": "DialogPortal",
+      "elements": [
+        {
+          "tag": "DialogPrimitive.Portal",
+          "slot": "dialog-portal",
+          "classes": [],
+          "spread": true,
+          "children": []
+        }
+      ]
+    },
+    {
+      "fn": "DialogClose",
+      "elements": [
+        {
+          "tag": "DialogPrimitive.Close",
+          "slot": "dialog-close",
+          "classes": [],
+          "spread": true,
+          "children": []
+        }
+      ]
+    },
+    {
+      "fn": "DialogOverlay",
+      "elements": [
+        {
+          "tag": "DialogPrimitive.Overlay",
+          "slot": "dialog-overlay",
+          "classes": [
+            "fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0"
+          ],
+          "spread": true,
+          "children": []
+        }
+      ]
+    },
+    {
+      "fn": "DialogContent",
+      "elements": [
+        {
+          "tag": "DialogPortal",
+          "slot": "dialog-portal",
+          "classes": [],
+          "spread": false,
+          "children": [
+            "<DialogOverlay>",
+            "<DialogPrimitive.Content slot=dialog-content class=[1 str]>"
+          ]
+        },
+        {
+          "tag": "DialogOverlay",
+          "slot": null,
+          "classes": [],
+          "spread": false,
+          "children": []
+        },
+        {
+          "tag": "DialogPrimitive.Content",
+          "slot": "dialog-content",
+          "classes": [
+            "fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border bg-background p-6 shadow-lg duration-200 outline-none data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 sm:max-w-lg"
+          ],
+          "spread": true,
+          "children": [
+            "{children}",
+            "OPT?"
+          ]
+        },
+        {
+          "tag": "DialogPrimitive.Close",
+          "slot": "dialog-close",
+          "classes": [
+            "absolute top-4 right-4 rounded-xs opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+          ],
+          "spread": false,
+          "children": [
+            "<XIcon>",
+            "<span class=[1 str]>"
+          ]
+        },
+        {
+          "tag": "XIcon",
+          "slot": null,
+          "classes": [],
+          "spread": false,
+          "children": []
+        },
+        {
+          "tag": "span",
+          "slot": null,
+          "classes": [
+            "sr-only"
+          ],
+          "spread": false,
+          "children": [
+            "text"
+          ]
+        }
+      ]
+    },
+    {
+      "fn": "DialogHeader",
+      "elements": [
+        {
+          "tag": "div",
+          "slot": "dialog-header",
+          "classes": [
+            "flex flex-col gap-2 text-center sm:text-left"
+          ],
+          "spread": true,
+          "children": []
+        }
+      ]
+    },
+    {
+      "fn": "DialogFooter",
+      "elements": [
+        {
+          "tag": "div",
+          "slot": "dialog-footer",
+          "classes": [
+            "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"
+          ],
+          "spread": true,
+          "children": [
+            "{children}",
+            "OPT?"
+          ]
+        },
+        {
+          "tag": "DialogPrimitive.Close",
+          "slot": null,
+          "classes": [],
+          "spread": false,
+          "children": [
+            "<Button>"
+          ]
+        },
+        {
+          "tag": "Button",
+          "slot": null,
+          "classes": [],
+          "spread": false,
+          "children": [
+            "text"
+          ]
+        }
+      ]
+    },
+    {
+      "fn": "DialogTitle",
+      "elements": [
+        {
+          "tag": "DialogPrimitive.Title",
+          "slot": "dialog-title",
+          "classes": [
+            "text-lg leading-none font-semibold"
+          ],
+          "spread": true,
+          "children": []
+        }
+      ]
+    },
+    {
+      "fn": "DialogDescription",
+      "elements": [
+        {
+          "tag": "DialogPrimitive.Description",
+          "slot": "dialog-description",
+          "classes": [
+            "text-sm text-muted-foreground"
+          ],
+          "spread": true,
+          "children": []
+        }
+      ]
+    }
+  ]
+}

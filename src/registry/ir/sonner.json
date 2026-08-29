@@ -1,0 +1,19 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "sonner",
+ "tier": "external",
+ "imports": [
+  "next-themes",
+  "sonner",
+  "@/app/(create)/components/icon-placeholder"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [],
+ "conditionals": [],
+ "cvaRefs": [],
+ "tagHints": {}
+}

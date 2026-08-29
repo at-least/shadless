@@ -1,0 +1,35 @@
+{
+  "oracleOpen": {
+    "step": "oracle",
+    "separator": {
+      "tag": "div",
+      "data-orientation": "horizontal",
+      "role": "none",
+      "data-slot": "separator",
+      "text": ""
+    },
+    "activeElement": "body",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "shadlessOpen": {
+    "step": "shadless",
+    "separator": {
+      "tag": "div",
+      "data-slot": "separator",
+      "data-orientation": "horizontal",
+      "role": "none",
+      "text": ""
+    },
+    "activeElement": "body",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "oracle": {},
+  "shadless": {},
+  "pass": true
+}

@@ -1,0 +1,102 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "toggle-group",
+ "tier": "trivial-js",
+ "imports": [
+  "react",
+  "class-variance-authority",
+  "radix-ui",
+  "@/registry/bases/radix/lib/utils",
+  "@/registry/bases/radix/ui/toggle"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "ToggleGroup",
+   "export": true,
+   "elements": [
+    {
+     "tag": "ToggleGroupPrimitive.Root",
+     "slot": "toggle-group",
+     "classes": [
+      "rounded-lg data-[size=sm]:rounded-[min(var(--radius-md),10px)] group/toggle-group flex w-fit flex-row items-center gap-[--spacing(var(--gap))] data-vertical:flex-col data-vertical:items-stretch"
+     ],
+     "spread": true,
+     "children": [
+      "<ToggleGroupContext.Provider>"
+     ]
+    },
+    {
+     "tag": "ToggleGroupContext.Provider",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": [
+      "{children}"
+     ]
+    }
+   ]
+  },
+  {
+   "fn": "ToggleGroupItem",
+   "export": true,
+   "elements": [
+    {
+     "tag": "ToggleGroupPrimitive.Item",
+     "slot": "toggle-group-item",
+     "classes": [
+      "group-data-[spacing=0]/toggle-group:rounded-none group-data-[spacing=0]/toggle-group:px-2 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-end]:pr-1.5 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-start]:pl-1.5 group-data-horizontal/toggle-group:data-[spacing=0]:first:rounded-l-lg group-data-vertical/toggle-group:data-[spacing=0]:first:rounded-t-lg group-data-horizontal/toggle-group:data-[spacing=0]:last:rounded-r-lg group-data-vertical/toggle-group:data-[spacing=0]:last:rounded-b-lg shrink-0 focus:z-10 focus-visible:z-10 group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:border-l-0 group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:border-t-0 group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-l group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-t",
+      "hover:text-foreground aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted gap-1 rounded-lg text-sm font-medium transition-all [&_svg:not([class*='size-'])]:size-4 group/toggle inline-flex items-center justify-center whitespace-nowrap outline-none hover:bg-muted focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+     ],
+     "spread": true,
+     "children": [
+      "{children}"
+     ]
+    }
+   ]
+  }
+ ],
+ "conditionals": [],
+ "cvaRefs": [
+  {
+   "slot": "toggle-group-item",
+   "ref": "toggleVariants",
+   "table": {
+    "base": "hover:text-foreground aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted gap-1 rounded-lg text-sm font-medium transition-all [&_svg:not([class*='size-'])]:size-4 group/toggle inline-flex items-center justify-center whitespace-nowrap outline-none hover:bg-muted focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+    "variants": {
+     "variant": {
+      "default": "bg-transparent",
+      "outline": "border-input hover:bg-muted border bg-transparent"
+     },
+     "size": {
+      "default": "h-8 min-w-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
+      "sm": "h-7 min-w-7 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
+      "lg": "h-9 min-w-9 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+     }
+    },
+    "defaults": {
+     "variant": "default",
+     "size": "default"
+    }
+   },
+   "dyn": [],
+   "dynAxes": [
+    "variant",
+    "size"
+   ],
+   "defaults": {
+    "variant": "default",
+    "size": "default"
+   }
+  }
+ ],
+ "tagHints": {
+  "ToggleGroupPrimitive.Root": "div",
+  "ToggleGroupContext.Provider": "div",
+  "ToggleGroupPrimitive.Item": "div"
+ }
+}

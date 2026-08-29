@@ -1,0 +1,351 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "menubar",
+ "tier": "medium",
+ "imports": [
+  "react",
+  "radix-ui",
+  "@/registry/bases/radix/lib/utils",
+  "@/app/(create)/components/icon-placeholder"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "Menubar",
+   "export": true,
+   "elements": [
+    {
+     "tag": "MenubarPrimitive.Root",
+     "slot": "menubar",
+     "classes": [
+      "h-8 gap-0.5 rounded-lg border p-[3px] flex items-center"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MenubarMenu",
+   "export": true,
+   "elements": [
+    {
+     "tag": "MenubarPrimitive.Menu",
+     "slot": "menubar-menu",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MenubarGroup",
+   "export": true,
+   "elements": [
+    {
+     "tag": "MenubarPrimitive.Group",
+     "slot": "menubar-group",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MenubarPortal",
+   "export": true,
+   "elements": [
+    {
+     "tag": "MenubarPrimitive.Portal",
+     "slot": "menubar-portal",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MenubarRadioGroup",
+   "export": true,
+   "elements": [
+    {
+     "tag": "MenubarPrimitive.RadioGroup",
+     "slot": "menubar-radio-group",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MenubarTrigger",
+   "export": true,
+   "elements": [
+    {
+     "tag": "MenubarPrimitive.Trigger",
+     "slot": "menubar-trigger",
+     "classes": [
+      "hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MenubarContent",
+   "export": true,
+   "elements": [
+    {
+     "tag": "MenubarPortal",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": [
+      "<MenubarPrimitive.Content slot=menubar-content class=[1]>"
+     ]
+    },
+    {
+     "tag": "MenubarPrimitive.Content",
+     "slot": "menubar-content",
+     "classes": [
+      "bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MenubarItem",
+   "export": true,
+   "elements": [
+    {
+     "tag": "MenubarPrimitive.Item",
+     "slot": "menubar-item",
+     "classes": [
+      "focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MenubarCheckboxItem",
+   "export": true,
+   "elements": [
+    {
+     "tag": "MenubarPrimitive.CheckboxItem",
+     "slot": "menubar-checkbox-item",
+     "classes": [
+      "focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+     ],
+     "spread": true,
+     "children": [
+      "<span class=[1]>",
+      "{children}"
+     ]
+    },
+    {
+     "tag": "span",
+     "slot": null,
+     "classes": [
+      "left-1.5 size-4 [&_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+     ],
+     "spread": false,
+     "children": [
+      "<MenubarPrimitive.ItemIndicator>"
+     ]
+    },
+    {
+     "tag": "MenubarPrimitive.ItemIndicator",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": [
+      "<IconPlaceholder>"
+     ]
+    },
+    {
+     "tag": "IconPlaceholder",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MenubarRadioItem",
+   "export": true,
+   "elements": [
+    {
+     "tag": "MenubarPrimitive.RadioItem",
+     "slot": "menubar-radio-item",
+     "classes": [
+      "focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+     ],
+     "spread": true,
+     "children": [
+      "<span class=[1]>",
+      "{children}"
+     ]
+    },
+    {
+     "tag": "span",
+     "slot": null,
+     "classes": [
+      "left-1.5 size-4 [&_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+     ],
+     "spread": false,
+     "children": [
+      "<MenubarPrimitive.ItemIndicator>"
+     ]
+    },
+    {
+     "tag": "MenubarPrimitive.ItemIndicator",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": [
+      "<IconPlaceholder>"
+     ]
+    },
+    {
+     "tag": "IconPlaceholder",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MenubarLabel",
+   "export": true,
+   "elements": [
+    {
+     "tag": "MenubarPrimitive.Label",
+     "slot": "menubar-label",
+     "classes": [
+      "px-1.5 py-1 text-sm font-medium data-inset:pl-7"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MenubarSeparator",
+   "export": true,
+   "elements": [
+    {
+     "tag": "MenubarPrimitive.Separator",
+     "slot": "menubar-separator",
+     "classes": [
+      "bg-border -mx-1 my-1 h-px"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MenubarShortcut",
+   "export": true,
+   "elements": [
+    {
+     "tag": "span",
+     "slot": "menubar-shortcut",
+     "classes": [
+      "text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MenubarSub",
+   "export": true,
+   "elements": [
+    {
+     "tag": "MenubarPrimitive.Sub",
+     "slot": "menubar-sub",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MenubarSubTrigger",
+   "export": true,
+   "elements": [
+    {
+     "tag": "MenubarPrimitive.SubTrigger",
+     "slot": "menubar-sub-trigger",
+     "classes": [
+      "focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-none select-none"
+     ],
+     "spread": true,
+     "children": [
+      "{children}",
+      "<IconPlaceholder class=[1]>"
+     ]
+    },
+    {
+     "tag": "IconPlaceholder",
+     "slot": null,
+     "classes": [
+      "cn-rtl-flip ml-auto size-4"
+     ],
+     "spread": false,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MenubarSubContent",
+   "export": true,
+   "elements": [
+    {
+     "tag": "MenubarPrimitive.SubContent",
+     "slot": "menubar-sub-content",
+     "classes": [
+      "bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-32 rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  }
+ ],
+ "conditionals": [],
+ "cvaRefs": [],
+ "tagHints": {
+  "MenubarPrimitive.Root": "div",
+  "MenubarPrimitive.Menu": "div",
+  "MenubarPrimitive.Group": "div",
+  "MenubarPrimitive.Portal": "div",
+  "MenubarPrimitive.RadioGroup": "div",
+  "MenubarPrimitive.Trigger": "button",
+  "MenubarPortal": "div",
+  "MenubarPrimitive.Content": "div",
+  "MenubarPrimitive.Item": "div",
+  "MenubarPrimitive.CheckboxItem": "div",
+  "MenubarPrimitive.ItemIndicator": "div",
+  "IconPlaceholder": "svg",
+  "MenubarPrimitive.RadioItem": "div",
+  "MenubarPrimitive.Label": "div",
+  "MenubarPrimitive.Separator": "div",
+  "MenubarPrimitive.Sub": "div",
+  "MenubarPrimitive.SubTrigger": "div",
+  "MenubarPrimitive.SubContent": "div"
+ }
+}

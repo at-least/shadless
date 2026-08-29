@@ -1,0 +1,124 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "card",
+ "tier": "static",
+ "imports": [
+  "react",
+  "@/registry/bases/radix/lib/utils"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "Card",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "card",
+     "classes": [
+      "ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "CardHeader",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "card-header",
+     "classes": [
+      "gap-1 rounded-t-xl px-(--card-spacing) [.border-b]:pb-(--card-spacing) group/card-header @container/card-header grid auto-rows-min items-start has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto]"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "CardTitle",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "card-title",
+     "classes": [
+      "text-base leading-snug font-medium group-data-[size=sm]/card:text-sm cn-font-heading"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "CardDescription",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "card-description",
+     "classes": [
+      "text-muted-foreground text-sm"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "CardAction",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "card-action",
+     "classes": [
+      "col-start-2 row-span-2 row-start-1 self-start justify-self-end"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "CardContent",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "card-content",
+     "classes": [
+      "px-(--card-spacing)"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "CardFooter",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "card-footer",
+     "classes": [
+      "bg-muted/50 rounded-b-xl border-t p-(--card-spacing) flex items-center"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  }
+ ],
+ "conditionals": [],
+ "cvaRefs": [],
+ "tagHints": {}
+}

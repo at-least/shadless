@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Typography — shadless docs</title>
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="fonts.css">
+<script>(function(){try{var k="shadless-docs-theme";var apply=function(d){document.documentElement.classList.toggle("dark",!!d)};var s=localStorage.getItem(k);var d=s?s==="dark":matchMedia("(prefers-color-scheme: dark)").matches;apply(d);addEventListener("storage",function(e){if(e.key===k)apply(e.newValue==="dark")});}catch(e){}})();</script>
+</head>
+<body>
+<header class="mobile-topbar">
+    <button type="button" class="sidebar-toggle" data-sidebar-toggle aria-controls="sidebar" aria-expanded="false" aria-label="Open navigation">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
+    </button>
+    <a class="brand" href="index.html">shadless docs</a>
+  </header>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand-row">
+      <a class="brand" href="index.html">shadless docs</a>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+    </svg>
+    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+    </svg>
+  </button>
+    </div>
+    <nav aria-label="Components and guides">
+      <ul>
+      <li><a href="introduction.html">Introduction</a></li>
+      <li><a href="accordion.html">accordion</a></li>
+      <li><a href="alert.html">alert</a></li>
+      <li><a href="alert-dialog.html">alert-dialog</a></li>
+      <li><a href="aspect-ratio.html">aspect-ratio</a></li>
+      <li><a href="attachment.html">attachment</a></li>
+      <li><a href="avatar.html">avatar</a></li>
+      <li><a href="badge.html">badge</a></li>
+      <li><a href="breadcrumb.html">breadcrumb</a></li>
+      <li><a href="bubble.html">bubble</a></li>
+      <li><a href="button.html">button</a></li>
+      <li><a href="button-group.html">button-group</a></li>
+      <li><a href="card.html">card</a></li>
+      <li><a href="carousel.html">carousel</a></li>
+      <li><a href="checkbox.html">checkbox</a></li>
+      <li><a href="collapsible.html">collapsible</a></li>
+      <li><a href="context-menu.html">context-menu</a></li>
+      <li><a href="dialog.html">dialog</a></li>
+      <li><a href="direction.html">direction</a></li>
+      <li><a href="dropdown-menu.html">dropdown-menu</a></li>
+      <li><a href="empty.html">empty</a></li>
+      <li><a href="field.html">field</a></li>
+      <li><a href="hover-card.html">hover-card</a></li>
+      <li><a href="input.html">input</a></li>
+      <li><a href="input-group.html">input-group</a></li>
+      <li><a href="item.html">item</a></li>
+      <li><a href="kbd.html">kbd</a></li>
+      <li><a href="label.html">label</a></li>
+      <li><a href="marker.html">marker</a></li>
+      <li><a href="menubar.html">menubar</a></li>
+      <li><a href="message.html">message</a></li>
+      <li><a href="message-scroller.html">message-scroller</a></li>
+      <li><a href="native-select.html">native-select</a></li>
+      <li><a href="navigation-menu.html">navigation-menu</a></li>
+      <li><a href="pagination.html">pagination</a></li>
+      <li><a href="popover.html">popover</a></li>
+      <li><a href="progress.html">progress</a></li>
+      <li><a href="radio-group.html">radio-group</a></li>
+      <li><a href="scroll-area.html">scroll-area</a></li>
+      <li><a href="select.html">select</a></li>
+      <li><a href="separator.html">separator</a></li>
+      <li><a href="sheet.html">sheet</a></li>
+      <li><a href="skeleton.html">skeleton</a></li>
+      <li><a href="slider.html">slider</a></li>
+      <li><a href="spinner.html">spinner</a></li>
+      <li><a href="switch.html">switch</a></li>
+      <li><a href="table.html">table</a></li>
+      <li><a href="tabs.html">tabs</a></li>
+      <li><a href="textarea.html">textarea</a></li>
+      <li><a href="toggle.html">toggle</a></li>
+      <li><a href="toggle-group.html">toggle-group</a></li>
+      <li><a href="tooltip.html">tooltip</a></li>
+      <li class="sidebar-group">Not available</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">calendar</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">chart</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">combobox</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">command</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">data-table</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">date-picker</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">drawer</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">form</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">input-otp</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">questionnaire</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">resizable</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">sidebar</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">sonner</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">toast</li>
+      <li class="sidebar-unavailable" title="No component in shadless — see Typography guide">typography <a href="typography.html" class="greyed-guide-link" title="Open Typography guide">→</a></li>
+      <li class="sidebar-group">Guides</li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="dark-mode.html">Dark Mode</a></li>
+      <li><a href="rtl.html">RTL</a></li>
+      <li><a href="shimmer.html">shimmer</a></li>
+      <li><a href="scroll-fade.html">scroll-fade</a></li>
+      <li><a href="ai-sdk.html">AI SDK</a></li>
+      <li><a href="tanstack-ai.html">TanStack AI</a></li>
+      <li><a href="typography.html">Typography</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="main">
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep" aria-hidden="true">›</span><span>Typography</span></nav>
+    <header class="page-header">
+      <div class="header-row">
+        <h1>Typography</h1>
+        <div class="docs-nav"><a href="tanstack-ai.html" aria-label="Previous page" title="Previous"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg></a></div>
+      </div>
+      <p class="lead">How to style text with the Tailwind utilities shadless ships — no Typography component needed.</p>
+
+    </header>
+    <div class="columns">
+      <article data-page="typography" class="typeset">
+<p>shadless does not ship a <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&lt;Typography&gt;
+</span></code> component. The same typographic roles
+that shadcn-ui's <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>Typography
+</span></code> wrapper produces are plain Tailwind utilities in
+<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>dist/out.css
+</span></code> — apply them directly to your HTML.</p>
+<h2 id="why-no-component">Why no component?</h2>
+<p><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&lt;Typography&gt;
+</span></code> in shadcn-ui is a thin wrapper that maps a single <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>variant
+</span></code> prop
+to a className. In shadless's vanilla stack, the wrapper is just noise — write
+the classes directly. The mapping below mirrors shadcn's default scale.</p>
+<h2 id="reference">Reference</h2>
+<table><thead><tr><th>Role</th><th>Classes</th><th>HTML</th></tr></thead><tbody><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>h1
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&lt;h1&gt;
+</span></code></td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>h2
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&lt;h2&gt;
+</span></code></td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>h3
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>scroll-m-20 text-2xl font-semibold tracking-tight
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&lt;h3&gt;
+</span></code></td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>h4
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>scroll-m-20 text-xl font-semibold tracking-tight
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&lt;h4&gt;
+</span></code></td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>p
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>leading-7 [&amp;:not(:first-child)]:mt-6
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&lt;p&gt;
+</span></code></td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>lead
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>text-xl text-muted-foreground
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&lt;p&gt;
+</span></code></td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>large
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>text-lg font-semibold
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&lt;div&gt;
+</span></code></td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>small
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>text-sm font-medium leading-none
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&lt;small&gt;
+</span></code></td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>muted
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>text-sm text-muted-foreground
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&lt;p&gt;
+</span></code></td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>blockquote
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>mt-6 border-l-2 pl-6 italic
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&lt;blockquote&gt;
+</span></code></td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>inline-code
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&lt;code&gt;
+</span></code> (inline)</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>list
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>my-6 ml-6 list-disc [&amp;&gt;li]:mt-2
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&lt;ul&gt;
+</span></code> / <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&lt;ol&gt;
+</span></code></td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>table
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>my-6 w-full overflow-y-auto
+</span></code> (wrapping div) + <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&lt;table class=&quot;w-full&quot;&gt;
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&lt;table&gt;
+</span></code></td></tr></tbody></table>
+<h2 id="examples">Examples</h2>
+<h3 id="h1">h1</h3>
+<h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Taxing Laughter: The Joke Tax Chronicles</h1>
+<h3 id="h2">h2</h3>
+<h2 id="the-people-of-the-kingdom" class="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">The People of the Kingdom</h2>
+<h3 id="h3">h3</h3>
+<h3 id="the-joke-tax" class="scroll-m-20 text-2xl font-semibold tracking-tight">The Joke Tax</h3>
+<h3 id="h4">h4</h3>
+<h4 class="scroll-m-20 text-xl font-semibold tracking-tight">People stopped telling jokes</h4>
+<h3 id="p">p</h3>
+<p class="leading-7 [&amp;:not(:first-child)]:mt-6">The king, seeing how much happier his subjects were, realized the error of his ways and repealed the joke tax.</p>
+<h3 id="blockquote">blockquote</h3>
+<blockquote class="mt-6 border-l-2 pl-6 italic">&quot;After all,&quot; he said, &quot;everyone enjoys a good joke, so it's only fair that they should pay for the privilege.&quot;</blockquote>
+<h3 id="list">list</h3>
+<ul class="my-6 ml-6 list-disc [&amp;&gt;li]:mt-2"><li>1st level of puns: 5 gold coins</li><li>2nd level of jokes: 10 gold coins</li><li>3rd level of one-liners: 20 gold coins</li></ul>
+<h3 id="lead">lead</h3>
+<p class="text-xl text-muted-foreground">A modal dialog that interrupts the user with important content and expects a response.</p>
+<h3 id="large">large</h3>
+<div class="text-lg font-semibold">Are you absolutely sure?</div>
+<h3 id="small">small</h3>
+<small class="text-sm font-medium leading-none">Email address</small>
+<h3 id="muted">muted</h3>
+<p class="text-sm text-muted-foreground">Enter your email address.</p>
+<h3 id="inline-code">inline code</h3>
+<p>Use the <code class="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">data-slot</code> attribute to mark component slots.</p>
+<h3 id="table">table</h3>
+<div class="my-6 w-full overflow-y-auto"><table class="w-full"><thead><tr class="m-0 border-t p-0 even:bg-muted"><th class="border px-4 py-2 text-left font-bold [&amp;[align=center]]:text-center [&amp;[align=right]]:text-right">Prop</th><th class="border px-4 py-2 text-left font-bold [&amp;[align=center]]:text-center [&amp;[align=right]]:text-right">Type</th><th class="border px-4 py-2 text-left font-bold [&amp;[align=center]]:text-center [&amp;[align=right]]:text-right">Default</th></tr></thead><tbody><tr class="m-0 border-t p-0 even:bg-muted"><td class="border px-4 py-2 text-left">[align]</td><td class="border px-4 py-2 text-left">&quot;center&quot; | &quot;left&quot; | &quot;right&quot;</td><td class="border px-4 py-2 text-left">—</td></tr></tbody></table></div>
+<h2 id="note-on-the-utility-set">Note on the utility set</h2>
+<p>A few shadcn-Typography classes (e.g. <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>font-extrabold
+</span></code>, <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>tracking-tight
+</span></code>, the
+<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>[&amp;[align=…]]
+</span></code> arbitrary variants, <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>first:mt-0
+</span></code>) are auto-included by Tailwind
+v4 when they're referenced in HTML shadless ships — no <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>tailwind.config
+</span></code> edit
+needed. If you write your own custom classes that aren't shown above, you'll
+need to ensure Tailwind picks them up at compile time.</p>
+      </article>
+      <nav class="toc" aria-label="On this page"><strong>On this page</strong>
+      <ul><li class="toc-2"><a href="#why-no-component">Why no component?</a></li><li class="toc-2"><a href="#reference">Reference</a></li><li class="toc-2"><a href="#examples">Examples</a></li><li class="toc-3"><a href="#h1">h1</a></li><li class="toc-3"><a href="#h2">h2</a></li><li class="toc-2"><a href="#the-people-of-the-kingdom">The People of the Kingdom</a></li><li class="toc-3"><a href="#h3">h3</a></li><li class="toc-3"><a href="#the-joke-tax">The Joke Tax</a></li><li class="toc-3"><a href="#h4">h4</a></li><li class="toc-3"><a href="#p">p</a></li><li class="toc-3"><a href="#blockquote">blockquote</a></li><li class="toc-3"><a href="#list">list</a></li><li class="toc-3"><a href="#lead">lead</a></li><li class="toc-3"><a href="#large">large</a></li><li class="toc-3"><a href="#small">small</a></li><li class="toc-3"><a href="#muted">muted</a></li><li class="toc-3"><a href="#inline-code">inline code</a></li><li class="toc-3"><a href="#table">table</a></li><li class="toc-2"><a href="#note-on-the-utility-set">Note on the utility set</a></li></ul></nav>
+    </div>
+<nav class="page-prev-next" aria-label="Page navigation"><a class="pn-prev" href="tanstack-ai.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg><span>Tanstack Ai</span></a><span></span></nav>
+  </div>
+</div>
+<div class="sidebar-backdrop" data-sidebar-backdrop aria-hidden="true"></div>
+<script src="site.js"></script>
+</body>
+</html>

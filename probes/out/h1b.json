@@ -1,0 +1,92 @@
+[
+ {
+  "file": "attachment",
+  "kind": "tag-cond",
+  "detail": "Comp"
+ },
+ {
+  "file": "badge",
+  "kind": "tag-cond",
+  "detail": "Comp"
+ },
+ {
+  "file": "breadcrumb",
+  "kind": "tag-cond",
+  "detail": "Comp"
+ },
+ {
+  "file": "breadcrumb",
+  "kind": "child-cond",
+  "detail": "children"
+ },
+ {
+  "file": "bubble",
+  "kind": "tag-cond",
+  "detail": "Comp"
+ },
+ {
+  "file": "button-group",
+  "kind": "tag-cond",
+  "detail": "Comp"
+ },
+ {
+  "file": "button",
+  "kind": "tag-cond",
+  "detail": "Comp"
+ },
+ {
+  "file": "dialog",
+  "kind": "child-cond",
+  "detail": "showCloseButton"
+ },
+ {
+  "file": "dialog",
+  "kind": "child-cond",
+  "detail": "showCloseButton"
+ },
+ {
+  "file": "item",
+  "kind": "tag-cond",
+  "detail": "Comp"
+ },
+ {
+  "file": "marker",
+  "kind": "tag-cond",
+  "detail": "Comp"
+ },
+ {
+  "file": "navigation-menu",
+  "kind": "child-cond",
+  "detail": "viewport"
+ },
+ {
+  "file": "scroll-area",
+  "kind": "class-cond",
+  "detail": "orientation"
+ },
+ {
+  "file": "select",
+  "kind": "class-cond",
+  "detail": "position"
+ },
+ {
+  "file": "select",
+  "kind": "class-cond",
+  "detail": "position"
+ },
+ {
+  "file": "sheet",
+  "kind": "class-cond",
+  "detail": "side"
+ },
+ {
+  "file": "sheet",
+  "kind": "child-cond",
+  "detail": "showCloseButton"
+ },
+ {
+  "file": "toggle-group",
+  "kind": "class-cond",
+  "detail": "context,variant"
+ }
+]

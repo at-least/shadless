@@ -1,0 +1,879 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TanStack AI — shadless docs</title>
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="fonts.css">
+<script>(function(){try{var k="shadless-docs-theme";var apply=function(d){document.documentElement.classList.toggle("dark",!!d)};var s=localStorage.getItem(k);var d=s?s==="dark":matchMedia("(prefers-color-scheme: dark)").matches;apply(d);addEventListener("storage",function(e){if(e.key===k)apply(e.newValue==="dark")});}catch(e){}})();</script>
+</head>
+<body>
+<header class="mobile-topbar">
+    <button type="button" class="sidebar-toggle" data-sidebar-toggle aria-controls="sidebar" aria-expanded="false" aria-label="Open navigation">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
+    </button>
+    <a class="brand" href="index.html">shadless docs</a>
+  </header>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand-row">
+      <a class="brand" href="index.html">shadless docs</a>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+    </svg>
+    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+    </svg>
+  </button>
+    </div>
+    <nav aria-label="Components and guides">
+      <ul>
+      <li><a href="introduction.html">Introduction</a></li>
+      <li><a href="accordion.html">accordion</a></li>
+      <li><a href="alert.html">alert</a></li>
+      <li><a href="alert-dialog.html">alert-dialog</a></li>
+      <li><a href="aspect-ratio.html">aspect-ratio</a></li>
+      <li><a href="attachment.html">attachment</a></li>
+      <li><a href="avatar.html">avatar</a></li>
+      <li><a href="badge.html">badge</a></li>
+      <li><a href="breadcrumb.html">breadcrumb</a></li>
+      <li><a href="bubble.html">bubble</a></li>
+      <li><a href="button.html">button</a></li>
+      <li><a href="button-group.html">button-group</a></li>
+      <li><a href="card.html">card</a></li>
+      <li><a href="carousel.html">carousel</a></li>
+      <li><a href="checkbox.html">checkbox</a></li>
+      <li><a href="collapsible.html">collapsible</a></li>
+      <li><a href="context-menu.html">context-menu</a></li>
+      <li><a href="dialog.html">dialog</a></li>
+      <li><a href="direction.html">direction</a></li>
+      <li><a href="dropdown-menu.html">dropdown-menu</a></li>
+      <li><a href="empty.html">empty</a></li>
+      <li><a href="field.html">field</a></li>
+      <li><a href="hover-card.html">hover-card</a></li>
+      <li><a href="input.html">input</a></li>
+      <li><a href="input-group.html">input-group</a></li>
+      <li><a href="item.html">item</a></li>
+      <li><a href="kbd.html">kbd</a></li>
+      <li><a href="label.html">label</a></li>
+      <li><a href="marker.html">marker</a></li>
+      <li><a href="menubar.html">menubar</a></li>
+      <li><a href="message.html">message</a></li>
+      <li><a href="message-scroller.html">message-scroller</a></li>
+      <li><a href="native-select.html">native-select</a></li>
+      <li><a href="navigation-menu.html">navigation-menu</a></li>
+      <li><a href="pagination.html">pagination</a></li>
+      <li><a href="popover.html">popover</a></li>
+      <li><a href="progress.html">progress</a></li>
+      <li><a href="radio-group.html">radio-group</a></li>
+      <li><a href="scroll-area.html">scroll-area</a></li>
+      <li><a href="select.html">select</a></li>
+      <li><a href="separator.html">separator</a></li>
+      <li><a href="sheet.html">sheet</a></li>
+      <li><a href="skeleton.html">skeleton</a></li>
+      <li><a href="slider.html">slider</a></li>
+      <li><a href="spinner.html">spinner</a></li>
+      <li><a href="switch.html">switch</a></li>
+      <li><a href="table.html">table</a></li>
+      <li><a href="tabs.html">tabs</a></li>
+      <li><a href="textarea.html">textarea</a></li>
+      <li><a href="toggle.html">toggle</a></li>
+      <li><a href="toggle-group.html">toggle-group</a></li>
+      <li><a href="tooltip.html">tooltip</a></li>
+      <li class="sidebar-group">Not available</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">calendar</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">chart</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">combobox</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">command</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">data-table</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">date-picker</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">drawer</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">form</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">input-otp</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">questionnaire</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">resizable</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">sidebar</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">sonner</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">toast</li>
+      <li class="sidebar-unavailable" title="No component in shadless — see Typography guide">typography <a href="typography.html" class="greyed-guide-link" title="Open Typography guide">→</a></li>
+      <li class="sidebar-group">Guides</li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="dark-mode.html">Dark Mode</a></li>
+      <li><a href="rtl.html">RTL</a></li>
+      <li><a href="shimmer.html">shimmer</a></li>
+      <li><a href="scroll-fade.html">scroll-fade</a></li>
+      <li><a href="ai-sdk.html">AI SDK</a></li>
+      <li><a href="tanstack-ai.html">TanStack AI</a></li>
+      <li><a href="typography.html">Typography</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="main">
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep" aria-hidden="true">›</span><span>TanStack AI</span></nav>
+    <header class="page-header">
+      <div class="header-row">
+        <h1>TanStack AI</h1>
+        <div class="docs-nav"><a href="ai-sdk.html" aria-label="Previous page" title="Previous"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg></a><a href="typography.html" aria-label="Next page" title="Next"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 5 7 7-7 7"/><path d="M5 12h14"/></svg></a></div>
+      </div>
+      <p class="lead">Create TanStack AI messages and stream predefined conversations through useChat without a model, API route, network request, or API key.</p>
+
+    </header>
+    <div class="columns">
+      <article data-page="tanstack-ai" class="typeset">
+<p><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>@shadcn/helpers/tanstack-ai
+</span></code> lets you write an AI conversation in code and
+stream it through TanStack AI's <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>useChat
+</span></code>, with no model, API route, network
+request, or API key.</p>
+<p>It creates native TanStack <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>UIMessage[]
+</span></code> values and replays each assistant
+response through a local connection adapter as real AG-UI events, so your
+components behave exactly as they would in production: text and reasoning
+stream word by word, and tool calls move from input to result.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">import</span> { createChat } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">from</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;@shadcn/helpers/tanstack-ai&quot;</span>
+</span><span data-line>
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">chat</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">createChat</span>()
+</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">user</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;What changed in this release?&quot;</span>)
+</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;The release adds keyboard shortcuts and faster search.&quot;</span>)
+</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">user</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Can you show me the shortcuts?&quot;</span>)
+</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Press ⌘K to search and ⌘Enter to submit.&quot;</span>)
+</span><span data-line>
+</span></code></pre>
+<p>Pass the chat to <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>useChat
+</span></code> with its initial messages and local connection.
+TanStack AI receives the same AG-UI events it would receive from a server.</p>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="2"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">import</span> { useChat } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">from</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;@tanstack/ai-react&quot;</span>
+</span><span data-line>
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">function</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">Chat</span>() {
+</span><span data-line>  <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> { <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">messages</span>, <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">append</span> } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">useChat</span>({
+</span><span data-line>    initialMessages: chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">get</span>(<span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">0</span>), <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// starts with no messages.</span>
+</span><span data-line>    connection: chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">transport</span>(),
+</span><span data-line>  })
+</span><span data-line>
+</span><span data-line>  <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">nextMessage</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">next</span>(messages)
+</span><span data-line>
+</span><span data-line>  <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">return</span> (
+</span><span data-line>    <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">button</span>
+</span><span data-line>      <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">disabled</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">={!</span>nextMessage<span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">}</span>
+</span><span data-line>      <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">onClick</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">={</span>() <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> {
+</span><span data-line>        <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">if</span> (nextMessage) {
+</span><span data-line>          <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">void</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">append</span>(nextMessage)
+</span><span data-line>        }
+</span><span data-line>      }<span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">}</span>
+</span><span data-line>    <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
+</span><span data-line>      Send next message
+</span><span data-line>    <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">button</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
+</span><span data-line>  )
+</span><span data-line>}
+</span><span data-line>
+</span></code></pre>
+<p><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>get(0)
+</span></code> starts with no messages. <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>append(nextMessage)
+</span></code> adds the next
+predefined user message; the connection then streams its assistant response
+as AG-UI events.</p>
+<hr>
+<h2 id="what-its-for">What It's For</h2>
+<p>The helper decouples your chat UI from the model and the backend, so you can
+work on the frontend on its own. It runs offline, instantly, and the same way every time.</p>
+<ul>
+<li><strong>Build components.</strong> Develop message bubbles, tool cards, and reasoning
+panels against realistic streaming output, without wiring up a model first.</li>
+<li><strong>Preview and demo.</strong> Ship reproducible previews, screenshots, and videos
+that never depend on a live model.</li>
+<li><strong>Write docs.</strong> Power documentation examples with conversations that render
+the same way on every load.</li>
+<li><strong>Test.</strong> Assert against a deterministic stream in CI, with no network calls,
+token spend, or flaky model output.</li>
+</ul>
+<hr>
+<h2 id="installation">Installation</h2>
+<pre><code class="language-bash" data-line-numbers data-line-numbers-max-digits="1"><span data-line>npm install @shadcn/helpers
+</span><span data-line>
+</span></code></pre>
+<hr>
+<h2 id="usage">Usage</h2>
+<p>Create a conversation, pass its messages and connection to <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>useChat
+</span></code>, then
+send each predefined user message with <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>next()
+</span></code>.</p>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="2"><span data-line><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;use client&quot;</span>
+</span><span data-line>
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">import</span> { createChat } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">from</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;@shadcn/helpers/tanstack-ai&quot;</span>
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">import</span> { useChat } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">from</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;@tanstack/ai-react&quot;</span>
+</span><span data-line>
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">chat</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">createChat</span>()
+</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">user</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;What changed in this release?&quot;</span>)
+</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;The release adds keyboard shortcuts and faster search.&quot;</span>)
+</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">user</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Can you show me the shortcuts?&quot;</span>)
+</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Press ⌘K to search and ⌘Enter to submit.&quot;</span>)
+</span><span data-line>
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">initialMessages</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">get</span>(<span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">0</span>)
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">connection</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">transport</span>()
+</span><span data-line>
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">export</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">function</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">Chat</span>() {
+</span><span data-line>  <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> { <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">messages</span>, <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">append</span>, <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">status</span> } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">useChat</span>({
+</span><span data-line>    initialMessages,
+</span><span data-line>    connection,
+</span><span data-line>  })
+</span><span data-line>  <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">nextMessage</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">next</span>(messages)
+</span><span data-line>  <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">isBusy</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> status <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">===</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;submitted&quot;</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">||</span> status <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">===</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;streaming&quot;</span>
+</span><span data-line>
+</span><span data-line>  <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">return</span> (
+</span><span data-line>    <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
+</span><span data-line>      <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">{</span>messages.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">map</span>((<span style="--shiki-light:#953800;--shiki-dark:#FFF">message</span>) <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> (
+</span><span data-line>        <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">key</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">={</span>message.id<span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">}</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">{</span><span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">/* Render the message */</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">}</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
+</span><span data-line>      ))<span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">}</span>
+</span><span data-line>      <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">button</span>
+</span><span data-line>        <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">disabled</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">={!</span>nextMessage <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">||</span> isBusy<span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">}</span>
+</span><span data-line>        <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">onClick</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">={</span>() <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> {
+</span><span data-line>          <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">if</span> (nextMessage <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">&amp;&amp;</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">!</span>isBusy) {
+</span><span data-line>            <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">void</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">append</span>(nextMessage)
+</span><span data-line>          }
+</span><span data-line>        }<span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">}</span>
+</span><span data-line>      <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
+</span><span data-line>        Send
+</span><span data-line>      <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">button</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
+</span><span data-line>    <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
+</span><span data-line>  )
+</span><span data-line>}
+</span><span data-line>
+</span></code></pre>
+<div data-component-preview="tanstack-ai-helper-demo" data-style-name="base-rhea" data-status="unavailable" class="component-preview-ph"><span class="ph-note">demo not available in shadless (base-style demo)</span><code class="ph-name">tanstack-ai-helper-demo</code><span class="ph-cross-link"> — <a href="tanstack-ai.html">see guide</a></span></div>
+<hr>
+<h2 id="user-messages">User Messages</h2>
+<p>Messages added with this helper use the <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>user
+</span></code> and <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>assistant
+</span></code> roles. Use
+<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>user()
+</span></code> to add a user message. Existing TanStack messages are preserved when
+you start with <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>createChat({ messages })
+</span></code>.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">chat</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">createChat</span>().<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">user</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;What changed in this release?&quot;</span>)
+</span><span data-line>
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> [<span style="--shiki-light:#0550AE;--shiki-dark:#FFF">message</span>] <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">get</span>()
+</span><span data-line>
+</span><span data-line>message.role <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// &quot;user&quot;</span>
+</span><span data-line>message.parts <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// [{ type: &quot;text&quot;, content: &quot;What changed in this release?&quot; }]</span>
+</span><span data-line>
+</span></code></pre>
+<p>Pass an <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>id
+</span></code>, or a <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>createdAt
+</span></code> timestamp via <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>metadata
+</span></code>, as the second argument
+when you need them.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">user</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;What changed in this release?&quot;</span>, {
+</span><span data-line>  id: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;user-release-question&quot;</span>,
+</span><span data-line>  metadata: {
+</span><span data-line>    createdAt: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;2026-01-01T10:00:00.000Z&quot;</span>,
+</span><span data-line>  },
+</span><span data-line>})
+</span><span data-line>
+</span></code></pre>
+<p>User messages can also include files. See <a href="#files">Files</a>.</p>
+<hr>
+<h2 id="assistant-messages">Assistant Messages</h2>
+<p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>assistant()
+</span></code> to add an assistant message.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">chat</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">createChat</span>().<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(
+</span><span data-line>  <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;The release adds keyboard shortcuts and faster search.&quot;</span>
+</span><span data-line>)
+</span><span data-line>
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> [<span style="--shiki-light:#0550AE;--shiki-dark:#FFF">message</span>] <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">get</span>()
+</span><span data-line>
+</span><span data-line>message.role <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// &quot;assistant&quot;</span>
+</span><span data-line>message.parts <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// [{ type: &quot;text&quot;, content: &quot;The release adds...&quot; }]</span>
+</span><span data-line>
+</span></code></pre>
+<p>A string creates one text part. You can also pass an array of TanStack message
+parts.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>([
+</span><span data-line>  { type: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;thinking&quot;</span>, content: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;I should summarize the release.&quot;</span> },
+</span><span data-line>  { type: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;text&quot;</span>, content: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;The release adds keyboard shortcuts.&quot;</span> },
+</span><span data-line>])
+</span><span data-line>
+</span></code></pre>
+<p>Use the writer callback when the message should stream in smaller steps.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(({ <span style="--shiki-light:#953800;--shiki-dark:#FFF">writer</span> }) <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> {
+</span><span data-line>  writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">reasoning</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;I should summarize the release.&quot;</span>)
+</span><span data-line>  writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">text</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;The release adds keyboard shortcuts and faster search.&quot;</span>)
+</span><span data-line>})
+</span><span data-line>
+</span></code></pre>
+<p>The writer adds parts in the order you call them.</p>
+<hr>
+<h2 id="message-parts">Message Parts</h2>
+<p>The TanStack writer supports the parts that can round-trip through its AG-UI
+connection: text, reasoning, and tool calls. It also supports timing and
+errors.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(({ <span style="--shiki-light:#953800;--shiki-dark:#FFF">writer</span> }) <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> {
+</span><span data-line>  writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">reasoning</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;I should answer directly.&quot;</span>)
+</span><span data-line>  writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">text</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Hello.&quot;</span>)
+</span><span data-line>})
+</span><span data-line>
+</span></code></pre>
+<p>See <a href="#adapter-differences">Adapter Differences</a> for parts that do not have an
+equivalent in this connection.</p>
+<hr>
+<h2 id="text">Text</h2>
+<p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>text()
+</span></code> to add text.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(({ <span style="--shiki-light:#953800;--shiki-dark:#FFF">writer</span> }) <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> {
+</span><span data-line>  writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">text</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;The release adds keyboard shortcuts.&quot;</span>)
+</span><span data-line>  writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">text</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot; Search is faster too.&quot;</span>)
+</span><span data-line>})
+</span><span data-line>
+</span></code></pre>
+<p>Text streams word by word when the chat is used with <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.transport()
+</span></code>.
+Consecutive text calls materialize as separate parts in <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>get()
+</span></code>, but TanStack's
+stream processor combines them into one text part during playback.</p>
+<p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>mode: &quot;instant&quot;
+</span></code> to send the whole value at once, or <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>delayMs
+</span></code> to change
+the delay between text deltas.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">text</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Done.&quot;</span>, { mode: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;instant&quot;</span> })
+</span><span data-line>writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">text</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;This part streams more slowly.&quot;</span>, { delayMs: <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">100</span> })
+</span><span data-line>
+</span></code></pre>
+<hr>
+<h2 id="reasoning">Reasoning</h2>
+<p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>reasoning()
+</span></code> to add reasoning. It becomes a TanStack <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>thinking
+</span></code> part.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(({ <span style="--shiki-light:#953800;--shiki-dark:#FFF">writer</span> }) <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> {
+</span><span data-line>  writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">reasoning</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;I should check the latest conditions first.&quot;</span>)
+</span><span data-line>  writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">text</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Let me check the weather.&quot;</span>)
+</span><span data-line>})
+</span><span data-line>
+</span></code></pre>
+<p>Reasoning uses the same <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>delayMs
+</span></code> and <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>mode
+</span></code> options as text.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">reasoning</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Checking the forecast.&quot;</span>, { mode: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;instant&quot;</span> })
+</span><span data-line>
+</span></code></pre>
+<hr>
+<h2 id="tool-calls">Tool Calls</h2>
+<p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>tool()
+</span></code> to add a tool call. It returns a handle that follows the tool from
+input to output.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="2"><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(({ <span style="--shiki-light:#953800;--shiki-dark:#FFF">writer</span> }) <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> {
+</span><span data-line>  writer
+</span><span data-line>    .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">tool</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;getWeather&quot;</span>, {
+</span><span data-line>      input: { city: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;San Francisco&quot;</span> },
+</span><span data-line>    })
+</span><span data-line>    .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">sleep</span>(<span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">900</span>)
+</span><span data-line>    .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">output</span>({
+</span><span data-line>      city: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;San Francisco&quot;</span>,
+</span><span data-line>      temperature: <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">18</span>,
+</span><span data-line>      condition: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Breezy&quot;</span>,
+</span><span data-line>    })
+</span><span data-line>
+</span><span data-line>  writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">text</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;It is 18°C and breezy in San Francisco.&quot;</span>)
+</span><span data-line>})
+</span><span data-line>
+</span></code></pre>
+<p>The tool can finish with <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>output()
+</span></code> or <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>error()
+</span></code>.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">tool</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;getWeather&quot;</span>, { input: { city: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;San Francisco&quot;</span> } }).<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">error</span>()
+</span><span data-line>
+</span></code></pre>
+<p>The completed TanStack message contains a <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>tool-call
+</span></code> part and a sibling
+<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>tool-result
+</span></code> part.</p>
+<p>Pass the same client-tool tuple used by your app to type the tool name, input,
+and output.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="2"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">import</span> { clientTools } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">from</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;@tanstack/ai-client&quot;</span>
+</span><span data-line>
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">import</span> { getWeatherTool } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">from</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;@/lib/tools&quot;</span>
+</span><span data-line>
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">tools</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">clientTools</span>(getWeatherTool.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">client</span>())
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">chat</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">createChat</span>&lt;<span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">typeof</span> tools&gt;()
+</span><span data-line>
+</span><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(({ <span style="--shiki-light:#953800;--shiki-dark:#FFF">writer</span> }) <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> {
+</span><span data-line>  writer
+</span><span data-line>    .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">tool</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;getWeather&quot;</span>, {
+</span><span data-line>      input: { city: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;San Francisco&quot;</span> },
+</span><span data-line>    })
+</span><span data-line>    .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">output</span>({
+</span><span data-line>      city: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;San Francisco&quot;</span>,
+</span><span data-line>      temperature: <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">18</span>,
+</span><span data-line>      condition: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Breezy&quot;</span>,
+</span><span data-line>    })
+</span><span data-line>})
+</span><span data-line>
+</span></code></pre>
+<hr>
+<h2 id="files">Files</h2>
+<p>Add files to a user message with the <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>files
+</span></code> option.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">user</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Describe this image.&quot;</span>, {
+</span><span data-line>  files: [
+</span><span data-line>    {
+</span><span data-line>      mediaType: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;image/png&quot;</span>,
+</span><span data-line>      url: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;https://example.com/screenshot.png&quot;</span>,
+</span><span data-line>    },
+</span><span data-line>  ],
+</span><span data-line>})
+</span><span data-line>
+</span></code></pre>
+<p>The helper converts each file into a TanStack media part based on its media
+type:</p>
+<table><thead><tr><th>Media type</th><th>TanStack part</th></tr></thead><tbody><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>image/*
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>image
+</span></code></td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>audio/*
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>audio
+</span></code></td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>video/*
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>video
+</span></code></td></tr><tr><td>Other</td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>document
+</span></code></td></tr></tbody></table>
+<p>These parts are available from <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>get()
+</span></code>. Because <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>next()
+</span></code> returns the complete
+user <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>UIMessage
+</span></code>, <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>append()
+</span></code> preserves its text and media parts.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">nextMessage</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">next</span>(messages)
+</span><span data-line>
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">if</span> (nextMessage) {
+</span><span data-line>  <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">void</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">append</span>(nextMessage)
+</span><span data-line>}
+</span><span data-line>
+</span></code></pre>
+<p>Assistant media parts can be included in a static parts array and read with
+<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>get()
+</span></code>, but the AG-UI connection does not stream assistant files.</p>
+<hr>
+<h2 id="adapter-differences">Adapter Differences</h2>
+<p>TanStack AI and the AI SDK use different message and streaming models. This
+adapter exposes only the operations it can represent end to end.</p>
+<table><thead><tr><th>Feature</th><th>Behavior</th></tr></thead><tbody><tr><td>Text</td><td>Streams as AG-UI text and becomes a <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>text
+</span></code> part.</td></tr><tr><td>Reasoning</td><td>Streams as AG-UI reasoning and becomes a <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>thinking
+</span></code> part.</td></tr><tr><td>Tool calls</td><td>Stream input, output, and errors into <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>tool-call
+</span></code> and <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>tool-result
+</span></code>.</td></tr><tr><td>Data and structured output</td><td>No writer method; existing message parts remain available through <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>get()
+</span></code>.</td></tr><tr><td>Custom events</td><td>No writer method in the public adapter.</td></tr><tr><td>Sources, reasoning files, step starts</td><td>No TanStack message or AG-UI equivalent in this adapter.</td></tr><tr><td>Assistant files</td><td>Available in <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>get()
+</span></code>, but omitted from connection streams.</td></tr><tr><td>Stop</td><td>Closes the stream; AG-UI has no separate abort event.</td></tr></tbody></table>
+<p>Use the <a href="ai-sdk.html">AI SDK helper</a> when a preview needs the AI SDK's
+full message-part model.</p>
+<hr>
+<h2 id="reading-messages">Reading Messages</h2>
+<p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>get()
+</span></code> to return messages from the start of the conversation.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">get</span>() <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// Every message.</span>
+</span><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">get</span>(<span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">2</span>) <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// The first two messages.</span>
+</span><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">get</span>(<span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">0</span>) <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// An empty initial conversation.</span>
+</span><span data-line>
+</span></code></pre>
+<p><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>get()
+</span></code> returns cloned TanStack <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>UIMessage[]
+</span></code> values and does not change the
+chat.</p>
+<p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>next()
+</span></code> to find the next predefined user message after the messages
+already shown.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">initialMessages</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">get</span>(<span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">2</span>)
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">nextMessage</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">next</span>(initialMessages)
+</span><span data-line>
+</span></code></pre>
+<p><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>next()
+</span></code> always accepts a message transcript, not an index. It returns the next
+user message or <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>null
+</span></code> when none remain.</p>
+<hr>
+<h2 id="start-from-existing-messages">Start from Existing Messages</h2>
+<p>Pass <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>messages
+</span></code> to continue from a saved conversation or fixture.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">import</span> { createChat } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">from</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;@shadcn/helpers/tanstack-ai&quot;</span>
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">import</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">type</span> { UIMessage } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">from</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;@tanstack/ai-client&quot;</span>
+</span><span data-line>
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">declare</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">savedMessages</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">:</span> <span style="--shiki-light:#953800;--shiki-dark:#FFC799">UIMessage</span>[]
+</span><span data-line>
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">chat</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">createChat</span>({ messages: savedMessages })
+</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">user</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;What should we do next?&quot;</span>)
+</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Turn the open questions into a checklist.&quot;</span>)
+</span><span data-line>
+</span></code></pre>
+<p>Existing IDs, timestamps, and parts are preserved.</p>
+<hr>
+<h2 id="transport">Transport</h2>
+<p><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>transport()
+</span></code> creates a TanStack <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>ConnectConnectionAdapter
+</span></code> that you pass to
+<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>useChat
+</span></code> as its <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>connection
+</span></code>.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="2"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">connection</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">transport</span>()
+</span><span data-line>
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> { <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">messages</span>, <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">append</span>, <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">sendMessage</span> } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">useChat</span>({
+</span><span data-line>  initialMessages: chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">get</span>(<span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">0</span>),
+</span><span data-line>  connection,
+</span><span data-line>})
+</span><span data-line>
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">nextMessage</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">next</span>(messages)
+</span><span data-line>
+</span><span data-line><span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// Replay the next predefined user message.</span>
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">if</span> (nextMessage) {
+</span><span data-line>  <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">void</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">append</span>(nextMessage)
+</span><span data-line>}
+</span><span data-line>
+</span><span data-line><span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// Or send ordinary user input as text or multimodal content.</span>
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">void</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">sendMessage</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Tell me more.&quot;</span>)
+</span><span data-line>
+</span></code></pre>
+<p>When <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>append()
+</span></code> or <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>sendMessage()
+</span></code> starts a run, the connection finds the
+assistant message that follows the current transcript and emits AG-UI events
+through TanStack's normal stream processor. It matches message IDs first and
+falls back to the role and text of the latest message.</p>
+<p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>append(nextMessage)
+</span></code> to replay a predefined user message. It preserves
+that message's ID and media parts. Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>sendMessage()
+</span></code> for ordinary user input;
+it accepts a string or multimodal content rather than a complete <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>UIMessage
+</span></code>.</p>
+<h3 id="events">Events</h3>
+<p>A response can emit the following sequence:</p>
+<pre><code class="language-txt" data-line-numbers data-line-numbers-max-digits="1"><span data-line>RUN_STARTED
+</span><span data-line>REASONING_MESSAGE_START → REASONING_MESSAGE_CONTENT → REASONING_MESSAGE_END
+</span><span data-line>TOOL_CALL_START → TOOL_CALL_ARGS → TOOL_CALL_END → TOOL_CALL_RESULT
+</span><span data-line>TEXT_MESSAGE_START → TEXT_MESSAGE_CONTENT → TEXT_MESSAGE_END
+</span><span data-line>RUN_FINISHED
+</span><span data-line>
+</span></code></pre>
+<p>Predefined errors emit <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>RUN_ERROR
+</span></code>. TanStack supplies the <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>threadId
+</span></code> and
+<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>runId
+</span></code> used by each run.</p>
+<h3 id="options">Options</h3>
+<table><thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>delayMs
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>number
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>50
+</span></code></td><td>Delay between text and reasoning deltas. Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>0
+</span></code> or <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>undefined
+</span></code> to remove it.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>fallback
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>string
+</span></code>, <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>MessagePart[]
+</span></code>, or a callback</td><td>None</td><td>Response to stream when no predefined assistant response remains.</td></tr></tbody></table>
+<p>The connection-level <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>delayMs
+</span></code> is the default for every streamed text and
+reasoning part. Override it for one part with <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>writer.text(..., { delayMs })
+</span></code>
+or <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>writer.reasoning(..., { delayMs })
+</span></code>.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">connection</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">transport</span>({
+</span><span data-line>  delayMs: <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">25</span>,
+</span><span data-line>})
+</span><span data-line>
+</span></code></pre>
+<h3 id="fallback">Fallback</h3>
+<p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>fallback
+</span></code> when the conversation has no predefined assistant response
+left. This keeps a demo usable after its predefined replies are exhausted.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">connection</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">transport</span>({
+</span><span data-line>  fallback: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;This demo has no more predefined replies.&quot;</span>,
+</span><span data-line>})
+</span><span data-line>
+</span></code></pre>
+<p>A fallback can also be an array of TanStack message parts or a writer callback.
+The callback receives the incoming transcript, so it can create a response from
+the current state.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">connection</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">transport</span>({
+</span><span data-line>  <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">fallback</span>: ({ <span style="--shiki-light:#953800;--shiki-dark:#FFF">writer</span>, <span style="--shiki-light:#953800;--shiki-dark:#FFF">messages</span> }) <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> {
+</span><span data-line>    writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">text</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">`This example already has ${</span>messages<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">.</span><span style="--shiki-light:#0550AE;--shiki-dark:#99FFE4">length</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">} messages.`</span>, {
+</span><span data-line>      mode: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;instant&quot;</span>,
+</span><span data-line>    })
+</span><span data-line>  },
+</span><span data-line>})
+</span><span data-line>
+</span></code></pre>
+<p>Fallback responses stream like assistant responses but are not added to the
+predefined conversation. Without one, the connection throws
+<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&quot;No assistant response found for this transcript.&quot;
+</span></code> when the conversation is
+exhausted.</p>
+<p>Calling <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>stop()
+</span></code> from <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>useChat
+</span></code> closes the active connection stream.</p>
+<hr>
+<h2 id="timing">Timing</h2>
+<p>Use delays to reproduce the pace of a real response.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="2"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">chat</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">createChat</span>()
+</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">user</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Give me a project update.&quot;</span>)
+</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">sleep</span>(<span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">800</span>)
+</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(({ <span style="--shiki-light:#953800;--shiki-dark:#FFF">writer</span> }) <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> {
+</span><span data-line>    writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">reasoning</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;I should lead with the completed milestone.&quot;</span>)
+</span><span data-line>    writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">sleep</span>(<span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">500</span>)
+</span><span data-line>    writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">text</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;The first milestone is complete.&quot;</span>, { mode: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;instant&quot;</span> })
+</span><span data-line>  })
+</span><span data-line>
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">connection</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">transport</span>({ delayMs: <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">50</span> })
+</span><span data-line>
+</span></code></pre>
+<ul>
+<li><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.sleep(ms)
+</span></code> waits before the next assistant response starts.</li>
+<li><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>writer.sleep(ms)
+</span></code> waits between parts of an assistant response.</li>
+<li><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>tool.sleep(ms)
+</span></code> waits between a tool's input and its result.</li>
+<li><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>transport({ delayMs })
+</span></code> sets the default delay between text and reasoning
+deltas.</li>
+<li><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>writer.text(text, { delayMs })
+</span></code> and <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>writer.reasoning(text, { delayMs })
+</span></code>
+override that delay for one part.</li>
+<li><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>mode: &quot;instant&quot;
+</span></code> sends a whole text or reasoning value in one delta.</li>
+</ul>
+<p>For fast tests, use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.transport({ delayMs: 0 })
+</span></code> and instant text.</p>
+<hr>
+<h2 id="errors">Errors</h2>
+<p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>error()
+</span></code> on the chat when the whole assistant response should fail.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">chat</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">createChat</span>()
+</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">user</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Load the report.&quot;</span>)
+</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">error</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;The report could not be loaded.&quot;</span>)
+</span><span data-line>
+</span></code></pre>
+<p>This emits a TanStack <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>RUN_ERROR
+</span></code> event.</p>
+<p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>writer.error()
+</span></code> to fail after other content has streamed.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(({ <span style="--shiki-light:#953800;--shiki-dark:#FFF">writer</span> }) <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> {
+</span><span data-line>  writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">text</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;I found the report.&quot;</span>)
+</span><span data-line>  writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">error</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;The connection closed before it could be read.&quot;</span>)
+</span><span data-line>})
+</span><span data-line>
+</span></code></pre>
+<hr>
+<h2 id="metadata-and-ids">Metadata and IDs</h2>
+<p>TanStack messages support a <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>createdAt
+</span></code> timestamp. Pass it as message metadata;
+it is preserved through <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>get()
+</span></code> and <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>next()
+</span></code>. The AG-UI connection does not
+stream message metadata.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">chat</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">createChat</span>()
+</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">user</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Hello&quot;</span>, {
+</span><span data-line>    metadata: { createdAt: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;2026-01-01T10:00:00.000Z&quot;</span> },
+</span><span data-line>  })
+</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Hi.&quot;</span>, {
+</span><span data-line>    id: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;assistant-welcome&quot;</span>,
+</span><span data-line>    metadata: { createdAt: <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">new</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">Date</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;2026-01-01T10:00:01.000Z&quot;</span>) },
+</span><span data-line>  })
+</span><span data-line>
+</span></code></pre>
+<p>Use chat options when a fixture needs custom prefixes or a fixed clock.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">chat</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">createChat</span>({
+</span><span data-line>  messageIdPrefix: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;demo-message&quot;</span>,
+</span><span data-line>  toolCallIdPrefix: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;demo-tool&quot;</span>,
+</span><span data-line>  now: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;2026-01-01T00:00:00.000Z&quot;</span>,
+</span><span data-line>})
+</span><span data-line>
+</span></code></pre>
+<hr>
+<h2 id="api-reference">API Reference</h2>
+<p>The sections above cover the common flows. This reference lists every public
+export and option.</p>
+<h3 id="createchat"><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>createChat()
+</span></code></h3>
+<p>Creates a typed conversation and returns the fluent TanStack chat interface.</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">function</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">createChat</span>&lt;
+</span><span data-line>  <span style="--shiki-light:#953800;--shiki-dark:#FFC799">TOOLS</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">extends</span> <span style="--shiki-light:#953800;--shiki-dark:#FFC799">ReadonlyArray</span>&lt;<span style="--shiki-light:#953800;--shiki-dark:#FFC799">AnyClientTool</span>&gt; <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#953800;--shiki-dark:#FFC799">AnyClientTool</span>[],
+</span><span data-line>  <span style="--shiki-light:#953800;--shiki-dark:#FFC799">DATA</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">unknown</span>,
+</span><span data-line>&gt;(<span style="--shiki-light:#953800;--shiki-dark:#FFF">options</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">?:</span> <span style="--shiki-light:#953800;--shiki-dark:#FFC799">CreateChatOptions</span>&lt;<span style="--shiki-light:#953800;--shiki-dark:#FFC799">TOOLS</span>, <span style="--shiki-light:#953800;--shiki-dark:#FFC799">DATA</span>&gt;)<span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">:</span> <span style="--shiki-light:#953800;--shiki-dark:#FFC799">TanStackChat</span>&lt;<span style="--shiki-light:#953800;--shiki-dark:#FFC799">TOOLS</span>, <span style="--shiki-light:#953800;--shiki-dark:#FFC799">DATA</span>&gt;
+</span><span data-line>
+</span></code></pre>
+<h4>Type Parameters</h4>
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>TOOLS
+</span></code></td><td>The client-tool tuple used to type tool names, inputs, and outputs.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>DATA
+</span></code></td><td>The payload type of <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>structured-output
+</span></code> parts in existing TanStack messages.</td></tr></tbody></table>
+<p>The helper writer does not create <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>structured-output
+</span></code> parts. <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>DATA
+</span></code> preserves
+their type when a chat starts from existing messages.</p>
+<h4>Options</h4>
+<table><thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>messages
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>UIMessage&lt;TOOLS, DATA&gt;[]
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>[]
+</span></code></td><td>Start from an existing transcript. Messages are cloned.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>messageIdPrefix
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>string
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&quot;msg&quot;
+</span></code></td><td>Prefix for generated message IDs.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>toolCallIdPrefix
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>string
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&quot;call&quot;
+</span></code></td><td>Prefix for generated tool call IDs.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>now
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>Date | string
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&quot;2026-01-01T00:00:00.000Z&quot;
+</span></code></td><td>Fixed time used for generated <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>createdAt
+</span></code> values.</td></tr></tbody></table>
+<p>IDs found in <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>messages
+</span></code> are reserved, so newly generated IDs continue after
+the existing transcript.</p>
+<h3 id="tanstackchat"><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>TanStackChat
+</span></code></h3>
+<p>Every method that adds content returns the same chat, so calls can be chained.</p>
+<table><thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead><tbody><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>user(text?, options?)
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>TanStackChat
+</span></code></td><td>Add a user message with text and optional files.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>assistant(input?, options?)
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>TanStackChat
+</span></code></td><td>Add an assistant message from text, parts, or a writer callback.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>sleep(delayMs)
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>TanStackChat
+</span></code></td><td>Wait before the next assistant response starts.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>error(errorText?)
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>TanStackChat
+</span></code></td><td>Add an assistant response that emits <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>RUN_ERROR
+</span></code>.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>get(count?)
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>UIMessage[]
+</span></code></td><td>Return cloned messages from the start of the conversation.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>next(messages)
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>UIMessage | null
+</span></code></td><td>Return the next predefined user message after a transcript.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>transport(options?)
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>ConnectConnectionAdapter
+</span></code></td><td>Create the connection used by <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>useChat
+</span></code>.</td></tr></tbody></table>
+<p>Calling <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>user()
+</span></code> or <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>assistant()
+</span></code> without content uses
+<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&quot;Summarize the uploaded receipt.&quot;
+</span></code>. Calling <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>error()
+</span></code> without a message uses
+<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&quot;An error occurred.&quot;
+</span></code>. <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>get(count)
+</span></code> throws when <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>count
+</span></code> is negative or not an
+integer.</p>
+<h4><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>user()
+</span></code> Options</h4>
+<table><thead><tr><th>Option</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>id
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>string
+</span></code></td><td>Use a specific message ID.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>metadata
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>TanStackMessageMetadata
+</span></code></td><td>Set the message's <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>createdAt
+</span></code> timestamp.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>files
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>FilePayload[]
+</span></code></td><td>Append media parts after the user text part.</td></tr></tbody></table>
+<p>A user file has this shape:</p>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">type</span> <span style="--shiki-light:#953800;--shiki-dark:#FFC799">FilePayload</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> {
+</span><span data-line>  <span style="--shiki-light:#953800;--shiki-dark:#FFF">type</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">?:</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;file&quot;</span>
+</span><span data-line>  <span style="--shiki-light:#953800;--shiki-dark:#FFF">mediaType</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">:</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">string</span>
+</span><span data-line>  <span style="--shiki-light:#953800;--shiki-dark:#FFF">url</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">:</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">string</span>
+</span><span data-line>  <span style="--shiki-light:#953800;--shiki-dark:#FFF">filename</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">?:</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">string</span>
+</span><span data-line>  <span style="--shiki-light:#953800;--shiki-dark:#FFF">providerMetadata</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">?:</span> <span style="--shiki-light:#953800;--shiki-dark:#FFC799">Record</span>&lt;<span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">string</span>, <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">unknown</span>&gt;
+</span><span data-line>}
+</span><span data-line>
+</span></code></pre>
+<p>TanStack media parts preserve the URL and media type. Their message shape does
+not preserve <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>filename
+</span></code> or <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>providerMetadata
+</span></code>.</p>
+<h4><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>assistant()
+</span></code> Input</h4>
+<table><thead><tr><th>Input</th><th>Result</th></tr></thead><tbody><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>string
+</span></code></td><td>One text part that streams word by word.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>MessagePart[]
+</span></code></td><td>Static TanStack parts in their existing order.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>({ writer }) =&gt; void
+</span></code></td><td>A synchronous callback for scripting parts, tools, errors, and timing.</td></tr></tbody></table>
+<h4><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>assistant()
+</span></code> Options</h4>
+<table><thead><tr><th>Option</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>id
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>string
+</span></code></td><td>Use a specific message ID.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>metadata
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>TanStackMessageMetadata
+</span></code></td><td>Set the message's <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>createdAt
+</span></code> timestamp.</td></tr></tbody></table>
+<h4><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>transport()
+</span></code> Options</h4>
+<table><thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>delayMs
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>number
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>50
+</span></code></td><td>Delay between text and reasoning deltas. Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>0
+</span></code> or <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>undefined
+</span></code> to remove it.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>fallback
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>string | MessagePart[] | ({ writer, messages }) =&gt; void
+</span></code></td><td>None</td><td>Response used when no predefined assistant response remains.</td></tr></tbody></table>
+<p>See <a href="#transport">Transport</a> for matching, fallback, errors, and AG-UI behavior.</p>
+<h3 id="writer">Writer</h3>
+<p>The writer is available inside <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>assistant(({ writer }) =&gt; {})
+</span></code> and fallback
+callbacks.</p>
+<table><thead><tr><th>Method</th><th>Description</th></tr></thead><tbody><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>text(text?, options?)
+</span></code></td><td>Add streamed text.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>reasoning(text?, options?)
+</span></code></td><td>Add streamed reasoning that becomes a <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>thinking
+</span></code> part.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>tool(name, options?)
+</span></code></td><td>Add a typed tool call and return its lifecycle handle.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>sleep(delayMs)
+</span></code></td><td>Pause before the next writer event.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>error(errorText?)
+</span></code></td><td>Emit <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>RUN_ERROR
+</span></code> and end without a <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>RUN_FINISHED
+</span></code> event.</td></tr></tbody></table>
+<p>Calling <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>text()
+</span></code> without content uses <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&quot;Summarize the uploaded receipt.&quot;
+</span></code>.
+Calling <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>reasoning()
+</span></code> without content uses
+<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&quot;I need to inspect the available context before answering.&quot;
+</span></code>. Calling
+<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>error()
+</span></code> without a message uses <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&quot;An error occurred.&quot;
+</span></code>.</p>
+<h4>Text and Reasoning Options</h4>
+<table><thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>delayMs
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>number
+</span></code></td><td>Connection</td><td>Override the connection delay for this value.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>mode
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&quot;stream&quot; | &quot;instant&quot;
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&quot;stream&quot;
+</span></code></td><td>Stream word deltas or emit the whole value in one delta.</td></tr></tbody></table>
+<h4>Tool Options</h4>
+<table><thead><tr><th>Option</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>toolCallId
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>string
+</span></code></td><td>Use a specific tool call ID.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>input
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>TOOLS[NAME][&quot;input&quot;]
+</span></code></td><td>Set the typed tool input.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>output
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>TOOLS[NAME][&quot;output&quot;]
+</span></code></td><td>Immediately finish with a typed output.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>errorText
+</span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>string
+</span></code></td><td>Immediately finish with an error.</td></tr></tbody></table>
+<p><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>tool()
+</span></code> returns a handle with <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>sleep(delayMs)
+</span></code>, <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>output(value)
+</span></code>, and
+<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>error(errorText?)
+</span></code>. Use the handle when the tool lifecycle needs events
+between its input and result. Calling <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>tool.error()
+</span></code> without a message uses
+<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&quot;Tool call failed.&quot;
+</span></code>.</p>
+<h3 id="types">Types</h3>
+<table><thead><tr><th>Export</th><th>Description</th></tr></thead><tbody><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>TanStackChat
+</span></code></td><td>The typed fluent chat returned by <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>createChat()
+</span></code>.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>CreateChatOptions
+</span></code></td><td>Options accepted by <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>createChat()
+</span></code>.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>TanStackMessageMetadata
+</span></code></td><td>The supported <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>{ createdAt? }
+</span></code> message metadata.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>TanStackToolHandle
+</span></code></td><td>The lifecycle handle returned by <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>writer.tool()
+</span></code>.</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>TanStackWriter
+</span></code></td><td>The writer available inside assistant and fallback callbacks.</td></tr></tbody></table>
+      </article>
+      <nav class="toc" aria-label="On this page"><strong>On this page</strong>
+      <ul><li class="toc-2"><a href="#what-its-for">What It's For</a></li><li class="toc-2"><a href="#installation">Installation</a></li><li class="toc-2"><a href="#usage">Usage</a></li><li class="toc-2"><a href="#user-messages">User Messages</a></li><li class="toc-2"><a href="#assistant-messages">Assistant Messages</a></li><li class="toc-2"><a href="#message-parts">Message Parts</a></li><li class="toc-2"><a href="#text">Text</a></li><li class="toc-2"><a href="#reasoning">Reasoning</a></li><li class="toc-2"><a href="#tool-calls">Tool Calls</a></li><li class="toc-2"><a href="#files">Files</a></li><li class="toc-2"><a href="#adapter-differences">Adapter Differences</a></li><li class="toc-2"><a href="#reading-messages">Reading Messages</a></li><li class="toc-2"><a href="#start-from-existing-messages">Start from Existing Messages</a></li><li class="toc-2"><a href="#transport">Transport</a></li><li class="toc-3"><a href="#events">Events</a></li><li class="toc-3"><a href="#options">Options</a></li><li class="toc-3"><a href="#fallback">Fallback</a></li><li class="toc-2"><a href="#timing">Timing</a></li><li class="toc-2"><a href="#errors">Errors</a></li><li class="toc-2"><a href="#metadata-and-ids">Metadata and IDs</a></li><li class="toc-2"><a href="#api-reference">API Reference</a></li><li class="toc-3"><a href="#createchat">createChat()
+</a></li><li class="toc-3"><a href="#tanstackchat">TanStackChat
+</a></li><li class="toc-3"><a href="#writer">Writer</a></li><li class="toc-3"><a href="#types">Types</a></li></ul></nav>
+    </div>
+<nav class="page-prev-next" aria-label="Page navigation"><a class="pn-prev" href="ai-sdk.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg><span>Ai Sdk</span></a><a class="pn-next" href="typography.html"><span>Typography</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 5 7 7-7 7"/><path d="M5 12h14"/></svg></a></nav>
+  </div>
+</div>
+<div class="sidebar-backdrop" data-sidebar-backdrop aria-hidden="true"></div>
+<script src="site.js"></script>
+</body>
+</html>

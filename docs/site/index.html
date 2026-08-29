@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Components — shadless docs</title>
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="fonts.css">
+<script>(function(){try{var k="shadless-docs-theme";var apply=function(d){document.documentElement.classList.toggle("dark",!!d)};var s=localStorage.getItem(k);var d=s?s==="dark":matchMedia("(prefers-color-scheme: dark)").matches;apply(d);addEventListener("storage",function(e){if(e.key===k)apply(e.newValue==="dark")});}catch(e){}})();</script>
+</head>
+<body>
+<header class="mobile-topbar">
+    <button type="button" class="sidebar-toggle" data-sidebar-toggle aria-controls="sidebar" aria-expanded="false" aria-label="Open navigation">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
+    </button>
+    <a class="brand" href="index.html">shadless docs</a>
+  </header>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand-row">
+      <a class="brand" href="index.html">shadless docs</a>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+    </svg>
+    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+    </svg>
+  </button>
+    </div>
+    <nav aria-label="Components and guides">
+      <ul>
+      <li><a href="introduction.html">Introduction</a></li>
+      <li><a href="accordion.html">accordion</a></li>
+      <li><a href="alert.html">alert</a></li>
+      <li><a href="alert-dialog.html">alert-dialog</a></li>
+      <li><a href="aspect-ratio.html">aspect-ratio</a></li>
+      <li><a href="attachment.html">attachment</a></li>
+      <li><a href="avatar.html">avatar</a></li>
+      <li><a href="badge.html">badge</a></li>
+      <li><a href="breadcrumb.html">breadcrumb</a></li>
+      <li><a href="bubble.html">bubble</a></li>
+      <li><a href="button.html">button</a></li>
+      <li><a href="button-group.html">button-group</a></li>
+      <li><a href="card.html">card</a></li>
+      <li><a href="carousel.html">carousel</a></li>
+      <li><a href="checkbox.html">checkbox</a></li>
+      <li><a href="collapsible.html">collapsible</a></li>
+      <li><a href="context-menu.html">context-menu</a></li>
+      <li><a href="dialog.html">dialog</a></li>
+      <li><a href="direction.html">direction</a></li>
+      <li><a href="dropdown-menu.html">dropdown-menu</a></li>
+      <li><a href="empty.html">empty</a></li>
+      <li><a href="field.html">field</a></li>
+      <li><a href="hover-card.html">hover-card</a></li>
+      <li><a href="input.html">input</a></li>
+      <li><a href="input-group.html">input-group</a></li>
+      <li><a href="item.html">item</a></li>
+      <li><a href="kbd.html">kbd</a></li>
+      <li><a href="label.html">label</a></li>
+      <li><a href="marker.html">marker</a></li>
+      <li><a href="menubar.html">menubar</a></li>
+      <li><a href="message.html">message</a></li>
+      <li><a href="message-scroller.html">message-scroller</a></li>
+      <li><a href="native-select.html">native-select</a></li>
+      <li><a href="navigation-menu.html">navigation-menu</a></li>
+      <li><a href="pagination.html">pagination</a></li>
+      <li><a href="popover.html">popover</a></li>
+      <li><a href="progress.html">progress</a></li>
+      <li><a href="radio-group.html">radio-group</a></li>
+      <li><a href="scroll-area.html">scroll-area</a></li>
+      <li><a href="select.html">select</a></li>
+      <li><a href="separator.html">separator</a></li>
+      <li><a href="sheet.html">sheet</a></li>
+      <li><a href="skeleton.html">skeleton</a></li>
+      <li><a href="slider.html">slider</a></li>
+      <li><a href="spinner.html">spinner</a></li>
+      <li><a href="switch.html">switch</a></li>
+      <li><a href="table.html">table</a></li>
+      <li><a href="tabs.html">tabs</a></li>
+      <li><a href="textarea.html">textarea</a></li>
+      <li><a href="toggle.html">toggle</a></li>
+      <li><a href="toggle-group.html">toggle-group</a></li>
+      <li><a href="tooltip.html">tooltip</a></li>
+      <li class="sidebar-group">Not available</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">calendar</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">chart</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">combobox</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">command</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">data-table</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">date-picker</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">drawer</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">form</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">input-otp</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">questionnaire</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">resizable</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">sidebar</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">sonner</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">toast</li>
+      <li class="sidebar-unavailable" title="No component in shadless — see Typography guide">typography <a href="typography.html" class="greyed-guide-link" title="Open Typography guide">→</a></li>
+      <li class="sidebar-group">Guides</li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="dark-mode.html">Dark Mode</a></li>
+      <li><a href="rtl.html">RTL</a></li>
+      <li><a href="shimmer.html">shimmer</a></li>
+      <li><a href="scroll-fade.html">scroll-fade</a></li>
+      <li><a href="ai-sdk.html">AI SDK</a></li>
+      <li><a href="tanstack-ai.html">TanStack AI</a></li>
+      <li><a href="typography.html">Typography</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="main">
+    <header class="page-header">
+      <h1>Components</h1>
+      <p class="lead">51 radix components available (linked below) · 15 not available (greyed — upstream tombstones or out of pipeline scope) · 9 guides.</p>
+    </header>
+    <p><strong>New here?</strong> Read the <a href="introduction.html">Introduction</a> to learn what shadless is and why it exists.</p>
+    <div class="columns">
+      <article data-page="index">
+        <ul class="index-list" data-grey-count="15">
+          <li><a href="accordion.html">accordion</a></li>
+          <li><a href="alert.html">alert</a></li>
+          <li><a href="alert-dialog.html">alert-dialog</a></li>
+          <li><a href="aspect-ratio.html">aspect-ratio</a></li>
+          <li><a href="attachment.html">attachment</a></li>
+          <li><a href="avatar.html">avatar</a></li>
+          <li><a href="badge.html">badge</a></li>
+          <li><a href="breadcrumb.html">breadcrumb</a></li>
+          <li><a href="bubble.html">bubble</a></li>
+          <li><a href="button.html">button</a></li>
+          <li><a href="button-group.html">button-group</a></li>
+          <li class="index-unavailable" data-component="calendar"><span class="idx-name">calendar</span><span class="idx-note">not available</span></li>
+          <li><a href="card.html">card</a></li>
+          <li><a href="carousel.html">carousel</a></li>
+          <li class="index-unavailable" data-component="chart"><span class="idx-name">chart</span><span class="idx-note">not available</span></li>
+          <li><a href="checkbox.html">checkbox</a></li>
+          <li><a href="collapsible.html">collapsible</a></li>
+          <li class="index-unavailable" data-component="combobox"><span class="idx-name">combobox</span><span class="idx-note">not available</span></li>
+          <li class="index-unavailable" data-component="command"><span class="idx-name">command</span><span class="idx-note">not available</span></li>
+          <li><a href="context-menu.html">context-menu</a></li>
+          <li class="index-unavailable" data-component="data-table"><span class="idx-name">data-table</span><span class="idx-note">not available</span></li>
+          <li class="index-unavailable" data-component="date-picker"><span class="idx-name">date-picker</span><span class="idx-note">not available</span></li>
+          <li><a href="dialog.html">dialog</a></li>
+          <li><a href="direction.html">direction</a></li>
+          <li class="index-unavailable" data-component="drawer"><span class="idx-name">drawer</span><span class="idx-note">not available</span></li>
+          <li><a href="dropdown-menu.html">dropdown-menu</a></li>
+          <li><a href="empty.html">empty</a></li>
+          <li><a href="field.html">field</a></li>
+          <li class="index-unavailable" data-component="form"><span class="idx-name">form</span><span class="idx-note">not available</span></li>
+          <li><a href="hover-card.html">hover-card</a></li>
+          <li><a href="input.html">input</a></li>
+          <li><a href="input-group.html">input-group</a></li>
+          <li class="index-unavailable" data-component="input-otp"><span class="idx-name">input-otp</span><span class="idx-note">not available</span></li>
+          <li><a href="item.html">item</a></li>
+          <li><a href="kbd.html">kbd</a></li>
+          <li><a href="label.html">label</a></li>
+          <li><a href="marker.html">marker</a></li>
+          <li><a href="menubar.html">menubar</a></li>
+          <li><a href="message.html">message</a></li>
+          <li><a href="message-scroller.html">message-scroller</a></li>
+          <li><a href="native-select.html">native-select</a></li>
+          <li><a href="navigation-menu.html">navigation-menu</a></li>
+          <li><a href="pagination.html">pagination</a></li>
+          <li><a href="popover.html">popover</a></li>
+          <li><a href="progress.html">progress</a></li>
+          <li class="index-unavailable" data-component="questionnaire"><span class="idx-name">questionnaire</span><span class="idx-note">not available</span></li>
+          <li><a href="radio-group.html">radio-group</a></li>
+          <li class="index-unavailable" data-component="resizable"><span class="idx-name">resizable</span><span class="idx-note">not available</span></li>
+          <li><a href="scroll-area.html">scroll-area</a></li>
+          <li><a href="select.html">select</a></li>
+          <li><a href="separator.html">separator</a></li>
+          <li><a href="sheet.html">sheet</a></li>
+          <li class="index-unavailable" data-component="sidebar"><span class="idx-name">sidebar</span><span class="idx-note">not available</span></li>
+          <li><a href="skeleton.html">skeleton</a></li>
+          <li><a href="slider.html">slider</a></li>
+          <li class="index-unavailable" data-component="sonner"><span class="idx-name">sonner</span><span class="idx-note">not available</span></li>
+          <li><a href="spinner.html">spinner</a></li>
+          <li><a href="switch.html">switch</a></li>
+          <li><a href="table.html">table</a></li>
+          <li><a href="tabs.html">tabs</a></li>
+          <li><a href="textarea.html">textarea</a></li>
+          <li class="index-unavailable" data-component="toast"><span class="idx-name">toast</span><span class="idx-note">not available</span></li>
+          <li><a href="toggle.html">toggle</a></li>
+          <li><a href="toggle-group.html">toggle-group</a></li>
+          <li><a href="tooltip.html">tooltip</a></li>
+          <li class="index-unavailable" data-component="typography"><span class="idx-name">typography</span><span class="idx-note">not available</span></li>
+          <li class="index-group">Guides</li>
+          <li><a href="introduction.html">Introduction</a></li>
+          <li><a href="installation.html">Installation</a></li>
+          <li><a href="dark-mode.html">Dark Mode</a></li>
+          <li><a href="rtl.html">RTL</a></li>
+          <li><a href="shimmer.html">shimmer</a></li>
+          <li><a href="scroll-fade.html">scroll-fade</a></li>
+          <li><a href="ai-sdk.html">AI SDK</a></li>
+          <li><a href="tanstack-ai.html">TanStack AI</a></li>
+          <li><a href="typography.html">Typography</a></li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</div>
+<div class="sidebar-backdrop" data-sidebar-backdrop aria-hidden="true"></div>
+<script src="site.js"></script>
+</body>
+</html>

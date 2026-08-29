@@ -1,0 +1,35 @@
+{
+  "oracleOpen": {
+    "step": "oracle",
+    "aspect-ratio": {
+      "tag": "div",
+      "data-slot": "aspect-ratio",
+      "id": "ar",
+      "style": "position: absolute; inset: 0px;",
+      "text": "Inside"
+    },
+    "activeElement": "body",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "shadlessOpen": {
+    "step": "shadless",
+    "aspect-ratio": {
+      "tag": "div",
+      "data-slot": "aspect-ratio",
+      "id": "ar",
+      "style": "position: absolute; inset: 0px;",
+      "text": "Inside"
+    },
+    "activeElement": "body",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "oracle": {},
+  "shadless": {},
+  "pass": true
+}

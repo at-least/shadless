@@ -1,0 +1,37 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "label",
+ "tier": "trivial-js",
+ "imports": [
+  "react",
+  "radix-ui",
+  "@/registry/bases/radix/lib/utils"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "Label",
+   "export": true,
+   "elements": [
+    {
+     "tag": "LabelPrimitive.Root",
+     "slot": "label",
+     "classes": [
+      "gap-2 text-sm leading-none font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 flex items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  }
+ ],
+ "conditionals": [],
+ "cvaRefs": [],
+ "tagHints": {
+  "LabelPrimitive.Root": "label"
+ }
+}

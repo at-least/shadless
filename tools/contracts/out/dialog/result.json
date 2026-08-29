@@ -1,0 +1,133 @@
+{
+  "oracleOpen": {
+    "step": "oracle",
+    "dialog-trigger": {
+      "tag": "button",
+      "type": "button",
+      "aria-haspopup": "dialog",
+      "aria-expanded": "true",
+      "aria-controls": "radix-_r_0_",
+      "data-state": "open",
+      "data-slot": "dialog-trigger",
+      "id": "d1-trigger",
+      "text": "Opendialog"
+    },
+    "dialog-overlay": {
+      "tag": "div",
+      "data-state": "open",
+      "data-slot": "dialog-overlay",
+      "data-aria-hidden": "true",
+      "aria-hidden": "true",
+      "style": "pointer-events: auto;",
+      "text": ""
+    },
+    "dialog-content": {
+      "tag": "div",
+      "role": "dialog",
+      "id": "radix-_r_0_",
+      "aria-describedby": "radix-_r_2_",
+      "aria-labelledby": "radix-_r_1_",
+      "data-state": "open",
+      "data-slot": "dialog-content",
+      "tabindex": "-1",
+      "style": "pointer-events: auto;",
+      "text": "Areyouabsolutelysure?Thi"
+    },
+    "dialog-title": {
+      "tag": "h2",
+      "id": "radix-_r_1_",
+      "data-slot": "dialog-title",
+      "text": "Areyouabsolutelysure?"
+    },
+    "dialog-description": {
+      "tag": "p",
+      "id": "radix-_r_2_",
+      "data-slot": "dialog-description",
+      "text": "Thisactioncannotbeundone"
+    },
+    "dialog-close": {
+      "tag": "button",
+      "data-slot": "dialog-close",
+      "data-variant": "ghost",
+      "data-size": "icon-sm",
+      "type": "button",
+      "text": "Close"
+    },
+    "activeElement": "dialog-close",
+    "scrollLock": {
+      "attr": "1",
+      "pointerEvents": "none"
+    }
+  },
+  "shadlessOpen": {
+    "step": "shadless",
+    "dialog-trigger": {
+      "tag": "button",
+      "type": "button",
+      "aria-haspopup": "dialog",
+      "aria-expanded": "true",
+      "aria-controls": "d1",
+      "data-state": "open",
+      "data-slot": "dialog-trigger",
+      "id": "d1-trigger",
+      "text": "Opendialog"
+    },
+    "dialog-overlay": {
+      "tag": "div",
+      "data-state": "open",
+      "data-slot": "dialog-overlay",
+      "style": "pointer-events: auto;",
+      "aria-hidden": "true",
+      "data-aria-hidden": "true",
+      "text": ""
+    },
+    "dialog-content": {
+      "tag": "div",
+      "role": "dialog",
+      "id": "d1",
+      "aria-describedby": "d1-desc",
+      "aria-labelledby": "d1-title",
+      "data-state": "open",
+      "data-slot": "dialog-content",
+      "tabindex": "-1",
+      "style": "pointer-events: auto;",
+      "text": "Areyouabsolutelysure?Thi"
+    },
+    "dialog-title": {
+      "tag": "h2",
+      "id": "d1-title",
+      "data-slot": "dialog-title",
+      "text": "Areyouabsolutelysure?"
+    },
+    "dialog-description": {
+      "tag": "p",
+      "id": "d1-desc",
+      "data-slot": "dialog-description",
+      "text": "Thisactioncannotbeundone"
+    },
+    "dialog-close": {
+      "tag": "button",
+      "data-slot": "dialog-close",
+      "data-variant": "ghost",
+      "data-size": "icon-sm",
+      "type": "button",
+      "text": "Close"
+    },
+    "activeElement": "dialog-close",
+    "scrollLock": {
+      "attr": "1",
+      "pointerEvents": "none"
+    }
+  },
+  "oracle": {
+    "overlay-mouse-click": "closes",
+    "escape": "closes",
+    "close-button": "closes"
+  },
+  "shadless": {
+    "overlay-mouse-click": "closes",
+    "escape": "closes",
+    "close-button": "closes"
+  },
+  "pass": true
+}

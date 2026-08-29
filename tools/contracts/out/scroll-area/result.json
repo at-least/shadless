@@ -1,0 +1,87 @@
+{
+  "oracleOpen": {
+    "step": "oracle",
+    "scroll-area": {
+      "tag": "div",
+      "dir": "ltr",
+      "data-slot": "scroll-area",
+      "style": "position: relative; --radix-scroll-area-corner-width: 0px; --radix-scroll-area-corner-height: 0px; height: 200px; width: 200px;",
+      "text": "[data-radix-scroll-area-"
+    },
+    "scroll-area-viewport": {
+      "tag": "div",
+      "data-radix-scroll-area-viewport": "",
+      "data-slot": "scroll-area-viewport",
+      "style": "overflow: hidden scroll;",
+      "text": "123456789101112131415161"
+    },
+    "scroll-area-scrollbar": {
+      "tag": "div",
+      "data-orientation": "vertical",
+      "data-state": "visible",
+      "data-slot": "scroll-area-scrollbar",
+      "style": "position: absolute; top: 0px; right: 0px; bottom: var(--radix-scroll-area-corner-height); --radix-scroll-area-thumb-height: 100px;",
+      "text": ""
+    },
+    "scroll-area-thumb": {
+      "tag": "div",
+      "data-state": "visible",
+      "data-slot": "scroll-area-thumb",
+      "style": "width: var(--radix-scroll-area-thumb-width); height: var(--radix-scroll-area-thumb-height); transform: translate3d(0px, 0px, 0px);",
+      "text": ""
+    },
+    "activeElement": "body",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "shadlessOpen": {
+    "step": "shadless",
+    "scroll-area": {
+      "tag": "div",
+      "dir": "ltr",
+      "data-slot": "scroll-area",
+      "style": "position: relative; --radix-scroll-area-corner-width: 0px; --radix-scroll-area-corner-height: 0px; height: 200px; width: 200px;",
+      "text": "[data-radix-scroll-area-"
+    },
+    "scroll-area-viewport": {
+      "tag": "div",
+      "data-radix-scroll-area-viewport": "",
+      "data-slot": "scroll-area-viewport",
+      "style": "overflow: hidden scroll;",
+      "text": "123456789101112131415161"
+    },
+    "scroll-area-scrollbar": {
+      "tag": "div",
+      "data-orientation": "vertical",
+      "data-state": "visible",
+      "data-slot": "scroll-area-scrollbar",
+      "style": "position: absolute; top: 0px; right: 0px; bottom: var(--radix-scroll-area-corner-height); --radix-scroll-area-thumb-height: 99px;",
+      "text": ""
+    },
+    "scroll-area-thumb": {
+      "tag": "div",
+      "data-state": "visible",
+      "data-slot": "scroll-area-thumb",
+      "style": "width: var(--radix-scroll-area-thumb-width); height: var(--radix-scroll-area-thumb-height); transform: translate3d(0px, 0px, 0px);",
+      "text": ""
+    },
+    "activeElement": "body",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "oracle": {
+    "move:[data-slot=scroll-area-viewport]+wheel:0,150": "150|visible|visible",
+    "wheel:0,300": "200|visible|visible",
+    "wheel:0,-500": "0|visible|visible"
+  },
+  "shadless": {
+    "move:[data-slot=scroll-area-viewport]+wheel:0,150": "150|visible|visible",
+    "wheel:0,300": "200|visible|visible",
+    "wheel:0,-500": "0|visible|visible"
+  },
+  "pass": true
+}

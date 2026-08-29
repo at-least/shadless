@@ -1,0 +1,150 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "table",
+ "tier": "static",
+ "imports": [
+  "react",
+  "@/registry/bases/radix/lib/utils"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "Table",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "table-container",
+     "classes": [
+      "relative w-full overflow-x-auto"
+     ],
+     "spread": false,
+     "children": [
+      "<table slot=table class=[1]>"
+     ]
+    },
+    {
+     "tag": "table",
+     "slot": "table",
+     "classes": [
+      "w-full caption-bottom text-sm"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "TableHeader",
+   "export": true,
+   "elements": [
+    {
+     "tag": "thead",
+     "slot": "table-header",
+     "classes": [
+      "[&_tr]:border-b"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "TableBody",
+   "export": true,
+   "elements": [
+    {
+     "tag": "tbody",
+     "slot": "table-body",
+     "classes": [
+      "[&_tr:last-child]:border-0"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "TableFooter",
+   "export": true,
+   "elements": [
+    {
+     "tag": "tfoot",
+     "slot": "table-footer",
+     "classes": [
+      "bg-muted/50 border-t font-medium [&>tr]:last:border-b-0"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "TableRow",
+   "export": true,
+   "elements": [
+    {
+     "tag": "tr",
+     "slot": "table-row",
+     "classes": [
+      "hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors has-aria-expanded:bg-muted/50"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "TableHead",
+   "export": true,
+   "elements": [
+    {
+     "tag": "th",
+     "slot": "table-head",
+     "classes": [
+      "text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "TableCell",
+   "export": true,
+   "elements": [
+    {
+     "tag": "td",
+     "slot": "table-cell",
+     "classes": [
+      "p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "TableCaption",
+   "export": true,
+   "elements": [
+    {
+     "tag": "caption",
+     "slot": "table-caption",
+     "classes": [
+      "text-muted-foreground mt-4 text-sm"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  }
+ ],
+ "conditionals": [],
+ "cvaRefs": [],
+ "tagHints": {}
+}

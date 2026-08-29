@@ -1,0 +1,8 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>shadless button-group</title>
+<link rel="stylesheet" href="../out.css"><script>(function(){try{var k="shadless-docs-theme";var apply=function(d){document.documentElement.classList.toggle("dark",!!d)};var s=localStorage.getItem(k);var d=s?s==="dark":matchMedia("(prefers-color-scheme: dark)").matches;apply(d);addEventListener("storage",function(e){if(e.key===k)apply(e.newValue==="dark")});}catch(e){}})();</script><link rel="stylesheet" href="../fonts.css"></head>
+<body>
+<div data-slot="button-group" class="group/button-group"><button style="display:inline-flex;align-items:center;border:1px solid hsl(var(--border));border-radius:0.375rem;padding:0.25rem 0.75rem;font-size:0.875rem;background:transparent">Text</button><div data-slot="button-group-separator" style="display:inline-block;width:1px;height:1.25rem;background:hsl(var(--input))"></div><button style="display:inline-flex;align-items:center;justify-content:center;width:2.25rem;height:2.25rem;border:1px solid hsl(var(--border));border-radius:0.375rem;background:transparent" aria-label="Add">+</button></div>
+<div class="button-group-text">Text</div>
+<div data-slot="button-group-separator"></div>
+</body></html>

@@ -1,0 +1,75 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "hover-card",
+ "tier": "kernel",
+ "imports": [
+  "react",
+  "radix-ui",
+  "@/registry/bases/radix/lib/utils"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "HoverCard",
+   "export": true,
+   "elements": [
+    {
+     "tag": "HoverCardPrimitive.Root",
+     "slot": "hover-card",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "HoverCardTrigger",
+   "export": true,
+   "elements": [
+    {
+     "tag": "HoverCardPrimitive.Trigger",
+     "slot": "hover-card-trigger",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "HoverCardContent",
+   "export": true,
+   "elements": [
+    {
+     "tag": "HoverCardPrimitive.Portal",
+     "slot": "hover-card-portal",
+     "classes": [],
+     "spread": false,
+     "children": [
+      "<HoverCardPrimitive.Content slot=hover-card-content class=[1]>"
+     ]
+    },
+    {
+     "tag": "HoverCardPrimitive.Content",
+     "slot": "hover-card-content",
+     "classes": [
+      "data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground w-64 rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-hover-card-content-transform-origin) outline-hidden"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  }
+ ],
+ "conditionals": [],
+ "cvaRefs": [],
+ "tagHints": {
+  "HoverCardPrimitive.Root": "div",
+  "HoverCardPrimitive.Trigger": "button",
+  "HoverCardPrimitive.Portal": "div",
+  "HoverCardPrimitive.Content": "div"
+ }
+}

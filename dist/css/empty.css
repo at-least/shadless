@@ -1,0 +1,11 @@
+/* empty */
+@layer components {
+  [data-slot="empty"] { @apply gap-4 rounded-xl border-dashed p-6 flex w-full min-w-0 flex-1 flex-col items-center justify-center text-center text-balance; }
+  [data-slot="empty-header"] { @apply gap-2 flex max-w-sm flex-col items-center; }
+  [data-slot="empty-title"] { @apply text-sm font-medium tracking-tight; }
+  [data-slot="empty-description"] { @apply text-sm/relaxed text-muted-foreground [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary; }
+  [data-slot="empty-content"] { @apply gap-2.5 text-sm flex w-full max-w-sm min-w-0 flex-col items-center text-balance; }
+  [data-slot="empty-icon"] { @apply mb-2 flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg]:shrink-0; }
+  [data-slot="empty-icon"]:where(:not([data-variant]), [data-variant="default"], [data-variant=""]) { @apply bg-transparent; }
+  [data-slot="empty-icon"]:where([data-variant="icon"]) { @apply bg-muted text-foreground flex size-8 shrink-0 items-center justify-center rounded-lg [&_svg:not([class*='size-'])]:size-4; }
+}

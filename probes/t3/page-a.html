@@ -1,0 +1,18 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="out-a.css"></head>
+<body>
+  <div style="padding:32px">
+    <button data-slot="button" type="button">Button</button>
+    <button data-slot="dialog-trigger" id="d1-trigger" type="button" aria-haspopup="dialog" aria-expanded="true">Open dialog</button>
+  </div>
+  <div data-slot="dialog-portal">
+    <div data-slot="dialog-overlay" data-state="open"></div>
+    <div data-slot="dialog-content" data-state="open" role="dialog" tabindex="-1">
+      <div data-slot="dialog-header">
+        <h2 data-slot="dialog-title">Are you absolutely sure?</h2>
+        <p data-slot="dialog-description">This action cannot be undone.</p>
+      </div>
+      <button data-slot="dialog-close" type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg><span class="sr-only">Close</span></button>
+    </div>
+  </div>
+</body></html>

@@ -1,0 +1,61 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "collapsible",
+ "tier": "trivial-js",
+ "imports": [
+  "radix-ui"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "Collapsible",
+   "export": true,
+   "elements": [
+    {
+     "tag": "CollapsiblePrimitive.Root",
+     "slot": "collapsible",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "CollapsibleTrigger",
+   "export": true,
+   "elements": [
+    {
+     "tag": "CollapsiblePrimitive.CollapsibleTrigger",
+     "slot": "collapsible-trigger",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "CollapsibleContent",
+   "export": true,
+   "elements": [
+    {
+     "tag": "CollapsiblePrimitive.CollapsibleContent",
+     "slot": "collapsible-content",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  }
+ ],
+ "conditionals": [],
+ "cvaRefs": [],
+ "tagHints": {
+  "CollapsiblePrimitive.Root": "div",
+  "CollapsiblePrimitive.CollapsibleTrigger": "div",
+  "CollapsiblePrimitive.CollapsibleContent": "div"
+ }
+}

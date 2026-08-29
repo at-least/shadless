@@ -1,0 +1,53 @@
+{
+  "oracleOpen": {
+    "step": "oracle",
+    "checkbox": {
+      "tag": "button",
+      "type": "button",
+      "role": "checkbox",
+      "aria-checked": "false",
+      "data-state": "unchecked",
+      "value": "on",
+      "data-slot": "checkbox",
+      "id": "c1",
+      "text": ""
+    },
+    "checkbox-indicator": null,
+    "activeElement": "body",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "shadlessOpen": {
+    "step": "shadless",
+    "checkbox": {
+      "tag": "button",
+      "data-slot": "checkbox",
+      "id": "c1",
+      "type": "button",
+      "role": "checkbox",
+      "aria-checked": "false",
+      "data-state": "unchecked",
+      "value": "on",
+      "text": ""
+    },
+    "checkbox-indicator": null,
+    "activeElement": "body",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "oracle": {
+    "click:#c1": "true|checked|checked",
+    "focus:#c1+key:Space": "true|checked|checked",
+    "click:#c1+click:#c1": "false|unchecked|absent"
+  },
+  "shadless": {
+    "click:#c1": "true|checked|checked",
+    "focus:#c1+key:Space": "true|checked|checked",
+    "click:#c1+click:#c1": "false|unchecked|absent"
+  },
+  "pass": true
+}

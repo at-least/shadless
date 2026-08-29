@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Installation — shadless docs</title>
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="fonts.css">
+<script>(function(){try{var k="shadless-docs-theme";var apply=function(d){document.documentElement.classList.toggle("dark",!!d)};var s=localStorage.getItem(k);var d=s?s==="dark":matchMedia("(prefers-color-scheme: dark)").matches;apply(d);addEventListener("storage",function(e){if(e.key===k)apply(e.newValue==="dark")});}catch(e){}})();</script>
+</head>
+<body>
+<header class="mobile-topbar">
+    <button type="button" class="sidebar-toggle" data-sidebar-toggle aria-controls="sidebar" aria-expanded="false" aria-label="Open navigation">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
+    </button>
+    <a class="brand" href="index.html">shadless docs</a>
+  </header>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand-row">
+      <a class="brand" href="index.html">shadless docs</a>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+    </svg>
+    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+    </svg>
+  </button>
+    </div>
+    <nav aria-label="Components and guides">
+      <ul>
+      <li><a href="introduction.html">Introduction</a></li>
+      <li><a href="accordion.html">accordion</a></li>
+      <li><a href="alert.html">alert</a></li>
+      <li><a href="alert-dialog.html">alert-dialog</a></li>
+      <li><a href="aspect-ratio.html">aspect-ratio</a></li>
+      <li><a href="attachment.html">attachment</a></li>
+      <li><a href="avatar.html">avatar</a></li>
+      <li><a href="badge.html">badge</a></li>
+      <li><a href="breadcrumb.html">breadcrumb</a></li>
+      <li><a href="bubble.html">bubble</a></li>
+      <li><a href="button.html">button</a></li>
+      <li><a href="button-group.html">button-group</a></li>
+      <li><a href="card.html">card</a></li>
+      <li><a href="carousel.html">carousel</a></li>
+      <li><a href="checkbox.html">checkbox</a></li>
+      <li><a href="collapsible.html">collapsible</a></li>
+      <li><a href="context-menu.html">context-menu</a></li>
+      <li><a href="dialog.html">dialog</a></li>
+      <li><a href="direction.html">direction</a></li>
+      <li><a href="dropdown-menu.html">dropdown-menu</a></li>
+      <li><a href="empty.html">empty</a></li>
+      <li><a href="field.html">field</a></li>
+      <li><a href="hover-card.html">hover-card</a></li>
+      <li><a href="input.html">input</a></li>
+      <li><a href="input-group.html">input-group</a></li>
+      <li><a href="item.html">item</a></li>
+      <li><a href="kbd.html">kbd</a></li>
+      <li><a href="label.html">label</a></li>
+      <li><a href="marker.html">marker</a></li>
+      <li><a href="menubar.html">menubar</a></li>
+      <li><a href="message.html">message</a></li>
+      <li><a href="message-scroller.html">message-scroller</a></li>
+      <li><a href="native-select.html">native-select</a></li>
+      <li><a href="navigation-menu.html">navigation-menu</a></li>
+      <li><a href="pagination.html">pagination</a></li>
+      <li><a href="popover.html">popover</a></li>
+      <li><a href="progress.html">progress</a></li>
+      <li><a href="radio-group.html">radio-group</a></li>
+      <li><a href="scroll-area.html">scroll-area</a></li>
+      <li><a href="select.html">select</a></li>
+      <li><a href="separator.html">separator</a></li>
+      <li><a href="sheet.html">sheet</a></li>
+      <li><a href="skeleton.html">skeleton</a></li>
+      <li><a href="slider.html">slider</a></li>
+      <li><a href="spinner.html">spinner</a></li>
+      <li><a href="switch.html">switch</a></li>
+      <li><a href="table.html">table</a></li>
+      <li><a href="tabs.html">tabs</a></li>
+      <li><a href="textarea.html">textarea</a></li>
+      <li><a href="toggle.html">toggle</a></li>
+      <li><a href="toggle-group.html">toggle-group</a></li>
+      <li><a href="tooltip.html">tooltip</a></li>
+      <li class="sidebar-group">Not available</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">calendar</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">chart</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">combobox</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">command</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">data-table</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">date-picker</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">drawer</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">form</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">input-otp</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">questionnaire</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">resizable</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">sidebar</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">sonner</li>
+      <li class="sidebar-unavailable" title="Not available in shadless">toast</li>
+      <li class="sidebar-unavailable" title="No component in shadless — see Typography guide">typography <a href="typography.html" class="greyed-guide-link" title="Open Typography guide">→</a></li>
+      <li class="sidebar-group">Guides</li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="dark-mode.html">Dark Mode</a></li>
+      <li><a href="rtl.html">RTL</a></li>
+      <li><a href="shimmer.html">shimmer</a></li>
+      <li><a href="scroll-fade.html">scroll-fade</a></li>
+      <li><a href="ai-sdk.html">AI SDK</a></li>
+      <li><a href="tanstack-ai.html">TanStack AI</a></li>
+      <li><a href="typography.html">Typography</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="main">
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep" aria-hidden="true">›</span><span>Installation</span></nav>
+    <header class="page-header">
+      <div class="header-row">
+        <h1>Installation</h1>
+        <div class="docs-nav"><a href="introduction.html" aria-label="Previous page" title="Previous"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg></a><a href="dark-mode.html" aria-label="Next page" title="Next"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 5 7 7-7 7"/><path d="M5 12h14"/></svg></a></div>
+      </div>
+      <p class="lead">shadless plugs into your Tailwind v4 build — two imports per component, vanilla JS where behavior is needed.</p>
+
+    </header>
+    <div class="columns">
+      <article data-page="installation" class="typeset">
+<p>shadless is consumed as plain files: every component ships as HTML markup
+carrying plain Tailwind utilities, a self-contained theme/stylesheet
+source, and (only where needed) vanilla JavaScript. There is no CLI and no
+framework requirement.</p>
+<div data-callout data-variant="info" class="callout"><span class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></span><div class="callout-body"><p>The library is a mechanical conversion of the pinned
+<a href="https://ui.shadcn.com">shadcn/ui</a> registry — same markup and styling, zero
+React. See the <strong>Installation</strong> section on any component page for its exact
+file list.</p></div></div>
+<h2 id="primary-your-tailwind-v4-build">Primary: your Tailwind v4 build</h2>
+<p>The intended path is the one you already know from shadcn itself: the
+classes live in your markup, <strong>your</strong> Tailwind build compiles them.</p>
+<ol data-steps class="steps"><li data-step class="step">Add shadless to your Tailwind entry, then one import per component you use.<pre><code class="language-css" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">@import</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;shadless&quot;</span>;     <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">/* theme + animate layer, self-contained */</span>
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">@import</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;shadless/button.css&quot;</span>; <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">/* each component you use, one import    */</span>
+</span><span data-line>
+</span></code></pre><p>Import exactly the components you use — nothing else lands in your build
+(this is machine-checked: the repo's <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>consumer-sim
+</span></code> gate compiles a scratch
+consumer and asserts zero leakage from non-imported components).</p></li><li data-step class="step">Copy the component markup you need from <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>dist/components/&lt;name&gt;.html
+</span></code> into your page.<p>The markup carries plain utilities inline; your build's content scan picks
+them up like any class you wrote yourself.</p></li><li data-step class="step">Where the component has behavior, load its JavaScript exactly as its demo page does.<p>Static components (alert, badge, card, table, …) need no JS at all.
+Interactive ones load the base (<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>shadless.js
+</span></code>) plus one file per
+component (<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>js/&lt;name&gt;.js
+</span></code>) — see the <strong>Installation</strong> section on the
+component's page. From a bundler the same surface is ES modules:</p><pre><code class="language-js" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">import</span> shadless, { get } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">from</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;shadless/runtime&quot;</span> <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// dist/esm/shadless.mjs</span>
+</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">import</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;shadless/js/dialog&quot;</span>                        <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// dist/esm/dialog.mjs</span>
+</span><span data-line><span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">get</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;#d1-trigger&quot;</span>).<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">open</span>()
+</span><span data-line>
+</span></code></pre><p>Each component module imports the base itself, so import order does not
+matter; <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>shadless/esm/&lt;name&gt;
+</span></code> names the module files explicitly.</p></li></ol>
+<h2 id="alternative-no-build">Alternative: no build</h2>
+<p>Not running a Tailwind build? Use the precompiled stylesheet instead of
+the imports above:</p>
+<pre><code class="language-html" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">link</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">rel</span>=<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;stylesheet&quot;</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">href</span>=<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;out.css&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
+</span><span data-line>
+</span></code></pre>
+<p><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>dist/out.css
+</span></code> (or the npm export <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>shadless/full.min.css
+</span></code>) contains every
+component — the trade-off is size: it is all-or-nothing, while the import
+path emits only what you use.</p>
+<h2 id="get-the-artifacts">Get the artifacts</h2>
+<p>Build the distribution once from the repo:</p>
+<pre><code class="language-bash" data-line-numbers data-line-numbers-max-digits="1"><span data-line>npm run demo
+</span><span data-line>
+</span></code></pre>
+<table><thead><tr><th>File</th><th>Purpose</th></tr></thead><tbody><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>dist/shadless-core.css
+</span></code></td><td>theme vars, <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>@theme
+</span></code>, animate layer — the tailwind entry source</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>dist/css/&lt;name&gt;.css
+</span></code></td><td>per-component slot styles (<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>@apply
+</span></code> source)</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>dist/components/&lt;name&gt;.html
+</span></code></td><td>one demo page per component — the markup to copy</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>dist/out.css
+</span></code></td><td>precompiled styles for every component (no-build path)</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>dist/shadless.js
+</span></code> / <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>.min.js
+</span></code></td><td>the JS base: delegation engine, registry, theme, the vendored radix kernel</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>dist/js/&lt;name&gt;.js
+</span></code></td><td>one behavior file per interactive component (carousel bundles the embla engine)</td></tr><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>dist/esm/shadless.mjs
+</span></code>, <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>dist/esm/&lt;name&gt;.mjs
+</span></code></td><td>the same two as ES modules, for bundlers and <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>&lt;script type=&quot;module&quot;&gt;
+</span></code></td></tr></tbody></table>
+<h2 id="theming">Theming</h2>
+<p>The theme ships as CSS variables (<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>--background
+</span></code>, <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>--foreground
+</span></code>,
+<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>--primary
+</span></code>, …) with a <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>.dark
+</span></code> override. See the
+<a href="dark-mode.html">Dark Mode</a> guide.</p>
+<h2 id="right-to-left">Right-to-left</h2>
+<p>Logical utilities (<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>start-*
+</span></code>/<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>end-*
+</span></code>, logical animations) are supported —
+see the <a href="rtl.html">RTL</a> guide.</p>
+      </article>
+      <nav class="toc" aria-label="On this page"><strong>On this page</strong>
+      <ul><li class="toc-2"><a href="#primary-your-tailwind-v4-build">Primary: your Tailwind v4 build</a></li><li class="toc-2"><a href="#alternative-no-build">Alternative: no build</a></li><li class="toc-2"><a href="#get-the-artifacts">Get the artifacts</a></li><li class="toc-2"><a href="#theming">Theming</a></li><li class="toc-2"><a href="#right-to-left">Right-to-left</a></li></ul></nav>
+    </div>
+<nav class="page-prev-next" aria-label="Page navigation"><a class="pn-prev" href="introduction.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg><span>Introduction</span></a><a class="pn-next" href="dark-mode.html"><span>Dark Mode</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 5 7 7-7 7"/><path d="M5 12h14"/></svg></a></nav>
+  </div>
+</div>
+<div class="sidebar-backdrop" data-sidebar-backdrop aria-hidden="true"></div>
+<script src="site.js"></script>
+</body>
+</html>

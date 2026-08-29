@@ -1,0 +1,12 @@
+/* accordion */
+@layer components {
+  .accordion-trigger { @apply flex; }
+  .accordion-content-div { @apply pt-0 pb-2.5 h-(--radix-accordion-content-height) [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4; }
+  [data-slot="accordion"] { @apply flex w-full flex-col; }
+  [data-slot="accordion-item"] { @apply not-last:border-b; }
+  [data-slot="accordion-trigger"] { @apply focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50; }
+  [data-slot="accordion-trigger-icon"] { @apply pointer-events-none shrink-0; }
+  [data-slot="accordion-content"] { @apply data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden; }
+  .accordion-trigger-icon { @apply group-aria-expanded/accordion-trigger:hidden; }
+  .accordion-trigger-icon-2 { @apply hidden group-aria-expanded/accordion-trigger:inline; }
+}

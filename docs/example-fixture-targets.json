@@ -1,0 +1,749 @@
+[
+ {
+  "name": "alert-dialog-basic",
+  "families": [
+   "alert-dialog"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "alert-dialog-destructive",
+  "families": [
+   "alert-dialog"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "alert-dialog-media",
+  "families": [
+   "alert-dialog"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "alert-dialog-rtl",
+  "families": [
+   "alert-dialog"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "alert-dialog-small",
+  "families": [
+   "alert-dialog"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "alert-dialog-small-media",
+  "families": [
+   "alert-dialog"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "attachment-trigger",
+  "families": [
+   "dialog"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "avatar-dropdown",
+  "families": [
+   "dropdown-menu"
+  ],
+  "trivial": [
+   "avatar"
+  ]
+ },
+ {
+  "name": "breadcrumb-demo",
+  "families": [
+   "dropdown-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "breadcrumb-dropdown",
+  "families": [
+   "dropdown-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "breadcrumb-rtl",
+  "families": [
+   "dropdown-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "bubble-popover",
+  "families": [
+   "popover"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "bubble-tooltip",
+  "families": [
+   "tooltip"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "button-group-demo",
+  "families": [
+   "dropdown-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "button-group-dropdown",
+  "families": [
+   "dropdown-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "button-group-input-group",
+  "families": [
+   "tooltip"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "button-group-nested",
+  "families": [
+   "tooltip"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "button-group-popover",
+  "families": [
+   "popover"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "button-group-rtl",
+  "families": [
+   "dropdown-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "button-group-select",
+  "families": [
+   "select"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "carousel-api",
+  "families": [
+   "carousel"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "carousel-demo",
+  "families": [
+   "carousel"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "carousel-orientation",
+  "families": [
+   "carousel"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "carousel-plugin",
+  "families": [
+   "carousel"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "carousel-rtl",
+  "families": [
+   "carousel"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "carousel-size",
+  "families": [
+   "carousel"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "carousel-spacing",
+  "families": [
+   "carousel"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "collapsible-file-tree",
+  "families": [
+   "tabs"
+  ],
+  "trivial": [
+   "collapsible"
+  ]
+ },
+ {
+  "name": "context-menu-basic",
+  "families": [
+   "context-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "context-menu-checkboxes",
+  "families": [
+   "context-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "context-menu-destructive",
+  "families": [
+   "context-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "context-menu-groups",
+  "families": [
+   "context-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "context-menu-icons",
+  "families": [
+   "context-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "context-menu-radio",
+  "families": [
+   "context-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "context-menu-rtl",
+  "families": [
+   "context-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "context-menu-shortcuts",
+  "families": [
+   "context-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "context-menu-submenu",
+  "families": [
+   "context-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "dialog-close-button",
+  "families": [
+   "dialog"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "dialog-no-close-button",
+  "families": [
+   "dialog"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "dialog-rtl",
+  "families": [
+   "dialog"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "dialog-scrollable-content",
+  "families": [
+   "dialog"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "dialog-sticky-footer",
+  "families": [
+   "dialog"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "dropdown-menu-avatar",
+  "families": [
+   "dropdown-menu"
+  ],
+  "trivial": [
+   "avatar"
+  ]
+ },
+ {
+  "name": "dropdown-menu-basic",
+  "families": [
+   "dropdown-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "dropdown-menu-checkboxes",
+  "families": [
+   "dropdown-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "dropdown-menu-checkboxes-icons",
+  "families": [
+   "dropdown-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "dropdown-menu-complex",
+  "families": [
+   "dropdown-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "dropdown-menu-destructive",
+  "families": [
+   "dropdown-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "dropdown-menu-icons",
+  "families": [
+   "dropdown-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "dropdown-menu-radio-group",
+  "families": [
+   "dropdown-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "dropdown-menu-radio-icons",
+  "families": [
+   "dropdown-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "dropdown-menu-rtl",
+  "families": [
+   "dropdown-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "dropdown-menu-shortcuts",
+  "families": [
+   "dropdown-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "dropdown-menu-submenu",
+  "families": [
+   "dropdown-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "field-demo",
+  "families": [
+   "select"
+  ],
+  "trivial": [
+   "checkbox"
+  ]
+ },
+ {
+  "name": "field-rtl",
+  "families": [
+   "select"
+  ],
+  "trivial": [
+   "checkbox"
+  ]
+ },
+ {
+  "name": "field-select",
+  "families": [
+   "select"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "field-slider",
+  "families": [
+   "slider"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "hover-card-rtl",
+  "families": [
+   "hover-card"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "hover-card-sides",
+  "families": [
+   "hover-card"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "input-form",
+  "families": [
+   "select"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "input-group-button",
+  "families": [
+   "popover"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "input-group-dropdown",
+  "families": [
+   "dropdown-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "item-dropdown",
+  "families": [
+   "dropdown-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "kbd-tooltip",
+  "families": [
+   "tooltip"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "menubar-checkbox",
+  "families": [
+   "menubar"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "menubar-demo",
+  "families": [
+   "menubar"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "menubar-icons",
+  "families": [
+   "menubar"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "menubar-radio",
+  "families": [
+   "menubar"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "menubar-rtl",
+  "families": [
+   "menubar"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "menubar-submenu",
+  "families": [
+   "menubar"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "navigation-menu-demo",
+  "families": [
+   "navigation-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "pagination-icons-only",
+  "families": [
+   "select"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "popover-alignments",
+  "families": [
+   "popover"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "popover-basic",
+  "families": [
+   "popover"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "popover-form",
+  "families": [
+   "popover"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "popover-rtl",
+  "families": [
+   "popover"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "progress-controlled",
+  "families": [
+   "slider"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "scroll-area-horizontal-demo",
+  "families": [
+   "scroll-area"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "scroll-area-rtl",
+  "families": [
+   "scroll-area"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "select-align-item",
+  "families": [
+   "select"
+  ],
+  "trivial": [
+   "switch"
+  ]
+ },
+ {
+  "name": "select-disabled",
+  "families": [
+   "select"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "select-groups",
+  "families": [
+   "select"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "select-invalid",
+  "families": [
+   "select"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "select-rtl",
+  "families": [
+   "select"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "select-scrollable",
+  "families": [
+   "select"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "sheet-no-close-button",
+  "families": [
+   "sheet"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "sheet-rtl",
+  "families": [
+   "sheet"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "sheet-side",
+  "families": [
+   "sheet"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "slider-controlled",
+  "families": [
+   "slider"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "slider-disabled",
+  "families": [
+   "slider"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "slider-multiple",
+  "families": [
+   "slider"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "slider-range",
+  "families": [
+   "slider"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "slider-rtl",
+  "families": [
+   "slider"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "slider-vertical",
+  "families": [
+   "slider"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "table-actions",
+  "families": [
+   "dropdown-menu"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "tabs-disabled",
+  "families": [
+   "tabs"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "tabs-icons",
+  "families": [
+   "tabs"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "tabs-line",
+  "families": [
+   "tabs"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "tabs-rtl",
+  "families": [
+   "tabs"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "tabs-vertical",
+  "families": [
+   "tabs"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "tooltip-disabled",
+  "families": [
+   "tooltip"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "tooltip-keyboard",
+  "families": [
+   "tooltip"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "tooltip-rtl",
+  "families": [
+   "tooltip"
+  ],
+  "trivial": []
+ },
+ {
+  "name": "tooltip-sides",
+  "families": [
+   "tooltip"
+  ],
+  "trivial": []
+ }
+]

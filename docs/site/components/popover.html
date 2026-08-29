@@ -1,0 +1,14 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>shadless popover</title>
+<link rel="stylesheet" href="../out.css"><script>(function(){try{var k="shadless-docs-theme";var apply=function(d){document.documentElement.classList.toggle("dark",!!d)};var s=localStorage.getItem(k);var d=s?s==="dark":matchMedia("(prefers-color-scheme: dark)").matches;apply(d);addEventListener("storage",function(e){if(e.key===k)apply(e.newValue==="dark")});}catch(e){}})();</script><link rel="stylesheet" href="../fonts.css"></head>
+<body class="p-8">
+<div>
+<button type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="p1" data-state="closed" data-slot="popover-trigger" id="p1-trigger">Open popover</button>
+</div>
+<template id="p1-portal">
+<div data-radix-popper-content-wrapper="" style="position: fixed; left: 0px; top: 0px; transform: translate(0px, 33px); min-width: max-content; --radix-popper-transform-origin: 50% 0px; z-index: auto; --radix-popper-available-width: 1280px; --radix-popper-available-height: 687px; --radix-popper-anchor-width: 100.484375px; --radix-popper-anchor-height: 21px;"><div data-side="bottom" data-align="center" data-state="open" role="dialog" id="p1" data-slot="popover-content" class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 flex flex-col gap-2.5 rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 w-72 origin-(--radix-popover-content-transform-origin) outline-hidden" tabindex="-1" style="--radix-popover-content-transform-origin: var(--radix-popper-transform-origin); --radix-popover-content-available-width: var(--radix-popper-available-width); --radix-popover-content-available-height: var(--radix-popper-available-height); --radix-popover-trigger-width: var(--radix-popper-anchor-width); --radix-popover-trigger-height: var(--radix-popper-anchor-height);" id="p1"><div data-slot="popover-header" class="flex flex-col gap-0.5 text-sm"><div data-slot="popover-title" class="font-medium">Dimensions</div><p data-slot="popover-description" class="text-muted-foreground">Set the dimensions.</p></div></div></div>
+</template>
+<script src="../shadless.js"></script>
+<script src="../js/popover.js"></script>
+
+</body></html>

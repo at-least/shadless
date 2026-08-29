@@ -1,0 +1,95 @@
+---
+title: Introduction
+description: shadless is the shadcn/ui component registry, mechanically converted to no-React artifacts — same markup and styling, vanilla HTML + CSS + JS.
+---
+
+**This is not a component library. It is how you build your component library.**
+
+shadless ships shadcn/ui's radix-line components as compiled HTML, CSS, and JS artifacts you copy into your project — no CLI, no React, no framework. You get the same components, the same design tokens, and the same `data-slot` convention; you skip the build-time JSX→JS step that shadcn's CLI handles for React projects.
+
+## Open Code
+
+shadless hands you the actual component markup. `dist/components/<name>.html` is the source of truth — the same JSX shadcn generates, just without the JSX wrappers and React hooks. Adapt any part to fit your design and functionality requirements.
+
+- **Full Transparency:** The HTML, the CSS, and the JS runtime are all on disk. Nothing is hidden behind a build step.
+- **Easy Customization:** Edit the markup directly. Slots are marked with `data-slot="…"`; keep them and the shipped styles apply unchanged.
+- **AI Integration:** Plain HTML is the most LLM-friendly format there is. Models read it, write it, and transform it without a JSX → DOM mental model.
+
+## Composition
+
+Every component in shadless shares a common, composable interface — the same one shadcn defines. **If a component does not exist, we bring it in as a slot-based composition**, and adjust its style to match and work with the rest of the design system.
+
+_The radix-line variants (49 components) compose consistently. Where shadcn defines a base-nova or aria variant on the same slot, shadless implements the radix version and links to the registry page for the other style lines._
+
+## Distribution
+
+shadless is a code distribution system. It takes the pinned shadcn-ui registry, runs every component through a contract-tested AST→IR→emit pipeline, and emits:
+
+- `dist/components/<name>.html` — one demo page per component, the markup to copy
+- `dist/shadless-core.css` + `dist/css/<name>.css` (npm: `shadless` + `shadless/<name>.css`) — the primary consume path: import them into your Tailwind v4 build and only the components you use are emitted
+- `dist/shadless.full.css` / `.full.min.css` (npm: `shadless/full.css`) — every component precompiled (no-build path)
+- `dist/shadless.js` (npm: `shadless/runtime`) — the JS base: delegation engine + registry + theme, with the vendored radix kernel inside
+- `dist/js/<name>.js` (npm: `shadless/js/<name>`) — one behavior file per interactive component; carousel bundles the vendored embla engine
+
+Every component has been validated against a real-browser recording of the shadcn React original (Wave T6 / T7 acceptance). The oracle is the upstream code, not our re-implementation.
+
+## Beautiful Defaults
+
+shadless comes with the same carefully chosen default styles as shadcn/ui — a clean, minimal look out of the box, with consistent design across components. Override the theme tokens (`--background`, `--foreground`, `--primary`, …) in your own CSS to re-theme the whole library without touching component markup.
+
+## AI-Ready
+
+Plain HTML + a slot convention is what LLMs already operate on. shadless components carry the same `data-slot` markers shadcn uses — models trained on shadcn output naturally produce shadless-compatible markup. No React, no JSX, no build step in the loop.
+
+## Open questions, answered
+
+<Accordion type="single" collapsible>
+  <AccordionItem value="faq-1" className="border-none">
+    <AccordionTrigger>
+      How is this different from a CDN-loaded component library?
+    </AccordionTrigger>
+    <AccordionContent className="flex flex-col gap-4">
+      <p>
+        CDN libraries ship a fixed set of styles and behaviors. shadless ships the
+        source — you copy it into your project and edit it. The runtime (`shadless.js`)
+        is generic slot-dispatched event delegation; if you want to extend a component,
+        you edit the markup directly, not a framework wrapper.
+      </p>
+      <p>
+        The topmost layer (your markup) is open for modification; the runtime/kernel
+        are vendor-pinned.
+      </p>
+    </AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="faq-2" className="border-none">
+    <AccordionTrigger>
+      Can I use this with React / Vue / Svelte / Astro?
+    </AccordionTrigger>
+    <AccordionContent className="flex flex-col gap-4">
+      <p>
+        Yes — shadless output is plain HTML and works in any framework that renders
+        HTML. In React, render the markup via <code>dangerouslySetInnerHTML</code> or
+        import the static HTML. In Astro/SSR frameworks, include the markup directly.
+      </p>
+      <p>
+        The included <code>shadless.js</code> runtime attaches DOM event listeners,
+        which works regardless of how the markup got there.
+      </p>
+    </AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="faq-3" className="border-none">
+    <AccordionTrigger>
+      Where does the "no React" come from?
+    </AccordionTrigger>
+    <AccordionContent className="flex flex-col gap-4">
+      <p>
+        shadcn/ui components are React JSX. shadless converts them via an AST
+        pipeline (babel → IR → emit) that drops the JSX wrappers, inlines cva
+        branches, and rewrites event handlers to attach through vanilla DOM.
+        Contract tests replay real-browser recordings of the original React
+        components against the emitted pages, so behavior parity is proven,
+        not assumed.
+      </p>
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>

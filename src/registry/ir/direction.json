@@ -1,0 +1,36 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "direction",
+ "tier": "static",
+ "imports": [
+  "react",
+  "radix-ui"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "DirectionProvider",
+   "export": true,
+   "elements": [
+    {
+     "tag": "Direction.DirectionProvider",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": [
+      "{children}"
+     ]
+    }
+   ]
+  }
+ ],
+ "conditionals": [],
+ "cvaRefs": [],
+ "tagHints": {
+  "Direction.DirectionProvider": "div"
+ }
+}

@@ -1,0 +1,499 @@
+{
+  "version": 1,
+  "generatedBy": "tools/docs-guides.mjs (FT4)",
+  "pages": {
+    "accordion": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/accordion.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "alert": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/alert.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "alert-dialog": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/alert-dialog.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "aspect-ratio": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/aspect-ratio.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "attachment": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/attachment.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "avatar": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/avatar.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "badge": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/badge.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "breadcrumb": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/breadcrumb.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "bubble": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/bubble.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "button": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/button.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "button-group": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/button-group.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "card": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/card.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "carousel": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/carousel.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "checkbox": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/checkbox.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "collapsible": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/collapsible.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "context-menu": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/context-menu.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "dialog": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/dialog.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "direction": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/direction.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "dropdown-menu": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/dropdown-menu.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "empty": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/empty.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "field": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/field.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "hover-card": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/hover-card.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "input": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/input.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "input-group": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/input-group.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "item": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/item.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "kbd": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/kbd.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "label": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/label.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "marker": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/marker.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "menubar": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/menubar.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "message": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/message.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "message-scroller": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/message-scroller.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "native-select": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/native-select.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "navigation-menu": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/navigation-menu.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "pagination": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/pagination.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "popover": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/popover.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "progress": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/progress.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "radio-group": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/radio-group.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "scroll-area": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/scroll-area.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "select": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/select.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "separator": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/separator.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "sheet": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/sheet.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "skeleton": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/skeleton.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "slider": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/slider.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "spinner": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/spinner.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "switch": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/switch.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "table": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/table.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "tabs": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/tabs.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "textarea": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/textarea.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "toggle": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/toggle.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "toggle-group": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/toggle-group.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "tooltip": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/tooltip.mdx",
+      "disposition": "adapted",
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+    },
+    "introduction": {
+      "source": "docs/content/introduction.mdx",
+      "disposition": "adapted",
+      "notes": "FT8: vanilla rewrite of upstream (root)/index.mdx; pure prose + 1 Accordion FAQ — was wrongly pruned as \"framework content\" but contains no React/CLI specifics"
+    },
+    "installation": {
+      "source": "docs/content/installation.mdx",
+      "disposition": "adapted",
+      "notes": "authored vanilla rewrite; replaces upstream installation/index.mdx (CLI/create/framework cards — React toolchain) and installation/manual.mdx (Tailwind+aliases+components.json setup); copy-files story over dist/ artifacts"
+    },
+    "dark-mode": {
+      "source": "docs/content/dark-mode.mdx",
+      "disposition": "adapted",
+      "notes": "authored rewrite; upstream dark-mode/index.mdx is framework cards only (next/vite/astro/remix/tanstack-start pruned); .dark theme variables ship precompiled in dist/out.css; mode-toggle preview to-author (FT7)"
+    },
+    "rtl": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/rtl/index.mdx",
+      "disposition": "mirror",
+      "notes": "load-bearing (56 radix pages link /docs/rtl); framework sub-pages (rtl/next|vite|start) pruned → their LinkedCard links greyed; card-rtl preview to-author (FT7); shadcn-CLI migrate section rewritten (rtlMigrate)"
+    },
+    "shimmer": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/utils/shimmer.mdx",
+      "disposition": "adapted",
+      "notes": "mirrored; Installation section replaced (utilities ship precompiled in dist/out.css, no npm install); all 9 previews base-style (base-rhea) → unavailable"
+    },
+    "scroll-fade": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/utils/scroll-fade.mdx",
+      "disposition": "adapted",
+      "notes": "mirrored; Installation section replaced (utilities ship precompiled in dist/out.css); all 7 previews base-style (6 base-rhea + 1 base-nova) → unavailable"
+    },
+    "ai-sdk": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/helpers/ai-sdk.mdx",
+      "disposition": "mirror",
+      "notes": "kept per keep-list; @shadcn/helpers/ai-sdk is a React useChat package — mirrored as reference (fences stay verbatim, same policy as radix pages); ai-sdk-helper-demo base-style → unavailable"
+    },
+    "tanstack-ai": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/helpers/tanstack-ai.mdx",
+      "disposition": "mirror",
+      "notes": "kept per keep-list; @shadcn/helpers/tanstack-ai is a React package — mirrored as reference; tanstack-ai-helper-demo base-style → unavailable"
+    },
+    "typography": {
+      "source": "docs/content/typography.mdx",
+      "disposition": "adapted",
+      "notes": "FT8: vanilla rewrite — upstream typography.mdx demos a <Typography> component shadless does not (and should not) ship; this guide maps the same typographic roles to plain Tailwind utilities already in dist/out.css"
+    },
+    "index": {
+      "source": "(generated)",
+      "disposition": "generated",
+      "notes": "components + guides index page"
+    }
+  },
+  "pruned": {
+    "forms": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/forms/",
+      "reason": "React-only (react-hook-form / tanstack-form / formisch guides); field.mdx links ×4 → greyed spans"
+    },
+    "react": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/react/",
+      "reason": "React-only component recipes (message-scroller, questionnaire); radix links ×6 → greyed spans"
+    },
+    "registry": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/registry/",
+      "reason": "shadcn CLI registry system (json schema, MCP, namespaces) — no vanilla equivalent"
+    },
+    "changelog": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/changelog/",
+      "reason": "shadcn release notes — not shadless content"
+    },
+    "(root)": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/(root)/",
+      "reason": "shadcn-site root pages (theming, cli, components.json…) — React/CLI specific"
+    },
+    "framework sub-pages": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/{installation,dark-mode,rtl}/* (non-index)",
+      "reason": "per-React-framework setup guides (next/vite/astro/remix/tanstack/laravel/gatsby…) — installation/dark-mode/rtl index pages kept instead"
+    }
+  },
+  "guidePreviews": {
+    "mode-toggle": {
+      "hostPages": [
+        "dark-mode"
+      ],
+      "styleName": null,
+      "disposition": "authored",
+      "reason": "already cataloged in the radix set"
+    },
+    "card-rtl": {
+      "hostPages": [
+        "rtl"
+      ],
+      "styleName": "base-nova",
+      "disposition": "authored",
+      "reason": "already cataloged in the radix set"
+    },
+    "shimmer-demo": {
+      "hostPages": [
+        "shimmer"
+      ],
+      "styleName": "base-rhea",
+      "disposition": "unavailable",
+      "reason": "already cataloged in the radix set"
+    },
+    "shimmer-marker": {
+      "hostPages": [
+        "shimmer"
+      ],
+      "styleName": "base-rhea",
+      "disposition": "unavailable",
+      "reason": "already cataloged in the radix set"
+    },
+    "shimmer-color": {
+      "hostPages": [
+        "shimmer"
+      ],
+      "styleName": "base-rhea",
+      "disposition": "unavailable",
+      "reason": "already cataloged in the radix set"
+    },
+    "shimmer-duration": {
+      "hostPages": [
+        "shimmer"
+      ],
+      "styleName": "base-rhea",
+      "disposition": "unavailable",
+      "reason": "already cataloged in the radix set"
+    },
+    "shimmer-spread": {
+      "hostPages": [
+        "shimmer"
+      ],
+      "styleName": "base-rhea",
+      "disposition": "unavailable",
+      "reason": "already cataloged in the radix set"
+    },
+    "shimmer-angle": {
+      "hostPages": [
+        "shimmer"
+      ],
+      "styleName": "base-rhea",
+      "disposition": "unavailable",
+      "reason": "already cataloged in the radix set"
+    },
+    "shimmer-once": {
+      "hostPages": [
+        "shimmer"
+      ],
+      "styleName": "base-rhea",
+      "disposition": "unavailable",
+      "reason": "already cataloged in the radix set"
+    },
+    "shimmer-none": {
+      "hostPages": [
+        "shimmer"
+      ],
+      "styleName": "base-rhea",
+      "disposition": "unavailable",
+      "reason": "already cataloged in the radix set"
+    },
+    "shimmer-rtl": {
+      "hostPages": [
+        "shimmer"
+      ],
+      "styleName": "base-rhea",
+      "disposition": "unavailable",
+      "reason": "already cataloged in the radix set"
+    },
+    "scroll-fade-demo": {
+      "hostPages": [
+        "scroll-fade"
+      ],
+      "styleName": "base-rhea",
+      "disposition": "unavailable",
+      "reason": "already cataloged in the radix set"
+    },
+    "scroll-fade-overflow": {
+      "hostPages": [
+        "scroll-fade"
+      ],
+      "styleName": "base-rhea",
+      "disposition": "unavailable",
+      "reason": "already cataloged in the radix set"
+    },
+    "scroll-fade-horizontal": {
+      "hostPages": [
+        "scroll-fade"
+      ],
+      "styleName": "base-rhea",
+      "disposition": "unavailable",
+      "reason": "already cataloged in the radix set"
+    },
+    "scroll-fade-edge": {
+      "hostPages": [
+        "scroll-fade"
+      ],
+      "styleName": "base-rhea",
+      "disposition": "unavailable",
+      "reason": "already cataloged in the radix set"
+    },
+    "scroll-fade-size": {
+      "hostPages": [
+        "scroll-fade"
+      ],
+      "styleName": "base-rhea",
+      "disposition": "unavailable",
+      "reason": "already cataloged in the radix set"
+    },
+    "scroll-fade-none": {
+      "hostPages": [
+        "scroll-fade"
+      ],
+      "styleName": "base-rhea",
+      "disposition": "unavailable",
+      "reason": "already cataloged in the radix set"
+    },
+    "scroll-fade-rtl": {
+      "hostPages": [
+        "scroll-fade"
+      ],
+      "styleName": "base-nova",
+      "disposition": "unavailable",
+      "reason": "already cataloged in the radix set"
+    },
+    "ai-sdk-helper-demo": {
+      "hostPages": [
+        "ai-sdk"
+      ],
+      "styleName": "base-rhea",
+      "disposition": "unavailable",
+      "reason": "already cataloged in the radix set"
+    },
+    "tanstack-ai-helper-demo": {
+      "hostPages": [
+        "tanstack-ai"
+      ],
+      "styleName": "base-rhea",
+      "disposition": "unavailable",
+      "reason": "already cataloged in the radix set"
+    }
+  }
+}

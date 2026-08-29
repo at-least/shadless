@@ -1,0 +1,123 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "empty",
+ "tier": "static",
+ "imports": [
+  "class-variance-authority",
+  "@/registry/bases/radix/lib/utils"
+ ],
+ "icons": [],
+ "cva": {
+  "emptyMediaVariants": {
+   "base": "mb-2 flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg]:shrink-0",
+   "variants": {
+    "variant": {
+     "default": "bg-transparent",
+     "icon": "bg-muted text-foreground flex size-8 shrink-0 items-center justify-center rounded-lg [&_svg:not([class*='size-'])]:size-4"
+    }
+   },
+   "defaults": {
+    "variant": "default"
+   }
+  }
+ },
+ "components": [
+  {
+   "fn": "Empty",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "empty",
+     "classes": [
+      "gap-4 rounded-xl border-dashed p-6 flex w-full min-w-0 flex-1 flex-col items-center justify-center text-center text-balance"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "EmptyHeader",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "empty-header",
+     "classes": [
+      "gap-2 flex max-w-sm flex-col items-center"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "EmptyMedia",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "empty-icon",
+     "classes": [
+      "mb-2 flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg]:shrink-0",
+      "bg-transparent"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "EmptyTitle",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "empty-title",
+     "classes": [
+      "text-sm font-medium tracking-tight cn-font-heading"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "EmptyDescription",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "empty-description",
+     "classes": [
+      "text-sm/relaxed text-muted-foreground [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "EmptyContent",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "empty-content",
+     "classes": [
+      "gap-2.5 text-sm flex w-full max-w-sm min-w-0 flex-col items-center text-balance"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  }
+ ],
+ "conditionals": [],
+ "cvaRefs": [],
+ "tagHints": {}
+}

@@ -1,0 +1,37 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "separator",
+ "tier": "trivial-js",
+ "imports": [
+  "react",
+  "radix-ui",
+  "@/registry/bases/radix/lib/utils"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "Separator",
+   "export": true,
+   "elements": [
+    {
+     "tag": "SeparatorPrimitive.Root",
+     "slot": "separator",
+     "classes": [
+      "shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  }
+ ],
+ "conditionals": [],
+ "cvaRefs": [],
+ "tagHints": {
+  "SeparatorPrimitive.Root": "div"
+ }
+}

@@ -1,0 +1,111 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "form",
+ "tier": "external",
+ "imports": [
+  "react",
+  "radix-ui",
+  "radix-ui",
+  "react-hook-form",
+  "@/lib/utils",
+  "@/registry/new-york-v4/ui/label"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "FormItem",
+   "export": true,
+   "elements": [
+    {
+     "tag": "FormItemContext.Provider",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": [
+      "<div slot=form-item class=[1]>"
+     ]
+    },
+    {
+     "tag": "div",
+     "slot": "form-item",
+     "classes": [
+      "grid gap-2"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "FormLabel",
+   "export": true,
+   "elements": [
+    {
+     "tag": "Label",
+     "slot": "form-label",
+     "classes": [
+      "data-[error=true]:text-destructive"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "FormControl",
+   "export": true,
+   "elements": [
+    {
+     "tag": "Slot.Root",
+     "slot": "form-control",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "FormDescription",
+   "export": true,
+   "elements": [
+    {
+     "tag": "p",
+     "slot": "form-description",
+     "classes": [
+      "text-sm text-muted-foreground"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "FormMessage",
+   "export": true,
+   "elements": [
+    {
+     "tag": "p",
+     "slot": "form-message",
+     "classes": [
+      "text-sm text-destructive"
+     ],
+     "spread": true,
+     "children": [
+      "{body}"
+     ]
+    }
+   ]
+  }
+ ],
+ "conditionals": [],
+ "cvaRefs": [],
+ "tagHints": {
+  "FormItemContext.Provider": "div",
+  "Label": "label",
+  "Slot.Root": "div"
+ }
+}

@@ -1,0 +1,146 @@
+{
+  "oracleOpen": {
+    "step": "oracle",
+    "menubar": {
+      "tag": "div",
+      "role": "menubar",
+      "data-slot": "menubar",
+      "tabindex": "0",
+      "data-orientation": "horizontal",
+      "style": "outline: none;",
+      "text": "FileEdit"
+    },
+    "menubar-trigger": {
+      "tag": "button",
+      "type": "button",
+      "role": "menuitem",
+      "id": "d1-trigger",
+      "aria-haspopup": "menu",
+      "aria-expanded": "true",
+      "data-state": "open",
+      "data-slot": "menubar-trigger",
+      "tabindex": "0",
+      "data-orientation": "horizontal",
+      "data-radix-collection-item": "",
+      "aria-controls": "radix-_r_2_",
+      "text": "File"
+    },
+    "menubar-content": {
+      "tag": "div",
+      "data-side": "bottom",
+      "data-align": "start",
+      "role": "menu",
+      "aria-orientation": "vertical",
+      "data-state": "open",
+      "data-radix-menu-content": "",
+      "dir": "ltr",
+      "id": "radix-_r_2_",
+      "aria-labelledby": "radix-_r_1_",
+      "data-radix-menubar-content": "",
+      "data-slot": "menubar-content",
+      "tabindex": "-1",
+      "data-orientation": "vertical",
+      "style": "outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);",
+      "text": "NewTabPrint"
+    },
+    "&[data-slot=menubar-item]": {
+      "tag": "div",
+      "role": "menuitem",
+      "data-slot": "menubar-item",
+      "data-variant": "default",
+      "id": "d1-item-1",
+      "tabindex": "-1",
+      "data-orientation": "vertical",
+      "data-radix-collection-item": "",
+      "text": "NewTab"
+    },
+    "activeElement": "menubar-content",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "shadlessOpen": {
+    "step": "shadless",
+    "menubar": {
+      "tag": "div",
+      "role": "menubar",
+      "data-slot": "menubar",
+      "tabindex": "0",
+      "data-orientation": "horizontal",
+      "style": "outline: none;",
+      "text": "FileEdit"
+    },
+    "menubar-trigger": {
+      "tag": "button",
+      "type": "button",
+      "role": "menuitem",
+      "id": "d1-trigger",
+      "aria-haspopup": "menu",
+      "aria-expanded": "true",
+      "data-state": "open",
+      "data-slot": "menubar-trigger",
+      "tabindex": "0",
+      "data-orientation": "horizontal",
+      "data-radix-collection-item": "",
+      "data-radixuigo-menu-trigger": "d1",
+      "aria-controls": "d1",
+      "data-radix-popper-side": "bottom",
+      "data-radix-popper-align": "start",
+      "text": "File"
+    },
+    "menubar-content": {
+      "tag": "div",
+      "data-side": "bottom",
+      "data-align": "start",
+      "role": "menu",
+      "aria-orientation": "vertical",
+      "data-state": "open",
+      "data-radix-menu-content": "",
+      "dir": "ltr",
+      "id": "d1",
+      "aria-labelledby": "d1-trigger",
+      "data-radix-menubar-content": "",
+      "data-slot": "menubar-content",
+      "tabindex": "-1",
+      "data-orientation": "vertical",
+      "style": "outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height); pointer-events: auto;",
+      "text": "NewTabPrint"
+    },
+    "&[data-slot=menubar-item]": {
+      "tag": "div",
+      "role": "menuitem",
+      "data-slot": "menubar-item",
+      "data-variant": "default",
+      "id": "d1-item-1",
+      "tabindex": "-1",
+      "data-orientation": "vertical",
+      "data-radix-collection-item": "",
+      "text": "NewTab"
+    },
+    "activeElement": "menubar-content",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "oracle": {
+    "key:Escape": "closed|File|closed/false/0|closed/false/-1|ae=d1-trigger",
+    "key:Escape+key:ArrowRight": "closed|Edit|closed/false/-1|closed/false/0|ae=d2-trigger",
+    "key:ArrowRight": "open|-|closed/false/-1|open/true/0|ae=content",
+    "key:ArrowRight+key:ArrowLeft": "open|-|open/true/0|closed/false/-1|ae=content",
+    "key:ArrowDown": "open|New Tab|open/true/0|closed/false/-1|ae=content",
+    "js-click:[data-slot=menubar-item]": "closed|File|closed/false/0|closed/false/-1|ae=d1-trigger",
+    "click:#d1-trigger": "closed|File|closed/false/0|closed/false/-1|ae=d1-trigger"
+  },
+  "shadless": {
+    "key:Escape": "closed|File|closed/false/0|closed/false/-1|ae=d1-trigger",
+    "key:Escape+key:ArrowRight": "closed|Edit|closed/false/-1|closed/false/0|ae=d2-trigger",
+    "key:ArrowRight": "open|-|closed/false/-1|open/true/0|ae=content",
+    "key:ArrowRight+key:ArrowLeft": "open|-|open/true/0|closed/false/-1|ae=content",
+    "key:ArrowDown": "open|New Tab|open/true/0|closed/false/-1|ae=content",
+    "js-click:[data-slot=menubar-item]": "closed|File|closed/false/0|closed/false/-1|ae=d1-trigger",
+    "click:#d1-trigger": "closed|File|closed/false/0|closed/false/-1|ae=d1-trigger"
+  },
+  "pass": true
+}

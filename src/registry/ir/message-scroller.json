@@ -1,0 +1,161 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "message-scroller",
+ "tier": "static",
+ "imports": [
+  "react",
+  "@shadcn/react/message-scroller",
+  "@/registry/bases/radix/lib/utils",
+  "@/registry/bases/radix/ui/button",
+  "@/app/(create)/components/icon-placeholder"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "MessageScrollerProvider",
+   "export": true,
+   "elements": [
+    {
+     "tag": "MessageScrollerPrimitive.Provider",
+     "slot": null,
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MessageScroller",
+   "export": true,
+   "elements": [
+    {
+     "tag": "MessageScrollerPrimitive.Root",
+     "slot": "message-scroller",
+     "classes": [
+      "group/message-scroller relative flex size-full min-h-0 flex-col overflow-hidden"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MessageScrollerViewport",
+   "export": true,
+   "elements": [
+    {
+     "tag": "MessageScrollerPrimitive.Viewport",
+     "slot": "message-scroller-viewport",
+     "classes": [
+      "size-full min-h-0 min-w-0 scroll-fade-b scrollbar-thin scrollbar-gutter-stable overflow-y-auto overscroll-contain contain-content data-autoscrolling:scrollbar-thumb-transparent data-autoscrolling:scrollbar-track-transparent"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MessageScrollerContent",
+   "export": true,
+   "elements": [
+    {
+     "tag": "MessageScrollerPrimitive.Content",
+     "slot": "message-scroller-content",
+     "classes": [
+      "gap-6 flex h-max min-h-full flex-col"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MessageScrollerItem",
+   "export": true,
+   "elements": [
+    {
+     "tag": "MessageScrollerPrimitive.Item",
+     "slot": "message-scroller-item",
+     "classes": [
+      "min-w-0 shrink-0 [contain-intrinsic-size:auto_10rem] [content-visibility:auto]"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MessageScrollerButton",
+   "export": true,
+   "elements": [
+    {
+     "tag": "MessageScrollerPrimitive.Button",
+     "slot": "message-scroller-button",
+     "classes": [
+      "absolute inset-s-1/2 -translate-x-1/2 border-border bg-background text-foreground transition-[translate,scale,opacity] duration-200 hover:bg-muted hover:text-foreground data-[active=false]:pointer-events-none data-[active=false]:scale-95 data-[active=false]:opacity-0 data-[active=false]:duration-400 data-[active=false]:ease-[cubic-bezier(0.7,0,0.84,0)] data-[active=true]:translate-y-0 data-[active=true]:scale-100 data-[active=true]:opacity-100 data-[active=true]:ease-[cubic-bezier(0.23,1,0.32,1)] data-[direction=end]:bottom-4 data-[direction=end]:data-[active=false]:translate-y-full data-[direction=start]:top-4 data-[direction=start]:data-[active=false]:-translate-y-full rtl:translate-x-1/2 data-[direction=start]:[&_svg]:rotate-180"
+     ],
+     "spread": true,
+     "children": [
+      "OPT?"
+     ]
+    },
+    {
+     "tag": "Button",
+     "slot": null,
+     "classes": [
+      "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+      "bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
+      "size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg"
+     ],
+     "spread": false,
+     "children": []
+    },
+    {
+     "tag": "IconPlaceholder",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": []
+    },
+    {
+     "tag": "span",
+     "slot": null,
+     "classes": [
+      "sr-only"
+     ],
+     "spread": false,
+     "children": [
+      "OPT?"
+     ]
+    }
+   ]
+  }
+ ],
+ "conditionals": [
+  {
+   "kind": "child-cond",
+   "fn": "MessageScrollerButton",
+   "parent": "MessageScrollerPrimitive.Button"
+  },
+  {
+   "kind": "child-cond",
+   "fn": "MessageScrollerButton",
+   "parent": "span"
+  }
+ ],
+ "cvaRefs": [],
+ "tagHints": {
+  "MessageScrollerPrimitive.Provider": "div",
+  "MessageScrollerPrimitive.Root": "div",
+  "MessageScrollerPrimitive.Viewport": "div",
+  "MessageScrollerPrimitive.Content": "div",
+  "MessageScrollerPrimitive.Item": "div",
+  "MessageScrollerPrimitive.Button": "button",
+  "Button": "button",
+  "IconPlaceholder": "svg"
+ }
+}

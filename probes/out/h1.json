@@ -1,0 +1,3800 @@
+[
+  {
+    "file": "accordion",
+    "classify": "wrapper",
+    "extDeps": [
+      "lucide-react"
+    ],
+    "radixAliases": [
+      "AccordionPrimitive"
+    ],
+    "primitiveUses": [
+      "Root",
+      "Item",
+      "Trigger",
+      "Header",
+      "Content"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 4,
+    "sub": [
+      {
+        "fn": "Accordion",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AccordionItem",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AccordionTrigger",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AccordionContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "alert-dialog",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [
+      "AlertDialogPrimitive"
+    ],
+    "primitiveUses": [
+      "Root",
+      "Trigger",
+      "Portal",
+      "Overlay",
+      "Content",
+      "Title",
+      "Description",
+      "Action",
+      "Cancel"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 12,
+    "sub": [
+      {
+        "fn": "AlertDialog",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AlertDialogTrigger",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AlertDialogPortal",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AlertDialogOverlay",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AlertDialogContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AlertDialogHeader",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AlertDialogFooter",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AlertDialogTitle",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AlertDialogDescription",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AlertDialogMedia",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AlertDialogAction",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AlertDialogCancel",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "alert",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 3,
+    "sub": [
+      {
+        "fn": "Alert",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AlertTitle",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AlertDescription",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "aspect-ratio",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [
+      "AspectRatioPrimitive"
+    ],
+    "primitiveUses": [
+      "Root"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 1,
+    "sub": [
+      {
+        "fn": "AspectRatio",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "attachment",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 9,
+    "sub": [
+      {
+        "fn": "Attachment",
+        "styledWrap": true,
+        "hasCvaCall": true,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AttachmentMedia",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AttachmentContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AttachmentTitle",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AttachmentDescription",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AttachmentActions",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AttachmentAction",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AttachmentTrigger",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AttachmentGroup",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "avatar",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [
+      "AvatarPrimitive"
+    ],
+    "primitiveUses": [
+      "Root",
+      "Image",
+      "Fallback"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 6,
+    "sub": [
+      {
+        "fn": "Avatar",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AvatarImage",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AvatarFallback",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AvatarBadge",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AvatarGroup",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "AvatarGroupCount",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "badge",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 1,
+    "sub": [
+      {
+        "fn": "Badge",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "breadcrumb",
+    "classify": "wrapper",
+    "extDeps": [
+      "lucide-react"
+    ],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 7,
+    "sub": [
+      {
+        "fn": "Breadcrumb",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "BreadcrumbList",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "BreadcrumbItem",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "BreadcrumbLink",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "BreadcrumbPage",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "BreadcrumbSeparator",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "BreadcrumbEllipsis",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "bubble",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 4,
+    "sub": [
+      {
+        "fn": "BubbleGroup",
+        "styledWrap": true,
+        "hasCvaCall": true,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "Bubble",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "BubbleContent",
+        "styledWrap": true,
+        "hasCvaCall": true,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "BubbleReactions",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "button-group",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 3,
+    "sub": [
+      {
+        "fn": "ButtonGroup",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ButtonGroupText",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ButtonGroupSeparator",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "button",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 1,
+    "sub": [
+      {
+        "fn": "Button",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "calendar",
+    "classify": "external-dep",
+    "extDeps": [
+      "lucide-react",
+      "react-day-picker"
+    ],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [
+      "useEffect"
+    ],
+    "allHooks": [
+      "useEffect"
+    ],
+    "nFns": 2,
+    "sub": [
+      {
+        "fn": "Calendar",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": [
+          "onLayout ",
+          "onVariant ",
+          "onLayout"
+        ]
+      },
+      {
+        "fn": "CalendarDayButton",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "card",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 7,
+    "sub": [
+      {
+        "fn": "Card",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "CardHeader",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "CardTitle",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "CardDescription",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "CardAction",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "CardContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "CardFooter",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "carousel",
+    "classify": "external-dep",
+    "extDeps": [
+      "embla-carousel-react",
+      "lucide-react"
+    ],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [
+      "useContext",
+      "useState",
+      "useCallback",
+      "useEffect"
+    ],
+    "allHooks": [
+      "useCarousel",
+      "useContext",
+      "useEmblaCarousel",
+      "useState",
+      "useCallback",
+      "useEffect"
+    ],
+    "nFns": 6,
+    "sub": [
+      {
+        "fn": "useCarousel",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "Carousel",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": [
+          "onSelect ",
+          "onKeyDownCapture"
+        ]
+      },
+      {
+        "fn": "CarouselContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "CarouselItem",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "CarouselPrevious",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": [
+          "onClick"
+        ]
+      },
+      {
+        "fn": "CarouselNext",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": [
+          "onClick"
+        ]
+      }
+    ]
+  },
+  {
+    "file": "chart",
+    "classify": "external-dep",
+    "extDeps": [
+      "recharts",
+      "recharts"
+    ],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [
+      "useContext",
+      "useId",
+      "useMemo"
+    ],
+    "allHooks": [
+      "useChart",
+      "useContext",
+      "useId",
+      "useMemo"
+    ],
+    "nFns": 6,
+    "sub": [
+      {
+        "fn": "useChart",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ChartContainer",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ChartStyle",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 1,
+        "handlers": []
+      },
+      {
+        "fn": "ChartTooltipContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 5,
+        "maps": 1,
+        "handlers": []
+      },
+      {
+        "fn": "ChartLegendContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 1,
+        "maps": 1,
+        "handlers": []
+      },
+      {
+        "fn": "getPayloadConfigFromPayload",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "checkbox",
+    "classify": "wrapper",
+    "extDeps": [
+      "lucide-react"
+    ],
+    "radixAliases": [
+      "CheckboxPrimitive"
+    ],
+    "primitiveUses": [
+      "Root",
+      "Indicator"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 1,
+    "sub": [
+      {
+        "fn": "Checkbox",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "collapsible",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [
+      "CollapsiblePrimitive"
+    ],
+    "primitiveUses": [
+      "Root",
+      "CollapsibleTrigger",
+      "CollapsibleContent"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 3,
+    "sub": [
+      {
+        "fn": "Collapsible",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "CollapsibleTrigger",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "CollapsibleContent",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "combobox",
+    "classify": "wrapper",
+    "extDeps": [
+      "lucide-react"
+    ],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [
+      "useComboboxAnchor"
+    ],
+    "nFns": 16,
+    "sub": [
+      {
+        "fn": "ComboboxValue",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ComboboxTrigger",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ComboboxClear",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ComboboxInput",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 1,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ComboboxContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ComboboxList",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ComboboxItem",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ComboboxGroup",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ComboboxLabel",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ComboboxCollection",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ComboboxEmpty",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ComboboxSeparator",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ComboboxChips",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ComboboxChip",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 1,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ComboboxChipsInput",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "useComboboxAnchor",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "command",
+    "classify": "external-dep",
+    "extDeps": [
+      "cmdk",
+      "lucide-react"
+    ],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 9,
+    "sub": [
+      {
+        "fn": "Command",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "CommandDialog",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "CommandInput",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "CommandList",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "CommandEmpty",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "CommandGroup",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "CommandSeparator",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "CommandItem",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "CommandShortcut",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "context-menu",
+    "classify": "wrapper",
+    "extDeps": [
+      "lucide-react"
+    ],
+    "radixAliases": [
+      "ContextMenuPrimitive"
+    ],
+    "primitiveUses": [
+      "Root",
+      "Trigger",
+      "Group",
+      "Portal",
+      "Sub",
+      "RadioGroup",
+      "SubTrigger",
+      "SubContent",
+      "Content",
+      "Item",
+      "CheckboxItem",
+      "ItemIndicator",
+      "RadioItem",
+      "Label",
+      "Separator"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 15,
+    "sub": [
+      {
+        "fn": "ContextMenu",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ContextMenuTrigger",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ContextMenuGroup",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ContextMenuPortal",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ContextMenuSub",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ContextMenuRadioGroup",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ContextMenuSubTrigger",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ContextMenuSubContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ContextMenuContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ContextMenuItem",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ContextMenuCheckboxItem",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ContextMenuRadioItem",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ContextMenuLabel",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ContextMenuSeparator",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ContextMenuShortcut",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "dialog",
+    "classify": "wrapper",
+    "extDeps": [
+      "lucide-react"
+    ],
+    "radixAliases": [
+      "DialogPrimitive"
+    ],
+    "primitiveUses": [
+      "Root",
+      "Trigger",
+      "Portal",
+      "Close",
+      "Overlay",
+      "Content",
+      "Title",
+      "Description"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 10,
+    "sub": [
+      {
+        "fn": "Dialog",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DialogTrigger",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DialogPortal",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DialogClose",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DialogOverlay",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DialogContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 1,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DialogHeader",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DialogFooter",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 1,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DialogTitle",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DialogDescription",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "direction",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 1,
+    "sub": [
+      {
+        "fn": "DirectionProvider",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "drawer",
+    "classify": "external-dep",
+    "extDeps": [
+      "vaul"
+    ],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 10,
+    "sub": [
+      {
+        "fn": "Drawer",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DrawerTrigger",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DrawerPortal",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DrawerClose",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DrawerOverlay",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DrawerContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DrawerHeader",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DrawerFooter",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DrawerTitle",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DrawerDescription",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "dropdown-menu",
+    "classify": "wrapper",
+    "extDeps": [
+      "lucide-react"
+    ],
+    "radixAliases": [
+      "DropdownMenuPrimitive"
+    ],
+    "primitiveUses": [
+      "Root",
+      "Portal",
+      "Trigger",
+      "Content",
+      "Group",
+      "Item",
+      "CheckboxItem",
+      "ItemIndicator",
+      "RadioGroup",
+      "RadioItem",
+      "Label",
+      "Separator",
+      "Sub",
+      "SubTrigger",
+      "SubContent"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 15,
+    "sub": [
+      {
+        "fn": "DropdownMenu",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DropdownMenuPortal",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DropdownMenuTrigger",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DropdownMenuContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DropdownMenuGroup",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DropdownMenuItem",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DropdownMenuCheckboxItem",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DropdownMenuRadioGroup",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DropdownMenuRadioItem",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DropdownMenuLabel",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DropdownMenuSeparator",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DropdownMenuShortcut",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DropdownMenuSub",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DropdownMenuSubTrigger",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "DropdownMenuSubContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "empty",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 6,
+    "sub": [
+      {
+        "fn": "Empty",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "EmptyHeader",
+        "styledWrap": true,
+        "hasCvaCall": true,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "EmptyMedia",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "EmptyTitle",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "EmptyDescription",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "EmptyContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "field",
+    "classify": "logic",
+    "extDeps": [],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [
+      "useMemo"
+    ],
+    "allHooks": [
+      "useMemo"
+    ],
+    "nFns": 10,
+    "sub": [
+      {
+        "fn": "FieldSet",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "FieldLegend",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "FieldGroup",
+        "styledWrap": true,
+        "hasCvaCall": true,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "Field",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "FieldContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "FieldLabel",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "FieldTitle",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "FieldDescription",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "FieldSeparator",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 1,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "FieldError",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 2,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "form",
+    "classify": "external-dep",
+    "extDeps": [
+      "react-hook-form"
+    ],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [
+      "useContext",
+      "useId"
+    ],
+    "allHooks": [
+      "useContext",
+      "useFormContext",
+      "useFormState",
+      "useId",
+      "useFormField"
+    ],
+    "nFns": 6,
+    "sub": [
+      {
+        "fn": "useFormField",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": [
+          "onId"
+        ]
+      },
+      {
+        "fn": "FormItem",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "FormLabel",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "FormControl",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "FormDescription",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "FormMessage",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "hover-card",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [
+      "HoverCardPrimitive"
+    ],
+    "primitiveUses": [
+      "Root",
+      "Trigger",
+      "Content",
+      "Portal"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 3,
+    "sub": [
+      {
+        "fn": "HoverCard",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "HoverCardTrigger",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "HoverCardContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "input-group",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 6,
+    "sub": [
+      {
+        "fn": "InputGroup",
+        "styledWrap": true,
+        "hasCvaCall": true,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": [
+          "onVariants "
+        ]
+      },
+      {
+        "fn": "InputGroupAddon",
+        "styledWrap": true,
+        "hasCvaCall": true,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": [
+          "onClick",
+          "onVariants "
+        ]
+      },
+      {
+        "fn": "InputGroupButton",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "InputGroupText",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "InputGroupInput",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "InputGroupTextarea",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "input-otp",
+    "classify": "external-dep",
+    "extDeps": [
+      "input-otp",
+      "lucide-react"
+    ],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [
+      "useContext"
+    ],
+    "allHooks": [
+      "useContext"
+    ],
+    "nFns": 4,
+    "sub": [
+      {
+        "fn": "InputOTP",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "InputOTPGroup",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "InputOTPSlot",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 1,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "InputOTPSeparator",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "input",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 1,
+    "sub": [
+      {
+        "fn": "Input",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "item",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 10,
+    "sub": [
+      {
+        "fn": "ItemGroup",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ItemSeparator",
+        "styledWrap": true,
+        "hasCvaCall": true,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "Item",
+        "styledWrap": true,
+        "hasCvaCall": true,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ItemMedia",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ItemContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ItemTitle",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ItemDescription",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ItemActions",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ItemHeader",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ItemFooter",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "kbd",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 2,
+    "sub": [
+      {
+        "fn": "Kbd",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "KbdGroup",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "label",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [
+      "LabelPrimitive"
+    ],
+    "primitiveUses": [
+      "Root"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 1,
+    "sub": [
+      {
+        "fn": "Label",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "marker",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 3,
+    "sub": [
+      {
+        "fn": "Marker",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MarkerIcon",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MarkerContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "menubar",
+    "classify": "wrapper",
+    "extDeps": [
+      "lucide-react"
+    ],
+    "radixAliases": [
+      "MenubarPrimitive"
+    ],
+    "primitiveUses": [
+      "Root",
+      "Menu",
+      "Group",
+      "Portal",
+      "RadioGroup",
+      "Trigger",
+      "Content",
+      "Item",
+      "CheckboxItem",
+      "ItemIndicator",
+      "RadioItem",
+      "Label",
+      "Separator",
+      "Sub",
+      "SubTrigger",
+      "SubContent"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 16,
+    "sub": [
+      {
+        "fn": "Menubar",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MenubarMenu",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MenubarGroup",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MenubarPortal",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MenubarRadioGroup",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MenubarTrigger",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MenubarContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MenubarItem",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MenubarCheckboxItem",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MenubarRadioItem",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MenubarLabel",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MenubarSeparator",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MenubarShortcut",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MenubarSub",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MenubarSubTrigger",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MenubarSubContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "message-scroller",
+    "classify": "wrapper",
+    "extDeps": [
+      "lucide-react"
+    ],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 6,
+    "sub": [
+      {
+        "fn": "MessageScrollerProvider",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MessageScroller",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MessageScrollerViewport",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MessageScrollerContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MessageScrollerItem",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MessageScrollerButton",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 1,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "message",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 6,
+    "sub": [
+      {
+        "fn": "MessageGroup",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "Message",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MessageAvatar",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MessageContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MessageHeader",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "MessageFooter",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "native-select",
+    "classify": "wrapper",
+    "extDeps": [
+      "lucide-react"
+    ],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 3,
+    "sub": [
+      {
+        "fn": "NativeSelect",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "NativeSelectOption",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "NativeSelectOptGroup",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "navigation-menu",
+    "classify": "wrapper",
+    "extDeps": [
+      "lucide-react"
+    ],
+    "radixAliases": [
+      "NavigationMenuPrimitive"
+    ],
+    "primitiveUses": [
+      "Root",
+      "List",
+      "Item",
+      "Trigger",
+      "Content",
+      "Viewport",
+      "Link",
+      "Indicator"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 8,
+    "sub": [
+      {
+        "fn": "NavigationMenu",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "NavigationMenuList",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "NavigationMenuItem",
+        "styledWrap": true,
+        "hasCvaCall": true,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": [
+          "onMenuTriggerStyle "
+        ]
+      },
+      {
+        "fn": "NavigationMenuTrigger",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "NavigationMenuContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "NavigationMenuViewport",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "NavigationMenuLink",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "NavigationMenuIndicator",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "pagination",
+    "classify": "wrapper",
+    "extDeps": [
+      "lucide-react"
+    ],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 7,
+    "sub": [
+      {
+        "fn": "Pagination",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "PaginationContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "PaginationItem",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": [
+          "onLinkProps "
+        ]
+      },
+      {
+        "fn": "PaginationLink",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "PaginationPrevious",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "PaginationNext",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "PaginationEllipsis",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "popover",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [
+      "PopoverPrimitive"
+    ],
+    "primitiveUses": [
+      "Root",
+      "Trigger",
+      "Content",
+      "Portal",
+      "Anchor"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 7,
+    "sub": [
+      {
+        "fn": "Popover",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "PopoverTrigger",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "PopoverContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "PopoverAnchor",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "PopoverHeader",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "PopoverTitle",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "PopoverDescription",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "progress",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [
+      "ProgressPrimitive"
+    ],
+    "primitiveUses": [
+      "Root",
+      "Indicator"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 1,
+    "sub": [
+      {
+        "fn": "Progress",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "radio-group",
+    "classify": "wrapper",
+    "extDeps": [
+      "lucide-react"
+    ],
+    "radixAliases": [
+      "RadioGroupPrimitive"
+    ],
+    "primitiveUses": [
+      "Root",
+      "Item",
+      "Indicator"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 2,
+    "sub": [
+      {
+        "fn": "RadioGroup",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "RadioGroupItem",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "resizable",
+    "classify": "external-dep",
+    "extDeps": [
+      "lucide-react",
+      "react-resizable-panels"
+    ],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 3,
+    "sub": [
+      {
+        "fn": "ResizablePanelGroup",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ResizablePanel",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ResizableHandle",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 1,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "scroll-area",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [
+      "ScrollAreaPrimitive"
+    ],
+    "primitiveUses": [
+      "Root",
+      "Viewport",
+      "Corner",
+      "ScrollAreaScrollbar",
+      "ScrollAreaThumb"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 2,
+    "sub": [
+      {
+        "fn": "ScrollArea",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ScrollBar",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "select",
+    "classify": "wrapper",
+    "extDeps": [
+      "lucide-react"
+    ],
+    "radixAliases": [
+      "SelectPrimitive"
+    ],
+    "primitiveUses": [
+      "Root",
+      "Group",
+      "Value",
+      "Trigger",
+      "Icon",
+      "Content",
+      "Portal",
+      "Viewport",
+      "Label",
+      "Item",
+      "ItemIndicator",
+      "ItemText",
+      "Separator",
+      "ScrollUpButton",
+      "ScrollDownButton"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 10,
+    "sub": [
+      {
+        "fn": "Select",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SelectGroup",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SelectValue",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SelectTrigger",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SelectContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SelectLabel",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SelectItem",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SelectSeparator",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SelectScrollUpButton",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SelectScrollDownButton",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "separator",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [
+      "SeparatorPrimitive"
+    ],
+    "primitiveUses": [
+      "Root"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 1,
+    "sub": [
+      {
+        "fn": "Separator",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "sheet",
+    "classify": "wrapper",
+    "extDeps": [
+      "lucide-react"
+    ],
+    "radixAliases": [
+      "SheetPrimitive"
+    ],
+    "primitiveUses": [
+      "Root",
+      "Trigger",
+      "Close",
+      "Portal",
+      "Overlay",
+      "Content",
+      "Title",
+      "Description"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 10,
+    "sub": [
+      {
+        "fn": "Sheet",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SheetTrigger",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SheetClose",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SheetPortal",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SheetOverlay",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SheetContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 1,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SheetHeader",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SheetFooter",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SheetTitle",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SheetDescription",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "sidebar",
+    "classify": "logic",
+    "extDeps": [
+      "lucide-react"
+    ],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [
+      "useContext",
+      "useState",
+      "useCallback",
+      "useEffect",
+      "useMemo"
+    ],
+    "allHooks": [
+      "useSidebar",
+      "useContext",
+      "useIsMobile",
+      "useState",
+      "useCallback",
+      "useEffect",
+      "useMemo"
+    ],
+    "nFns": 24,
+    "sub": [
+      {
+        "fn": "useSidebar",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SidebarProvider",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 1,
+        "maps": 0,
+        "handlers": [
+          "onOpenChange"
+        ]
+      },
+      {
+        "fn": "Sidebar",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": [
+          "onOpenChange"
+        ]
+      },
+      {
+        "fn": "SidebarTrigger",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": [
+          "onClick"
+        ]
+      },
+      {
+        "fn": "SidebarRail",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": [
+          "onClick"
+        ]
+      },
+      {
+        "fn": "SidebarInset",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SidebarInput",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SidebarHeader",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SidebarFooter",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SidebarSeparator",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SidebarContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SidebarGroup",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SidebarGroupLabel",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SidebarGroupAction",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SidebarGroupContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SidebarMenu",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SidebarMenuItem",
+        "styledWrap": true,
+        "hasCvaCall": true,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": [
+          "onVariants "
+        ]
+      },
+      {
+        "fn": "SidebarMenuButton",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SidebarMenuAction",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SidebarMenuBadge",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SidebarMenuSkeleton",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 1,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SidebarMenuSub",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SidebarMenuSubItem",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "SidebarMenuSubButton",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "skeleton",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 1,
+    "sub": [
+      {
+        "fn": "Skeleton",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "slider",
+    "classify": "logic",
+    "extDeps": [],
+    "radixAliases": [
+      "SliderPrimitive"
+    ],
+    "primitiveUses": [
+      "Root",
+      "Track",
+      "Range",
+      "Thumb"
+    ],
+    "reactHooks": [
+      "useMemo"
+    ],
+    "allHooks": [
+      "useMemo"
+    ],
+    "nFns": 1,
+    "sub": [
+      {
+        "fn": "Slider",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "sonner",
+    "classify": "external-dep",
+    "extDeps": [
+      "lucide-react",
+      "next-themes",
+      "sonner"
+    ],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [
+      "useTheme"
+    ],
+    "nFns": 1,
+    "sub": [
+      {
+        "fn": "Toaster",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "spinner",
+    "classify": "wrapper",
+    "extDeps": [
+      "lucide-react"
+    ],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 1,
+    "sub": [
+      {
+        "fn": "Spinner",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "switch",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [
+      "SwitchPrimitive"
+    ],
+    "primitiveUses": [
+      "Root",
+      "Thumb"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 1,
+    "sub": [
+      {
+        "fn": "Switch",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "table",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 8,
+    "sub": [
+      {
+        "fn": "Table",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "TableHeader",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "TableBody",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "TableFooter",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "TableRow",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "TableHead",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "TableCell",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "TableCaption",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "tabs",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [
+      "TabsPrimitive"
+    ],
+    "primitiveUses": [
+      "Root",
+      "List",
+      "Trigger",
+      "Content"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 4,
+    "sub": [
+      {
+        "fn": "Tabs",
+        "styledWrap": true,
+        "hasCvaCall": true,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "TabsList",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "TabsTrigger",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "TabsContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "textarea",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [],
+    "primitiveUses": [],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 1,
+    "sub": [
+      {
+        "fn": "Textarea",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "toggle-group",
+    "classify": "logic",
+    "extDeps": [],
+    "radixAliases": [
+      "ToggleGroupPrimitive"
+    ],
+    "primitiveUses": [
+      "Root",
+      "Item"
+    ],
+    "reactHooks": [
+      "useContext"
+    ],
+    "allHooks": [
+      "useContext"
+    ],
+    "nFns": 2,
+    "sub": [
+      {
+        "fn": "ToggleGroup",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "ToggleGroupItem",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "toggle",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [
+      "TogglePrimitive"
+    ],
+    "primitiveUses": [
+      "Root"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 1,
+    "sub": [
+      {
+        "fn": "Toggle",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  },
+  {
+    "file": "tooltip",
+    "classify": "wrapper",
+    "extDeps": [],
+    "radixAliases": [
+      "TooltipPrimitive"
+    ],
+    "primitiveUses": [
+      "Provider",
+      "Root",
+      "Trigger",
+      "Content",
+      "Portal",
+      "Arrow"
+    ],
+    "reactHooks": [],
+    "allHooks": [],
+    "nFns": 4,
+    "sub": [
+      {
+        "fn": "TooltipProvider",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "Tooltip",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "TooltipTrigger",
+        "styledWrap": false,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      },
+      {
+        "fn": "TooltipContent",
+        "styledWrap": true,
+        "hasCvaCall": false,
+        "condChildren": 0,
+        "maps": 0,
+        "handlers": []
+      }
+    ]
+  }
+]

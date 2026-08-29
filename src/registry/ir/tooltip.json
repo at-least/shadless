@@ -1,0 +1,102 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "tooltip",
+ "tier": "kernel",
+ "imports": [
+  "react",
+  "radix-ui",
+  "@/registry/bases/radix/lib/utils"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "TooltipProvider",
+   "export": true,
+   "elements": [
+    {
+     "tag": "TooltipPrimitive.Provider",
+     "slot": "tooltip-provider",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "Tooltip",
+   "export": true,
+   "elements": [
+    {
+     "tag": "TooltipPrimitive.Root",
+     "slot": "tooltip",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "TooltipTrigger",
+   "export": true,
+   "elements": [
+    {
+     "tag": "TooltipPrimitive.Trigger",
+     "slot": "tooltip-trigger",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "TooltipContent",
+   "export": true,
+   "elements": [
+    {
+     "tag": "TooltipPrimitive.Portal",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": [
+      "<TooltipPrimitive.Content slot=tooltip-content class=[1]>"
+     ]
+    },
+    {
+     "tag": "TooltipPrimitive.Content",
+     "slot": "tooltip-content",
+     "classes": [
+      "data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[state=delayed-open]:animate-in data-[state=delayed-open]:fade-in-0 data-[state=delayed-open]:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:relative **:data-[slot=kbd]:isolate **:data-[slot=kbd]:z-50 **:data-[slot=kbd]:rounded-sm z-50 w-fit max-w-xs origin-(--radix-tooltip-content-transform-origin) bg-foreground text-background"
+     ],
+     "spread": true,
+     "children": [
+      "{children}",
+      "<TooltipPrimitive.Arrow class=[1]>"
+     ]
+    },
+    {
+     "tag": "TooltipPrimitive.Arrow",
+     "slot": null,
+     "classes": [
+      "size-2.5 rotate-45 rounded-[2px] z-50 translate-y-[calc(-50%_-_2px)] bg-foreground fill-foreground"
+     ],
+     "spread": false,
+     "children": []
+    }
+   ]
+  }
+ ],
+ "conditionals": [],
+ "cvaRefs": [],
+ "tagHints": {
+  "TooltipPrimitive.Provider": "div",
+  "TooltipPrimitive.Root": "div",
+  "TooltipPrimitive.Trigger": "button",
+  "TooltipPrimitive.Portal": "div",
+  "TooltipPrimitive.Content": "div",
+  "TooltipPrimitive.Arrow": "div"
+ }
+}

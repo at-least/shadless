@@ -1,0 +1,9 @@
+<!doctype html>
+<html><head>
+<link rel="stylesheet" href="../out.css"><meta charset="utf-8"><title>shadless toggle</title><script>(function(){try{var k="shadless-docs-theme";var apply=function(d){document.documentElement.classList.toggle("dark",!!d)};var s=localStorage.getItem(k);var d=s?s==="dark":matchMedia("(prefers-color-scheme: dark)").matches;apply(d);addEventListener("storage",function(e){if(e.key===k)apply(e.newValue==="dark")});}catch(e){}})();</script><link rel="stylesheet" href="../fonts.css"></head>
+<body>
+  <button data-slot="toggle" id="tg1" type="button" aria-pressed="false" data-state="off">Bold</button>
+  <script src="../shadless.js"></script>
+  <script src="../js/toggle.js"></script>
+  <script>shadless.initAll()</script>
+</body></html>

@@ -1,0 +1,120 @@
+{
+  "oracleOpen": {
+    "step": "oracle",
+    "dropdown-menu-trigger": {
+      "tag": "button",
+      "type": "button",
+      "id": "d1-trigger",
+      "aria-haspopup": "menu",
+      "aria-expanded": "true",
+      "data-state": "open",
+      "data-slot": "dropdown-menu-trigger",
+      "aria-controls": "radix-_r_1_",
+      "text": "Openmenu"
+    },
+    "dropdown-menu-content": {
+      "tag": "div",
+      "data-side": "bottom",
+      "data-align": "start",
+      "role": "menu",
+      "aria-orientation": "vertical",
+      "data-state": "open",
+      "data-radix-menu-content": "",
+      "dir": "ltr",
+      "id": "radix-_r_1_",
+      "aria-labelledby": "radix-_r_0_",
+      "data-slot": "dropdown-menu-content",
+      "tabindex": "-1",
+      "data-orientation": "vertical",
+      "style": "outline: none; --radix-dropdown-menu-content-transform-origin: var(--radix-popper-transform-origin); --radix-dropdown-menu-content-available-width: var(--radix-popper-available-width); --radix-dropdown-menu-content-available-height: var(--radix-popper-available-height); --radix-dropdown-menu-trigger-width: var(--radix-popper-anchor-width); --radix-dropdown-menu-trigger-height: var(--radix-popper-anchor-height); pointer-events: auto;",
+      "text": "Item1Item2"
+    },
+    "&[role=menuitem]": {
+      "tag": "div",
+      "role": "menuitem",
+      "data-slot": "dropdown-menu-item",
+      "data-variant": "default",
+      "id": "d1-item-1",
+      "tabindex": "-1",
+      "data-orientation": "vertical",
+      "data-radix-collection-item": "",
+      "text": "Item1"
+    },
+    "activeElement": "dropdown-menu-content",
+    "scrollLock": {
+      "attr": "1",
+      "pointerEvents": "none"
+    }
+  },
+  "shadlessOpen": {
+    "step": "shadless",
+    "dropdown-menu-trigger": {
+      "tag": "button",
+      "type": "button",
+      "id": "d1-trigger",
+      "aria-haspopup": "menu",
+      "aria-expanded": "true",
+      "data-state": "open",
+      "data-slot": "dropdown-menu-trigger",
+      "data-radixuigo-menu-trigger": "d1",
+      "aria-controls": "d1",
+      "data-radix-popper-side": "bottom",
+      "data-radix-popper-align": "start",
+      "text": "Openmenu"
+    },
+    "dropdown-menu-content": {
+      "tag": "div",
+      "data-side": "bottom",
+      "data-align": "start",
+      "role": "menu",
+      "aria-orientation": "vertical",
+      "data-state": "open",
+      "data-radix-menu-content": "",
+      "dir": "ltr",
+      "id": "d1",
+      "aria-labelledby": "d1-trigger",
+      "data-slot": "dropdown-menu-content",
+      "tabindex": "-1",
+      "data-orientation": "vertical",
+      "style": "outline: none; --radix-dropdown-menu-content-transform-origin: var(--radix-popper-transform-origin); --radix-dropdown-menu-content-available-width: var(--radix-popper-available-width); --radix-dropdown-menu-content-available-height: var(--radix-popper-available-height); --radix-dropdown-menu-trigger-width: var(--radix-popper-anchor-width); --radix-dropdown-menu-trigger-height: var(--radix-popper-anchor-height); pointer-events: auto;",
+      "text": "Item1Item2"
+    },
+    "&[role=menuitem]": {
+      "tag": "div",
+      "role": "menuitem",
+      "data-slot": "dropdown-menu-item",
+      "data-variant": "default",
+      "id": "d1-item-1",
+      "tabindex": "-1",
+      "data-orientation": "vertical",
+      "data-radix-collection-item": "",
+      "text": "Item1"
+    },
+    "activeElement": "dropdown-menu-content",
+    "scrollLock": {
+      "attr": "1",
+      "pointerEvents": "none"
+    }
+  },
+  "oracle": {
+    "escape": "closed|-",
+    "outside-click": "closed|-",
+    "mouse-click:[data-slot=dropdown-menu-trigger]": "closed|-",
+    "click:[role=menuitem]": "closed|-",
+    "key:ArrowDown": "open|Item 1",
+    "key:ArrowDown+key:ArrowDown": "open|Item 2",
+    "key:ArrowDown+key:Enter": "closed|-",
+    "key:ArrowDown+key:ArrowUp": "open|Item 1"
+  },
+  "shadless": {
+    "escape": "closed|-",
+    "outside-click": "closed|-",
+    "mouse-click:[data-slot=dropdown-menu-trigger]": "closed|-",
+    "click:[role=menuitem]": "closed|-",
+    "key:ArrowDown": "open|Item 1",
+    "key:ArrowDown+key:ArrowDown": "open|Item 2",
+    "key:ArrowDown+key:Enter": "closed|-",
+    "key:ArrowDown+key:ArrowUp": "open|Item 1"
+  },
+  "pass": true
+}

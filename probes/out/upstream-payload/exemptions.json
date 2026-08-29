@@ -1,0 +1,445 @@
+{
+ "examples": {
+  "attachment-demo": {
+   "reason": "token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin"
+  },
+  "attachment-group": {
+   "reason": "token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin"
+  },
+  "attachment-image": {
+   "reason": "token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin"
+  },
+  "attachment-sizes": {
+   "reason": "token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin"
+  },
+  "attachment-states": {
+   "reason": "token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin"
+  },
+  "attachment-trigger": {
+   "reason": "token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin"
+  },
+  "bubble-alignment": {
+   "reason": "token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin"
+  },
+  "bubble-collapsible": {
+   "reason": "token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin"
+  },
+  "bubble-demo": {
+   "reason": "token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin"
+  },
+  "bubble-group-demo": {
+   "reason": "token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin"
+  },
+  "bubble-link-button": {
+   "reason": "token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin"
+  },
+  "bubble-popover": {
+   "reason": "token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin"
+  },
+  "bubble-reactions": {
+   "reason": "token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin"
+  },
+  "bubble-tooltip": {
+   "reason": "token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin"
+  },
+  "bubble-variants": {
+   "reason": "token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin"
+  },
+  "button-with-icon": {
+   "reason": "lucide icon path encoding drift vs live — deploy lag; re-check on re-pin"
+  },
+  "calendar-basic": {
+   "reason": "external dep react-day-picker (calendar) — tombstone; oracle cannot bundle"
+  },
+  "calendar-booked-dates": {
+   "reason": "external dep react-day-picker (calendar) — tombstone; oracle cannot bundle"
+  },
+  "calendar-caption": {
+   "reason": "external dep react-day-picker (calendar) — tombstone; oracle cannot bundle"
+  },
+  "calendar-custom-days": {
+   "reason": "external dep react-day-picker (calendar) — tombstone; oracle cannot bundle"
+  },
+  "calendar-demo": {
+   "reason": "external dep react-day-picker (calendar) — tombstone; oracle cannot bundle"
+  },
+  "calendar-hijri": {
+   "reason": "external dep react-day-picker (calendar) — tombstone; oracle cannot bundle"
+  },
+  "calendar-presets": {
+   "reason": "external dep react-day-picker (calendar) — tombstone; oracle cannot bundle"
+  },
+  "calendar-range": {
+   "reason": "external dep react-day-picker (calendar) — tombstone; oracle cannot bundle"
+  },
+  "calendar-rtl": {
+   "reason": "external dep react-day-picker (calendar) — tombstone; oracle cannot bundle"
+  },
+  "calendar-time": {
+   "reason": "external dep react-day-picker (calendar) — tombstone; oracle cannot bundle"
+  },
+  "calendar-week-numbers": {
+   "reason": "external dep react-day-picker (calendar) — tombstone; oracle cannot bundle"
+  },
+  "carousel-api": {
+   "reason": "embla live-region text (Slide N of N) computed after mount (SSR frame 0/0) — frame lag; re-check on re-pin"
+  },
+  "carousel-rtl": {
+   "reason": "physical→logical utility drift vs live (-ml-4 vs -ms-4, pinned carousel skin) — deploy lag; re-check on re-pin"
+  },
+  "chart-demo": {
+   "reason": "external dep recharts (chart) — tombstone; oracle cannot bundle"
+  },
+  "chart-example": {
+   "reason": "external dep recharts (chart) — tombstone; oracle cannot bundle"
+  },
+  "chart-example-axis": {
+   "reason": "external dep recharts (chart) — tombstone; oracle cannot bundle"
+  },
+  "chart-example-grid": {
+   "reason": "external dep recharts (chart) — tombstone; oracle cannot bundle"
+  },
+  "chart-example-legend": {
+   "reason": "external dep recharts (chart) — tombstone; oracle cannot bundle"
+  },
+  "chart-example-tooltip": {
+   "reason": "external dep recharts (chart) — tombstone; oracle cannot bundle"
+  },
+  "chart-rtl": {
+   "reason": "external dep recharts (chart) — tombstone; oracle cannot bundle"
+  },
+  "combobox-auto-highlight": {
+   "reason": "external dep @base-ui/react (combobox) — tombstone; oracle cannot bundle"
+  },
+  "combobox-basic": {
+   "reason": "external dep @base-ui/react (combobox) — tombstone; oracle cannot bundle"
+  },
+  "combobox-clear": {
+   "reason": "external dep @base-ui/react (combobox) — tombstone; oracle cannot bundle"
+  },
+  "combobox-custom": {
+   "reason": "external dep @base-ui/react (combobox) — tombstone; oracle cannot bundle"
+  },
+  "combobox-demo": {
+   "reason": "external dep @base-ui/react (combobox) — tombstone; oracle cannot bundle"
+  },
+  "combobox-disabled": {
+   "reason": "external dep @base-ui/react (combobox) — tombstone; oracle cannot bundle"
+  },
+  "combobox-groups": {
+   "reason": "external dep @base-ui/react (combobox) — tombstone; oracle cannot bundle"
+  },
+  "combobox-input-group": {
+   "reason": "external dep @base-ui/react (combobox) — tombstone; oracle cannot bundle"
+  },
+  "combobox-invalid": {
+   "reason": "external dep @base-ui/react (combobox) — tombstone; oracle cannot bundle"
+  },
+  "combobox-multiple": {
+   "reason": "external dep @base-ui/react (combobox) — tombstone; oracle cannot bundle"
+  },
+  "combobox-popup": {
+   "reason": "external dep @base-ui/react (combobox) — tombstone; oracle cannot bundle"
+  },
+  "combobox-rtl": {
+   "reason": "external dep @base-ui/react (combobox) — tombstone; oracle cannot bundle"
+  },
+  "command-basic": {
+   "reason": "external dep cmdk (command) — tombstone; oracle cannot bundle"
+  },
+  "command-demo": {
+   "reason": "external dep cmdk (command) — tombstone; oracle cannot bundle"
+  },
+  "command-groups": {
+   "reason": "external dep cmdk (command) — tombstone; oracle cannot bundle"
+  },
+  "command-rtl": {
+   "reason": "external dep cmdk (command) — tombstone; oracle cannot bundle"
+  },
+  "command-scrollable": {
+   "reason": "external dep cmdk (command) — tombstone; oracle cannot bundle"
+  },
+  "command-shortcuts": {
+   "reason": "external dep cmdk (command) — tombstone; oracle cannot bundle"
+  },
+  "context-menu-basic": {
+   "reason": "radix context-menu trigger vendor style (-webkit-touch-callout) added after pin — deploy lag; re-check on re-pin"
+  },
+  "context-menu-checkboxes": {
+   "reason": "radix context-menu trigger vendor style (-webkit-touch-callout) added after pin — deploy lag; re-check on re-pin"
+  },
+  "context-menu-demo": {
+   "reason": "radix context-menu trigger vendor style (-webkit-touch-callout) added after pin — deploy lag; re-check on re-pin"
+  },
+  "context-menu-destructive": {
+   "reason": "radix context-menu trigger vendor style (-webkit-touch-callout) added after pin — deploy lag; re-check on re-pin"
+  },
+  "context-menu-groups": {
+   "reason": "radix context-menu trigger vendor style (-webkit-touch-callout) added after pin — deploy lag; re-check on re-pin"
+  },
+  "context-menu-icons": {
+   "reason": "radix context-menu trigger vendor style (-webkit-touch-callout) added after pin — deploy lag; re-check on re-pin"
+  },
+  "context-menu-radio": {
+   "reason": "radix context-menu trigger vendor style (-webkit-touch-callout) added after pin — deploy lag; re-check on re-pin"
+  },
+  "context-menu-rtl": {
+   "reason": "radix context-menu trigger vendor style (-webkit-touch-callout) added after pin — deploy lag; re-check on re-pin"
+  },
+  "context-menu-shortcuts": {
+   "reason": "radix context-menu trigger vendor style (-webkit-touch-callout) added after pin — deploy lag; re-check on re-pin"
+  },
+  "context-menu-submenu": {
+   "reason": "radix context-menu trigger vendor style (-webkit-touch-callout) added after pin — deploy lag; re-check on re-pin"
+  },
+  "data-table-demo": {
+   "reason": "external dep @tanstack/react-table (data-table example) — page stays hand-authored"
+  },
+  "data-table-rtl": {
+   "reason": "external dep @tanstack/react-table (data-table example) — page stays hand-authored"
+  },
+  "date-picker-basic": {
+   "reason": "external dep react-day-picker (date-picker) — tombstone; oracle cannot bundle"
+  },
+  "date-picker-demo": {
+   "reason": "external dep react-day-picker (date-picker) — tombstone; oracle cannot bundle"
+  },
+  "date-picker-dob": {
+   "reason": "external dep react-day-picker (date-picker) — tombstone; oracle cannot bundle"
+  },
+  "date-picker-input": {
+   "reason": "external dep react-day-picker (date-picker) — tombstone; oracle cannot bundle"
+  },
+  "date-picker-natural-language": {
+   "reason": "external dep react-day-picker (date-picker) — tombstone; oracle cannot bundle"
+  },
+  "date-picker-range": {
+   "reason": "external dep react-day-picker (date-picker) — tombstone; oracle cannot bundle"
+  },
+  "date-picker-rtl": {
+   "reason": "external dep react-day-picker (date-picker) — tombstone; oracle cannot bundle"
+  },
+  "date-picker-time": {
+   "reason": "external dep react-day-picker (date-picker) — tombstone; oracle cannot bundle"
+  },
+  "drawer-demo": {
+   "reason": "external dep vaul + recharts (drawer) — tombstone; oracle cannot bundle"
+  },
+  "drawer-dialog": {
+   "reason": "external dep vaul + recharts (drawer) — tombstone; oracle cannot bundle"
+  },
+  "drawer-rtl": {
+   "reason": "external dep vaul + recharts (drawer) — tombstone; oracle cannot bundle"
+  },
+  "drawer-scrollable-content": {
+   "reason": "external dep vaul + recharts (drawer) — tombstone; oracle cannot bundle"
+  },
+  "drawer-sides": {
+   "reason": "external dep vaul + recharts (drawer) — tombstone; oracle cannot bundle"
+  },
+  "field-slider": {
+   "reason": "slider/progress thumb position is runtime-measured (SSR frame at 0%) — frame lag; re-check on re-pin"
+  },
+  "input-form": {
+   "reason": "radix SelectValue renders value only after hydration on live (SSR frame empty) — deploy lag; re-check on re-pin"
+  },
+  "input-group-button": {
+   "reason": "lucide icon path encoding drift vs live — deploy lag; re-check on re-pin"
+  },
+  "input-group-rtl": {
+   "reason": "physical→logical utility drift vs live (pinned skin pr-2 vs live pe-2) — deploy lag; re-check on re-pin"
+  },
+  "input-group-textarea": {
+   "reason": "lucide icon path encoding drift vs live — deploy lag; re-check on re-pin"
+  },
+  "input-otp-alphanumeric": {
+   "reason": "external dep input-otp — tombstone; oracle cannot bundle"
+  },
+  "input-otp-controlled": {
+   "reason": "external dep input-otp — tombstone; oracle cannot bundle"
+  },
+  "input-otp-demo": {
+   "reason": "external dep input-otp — tombstone; oracle cannot bundle"
+  },
+  "input-otp-disabled": {
+   "reason": "external dep input-otp — tombstone; oracle cannot bundle"
+  },
+  "input-otp-form": {
+   "reason": "external dep input-otp — tombstone; oracle cannot bundle"
+  },
+  "input-otp-four-digits": {
+   "reason": "external dep input-otp — tombstone; oracle cannot bundle"
+  },
+  "input-otp-invalid": {
+   "reason": "external dep input-otp — tombstone; oracle cannot bundle"
+  },
+  "input-otp-pattern": {
+   "reason": "external dep input-otp — tombstone; oracle cannot bundle"
+  },
+  "input-otp-rtl": {
+   "reason": "external dep input-otp — tombstone; oracle cannot bundle"
+  },
+  "input-otp-separator": {
+   "reason": "external dep input-otp — tombstone; oracle cannot bundle"
+  },
+  "message-actions": {
+   "reason": "token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin"
+  },
+  "message-attachment": {
+   "reason": "token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin"
+  },
+  "message-avatar": {
+   "reason": "token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin"
+  },
+  "message-demo": {
+   "reason": "token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin"
+  },
+  "message-group": {
+   "reason": "token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin"
+  },
+  "message-header-footer": {
+   "reason": "token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin"
+  },
+  "message-scroller-anchoring": {
+   "reason": "external dep @ai-sdk/react + @shadcn/react/message-scroller — page stays hand-authored"
+  },
+  "message-scroller-animation": {
+   "reason": "external dep @ai-sdk/react + @shadcn/react/message-scroller — page stays hand-authored"
+  },
+  "message-scroller-commands": {
+   "reason": "external dep @ai-sdk/react + @shadcn/react/message-scroller — page stays hand-authored"
+  },
+  "message-scroller-demo": {
+   "reason": "external dep @ai-sdk/react + @shadcn/react/message-scroller — page stays hand-authored"
+  },
+  "message-scroller-group-chat": {
+   "reason": "external dep @ai-sdk/react + @shadcn/react/message-scroller — page stays hand-authored"
+  },
+  "message-scroller-load-history": {
+   "reason": "external dep @ai-sdk/react + @shadcn/react/message-scroller — page stays hand-authored"
+  },
+  "message-scroller-opening-position": {
+   "reason": "external dep @ai-sdk/react + @shadcn/react/message-scroller — page stays hand-authored"
+  },
+  "message-scroller-previous-context": {
+   "reason": "external dep @ai-sdk/react + @shadcn/react/message-scroller — page stays hand-authored"
+  },
+  "message-scroller-scrollable": {
+   "reason": "external dep @ai-sdk/react + @shadcn/react/message-scroller — page stays hand-authored"
+  },
+  "message-scroller-streaming": {
+   "reason": "external dep @ai-sdk/react + @shadcn/react/message-scroller — page stays hand-authored"
+  },
+  "message-scroller-visibility": {
+   "reason": "external dep @ai-sdk/react + @shadcn/react/message-scroller — page stays hand-authored"
+  },
+  "pagination-icons-only": {
+   "reason": "radix SelectValue renders value only after hydration on live (SSR frame empty) — deploy lag; re-check on re-pin"
+  },
+  "pagination-rtl": {
+   "reason": "physical→logical utility drift vs live (pinned skin pr-2 vs live pe-2) — deploy lag; re-check on re-pin"
+  },
+  "progress-controlled": {
+   "reason": "slider/progress thumb position is runtime-measured (SSR frame at 0%) — frame lag; re-check on re-pin"
+  },
+  "progress-rtl": {
+   "reason": "ICU Arabic percent-usage spacing differs between local chromium and upstream's SSR ICU — environment; re-check on re-pin"
+  },
+  "questionnaire-animated": {
+   "reason": "external dep @shadcn/react/questionnaire (+ zod) — tombstone; oracle cannot bundle"
+  },
+  "questionnaire-card": {
+   "reason": "external dep @shadcn/react/questionnaire (+ zod) — tombstone; oracle cannot bundle"
+  },
+  "questionnaire-conditional": {
+   "reason": "external dep @shadcn/react/questionnaire (+ zod) — tombstone; oracle cannot bundle"
+  },
+  "questionnaire-controlled": {
+   "reason": "external dep @shadcn/react/questionnaire (+ zod) — tombstone; oracle cannot bundle"
+  },
+  "questionnaire-demo": {
+   "reason": "external dep @shadcn/react/questionnaire (+ zod) — tombstone; oracle cannot bundle"
+  },
+  "questionnaire-dialog": {
+   "reason": "external dep @shadcn/react/questionnaire (+ zod) — tombstone; oracle cannot bundle"
+  },
+  "questionnaire-freeform": {
+   "reason": "external dep @shadcn/react/questionnaire (+ zod) — tombstone; oracle cannot bundle"
+  },
+  "questionnaire-multiple": {
+   "reason": "external dep @shadcn/react/questionnaire (+ zod) — tombstone; oracle cannot bundle"
+  },
+  "questionnaire-navigation-state": {
+   "reason": "external dep @shadcn/react/questionnaire (+ zod) — tombstone; oracle cannot bundle"
+  },
+  "questionnaire-progress": {
+   "reason": "external dep @shadcn/react/questionnaire (+ zod) — tombstone; oracle cannot bundle"
+  },
+  "questionnaire-resume": {
+   "reason": "external dep @shadcn/react/questionnaire (+ zod) — tombstone; oracle cannot bundle"
+  },
+  "questionnaire-shortcuts": {
+   "reason": "external dep @shadcn/react/questionnaire (+ zod) — tombstone; oracle cannot bundle"
+  },
+  "questionnaire-skip": {
+   "reason": "external dep @shadcn/react/questionnaire (+ zod) — tombstone; oracle cannot bundle"
+  },
+  "questionnaire-validation": {
+   "reason": "external dep @shadcn/react/questionnaire (+ zod) — tombstone; oracle cannot bundle"
+  },
+  "resizable-demo": {
+   "reason": "external dep react-resizable-panels — tombstone; oracle cannot bundle"
+  },
+  "resizable-handle": {
+   "reason": "external dep react-resizable-panels — tombstone; oracle cannot bundle"
+  },
+  "resizable-rtl": {
+   "reason": "external dep react-resizable-panels — tombstone; oracle cannot bundle"
+  },
+  "resizable-vertical": {
+   "reason": "external dep react-resizable-panels — tombstone; oracle cannot bundle"
+  },
+  "scroll-area-demo": {
+   "reason": "radix scroll-area viewport overflow differs in SSR frame (hidden vs settled scroll) — deploy lag; re-check on re-pin"
+  },
+  "scroll-area-horizontal-demo": {
+   "reason": "radix scroll-area viewport overflow differs in SSR frame (hidden vs settled scroll) — deploy lag; re-check on re-pin"
+  },
+  "scroll-area-rtl": {
+   "reason": "radix scroll-area viewport overflow differs in SSR frame (hidden vs settled scroll) — deploy lag; re-check on re-pin"
+  },
+  "select-align-item": {
+   "reason": "radix SelectValue renders value only after hydration on live (SSR frame empty) — deploy lag; re-check on re-pin"
+  },
+  "slider-controlled": {
+   "reason": "slider/progress thumb position is runtime-measured (SSR frame at 0%) — frame lag; re-check on re-pin"
+  },
+  "slider-demo": {
+   "reason": "slider/progress thumb position is runtime-measured (SSR frame at 0%) — frame lag; re-check on re-pin"
+  },
+  "slider-disabled": {
+   "reason": "slider/progress thumb position is runtime-measured (SSR frame at 0%) — frame lag; re-check on re-pin"
+  },
+  "slider-multiple": {
+   "reason": "slider/progress thumb position is runtime-measured (SSR frame at 0%) — frame lag; re-check on re-pin"
+  },
+  "slider-range": {
+   "reason": "slider/progress thumb position is runtime-measured (SSR frame at 0%) — frame lag; re-check on re-pin"
+  },
+  "slider-rtl": {
+   "reason": "slider/progress thumb position is runtime-measured (SSR frame at 0%) — frame lag; re-check on re-pin"
+  },
+  "slider-vertical": {
+   "reason": "slider/progress thumb position is runtime-measured (SSR frame at 0%) — frame lag; re-check on re-pin"
+  },
+  "tabs-rtl": {
+   "reason": "physical→logical utility drift vs live (-right-1 vs -end-1, pinned tabs.tsx) — deploy lag; re-check on re-pin"
+  },
+  "toggle-group-font-weight-selector": {
+   "reason": "example copy drift vs live (\"font-normal\" vs \"font- normal\") — deploy lag; re-check on re-pin"
+  },
+  "toggle-group-rtl": {
+   "reason": "physical→logical utility drift vs live (pinned skin pr-2 vs live pe-2) — deploy lag; re-check on re-pin"
+  }
+ }
+}

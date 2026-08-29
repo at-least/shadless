@@ -1,0 +1,5285 @@
+{
+  "version": 1,
+  "generatedFrom": {
+    "repo": "https://github.com/shadcn-ui/ui",
+    "tag": "shadcn@4.19.0",
+    "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+  },
+  "sets": {
+    "components/radix": {
+      "dir": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix",
+      "mdxFiles": 65,
+      "previewTags": 460,
+      "multilinePreviewTags": 208,
+      "uniquePreviewNames": 456,
+      "sourceTags": 64,
+      "namedSourceTags": 61
+    },
+    "guides": {
+      "dir": "docs/content/ + UP/...",
+      "mdxFiles": 7,
+      "previewTags": 20,
+      "multilinePreviewTags": 10,
+      "uniquePreviewNames": 20,
+      "sourceTags": 0,
+      "namedSourceTags": 0
+    }
+  },
+  "previews": [
+    {
+      "name": "accordion-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "accordion"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/accordion-demo.html"
+    },
+    {
+      "name": "accordion-basic",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "accordion"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/accordion-basic.html"
+    },
+    {
+      "name": "accordion-multiple",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "accordion"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/accordion-multiple.html"
+    },
+    {
+      "name": "accordion-disabled",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "accordion"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/accordion-disabled.html"
+    },
+    {
+      "name": "accordion-borders",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "accordion"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/accordion-borders.html"
+    },
+    {
+      "name": "accordion-card",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "accordion"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/accordion-card.html"
+    },
+    {
+      "name": "accordion-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "accordion"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/accordion-rtl.html"
+    },
+    {
+      "name": "alert-dialog-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "alert-dialog"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/alert-dialog.html"
+    },
+    {
+      "name": "alert-dialog-basic",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "alert-dialog"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/alert-dialog-basic.html"
+    },
+    {
+      "name": "alert-dialog-small",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "alert-dialog"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/alert-dialog-small.html"
+    },
+    {
+      "name": "alert-dialog-media",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "alert-dialog"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/alert-dialog-media.html"
+    },
+    {
+      "name": "alert-dialog-small-media",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "alert-dialog"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/alert-dialog-small-media.html"
+    },
+    {
+      "name": "alert-dialog-destructive",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "alert-dialog"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/alert-dialog-destructive.html"
+    },
+    {
+      "name": "alert-dialog-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "alert-dialog"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/alert-dialog-rtl.html"
+    },
+    {
+      "name": "alert-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "alert"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/alert-demo.html"
+    },
+    {
+      "name": "alert-basic",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "alert"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/alert-basic.html"
+    },
+    {
+      "name": "alert-destructive",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "alert"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/alert-destructive.html"
+    },
+    {
+      "name": "alert-action",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "alert"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/alert-action.html"
+    },
+    {
+      "name": "alert-colors",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "alert"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/alert-colors.html"
+    },
+    {
+      "name": "alert-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "alert"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/alert-rtl.html"
+    },
+    {
+      "name": "aspect-ratio-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "aspect-ratio"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/aspect-ratio-demo.html"
+    },
+    {
+      "name": "aspect-ratio-square",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "aspect-ratio"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/aspect-ratio-square.html"
+    },
+    {
+      "name": "aspect-ratio-portrait",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "aspect-ratio"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/aspect-ratio-portrait.html"
+    },
+    {
+      "name": "aspect-ratio-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "aspect-ratio"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/aspect-ratio-rtl.html"
+    },
+    {
+      "name": "attachment-demo",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "attachment"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/attachment-demo.html"
+    },
+    {
+      "name": "attachment-image",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "attachment"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/attachment-image.html"
+    },
+    {
+      "name": "attachment-states",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "attachment"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/attachment-states.html"
+    },
+    {
+      "name": "attachment-sizes",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "attachment"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/attachment-sizes.html"
+    },
+    {
+      "name": "attachment-group",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "attachment"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/attachment-group.html"
+    },
+    {
+      "name": "attachment-trigger",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "attachment"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/attachment-trigger.html"
+    },
+    {
+      "name": "avatar-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "avatar"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/avatar-demo.html"
+    },
+    {
+      "name": "avatar-basic",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "avatar"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/avatar-basic.html"
+    },
+    {
+      "name": "avatar-badge",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "avatar"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/avatar-badge.html"
+    },
+    {
+      "name": "avatar-badge-icon",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "avatar"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/avatar-badge-icon.html"
+    },
+    {
+      "name": "avatar-group",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "avatar"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/avatar-group.html"
+    },
+    {
+      "name": "avatar-group-count",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "avatar"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/avatar-group-count.html"
+    },
+    {
+      "name": "avatar-group-count-icon",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "avatar"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/avatar-group-count-icon.html"
+    },
+    {
+      "name": "avatar-size",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "avatar"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/avatar-size.html"
+    },
+    {
+      "name": "avatar-dropdown",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "avatar"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/avatar-dropdown.html"
+    },
+    {
+      "name": "avatar-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "avatar"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/avatar-rtl.html"
+    },
+    {
+      "name": "badge-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "badge"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/badge-demo.html"
+    },
+    {
+      "name": "badge-variants",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "badge"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/badge-variants.html"
+    },
+    {
+      "name": "badge-icon",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "badge"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/badge-icon.html"
+    },
+    {
+      "name": "badge-spinner",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "badge"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/badge-spinner.html"
+    },
+    {
+      "name": "badge-link",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "badge"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/badge-link.html"
+    },
+    {
+      "name": "badge-colors",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "badge"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/badge-colors.html"
+    },
+    {
+      "name": "badge-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "badge"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/badge-rtl.html"
+    },
+    {
+      "name": "breadcrumb-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "breadcrumb"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/breadcrumb-demo.html"
+    },
+    {
+      "name": "breadcrumb-basic",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "breadcrumb"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/breadcrumb-basic.html"
+    },
+    {
+      "name": "breadcrumb-separator",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "breadcrumb"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/breadcrumb-separator.html"
+    },
+    {
+      "name": "breadcrumb-dropdown",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "breadcrumb"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/breadcrumb-dropdown.html"
+    },
+    {
+      "name": "breadcrumb-ellipsis",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "breadcrumb"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/breadcrumb-ellipsis.html"
+    },
+    {
+      "name": "breadcrumb-link",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "breadcrumb"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/breadcrumb-link.html"
+    },
+    {
+      "name": "breadcrumb-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "breadcrumb"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/breadcrumb-rtl.html"
+    },
+    {
+      "name": "bubble-demo",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "bubble"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/bubble-demo.html"
+    },
+    {
+      "name": "bubble-variants",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "bubble"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/bubble-variants.html"
+    },
+    {
+      "name": "bubble-alignment",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "bubble"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/bubble-alignment.html"
+    },
+    {
+      "name": "bubble-group-demo",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "bubble"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/bubble-group-demo.html"
+    },
+    {
+      "name": "bubble-link-button",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "bubble"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/bubble-link-button.html"
+    },
+    {
+      "name": "bubble-reactions",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "bubble"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/bubble-reactions.html"
+    },
+    {
+      "name": "bubble-collapsible",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "bubble"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/bubble-collapsible.html"
+    },
+    {
+      "name": "bubble-tooltip",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "bubble"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/bubble-tooltip.html"
+    },
+    {
+      "name": "bubble-popover",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "bubble"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/bubble-popover.html"
+    },
+    {
+      "name": "button-group-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button-group",
+        "button"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-group-demo.html"
+    },
+    {
+      "name": "button-group-orientation",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-group-orientation.html"
+    },
+    {
+      "name": "button-group-size",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-group-size.html"
+    },
+    {
+      "name": "button-group-nested",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-group-nested.html"
+    },
+    {
+      "name": "button-group-separator",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-group-separator.html"
+    },
+    {
+      "name": "button-group-split",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-group-split.html"
+    },
+    {
+      "name": "button-group-input",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-group-input.html"
+    },
+    {
+      "name": "button-group-input-group",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-group-input-group.html"
+    },
+    {
+      "name": "button-group-dropdown",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-group-dropdown.html"
+    },
+    {
+      "name": "button-group-select",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-group-select.html"
+    },
+    {
+      "name": "button-group-popover",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-group-popover.html"
+    },
+    {
+      "name": "button-group-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-group-rtl.html"
+    },
+    {
+      "name": "button-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-demo.html"
+    },
+    {
+      "name": "button-size",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-size.html"
+    },
+    {
+      "name": "button-default",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-default.html"
+    },
+    {
+      "name": "button-outline",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-outline.html"
+    },
+    {
+      "name": "button-secondary",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-secondary.html"
+    },
+    {
+      "name": "button-ghost",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-ghost.html"
+    },
+    {
+      "name": "button-destructive",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-destructive.html"
+    },
+    {
+      "name": "button-link",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-link.html"
+    },
+    {
+      "name": "button-icon",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-icon.html"
+    },
+    {
+      "name": "button-with-icon",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-with-icon.html"
+    },
+    {
+      "name": "button-rounded",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-rounded.html"
+    },
+    {
+      "name": "button-spinner",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-spinner.html"
+    },
+    {
+      "name": "button-aschild",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-aschild.html"
+    },
+    {
+      "name": "button-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "button"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/button-rtl.html"
+    },
+    {
+      "name": "calendar-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "calendar"
+      ],
+      "status": "tombstoned",
+      "demoPath": null,
+      "quality": "informational"
+    },
+    {
+      "name": "calendar-hijri",
+      "styleName": "radix-nova",
+      "description": "A Persian calendar.",
+      "hostPages": [
+        "calendar"
+      ],
+      "status": "tombstoned",
+      "demoPath": null,
+      "quality": "informational"
+    },
+    {
+      "name": "calendar-basic",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "calendar"
+      ],
+      "status": "tombstoned",
+      "demoPath": null,
+      "quality": "informational"
+    },
+    {
+      "name": "calendar-range",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "calendar"
+      ],
+      "status": "tombstoned",
+      "demoPath": null,
+      "quality": "informational"
+    },
+    {
+      "name": "calendar-caption",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "calendar"
+      ],
+      "status": "tombstoned",
+      "demoPath": null,
+      "quality": "informational"
+    },
+    {
+      "name": "calendar-presets",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "calendar"
+      ],
+      "status": "tombstoned",
+      "demoPath": null,
+      "quality": "informational"
+    },
+    {
+      "name": "calendar-time",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "calendar"
+      ],
+      "status": "tombstoned",
+      "demoPath": null,
+      "quality": "informational"
+    },
+    {
+      "name": "calendar-booked-dates",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "calendar"
+      ],
+      "status": "tombstoned",
+      "demoPath": null,
+      "quality": "informational"
+    },
+    {
+      "name": "calendar-custom-days",
+      "styleName": "radix-nova",
+      "description": "A calendar with custom cell size that's responsive.",
+      "hostPages": [
+        "calendar"
+      ],
+      "status": "tombstoned",
+      "demoPath": null,
+      "quality": "informational"
+    },
+    {
+      "name": "calendar-week-numbers",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "calendar"
+      ],
+      "status": "tombstoned",
+      "demoPath": null,
+      "quality": "informational"
+    },
+    {
+      "name": "calendar-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "calendar"
+      ],
+      "status": "tombstoned",
+      "demoPath": null,
+      "quality": "informational"
+    },
+    {
+      "name": "card-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "card"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/card-demo.html"
+    },
+    {
+      "name": "card-small",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "card"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/card-small.html"
+    },
+    {
+      "name": "card-spacing",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "card"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/card-spacing.html"
+    },
+    {
+      "name": "card-edge-to-edge",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "card"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/card-edge-to-edge.html"
+    },
+    {
+      "name": "card-image",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "card"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/card-image.html"
+    },
+    {
+      "name": "card-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "card",
+        "direction",
+        "rtl"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/card-rtl.html"
+    },
+    {
+      "name": "carousel-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "carousel"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/carousel-demo.html"
+    },
+    {
+      "name": "carousel-size",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "carousel"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/carousel-size.html"
+    },
+    {
+      "name": "carousel-spacing",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "carousel"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/carousel-spacing.html"
+    },
+    {
+      "name": "carousel-orientation",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "carousel"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/carousel-orientation.html"
+    },
+    {
+      "name": "carousel-api",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "carousel"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/carousel-api.html"
+    },
+    {
+      "name": "carousel-plugin",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "carousel"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/carousel-plugin.html"
+    },
+    {
+      "name": "carousel-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "carousel"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/carousel-rtl.html"
+    },
+    {
+      "name": "chart-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "chart"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "chart-example",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "chart"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "chart-example-grid",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "chart"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "chart-example-axis",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "chart"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "chart-example-tooltip",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "chart"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "chart-example-legend",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "chart"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "chart-tooltip",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "chart"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "chart-rtl",
+      "styleName": "base-nova",
+      "description": null,
+      "hostPages": [
+        "chart"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "checkbox-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "checkbox"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/checkbox-demo.html"
+    },
+    {
+      "name": "checkbox-invalid",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "checkbox"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/checkbox-invalid.html"
+    },
+    {
+      "name": "checkbox-basic",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "checkbox"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/checkbox-basic.html"
+    },
+    {
+      "name": "checkbox-description",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "checkbox"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/checkbox-description.html"
+    },
+    {
+      "name": "checkbox-disabled",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "checkbox"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/checkbox-disabled.html"
+    },
+    {
+      "name": "checkbox-group",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "checkbox"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/checkbox-group.html"
+    },
+    {
+      "name": "checkbox-table",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "checkbox"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/checkbox-table.html"
+    },
+    {
+      "name": "checkbox-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "checkbox"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/checkbox-rtl.html"
+    },
+    {
+      "name": "collapsible-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "collapsible"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/collapsible-demo.html"
+    },
+    {
+      "name": "collapsible-basic",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "collapsible"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/collapsible-basic.html"
+    },
+    {
+      "name": "collapsible-settings",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "collapsible"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/collapsible-settings.html"
+    },
+    {
+      "name": "collapsible-file-tree",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "collapsible"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/collapsible-file-tree.html"
+    },
+    {
+      "name": "collapsible-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "collapsible"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/collapsible-rtl.html"
+    },
+    {
+      "name": "combobox-demo",
+      "styleName": "base-nova",
+      "description": "A combobox with a list of frameworks.",
+      "hostPages": [
+        "combobox"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "combobox-basic",
+      "styleName": "base-nova",
+      "description": null,
+      "hostPages": [
+        "combobox"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "combobox-multiple",
+      "styleName": "base-nova",
+      "description": null,
+      "hostPages": [
+        "combobox"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "combobox-clear",
+      "styleName": "base-nova",
+      "description": null,
+      "hostPages": [
+        "combobox"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "combobox-groups",
+      "styleName": "base-nova",
+      "description": null,
+      "hostPages": [
+        "combobox"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "combobox-custom",
+      "styleName": "base-nova",
+      "description": null,
+      "hostPages": [
+        "combobox"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "combobox-invalid",
+      "styleName": "base-nova",
+      "description": null,
+      "hostPages": [
+        "combobox"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "combobox-disabled",
+      "styleName": "base-nova",
+      "description": null,
+      "hostPages": [
+        "combobox"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "combobox-auto-highlight",
+      "styleName": "base-nova",
+      "description": null,
+      "hostPages": [
+        "combobox"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "combobox-popup",
+      "styleName": "base-nova",
+      "description": null,
+      "hostPages": [
+        "combobox"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "combobox-input-group",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "combobox"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "combobox-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "combobox"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "command-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "command"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "command-basic",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "command"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "command-shortcuts",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "command"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "command-groups",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "command"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "command-scrollable",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "command"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "command-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "command"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "context-menu-demo",
+      "styleName": "radix-nova",
+      "description": "A context menu with sub menu items.",
+      "hostPages": [
+        "context-menu"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/context-menu.html"
+    },
+    {
+      "name": "context-menu-basic",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "context-menu"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/context-menu-basic.html"
+    },
+    {
+      "name": "context-menu-submenu",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "context-menu"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/context-menu-submenu.html"
+    },
+    {
+      "name": "context-menu-shortcuts",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "context-menu"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/context-menu-shortcuts.html"
+    },
+    {
+      "name": "context-menu-groups",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "context-menu"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/context-menu-groups.html"
+    },
+    {
+      "name": "context-menu-icons",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "context-menu"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/context-menu-icons.html"
+    },
+    {
+      "name": "context-menu-checkboxes",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "context-menu"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/context-menu-checkboxes.html"
+    },
+    {
+      "name": "context-menu-radio",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "context-menu"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/context-menu-radio.html"
+    },
+    {
+      "name": "context-menu-destructive",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "context-menu"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/context-menu-destructive.html"
+    },
+    {
+      "name": "context-menu-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "context-menu"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/context-menu-rtl.html"
+    },
+    {
+      "name": "data-table-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "data-table"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "data-table-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "data-table"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "date-picker-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "date-picker"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "date-picker-basic",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "date-picker"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "date-picker-range",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "date-picker"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "date-picker-dob",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "date-picker"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "date-picker-input",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "date-picker"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "date-picker-time",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "date-picker"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "date-picker-natural-language",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "date-picker"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "date-picker-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "date-picker"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "dialog-demo",
+      "styleName": "radix-nova",
+      "description": "A dialog for editing profile details.",
+      "hostPages": [
+        "dialog"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/dialog.html"
+    },
+    {
+      "name": "dialog-close-button",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "dialog"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/dialog-close-button.html"
+    },
+    {
+      "name": "dialog-no-close-button",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "dialog"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/dialog-no-close-button.html"
+    },
+    {
+      "name": "dialog-sticky-footer",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "dialog"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/dialog-sticky-footer.html"
+    },
+    {
+      "name": "dialog-scrollable-content",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "dialog"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/dialog-scrollable-content.html"
+    },
+    {
+      "name": "dialog-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "dialog"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/dialog-rtl.html"
+    },
+    {
+      "name": "drawer-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "drawer"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "drawer-scrollable-content",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "drawer"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "drawer-sides",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "drawer"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "drawer-dialog",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "drawer"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "drawer-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "drawer"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "dropdown-menu-demo",
+      "styleName": "radix-nova",
+      "description": "A dropdown menu with icons, shortcuts and sub menu items.",
+      "hostPages": [
+        "dropdown-menu"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/dropdown-menu.html"
+    },
+    {
+      "name": "dropdown-menu-basic",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "dropdown-menu"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/dropdown-menu-basic.html"
+    },
+    {
+      "name": "dropdown-menu-submenu",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "dropdown-menu"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/dropdown-menu-submenu.html"
+    },
+    {
+      "name": "dropdown-menu-shortcuts",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "dropdown-menu"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/dropdown-menu-shortcuts.html"
+    },
+    {
+      "name": "dropdown-menu-icons",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "dropdown-menu"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/dropdown-menu-icons.html"
+    },
+    {
+      "name": "dropdown-menu-checkboxes",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "dropdown-menu"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/dropdown-menu-checkboxes.html"
+    },
+    {
+      "name": "dropdown-menu-checkboxes-icons",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "dropdown-menu"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/dropdown-menu-checkboxes-icons.html"
+    },
+    {
+      "name": "dropdown-menu-radio-group",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "dropdown-menu"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/dropdown-menu-radio-group.html"
+    },
+    {
+      "name": "dropdown-menu-radio-icons",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "dropdown-menu"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/dropdown-menu-radio-icons.html"
+    },
+    {
+      "name": "dropdown-menu-destructive",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "dropdown-menu"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/dropdown-menu-destructive.html"
+    },
+    {
+      "name": "dropdown-menu-avatar",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "dropdown-menu"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/dropdown-menu-avatar.html"
+    },
+    {
+      "name": "dropdown-menu-complex",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "dropdown-menu"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/dropdown-menu-complex.html"
+    },
+    {
+      "name": "dropdown-menu-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "dropdown-menu"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/dropdown-menu-rtl.html"
+    },
+    {
+      "name": "empty-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "empty"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/empty-demo.html"
+    },
+    {
+      "name": "empty-outline",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "empty"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/empty-outline.html"
+    },
+    {
+      "name": "empty-background",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "empty"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/empty-background.html"
+    },
+    {
+      "name": "empty-avatar",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "empty"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/empty-avatar.html"
+    },
+    {
+      "name": "empty-avatar-group",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "empty"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/empty-avatar-group.html"
+    },
+    {
+      "name": "empty-input-group",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "empty"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/empty-input-group.html"
+    },
+    {
+      "name": "empty-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "empty"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/empty-rtl.html"
+    },
+    {
+      "name": "field-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "field",
+        "label"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/field-demo.html"
+    },
+    {
+      "name": "field-input",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "field"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/field-input.html"
+    },
+    {
+      "name": "field-textarea",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "field"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/field-textarea.html"
+    },
+    {
+      "name": "field-select",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "field"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/field-select.html"
+    },
+    {
+      "name": "field-slider",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "field"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/field-slider.html"
+    },
+    {
+      "name": "field-fieldset",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "field"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/field-fieldset.html"
+    },
+    {
+      "name": "field-checkbox",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "field"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/field-checkbox.html"
+    },
+    {
+      "name": "field-radio",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "field"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/field-radio.html"
+    },
+    {
+      "name": "field-switch",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "field"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/field-switch.html"
+    },
+    {
+      "name": "field-choice-card",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "field"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/field-choice-card.html"
+    },
+    {
+      "name": "field-group",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "field"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/field-group.html"
+    },
+    {
+      "name": "field-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "field"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/field-rtl.html"
+    },
+    {
+      "name": "field-responsive",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "field"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/field-responsive.html"
+    },
+    {
+      "name": "hover-card-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "hover-card"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/hover-card.html"
+    },
+    {
+      "name": "hover-card-sides",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "hover-card"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/hover-card-sides.html"
+    },
+    {
+      "name": "hover-card-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "hover-card"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/hover-card-rtl.html"
+    },
+    {
+      "name": "input-group-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-group-demo.html"
+    },
+    {
+      "name": "input-group-inline-start",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-group-inline-start.html"
+    },
+    {
+      "name": "input-group-inline-end",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-group-inline-end.html"
+    },
+    {
+      "name": "input-group-block-start",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-group-block-start.html"
+    },
+    {
+      "name": "input-group-block-end",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-group-block-end.html"
+    },
+    {
+      "name": "input-group-icon",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-group-icon.html"
+    },
+    {
+      "name": "input-group-text",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-group-text.html"
+    },
+    {
+      "name": "input-group-button",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-group-button.html"
+    },
+    {
+      "name": "input-group-kbd",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-group-kbd.html"
+    },
+    {
+      "name": "input-group-dropdown",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-group-dropdown.html"
+    },
+    {
+      "name": "input-group-spinner",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-group-spinner.html"
+    },
+    {
+      "name": "input-group-textarea",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-group-textarea.html"
+    },
+    {
+      "name": "input-group-custom",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-group-custom.html"
+    },
+    {
+      "name": "input-group-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-group-rtl.html"
+    },
+    {
+      "name": "input-otp-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-otp"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "input-otp-pattern",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-otp"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "input-otp-separator",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-otp"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "input-otp-disabled",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-otp"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "input-otp-controlled",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-otp"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "input-otp-invalid",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-otp"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "input-otp-four-digits",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-otp"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "input-otp-alphanumeric",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-otp"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "input-otp-form",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-otp"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "input-otp-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input-otp"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "input-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-demo.html"
+    },
+    {
+      "name": "input-basic",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-basic.html"
+    },
+    {
+      "name": "input-field",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-field.html"
+    },
+    {
+      "name": "input-fieldgroup",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-fieldgroup.html"
+    },
+    {
+      "name": "input-disabled",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-disabled.html"
+    },
+    {
+      "name": "input-invalid",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-invalid.html"
+    },
+    {
+      "name": "input-file",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-file.html"
+    },
+    {
+      "name": "input-inline",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-inline.html"
+    },
+    {
+      "name": "input-grid",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-grid.html"
+    },
+    {
+      "name": "input-required",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-required.html"
+    },
+    {
+      "name": "input-badge",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-badge.html"
+    },
+    {
+      "name": "input-input-group",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-input-group.html"
+    },
+    {
+      "name": "input-button-group",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-button-group.html"
+    },
+    {
+      "name": "input-form",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-form.html"
+    },
+    {
+      "name": "input-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "input"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/input-rtl.html"
+    },
+    {
+      "name": "item-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "item"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/item-demo.html"
+    },
+    {
+      "name": "item-variant",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "item"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/item-variant.html"
+    },
+    {
+      "name": "item-size",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "item"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/item-size.html"
+    },
+    {
+      "name": "item-icon",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "item"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/item-icon.html"
+    },
+    {
+      "name": "item-avatar",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "item"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/item-avatar.html"
+    },
+    {
+      "name": "item-image",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "item"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/item-image.html"
+    },
+    {
+      "name": "item-group",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "item"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/item-group.html"
+    },
+    {
+      "name": "item-header",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "item"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/item-header.html"
+    },
+    {
+      "name": "item-link",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "item"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/item-link.html"
+    },
+    {
+      "name": "item-dropdown",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "item"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/item-dropdown.html"
+    },
+    {
+      "name": "item-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "item"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/item-rtl.html"
+    },
+    {
+      "name": "kbd-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "kbd"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/kbd-demo.html"
+    },
+    {
+      "name": "kbd-group",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "kbd"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/kbd-group.html"
+    },
+    {
+      "name": "kbd-button",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "kbd"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/kbd-button.html"
+    },
+    {
+      "name": "kbd-tooltip",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "kbd"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/kbd-tooltip.html"
+    },
+    {
+      "name": "kbd-input-group",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "kbd"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/kbd-input-group.html"
+    },
+    {
+      "name": "kbd-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "kbd"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/kbd-rtl.html"
+    },
+    {
+      "name": "label-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "label"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/label-demo.html"
+    },
+    {
+      "name": "label-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "label"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/label-rtl.html"
+    },
+    {
+      "name": "marker-demo",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "marker"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/marker-demo.html"
+    },
+    {
+      "name": "marker-variants",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "marker"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/marker-variants.html"
+    },
+    {
+      "name": "marker-status",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "marker"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/marker-status.html"
+    },
+    {
+      "name": "marker-shimmer",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "marker"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/marker-shimmer.html"
+    },
+    {
+      "name": "marker-separator",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "marker"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/marker-separator.html"
+    },
+    {
+      "name": "marker-border",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "marker"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/marker-border.html"
+    },
+    {
+      "name": "marker-icon",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "marker"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/marker-icon.html"
+    },
+    {
+      "name": "marker-link-button",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "marker"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/marker-link-button.html"
+    },
+    {
+      "name": "menubar-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "menubar"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/menubar-demo.html"
+    },
+    {
+      "name": "menubar-checkbox",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "menubar"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/menubar-checkbox.html"
+    },
+    {
+      "name": "menubar-radio",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "menubar"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/menubar-radio.html"
+    },
+    {
+      "name": "menubar-submenu",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "menubar"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/menubar-submenu.html"
+    },
+    {
+      "name": "menubar-icons",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "menubar"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/menubar-icons.html"
+    },
+    {
+      "name": "menubar-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "menubar"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/menubar-rtl.html"
+    },
+    {
+      "name": "message-scroller-demo",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "message-scroller"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/message-scroller.html"
+    },
+    {
+      "name": "message-scroller-anchoring",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "message-scroller"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/message-scroller-anchoring.html"
+    },
+    {
+      "name": "message-scroller-group-chat",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "message-scroller"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/message-scroller-group-chat.html"
+    },
+    {
+      "name": "message-scroller-previous-context",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "message-scroller"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/message-scroller-previous-context.html"
+    },
+    {
+      "name": "message-scroller-streaming",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "message-scroller"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/message-scroller-streaming.html"
+    },
+    {
+      "name": "message-scroller-opening-position",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "message-scroller"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/message-scroller-opening-position.html"
+    },
+    {
+      "name": "message-scroller-load-history",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "message-scroller"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/message-scroller-load-history.html"
+    },
+    {
+      "name": "message-scroller-animation",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "message-scroller"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/message-scroller-animation.html"
+    },
+    {
+      "name": "message-scroller-commands",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "message-scroller"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/message-scroller-commands.html"
+    },
+    {
+      "name": "message-scroller-visibility",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "message-scroller"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/message-scroller-visibility.html"
+    },
+    {
+      "name": "message-scroller-scrollable",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "message-scroller"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/message-scroller-scrollable.html"
+    },
+    {
+      "name": "message-demo",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "message"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/message-demo.html"
+    },
+    {
+      "name": "message-avatar",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "message"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/message-avatar.html"
+    },
+    {
+      "name": "message-group",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "message"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/message-group.html"
+    },
+    {
+      "name": "message-header-footer",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "message"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/message-header-footer.html"
+    },
+    {
+      "name": "message-actions",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "message"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/message-actions.html"
+    },
+    {
+      "name": "message-attachment",
+      "styleName": "radix-rhea",
+      "description": null,
+      "hostPages": [
+        "message"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/message-attachment.html"
+    },
+    {
+      "name": "native-select-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "native-select"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/native-select-demo.html"
+    },
+    {
+      "name": "native-select-groups",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "native-select"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/native-select-groups.html"
+    },
+    {
+      "name": "native-select-disabled",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "native-select"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/native-select-disabled.html"
+    },
+    {
+      "name": "native-select-invalid",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "native-select"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/native-select-invalid.html"
+    },
+    {
+      "name": "native-select-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "native-select"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/native-select-rtl.html"
+    },
+    {
+      "name": "navigation-menu-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "navigation-menu"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/navigation-menu-demo.html"
+    },
+    {
+      "name": "navigation-menu-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "navigation-menu"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "pagination-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "pagination"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/pagination-demo.html"
+    },
+    {
+      "name": "pagination-simple",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "pagination"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/pagination-simple.html"
+    },
+    {
+      "name": "pagination-icons-only",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "pagination"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/pagination-icons-only.html"
+    },
+    {
+      "name": "pagination-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "pagination"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/pagination-rtl.html"
+    },
+    {
+      "name": "popover-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "popover"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/popover.html"
+    },
+    {
+      "name": "popover-basic",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "popover"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/popover-basic.html"
+    },
+    {
+      "name": "popover-alignments",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "popover"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/popover-alignments.html"
+    },
+    {
+      "name": "popover-form",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "popover"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/popover-form.html"
+    },
+    {
+      "name": "popover-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "popover"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/popover-rtl.html"
+    },
+    {
+      "name": "progress-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "progress"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/progress-demo.html"
+    },
+    {
+      "name": "progress-label",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "progress"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/progress-label.html"
+    },
+    {
+      "name": "progress-controlled",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "progress"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/progress-controlled.html"
+    },
+    {
+      "name": "progress-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "progress"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/progress-rtl.html"
+    },
+    {
+      "name": "questionnaire-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "questionnaire"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "questionnaire-multiple",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "questionnaire"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "questionnaire-freeform",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "questionnaire"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "questionnaire-skip",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "questionnaire"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "questionnaire-shortcuts",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "questionnaire"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "questionnaire-validation",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "questionnaire"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "questionnaire-controlled",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "questionnaire"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "questionnaire-resume",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "questionnaire"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "questionnaire-conditional",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "questionnaire"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "questionnaire-navigation-state",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "questionnaire"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "questionnaire-progress",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "questionnaire"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "questionnaire-animated",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "questionnaire"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "questionnaire-card",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "questionnaire"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "questionnaire-dialog",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "questionnaire"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "radio-group-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "radio-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/radio-group-demo.html"
+    },
+    {
+      "name": "radio-group-description",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "radio-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/radio-group-description.html"
+    },
+    {
+      "name": "radio-group-choice-card",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "radio-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/radio-group-choice-card.html"
+    },
+    {
+      "name": "radio-group-fieldset",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "radio-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/radio-group-fieldset.html"
+    },
+    {
+      "name": "radio-group-disabled",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "radio-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/radio-group-disabled.html"
+    },
+    {
+      "name": "radio-group-invalid",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "radio-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/radio-group-invalid.html"
+    },
+    {
+      "name": "radio-group-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "radio-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/radio-group-rtl.html"
+    },
+    {
+      "name": "resizable-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "resizable"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "resizable-vertical",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "resizable"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "resizable-handle",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "resizable"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "resizable-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "resizable"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "scroll-area-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "scroll-area"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/scroll-area.html"
+    },
+    {
+      "name": "scroll-area-horizontal-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "scroll-area"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/scroll-area-horizontal-demo.html"
+    },
+    {
+      "name": "scroll-area-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "scroll-area"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/scroll-area-rtl.html"
+    },
+    {
+      "name": "select-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "select"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/select.html"
+    },
+    {
+      "name": "select-align-item",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "select"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/select-align-item.html"
+    },
+    {
+      "name": "select-groups",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "select"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/select-groups.html"
+    },
+    {
+      "name": "select-scrollable",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "select"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/select-scrollable.html"
+    },
+    {
+      "name": "select-disabled",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "select"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/select-disabled.html"
+    },
+    {
+      "name": "select-invalid",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "select"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/select-invalid.html"
+    },
+    {
+      "name": "select-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "select"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/select-rtl.html"
+    },
+    {
+      "name": "separator-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "separator"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/separator-demo.html"
+    },
+    {
+      "name": "separator-vertical",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "separator"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/separator-vertical.html"
+    },
+    {
+      "name": "separator-menu",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "separator"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/separator-menu.html"
+    },
+    {
+      "name": "separator-list",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "separator"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/separator-list.html"
+    },
+    {
+      "name": "separator-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "separator"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/separator-rtl.html"
+    },
+    {
+      "name": "sheet-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "sheet"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/sheet.html"
+    },
+    {
+      "name": "sheet-side",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "sheet"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/sheet-side.html"
+    },
+    {
+      "name": "sheet-no-close-button",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "sheet"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/sheet-no-close-button.html"
+    },
+    {
+      "name": "sheet-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "sheet"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/sheet-rtl.html"
+    },
+    {
+      "name": "sidebar-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "sidebar"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "skeleton-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "skeleton"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/skeleton-demo.html"
+    },
+    {
+      "name": "skeleton-avatar",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "skeleton"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/skeleton-avatar.html"
+    },
+    {
+      "name": "skeleton-card",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "skeleton"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/skeleton-card.html"
+    },
+    {
+      "name": "skeleton-text",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "skeleton"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/skeleton-text.html"
+    },
+    {
+      "name": "skeleton-form",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "skeleton"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/skeleton-form.html"
+    },
+    {
+      "name": "skeleton-table",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "skeleton"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/skeleton-table.html"
+    },
+    {
+      "name": "skeleton-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "skeleton"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/skeleton-rtl.html"
+    },
+    {
+      "name": "slider-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "slider"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/slider.html"
+    },
+    {
+      "name": "slider-range",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "slider"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/slider-range.html"
+    },
+    {
+      "name": "slider-multiple",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "slider"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/slider-multiple.html"
+    },
+    {
+      "name": "slider-vertical",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "slider"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/slider-vertical.html"
+    },
+    {
+      "name": "slider-controlled",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "slider"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/slider-controlled.html"
+    },
+    {
+      "name": "slider-disabled",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "slider"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/slider-disabled.html"
+    },
+    {
+      "name": "slider-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "slider"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/slider-rtl.html"
+    },
+    {
+      "name": "sonner-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "sonner"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "sonner-types",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "sonner"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "sonner-description",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "sonner"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "sonner-position",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "sonner"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "spinner-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "spinner"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/spinner-demo.html"
+    },
+    {
+      "name": "spinner-custom",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "spinner"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/spinner-custom.html"
+    },
+    {
+      "name": "spinner-size",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "spinner"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/spinner-size.html"
+    },
+    {
+      "name": "spinner-button",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "spinner"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/spinner-button.html"
+    },
+    {
+      "name": "spinner-badge",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "spinner"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/spinner-badge.html"
+    },
+    {
+      "name": "spinner-input-group",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "spinner"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/spinner-input-group.html"
+    },
+    {
+      "name": "spinner-empty",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "spinner"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/spinner-empty.html"
+    },
+    {
+      "name": "spinner-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "spinner"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/spinner-rtl.html"
+    },
+    {
+      "name": "switch-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "switch"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/switch-demo.html"
+    },
+    {
+      "name": "switch-description",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "switch"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/switch-description.html"
+    },
+    {
+      "name": "switch-choice-card",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "switch"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/switch-choice-card.html"
+    },
+    {
+      "name": "switch-disabled",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "switch"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/switch-disabled.html"
+    },
+    {
+      "name": "switch-invalid",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "switch"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/switch-invalid.html"
+    },
+    {
+      "name": "switch-sizes",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "switch"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/switch-sizes.html"
+    },
+    {
+      "name": "switch-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "switch"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/switch-rtl.html"
+    },
+    {
+      "name": "table-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "table"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/table-demo.html"
+    },
+    {
+      "name": "table-footer",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "table"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/table-footer.html"
+    },
+    {
+      "name": "table-actions",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "table"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/table-actions.html"
+    },
+    {
+      "name": "table-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "table"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/table-rtl.html"
+    },
+    {
+      "name": "tabs-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "tabs"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/tabs.html"
+    },
+    {
+      "name": "tabs-line",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "tabs"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/tabs-line.html"
+    },
+    {
+      "name": "tabs-vertical",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "tabs"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/tabs-vertical.html"
+    },
+    {
+      "name": "tabs-disabled",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "tabs"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/tabs-disabled.html"
+    },
+    {
+      "name": "tabs-icons",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "tabs"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/tabs-icons.html"
+    },
+    {
+      "name": "tabs-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "tabs"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/tabs-rtl.html"
+    },
+    {
+      "name": "textarea-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "textarea"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/textarea-demo.html"
+    },
+    {
+      "name": "textarea-field",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "textarea"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/textarea-field.html"
+    },
+    {
+      "name": "textarea-disabled",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "textarea"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/textarea-disabled.html"
+    },
+    {
+      "name": "textarea-invalid",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "textarea"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/textarea-invalid.html"
+    },
+    {
+      "name": "textarea-button",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "textarea"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/textarea-button.html"
+    },
+    {
+      "name": "textarea-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "textarea"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/textarea-rtl.html"
+    },
+    {
+      "name": "toggle-group-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "toggle-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/toggle-group-demo.html"
+    },
+    {
+      "name": "toggle-group-outline",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "toggle-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/toggle-group-outline.html"
+    },
+    {
+      "name": "toggle-group-sizes",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "toggle-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/toggle-group-sizes.html"
+    },
+    {
+      "name": "toggle-group-spacing",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "toggle-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/toggle-group-spacing.html"
+    },
+    {
+      "name": "toggle-group-vertical",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "toggle-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/toggle-group-vertical.html"
+    },
+    {
+      "name": "toggle-group-disabled",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "toggle-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/toggle-group-disabled.html"
+    },
+    {
+      "name": "toggle-group-font-weight-selector",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "toggle-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/toggle-group-font-weight-selector.html"
+    },
+    {
+      "name": "toggle-group-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "toggle-group"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/toggle-group-rtl.html"
+    },
+    {
+      "name": "toggle-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "toggle"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/toggle-demo.html"
+    },
+    {
+      "name": "toggle-outline",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "toggle"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/toggle-outline.html"
+    },
+    {
+      "name": "toggle-text",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "toggle"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/toggle-text.html"
+    },
+    {
+      "name": "toggle-sizes",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "toggle"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/toggle-sizes.html"
+    },
+    {
+      "name": "toggle-disabled",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "toggle"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/toggle-disabled.html"
+    },
+    {
+      "name": "toggle-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "toggle"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/toggle-rtl.html"
+    },
+    {
+      "name": "tooltip-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "tooltip"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/tooltip.html"
+    },
+    {
+      "name": "tooltip-sides",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "tooltip"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/tooltip-sides.html"
+    },
+    {
+      "name": "tooltip-keyboard",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "tooltip"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/tooltip-keyboard.html"
+    },
+    {
+      "name": "tooltip-disabled",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "tooltip"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/tooltip-disabled.html"
+    },
+    {
+      "name": "tooltip-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "tooltip"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/tooltip-rtl.html"
+    },
+    {
+      "name": "typography-demo",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "typography"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "typography-h1",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "typography"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "typography-h2",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "typography"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "typography-h3",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "typography"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "typography-h4",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "typography"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "typography-p",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "typography"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "typography-blockquote",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "typography"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "typography-table",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "typography"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "typography-list",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "typography"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "typography-inline-code",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "typography"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "typography-lead",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "typography"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "typography-large",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "typography"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "typography-small",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "typography"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "typography-muted",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "typography"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "typography-rtl",
+      "styleName": "radix-nova",
+      "description": null,
+      "hostPages": [
+        "typography"
+      ],
+      "status": "tombstoned",
+      "demoPath": null
+    },
+    {
+      "name": "mode-toggle",
+      "hostPages": [
+        "dark-mode"
+      ],
+      "status": "authored",
+      "demoPath": "docs/demos/mode-toggle.html"
+    },
+    {
+      "name": "shimmer-demo",
+      "styleName": "base-rhea",
+      "hostPages": [
+        "shimmer"
+      ],
+      "status": "unavailable",
+      "demoPath": null
+    },
+    {
+      "name": "shimmer-marker",
+      "styleName": "base-rhea",
+      "hostPages": [
+        "shimmer"
+      ],
+      "status": "unavailable",
+      "demoPath": null
+    },
+    {
+      "name": "shimmer-color",
+      "styleName": "base-rhea",
+      "hostPages": [
+        "shimmer"
+      ],
+      "status": "unavailable",
+      "demoPath": null
+    },
+    {
+      "name": "shimmer-duration",
+      "styleName": "base-rhea",
+      "hostPages": [
+        "shimmer"
+      ],
+      "status": "unavailable",
+      "demoPath": null
+    },
+    {
+      "name": "shimmer-spread",
+      "styleName": "base-rhea",
+      "hostPages": [
+        "shimmer"
+      ],
+      "status": "unavailable",
+      "demoPath": null
+    },
+    {
+      "name": "shimmer-angle",
+      "styleName": "base-rhea",
+      "hostPages": [
+        "shimmer"
+      ],
+      "status": "unavailable",
+      "demoPath": null
+    },
+    {
+      "name": "shimmer-once",
+      "styleName": "base-rhea",
+      "hostPages": [
+        "shimmer"
+      ],
+      "status": "unavailable",
+      "demoPath": null
+    },
+    {
+      "name": "shimmer-none",
+      "styleName": "base-rhea",
+      "hostPages": [
+        "shimmer"
+      ],
+      "status": "unavailable",
+      "demoPath": null
+    },
+    {
+      "name": "shimmer-rtl",
+      "styleName": "base-rhea",
+      "hostPages": [
+        "shimmer"
+      ],
+      "status": "unavailable",
+      "demoPath": null
+    },
+    {
+      "name": "scroll-fade-demo",
+      "styleName": "base-rhea",
+      "hostPages": [
+        "scroll-fade"
+      ],
+      "status": "unavailable",
+      "demoPath": null
+    },
+    {
+      "name": "scroll-fade-overflow",
+      "styleName": "base-rhea",
+      "hostPages": [
+        "scroll-fade"
+      ],
+      "status": "unavailable",
+      "demoPath": null
+    },
+    {
+      "name": "scroll-fade-horizontal",
+      "styleName": "base-rhea",
+      "hostPages": [
+        "scroll-fade"
+      ],
+      "status": "unavailable",
+      "demoPath": null
+    },
+    {
+      "name": "scroll-fade-edge",
+      "styleName": "base-rhea",
+      "hostPages": [
+        "scroll-fade"
+      ],
+      "status": "unavailable",
+      "demoPath": null
+    },
+    {
+      "name": "scroll-fade-size",
+      "styleName": "base-rhea",
+      "hostPages": [
+        "scroll-fade"
+      ],
+      "status": "unavailable",
+      "demoPath": null
+    },
+    {
+      "name": "scroll-fade-none",
+      "styleName": "base-rhea",
+      "hostPages": [
+        "scroll-fade"
+      ],
+      "status": "unavailable",
+      "demoPath": null
+    },
+    {
+      "name": "scroll-fade-rtl",
+      "styleName": "base-nova",
+      "hostPages": [
+        "scroll-fade"
+      ],
+      "status": "unavailable",
+      "demoPath": null
+    },
+    {
+      "name": "ai-sdk-helper-demo",
+      "styleName": "base-rhea",
+      "hostPages": [
+        "ai-sdk"
+      ],
+      "status": "unavailable",
+      "demoPath": null
+    },
+    {
+      "name": "tanstack-ai-helper-demo",
+      "styleName": "base-rhea",
+      "hostPages": [
+        "tanstack-ai"
+      ],
+      "status": "unavailable",
+      "demoPath": null
+    }
+  ],
+  "sources": [
+    {
+      "name": "accordion",
+      "hostPages": [
+        "accordion"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/accordion.html"
+    },
+    {
+      "name": "alert-dialog",
+      "hostPages": [
+        "alert-dialog"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/alert-dialog.html"
+    },
+    {
+      "name": "alert",
+      "hostPages": [
+        "alert"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/alert.html"
+    },
+    {
+      "name": "aspect-ratio",
+      "hostPages": [
+        "aspect-ratio"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/aspect-ratio.html"
+    },
+    {
+      "name": "attachment",
+      "hostPages": [
+        "attachment"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/attachment.html"
+    },
+    {
+      "name": "avatar",
+      "hostPages": [
+        "avatar"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/avatar.html"
+    },
+    {
+      "name": "badge",
+      "hostPages": [
+        "badge"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/badge.html"
+    },
+    {
+      "name": "breadcrumb",
+      "hostPages": [
+        "breadcrumb"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/breadcrumb.html"
+    },
+    {
+      "name": "bubble",
+      "hostPages": [
+        "bubble"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/bubble.html"
+    },
+    {
+      "name": "button-group",
+      "hostPages": [
+        "button-group"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/button-group.html"
+    },
+    {
+      "name": "button",
+      "hostPages": [
+        "button"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/button.html"
+    },
+    {
+      "name": "calendar",
+      "hostPages": [
+        "calendar"
+      ],
+      "status": "no-dist",
+      "demoPath": null
+    },
+    {
+      "name": "card",
+      "hostPages": [
+        "card"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/card.html"
+    },
+    {
+      "name": "carousel",
+      "hostPages": [
+        "carousel"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/carousel.html"
+    },
+    {
+      "name": "chart",
+      "hostPages": [
+        "chart"
+      ],
+      "status": "no-dist",
+      "demoPath": null
+    },
+    {
+      "name": "checkbox",
+      "hostPages": [
+        "checkbox"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/checkbox.html"
+    },
+    {
+      "name": "collapsible",
+      "hostPages": [
+        "collapsible"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/collapsible.html"
+    },
+    {
+      "name": "combobox",
+      "hostPages": [
+        "combobox"
+      ],
+      "status": "no-dist",
+      "demoPath": null
+    },
+    {
+      "name": "command",
+      "hostPages": [
+        "command"
+      ],
+      "status": "no-dist",
+      "demoPath": null
+    },
+    {
+      "name": "context-menu",
+      "hostPages": [
+        "context-menu"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/context-menu.html"
+    },
+    {
+      "name": "dialog",
+      "hostPages": [
+        "dialog"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/dialog.html"
+    },
+    {
+      "name": "direction",
+      "hostPages": [
+        "direction"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/direction.html"
+    },
+    {
+      "name": "drawer",
+      "hostPages": [
+        "drawer"
+      ],
+      "status": "no-dist",
+      "demoPath": null
+    },
+    {
+      "name": "dropdown-menu",
+      "hostPages": [
+        "dropdown-menu"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/dropdown-menu.html"
+    },
+    {
+      "name": "empty",
+      "hostPages": [
+        "empty"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/empty.html"
+    },
+    {
+      "name": "field",
+      "hostPages": [
+        "field"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/field.html"
+    },
+    {
+      "name": "hover-card",
+      "hostPages": [
+        "hover-card"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/hover-card.html"
+    },
+    {
+      "name": "input-group",
+      "hostPages": [
+        "input-group"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/input-group.html"
+    },
+    {
+      "name": "input-otp",
+      "hostPages": [
+        "input-otp"
+      ],
+      "status": "no-dist",
+      "demoPath": null
+    },
+    {
+      "name": "input",
+      "hostPages": [
+        "input"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/input.html"
+    },
+    {
+      "name": "item",
+      "hostPages": [
+        "item"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/item.html"
+    },
+    {
+      "name": "kbd",
+      "hostPages": [
+        "kbd"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/kbd.html"
+    },
+    {
+      "name": "label",
+      "hostPages": [
+        "label"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/label.html"
+    },
+    {
+      "name": "marker",
+      "hostPages": [
+        "marker"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/marker.html"
+    },
+    {
+      "name": "menubar",
+      "hostPages": [
+        "menubar"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/menubar.html"
+    },
+    {
+      "name": "message-scroller",
+      "hostPages": [
+        "message-scroller"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/message-scroller.html"
+    },
+    {
+      "name": "message",
+      "hostPages": [
+        "message"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/message.html"
+    },
+    {
+      "name": "native-select",
+      "hostPages": [
+        "native-select"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/native-select.html"
+    },
+    {
+      "name": "navigation-menu",
+      "hostPages": [
+        "navigation-menu"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/navigation-menu.html"
+    },
+    {
+      "name": "pagination",
+      "hostPages": [
+        "pagination"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/pagination.html"
+    },
+    {
+      "name": "popover",
+      "hostPages": [
+        "popover"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/popover.html"
+    },
+    {
+      "name": "progress",
+      "hostPages": [
+        "progress"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/progress.html"
+    },
+    {
+      "name": "questionnaire",
+      "hostPages": [
+        "questionnaire"
+      ],
+      "status": "no-dist",
+      "demoPath": null
+    },
+    {
+      "name": "radio-group",
+      "hostPages": [
+        "radio-group"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/radio-group.html"
+    },
+    {
+      "name": "resizable",
+      "hostPages": [
+        "resizable"
+      ],
+      "status": "no-dist",
+      "demoPath": null
+    },
+    {
+      "name": "scroll-area",
+      "hostPages": [
+        "scroll-area"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/scroll-area.html"
+    },
+    {
+      "name": "select",
+      "hostPages": [
+        "select"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/select.html"
+    },
+    {
+      "name": "separator",
+      "hostPages": [
+        "separator"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/separator.html"
+    },
+    {
+      "name": "sheet",
+      "hostPages": [
+        "sheet"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/sheet.html"
+    },
+    {
+      "name": "sidebar",
+      "hostPages": [
+        "sidebar"
+      ],
+      "status": "no-dist",
+      "demoPath": null
+    },
+    {
+      "name": "skeleton",
+      "hostPages": [
+        "skeleton"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/skeleton.html"
+    },
+    {
+      "name": "slider",
+      "hostPages": [
+        "slider"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/slider.html"
+    },
+    {
+      "name": "sonner",
+      "hostPages": [
+        "sonner"
+      ],
+      "status": "no-dist",
+      "demoPath": null
+    },
+    {
+      "name": "spinner",
+      "hostPages": [
+        "spinner"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/spinner.html"
+    },
+    {
+      "name": "switch",
+      "hostPages": [
+        "switch"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/switch.html"
+    },
+    {
+      "name": "table",
+      "hostPages": [
+        "table"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/table.html"
+    },
+    {
+      "name": "tabs",
+      "hostPages": [
+        "tabs"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/tabs.html"
+    },
+    {
+      "name": "textarea",
+      "hostPages": [
+        "textarea"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/textarea.html"
+    },
+    {
+      "name": "toggle-group",
+      "hostPages": [
+        "toggle-group"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/toggle-group.html"
+    },
+    {
+      "name": "toggle",
+      "hostPages": [
+        "toggle"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/toggle.html"
+    },
+    {
+      "name": "tooltip",
+      "hostPages": [
+        "tooltip"
+      ],
+      "status": "existing-dist",
+      "demoPath": "dist/components/tooltip.html"
+    }
+  ],
+  "flags": [
+    {
+      "file": "data-table.mdx",
+      "kind": "ComponentSource",
+      "reason": "no name= attr",
+      "src": "/app/(app)/examples/tasks/components/data-table-column-header.tsx"
+    },
+    {
+      "file": "data-table.mdx",
+      "kind": "ComponentSource",
+      "reason": "no name= attr",
+      "src": "/app/(app)/examples/tasks/components/data-table-pagination.tsx"
+    },
+    {
+      "file": "data-table.mdx",
+      "kind": "ComponentSource",
+      "reason": "no name= attr",
+      "src": "/app/(app)/examples/tasks/components/data-table-view-options.tsx"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+<!doctype html>
+<html><head>
+<meta charset="utf-8"><title>mode-toggle</title>
+<link rel="stylesheet" href="../out.css"><script>(function(){try{var k="shadless-docs-theme";var apply=function(d){document.documentElement.classList.toggle("dark",!!d)};var s=localStorage.getItem(k);var d=s?s==="dark":matchMedia("(prefers-color-scheme: dark)").matches;apply(d);addEventListener("storage",function(e){if(e.key===k)apply(e.newValue==="dark")});}catch(e){}})();</script><link rel="stylesheet" href="../fonts.css"></head>
+<body class="p-4">
+  <span data-slot="button-group">
+    <button data-slot="button" data-variant="outline" data-size="icon" id="mt-sun" aria-label="Use light theme">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+    </button>
+    <button data-slot="button" data-variant="outline" data-size="icon" id="mt-moon" aria-label="Use dark theme">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+    </button>
+  </span>
+  <script src="../shadless.js"></script>
+  <script>
+    shadless.initAll()
+    var root = document.documentElement
+    var sun = document.getElementById("mt-sun")
+    var moon = document.getElementById("mt-moon")
+    function reflect() {
+      var dark = root.classList.contains("dark")
+      sun.setAttribute("data-state", dark ? "off" : "on")
+      moon.setAttribute("data-state", dark ? "on" : "off")
+    }
+    function toggle(target) {
+      var dark = target === "dark"
+      root.classList.toggle("dark", dark)
+      try { localStorage.setItem("shadless-docs-theme", dark ? "dark" : "light") } catch (e) {}
+      reflect()
+    }
+    sun.addEventListener("click", () => toggle("light"))
+    moon.addEventListener("click", () => toggle("dark"))
+    reflect()
+  </script>
+</body></html>

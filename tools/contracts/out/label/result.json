@@ -1,0 +1,53 @@
+{
+  "oracleOpen": {
+    "step": "oracle",
+    "label": {
+      "tag": "label",
+      "data-slot": "label",
+      "for": "in1",
+      "text": "Name"
+    },
+    "&input#in1": {
+      "tag": "input",
+      "data-slot": "input",
+      "id": "in1",
+      "text": ""
+    },
+    "activeElement": "body",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "shadlessOpen": {
+    "step": "shadless",
+    "label": {
+      "tag": "label",
+      "data-slot": "label",
+      "for": "in1",
+      "text": "Name"
+    },
+    "&input#in1": {
+      "tag": "input",
+      "data-slot": "input",
+      "id": "in1",
+      "text": ""
+    },
+    "activeElement": "body",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "oracle": {
+    "click:label": "ae=in1",
+    "focus:label+key:Tab": "ae=in2",
+    "js-click:#lb2": "ae=in2"
+  },
+  "shadless": {
+    "click:label": "ae=in1",
+    "focus:label+key:Tab": "ae=in2",
+    "js-click:#lb2": "ae=in2"
+  },
+  "pass": true
+}

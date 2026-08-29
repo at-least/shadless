@@ -1,0 +1,104 @@
+{
+  "oracleOpen": {
+    "step": "oracle",
+    "navigation-menu": {
+      "tag": "nav",
+      "aria-label": "Main",
+      "data-orientation": "horizontal",
+      "dir": "ltr",
+      "data-slot": "navigation-menu",
+      "data-viewport": "true",
+      "text": "GettingstartedComponents"
+    },
+    "navigation-menu-list": {
+      "tag": "ul",
+      "data-orientation": "horizontal",
+      "data-slot": "navigation-menu-list",
+      "dir": "ltr",
+      "text": "GettingstartedComponents"
+    },
+    "navigation-menu-trigger": {
+      "tag": "button",
+      "id": "d1-trigger",
+      "data-state": "open",
+      "aria-expanded": "true",
+      "aria-controls": "radix-_r_0_-content-radix-_r_1_",
+      "data-slot": "navigation-menu-trigger",
+      "data-radix-collection-item": "",
+      "text": "Gettingstarted"
+    },
+    "navigation-menu-viewport": {
+      "tag": "div",
+      "data-state": "open",
+      "data-orientation": "horizontal",
+      "data-slot": "navigation-menu-viewport",
+      "id": "d1-viewport",
+      "style": "--radix-navigation-menu-viewport-width: 1264px; --radix-navigation-menu-viewport-height: 18px;",
+      "text": "Documentation"
+    },
+    "activeElement": "navigation-menu-trigger",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "shadlessOpen": {
+    "step": "shadless",
+    "navigation-menu": {
+      "tag": "nav",
+      "aria-label": "Main",
+      "data-orientation": "horizontal",
+      "dir": "ltr",
+      "data-slot": "navigation-menu",
+      "data-viewport": "true",
+      "text": "GettingstartedComponents"
+    },
+    "navigation-menu-list": {
+      "tag": "ul",
+      "data-orientation": "horizontal",
+      "data-slot": "navigation-menu-list",
+      "dir": "ltr",
+      "text": "GettingstartedComponents"
+    },
+    "navigation-menu-trigger": {
+      "tag": "button",
+      "id": "d1-trigger",
+      "data-state": "open",
+      "aria-expanded": "true",
+      "aria-controls": "d1-content",
+      "data-slot": "navigation-menu-trigger",
+      "data-radix-collection-item": "",
+      "data-radixuigo-nav-trigger": "d1",
+      "text": "Gettingstarted"
+    },
+    "navigation-menu-viewport": {
+      "tag": "div",
+      "data-slot": "navigation-menu-viewport",
+      "id": "d1-viewport",
+      "data-orientation": "horizontal",
+      "data-state": "open",
+      "style": "--radix-navigation-menu-viewport-width: 240px; --radix-navigation-menu-viewport-height: 76px;",
+      "text": "Documentation"
+    },
+    "activeElement": "navigation-menu-trigger",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "oracle": {
+    "key:Escape": "vp=-|c=closed|closed/false|closed/false|ae=d1-trigger",
+    "key:Escape+key:ArrowRight": "vp=-|c=closed|closed/false|closed/false|ae=d2-trigger",
+    "key:ArrowRight": "vp=open/Documentat|c=open|open/true|closed/false|ae=d2-trigger",
+    "click:[data-slot=navigation-menu-link]": "vp=-|c=closed|closed/false|closed/false|ae=BODY",
+    "click:#d1-trigger": "vp=-|c=closed|closed/false|closed/false|ae=d1-trigger"
+  },
+  "shadless": {
+    "key:Escape": "vp=-|c=closed|closed/false|closed/false|ae=d1-trigger",
+    "key:Escape+key:ArrowRight": "vp=-|c=closed|closed/false|closed/false|ae=d2-trigger",
+    "key:ArrowRight": "vp=open/Documentat|c=open|open/true|closed/false|ae=d2-trigger",
+    "click:[data-slot=navigation-menu-link]": "vp=-|c=closed|closed/false|closed/false|ae=BODY",
+    "click:#d1-trigger": "vp=-|c=closed|closed/false|closed/false|ae=d1-trigger"
+  },
+  "pass": true
+}

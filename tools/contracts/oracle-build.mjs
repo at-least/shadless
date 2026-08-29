@@ -1,0 +1,44 @@
+// Bundle a contract def's React usage tree into OUT/oracle.{js,html}. Used by
+// the contracts runner and by tools/example-fixture.mjs --contracts (which
+// generates the shadless fixture pages FROM this render).
+import { build } from "esbuild"
+import { writeFileSync, mkdirSync } from "node:fs"
+import { resolve } from "node:path"
+
+export async function buildContractOracle(def, OUT, recorder = "") {
+  const entry = `
+import React from "react";
+import { createRoot } from "react-dom/client";
+${def.imports}
+${recorder}
+window.__open = true;
+const root = createRoot(document.getElementById("root"));
+const render = () => root.render((${def.usage}));
+window.__setOpen = (o) => { window.__open = o; render(); };
+render();
+`
+  mkdirSync(OUT, { recursive: true })
+  writeFileSync(`${OUT}/.oracle-entry.mjs`, entry)
+  await build({
+    entryPoints: [`${OUT}/.oracle-entry.mjs`], bundle: true, format: "iife",
+    outfile: `${OUT}/oracle.js`, logLevel: "error",
+    alias: {
+      // resolved tree (tools/resolve-skins.mjs): cn-* already expanded —
+      // the oracle and shadless compare against identical class semantics
+      "@": resolve(".upstream/shadcn-ui/apps/v4"),
+      "@/registry/bases/radix/ui": resolve("probes/out/resolved-ui/ui"),
+      "@/registry/bases/radix/lib": resolve("probes/out/resolved-ui/lib"),
+      "@/registry/bases/radix/hooks": resolve("probes/out/resolved-ui/hooks"),
+      // route-group indirection + subtree cut: ui components import the
+      // demo-app icon switcher @/app/(create)/components/icon-placeholder,
+      // which pulls next/navigation + nuqs into the oracle bundle — stub it
+      "@/app/(create)/components/icon-placeholder": resolve("tools/contracts/stubs/icon-placeholder.jsx"),
+    },
+    loader: { ".tsx": "tsx" },
+    // classic JSX (default) emits free `React.createElement` for sources
+    // without an explicit React import — automatic runtime resolves via jsx-runtime
+    jsx: "automatic",
+  })
+  writeFileSync(`${OUT}/oracle.html`,
+    `<!doctype html><html><head>${def.oracleCss ? `<style>${def.oracleCss}</style>` : ""}</head><body><div id="root"></div><script src="oracle.js"></script></body></html>`)
+}

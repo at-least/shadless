@@ -1,0 +1,245 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "sheet",
+ "tier": "kernel",
+ "imports": [
+  "react",
+  "radix-ui",
+  "@/registry/bases/radix/lib/utils",
+  "@/registry/bases/radix/ui/button",
+  "@/app/(create)/components/icon-placeholder"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "Sheet",
+   "export": true,
+   "elements": [
+    {
+     "tag": "SheetPrimitive.Root",
+     "slot": "sheet",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "SheetTrigger",
+   "export": true,
+   "elements": [
+    {
+     "tag": "SheetPrimitive.Trigger",
+     "slot": "sheet-trigger",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "SheetClose",
+   "export": true,
+   "elements": [
+    {
+     "tag": "SheetPrimitive.Close",
+     "slot": "sheet-close",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "SheetPortal",
+   "export": false,
+   "elements": [
+    {
+     "tag": "SheetPrimitive.Portal",
+     "slot": "sheet-portal",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "SheetOverlay",
+   "export": false,
+   "elements": [
+    {
+     "tag": "SheetPrimitive.Overlay",
+     "slot": "sheet-overlay",
+     "classes": [
+      "bg-black/10 supports-backdrop-filter:backdrop-blur-xs fixed inset-0 z-50 duration-100 data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "SheetContent",
+   "export": true,
+   "elements": [
+    {
+     "tag": "SheetPortal",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": [
+      "<SheetOverlay>",
+      "<SheetPrimitive.Content slot=sheet-content class=[1]>"
+     ]
+    },
+    {
+     "tag": "SheetOverlay",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": []
+    },
+    {
+     "tag": "SheetPrimitive.Content",
+     "slot": "sheet-content",
+     "classes": [
+      "bg-popover text-popover-foreground fixed z-50 flex flex-col gap-4 bg-clip-padding text-sm shadow-lg transition duration-200 ease-in-out data-[side=bottom]:inset-x-0 data-[side=bottom]:bottom-0 data-[side=bottom]:h-auto data-[side=bottom]:border-t data-[side=left]:inset-y-0 data-[side=left]:left-0 data-[side=left]:h-full data-[side=left]:w-3/4 data-[side=left]:border-r data-[side=right]:inset-y-0 data-[side=right]:right-0 data-[side=right]:h-full data-[side=right]:w-3/4 data-[side=right]:border-l data-[side=top]:inset-x-0 data-[side=top]:top-0 data-[side=top]:h-auto data-[side=top]:border-b data-[side=left]:sm:max-w-sm data-[side=right]:sm:max-w-sm data-open:animate-in data-open:fade-in-0 data-[side=bottom]:data-open:slide-in-from-bottom-10 data-[side=left]:data-open:slide-in-from-left-10 data-[side=right]:data-open:slide-in-from-right-10 data-[side=top]:data-open:slide-in-from-top-10 data-closed:animate-out data-closed:fade-out-0 data-[side=bottom]:data-closed:slide-out-to-bottom-10 data-[side=left]:data-closed:slide-out-to-left-10 data-[side=right]:data-closed:slide-out-to-right-10 data-[side=top]:data-closed:slide-out-to-top-10"
+     ],
+     "spread": true,
+     "children": [
+      "{children}",
+      "OPT?"
+     ]
+    },
+    {
+     "tag": "SheetPrimitive.Close",
+     "slot": "sheet-close",
+     "classes": [],
+     "spread": false,
+     "children": [
+      "<Button class=[1]>"
+     ]
+    },
+    {
+     "tag": "Button",
+     "slot": null,
+     "classes": [
+      "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+      "hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground",
+      "size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg",
+      "absolute top-3 right-3"
+     ],
+     "spread": false,
+     "children": [
+      "<IconPlaceholder>",
+      "<span class=[1]>"
+     ]
+    },
+    {
+     "tag": "IconPlaceholder",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": []
+    },
+    {
+     "tag": "span",
+     "slot": null,
+     "classes": [
+      "sr-only"
+     ],
+     "spread": false,
+     "children": [
+      "text"
+     ]
+    }
+   ]
+  },
+  {
+   "fn": "SheetHeader",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "sheet-header",
+     "classes": [
+      "gap-0.5 p-4 flex flex-col"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "SheetFooter",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "sheet-footer",
+     "classes": [
+      "gap-2 p-4 mt-auto flex flex-col"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "SheetTitle",
+   "export": true,
+   "elements": [
+    {
+     "tag": "SheetPrimitive.Title",
+     "slot": "sheet-title",
+     "classes": [
+      "text-foreground text-base font-medium cn-font-heading"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "SheetDescription",
+   "export": true,
+   "elements": [
+    {
+     "tag": "SheetPrimitive.Description",
+     "slot": "sheet-description",
+     "classes": [
+      "text-muted-foreground text-sm"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  }
+ ],
+ "conditionals": [
+  {
+   "kind": "child-cond",
+   "fn": "SheetContent",
+   "parent": "SheetPrimitive.Content"
+  }
+ ],
+ "cvaRefs": [],
+ "tagHints": {
+  "SheetPrimitive.Root": "div",
+  "SheetPrimitive.Trigger": "button",
+  "SheetPrimitive.Close": "div",
+  "SheetPrimitive.Portal": "div",
+  "SheetPrimitive.Overlay": "div",
+  "SheetPortal": "div",
+  "SheetOverlay": "div",
+  "SheetPrimitive.Content": "div",
+  "Button": "button",
+  "IconPlaceholder": "svg",
+  "SheetPrimitive.Title": "div",
+  "SheetPrimitive.Description": "div"
+ }
+}

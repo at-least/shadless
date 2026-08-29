@@ -1,0 +1,97 @@
+{
+  "oracleOpen": {
+    "step": "oracle",
+    "popover-trigger": {
+      "tag": "button",
+      "type": "button",
+      "aria-haspopup": "dialog",
+      "aria-expanded": "true",
+      "aria-controls": "radix-_r_0_",
+      "data-state": "open",
+      "data-slot": "popover-trigger",
+      "id": "p1-trigger",
+      "text": "Openpopover"
+    },
+    "popover-content": {
+      "tag": "div",
+      "data-side": "bottom",
+      "data-align": "center",
+      "data-state": "open",
+      "role": "dialog",
+      "id": "radix-_r_0_",
+      "data-slot": "popover-content",
+      "tabindex": "-1",
+      "style": "--radix-popover-content-transform-origin: var(--radix-popper-transform-origin); --radix-popover-content-available-width: var(--radix-popper-available-width); --radix-popover-content-available-height: var(--radix-popper-available-height); --radix-popover-trigger-width: var(--radix-popper-anchor-width); --radix-popover-trigger-height: var(--radix-popper-anchor-height);",
+      "text": "DimensionsSetthedimensio"
+    },
+    "popover-title": {
+      "tag": "div",
+      "data-slot": "popover-title",
+      "text": "Dimensions"
+    },
+    "popover-description": {
+      "tag": "p",
+      "data-slot": "popover-description",
+      "text": "Setthedimensions."
+    },
+    "activeElement": "popover-content",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "shadlessOpen": {
+    "step": "shadless",
+    "popover-trigger": {
+      "tag": "button",
+      "type": "button",
+      "aria-haspopup": "dialog",
+      "aria-expanded": "true",
+      "aria-controls": "p1",
+      "data-state": "open",
+      "data-slot": "popover-trigger",
+      "id": "p1-trigger",
+      "data-radix-popper-side": "bottom",
+      "data-radix-popper-align": "center",
+      "text": "Openpopover"
+    },
+    "popover-content": {
+      "tag": "div",
+      "data-side": "bottom",
+      "data-align": "center",
+      "data-state": "open",
+      "role": "dialog",
+      "id": "p1",
+      "data-slot": "popover-content",
+      "tabindex": "-1",
+      "style": "--radix-popover-content-transform-origin: var(--radix-popper-transform-origin); --radix-popover-content-available-width: var(--radix-popper-available-width); --radix-popover-content-available-height: var(--radix-popper-available-height); --radix-popover-trigger-width: var(--radix-popper-anchor-width); --radix-popover-trigger-height: var(--radix-popper-anchor-height);",
+      "text": "DimensionsSetthedimensio"
+    },
+    "popover-title": {
+      "tag": "div",
+      "data-slot": "popover-title",
+      "text": "Dimensions"
+    },
+    "popover-description": {
+      "tag": "p",
+      "data-slot": "popover-description",
+      "text": "Setthedimensions."
+    },
+    "activeElement": "popover-content",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "oracle": {
+    "escape": "closes",
+    "outside-click": "closes",
+    "trigger-toggle": "closes"
+  },
+  "shadless": {
+    "escape": "closes",
+    "outside-click": "closes",
+    "trigger-toggle": "closes"
+  },
+  "pass": true
+}

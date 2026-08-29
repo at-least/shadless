@@ -1,0 +1,134 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "accordion",
+ "tier": "trivial-js",
+ "imports": [
+  "react",
+  "radix-ui",
+  "@/registry/bases/radix/lib/utils",
+  "@/app/(create)/components/icon-placeholder"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "Accordion",
+   "export": true,
+   "elements": [
+    {
+     "tag": "AccordionPrimitive.Root",
+     "slot": "accordion",
+     "classes": [
+      "flex w-full flex-col"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "AccordionItem",
+   "export": true,
+   "elements": [
+    {
+     "tag": "AccordionPrimitive.Item",
+     "slot": "accordion-item",
+     "classes": [
+      "not-last:border-b"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "AccordionTrigger",
+   "export": true,
+   "elements": [
+    {
+     "tag": "AccordionPrimitive.Header",
+     "slot": null,
+     "classes": [
+      "flex"
+     ],
+     "spread": false,
+     "children": [
+      "<AccordionPrimitive.Trigger slot=accordion-trigger class=[1]>"
+     ]
+    },
+    {
+     "tag": "AccordionPrimitive.Trigger",
+     "slot": "accordion-trigger",
+     "classes": [
+      "focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
+     ],
+     "spread": true,
+     "children": [
+      "{children}",
+      "<IconPlaceholder slot=accordion-trigger-icon class=[1]>",
+      "<IconPlaceholder slot=accordion-trigger-icon class=[1]>"
+     ]
+    },
+    {
+     "tag": "IconPlaceholder",
+     "slot": "accordion-trigger-icon",
+     "classes": [
+      "pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
+     ],
+     "spread": false,
+     "children": []
+    },
+    {
+     "tag": "IconPlaceholder",
+     "slot": "accordion-trigger-icon",
+     "classes": [
+      "pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
+     ],
+     "spread": false,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "AccordionContent",
+   "export": true,
+   "elements": [
+    {
+     "tag": "AccordionPrimitive.Content",
+     "slot": "accordion-content",
+     "classes": [
+      "data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
+     ],
+     "spread": true,
+     "children": [
+      "<div class=[1]>"
+     ]
+    },
+    {
+     "tag": "div",
+     "slot": null,
+     "classes": [
+      "pt-0 pb-2.5 h-(--radix-accordion-content-height) [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4"
+     ],
+     "spread": false,
+     "children": [
+      "{children}"
+     ]
+    }
+   ]
+  }
+ ],
+ "conditionals": [],
+ "cvaRefs": [],
+ "tagHints": {
+  "AccordionPrimitive.Root": "div",
+  "AccordionPrimitive.Item": "div",
+  "AccordionPrimitive.Header": "div",
+  "AccordionPrimitive.Trigger": "button",
+  "IconPlaceholder": "svg",
+  "AccordionPrimitive.Content": "div"
+ }
+}

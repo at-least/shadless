@@ -1,0 +1,83 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "button-group",
+ "tier": "static",
+ "imports": [
+  "class-variance-authority",
+  "radix-ui",
+  "@/registry/bases/radix/lib/utils",
+  "@/registry/bases/radix/ui/separator"
+ ],
+ "icons": [],
+ "cva": {
+  "buttonGroupVariants": {
+   "base": "has-[>[data-slot=button-group]]:gap-2 has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group flex w-fit items-stretch *:focus-visible:relative *:focus-visible:z-10 [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1",
+   "variants": {
+    "orientation": {
+     "horizontal": "[&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none",
+     "vertical": "[&>[data-slot]:not(:has(~[data-slot]))]:rounded-b-lg! flex-col [&>*:not(:first-child)]:rounded-t-none [&>*:not(:first-child)]:border-t-0 [&>*:not(:last-child)]:rounded-b-none"
+    }
+   },
+   "defaults": {
+    "orientation": "horizontal"
+   }
+  }
+ },
+ "components": [
+  {
+   "fn": "ButtonGroup",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "button-group",
+     "classes": [
+      "has-[>[data-slot=button-group]]:gap-2 has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group flex w-fit items-stretch *:focus-visible:relative *:focus-visible:z-10 [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1",
+      "[&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "ButtonGroupText",
+   "export": true,
+   "elements": [
+    {
+     "tag": "Comp",
+     "slot": null,
+     "classes": [
+      "bg-muted gap-2 rounded-lg border px-2.5 text-sm font-medium [&_svg:not([class*='size-'])]:size-4 flex items-center [&_svg]:pointer-events-none"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "ButtonGroupSeparator",
+   "export": true,
+   "elements": [
+    {
+     "tag": "Separator",
+     "slot": "button-group-separator",
+     "classes": [
+      "bg-input relative self-stretch data-horizontal:mx-px data-horizontal:w-auto data-vertical:my-px data-vertical:h-auto"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  }
+ ],
+ "conditionals": [],
+ "cvaRefs": [],
+ "tagHints": {
+  "Comp": "div",
+  "Separator": "div"
+ }
+}

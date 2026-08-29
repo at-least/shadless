@@ -1,0 +1,12 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>shadless pagination</title>
+<link rel="stylesheet" href="../out.css"><script>(function(){try{var k="shadless-docs-theme";var apply=function(d){document.documentElement.classList.toggle("dark",!!d)};var s=localStorage.getItem(k);var d=s?s==="dark":matchMedia("(prefers-color-scheme: dark)").matches;apply(d);addEventListener("storage",function(e){if(e.key===k)apply(e.newValue==="dark")});}catch(e){}})();</script></head>
+<body>
+<nav data-slot="pagination"><ul data-slot="pagination-content"><li data-slot="pagination-item"><a data-slot="pagination-link" href="#" aria-label="Previous">‹</a></li><li data-slot="pagination-item"><a data-slot="pagination-link" href="#">1</a></li><li data-slot="pagination-item"><a data-slot="pagination-link" href="#" aria-current="page" data-active="true">2</a></li><li data-slot="pagination-item"><a data-slot="pagination-link" href="#">3</a></li><li data-slot="pagination-item"><span data-slot="pagination-ellipsis">…</span></li><li data-slot="pagination-item"><a data-slot="pagination-link" href="#" aria-label="Next">›</a></li></ul></nav>
+<ul data-slot="pagination-content"><li data-slot="pagination-item"><a data-slot="pagination-link" href="#" aria-current="page" data-active="true">1</a></li><li data-slot="pagination-item"><a data-slot="pagination-link" href="#">2</a></li><li data-slot="pagination-item"><a data-slot="pagination-link" href="#">3</a></li></ul>
+<li data-slot="pagination-item"><a data-slot="pagination-link" href="#">1</a></li>
+<button class="pagination-link group/button">1</button>
+<button class="pagination-previous group/button" href="#" aria-label="Go to the previous page">‹</button>
+<button class="pagination-next group/button" href="#" aria-label="Go to the next page">›</button>
+<span data-slot="pagination-ellipsis">…</span>
+</body></html>

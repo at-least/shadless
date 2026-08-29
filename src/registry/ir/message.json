@@ -1,0 +1,109 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "message",
+ "tier": "static",
+ "imports": [
+  "react",
+  "@/registry/bases/radix/lib/utils"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "MessageGroup",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "message-group",
+     "classes": [
+      "gap-2 flex min-w-0 flex-col"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "Message",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "message",
+     "classes": [
+      "text-sm gap-2 group/message relative flex w-full min-w-0 data-[align=end]:flex-row-reverse"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MessageAvatar",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "message-avatar",
+     "classes": [
+      "min-w-8 group-has-data-[slot=message-footer]/message:-translate-y-8 flex w-fit shrink-0 items-center justify-center self-end overflow-hidden rounded-full bg-muted"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MessageContent",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "message-content",
+     "classes": [
+      "gap-2.5 group-data-[align=end]/message:*:data-slot:self-end flex w-full min-w-0 flex-col wrap-break-word"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MessageHeader",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "message-header",
+     "classes": [
+      "text-xs font-medium text-muted-foreground px-3 group-has-data-[variant=ghost]/message:px-0 flex max-w-full min-w-0 items-center"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MessageFooter",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "message-footer",
+     "classes": [
+      "text-xs font-medium text-muted-foreground px-3 group-has-data-[variant=ghost]/message:px-0 flex max-w-full min-w-0 items-center group-data-[align=end]/message:justify-end"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  }
+ ],
+ "conditionals": [],
+ "cvaRefs": [],
+ "tagHints": {}
+}

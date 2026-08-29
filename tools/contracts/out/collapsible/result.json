@@ -1,0 +1,82 @@
+{
+  "oracleOpen": {
+    "step": "oracle",
+    "collapsible": {
+      "tag": "div",
+      "data-state": "closed",
+      "data-slot": "collapsible",
+      "id": "co",
+      "text": "Toggle"
+    },
+    "collapsible-trigger": {
+      "tag": "button",
+      "type": "button",
+      "aria-controls": "radix-_r_0_",
+      "aria-expanded": "false",
+      "data-state": "closed",
+      "data-slot": "collapsible-trigger",
+      "id": "d1-ct",
+      "text": "Toggle"
+    },
+    "collapsible-content": {
+      "tag": "div",
+      "data-state": "closed",
+      "id": "radix-_r_0_",
+      "hidden": "",
+      "data-slot": "collapsible-content",
+      "style": "",
+      "text": ""
+    },
+    "activeElement": "body",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "shadlessOpen": {
+    "step": "shadless",
+    "collapsible": {
+      "tag": "div",
+      "data-slot": "collapsible",
+      "id": "co",
+      "data-state": "closed",
+      "text": "ToggleContent"
+    },
+    "collapsible-trigger": {
+      "tag": "button",
+      "data-slot": "collapsible-trigger",
+      "id": "d1-ct",
+      "type": "button",
+      "aria-expanded": "false",
+      "data-state": "closed",
+      "aria-controls": "d1-cc",
+      "text": "Toggle"
+    },
+    "collapsible-content": {
+      "tag": "div",
+      "data-slot": "collapsible-content",
+      "id": "d1-cc",
+      "data-state": "closed",
+      "hidden": "",
+      "text": "Content"
+    },
+    "activeElement": "body",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "oracle": {
+    "click:#d1-ct": "open/true/ctl|open/shown|open",
+    "click:#d1-ct+click:#d1-ct": "closed/false/ctl|closed/hidden|closed",
+    "focus:#d1-ct+key:Space+key:Space": "closed/false/ctl|closed/hidden|closed",
+    "focus:#d1-ct+key:Enter": "open/true/ctl|open/shown|open"
+  },
+  "shadless": {
+    "click:#d1-ct": "open/true/ctl|open/shown|open",
+    "click:#d1-ct+click:#d1-ct": "closed/false/ctl|closed/hidden|closed",
+    "focus:#d1-ct+key:Space+key:Space": "closed/false/ctl|closed/hidden|closed",
+    "focus:#d1-ct+key:Enter": "open/true/ctl|open/shown|open"
+  },
+  "pass": true
+}

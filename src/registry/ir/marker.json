@@ -1,0 +1,82 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "marker",
+ "tier": "static",
+ "imports": [
+  "react",
+  "class-variance-authority",
+  "radix-ui",
+  "@/registry/bases/radix/lib/utils"
+ ],
+ "icons": [],
+ "cva": {
+  "markerVariants": {
+   "base": "gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center",
+   "variants": {
+    "variant": {
+     "default": "",
+     "separator": "before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1",
+     "border": "border-b border-border pb-2"
+    }
+   },
+   "defaults": {
+    "variant": "default"
+   }
+  }
+ },
+ "components": [
+  {
+   "fn": "Marker",
+   "export": true,
+   "elements": [
+    {
+     "tag": "Comp",
+     "slot": "marker",
+     "classes": [
+      "gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MarkerIcon",
+   "export": true,
+   "elements": [
+    {
+     "tag": "span",
+     "slot": "marker-icon",
+     "classes": [
+      "size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "MarkerContent",
+   "export": true,
+   "elements": [
+    {
+     "tag": "span",
+     "slot": "marker-content",
+     "classes": [
+      "group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  }
+ ],
+ "conditionals": [],
+ "cvaRefs": [],
+ "tagHints": {
+  "Comp": "div"
+ }
+}

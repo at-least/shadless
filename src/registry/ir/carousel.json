@@ -1,0 +1,241 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "carousel",
+ "tier": "external",
+ "imports": [
+  "react",
+  "embla-carousel-react",
+  "@/registry/bases/radix/lib/utils",
+  "@/registry/bases/radix/ui/button",
+  "@/app/(create)/components/icon-placeholder"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "useCarousel",
+   "export": true,
+   "elements": []
+  },
+  {
+   "fn": "Carousel",
+   "export": true,
+   "elements": [
+    {
+     "tag": "CarouselContext.Provider",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": [
+      "<div slot=carousel class=[1]>"
+     ]
+    },
+    {
+     "tag": "div",
+     "slot": "carousel",
+     "classes": [
+      "relative"
+     ],
+     "spread": true,
+     "children": [
+      "{children}"
+     ]
+    }
+   ]
+  },
+  {
+   "fn": "CarouselContent",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "carousel-content",
+     "classes": [
+      "overflow-hidden"
+     ],
+     "spread": false,
+     "children": [
+      "<div class=[3]>"
+     ]
+    },
+    {
+     "tag": "div",
+     "slot": null,
+     "classes": [
+      "flex",
+      "-ml-4",
+      "-mt-4 flex-col"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "CarouselItem",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "carousel-item",
+     "classes": [
+      "min-w-0 shrink-0 grow-0 basis-full",
+      "pl-4",
+      "pt-4"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "CarouselPrevious",
+   "export": true,
+   "elements": [
+    {
+     "tag": "Button",
+     "slot": "carousel-previous",
+     "classes": [
+      "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+      "border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground",
+      "size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg",
+      "rounded-full absolute touch-manipulation",
+      "inset-y-0 -left-12 my-auto",
+      "-top-12 left-1/2 -translate-x-1/2 rotate-90"
+     ],
+     "spread": true,
+     "children": [
+      "<IconPlaceholder class=[1]>",
+      "<span class=[1]>"
+     ]
+    },
+    {
+     "tag": "IconPlaceholder",
+     "slot": null,
+     "classes": [
+      "cn-rtl-flip"
+     ],
+     "spread": false,
+     "children": []
+    },
+    {
+     "tag": "span",
+     "slot": null,
+     "classes": [
+      "sr-only"
+     ],
+     "spread": false,
+     "children": [
+      "text"
+     ]
+    }
+   ]
+  },
+  {
+   "fn": "CarouselNext",
+   "export": true,
+   "elements": [
+    {
+     "tag": "Button",
+     "slot": "carousel-next",
+     "classes": [
+      "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+      "border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground",
+      "size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg",
+      "rounded-full absolute touch-manipulation",
+      "inset-y-0 -right-12 my-auto",
+      "-bottom-12 left-1/2 -translate-x-1/2 rotate-90"
+     ],
+     "spread": true,
+     "children": [
+      "<IconPlaceholder class=[1]>",
+      "<span class=[1]>"
+     ]
+    },
+    {
+     "tag": "IconPlaceholder",
+     "slot": null,
+     "classes": [
+      "cn-rtl-flip"
+     ],
+     "spread": false,
+     "children": []
+    },
+    {
+     "tag": "span",
+     "slot": null,
+     "classes": [
+      "sr-only"
+     ],
+     "spread": false,
+     "children": [
+      "text"
+     ]
+    }
+   ]
+  }
+ ],
+ "conditionals": [
+  {
+   "kind": "class-cond",
+   "fn": "CarouselContent",
+   "slot": null,
+   "then": "-ml-4",
+   "else": "-mt-4 flex-col",
+   "test": {
+    "name": "orientation",
+    "op": "===",
+    "value": "horizontal",
+    "default": "horizontal"
+   }
+  },
+  {
+   "kind": "class-cond",
+   "fn": "CarouselItem",
+   "slot": "carousel-item",
+   "then": "pl-4",
+   "else": "pt-4",
+   "test": {
+    "name": "orientation",
+    "op": "===",
+    "value": "horizontal",
+    "default": "horizontal"
+   }
+  },
+  {
+   "kind": "class-cond",
+   "fn": "CarouselPrevious",
+   "slot": "carousel-previous",
+   "then": "inset-y-0 -left-12 my-auto",
+   "else": "-top-12 left-1/2 -translate-x-1/2 rotate-90",
+   "test": {
+    "name": "orientation",
+    "op": "===",
+    "value": "horizontal",
+    "default": "horizontal"
+   }
+  },
+  {
+   "kind": "class-cond",
+   "fn": "CarouselNext",
+   "slot": "carousel-next",
+   "then": "inset-y-0 -right-12 my-auto",
+   "else": "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
+   "test": {
+    "name": "orientation",
+    "op": "===",
+    "value": "horizontal",
+    "default": "horizontal"
+   }
+  }
+ ],
+ "cvaRefs": [],
+ "tagHints": {
+  "CarouselContext.Provider": "div",
+  "Button": "button",
+  "IconPlaceholder": "svg"
+ }
+}

@@ -1,0 +1,33 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "aspect-ratio",
+ "tier": "trivial-js",
+ "imports": [
+  "radix-ui"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "AspectRatio",
+   "export": true,
+   "elements": [
+    {
+     "tag": "AspectRatioPrimitive.Root",
+     "slot": "aspect-ratio",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  }
+ ],
+ "conditionals": [],
+ "cvaRefs": [],
+ "tagHints": {
+  "AspectRatioPrimitive.Root": "div"
+ }
+}

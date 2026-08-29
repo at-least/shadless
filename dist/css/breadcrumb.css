@@ -1,0 +1,10 @@
+/* breadcrumb */
+@layer components {
+  .breadcrumb-ellipsis-span { @apply sr-only; }
+  [data-slot="breadcrumb-list"] { @apply text-muted-foreground gap-1.5 text-sm flex flex-wrap items-center wrap-break-word; }
+  [data-slot="breadcrumb-item"] { @apply gap-1 inline-flex items-center; }
+  [data-slot="breadcrumb-link"] { @apply hover:text-foreground transition-colors; }
+  [data-slot="breadcrumb-page"] { @apply text-foreground font-normal; }
+  [data-slot="breadcrumb-separator"] { @apply [&>svg]:size-3.5; }
+  [data-slot="breadcrumb-ellipsis"] { @apply size-5 [&>svg]:size-4 flex items-center justify-center; }
+}

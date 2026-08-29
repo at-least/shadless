@@ -1,0 +1,107 @@
+{
+  "oracleOpen": {
+    "step": "oracle",
+    "slider": {
+      "tag": "span",
+      "dir": "ltr",
+      "data-orientation": "horizontal",
+      "aria-disabled": "false",
+      "data-slot": "slider",
+      "id": "s1",
+      "style": "--radix-slider-thumb-transform: translateX(-50%);",
+      "text": ""
+    },
+    "slider-track": {
+      "tag": "span",
+      "data-orientation": "horizontal",
+      "data-slot": "slider-track",
+      "text": ""
+    },
+    "slider-range": {
+      "tag": "span",
+      "data-orientation": "horizontal",
+      "data-slot": "slider-range",
+      "style": "left: 0%; right: 50%;",
+      "text": ""
+    },
+    "slider-thumb": {
+      "tag": "span",
+      "role": "slider",
+      "aria-valuemin": "0",
+      "aria-valuemax": "100",
+      "aria-orientation": "horizontal",
+      "data-orientation": "horizontal",
+      "tabindex": "0",
+      "data-slot": "slider-thumb",
+      "data-radix-collection-item": "",
+      "aria-valuenow": "50",
+      "style": "",
+      "text": ""
+    },
+    "activeElement": "slider-thumb",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "shadlessOpen": {
+    "step": "shadless",
+    "slider": {
+      "tag": "span",
+      "dir": "ltr",
+      "data-orientation": "horizontal",
+      "aria-disabled": "false",
+      "data-slot": "slider",
+      "id": "s1",
+      "style": "--radix-slider-thumb-transform: translateX(-50%);",
+      "text": ""
+    },
+    "slider-track": {
+      "tag": "span",
+      "data-orientation": "horizontal",
+      "data-slot": "slider-track",
+      "text": ""
+    },
+    "slider-range": {
+      "tag": "span",
+      "data-orientation": "horizontal",
+      "data-slot": "slider-range",
+      "style": "left: 0%; right: 50%;",
+      "text": ""
+    },
+    "slider-thumb": {
+      "tag": "span",
+      "role": "slider",
+      "aria-valuemin": "0",
+      "aria-valuemax": "100",
+      "aria-orientation": "horizontal",
+      "data-orientation": "horizontal",
+      "tabindex": "0",
+      "data-slot": "slider-thumb",
+      "data-radix-collection-item": "",
+      "aria-valuenow": "50",
+      "style": "",
+      "text": ""
+    },
+    "activeElement": "slider-thumb",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "oracle": {
+    "key:ArrowRight": "51",
+    "key:Home": "0",
+    "key:PageUp": "60",
+    "key:End+key:ArrowLeft": "99",
+    "clickAt:[data-slot=slider-track]@75,50": "75"
+  },
+  "shadless": {
+    "key:ArrowRight": "51",
+    "key:Home": "0",
+    "key:PageUp": "60",
+    "key:End+key:ArrowLeft": "99",
+    "clickAt:[data-slot=slider-track]@75,50": "75"
+  },
+  "pass": true
+}

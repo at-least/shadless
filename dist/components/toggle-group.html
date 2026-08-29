@@ -1,0 +1,12 @@
+<!doctype html>
+<html><head>
+<link rel="stylesheet" href="../out.css"><meta charset="utf-8"><title>shadless toggle-group</title><script>(function(){try{var k="shadless-docs-theme";var apply=function(d){document.documentElement.classList.toggle("dark",!!d)};var s=localStorage.getItem(k);var d=s?s==="dark":matchMedia("(prefers-color-scheme: dark)").matches;apply(d);addEventListener("storage",function(e){if(e.key===k)apply(e.newValue==="dark")});}catch(e){}})();</script></head>
+<body>
+  <div data-slot="toggle-group" id="grp" dir="ltr" role="group" data-orientation="horizontal" data-spacing="2" style="--gap:2" tabindex="0">
+    <button data-slot="toggle-group-item" id="gi1" type="button" data-variant="default" data-size="default" data-state="off" role="radio" aria-checked="false" data-spacing="2" tabindex="-1">A</button>
+    <button data-slot="toggle-group-item" id="gi2" type="button" data-variant="default" data-size="default" data-state="off" role="radio" aria-checked="false" data-spacing="2" tabindex="-1">B</button>
+  </div>
+  <script src="../shadless.js"></script>
+  <script src="../js/toggle-group.js"></script>
+  <script>shadless.initAll()</script>
+</body></html>

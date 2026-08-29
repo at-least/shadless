@@ -1,0 +1,49 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "progress",
+ "tier": "trivial-js",
+ "imports": [
+  "react",
+  "radix-ui",
+  "@/registry/bases/radix/lib/utils"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "Progress",
+   "export": true,
+   "elements": [
+    {
+     "tag": "ProgressPrimitive.Root",
+     "slot": "progress",
+     "classes": [
+      "bg-muted h-1 rounded-full relative flex w-full items-center overflow-x-hidden"
+     ],
+     "spread": true,
+     "children": [
+      "<ProgressPrimitive.Indicator slot=progress-indicator class=[1]>"
+     ]
+    },
+    {
+     "tag": "ProgressPrimitive.Indicator",
+     "slot": "progress-indicator",
+     "classes": [
+      "bg-primary size-full flex-1 transition-all"
+     ],
+     "spread": false,
+     "children": []
+    }
+   ]
+  }
+ ],
+ "conditionals": [],
+ "cvaRefs": [],
+ "tagHints": {
+  "ProgressPrimitive.Root": "div",
+  "ProgressPrimitive.Indicator": "div"
+ }
+}

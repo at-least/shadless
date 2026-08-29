@@ -1,0 +1,59 @@
+{
+  "oracleOpen": {
+    "step": "oracle",
+    "progress": {
+      "tag": "div",
+      "aria-valuemax": "100",
+      "aria-valuemin": "0",
+      "role": "progressbar",
+      "data-state": "indeterminate",
+      "data-max": "100",
+      "data-slot": "progress",
+      "id": "pg",
+      "text": ""
+    },
+    "progress-indicator": {
+      "tag": "div",
+      "data-state": "indeterminate",
+      "data-max": "100",
+      "data-slot": "progress-indicator",
+      "style": "transform: translateX(-58%);",
+      "text": ""
+    },
+    "activeElement": "body",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "shadlessOpen": {
+    "step": "shadless",
+    "progress": {
+      "tag": "div",
+      "data-slot": "progress",
+      "id": "pg",
+      "role": "progressbar",
+      "aria-valuemax": "100",
+      "aria-valuemin": "0",
+      "data-state": "indeterminate",
+      "data-max": "100",
+      "text": ""
+    },
+    "progress-indicator": {
+      "tag": "div",
+      "data-slot": "progress-indicator",
+      "data-state": "indeterminate",
+      "data-max": "100",
+      "style": "transform: translateX(-58%);",
+      "text": ""
+    },
+    "activeElement": "body",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "oracle": {},
+  "shadless": {},
+  "pass": true
+}

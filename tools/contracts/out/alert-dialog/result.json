@@ -1,0 +1,153 @@
+{
+  "oracleOpen": {
+    "step": "oracle",
+    "alert-dialog-trigger": {
+      "tag": "button",
+      "type": "button",
+      "aria-haspopup": "dialog",
+      "aria-expanded": "true",
+      "aria-controls": "radix-_r_0_",
+      "data-state": "open",
+      "data-slot": "alert-dialog-trigger",
+      "id": "d1-trigger",
+      "text": "ShowDialog"
+    },
+    "alert-dialog-overlay": {
+      "tag": "div",
+      "data-state": "open",
+      "data-slot": "alert-dialog-overlay",
+      "data-aria-hidden": "true",
+      "aria-hidden": "true",
+      "style": "pointer-events: auto;",
+      "text": ""
+    },
+    "alert-dialog-content": {
+      "tag": "div",
+      "role": "alertdialog",
+      "id": "radix-_r_0_",
+      "aria-describedby": "radix-_r_2_",
+      "aria-labelledby": "radix-_r_1_",
+      "data-state": "open",
+      "data-slot": "alert-dialog-content",
+      "data-size": "default",
+      "tabindex": "-1",
+      "style": "pointer-events: auto;",
+      "text": "Areyouabsolutelysure?Thi"
+    },
+    "alert-dialog-title": {
+      "tag": "h2",
+      "id": "radix-_r_1_",
+      "data-slot": "alert-dialog-title",
+      "text": "Areyouabsolutelysure?"
+    },
+    "alert-dialog-description": {
+      "tag": "p",
+      "id": "radix-_r_2_",
+      "data-slot": "alert-dialog-description",
+      "text": "Thisactioncannotbeundone"
+    },
+    "alert-dialog-cancel": {
+      "tag": "button",
+      "type": "button",
+      "data-slot": "alert-dialog-cancel",
+      "data-variant": "outline",
+      "data-size": "default",
+      "text": "Cancel"
+    },
+    "alert-dialog-action": {
+      "tag": "button",
+      "type": "button",
+      "data-slot": "alert-dialog-action",
+      "data-variant": "default",
+      "data-size": "default",
+      "text": "Continue"
+    },
+    "activeElement": "alert-dialog-cancel",
+    "scrollLock": {
+      "attr": "1",
+      "pointerEvents": "none"
+    }
+  },
+  "shadlessOpen": {
+    "step": "shadless",
+    "alert-dialog-trigger": {
+      "tag": "button",
+      "type": "button",
+      "aria-haspopup": "dialog",
+      "aria-expanded": "true",
+      "aria-controls": "d1",
+      "data-state": "open",
+      "data-slot": "alert-dialog-trigger",
+      "id": "d1-trigger",
+      "text": "ShowDialog"
+    },
+    "alert-dialog-overlay": {
+      "tag": "div",
+      "data-state": "open",
+      "data-slot": "alert-dialog-overlay",
+      "style": "pointer-events: auto;",
+      "aria-hidden": "true",
+      "data-aria-hidden": "true",
+      "text": ""
+    },
+    "alert-dialog-content": {
+      "tag": "div",
+      "role": "alertdialog",
+      "id": "d1",
+      "aria-describedby": "d1-desc",
+      "aria-labelledby": "d1-title",
+      "data-state": "open",
+      "data-slot": "alert-dialog-content",
+      "data-size": "default",
+      "tabindex": "-1",
+      "style": "pointer-events: auto;",
+      "text": "Areyouabsolutelysure?Thi"
+    },
+    "alert-dialog-title": {
+      "tag": "h2",
+      "id": "d1-title",
+      "data-slot": "alert-dialog-title",
+      "text": "Areyouabsolutelysure?"
+    },
+    "alert-dialog-description": {
+      "tag": "p",
+      "id": "d1-desc",
+      "data-slot": "alert-dialog-description",
+      "text": "Thisactioncannotbeundone"
+    },
+    "alert-dialog-cancel": {
+      "tag": "button",
+      "type": "button",
+      "data-slot": "alert-dialog-cancel",
+      "data-variant": "outline",
+      "data-size": "default",
+      "text": "Cancel"
+    },
+    "alert-dialog-action": {
+      "tag": "button",
+      "type": "button",
+      "data-slot": "alert-dialog-action",
+      "data-variant": "default",
+      "data-size": "default",
+      "text": "Continue"
+    },
+    "activeElement": "alert-dialog-cancel",
+    "scrollLock": {
+      "attr": "1",
+      "pointerEvents": "none"
+    }
+  },
+  "oracle": {
+    "overlay-mouse-click": "open",
+    "escape": "closes",
+    "click:[data-slot=alert-dialog-cancel]": "closes",
+    "click:[data-slot=alert-dialog-action]": "closes"
+  },
+  "shadless": {
+    "overlay-mouse-click": "open",
+    "escape": "closes",
+    "click:[data-slot=alert-dialog-cancel]": "closes",
+    "click:[data-slot=alert-dialog-action]": "closes"
+  },
+  "pass": true
+}

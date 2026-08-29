@@ -1,0 +1,383 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "questionnaire",
+ "tier": "external",
+ "imports": [
+  "react",
+  "@shadcn/react/questionnaire",
+  "@/registry/bases/radix/lib/utils",
+  "@/registry/bases/radix/ui/button",
+  "@/app/(create)/components/icon-placeholder"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "Questionnaire",
+   "export": true,
+   "elements": [
+    {
+     "tag": "QuestionnairePrimitive.Root",
+     "slot": "questionnaire",
+     "classes": [
+      "gap-4 flex w-full min-w-0 flex-col"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "QuestionnaireProgress",
+   "export": true,
+   "elements": [
+    {
+     "tag": "QuestionnairePrimitive.Progress",
+     "slot": "questionnaire-progress",
+     "classes": [
+      "text-xs min-h-[1lh] w-fit min-w-[14ch] font-medium text-muted-foreground tabular-nums"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "QuestionnaireItem",
+   "export": true,
+   "elements": [
+    {
+     "tag": "QuestionnairePrimitive.Item",
+     "slot": "questionnaire-item",
+     "classes": [
+      "flex flex-col gap-4 min-w-0 border-0 p-0 outline-none"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "QuestionnaireTitle",
+   "export": true,
+   "elements": [
+    {
+     "tag": "QuestionnairePrimitive.Title",
+     "slot": "questionnaire-title",
+     "classes": [
+      "text-base leading-snug font-medium [&:not(:has(~[data-slot=questionnaire-description]))]:mb-4 cn-font-heading text-pretty"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "QuestionnaireDescription",
+   "export": true,
+   "elements": [
+    {
+     "tag": "QuestionnairePrimitive.Description",
+     "slot": "questionnaire-description",
+     "classes": [
+      "text-sm text-pretty text-muted-foreground"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "QuestionnaireChoices",
+   "export": true,
+   "elements": [
+    {
+     "tag": "QuestionnairePrimitive.Choices",
+     "slot": "questionnaire-choices",
+     "classes": [
+      "gap-2 group/questionnaire-choices grid min-w-0"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "QuestionnaireChoice",
+   "export": true,
+   "elements": [
+    {
+     "tag": "QuestionnairePrimitive.Choice",
+     "slot": "questionnaire-choice",
+     "classes": [
+      "border-input dark:bg-input/20 hover:bg-muted/50 data-checked:border-primary/40 data-checked:bg-muted dark:data-checked:bg-muted data-invalid:border-destructive has-[>input:focus-visible]:border-ring has-[>input:focus-visible]:ring-ring/50 gap-2.5 rounded-lg border bg-transparent px-3 py-2.5 text-sm has-[>input:focus-visible]:ring-3 group/questionnaire-choice relative flex min-h-11 cursor-pointer items-start text-start transition-colors outline-none select-none",
+      "data-disabled:pointer-events-none data-disabled:cursor-not-allowed data-disabled:opacity-50"
+     ],
+     "spread": true,
+     "children": [
+      "<QuestionnairePrimitive.ChoiceInput slot=questionnaire-choice-input class=[1]>",
+      "<span slot=questionnaire-choice-indicator class=[1]>",
+      "<QuestionnairePrimitive.ChoiceLabel slot=questionnaire-choice-label class=[1]>",
+      "<QuestionnairePrimitive.ChoiceShortcut slot=questionnaire-choice-shortcut class=[1]>"
+     ]
+    },
+    {
+     "tag": "QuestionnairePrimitive.ChoiceInput",
+     "slot": "questionnaire-choice-input",
+     "classes": [
+      "absolute inset-0 z-10 size-full cursor-pointer opacity-0"
+     ],
+     "spread": false,
+     "children": []
+    },
+    {
+     "tag": "span",
+     "slot": "questionnaire-choice-indicator",
+     "classes": [
+      "border-input dark:bg-input/30 group-data-checked/questionnaire-choice:bg-primary dark:group-data-checked/questionnaire-choice:bg-primary group-data-checked/questionnaire-choice:text-primary-foreground group-data-checked/questionnaire-choice:border-primary size-4 translate-y-[--spacing(0.45)] group-has-data-[slot=questionnaire-choice-description]/questionnaire-choice:translate-y-0.5 rounded-[4px] pointer-events-none relative flex shrink-0 items-center justify-center border group-data-[type=radio]/questionnaire-choice:rounded-full"
+     ],
+     "spread": false,
+     "children": [
+      "<span slot=questionnaire-choice-indicator-dot class=[1]>",
+      "<IconPlaceholder slot=questionnaire-choice-indicator-check class=[1]>"
+     ]
+    },
+    {
+     "tag": "span",
+     "slot": "questionnaire-choice-indicator-dot",
+     "classes": [
+      "bg-primary-foreground size-2 hidden rounded-full group-data-[type=checkbox]/questionnaire-choice:hidden group-data-checked/questionnaire-choice:block"
+     ],
+     "spread": false,
+     "children": []
+    },
+    {
+     "tag": "IconPlaceholder",
+     "slot": "questionnaire-choice-indicator-check",
+     "classes": [
+      "size-3.5 hidden group-data-[type=radio]/questionnaire-choice:hidden group-data-checked/questionnaire-choice:block"
+     ],
+     "spread": false,
+     "children": []
+    },
+    {
+     "tag": "QuestionnairePrimitive.ChoiceLabel",
+     "slot": "questionnaire-choice-label",
+     "classes": [
+      "gap-0.5 flex min-w-0 flex-1 flex-col leading-snug"
+     ],
+     "spread": false,
+     "children": [
+      "{children}"
+     ]
+    },
+    {
+     "tag": "QuestionnairePrimitive.ChoiceShortcut",
+     "slot": "questionnaire-choice-shortcut",
+     "classes": [
+      "border-input bg-background text-muted-foreground size-5 translate-y-[--spacing(0.45)] group-has-data-[slot=questionnaire-choice-description]/questionnaire-choice:translate-y-0.5 items-center justify-center rounded-md border font-mono text-[0.625rem] font-medium leading-none pointer-events-none ms-auto hidden shrink-0 group-data-[shortcut]/questionnaire-choice:inline-flex"
+     ],
+     "spread": false,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "QuestionnaireChoiceDescription",
+   "export": true,
+   "elements": [
+    {
+     "tag": "span",
+     "slot": "questionnaire-choice-description",
+     "classes": [
+      "text-muted-foreground"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "QuestionnaireInput",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "questionnaire-input-wrapper",
+     "classes": [
+      "w-full group/questionnaire-input relative min-w-0"
+     ],
+     "spread": false,
+     "children": [
+      "<QuestionnairePrimitive.Input slot=questionnaire-input class=[2]>"
+     ]
+    },
+    {
+     "tag": "QuestionnairePrimitive.Input",
+     "slot": "questionnaire-input",
+     "classes": [
+      "dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent px-2.5 py-1 text-base focus-visible:ring-3 aria-invalid:ring-3 md:text-sm min-h-11 w-full min-w-0 transition-[color,box-shadow,background-color] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 sm:min-h-0",
+      "selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "QuestionnaireError",
+   "export": true,
+   "elements": [
+    {
+     "tag": "QuestionnairePrimitive.Error",
+     "slot": "questionnaire-error",
+     "classes": [
+      "mt-2 text-sm text-destructive"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "QuestionnaireActions",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "questionnaire-actions",
+     "classes": [
+      "gap-2 sm:min-h-8 grid min-h-11 w-full grid-cols-[minmax(0,1fr)_auto_auto] items-center"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "QuestionnairePrevious",
+   "export": true,
+   "elements": [
+    {
+     "tag": "QuestionnairePrimitive.Previous",
+     "slot": "questionnaire-previous",
+     "classes": [
+      "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+      "border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground",
+      "h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
+      "col-start-1 row-start-1 min-h-11 justify-self-start sm:min-h-0"
+     ],
+     "spread": true,
+     "children": [
+      "OPT?"
+     ]
+    }
+   ]
+  },
+  {
+   "fn": "QuestionnaireSkip",
+   "export": true,
+   "elements": [
+    {
+     "tag": "QuestionnairePrimitive.Skip",
+     "slot": "questionnaire-skip",
+     "classes": [
+      "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+      "border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground",
+      "h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
+      "col-start-2 row-start-1 min-h-11 justify-self-end sm:min-h-0"
+     ],
+     "spread": true,
+     "children": [
+      "OPT?"
+     ]
+    }
+   ]
+  },
+  {
+   "fn": "QuestionnaireNext",
+   "export": true,
+   "elements": [
+    {
+     "tag": "QuestionnairePrimitive.Next",
+     "slot": "questionnaire-next",
+     "classes": [
+      "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+      "bg-primary text-primary-foreground hover:bg-primary/80",
+      "h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
+      "col-start-3 row-start-1 min-h-11 justify-self-end sm:min-h-0"
+     ],
+     "spread": true,
+     "children": [
+      "OPT?"
+     ]
+    }
+   ]
+  },
+  {
+   "fn": "QuestionnaireSubmit",
+   "export": true,
+   "elements": [
+    {
+     "tag": "QuestionnairePrimitive.Submit",
+     "slot": "questionnaire-submit",
+     "classes": [
+      "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+      "bg-primary text-primary-foreground hover:bg-primary/80",
+      "h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
+      "col-start-3 row-start-1 min-h-11 justify-self-end sm:min-h-0"
+     ],
+     "spread": true,
+     "children": [
+      "OPT?"
+     ]
+    }
+   ]
+  }
+ ],
+ "conditionals": [
+  {
+   "kind": "child-cond",
+   "fn": "QuestionnairePrevious",
+   "parent": "QuestionnairePrimitive.Previous"
+  },
+  {
+   "kind": "child-cond",
+   "fn": "QuestionnaireSkip",
+   "parent": "QuestionnairePrimitive.Skip"
+  },
+  {
+   "kind": "child-cond",
+   "fn": "QuestionnaireNext",
+   "parent": "QuestionnairePrimitive.Next"
+  },
+  {
+   "kind": "child-cond",
+   "fn": "QuestionnaireSubmit",
+   "parent": "QuestionnairePrimitive.Submit"
+  }
+ ],
+ "cvaRefs": [],
+ "tagHints": {
+  "QuestionnairePrimitive.Root": "div",
+  "QuestionnairePrimitive.Progress": "div",
+  "QuestionnairePrimitive.Item": "div",
+  "QuestionnairePrimitive.Title": "div",
+  "QuestionnairePrimitive.Description": "div",
+  "QuestionnairePrimitive.Choices": "div",
+  "QuestionnairePrimitive.Choice": "div",
+  "QuestionnairePrimitive.ChoiceInput": "div",
+  "IconPlaceholder": "svg",
+  "QuestionnairePrimitive.ChoiceLabel": "div",
+  "QuestionnairePrimitive.ChoiceShortcut": "div",
+  "QuestionnairePrimitive.Input": "div",
+  "QuestionnairePrimitive.Error": "div",
+  "QuestionnairePrimitive.Previous": "div",
+  "QuestionnairePrimitive.Skip": "div",
+  "QuestionnairePrimitive.Next": "div",
+  "QuestionnairePrimitive.Submit": "div"
+ }
+}

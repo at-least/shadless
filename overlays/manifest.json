@@ -1,0 +1,332 @@
+{
+  "pin": "shadcn@4.19.0",
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2",
+  "units": {
+    "behavior:accordion": {
+      "file": "src/runtime/components/accordion.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/accordion.tsx"
+      ],
+      "extra": [],
+      "hash": "c5e1290c43bc90dd84687b62c7ba796504d7f13ce835de1399cb616e4969a6e1",
+      "pin": "shadcn@4.19.0"
+    },
+    "behavior:alert-dialog": {
+      "file": "src/runtime/components/alert-dialog.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/alert-dialog.tsx"
+      ],
+      "extra": [],
+      "hash": "c5f072cf2075d7d64aef45cd1dd16fa0c10c839fb7c8971b43e6b5732a07a387",
+      "pin": "shadcn@4.19.0"
+    },
+    "behavior:avatar": {
+      "file": "src/runtime/components/avatar.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/avatar.tsx"
+      ],
+      "extra": [],
+      "hash": "13bcc0750b054fc59d5bd9a0bb9e1d5972bf17b38c197cbfe3740abe91463fc6",
+      "pin": "shadcn@4.19.0"
+    },
+    "behavior:carousel": {
+      "file": "src/runtime/components/carousel.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/carousel.tsx"
+      ],
+      "extra": [],
+      "hash": "de9e444edc6b8f49c94e2c8bd51432f81f8c738764efbdc3ca6f02005a961c6b",
+      "pin": "shadcn@4.19.0"
+    },
+    "behavior:checkbox": {
+      "file": "src/runtime/components/checkbox.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/checkbox.tsx"
+      ],
+      "extra": [],
+      "hash": "30864f46e3970cd0d069a300f9bc19659fc37f173b069d2a668c85df86b1bdc0",
+      "pin": "shadcn@4.19.0"
+    },
+    "behavior:collapsible": {
+      "file": "src/runtime/components/collapsible.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/collapsible.tsx"
+      ],
+      "extra": [],
+      "hash": "fdde930d6417de57d91251cfd41b44a92ce63daf029d9a7fcbc7199c758037d6",
+      "pin": "shadcn@4.19.0"
+    },
+    "behavior:context-menu": {
+      "file": "src/runtime/components/context-menu.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/context-menu.tsx"
+      ],
+      "extra": [],
+      "hash": "c187d53965338fae587f78fa07ba47766fe755124d3ff6fa2bcb557e0d1eea35",
+      "pin": "shadcn@4.19.0"
+    },
+    "behavior:dialog": {
+      "file": "src/runtime/components/dialog.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/dialog.tsx"
+      ],
+      "extra": [],
+      "hash": "5d5b8fb538905443c3694e5760774a909d7e2c998b6d69acac76ad4e653c463a",
+      "pin": "shadcn@4.19.0"
+    },
+    "behavior:dropdown-menu": {
+      "file": "src/runtime/components/dropdown-menu.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/dropdown-menu.tsx"
+      ],
+      "extra": [],
+      "hash": "b3aaa6884896842bf2edc99cbf7178a551afb3721044844482cf54fb26c73988",
+      "pin": "shadcn@4.19.0"
+    },
+    "behavior:hover-card": {
+      "file": "src/runtime/components/hover-card.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/hover-card.tsx"
+      ],
+      "extra": [],
+      "hash": "81c0da560af0fd41e846b060f7b088bd5ff578a0f2cb204a6913238360929856",
+      "pin": "shadcn@4.19.0"
+    },
+    "behavior:menubar": {
+      "file": "src/runtime/components/menubar.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/menubar.tsx"
+      ],
+      "extra": [],
+      "hash": "49b94ca8c98850f2d062922cef7248468740c353aa22c48322618b6d2215136f",
+      "pin": "shadcn@4.19.0"
+    },
+    "behavior:navigation-menu": {
+      "file": "src/runtime/components/navigation-menu.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/navigation-menu.tsx"
+      ],
+      "extra": [],
+      "hash": "6869f3537e52da551e48ec5afa973b2914c17553695470a84c966218931f7859",
+      "pin": "shadcn@4.19.0"
+    },
+    "behavior:popover": {
+      "file": "src/runtime/components/popover.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/popover.tsx"
+      ],
+      "extra": [],
+      "hash": "2a2cd59599d551098e20f402c631cca6506e280ae0a713408070fec5f851d005",
+      "pin": "shadcn@4.19.0"
+    },
+    "behavior:radio-group": {
+      "file": "src/runtime/components/radio-group.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/radio-group.tsx"
+      ],
+      "extra": [],
+      "hash": "9f0e905909a70221f0f90a27f1e237e1012c13fc7b2ab527546eaafa090f96c8",
+      "pin": "shadcn@4.19.0"
+    },
+    "behavior:scroll-area": {
+      "file": "src/runtime/components/scroll-area.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/scroll-area.tsx"
+      ],
+      "extra": [],
+      "hash": "2a9a37e129cf4baa534be773f2dcba75a198c199cd97937082da4545f7dce8b2",
+      "pin": "shadcn@4.19.0"
+    },
+    "behavior:select": {
+      "file": "src/runtime/components/select.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/select.tsx"
+      ],
+      "extra": [],
+      "hash": "9b956c1c9bdf3094600e52edf116bf7872e4d2230b3b5307bcd52779bed6b50f",
+      "pin": "shadcn@4.19.0"
+    },
+    "behavior:sheet": {
+      "file": "src/runtime/components/sheet.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/sheet.tsx"
+      ],
+      "extra": [],
+      "hash": "58ae2b93b276025c1b1db5af94b81842455f3d4a59439fe3ed5699d1abca47f8",
+      "pin": "shadcn@4.19.0"
+    },
+    "behavior:slider": {
+      "file": "src/runtime/components/slider.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/slider.tsx"
+      ],
+      "extra": [],
+      "hash": "ea1ab8639eace580efdb9583add8f0b7f676e3a12f9c0d8b75c75c1214ea9d5f",
+      "pin": "shadcn@4.19.0"
+    },
+    "behavior:switch": {
+      "file": "src/runtime/components/switch.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/switch.tsx"
+      ],
+      "extra": [],
+      "hash": "e5eb1fe11771f9a86726430352afa4384899f49f6950ee7d9198310f6d2d25ae",
+      "pin": "shadcn@4.19.0"
+    },
+    "behavior:tabs": {
+      "file": "src/runtime/components/tabs.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/tabs.tsx"
+      ],
+      "extra": [],
+      "hash": "c3fe128342af68914e56603ef7ae4f460e48974e9ed8ae42ca76ad5a551caab8",
+      "pin": "shadcn@4.19.0"
+    },
+    "behavior:toggle-group": {
+      "file": "src/runtime/components/toggle-group.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/toggle-group.tsx"
+      ],
+      "extra": [],
+      "hash": "1c19043699f0bf452594a1e48c385767b0bd067f6a5014d424c1f92e4d364f77",
+      "pin": "shadcn@4.19.0"
+    },
+    "behavior:toggle": {
+      "file": "src/runtime/components/toggle.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/toggle.tsx"
+      ],
+      "extra": [],
+      "hash": "fc84b7b232c8e6da2e887a40f9d96107cd007c964f0e056cf3b49a9da0b13863",
+      "pin": "shadcn@4.19.0"
+    },
+    "behavior:tooltip": {
+      "file": "src/runtime/components/tooltip.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/tooltip.tsx"
+      ],
+      "extra": [],
+      "hash": "2f150fada6d331ced4b22726a6ad3548a9b78fe3f5021e136d6a67113733399f",
+      "pin": "shadcn@4.19.0"
+    },
+    "runtime:core": {
+      "file": "src/runtime/core.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/accordion.tsx",
+        "apps/v4/registry/bases/radix/ui/aspect-ratio.tsx",
+        "apps/v4/registry/bases/radix/ui/avatar.tsx",
+        "apps/v4/registry/bases/radix/ui/checkbox.tsx",
+        "apps/v4/registry/bases/radix/ui/collapsible.tsx",
+        "apps/v4/registry/bases/radix/ui/label.tsx",
+        "apps/v4/registry/bases/radix/ui/progress.tsx",
+        "apps/v4/registry/bases/radix/ui/radio-group.tsx",
+        "apps/v4/registry/bases/radix/ui/separator.tsx",
+        "apps/v4/registry/bases/radix/ui/switch.tsx",
+        "apps/v4/registry/bases/radix/ui/toggle.tsx",
+        "apps/v4/registry/bases/radix/ui/toggle-group.tsx"
+      ],
+      "extra": [],
+      "hash": "1bd3458ed9df40ee15ee044415c62b43f026e3148eb90a87b571c6bfd806a14a",
+      "pin": "shadcn@4.19.0"
+    },
+    "demo:message-scroller-anchoring": {
+      "file": "docs/demos/message-scroller-anchoring.html",
+      "inputs": [
+        "apps/v4/examples/radix/message-scroller-anchoring.tsx"
+      ],
+      "extra": [],
+      "hash": "577d312bfac30d2fc008b92b8c3a95a8d756de1a3c828309d6c115e921a9b513",
+      "pin": "shadcn@4.19.0"
+    },
+    "demo:message-scroller-animation": {
+      "file": "docs/demos/message-scroller-animation.html",
+      "inputs": [
+        "apps/v4/examples/radix/message-scroller-animation.tsx"
+      ],
+      "extra": [],
+      "hash": "1f859fcbccdf4e6858bab38ec1d0cd3d230d84abde688efb0db124aa00ae4bd2",
+      "pin": "shadcn@4.19.0"
+    },
+    "demo:message-scroller-commands": {
+      "file": "docs/demos/message-scroller-commands.html",
+      "inputs": [
+        "apps/v4/examples/radix/message-scroller-commands.tsx"
+      ],
+      "extra": [],
+      "hash": "018dc01fb9a01173950486574050047638917e2a281d671c958fc039132b1815",
+      "pin": "shadcn@4.19.0"
+    },
+    "demo:message-scroller-group-chat": {
+      "file": "docs/demos/message-scroller-group-chat.html",
+      "inputs": [
+        "apps/v4/examples/radix/message-scroller-group-chat.tsx"
+      ],
+      "extra": [],
+      "hash": "da67a9df48b7924aaec0153b357ba2701888cd13825f91d7e04c9b7147d94b21",
+      "pin": "shadcn@4.19.0"
+    },
+    "demo:message-scroller-load-history": {
+      "file": "docs/demos/message-scroller-load-history.html",
+      "inputs": [
+        "apps/v4/examples/radix/message-scroller-load-history.tsx"
+      ],
+      "extra": [],
+      "hash": "776ef59d5c099510f336169fd81645cf643ed1b8d098e6078d1deb8bd8bbf140",
+      "pin": "shadcn@4.19.0"
+    },
+    "demo:message-scroller-opening-position": {
+      "file": "docs/demos/message-scroller-opening-position.html",
+      "inputs": [
+        "apps/v4/examples/radix/message-scroller-opening-position.tsx"
+      ],
+      "extra": [],
+      "hash": "0c7dba836e2cbfce10add59eee4f2e083f4d1316dac0be23b114a4e715e622fb",
+      "pin": "shadcn@4.19.0"
+    },
+    "demo:message-scroller-previous-context": {
+      "file": "docs/demos/message-scroller-previous-context.html",
+      "inputs": [
+        "apps/v4/examples/radix/message-scroller-previous-context.tsx"
+      ],
+      "extra": [],
+      "hash": "61a831a4ca9ac624eba7a02d3ec5a2b3d3e8e37a46a69d2b092a0f238919e066",
+      "pin": "shadcn@4.19.0"
+    },
+    "demo:message-scroller-scrollable": {
+      "file": "docs/demos/message-scroller-scrollable.html",
+      "inputs": [
+        "apps/v4/examples/radix/message-scroller-scrollable.tsx"
+      ],
+      "extra": [],
+      "hash": "8518b59d49ff64661f0240e72e703f3e6f6706e4124508fa4af6acb699dc8976",
+      "pin": "shadcn@4.19.0"
+    },
+    "demo:message-scroller-streaming": {
+      "file": "docs/demos/message-scroller-streaming.html",
+      "inputs": [
+        "apps/v4/examples/radix/message-scroller-streaming.tsx"
+      ],
+      "extra": [],
+      "hash": "9c74440d31e1c86bb5205e8f195769ece29276d2d380571ab13dd180720a20e6",
+      "pin": "shadcn@4.19.0"
+    },
+    "demo:message-scroller-visibility": {
+      "file": "docs/demos/message-scroller-visibility.html",
+      "inputs": [
+        "apps/v4/examples/radix/message-scroller-visibility.tsx"
+      ],
+      "extra": [],
+      "hash": "d7f989a390f41c92b5c77973e30216fd97b6c1fe2cf44a0710a2ddf829247a5a",
+      "pin": "shadcn@4.19.0"
+    },
+    "demo:mode-toggle": {
+      "file": "docs/demos/mode-toggle.html",
+      "inputs": [],
+      "extra": [
+        "no-upstream-input"
+      ],
+      "hash": "14ec51e6304f51544cef9a8926623ef039f03f2c420fa48c3470db332ea51619",
+      "pin": "shadcn@4.19.0"
+    }
+  }
+}

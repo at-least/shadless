@@ -1,0 +1,63 @@
+{
+  "oracleOpen": {
+    "step": "oracle",
+    "hover-card-trigger": {
+      "tag": "a",
+      "data-state": "open",
+      "data-slot": "hover-card-trigger",
+      "id": "d1-trigger",
+      "text": "Hoverme"
+    },
+    "hover-card-content": {
+      "tag": "div",
+      "data-side": "bottom",
+      "data-align": "center",
+      "data-state": "open",
+      "data-slot": "hover-card-content",
+      "style": "--radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin); --radix-hover-card-content-available-width: var(--radix-popper-available-width); --radix-hover-card-content-available-height: var(--radix-popper-available-height); --radix-hover-card-trigger-width: var(--radix-popper-anchor-width); --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);",
+      "text": "TheReactFrameworkforweba"
+    },
+    "activeElement": "body",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "shadlessOpen": {
+    "step": "shadless",
+    "hover-card-trigger": {
+      "tag": "a",
+      "data-state": "open",
+      "data-slot": "hover-card-trigger",
+      "id": "d1-trigger",
+      "data-radix-popper-side": "bottom",
+      "data-radix-popper-align": "center",
+      "text": "Hoverme"
+    },
+    "hover-card-content": {
+      "tag": "div",
+      "data-side": "bottom",
+      "data-align": "center",
+      "data-state": "open",
+      "data-slot": "hover-card-content",
+      "style": "--radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin); --radix-hover-card-content-available-width: var(--radix-popper-available-width); --radix-hover-card-content-available-height: var(--radix-popper-available-height); --radix-hover-card-trigger-width: var(--radix-popper-anchor-width); --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);",
+      "text": "TheReactFrameworkforweba"
+    },
+    "activeElement": "body",
+    "scrollLock": {
+      "attr": null,
+      "pointerEvents": ""
+    }
+  },
+  "oracle": {
+    "escape": "closes",
+    "outside-click": "closes",
+    "pointer-away": "closes"
+  },
+  "shadless": {
+    "escape": "closes",
+    "outside-click": "closes",
+    "pointer-away": "closes"
+  },
+  "pass": true
+}

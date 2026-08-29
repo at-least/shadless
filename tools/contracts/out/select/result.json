@@ -1,0 +1,121 @@
+{
+  "oracleOpen": {
+    "step": "oracle",
+    "select-trigger": {
+      "tag": "button",
+      "type": "button",
+      "role": "combobox",
+      "aria-controls": "radix-_r_0_",
+      "aria-expanded": "true",
+      "aria-autocomplete": "none",
+      "dir": "ltr",
+      "data-state": "open",
+      "data-slot": "select-trigger",
+      "data-size": "default",
+      "id": "s1-trigger",
+      "text": "Apple"
+    },
+    "select-value": {
+      "tag": "span",
+      "data-slot": "select-value",
+      "style": "pointer-events: none;",
+      "text": "Apple"
+    },
+    "select-content": {
+      "tag": "div",
+      "role": "listbox",
+      "id": "radix-_r_0_",
+      "data-state": "open",
+      "dir": "ltr",
+      "data-slot": "select-content",
+      "data-align-trigger": "true",
+      "tabindex": "-1",
+      "style": "box-sizing: border-box; max-height: 100%; display: flex; flex-direction: column; outline: none; pointer-events: auto;",
+      "text": "[data-radix-select-viewp"
+    },
+    "&[role=option]": {
+      "tag": "div",
+      "role": "option",
+      "aria-labelledby": "radix-_r_3_",
+      "aria-selected": "true",
+      "data-state": "checked",
+      "tabindex": "-1",
+      "data-slot": "select-item",
+      "data-radix-collection-item": "",
+      "data-highlighted": "",
+      "text": "Apple"
+    },
+    "activeElement": "select-item",
+    "scrollLock": {
+      "attr": "1",
+      "pointerEvents": "none"
+    }
+  },
+  "shadlessOpen": {
+    "step": "shadless",
+    "select-trigger": {
+      "tag": "button",
+      "type": "button",
+      "role": "combobox",
+      "aria-controls": "s1",
+      "aria-expanded": "true",
+      "aria-autocomplete": "none",
+      "dir": "ltr",
+      "data-state": "open",
+      "data-slot": "select-trigger",
+      "data-size": "default",
+      "id": "s1-trigger",
+      "text": "Apple"
+    },
+    "select-value": {
+      "tag": "span",
+      "data-slot": "select-value",
+      "style": "pointer-events: none;",
+      "text": "Apple"
+    },
+    "select-content": {
+      "tag": "div",
+      "role": "listbox",
+      "id": "s1",
+      "data-state": "open",
+      "dir": "ltr",
+      "data-slot": "select-content",
+      "data-align-trigger": "true",
+      "tabindex": "-1",
+      "style": "box-sizing: border-box; max-height: 100%; display: flex; flex-direction: column; outline: none; pointer-events: auto;",
+      "text": "[data-radix-select-viewp"
+    },
+    "&[role=option]": {
+      "tag": "div",
+      "role": "option",
+      "aria-labelledby": "s1-e0",
+      "aria-selected": "true",
+      "data-state": "checked",
+      "tabindex": "-1",
+      "data-slot": "select-item",
+      "data-radix-collection-item": "",
+      "data-highlighted": "",
+      "text": "Apple"
+    },
+    "activeElement": "select-item",
+    "scrollLock": {
+      "attr": "1",
+      "pointerEvents": "none"
+    }
+  },
+  "oracle": {
+    "escape": "closes",
+    "outside-click": "closes",
+    "mouse-click:[data-slot=select-trigger]": "closes",
+    "click:[role=option]": "closes",
+    "key:ArrowDown+key:Enter": "closes"
+  },
+  "shadless": {
+    "escape": "closes",
+    "outside-click": "closes",
+    "mouse-click:[data-slot=select-trigger]": "closes",
+    "click:[role=option]": "closes",
+    "key:ArrowDown+key:Enter": "closes"
+  },
+  "pass": true
+}

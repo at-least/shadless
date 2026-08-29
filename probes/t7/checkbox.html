@@ -1,0 +1,12 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>shadless checkbox</title></head>
+<body>
+  <button data-slot="checkbox" id="c1" type="button" role="checkbox"
+    aria-checked="false" data-state="unchecked" value="on"></button>
+  <template data-for="checkbox-indicator">
+    <span data-slot="checkbox-indicator" data-state="checked" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
+  </template>
+  <script src="../../dist/shadless.js"></script>
+  <script src="../../dist/js/checkbox.js"></script>
+  <script>shadless.initAll()</script>
+</body></html>

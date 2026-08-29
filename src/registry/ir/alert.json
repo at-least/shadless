@@ -1,0 +1,94 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "alert",
+ "tier": "static",
+ "imports": [
+  "react",
+  "class-variance-authority",
+  "@/registry/bases/radix/lib/utils"
+ ],
+ "icons": [],
+ "cva": {
+  "alertVariants": {
+   "base": "grid gap-0.5 rounded-lg border px-2.5 py-2 text-left text-sm has-data-[slot=alert-action]:relative has-data-[slot=alert-action]:pr-18 has-[>svg]:grid-cols-[auto_1fr] has-[>svg]:gap-x-2 *:[svg]:row-span-2 *:[svg]:translate-y-0.5 *:[svg]:text-current *:[svg:not([class*='size-'])]:size-4 group/alert relative w-full",
+   "variants": {
+    "variant": {
+     "default": "bg-card text-card-foreground",
+     "destructive": "text-destructive bg-card *:data-[slot=alert-description]:text-destructive/90 *:[svg]:text-current"
+    }
+   },
+   "defaults": {
+    "variant": "default"
+   }
+  }
+ },
+ "components": [
+  {
+   "fn": "Alert",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "alert",
+     "classes": [
+      "grid gap-0.5 rounded-lg border px-2.5 py-2 text-left text-sm has-data-[slot=alert-action]:relative has-data-[slot=alert-action]:pr-18 has-[>svg]:grid-cols-[auto_1fr] has-[>svg]:gap-x-2 *:[svg]:row-span-2 *:[svg]:translate-y-0.5 *:[svg]:text-current *:[svg:not([class*='size-'])]:size-4 group/alert relative w-full",
+      "bg-card text-card-foreground"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "AlertTitle",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "alert-title",
+     "classes": [
+      "font-medium group-has-[>svg]/alert:col-start-2 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "AlertDescription",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "alert-description",
+     "classes": [
+      "text-muted-foreground text-sm text-balance md:text-pretty [&_p:not(:last-child)]:mb-4 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "AlertAction",
+   "export": true,
+   "elements": [
+    {
+     "tag": "div",
+     "slot": "alert-action",
+     "classes": [
+      "absolute top-2 right-2"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  }
+ ],
+ "conditionals": [],
+ "cvaRefs": [],
+ "tagHints": {}
+}

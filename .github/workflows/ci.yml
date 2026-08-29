@@ -1,0 +1,70 @@
+# CI — the "all gates green" claim, mechanized. Three jobs, all derived from
+# gates/registry.mjs so this file holds no gate list of its own:
+#
+#   build         node gates/run.mjs --tier=full   (every artifact, every gate,
+#                 ending in `reproducible`: the committed generated trees must
+#                 equal what the pipeline just produced)
+#   meta          node gates/meta.mjs — every gate must be provably able to fail
+#
+# The pinned upstream checkout (.upstream/) is cached keyed on pin.json — a
+# re-pin changes the key and forces a fresh clone at the new tag.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - name: Restore pinned upstream checkout
+        id: upstream-cache
+        uses: actions/cache@v4
+        with:
+          path: .upstream
+          key: upstream-${{ hashFiles('src/registry/pin.json') }}
+      - name: Clone pinned upstream
+        if: steps.upstream-cache.outputs.cache-hit != 'true'
+        run: |
+          TAG=$(node -p "require('./src/registry/pin.json').shadcn_ui.tag")
+          git clone --depth 1 --branch "$TAG" https://github.com/shadcn-ui/ui .upstream/shadcn-ui
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: full tier (build + every gate + reproducible)
+        run: node gates/run.mjs --tier=full
+      - name: upload gate output on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with: { name: gates-out, path: gates/out, if-no-files-found: ignore }
+
+  meta:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - uses: actions/cache@v4
+        with:
+          path: .upstream
+          key: upstream-${{ hashFiles('src/registry/pin.json') }}
+      - name: Clone pinned upstream
+        run: |
+          test -d .upstream/shadcn-ui || { TAG=$(node -p "require('./src/registry/pin.json').shadcn_ui.tag"); git clone --depth 1 --branch "$TAG" https://github.com/shadcn-ui/ui .upstream/shadcn-ui; }
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      # mutations edit built artifacts; build them first (gates skipped — the
+      # build job already proved them), then prove every gate can fail
+      - run: node gates/run.mjs --tier=full --builds-only
+      - run: node gates/meta.mjs

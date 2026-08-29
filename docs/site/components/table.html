@@ -1,0 +1,13 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>shadless table</title>
+<link rel="stylesheet" href="../out.css"><script>(function(){try{var k="shadless-docs-theme";var apply=function(d){document.documentElement.classList.toggle("dark",!!d)};var s=localStorage.getItem(k);var d=s?s==="dark":matchMedia("(prefers-color-scheme: dark)").matches;apply(d);addEventListener("storage",function(e){if(e.key===k)apply(e.newValue==="dark")});}catch(e){}})();</script><link rel="stylesheet" href="../fonts.css"></head>
+<body>
+<div data-slot="table-container"><table data-slot="table" style="width:100%;caption-side:bottom;font-size:0.875rem"><thead data-slot="table-header"><tr data-slot="table-row"><th data-slot="table-head" style="text-align:left;padding:0.5rem;border-bottom:1px solid hsl(var(--border))">Name</th><th data-slot="table-head" style="text-align:left;padding:0.5rem;border-bottom:1px solid hsl(var(--border))">Status</th><th data-slot="table-head" style="text-align:right;padding:0.5rem;border-bottom:1px solid hsl(var(--border))">Amount</th></tr></thead><tbody data-slot="table-body"><tr data-slot="table-row"><td data-slot="table-cell" style="padding:0.5rem;border-bottom:1px solid hsl(var(--border))">Alice</td><td data-slot="table-cell" style="padding:0.5rem;border-bottom:1px solid hsl(var(--border))">Active</td><td data-slot="table-cell" style="text-align:right;padding:0.5rem;border-bottom:1px solid hsl(var(--border))">$250</td></tr><tr data-slot="table-row"><td data-slot="table-cell" style="padding:0.5rem;border-bottom:1px solid hsl(var(--border))">Bob</td><td data-slot="table-cell" style="padding:0.5rem;border-bottom:1px solid hsl(var(--border))">Inactive</td><td data-slot="table-cell" style="text-align:right;padding:0.5rem;border-bottom:1px solid hsl(var(--border))">$150</td></tr></tbody></table></div>
+<table><thead data-slot="table-header"><tr data-slot="table-row"><th data-slot="table-head" style="text-align:left;padding:0.5rem;border-bottom:1px solid hsl(var(--border))">Header</th></tr></thead></table>
+<table><tbody data-slot="table-body"><tr data-slot="table-row"><td data-slot="table-cell" style="padding:0.5rem;border-bottom:1px solid hsl(var(--border))">Cell</td></tr></tbody></table>
+<table><tfoot data-slot="table-footer"><tr data-slot="table-row"><td data-slot="table-cell" style="padding:0.5rem">Footer</td></tr></tfoot></table>
+<table><tr data-slot="table-row"><td data-slot="table-cell" style="padding:0.5rem;border-bottom:1px solid hsl(var(--border))">Cell</td></tr></table>
+<table><th data-slot="table-head">Header</th></table>
+<table><td data-slot="table-cell">Cell</td></table>
+<table><caption data-slot="table-caption">Caption</caption></table>
+</body></html>

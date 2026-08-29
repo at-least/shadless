@@ -1,0 +1,13 @@
+{
+  "shadcn_ui": {
+    "repo": "https://github.com/shadcn-ui/ui",
+    "tag": "shadcn@4.19.0",
+    "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2",
+    "registry": "apps/v4/registry/bases/radix/ui"
+  },
+  "kernel": {
+    "file": "vendor/radix-kernel.iife.js",
+    "sha256": "60488312cfda1ad18dfa232d852327e3b091046ae5da6fa17519ed3f68fa0d80"
+  },
+  "recorded": "2026-08-22"
+}

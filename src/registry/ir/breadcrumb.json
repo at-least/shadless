@@ -1,0 +1,165 @@
+{
+ "schema": 2,
+ "source": {
+  "commit": "1773ecfeeb4a04366978d353e69b5c7ded78dcb2"
+ },
+ "name": "breadcrumb",
+ "tier": "static",
+ "imports": [
+  "react",
+  "radix-ui",
+  "@/registry/bases/radix/lib/utils",
+  "@/app/(create)/components/icon-placeholder"
+ ],
+ "icons": [],
+ "cva": {},
+ "components": [
+  {
+   "fn": "Breadcrumb",
+   "export": true,
+   "elements": [
+    {
+     "tag": "nav",
+     "slot": "breadcrumb",
+     "classes": [],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "BreadcrumbList",
+   "export": true,
+   "elements": [
+    {
+     "tag": "ol",
+     "slot": "breadcrumb-list",
+     "classes": [
+      "text-muted-foreground gap-1.5 text-sm flex flex-wrap items-center wrap-break-word"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "BreadcrumbItem",
+   "export": true,
+   "elements": [
+    {
+     "tag": "li",
+     "slot": "breadcrumb-item",
+     "classes": [
+      "gap-1 inline-flex items-center"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "BreadcrumbLink",
+   "export": true,
+   "elements": [
+    {
+     "tag": "Comp",
+     "slot": "breadcrumb-link",
+     "classes": [
+      "hover:text-foreground transition-colors"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "BreadcrumbPage",
+   "export": true,
+   "elements": [
+    {
+     "tag": "span",
+     "slot": "breadcrumb-page",
+     "classes": [
+      "text-foreground font-normal"
+     ],
+     "spread": true,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "BreadcrumbSeparator",
+   "export": true,
+   "elements": [
+    {
+     "tag": "li",
+     "slot": "breadcrumb-separator",
+     "classes": [
+      "[&>svg]:size-3.5"
+     ],
+     "spread": true,
+     "children": [
+      "OPT?"
+     ]
+    },
+    {
+     "tag": "IconPlaceholder",
+     "slot": null,
+     "classes": [
+      "cn-rtl-flip"
+     ],
+     "spread": false,
+     "children": []
+    }
+   ]
+  },
+  {
+   "fn": "BreadcrumbEllipsis",
+   "export": true,
+   "elements": [
+    {
+     "tag": "span",
+     "slot": "breadcrumb-ellipsis",
+     "classes": [
+      "size-5 [&>svg]:size-4 flex items-center justify-center"
+     ],
+     "spread": true,
+     "children": [
+      "<IconPlaceholder>",
+      "<span class=[1]>"
+     ]
+    },
+    {
+     "tag": "IconPlaceholder",
+     "slot": null,
+     "classes": [],
+     "spread": false,
+     "children": []
+    },
+    {
+     "tag": "span",
+     "slot": null,
+     "classes": [
+      "sr-only"
+     ],
+     "spread": false,
+     "children": [
+      "text"
+     ]
+    }
+   ]
+  }
+ ],
+ "conditionals": [
+  {
+   "kind": "child-cond",
+   "fn": "BreadcrumbSeparator",
+   "parent": "li"
+  }
+ ],
+ "cvaRefs": [],
+ "tagHints": {
+  "Comp": "a",
+  "IconPlaceholder": "svg"
+ }
+}
