@@ -18,26 +18,31 @@
 //   - theme variables must survive (dark mode flips on them);
 //   - size sanity bound — catches "everything leaked into the build".
 //
-// The scratch dir lives inside the repo (node_modules resolvable for the
-// tailwindcss CLI) and is the compile's --cwd, so its scan sees ONLY the
-// consumer page — same shape as tools/tw.mjs hermetic product builds.
+// The scratch dir is an OS temp dir — a consumer's project, not a corner
+// of this repo. It must NOT sit under a gitignored path: tailwind's
+// automatic source detection stops honouring ignore rules when the cwd
+// itself is ignored (verified 2026-08-30 with build/consumer-sim: it
+// followed node_modules/shadless into the whole repo and "tree-shook" a
+// 589 KB build). tailwindcss resolves through a second symlink so
+// `@import "tailwindcss"` works from outside the repo.
 import { execFileSync } from "node:child_process"
-import { readFileSync, writeFileSync, mkdirSync, rmSync, symlinkSync, readdirSync } from "node:fs"
-import { resolve } from "node:path"
+import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, rmSync, symlinkSync, readdirSync } from "node:fs"
+import { resolve, join } from "node:path"
+import { tmpdir } from "node:os"
 
 const ROOT = resolve(".")
-const SIM = "build/consumer-sim"
+const SIM = mkdtempSync(join(tmpdir(), "shadless-consumer-sim-"))
+process.on("exit", () => rmSync(SIM, { recursive: true, force: true }))
 const IMPORTED = ["button", "alert"]
 const NOT_IMPORTED = ["dialog", "accordion", "select", "tooltip", "carousel"]
 
-rmSync(SIM, { recursive: true, force: true })
-mkdirSync(SIM, { recursive: true },)
 // install the package the way a consumer would have it: node_modules/
 // shadless → this repo. The entry then imports through the REAL
 // package.json exports map — the specifiers the docs document are the
 // ones machine-checked here, not just file copies
 mkdirSync(`${SIM}/node_modules`, { recursive: true })
 symlinkSync(ROOT, `${SIM}/node_modules/shadless`, "dir")
+symlinkSync(`${ROOT}/node_modules/tailwindcss`, `${SIM}/node_modules/tailwindcss`, "dir")
 
 writeFileSync(`${SIM}/entry.css`, `@import "shadless";
 ${IMPORTED.map((n) => `@import "shadless/${n}.css";`).join("\n")}

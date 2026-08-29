@@ -5,7 +5,7 @@
 //
 // Pure helpers are exported for unit tests (tools/unit/emitter.mjs); the
 // pipeline + gates run under the main guard only.
-import { readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync } from "node:fs"
+import { readFileSync, writeFileSync, mkdirSync, readdirSync } from "node:fs"
 import { join } from "node:path"
 import { pathToFileURL } from "node:url"
 import { JSDOM } from "jsdom"
@@ -309,9 +309,15 @@ export function validateDefaultContent(statics) {
 
 // ---------- emit --------------------------------------------------------------
 function main() {
+  // emit OWNS the static-tier pages and dist/shadless.css, nothing else in
+  // dist/. It used to wipe dist/components and overwrite globals.css /
+  // out.css / demo-index.html with static-only versions that the demo chain
+  // (full tier) later replaced — so every medium-tier run left a committed
+  // tree broken until the next full build, and twice a partial out.css got
+  // committed. Its own stylesheet/index now go to build/emit/ (emit-smoke
+  // reads them there); dist/components is written into, never wiped.
   mkdirSync("dist/components", { recursive: true })
-  rmSync("dist/components", { recursive: true, force: true })
-  mkdirSync("dist/components", { recursive: true })
+  mkdirSync("build/emit", { recursive: true })
 
   const files = readdirSync(IRDIR).filter((f) => f.endsWith(".json")).sort()
   const statics = files.map((f) => JSON.parse(readFileSync(join(IRDIR, f), "utf8")))
@@ -388,10 +394,10 @@ ${body}
   // globals: h4 globals minus demo source + slot rules + shadless fixes
   // (cn-* is resolved at source — no skin @utility layer, no sentinel)
   const g = readFileSync("probes/h4/globals.css", "utf8").replace('@source "./demo.html";\n', "")
-  writeFileSync("dist/globals.css", g + "\n" + SHADLESS_CSS_FIXES + "\n" + cssParts.join("\n\n"))
+  writeFileSync("build/emit/globals.css", g + "\n" + SHADLESS_CSS_FIXES + "\n" + cssParts.join("\n\n"))
 
-  // demo index
-  writeFileSync("dist/demo-index.html", `<!doctype html><html><head><meta charset="utf-8">
+  // static-only demo index (the shipped dist/demo-index.html is tools/demo.mjs's)
+  writeFileSync("build/emit/demo-index.html", `<!doctype html><html><head><meta charset="utf-8">
 <link rel="stylesheet" href="out.css"></head><body>
 <ul>${statics.map((ir) => `<li><a href="components/${ir.name}.html">${ir.name}</a></li>`).join("")}</ul>
 </body></html>`)

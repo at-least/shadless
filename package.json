@@ -55,7 +55,7 @@
     "unit": "node tools/unit-check.mjs",
     "contracts": "node tools/contracts/run.mjs",
     "convert": "node tools/resolve-skins.mjs && node src/converter/index.mjs",
-    "emit": "node src/emitter/index.mjs && node tools/tw.mjs dist/globals.css dist/out.css --cwd dist && node src/emitter/smoke.mjs",
+    "emit": "node src/emitter/index.mjs && node tools/tw.mjs build/emit/globals.css build/emit/out.css --cwd dist && node src/emitter/smoke.mjs",
     "demo": "npm run emit && node tools/build-demo.mjs && node tools/example-oracle.mjs && node tools/example-fixture.mjs && node tools/build-rtl.mjs && node tools/demo.mjs && node tools/product-css.mjs && node tools/tw.mjs dist/globals.css dist/out.css --cwd . && node tools/tw.mjs dist/shadless.product.css dist/shadless.full.css && node tools/tw.mjs dist/shadless.product.css dist/shadless.full.min.css --minify",
     "demo:smoke": "node tools/demo-smoke.mjs",
     "verify": "node gates/run.mjs --tier=full",
@@ -231,7 +231,13 @@
     "w:pin": {
       "command": "node tools/pin.mjs --check-only",
       "output": [],
-      "clean": false
+      "clean": false,
+      "files": [
+        "tools/pin.mjs",
+        "src/registry/pin.json",
+        "vendor/**",
+        ".upstream/shadcn-ui/.git/HEAD"
+      ]
     },
     "w:unit": {
       "command": "node tools/unit-check.mjs",
@@ -350,15 +356,14 @@
       ]
     },
     "w:emit": {
-      "command": "node src/emitter/index.mjs && node tools/tw.mjs dist/globals.css dist/out.css --cwd dist",
+      "command": "node src/emitter/index.mjs && node tools/tw.mjs build/emit/globals.css build/emit/out.css --cwd dist",
       "dependencies": [
         "w:convert"
       ],
       "output": [
-        "dist/components/**",
-        "dist/globals.css",
-        "dist/out.css",
-        "dist/shadless.css"
+        "dist/components/*.html",
+        "dist/shadless.css",
+        "build/emit/**"
       ],
       "clean": false,
       "files": [
@@ -380,7 +385,9 @@
       "clean": false,
       "files": [
         "src/emitter/smoke.mjs",
-        "src/registry/tiers.json"
+        "src/registry/tiers.json",
+        "src/registry/ir/**",
+        "dist/components/**"
       ]
     },
     "w:build-js": {

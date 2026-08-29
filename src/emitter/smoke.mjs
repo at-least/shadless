@@ -26,7 +26,7 @@ if (staticPages.length !== EXPECT_STATIC) {
   process.exit(1)
 }
 
-const css = readFileSync("dist/out.css", "utf8")
+const css = readFileSync("build/emit/out.css", "utf8") // emit's own compile (static slot rules)
 const shadlessCss = readFileSync("dist/shadless.css", "utf8")
 // Every slot rule the emitter generated must survive the tailwind compile
 // into out.css — catches any component's CSS vanishing.

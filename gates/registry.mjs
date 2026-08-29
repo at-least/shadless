@@ -37,7 +37,10 @@ export const NODES = [
   node({
     id: "pin", kind: "gate", tier: "fast", needs: [],
     run: [["node", "tools/pin.mjs", "--check-only"]],
-    inputs: null, // never fresh: judges state outside the tree
+    // the checkout's HEAD file IS the state this gate judges; declaring it
+    // (rather than `null`) matters: wireit cannot consider any dependent of
+    // an untracked node fresh, and everything descends from pin
+    inputs: ["tools/pin.mjs", "src/registry/pin.json", "vendor/**", ".upstream/shadcn-ui/.git/HEAD"],
     why: "the .upstream checkout must sit exactly at the pinned release tag; " +
          "upgrade tools write pin.json directly and nothing else checks the result",
     mutations: ["pin-commit-drift"],
@@ -127,21 +130,23 @@ export const NODES = [
   }),
   node({
     id: "emit", kind: "build", tier: "medium", needs: ["convert"],
-    // emit wipes dist/components — everything that writes into it must depend on emit
+    // emit writes ONLY the static pages + dist/shadless.css into dist/; its own
+    // globals/out.css/index live in build/emit/ so a medium-tier run never
+    // damages the committed demo chain outputs (it used to wipe dist/components)
     run: [["node", "src/emitter/index.mjs"],
-          ["node", "tools/tw.mjs", "dist/globals.css", "dist/out.css", "--cwd", "dist"]],
+          ["node", "tools/tw.mjs", "build/emit/globals.css", "build/emit/out.css", "--cwd", "dist"]],
     inputs: ["src/emitter/**", "src/tags.mjs", "src/docs/theme-prepaint.mjs",
              "src/registry/tiers.json", "src/registry/pin.json", "probes/h4/globals.css",
              "tools/tw.mjs"],
     why: "static-tier emit: IR -> component html + per-slot css",
-    produces: ["dist/components", "dist/globals.css", "dist/out.css", "dist/shadless.css"],
+    produces: ["dist/components/*.html", "dist/shadless.css", "build/emit"],
   }),
   node({
     id: "emit-smoke", kind: "gate", tier: "medium", needs: ["emit"],
     // was buried inside the emit build step, where no tier could select it and
     // no mutation could prove it
     run: [["node", "src/emitter/smoke.mjs"]],
-    inputs: ["src/emitter/smoke.mjs", "src/registry/tiers.json"],
+    inputs: ["src/emitter/smoke.mjs", "src/registry/tiers.json", "src/registry/ir/**", "dist/components/**"],
     why: "emitted markup parses to exactly the expected tags and nesting (jsdom)",
     mutations: ["emit-smoke-slotless-page"],
   }),
