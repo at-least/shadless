@@ -46,6 +46,8 @@ Reconciled so far:
   41 nodes (44 targets).
 - On a green tree, exactly one node is not fresh: `reproducible`, which is
   the only `inputs: null` node — matching wireit's "Ran 1, skipped 40".
+- `plan` stays equivalent after the fan-out: collapsing `contracts:*` back to
+  `contracts` reproduces the registry's plan for all 44 targets.
 - Propagation, checked against the graph: touching `src/emitter/skin.mjs`
   marks convert + its whole downstream stale, plus `unit` and `ledger`
   (which declare `src/**` directly). Touching `gates/coverage.mjs` marks
@@ -65,12 +67,31 @@ Measured: forcing the medium tier (7 nodes) takes 4.7s at -j1 and 2.4s at -j8,
 tree byte-identical afterwards. A warm `run full` is 0.8s — one node
 (`reproducible`) and 40 skipped.
 
+## Fan-out
+
+`pipeline/export-graph.mjs` may give the Go runner a FINER view than the
+registry: a node whose work is really N independent jobs becomes N nodes, each
+with its own key. Only legal when the jobs are genuinely independent —
+separate outputs, no shared mutable state, each failing on its own.
+
+`contracts` is the one that pays for the exercise. It was a single node running
+29 components serially, 46% of the full tier, already spawning a child process
+per component:
+
+    serial, 1 node (wireit)     350.9s
+    29 nodes, -j8                55.0s     6.4x
+
+Per-component durations sum to 353s, matching the serial baseline, so the win
+is scheduling and not a measurement error; the longest single component
+(dropdown-menu, 24.7s) is the floor. The other half of the win does not show up
+in a timing: editing tools/contracts/components/dialog.mjs now marks
+`contracts:dialog` stale and nothing else, instead of re-running all 29.
+
 Still missing before it can replace wireit: output caching across machines
-(wireit has local + GitHub Actions caching), and sub-node granularity — the
-point of the exercise. `contracts` is one node running 29 components serially
-(46% of the full tier) and already spawns a child process per component; each
-should be its own node with its own key, so changing one contract def re-runs
-one component.
+(wireit has local + GitHub Actions caching), and moving the node definitions
+themselves into Go — `gates/registry.mjs` is still the source of truth and
+`export-graph.mjs` derives from it, which is what keeps the reconciliation
+honest while both runners exist.
 
 `graph.json` is generated from `gates/registry.mjs`, which stays the single
 source of truth until the reconciliation is finished.

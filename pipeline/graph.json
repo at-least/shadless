@@ -684,7 +684,7 @@
   "produces": []
  },
  {
-  "id": "contracts",
+  "id": "contracts:accordion",
   "kind": "gate",
   "tier": "full",
   "needs": [
@@ -692,15 +692,16 @@
   ],
   "run": [
    [
-    "npm",
-    "run",
-    "contracts"
+    "node",
+    "tools/contracts/run.mjs",
+    "accordion"
    ]
   ],
   "inputs": [
-   "tools/contracts/**/*.mjs",
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/accordion.mjs",
    "tools/contracts/stubs/**",
-   "tools/contracts/components/**",
    "tools/oracle-lib.mjs",
    "dist/**",
    "src/kernel/**",
@@ -709,7 +710,847 @@
    "gates/ledger.json"
   ],
   "produces": [
-   "tools/contracts/out"
+   "tools/contracts/out/accordion"
+  ]
+ },
+ {
+  "id": "contracts:accordion-multiple",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "accordion-multiple"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/accordion-multiple.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/accordion-multiple"
+  ]
+ },
+ {
+  "id": "contracts:alert-dialog",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "alert-dialog"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/alert-dialog.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/alert-dialog"
+  ]
+ },
+ {
+  "id": "contracts:aspect-ratio",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "aspect-ratio"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/aspect-ratio.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/aspect-ratio"
+  ]
+ },
+ {
+  "id": "contracts:avatar",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "avatar"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/avatar.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/avatar"
+  ]
+ },
+ {
+  "id": "contracts:carousel",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "carousel"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/carousel.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/carousel"
+  ]
+ },
+ {
+  "id": "contracts:checkbox",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "checkbox"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/checkbox.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/checkbox"
+  ]
+ },
+ {
+  "id": "contracts:collapsible",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "collapsible"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/collapsible.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/collapsible"
+  ]
+ },
+ {
+  "id": "contracts:context-menu",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "context-menu"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/context-menu.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/context-menu"
+  ]
+ },
+ {
+  "id": "contracts:dialog",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "dialog"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/dialog.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/dialog"
+  ]
+ },
+ {
+  "id": "contracts:dropdown-menu",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "dropdown-menu"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/dropdown-menu.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/dropdown-menu"
+  ]
+ },
+ {
+  "id": "contracts:hover-card",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "hover-card"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/hover-card.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/hover-card"
+  ]
+ },
+ {
+  "id": "contracts:label",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "label"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/label.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/label"
+  ]
+ },
+ {
+  "id": "contracts:menubar",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "menubar"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/menubar.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/menubar"
+  ]
+ },
+ {
+  "id": "contracts:navigation-menu",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "navigation-menu"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/navigation-menu.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/navigation-menu"
+  ]
+ },
+ {
+  "id": "contracts:popover",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "popover"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/popover.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/popover"
+  ]
+ },
+ {
+  "id": "contracts:progress",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "progress"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/progress.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/progress"
+  ]
+ },
+ {
+  "id": "contracts:radio-group",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "radio-group"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/radio-group.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/radio-group"
+  ]
+ },
+ {
+  "id": "contracts:scroll-area",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "scroll-area"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/scroll-area.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/scroll-area"
+  ]
+ },
+ {
+  "id": "contracts:select",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "select"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/select.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/select"
+  ]
+ },
+ {
+  "id": "contracts:separator",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "separator"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/separator.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/separator"
+  ]
+ },
+ {
+  "id": "contracts:sheet",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "sheet"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/sheet.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/sheet"
+  ]
+ },
+ {
+  "id": "contracts:slider",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "slider"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/slider.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/slider"
+  ]
+ },
+ {
+  "id": "contracts:switch",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "switch"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/switch.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/switch"
+  ]
+ },
+ {
+  "id": "contracts:tabs",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "tabs"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/tabs.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/tabs"
+  ]
+ },
+ {
+  "id": "contracts:toggle",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "toggle"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/toggle.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/toggle"
+  ]
+ },
+ {
+  "id": "contracts:toggle-group",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "toggle-group"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/toggle-group.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/toggle-group"
+  ]
+ },
+ {
+  "id": "contracts:toggle-group-multiple",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "toggle-group-multiple"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/toggle-group-multiple.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/toggle-group-multiple"
+  ]
+ },
+ {
+  "id": "contracts:tooltip",
+  "kind": "gate",
+  "tier": "full",
+  "needs": [
+   "demo-css"
+  ],
+  "run": [
+   [
+    "node",
+    "tools/contracts/run.mjs",
+    "tooltip"
+   ]
+  ],
+  "inputs": [
+   "tools/contracts/run.mjs",
+   "tools/contracts/oracle-build.mjs",
+   "tools/contracts/components/tooltip.mjs",
+   "tools/contracts/stubs/**",
+   "tools/oracle-lib.mjs",
+   "dist/**",
+   "src/kernel/**",
+   "src/registry/pin.json",
+   "package-lock.json",
+   "gates/ledger.json"
+  ],
+  "produces": [
+   "tools/contracts/out/tooltip"
   ]
  },
  {
@@ -740,7 +1581,35 @@
   "kind": "gate",
   "tier": "full",
   "needs": [
-   "contracts",
+   "contracts:accordion",
+   "contracts:accordion-multiple",
+   "contracts:alert-dialog",
+   "contracts:aspect-ratio",
+   "contracts:avatar",
+   "contracts:carousel",
+   "contracts:checkbox",
+   "contracts:collapsible",
+   "contracts:context-menu",
+   "contracts:dialog",
+   "contracts:dropdown-menu",
+   "contracts:hover-card",
+   "contracts:label",
+   "contracts:menubar",
+   "contracts:navigation-menu",
+   "contracts:popover",
+   "contracts:progress",
+   "contracts:radio-group",
+   "contracts:scroll-area",
+   "contracts:select",
+   "contracts:separator",
+   "contracts:sheet",
+   "contracts:slider",
+   "contracts:switch",
+   "contracts:tabs",
+   "contracts:toggle",
+   "contracts:toggle-group",
+   "contracts:toggle-group-multiple",
+   "contracts:tooltip",
    "oracle-css"
   ],
   "run": [
