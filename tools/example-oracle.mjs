@@ -52,6 +52,20 @@ const CHECK = process.argv.includes("--check")
 // every downstream gate that reads the manifest went green over an empty
 // surface.
 const MANIFEST = "docs/example-oracle.json"
+
+// Examples that cannot be BUNDLED at all: the upstream file imports packages
+// this repo does not carry (@ai-sdk/react, @shadcn/react/message-scroller).
+// Their pages stay hand-authored, and a build failure on one of them is not a
+// pipeline failure. Deliberately NOT a second list — those same names are
+// already recorded, with that reason, as golden-hop exemptions, budgeted
+// through gates/ledger.json (golden.exempt-demos, target 0). One place to
+// delete them from when upstream drops the dependency.
+const GOLDEN_EXEMPTIONS = "src/registry/upstream-snapshot/exemptions.json"
+const NO_ORACLE = new Set(
+  Object.entries(JSON.parse(readFileSync(GOLDEN_EXEMPTIONS, "utf8")).examples)
+    .filter(([, e]) => /^external dep /.test(e.reason))
+    .map(([name]) => name))
+
 function loadTargets() {
   const catalog = JSON.parse(readFileSync("docs/catalog.json", "utf8"))
   // Kernel-tier -demo previews keep the existing fixture path
@@ -156,6 +170,7 @@ const FIXTURE_TARGETS = "docs/example-fixture-targets.json"
 const fixtureTargets = []
 const rendered = []
 const failures = []
+const exempt = []
 // Phase 1 — render everything, write nothing. The run is ALL-OR-NOTHING:
 // a partial emit leaves the tree half-generated and, worse, rewrites the
 // two manifests to describe only the pages that happened to survive, which
@@ -173,10 +188,14 @@ for (const t of TARGETS) {
     if (families.length && t.out.startsWith("docs/demos/")) { fixtureTargets.push({ name: t.name, families, trivial }); continue }
     rendered.push({ t, dom: dom.trim(), trivial })
   } catch (err) {
+    if (NO_ORACLE.has(t.name)) { exempt.push(t.name); continue }
     failures.push(`${t.name}: oracle render failed (${err.message.split("\n")[0]})`)
   }
 }
 await browser.close()
+if (exempt.length)
+  console.log(`example-oracle: ${exempt.length} examples cannot be bundled (external deps, ` +
+    `recorded in ${GOLDEN_EXEMPTIONS}) — pages stay hand-authored: ${exempt.join(", ")}`)
 
 if (failures.length) {
   for (const f of failures) console.error(`FAIL [${f.split(":")[0]}]: ${f.slice(f.indexOf(":") + 2)}`)
@@ -193,4 +212,5 @@ for (const { t, dom, trivial } of rendered) {
 writeFileSync(MANIFEST, JSON.stringify(rendered.map(({ t }) => ({ name: t.name, out: t.out })), null, 1) + "\n")
 writeFileSync(FIXTURE_TARGETS, JSON.stringify(fixtureTargets.sort((a, b) => a.name.localeCompare(b.name)), null, 1) + "\n")
 console.log(`example-oracle: ${fixtureTargets.length} pages carry kernel families — handed to tools/example-fixture.mjs (${FIXTURE_TARGETS})`)
-console.log(`example-oracle: ${rendered.length} pages emitted from React oracle (${TARGETS.length} targets, 0 failures)`)
+console.log(`example-oracle: ${rendered.length} pages emitted from React oracle ` +
+  `(${TARGETS.length} targets, ${fixtureTargets.length} to example-fixture, ${exempt.length} exempt, 0 failures)`)
