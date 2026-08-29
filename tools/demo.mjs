@@ -48,11 +48,31 @@ const names = irAll.map((ir) => ir.name).sort()
 // ---- 1. unified globals.css (base + all-47 slot rules + @source per page) ---
 const base = readFileSync("probes/h4/globals.css", "utf8")
   .replace('@source "./demo.html";\n', "")
+// dist/css/<name>.css is the npm-consumable per-component @apply source
+// (package.json exports "./*"), and it is the SAME text this loop folds into
+// globals.css. It used to be tracked with no writer at all: every tool
+// touching dist/css only read it back, so the 48 files were a hand-planted
+// snapshot that no IR change could ever refresh and `reproducible` could
+// never catch drifting. Written here, next to the one call that computes it,
+// rather than re-deriving irAll's tier filter in a second tool.
+mkdirSync(`${DIST}/css`, { recursive: true })
 const cssParts = []
+const cssFiles = new Set()
 for (const ir of irAll) {
   const css = componentCss(ir)
   if (!css.rules.length) continue
-  cssParts.push(wrapComponentCss(ir.name, css))
+  const part = wrapComponentCss(ir.name, css)
+  cssParts.push(part)
+  writeFileSync(`${DIST}/css/${ir.name}.css`, part + "\n")
+  cssFiles.add(`${ir.name}.css`)
+}
+// a component leaving the emitted set must take its file with it — an
+// orphan keeps shipping through shadless.product.css (src/registry/ir/form.json
+// is the same bug one layer up). Safe to delete from: the count assertion
+// above already threw if irAll is not the full expected set.
+for (const f of readdirSync(`${DIST}/css`).filter((x) => x.endsWith(".css") && !cssFiles.has(x))) {
+  rmSync(`${DIST}/css/${f}`)
+  console.log(`demo: removed orphaned dist/css/${f} (no longer an emitted component)`)
 }
 // out.css's content scan is EXPLICIT. It used to be tailwind's automatic
 // repo-wide detection (compile from the repo root), which was load-bearing

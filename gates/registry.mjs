@@ -196,7 +196,7 @@ export const NODES = [
     inputs: ["tools/example-oracle.mjs", "src/docs/theme-prepaint.mjs", "src/registry/tiers.json",
              "src/runtime/components/**", "docs/catalog.json", "tools/oracle-lib.mjs",
              "tools/contracts/stubs/**", "tools/resolve-skins.mjs", "src/registry/pin.json",
-             "package-lock.json"],
+             "src/registry/upstream-snapshot/exemptions.json", "package-lock.json"],
     why: "upstream examples rendered by real React+chromium BECOME the demo pages — " +
          "1:1 with upstream by construction, not by hand-mirroring",
     // rtl language variants are demo-rtl's: output sets must be DISJOINT between
@@ -232,17 +232,23 @@ export const NODES = [
     inputs: ["tools/demo.mjs", "tools/demo-lib.mjs", "tools/build-js.mjs", "src/emitter/css.mjs",
              "src/docs/theme-prepaint.mjs", "src/registry/tiers.json", "src/registry/ir/**",
              "src/kernel/**", "probes/h4/globals.css", "probes/t7/**", "probes/t8/**"],
-    why: "unified globals.css (slot rules folded in) + the demo index",
-    produces: ["dist/globals.css", "dist/demo-index.html", "dist/components/*.html", "!dist/components/*-rtl-*.html"],
+    why: "unified globals.css (slot rules folded in) + the demo index + the " +
+         "per-component @apply sources the npm surface exports",
+    produces: ["dist/globals.css", "dist/demo-index.html", "dist/css", "dist/components/*.html", "!dist/components/*-rtl-*.html"],
   }),
 
   // ------------------------------------------------------------ css builds
   node({
+    // dist/css is DEMO's output now (one writer, next to the componentCss call
+    // that computes it); this node only reads it back into the product entry.
+    // theme-prepaint supplies SHADLESS_CSS_FIXES and package-lock pins the
+    // tw-animate-css that gets inlined — both were read but undeclared.
     id: "product-css", kind: "build", tier: "medium", needs: ["demo"],
     run: [["node", "tools/product-css.mjs"]],
-    inputs: ["tools/product-css.mjs", "src/emitter/css.mjs", "src/registry/ir/**"],
-    why: "token extraction + per-component @apply sources — the consumer-facing surface",
-    produces: ["dist/css", "dist/shadless-core.css", "dist/shadless.product.css"],
+    inputs: ["tools/product-css.mjs", "src/docs/theme-prepaint.mjs", "probes/h4/globals.css",
+             "package-lock.json"],
+    why: "token extraction + the product entry — the consumer-facing surface",
+    produces: ["dist/shadless-core.css", "dist/shadless.product.css"],
   }),
   node({
     id: "demo-css", kind: "build", tier: "medium", needs: ["demo"],
@@ -289,7 +295,7 @@ export const NODES = [
   node({
     id: "path-parity", kind: "gate", tier: "full", needs: ["product-build", "oracle-css"],
     run: [["node", "gates/path-parity.mjs"]],
-    inputs: ["gates/path-parity.mjs", "gates/path-parity-baseline.json", "gates/ledger.json",
+    inputs: ["gates/path-parity.mjs", "gates/parity-baseline.mjs", "gates/path-parity-baseline.json", "gates/ledger.json",
              "src/emitter/css.mjs", "src/tags.mjs", "src/registry/ir/**", "dist/css/**",
              "dist/shadless.full.css", "build/gates/oracle.css", "src/registry/pin.json",
              "tools/tw.mjs"],
@@ -304,7 +310,7 @@ export const NODES = [
   node({
     id: "demo-parity", kind: "gate", tier: "full", needs: ["demo-css", "oracle-css", "example-oracle"],
     run: [["node", "gates/demo-parity.mjs"]],
-    inputs: ["gates/demo-parity.mjs", "gates/demo-parity-baseline.json", "gates/ledger.json",
+    inputs: ["gates/demo-parity.mjs", "gates/parity-baseline.mjs", "gates/demo-parity-baseline.json", "gates/ledger.json",
              "build/gates/oracle.css", "dist/out.css", "docs/demos/**", "docs/example-oracle.json"],
     why: "every shipped demo page's DOM under our css must compute what the SAME DOM computes " +
          "under upstream's stylesheet, light/dark x ltr/rtl — same DOM on both sides, so every " +
@@ -341,12 +347,12 @@ export const NODES = [
   node({
     id: "style-parity", kind: "gate", tier: "full", needs: ["contracts", "oracle-css"],
     run: [["node", "tools/style-parity.mjs"]],
-    inputs: ["tools/style-parity.mjs", "gates/style-parity-baseline.json", "gates/ledger.json",
+    inputs: ["tools/style-parity.mjs", "gates/parity-baseline.mjs", "gates/style-parity-baseline.json", "gates/ledger.json",
              "tools/contracts/out/**", "tools/contracts/components/**", "build/gates/oracle.css",
              "src/registry/pin.json"],
     why: "computed STYLE parity vs the React oracle — 'same DOM + same css => same " +
          "styles' was an inference no gate ever tested",
-    mutations: ["style-parity-perturb-padding"],
+    mutations: ["style-parity-perturb-padding", "style-parity-recorded-value-drift"],
   }),
   node({
     id: "demo-smoke", kind: "gate", tier: "full", needs: ["demo-css"],

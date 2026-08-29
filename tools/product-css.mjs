@@ -6,7 +6,7 @@
 //                                @utility helpers + keyframes (NO docs-site
 //                                chrome, NO demo @source, NO demo body pad)
 //   dist/css/<name>.css          per-component @layer block (@apply source,
-//                                49 files — written by tools/demo.mjs)
+//                                written by tools/demo.mjs — READ here)
 //   dist/shadless.product.css    tokens + fixes + all parts (tailwind input)
 //   dist/shadless.full[.min].css compiled by the demo chain (zero-build use)
 //

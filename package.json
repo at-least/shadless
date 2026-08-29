@@ -478,6 +478,7 @@
         "tools/contracts/stubs/**",
         "tools/resolve-skins.mjs",
         "src/registry/pin.json",
+        "src/registry/upstream-snapshot/exemptions.json",
         "package-lock.json"
       ]
     },
@@ -536,6 +537,7 @@
       "output": [
         "dist/globals.css",
         "dist/demo-index.html",
+        "dist/css/**",
         "dist/components/*.html",
         "!dist/components/*-rtl-*.html"
       ],
@@ -560,15 +562,15 @@
         "w:demo"
       ],
       "output": [
-        "dist/css/**",
         "dist/shadless-core.css",
         "dist/shadless.product.css"
       ],
       "clean": false,
       "files": [
         "tools/product-css.mjs",
-        "src/emitter/css.mjs",
-        "src/registry/ir/**"
+        "src/docs/theme-prepaint.mjs",
+        "probes/h4/globals.css",
+        "package-lock.json"
       ]
     },
     "w:demo-css": {
@@ -646,6 +648,7 @@
       "clean": false,
       "files": [
         "gates/path-parity.mjs",
+        "gates/parity-baseline.mjs",
         "gates/path-parity-baseline.json",
         "gates/ledger.json",
         "src/emitter/css.mjs",
@@ -669,6 +672,7 @@
       "clean": false,
       "files": [
         "gates/demo-parity.mjs",
+        "gates/parity-baseline.mjs",
         "gates/demo-parity-baseline.json",
         "gates/ledger.json",
         "build/gates/oracle.css",
@@ -736,6 +740,7 @@
       "clean": false,
       "files": [
         "tools/style-parity.mjs",
+        "gates/parity-baseline.mjs",
         "gates/style-parity-baseline.json",
         "gates/ledger.json",
         "tools/contracts/out/**",
