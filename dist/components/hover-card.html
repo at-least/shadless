@@ -1,0 +1,14 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>shadless hover-card</title>
+<link rel="stylesheet" href="../out.css"><script>(function(){try{var k="shadless-docs-theme";var apply=function(d){document.documentElement.classList.toggle("dark",!!d)};var s=localStorage.getItem(k);var d=s?s==="dark":matchMedia("(prefers-color-scheme: dark)").matches;apply(d);addEventListener("storage",function(e){if(e.key===k)apply(e.newValue==="dark")});}catch(e){}})();</script></head>
+<body class="p-8">
+<div>
+<a data-state="closed" data-slot="hover-card-trigger" id="d1-trigger">Hover me</a>
+</div>
+<template id="d1-portal">
+<div data-radix-popper-content-wrapper="" style="position: fixed; left: 0px; top: 0px; transform: translate(0px, 29px); min-width: max-content; --radix-popper-transform-origin: 50% 0px; z-index: auto; --radix-popper-available-width: 1280px; --radix-popper-available-height: 691px; --radix-popper-anchor-width: 63.53125px; --radix-popper-anchor-height: 17px;"><div data-side="bottom" data-align="center" data-state="open" data-slot="hover-card-content" class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground w-64 rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-hover-card-content-transform-origin) outline-hidden" style="--radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin); --radix-hover-card-content-available-width: var(--radix-popper-available-width); --radix-hover-card-content-available-height: var(--radix-popper-available-height); --radix-hover-card-trigger-width: var(--radix-popper-anchor-width); --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);">The React Framework for web and native user interfaces.</div></div>
+</template>
+<script src="../shadless.js"></script>
+<script src="../js/hover-card.js"></script>
+
+</body></html>

@@ -1,0 +1,10 @@
+<!doctype html>
+<html><head>
+<link rel="stylesheet" href="../out.css"><meta charset="utf-8"><title>shadless switch</title><script>(function(){try{var k="shadless-docs-theme";var apply=function(d){document.documentElement.classList.toggle("dark",!!d)};var s=localStorage.getItem(k);var d=s?s==="dark":matchMedia("(prefers-color-scheme: dark)").matches;apply(d);addEventListener("storage",function(e){if(e.key===k)apply(e.newValue==="dark")});}catch(e){}})();</script></head>
+<body>
+  <button data-slot="switch" id="s1" type="button" role="switch"
+    aria-checked="false" data-state="unchecked" value="on" data-size="default"><span data-slot="switch-thumb" data-state="unchecked"></span></button>
+  <script src="../shadless.js"></script>
+  <script src="../js/switch.js"></script>
+  <script>shadless.initAll()</script>
+</body></html>
