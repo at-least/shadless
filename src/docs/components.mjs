@@ -18,7 +18,7 @@ import { basename } from 'node:path'
 import { el } from './jsx.mjs'
 import { iconComponent } from './icons.mjs'
 import { extractDemoScripts } from './demo-scripts.mjs'
-import { tokenizeLines, lineNumbersAttrs } from './highlight.mjs'
+import { splitLines, codeAttrs } from './highlight.mjs'
 
 const catalog = JSON.parse(readFileSync('docs/catalog.json', 'utf8'))
 const previews = new Map(catalog.previews.map((p) => [p.name, p]))
@@ -49,12 +49,21 @@ const classes = (...xs) => xs.filter(Boolean).join(' ')
 const kids = (c) => (c === undefined || c === null ? [] : Array.isArray(c) ? c : [c])
 
 // local (non-vendor) scripts a demo page references → real file bodies.
+// The JS tab shows the COMPONENT's behavior file (dist/js/<name>.js) plus
+// any inline init; the shared base runtime (dist/shadless.js, 163 KB,
+// identical for every component) is referenced by a comment line, not
+// inlined — inlining it 121× across the site was 90% of docs/site's bytes.
 // Inline scripts go through extractDemoScripts so the FT9 theme pre-paint
 // boilerplate never leaks into the docs JS tab (Wave H D3).
 function demoSources(file) {
   const html = readFileSync(file, 'utf8')
   const { srcScripts, inlineScripts } = extractDemoScripts(html)
-  const parts = srcScripts.map((s) => readFileSync(`dist/${s}`, 'utf8').trim())
+  const parts = []
+  if (srcScripts.includes('shadless.js')) parts.push('// <script src="shadless.js"></script>  — the shared runtime (see Installation)')
+  for (const s of srcScripts) {
+    if (s === 'shadless.js') continue
+    parts.push(`// ${s}\n${readFileSync(`dist/${s}`, 'utf8').trim()}`)
+  }
   parts.push(...inlineScripts)
   return { html, js: parts.join('\n\n') }
 }
@@ -97,33 +106,18 @@ const ComponentPreview = (p) => {
   // COLLAPSED to a capped sliver behind a gradient veil with a centered
   // "View Code" button (upstream ComponentPreview); site.js flips
   // data-open="true" on click, which uncaps the body and hides the veil.
-  // Upstream parity: source blocks get the SAME treatment as mdx fences —
-  // dual-theme shiki tokens (--shiki-light/--shiki-dark vars) + line-number
-  // gutter via data-line spans + data-line-numbers attrs (site.css draws
-  // the counter ::before). HTML/JS tabs both highlight.
-  const tokenSpanStyle = (tok) => [
-    tok.light ? `--shiki-light:${tok.light}` : '',
-    tok.dark ? `--shiki-dark:${tok.dark}` : '',
-    tok.italic ? 'font-style:italic' : '',
-    tok.bold ? 'font-weight:bold' : '',
-  ].filter(Boolean).join(';')
-  const highlightedCode = (code, lang) => {
-    const lines = tokenizeLines(code, lang)
-    const lineSpans = lines.map((tokens) => {
-      const children = tokens.map((tok) =>
-        tok.light || tok.italic || tok.bold
-          ? el('span', { style: tokenSpanStyle(tok) }, [tok.content])
-          : tok.content)
-      const last = children[children.length - 1]
-      if (typeof last === 'string') children[children.length - 1] = last + '\n'
-      else children.push('\n')
-      return el('span', { 'data-line': '' }, children)
-    })
-    return el('code', lineNumbersAttrs(lines.length), lineSpans)
+  // Upstream parity: source blocks get the SAME structure as mdx fences —
+  // plain-text <span data-line> lines + line-number gutter attrs (site.css
+  // draws the counter ::before); data-lang tells docs/site/highlight.js
+  // which grammar to colour them with in the browser.
+  const plainCode = (code, lang) => {
+    const lines = splitLines(code)
+    return el('code', codeAttrs(lines.length, lang),
+      lines.map((line) => el('span', { 'data-line': '' }, [line + '\n'])))
   }
   const sourceBlock = (label, code, lang) => el('div', { class: 'source-block' }, [
     el('div', { class: 'source-label' }, [label]),
-    el('pre', { class: 'preview-code' }, [highlightedCode(code, lang)]),
+    el('pre', { class: 'preview-code' }, [plainCode(code, lang)]),
   ])
   const sourceBody = el('div', { class: 'source-body' }, [
     sourceBlock('HTML', html, 'html'),

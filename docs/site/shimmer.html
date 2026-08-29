@@ -159,8 +159,7 @@ use the classes directly (see the <a href="installation.html">Installation</a> g
 </span></code></td></tr></tbody></table>
 <p>Add <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>shimmer
 </span></code> to a text element.</p>
-<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">p</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">className</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;shimmer text-muted-foreground&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>Generating response<span style="--shiki-light:#CF222E;--shiki-dark:#FFC799">&amp;hellip;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">p</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1" data-lang="tsx"><span data-line>&lt;p className=&quot;shimmer text-muted-foreground&quot;&gt;Generating response&amp;hellip;&lt;/p&gt;
 </span></code></pre>
 <p>The shimmer is built on <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>currentColor
 </span></code>, so it adapts to the element:</p>
@@ -175,21 +174,19 @@ use the classes directly (see the <a href="installation.html">Installation</a> g
 <h2 id="with-marker">With Marker</h2>
 <p>The shimmer composes with any component that renders text. A common pattern is a <a href="marker.html">Marker</a> showing a live status while the assistant is working:</p>
 <div data-component-preview="shimmer-marker" data-style-name="base-rhea" data-status="unavailable" class="component-preview-ph"><span class="ph-note">demo not available in shadless (base-style demo)</span><code class="ph-name">shimmer-marker</code><span class="ph-cross-link"> — <a href="shimmer.html">see guide</a></span></div>
-<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">Marker</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">role</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;status&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>  <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">MarkerIcon</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>    <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">Spinner</span> <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">/&gt;</span>
-</span><span data-line>  <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">MarkerIcon</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>  <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">MarkerContent</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">className</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;shimmer&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>Thinking<span style="--shiki-light:#CF222E;--shiki-dark:#FFC799">&amp;hellip;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">MarkerContent</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">Marker</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1" data-lang="tsx"><span data-line>&lt;Marker role=&quot;status&quot;&gt;
+</span><span data-line>  &lt;MarkerIcon&gt;
+</span><span data-line>    &lt;Spinner /&gt;
+</span><span data-line>  &lt;/MarkerIcon&gt;
+</span><span data-line>  &lt;MarkerContent className=&quot;shimmer&quot;&gt;Thinking&amp;hellip;&lt;/MarkerContent&gt;
+</span><span data-line>&lt;/Marker&gt;
 </span></code></pre>
 <h2 id="color">Color</h2>
 <p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>shimmer-color-&lt;color&gt;
 </span></code> to set the highlight color explicitly. It accepts theme colors with an optional opacity modifier, or any arbitrary color value.</p>
 <div data-component-preview="shimmer-color" data-style-name="base-rhea" data-status="unavailable" class="component-preview-ph"><span class="ph-note">demo not available in shadless (base-style demo)</span><code class="ph-name">shimmer-color</code><span class="ph-cross-link"> — <a href="shimmer.html">see guide</a></span></div>
-<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">p</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">className</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;shimmer shimmer-color-blue-500/60&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>Generating response<span style="--shiki-light:#CF222E;--shiki-dark:#FFC799">&amp;hellip;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">p</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">p</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">className</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;shimmer shimmer-color-[#378ADD]&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>Generating response<span style="--shiki-light:#CF222E;--shiki-dark:#FFC799">&amp;hellip;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">p</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1" data-lang="tsx"><span data-line>&lt;p className=&quot;shimmer shimmer-color-blue-500/60&quot;&gt;Generating response&amp;hellip;&lt;/p&gt;
+</span><span data-line>&lt;p className=&quot;shimmer shimmer-color-[#378ADD]&quot;&gt;Generating response&amp;hellip;&lt;/p&gt;
 </span></code></pre>
 <h2 id="duration">Duration</h2>
 <p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>shimmer-duration-&lt;number&gt;
@@ -197,8 +194,7 @@ use the classes directly (see the <a href="installation.html">Installation</a> g
 </span></code>, i.e. <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>2s
 </span></code>.</p>
 <div data-component-preview="shimmer-duration" data-style-name="base-rhea" data-status="unavailable" class="component-preview-ph"><span class="ph-note">demo not available in shadless (base-style demo)</span><code class="ph-name">shimmer-duration</code><span class="ph-cross-link"> — <a href="shimmer.html">see guide</a></span></div>
-<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">p</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">className</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;shimmer shimmer-duration-1000&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>Generating response<span style="--shiki-light:#CF222E;--shiki-dark:#FFC799">&amp;hellip;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">p</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1" data-lang="tsx"><span data-line>&lt;p className=&quot;shimmer shimmer-duration-1000&quot;&gt;Generating response&amp;hellip;&lt;/p&gt;
 </span></code></pre>
 <h2 id="spread">Spread</h2>
 <p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>shimmer-spread-&lt;number&gt;
@@ -206,53 +202,46 @@ use the classes directly (see the <a href="installation.html">Installation</a> g
 </span></code>: a fixed base plus a <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>3ch
 </span></code> term that scales with the font size.</p>
 <div data-component-preview="shimmer-spread" data-style-name="base-rhea" data-status="unavailable" class="component-preview-ph"><span class="ph-note">demo not available in shadless (base-style demo)</span><code class="ph-name">shimmer-spread</code><span class="ph-cross-link"> — <a href="shimmer.html">see guide</a></span></div>
-<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">p</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">className</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;shimmer shimmer-spread-24&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>Generating response<span style="--shiki-light:#CF222E;--shiki-dark:#FFC799">&amp;hellip;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">p</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1" data-lang="tsx"><span data-line>&lt;p className=&quot;shimmer shimmer-spread-24&quot;&gt;Generating response&amp;hellip;&lt;/p&gt;
 </span></code></pre>
 <p>For one-off values, use an arbitrary length or percentage:</p>
-<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">p</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">className</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;shimmer shimmer-spread-[5rem]&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>Generating response<span style="--shiki-light:#CF222E;--shiki-dark:#FFC799">&amp;hellip;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">p</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1" data-lang="tsx"><span data-line>&lt;p className=&quot;shimmer shimmer-spread-[5rem]&quot;&gt;Generating response&amp;hellip;&lt;/p&gt;
 </span></code></pre>
 <h2 id="angle">Angle</h2>
 <p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>shimmer-angle-&lt;number&gt;
 </span></code> to set the tilt of the highlight band in degrees. The default is <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>20
 </span></code>.</p>
 <div data-component-preview="shimmer-angle" data-style-name="base-rhea" data-status="unavailable" class="component-preview-ph"><span class="ph-note">demo not available in shadless (base-style demo)</span><code class="ph-name">shimmer-angle</code><span class="ph-cross-link"> — <a href="shimmer.html">see guide</a></span></div>
-<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">p</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">className</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;shimmer shimmer-angle-45&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>Generating response<span style="--shiki-light:#CF222E;--shiki-dark:#FFC799">&amp;hellip;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">p</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1" data-lang="tsx"><span data-line>&lt;p className=&quot;shimmer shimmer-angle-45&quot;&gt;Generating response&amp;hellip;&lt;/p&gt;
 </span></code></pre>
 <h2 id="reverse">Reverse</h2>
 <p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>shimmer-reverse
 </span></code> to sweep the highlight in the opposite direction. In RTL layouts the sweep already follows the reading direction. See <a href="#rtl">RTL</a>.</p>
-<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">p</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">className</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;shimmer shimmer-reverse&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>Generating response<span style="--shiki-light:#CF222E;--shiki-dark:#FFC799">&amp;hellip;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">p</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1" data-lang="tsx"><span data-line>&lt;p className=&quot;shimmer shimmer-reverse&quot;&gt;Generating response&amp;hellip;&lt;/p&gt;
 </span></code></pre>
 <h2 id="play-once">Play Once</h2>
 <p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>shimmer-once
 </span></code> to play a single sweep instead of looping, useful as a reveal when streaming completes. Pair it with <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>shimmer-duration-&lt;number&gt;
 </span></code> to control how long the sweep takes.</p>
 <div data-component-preview="shimmer-once" data-style-name="base-rhea" data-status="unavailable" class="component-preview-ph"><span class="ph-note">demo not available in shadless (base-style demo)</span><code class="ph-name">shimmer-once</code><span class="ph-cross-link"> — <a href="shimmer.html">see guide</a></span></div>
-<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">p</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">className</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;shimmer shimmer-duration-1100 shimmer-once&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1" data-lang="tsx"><span data-line>&lt;p className=&quot;shimmer shimmer-duration-1100 shimmer-once&quot;&gt;
 </span><span data-line>  Response generated.
-</span><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">p</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>
+</span><span data-line>&lt;/p&gt;
 </span></code></pre>
 <h2 id="disabling-the-shimmer">Disabling the Shimmer</h2>
 <p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>shimmer-none
 </span></code> to turn the effect off and render the text normally. It works in any class order, so the typical use is responsive or stateful:</p>
 <div data-component-preview="shimmer-none" data-style-name="base-rhea" data-status="unavailable" class="component-preview-ph"><span class="ph-note">demo not available in shadless (base-style demo)</span><code class="ph-name">shimmer-none</code><span class="ph-cross-link"> — <a href="shimmer.html">see guide</a></span></div>
-<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">p</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">className</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;shimmer md:shimmer-none&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>Generating response<span style="--shiki-light:#CF222E;--shiki-dark:#FFC799">&amp;hellip;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">p</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1" data-lang="tsx"><span data-line>&lt;p className=&quot;shimmer md:shimmer-none&quot;&gt;Generating response&amp;hellip;&lt;/p&gt;
 </span></code></pre>
 <h2 id="fallback">Fallback</h2>
 <p>The shimmer is built on modern color features, <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_colors/Relative_colors">relative color syntax</a> and <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>color-mix()
 </span></code>, which are available in all current browsers. In older browsers without support, the highlight gradient is dropped and the text can render transparent. If you target older browsers, apply <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>shimmer
 </span></code> conditionally with a <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>supports-*
 </span></code> variant:</p>
-<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">p</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">className</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;supports-[color:oklch(from_white_l_c_h)]:shimmer&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>  Generating response<span style="--shiki-light:#CF222E;--shiki-dark:#FFC799">&amp;hellip;</span>
-</span><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">p</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1" data-lang="tsx"><span data-line>&lt;p className=&quot;supports-[color:oklch(from_white_l_c_h)]:shimmer&quot;&gt;
+</span><span data-line>  Generating response&amp;hellip;
+</span><span data-line>&lt;/p&gt;
 </span></code></pre>
 <h2 id="reduced-motion">Reduced Motion</h2>
 <p>When the user prefers reduced motion, the animation is disabled automatically and the text renders normally. There is nothing to configure.</p>
@@ -270,5 +259,6 @@ use the classes directly (see the <a href="installation.html">Installation</a> g
 </div>
 <div class="sidebar-backdrop" data-sidebar-backdrop aria-hidden="true"></div>
 <script src="site.js"></script>
+<script src="highlight.js" defer></script>
 </body>
 </html>

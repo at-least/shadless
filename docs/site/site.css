@@ -128,11 +128,13 @@ code { font: 13px/1.6 "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospa
    Every code block's lines are <span data-line> inside
    code[data-line-numbers][data-line-numbers-max-digits=N]; the gutter is
    a CSS counter ::before (faded, right-aligned, tabular). Token spans
-   carry --shiki-light/--shiki-dark inline vars; site chrome switches on
-   :root.dark — same mechanism upstream uses for its vesper dark theme. */
+   carry --shiki-light/--shiki-dark inline vars (set in the browser by
+   highlight.js); site chrome switches on :root.dark — same mechanism
+   upstream uses for its vesper dark theme. */
 article pre code[data-line-numbers] { display: block; counter-reset: ln; --ln-gutter: 1.5rem; }
 article pre code[data-line-numbers-max-digits="2"] { --ln-gutter: 2rem; }
 article pre code[data-line-numbers-max-digits="3"] { --ln-gutter: 2.5rem; }
+article pre code[data-line-numbers-max-digits="4"] { --ln-gutter: 3rem; }
 article pre code[data-line-numbers] > span[data-line] { display: block; position: relative; padding-left: calc(var(--ln-gutter) + 1.25rem); }
 article pre code[data-line-numbers] > span[data-line]::before {
   counter-increment: ln;

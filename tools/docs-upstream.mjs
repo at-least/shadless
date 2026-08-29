@@ -67,6 +67,8 @@ const check = (label, ok, detail = '') => {
 for (const mode of ['light', 'dark']) {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, colorScheme: mode })
   await page.goto(`${base}/alert.html`, { waitUntil: 'load' })
+  // tokens are coloured client-side by highlight.js after DOMContentLoaded
+  await page.waitForFunction(() => document.documentElement.dataset.highlighted === 'true', null, { timeout: 10000 })
   await page.waitForTimeout(600)
   const r = await page.evaluate(() => {
     const out = {}
@@ -113,8 +115,8 @@ for (const mode of ['light', 'dark']) {
   check(`[${mode}] dark token colors ⊆ ${DARK_THEME}`, badDark.length === 0, `foreign: ${badDark.join(',')}`)
 
   // 3. line numbers
-  check(`[${mode}] all code blocks line-numbered with digits attr`,
-    r.codeFacts.length > 0 && r.codeFacts.every((c) => c.numbered && c.digits && +c.digits >= 1),
+  check(`[${mode}] all code blocks line-numbered with digits attr (gutter styled up to 4 digits)`,
+    r.codeFacts.length > 0 && r.codeFacts.every((c) => c.numbered && c.digits && +c.digits >= 1 && +c.digits <= 4),
     `blocks=${r.codeFacts.length}`)
   check(`[${mode}] gutter counter renders`,
     r.before.content === 'counter(ln)' && r.before.incr.includes('ln'),

@@ -5,8 +5,11 @@
 // JS", polluting every JS tab and making `inlineInit` always-true.
 //
 // extractDemoScripts(html):
-//   srcScripts    — local script srcs the demo loads (glue/*.js, shadless.js;
-//                   vendor IIFEs/out.css are NOT local init and stay out)
+//   srcScripts    — local script srcs the demo loads (js/<name>.js — the
+//                   component's behavior — and shadless.js, the shared
+//                   base runtime; vendor IIFEs/out.css are NOT local init
+//                   and stay out). The docs JS tab shows js/<name>.js and
+//                   links the runtime; the install table lists both.
 //   inlineScripts — inline <script> bodies EXCLUDING the theme pre-paint
 //                   boilerplate (identified by its storage-key signature)
 
@@ -14,7 +17,7 @@ const PREPAINT_SIG = 'shadless-docs-theme'
 
 export function extractDemoScripts(html) {
   const srcScripts = []
-  for (const m of html.matchAll(/<script src="\.\.\/(glue\/[\w.-]+\.js|shadless\.js)"><\/script>/g))
+  for (const m of html.matchAll(/<script src="\.\.\/(js\/[\w.-]+\.js|shadless\.js)"><\/script>/g))
     srcScripts.push(m[1])
   const inlineScripts = []
   for (const m of html.matchAll(/<script>([\s\S]*?)<\/script>/g)) {

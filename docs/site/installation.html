@@ -134,9 +134,8 @@ file list.</p></div></div>
 <h2 id="primary-your-tailwind-v4-build">Primary: your Tailwind v4 build</h2>
 <p>The intended path is the one you already know from shadcn itself: the
 classes live in your markup, <strong>your</strong> Tailwind build compiles them.</p>
-<ol data-steps class="steps"><li data-step class="step">Add shadless to your Tailwind entry, then one import per component you use.<pre><code class="language-css" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">@import</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;shadless&quot;</span>;     <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">/* theme + animate layer, self-contained */</span>
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">@import</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;shadless/button.css&quot;</span>; <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">/* each component you use, one import    */</span>
-</span><span data-line>
+<ol data-steps class="steps"><li data-step class="step">Add shadless to your Tailwind entry, then one import per component you use.<pre><code class="language-css" data-line-numbers data-line-numbers-max-digits="1" data-lang="css"><span data-line>@import &quot;shadless&quot;;     /* theme + animate layer, self-contained */
+</span><span data-line>@import &quot;shadless/button.css&quot;; /* each component you use, one import    */
 </span></code></pre><p>Import exactly the components you use — nothing else lands in your build
 (this is machine-checked: the repo's <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>consumer-sim
 </span></code> gate compiles a scratch
@@ -147,18 +146,16 @@ Interactive ones load the base (<code data-line-numbers data-line-numbers-max-di
 </span></code>) plus one file per
 component (<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>js/&lt;name&gt;.js
 </span></code>) — see the <strong>Installation</strong> section on the
-component's page. From a bundler the same surface is ES modules:</p><pre><code class="language-js" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">import</span> shadless, { get } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">from</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;shadless/runtime&quot;</span> <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// dist/esm/shadless.mjs</span>
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">import</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;shadless/js/dialog&quot;</span>                        <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// dist/esm/dialog.mjs</span>
-</span><span data-line><span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">get</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;#d1-trigger&quot;</span>).<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">open</span>()
-</span><span data-line>
+component's page. From a bundler the same surface is ES modules:</p><pre><code class="language-js" data-line-numbers data-line-numbers-max-digits="1" data-lang="javascript"><span data-line>import shadless, { get } from &quot;shadless/runtime&quot; // dist/esm/shadless.mjs
+</span><span data-line>import &quot;shadless/js/dialog&quot;                        // dist/esm/dialog.mjs
+</span><span data-line>get(&quot;#d1-trigger&quot;).open()
 </span></code></pre><p>Each component module imports the base itself, so import order does not
 matter; <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>shadless/esm/&lt;name&gt;
 </span></code> names the module files explicitly.</p></li></ol>
 <h2 id="alternative-no-build">Alternative: no build</h2>
 <p>Not running a Tailwind build? Use the precompiled stylesheet instead of
 the imports above:</p>
-<pre><code class="language-html" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">link</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">rel</span>=<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;stylesheet&quot;</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">href</span>=<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;out.css&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>
+<pre><code class="language-html" data-line-numbers data-line-numbers-max-digits="1" data-lang="html"><span data-line>&lt;link rel=&quot;stylesheet&quot; href=&quot;out.css&quot;&gt;
 </span></code></pre>
 <p><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>dist/out.css
 </span></code> (or the npm export <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>shadless/full.min.css
@@ -168,7 +165,6 @@ path emits only what you use.</p>
 <h2 id="get-the-artifacts">Get the artifacts</h2>
 <p>Build the distribution once from the repo:</p>
 <pre><code class="language-bash" data-line-numbers data-line-numbers-max-digits="1"><span data-line>npm run demo
-</span><span data-line>
 </span></code></pre>
 <table><thead><tr><th>File</th><th>Purpose</th></tr></thead><tbody><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>dist/shadless-core.css
 </span></code></td><td>theme vars, <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>@theme
@@ -205,5 +201,6 @@ see the <a href="rtl.html">RTL</a> guide.</p>
 </div>
 <div class="sidebar-backdrop" data-sidebar-backdrop aria-hidden="true"></div>
 <script src="site.js"></script>
+<script src="highlight.js" defer></script>
 </body>
 </html>

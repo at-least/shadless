@@ -133,42 +133,40 @@ request, or API key.</p>
 response through a local connection adapter as real AG-UI events, so your
 components behave exactly as they would in production: text and reasoning
 stream word by word, and tool calls move from input to result.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">import</span> { createChat } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">from</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;@shadcn/helpers/tanstack-ai&quot;</span>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>import { createChat } from &quot;@shadcn/helpers/tanstack-ai&quot;
 </span><span data-line>
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">chat</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">createChat</span>()
-</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">user</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;What changed in this release?&quot;</span>)
-</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;The release adds keyboard shortcuts and faster search.&quot;</span>)
-</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">user</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Can you show me the shortcuts?&quot;</span>)
-</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Press ⌘K to search and ⌘Enter to submit.&quot;</span>)
-</span><span data-line>
+</span><span data-line>const chat = createChat()
+</span><span data-line>  .user(&quot;What changed in this release?&quot;)
+</span><span data-line>  .assistant(&quot;The release adds keyboard shortcuts and faster search.&quot;)
+</span><span data-line>  .user(&quot;Can you show me the shortcuts?&quot;)
+</span><span data-line>  .assistant(&quot;Press ⌘K to search and ⌘Enter to submit.&quot;)
 </span></code></pre>
 <p>Pass the chat to <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>useChat
 </span></code> with its initial messages and local connection.
 TanStack AI receives the same AG-UI events it would receive from a server.</p>
-<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="2"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">import</span> { useChat } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">from</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;@tanstack/ai-react&quot;</span>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="2" data-lang="tsx"><span data-line>import { useChat } from &quot;@tanstack/ai-react&quot;
 </span><span data-line>
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">function</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">Chat</span>() {
-</span><span data-line>  <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> { <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">messages</span>, <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">append</span> } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">useChat</span>({
-</span><span data-line>    initialMessages: chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">get</span>(<span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">0</span>), <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// starts with no messages.</span>
-</span><span data-line>    connection: chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">transport</span>(),
+</span><span data-line>function Chat() {
+</span><span data-line>  const { messages, append } = useChat({
+</span><span data-line>    initialMessages: chat.get(0), // starts with no messages.
+</span><span data-line>    connection: chat.transport(),
 </span><span data-line>  })
 </span><span data-line>
-</span><span data-line>  <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">nextMessage</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">next</span>(messages)
+</span><span data-line>  const nextMessage = chat.next(messages)
 </span><span data-line>
-</span><span data-line>  <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">return</span> (
-</span><span data-line>    <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">button</span>
-</span><span data-line>      <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">disabled</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">={!</span>nextMessage<span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">}</span>
-</span><span data-line>      <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">onClick</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">={</span>() <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> {
-</span><span data-line>        <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">if</span> (nextMessage) {
-</span><span data-line>          <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">void</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">append</span>(nextMessage)
+</span><span data-line>  return (
+</span><span data-line>    &lt;button
+</span><span data-line>      disabled={!nextMessage}
+</span><span data-line>      onClick={() =&gt; {
+</span><span data-line>        if (nextMessage) {
+</span><span data-line>          void append(nextMessage)
 </span><span data-line>        }
-</span><span data-line>      }<span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">}</span>
-</span><span data-line>    <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
+</span><span data-line>      }}
+</span><span data-line>    &gt;
 </span><span data-line>      Send next message
-</span><span data-line>    <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">button</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
+</span><span data-line>    &lt;/button&gt;
 </span><span data-line>  )
 </span><span data-line>}
-</span><span data-line>
 </span></code></pre>
 <p><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>get(0)
 </span></code> starts with no messages. <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>append(nextMessage)
@@ -192,7 +190,6 @@ token spend, or flaky model output.</li>
 <hr>
 <h2 id="installation">Installation</h2>
 <pre><code class="language-bash" data-line-numbers data-line-numbers-max-digits="1"><span data-line>npm install @shadcn/helpers
-</span><span data-line>
 </span></code></pre>
 <hr>
 <h2 id="usage">Usage</h2>
@@ -200,47 +197,46 @@ token spend, or flaky model output.</li>
 </span></code>, then
 send each predefined user message with <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>next()
 </span></code>.</p>
-<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="2"><span data-line><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;use client&quot;</span>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="2" data-lang="tsx"><span data-line>&quot;use client&quot;
 </span><span data-line>
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">import</span> { createChat } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">from</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;@shadcn/helpers/tanstack-ai&quot;</span>
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">import</span> { useChat } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">from</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;@tanstack/ai-react&quot;</span>
+</span><span data-line>import { createChat } from &quot;@shadcn/helpers/tanstack-ai&quot;
+</span><span data-line>import { useChat } from &quot;@tanstack/ai-react&quot;
 </span><span data-line>
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">chat</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">createChat</span>()
-</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">user</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;What changed in this release?&quot;</span>)
-</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;The release adds keyboard shortcuts and faster search.&quot;</span>)
-</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">user</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Can you show me the shortcuts?&quot;</span>)
-</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Press ⌘K to search and ⌘Enter to submit.&quot;</span>)
+</span><span data-line>const chat = createChat()
+</span><span data-line>  .user(&quot;What changed in this release?&quot;)
+</span><span data-line>  .assistant(&quot;The release adds keyboard shortcuts and faster search.&quot;)
+</span><span data-line>  .user(&quot;Can you show me the shortcuts?&quot;)
+</span><span data-line>  .assistant(&quot;Press ⌘K to search and ⌘Enter to submit.&quot;)
 </span><span data-line>
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">initialMessages</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">get</span>(<span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">0</span>)
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">connection</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">transport</span>()
+</span><span data-line>const initialMessages = chat.get(0)
+</span><span data-line>const connection = chat.transport()
 </span><span data-line>
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">export</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">function</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">Chat</span>() {
-</span><span data-line>  <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> { <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">messages</span>, <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">append</span>, <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">status</span> } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">useChat</span>({
+</span><span data-line>export function Chat() {
+</span><span data-line>  const { messages, append, status } = useChat({
 </span><span data-line>    initialMessages,
 </span><span data-line>    connection,
 </span><span data-line>  })
-</span><span data-line>  <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">nextMessage</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">next</span>(messages)
-</span><span data-line>  <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">isBusy</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> status <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">===</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;submitted&quot;</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">||</span> status <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">===</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;streaming&quot;</span>
+</span><span data-line>  const nextMessage = chat.next(messages)
+</span><span data-line>  const isBusy = status === &quot;submitted&quot; || status === &quot;streaming&quot;
 </span><span data-line>
-</span><span data-line>  <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">return</span> (
-</span><span data-line>    <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>      <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">{</span>messages.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">map</span>((<span style="--shiki-light:#953800;--shiki-dark:#FFF">message</span>) <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> (
-</span><span data-line>        <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">key</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">={</span>message.id<span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">}</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">{</span><span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">/* Render the message */</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">}</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>      ))<span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">}</span>
-</span><span data-line>      <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">button</span>
-</span><span data-line>        <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">disabled</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">={!</span>nextMessage <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">||</span> isBusy<span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">}</span>
-</span><span data-line>        <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">onClick</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">={</span>() <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> {
-</span><span data-line>          <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">if</span> (nextMessage <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">&amp;&amp;</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">!</span>isBusy) {
-</span><span data-line>            <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">void</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">append</span>(nextMessage)
+</span><span data-line>  return (
+</span><span data-line>    &lt;div&gt;
+</span><span data-line>      {messages.map((message) =&gt; (
+</span><span data-line>        &lt;div key={message.id}&gt;{/* Render the message */}&lt;/div&gt;
+</span><span data-line>      ))}
+</span><span data-line>      &lt;button
+</span><span data-line>        disabled={!nextMessage || isBusy}
+</span><span data-line>        onClick={() =&gt; {
+</span><span data-line>          if (nextMessage &amp;&amp; !isBusy) {
+</span><span data-line>            void append(nextMessage)
 </span><span data-line>          }
-</span><span data-line>        }<span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">}</span>
-</span><span data-line>      <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
+</span><span data-line>        }}
+</span><span data-line>      &gt;
 </span><span data-line>        Send
-</span><span data-line>      <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">button</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>    <span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
+</span><span data-line>      &lt;/button&gt;
+</span><span data-line>    &lt;/div&gt;
 </span><span data-line>  )
 </span><span data-line>}
-</span><span data-line>
 </span></code></pre>
 <div data-component-preview="tanstack-ai-helper-demo" data-style-name="base-rhea" data-status="unavailable" class="component-preview-ph"><span class="ph-note">demo not available in shadless (base-style demo)</span><code class="ph-name">tanstack-ai-helper-demo</code><span class="ph-cross-link"> — <a href="tanstack-ai.html">see guide</a></span></div>
 <hr>
@@ -252,56 +248,51 @@ send each predefined user message with <code data-line-numbers data-line-numbers
 </span></code> to add a user message. Existing TanStack messages are preserved when
 you start with <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>createChat({ messages })
 </span></code>.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">chat</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">createChat</span>().<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">user</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;What changed in this release?&quot;</span>)
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>const chat = createChat().user(&quot;What changed in this release?&quot;)
 </span><span data-line>
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> [<span style="--shiki-light:#0550AE;--shiki-dark:#FFF">message</span>] <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">get</span>()
+</span><span data-line>const [message] = chat.get()
 </span><span data-line>
-</span><span data-line>message.role <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// &quot;user&quot;</span>
-</span><span data-line>message.parts <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// [{ type: &quot;text&quot;, content: &quot;What changed in this release?&quot; }]</span>
-</span><span data-line>
+</span><span data-line>message.role // &quot;user&quot;
+</span><span data-line>message.parts // [{ type: &quot;text&quot;, content: &quot;What changed in this release?&quot; }]
 </span></code></pre>
 <p>Pass an <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>id
 </span></code>, or a <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>createdAt
 </span></code> timestamp via <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>metadata
 </span></code>, as the second argument
 when you need them.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">user</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;What changed in this release?&quot;</span>, {
-</span><span data-line>  id: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;user-release-question&quot;</span>,
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>chat.user(&quot;What changed in this release?&quot;, {
+</span><span data-line>  id: &quot;user-release-question&quot;,
 </span><span data-line>  metadata: {
-</span><span data-line>    createdAt: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;2026-01-01T10:00:00.000Z&quot;</span>,
+</span><span data-line>    createdAt: &quot;2026-01-01T10:00:00.000Z&quot;,
 </span><span data-line>  },
 </span><span data-line>})
-</span><span data-line>
 </span></code></pre>
 <p>User messages can also include files. See <a href="#files">Files</a>.</p>
 <hr>
 <h2 id="assistant-messages">Assistant Messages</h2>
 <p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>assistant()
 </span></code> to add an assistant message.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">chat</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">createChat</span>().<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(
-</span><span data-line>  <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;The release adds keyboard shortcuts and faster search.&quot;</span>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>const chat = createChat().assistant(
+</span><span data-line>  &quot;The release adds keyboard shortcuts and faster search.&quot;
 </span><span data-line>)
 </span><span data-line>
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> [<span style="--shiki-light:#0550AE;--shiki-dark:#FFF">message</span>] <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">get</span>()
+</span><span data-line>const [message] = chat.get()
 </span><span data-line>
-</span><span data-line>message.role <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// &quot;assistant&quot;</span>
-</span><span data-line>message.parts <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// [{ type: &quot;text&quot;, content: &quot;The release adds...&quot; }]</span>
-</span><span data-line>
+</span><span data-line>message.role // &quot;assistant&quot;
+</span><span data-line>message.parts // [{ type: &quot;text&quot;, content: &quot;The release adds...&quot; }]
 </span></code></pre>
 <p>A string creates one text part. You can also pass an array of TanStack message
 parts.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>([
-</span><span data-line>  { type: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;thinking&quot;</span>, content: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;I should summarize the release.&quot;</span> },
-</span><span data-line>  { type: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;text&quot;</span>, content: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;The release adds keyboard shortcuts.&quot;</span> },
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>chat.assistant([
+</span><span data-line>  { type: &quot;thinking&quot;, content: &quot;I should summarize the release.&quot; },
+</span><span data-line>  { type: &quot;text&quot;, content: &quot;The release adds keyboard shortcuts.&quot; },
 </span><span data-line>])
-</span><span data-line>
 </span></code></pre>
 <p>Use the writer callback when the message should stream in smaller steps.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(({ <span style="--shiki-light:#953800;--shiki-dark:#FFF">writer</span> }) <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> {
-</span><span data-line>  writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">reasoning</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;I should summarize the release.&quot;</span>)
-</span><span data-line>  writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">text</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;The release adds keyboard shortcuts and faster search.&quot;</span>)
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>chat.assistant(({ writer }) =&gt; {
+</span><span data-line>  writer.reasoning(&quot;I should summarize the release.&quot;)
+</span><span data-line>  writer.text(&quot;The release adds keyboard shortcuts and faster search.&quot;)
 </span><span data-line>})
-</span><span data-line>
 </span></code></pre>
 <p>The writer adds parts in the order you call them.</p>
 <hr>
@@ -309,11 +300,10 @@ parts.</p>
 <p>The TanStack writer supports the parts that can round-trip through its AG-UI
 connection: text, reasoning, and tool calls. It also supports timing and
 errors.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(({ <span style="--shiki-light:#953800;--shiki-dark:#FFF">writer</span> }) <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> {
-</span><span data-line>  writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">reasoning</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;I should answer directly.&quot;</span>)
-</span><span data-line>  writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">text</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Hello.&quot;</span>)
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>chat.assistant(({ writer }) =&gt; {
+</span><span data-line>  writer.reasoning(&quot;I should answer directly.&quot;)
+</span><span data-line>  writer.text(&quot;Hello.&quot;)
 </span><span data-line>})
-</span><span data-line>
 </span></code></pre>
 <p>See <a href="#adapter-differences">Adapter Differences</a> for parts that do not have an
 equivalent in this connection.</p>
@@ -321,11 +311,10 @@ equivalent in this connection.</p>
 <h2 id="text">Text</h2>
 <p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>text()
 </span></code> to add text.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(({ <span style="--shiki-light:#953800;--shiki-dark:#FFF">writer</span> }) <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> {
-</span><span data-line>  writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">text</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;The release adds keyboard shortcuts.&quot;</span>)
-</span><span data-line>  writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">text</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot; Search is faster too.&quot;</span>)
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>chat.assistant(({ writer }) =&gt; {
+</span><span data-line>  writer.text(&quot;The release adds keyboard shortcuts.&quot;)
+</span><span data-line>  writer.text(&quot; Search is faster too.&quot;)
 </span><span data-line>})
-</span><span data-line>
 </span></code></pre>
 <p>Text streams word by word when the chat is used with <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.transport()
 </span></code>.
@@ -336,53 +325,48 @@ stream processor combines them into one text part during playback.</p>
 </span></code> to send the whole value at once, or <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>delayMs
 </span></code> to change
 the delay between text deltas.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">text</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Done.&quot;</span>, { mode: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;instant&quot;</span> })
-</span><span data-line>writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">text</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;This part streams more slowly.&quot;</span>, { delayMs: <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">100</span> })
-</span><span data-line>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>writer.text(&quot;Done.&quot;, { mode: &quot;instant&quot; })
+</span><span data-line>writer.text(&quot;This part streams more slowly.&quot;, { delayMs: 100 })
 </span></code></pre>
 <hr>
 <h2 id="reasoning">Reasoning</h2>
 <p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>reasoning()
 </span></code> to add reasoning. It becomes a TanStack <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>thinking
 </span></code> part.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(({ <span style="--shiki-light:#953800;--shiki-dark:#FFF">writer</span> }) <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> {
-</span><span data-line>  writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">reasoning</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;I should check the latest conditions first.&quot;</span>)
-</span><span data-line>  writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">text</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Let me check the weather.&quot;</span>)
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>chat.assistant(({ writer }) =&gt; {
+</span><span data-line>  writer.reasoning(&quot;I should check the latest conditions first.&quot;)
+</span><span data-line>  writer.text(&quot;Let me check the weather.&quot;)
 </span><span data-line>})
-</span><span data-line>
 </span></code></pre>
 <p>Reasoning uses the same <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>delayMs
 </span></code> and <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>mode
 </span></code> options as text.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">reasoning</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Checking the forecast.&quot;</span>, { mode: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;instant&quot;</span> })
-</span><span data-line>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>writer.reasoning(&quot;Checking the forecast.&quot;, { mode: &quot;instant&quot; })
 </span></code></pre>
 <hr>
 <h2 id="tool-calls">Tool Calls</h2>
 <p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>tool()
 </span></code> to add a tool call. It returns a handle that follows the tool from
 input to output.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="2"><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(({ <span style="--shiki-light:#953800;--shiki-dark:#FFF">writer</span> }) <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> {
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="2" data-lang="typescript"><span data-line>chat.assistant(({ writer }) =&gt; {
 </span><span data-line>  writer
-</span><span data-line>    .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">tool</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;getWeather&quot;</span>, {
-</span><span data-line>      input: { city: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;San Francisco&quot;</span> },
+</span><span data-line>    .tool(&quot;getWeather&quot;, {
+</span><span data-line>      input: { city: &quot;San Francisco&quot; },
 </span><span data-line>    })
-</span><span data-line>    .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">sleep</span>(<span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">900</span>)
-</span><span data-line>    .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">output</span>({
-</span><span data-line>      city: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;San Francisco&quot;</span>,
-</span><span data-line>      temperature: <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">18</span>,
-</span><span data-line>      condition: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Breezy&quot;</span>,
+</span><span data-line>    .sleep(900)
+</span><span data-line>    .output({
+</span><span data-line>      city: &quot;San Francisco&quot;,
+</span><span data-line>      temperature: 18,
+</span><span data-line>      condition: &quot;Breezy&quot;,
 </span><span data-line>    })
 </span><span data-line>
-</span><span data-line>  writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">text</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;It is 18°C and breezy in San Francisco.&quot;</span>)
+</span><span data-line>  writer.text(&quot;It is 18°C and breezy in San Francisco.&quot;)
 </span><span data-line>})
-</span><span data-line>
 </span></code></pre>
 <p>The tool can finish with <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>output()
 </span></code> or <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>error()
 </span></code>.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">tool</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;getWeather&quot;</span>, { input: { city: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;San Francisco&quot;</span> } }).<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">error</span>()
-</span><span data-line>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>writer.tool(&quot;getWeather&quot;, { input: { city: &quot;San Francisco&quot; } }).error()
 </span></code></pre>
 <p>The completed TanStack message contains a <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>tool-call
 </span></code> part and a sibling
@@ -390,39 +374,37 @@ input to output.</p>
 </span></code> part.</p>
 <p>Pass the same client-tool tuple used by your app to type the tool name, input,
 and output.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="2"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">import</span> { clientTools } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">from</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;@tanstack/ai-client&quot;</span>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="2" data-lang="typescript"><span data-line>import { clientTools } from &quot;@tanstack/ai-client&quot;
 </span><span data-line>
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">import</span> { getWeatherTool } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">from</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;@/lib/tools&quot;</span>
+</span><span data-line>import { getWeatherTool } from &quot;@/lib/tools&quot;
 </span><span data-line>
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">tools</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">clientTools</span>(getWeatherTool.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">client</span>())
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">chat</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">createChat</span>&lt;<span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">typeof</span> tools&gt;()
+</span><span data-line>const tools = clientTools(getWeatherTool.client())
+</span><span data-line>const chat = createChat&lt;typeof tools&gt;()
 </span><span data-line>
-</span><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(({ <span style="--shiki-light:#953800;--shiki-dark:#FFF">writer</span> }) <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> {
+</span><span data-line>chat.assistant(({ writer }) =&gt; {
 </span><span data-line>  writer
-</span><span data-line>    .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">tool</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;getWeather&quot;</span>, {
-</span><span data-line>      input: { city: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;San Francisco&quot;</span> },
+</span><span data-line>    .tool(&quot;getWeather&quot;, {
+</span><span data-line>      input: { city: &quot;San Francisco&quot; },
 </span><span data-line>    })
-</span><span data-line>    .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">output</span>({
-</span><span data-line>      city: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;San Francisco&quot;</span>,
-</span><span data-line>      temperature: <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">18</span>,
-</span><span data-line>      condition: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Breezy&quot;</span>,
+</span><span data-line>    .output({
+</span><span data-line>      city: &quot;San Francisco&quot;,
+</span><span data-line>      temperature: 18,
+</span><span data-line>      condition: &quot;Breezy&quot;,
 </span><span data-line>    })
 </span><span data-line>})
-</span><span data-line>
 </span></code></pre>
 <hr>
 <h2 id="files">Files</h2>
 <p>Add files to a user message with the <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>files
 </span></code> option.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">user</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Describe this image.&quot;</span>, {
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>chat.user(&quot;Describe this image.&quot;, {
 </span><span data-line>  files: [
 </span><span data-line>    {
-</span><span data-line>      mediaType: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;image/png&quot;</span>,
-</span><span data-line>      url: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;https://example.com/screenshot.png&quot;</span>,
+</span><span data-line>      mediaType: &quot;image/png&quot;,
+</span><span data-line>      url: &quot;https://example.com/screenshot.png&quot;,
 </span><span data-line>    },
 </span><span data-line>  ],
 </span><span data-line>})
-</span><span data-line>
 </span></code></pre>
 <p>The helper converts each file into a TanStack media part based on its media
 type:</p>
@@ -440,12 +422,11 @@ type:</p>
 user <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>UIMessage
 </span></code>, <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>append()
 </span></code> preserves its text and media parts.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">nextMessage</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">next</span>(messages)
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>const nextMessage = chat.next(messages)
 </span><span data-line>
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">if</span> (nextMessage) {
-</span><span data-line>  <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">void</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">append</span>(nextMessage)
+</span><span data-line>if (nextMessage) {
+</span><span data-line>  void append(nextMessage)
 </span><span data-line>}
-</span><span data-line>
 </span></code></pre>
 <p>Assistant media parts can be included in a static parts array and read with
 <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>get()
@@ -467,10 +448,9 @@ full message-part model.</p>
 <h2 id="reading-messages">Reading Messages</h2>
 <p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>get()
 </span></code> to return messages from the start of the conversation.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">get</span>() <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// Every message.</span>
-</span><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">get</span>(<span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">2</span>) <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// The first two messages.</span>
-</span><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">get</span>(<span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">0</span>) <span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// An empty initial conversation.</span>
-</span><span data-line>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>chat.get() // Every message.
+</span><span data-line>chat.get(2) // The first two messages.
+</span><span data-line>chat.get(0) // An empty initial conversation.
 </span></code></pre>
 <p><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>get()
 </span></code> returns cloned TanStack <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>UIMessage[]
@@ -479,9 +459,8 @@ chat.</p>
 <p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>next()
 </span></code> to find the next predefined user message after the messages
 already shown.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">initialMessages</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">get</span>(<span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">2</span>)
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">nextMessage</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">next</span>(initialMessages)
-</span><span data-line>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>const initialMessages = chat.get(2)
+</span><span data-line>const nextMessage = chat.next(initialMessages)
 </span></code></pre>
 <p><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>next()
 </span></code> always accepts a message transcript, not an index. It returns the next
@@ -491,15 +470,14 @@ user message or <code data-line-numbers data-line-numbers-max-digits="1"><span d
 <h2 id="start-from-existing-messages">Start from Existing Messages</h2>
 <p>Pass <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>messages
 </span></code> to continue from a saved conversation or fixture.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">import</span> { createChat } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">from</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;@shadcn/helpers/tanstack-ai&quot;</span>
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">import</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">type</span> { UIMessage } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">from</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;@tanstack/ai-client&quot;</span>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>import { createChat } from &quot;@shadcn/helpers/tanstack-ai&quot;
+</span><span data-line>import type { UIMessage } from &quot;@tanstack/ai-client&quot;
 </span><span data-line>
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">declare</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">savedMessages</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">:</span> <span style="--shiki-light:#953800;--shiki-dark:#FFC799">UIMessage</span>[]
+</span><span data-line>declare const savedMessages: UIMessage[]
 </span><span data-line>
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">chat</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">createChat</span>({ messages: savedMessages })
-</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">user</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;What should we do next?&quot;</span>)
-</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Turn the open questions into a checklist.&quot;</span>)
-</span><span data-line>
+</span><span data-line>const chat = createChat({ messages: savedMessages })
+</span><span data-line>  .user(&quot;What should we do next?&quot;)
+</span><span data-line>  .assistant(&quot;Turn the open questions into a checklist.&quot;)
 </span></code></pre>
 <p>Existing IDs, timestamps, and parts are preserved.</p>
 <hr>
@@ -510,23 +488,22 @@ user message or <code data-line-numbers data-line-numbers-max-digits="1"><span d
 <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>useChat
 </span></code> as its <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>connection
 </span></code>.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="2"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">connection</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">transport</span>()
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="2" data-lang="typescript"><span data-line>const connection = chat.transport()
 </span><span data-line>
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> { <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">messages</span>, <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">append</span>, <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">sendMessage</span> } <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">useChat</span>({
-</span><span data-line>  initialMessages: chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">get</span>(<span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">0</span>),
+</span><span data-line>const { messages, append, sendMessage } = useChat({
+</span><span data-line>  initialMessages: chat.get(0),
 </span><span data-line>  connection,
 </span><span data-line>})
 </span><span data-line>
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">nextMessage</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">next</span>(messages)
+</span><span data-line>const nextMessage = chat.next(messages)
 </span><span data-line>
-</span><span data-line><span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// Replay the next predefined user message.</span>
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">if</span> (nextMessage) {
-</span><span data-line>  <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">void</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">append</span>(nextMessage)
+</span><span data-line>// Replay the next predefined user message.
+</span><span data-line>if (nextMessage) {
+</span><span data-line>  void append(nextMessage)
 </span><span data-line>}
 </span><span data-line>
-</span><span data-line><span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">// Or send ordinary user input as text or multimodal content.</span>
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">void</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">sendMessage</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Tell me more.&quot;</span>)
-</span><span data-line>
+</span><span data-line>// Or send ordinary user input as text or multimodal content.
+</span><span data-line>void sendMessage(&quot;Tell me more.&quot;)
 </span></code></pre>
 <p>When <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>append()
 </span></code> or <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>sendMessage()
@@ -547,7 +524,6 @@ it accepts a string or multimodal content rather than a complete <code data-line
 </span><span data-line>TOOL_CALL_START → TOOL_CALL_ARGS → TOOL_CALL_END → TOOL_CALL_RESULT
 </span><span data-line>TEXT_MESSAGE_START → TEXT_MESSAGE_CONTENT → TEXT_MESSAGE_END
 </span><span data-line>RUN_FINISHED
-</span><span data-line>
 </span></code></pre>
 <p>Predefined errors emit <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>RUN_ERROR
 </span></code>. TanStack supplies the <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>threadId
@@ -570,31 +546,28 @@ reasoning part. Override it for one part with <code data-line-numbers data-line-
 </span></code>
 or <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>writer.reasoning(..., { delayMs })
 </span></code>.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">connection</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">transport</span>({
-</span><span data-line>  delayMs: <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">25</span>,
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>const connection = chat.transport({
+</span><span data-line>  delayMs: 25,
 </span><span data-line>})
-</span><span data-line>
 </span></code></pre>
 <h3 id="fallback">Fallback</h3>
 <p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>fallback
 </span></code> when the conversation has no predefined assistant response
 left. This keeps a demo usable after its predefined replies are exhausted.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">connection</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">transport</span>({
-</span><span data-line>  fallback: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;This demo has no more predefined replies.&quot;</span>,
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>const connection = chat.transport({
+</span><span data-line>  fallback: &quot;This demo has no more predefined replies.&quot;,
 </span><span data-line>})
-</span><span data-line>
 </span></code></pre>
 <p>A fallback can also be an array of TanStack message parts or a writer callback.
 The callback receives the incoming transcript, so it can create a response from
 the current state.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">connection</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">transport</span>({
-</span><span data-line>  <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">fallback</span>: ({ <span style="--shiki-light:#953800;--shiki-dark:#FFF">writer</span>, <span style="--shiki-light:#953800;--shiki-dark:#FFF">messages</span> }) <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> {
-</span><span data-line>    writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">text</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">`This example already has ${</span>messages<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">.</span><span style="--shiki-light:#0550AE;--shiki-dark:#99FFE4">length</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">} messages.`</span>, {
-</span><span data-line>      mode: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;instant&quot;</span>,
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>const connection = chat.transport({
+</span><span data-line>  fallback: ({ writer, messages }) =&gt; {
+</span><span data-line>    writer.text(`This example already has ${messages.length} messages.`, {
+</span><span data-line>      mode: &quot;instant&quot;,
 </span><span data-line>    })
 </span><span data-line>  },
 </span><span data-line>})
-</span><span data-line>
 </span></code></pre>
 <p>Fallback responses stream like assistant responses but are not added to the
 predefined conversation. Without one, the connection throws
@@ -607,17 +580,16 @@ exhausted.</p>
 <hr>
 <h2 id="timing">Timing</h2>
 <p>Use delays to reproduce the pace of a real response.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="2"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">chat</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">createChat</span>()
-</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">user</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Give me a project update.&quot;</span>)
-</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">sleep</span>(<span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">800</span>)
-</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(({ <span style="--shiki-light:#953800;--shiki-dark:#FFF">writer</span> }) <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> {
-</span><span data-line>    writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">reasoning</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;I should lead with the completed milestone.&quot;</span>)
-</span><span data-line>    writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">sleep</span>(<span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">500</span>)
-</span><span data-line>    writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">text</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;The first milestone is complete.&quot;</span>, { mode: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;instant&quot;</span> })
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="2" data-lang="typescript"><span data-line>const chat = createChat()
+</span><span data-line>  .user(&quot;Give me a project update.&quot;)
+</span><span data-line>  .sleep(800)
+</span><span data-line>  .assistant(({ writer }) =&gt; {
+</span><span data-line>    writer.reasoning(&quot;I should lead with the completed milestone.&quot;)
+</span><span data-line>    writer.sleep(500)
+</span><span data-line>    writer.text(&quot;The first milestone is complete.&quot;, { mode: &quot;instant&quot; })
 </span><span data-line>  })
 </span><span data-line>
-</span><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">connection</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">transport</span>({ delayMs: <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">50</span> })
-</span><span data-line>
+</span><span data-line>const connection = chat.transport({ delayMs: 50 })
 </span></code></pre>
 <ul>
 <li><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.sleep(ms)
@@ -642,20 +614,18 @@ override that delay for one part.</li>
 <h2 id="errors">Errors</h2>
 <p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>error()
 </span></code> on the chat when the whole assistant response should fail.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">chat</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">createChat</span>()
-</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">user</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Load the report.&quot;</span>)
-</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">error</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;The report could not be loaded.&quot;</span>)
-</span><span data-line>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>const chat = createChat()
+</span><span data-line>  .user(&quot;Load the report.&quot;)
+</span><span data-line>  .error(&quot;The report could not be loaded.&quot;)
 </span></code></pre>
 <p>This emits a TanStack <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>RUN_ERROR
 </span></code> event.</p>
 <p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>writer.error()
 </span></code> to fail after other content has streamed.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line>chat.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(({ <span style="--shiki-light:#953800;--shiki-dark:#FFF">writer</span> }) <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=&gt;</span> {
-</span><span data-line>  writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">text</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;I found the report.&quot;</span>)
-</span><span data-line>  writer.<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">error</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;The connection closed before it could be read.&quot;</span>)
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>chat.assistant(({ writer }) =&gt; {
+</span><span data-line>  writer.text(&quot;I found the report.&quot;)
+</span><span data-line>  writer.error(&quot;The connection closed before it could be read.&quot;)
 </span><span data-line>})
-</span><span data-line>
 </span></code></pre>
 <hr>
 <h2 id="metadata-and-ids">Metadata and IDs</h2>
@@ -665,23 +635,21 @@ it is preserved through <code data-line-numbers data-line-numbers-max-digits="1"
 </span></code> and <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>next()
 </span></code>. The AG-UI connection does not
 stream message metadata.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">chat</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">createChat</span>()
-</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">user</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Hello&quot;</span>, {
-</span><span data-line>    metadata: { createdAt: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;2026-01-01T10:00:00.000Z&quot;</span> },
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>const chat = createChat()
+</span><span data-line>  .user(&quot;Hello&quot;, {
+</span><span data-line>    metadata: { createdAt: &quot;2026-01-01T10:00:00.000Z&quot; },
 </span><span data-line>  })
-</span><span data-line>  .<span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">assistant</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;Hi.&quot;</span>, {
-</span><span data-line>    id: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;assistant-welcome&quot;</span>,
-</span><span data-line>    metadata: { createdAt: <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">new</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">Date</span>(<span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;2026-01-01T10:00:01.000Z&quot;</span>) },
+</span><span data-line>  .assistant(&quot;Hi.&quot;, {
+</span><span data-line>    id: &quot;assistant-welcome&quot;,
+</span><span data-line>    metadata: { createdAt: new Date(&quot;2026-01-01T10:00:01.000Z&quot;) },
 </span><span data-line>  })
-</span><span data-line>
 </span></code></pre>
 <p>Use chat options when a fixture needs custom prefixes or a fixed clock.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">const</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFF">chat</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">createChat</span>({
-</span><span data-line>  messageIdPrefix: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;demo-message&quot;</span>,
-</span><span data-line>  toolCallIdPrefix: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;demo-tool&quot;</span>,
-</span><span data-line>  now: <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;2026-01-01T00:00:00.000Z&quot;</span>,
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>const chat = createChat({
+</span><span data-line>  messageIdPrefix: &quot;demo-message&quot;,
+</span><span data-line>  toolCallIdPrefix: &quot;demo-tool&quot;,
+</span><span data-line>  now: &quot;2026-01-01T00:00:00.000Z&quot;,
 </span><span data-line>})
-</span><span data-line>
 </span></code></pre>
 <hr>
 <h2 id="api-reference">API Reference</h2>
@@ -690,11 +658,10 @@ export and option.</p>
 <h3 id="createchat"><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>createChat()
 </span></code></h3>
 <p>Creates a typed conversation and returns the fluent TanStack chat interface.</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">function</span> <span style="--shiki-light:#8250DF;--shiki-dark:#FFC799">createChat</span>&lt;
-</span><span data-line>  <span style="--shiki-light:#953800;--shiki-dark:#FFC799">TOOLS</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">extends</span> <span style="--shiki-light:#953800;--shiki-dark:#FFC799">ReadonlyArray</span>&lt;<span style="--shiki-light:#953800;--shiki-dark:#FFC799">AnyClientTool</span>&gt; <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#953800;--shiki-dark:#FFC799">AnyClientTool</span>[],
-</span><span data-line>  <span style="--shiki-light:#953800;--shiki-dark:#FFC799">DATA</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">unknown</span>,
-</span><span data-line>&gt;(<span style="--shiki-light:#953800;--shiki-dark:#FFF">options</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">?:</span> <span style="--shiki-light:#953800;--shiki-dark:#FFC799">CreateChatOptions</span>&lt;<span style="--shiki-light:#953800;--shiki-dark:#FFC799">TOOLS</span>, <span style="--shiki-light:#953800;--shiki-dark:#FFC799">DATA</span>&gt;)<span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">:</span> <span style="--shiki-light:#953800;--shiki-dark:#FFC799">TanStackChat</span>&lt;<span style="--shiki-light:#953800;--shiki-dark:#FFC799">TOOLS</span>, <span style="--shiki-light:#953800;--shiki-dark:#FFC799">DATA</span>&gt;
-</span><span data-line>
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>function createChat&lt;
+</span><span data-line>  TOOLS extends ReadonlyArray&lt;AnyClientTool&gt; = AnyClientTool[],
+</span><span data-line>  DATA = unknown,
+</span><span data-line>&gt;(options?: CreateChatOptions&lt;TOOLS, DATA&gt;): TanStackChat&lt;TOOLS, DATA&gt;
 </span></code></pre>
 <h4>Type Parameters</h4>
 <table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>TOOLS
@@ -765,14 +732,13 @@ integer.</p>
 </span></code></td><td><code data-line-numbers data-line-numbers-max-digits="1"><span data-line>FilePayload[]
 </span></code></td><td>Append media parts after the user text part.</td></tr></tbody></table>
 <p>A user file has this shape:</p>
-<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">type</span> <span style="--shiki-light:#953800;--shiki-dark:#FFC799">FilePayload</span> <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span> {
-</span><span data-line>  <span style="--shiki-light:#953800;--shiki-dark:#FFF">type</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">?:</span> <span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;file&quot;</span>
-</span><span data-line>  <span style="--shiki-light:#953800;--shiki-dark:#FFF">mediaType</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">:</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">string</span>
-</span><span data-line>  <span style="--shiki-light:#953800;--shiki-dark:#FFF">url</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">:</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">string</span>
-</span><span data-line>  <span style="--shiki-light:#953800;--shiki-dark:#FFF">filename</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">?:</span> <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">string</span>
-</span><span data-line>  <span style="--shiki-light:#953800;--shiki-dark:#FFF">providerMetadata</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">?:</span> <span style="--shiki-light:#953800;--shiki-dark:#FFC799">Record</span>&lt;<span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">string</span>, <span style="--shiki-light:#0550AE;--shiki-dark:#FFC799">unknown</span>&gt;
+<pre><code class="language-ts" data-line-numbers data-line-numbers-max-digits="1" data-lang="typescript"><span data-line>type FilePayload = {
+</span><span data-line>  type?: &quot;file&quot;
+</span><span data-line>  mediaType: string
+</span><span data-line>  url: string
+</span><span data-line>  filename?: string
+</span><span data-line>  providerMetadata?: Record&lt;string, unknown&gt;
 </span><span data-line>}
-</span><span data-line>
 </span></code></pre>
 <p>TanStack media parts preserve the URL and media type. Their message shape does
 not preserve <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>filename
@@ -875,5 +841,6 @@ between its input and result. Calling <code data-line-numbers data-line-numbers-
 </div>
 <div class="sidebar-backdrop" data-sidebar-backdrop aria-hidden="true"></div>
 <script src="site.js"></script>
+<script src="highlight.js" defer></script>
 </body>
 </html>

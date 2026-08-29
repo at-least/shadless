@@ -168,8 +168,7 @@ use the classes directly (see the <a href="installation.html">Installation</a> g
 </span></code> or <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>scroll-fade-y
 </span></code> to the scroll container, i.e. the element that has <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>overflow-y-auto
 </span></code>.</p>
-<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">className</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;scroll-fade overflow-y-auto&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">{</span><span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">/* ... */</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">}</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1" data-lang="tsx"><span data-line>&lt;div className=&quot;scroll-fade overflow-y-auto&quot;&gt;{/* ... */}&lt;/div&gt;
 </span></code></pre>
 <p>The fade is scroll-aware and tracks the scroll position:</p>
 <ul>
@@ -193,8 +192,7 @@ use the classes directly (see the <a href="installation.html">Installation</a> g
 </span></code> on containers that scroll horizontally, i.e. the element that has <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>overflow-x-auto
 </span></code>.</p>
 <div data-component-preview="scroll-fade-horizontal" data-style-name="base-rhea" data-status="unavailable" class="component-preview-ph"><span class="ph-note">demo not available in shadless (base-style demo)</span><code class="ph-name">scroll-fade-horizontal</code><span class="ph-cross-link"> — <a href="scroll-fade.html">see guide</a></span></div>
-<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">className</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;flex scroll-fade-x overflow-x-auto&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">{</span><span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">/* ... */</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">}</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1" data-lang="tsx"><span data-line>&lt;div className=&quot;flex scroll-fade-x overflow-x-auto&quot;&gt;{/* ... */}&lt;/div&gt;
 </span></code></pre>
 <p>The horizontal fade is direction-aware. In RTL layouts, the crisp edge and the fade follow the reading direction with no extra classes needed. <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>scroll-fade-&lt;number&gt;
 </span></code> and <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>scroll-fade-none
@@ -202,8 +200,7 @@ use the classes directly (see the <a href="installation.html">Installation</a> g
 <h2 id="edge-fades">Edge Fades</h2>
 <p>Use edge utilities when only one edge should track the scroll position.</p>
 <div data-component-preview="scroll-fade-edge" data-style-name="base-rhea" data-status="unavailable" class="component-preview-ph"><span class="ph-note">demo not available in shadless (base-style demo)</span><code class="ph-name">scroll-fade-edge</code><span class="ph-cross-link"> — <a href="scroll-fade.html">see guide</a></span></div>
-<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">className</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;scroll-fade-b overflow-y-auto&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">{</span><span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">/* ... */</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">}</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1" data-lang="tsx"><span data-line>&lt;div className=&quot;scroll-fade-b overflow-y-auto&quot;&gt;{/* ... */}&lt;/div&gt;
 </span></code></pre>
 <p>The edge utilities are scroll-aware. Start edges fade in after you scroll away from the start, and end edges fade out when you reach the end. Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>scroll-fade-t
 </span></code>, <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>scroll-fade-b
@@ -219,12 +216,10 @@ use the classes directly (see the <a href="installation.html">Installation</a> g
 </span></code> to set a fixed size on the spacing scale instead, the same way <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>scroll-mt-&lt;number&gt;
 </span></code> works.</p>
 <div data-component-preview="scroll-fade-size" data-style-name="base-rhea" data-status="unavailable" class="component-preview-ph"><span class="ph-note">demo not available in shadless (base-style demo)</span><code class="ph-name">scroll-fade-size</code><span class="ph-cross-link"> — <a href="scroll-fade.html">see guide</a></span></div>
-<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">className</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;scroll-fade overflow-y-auto scroll-fade-24&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">{</span><span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">/* ... */</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">}</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1" data-lang="tsx"><span data-line>&lt;div className=&quot;scroll-fade overflow-y-auto scroll-fade-24&quot;&gt;{/* ... */}&lt;/div&gt;
 </span></code></pre>
 <p>For one-off values, use an arbitrary length or percentage:</p>
-<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">className</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;scroll-fade overflow-y-auto scroll-fade-[15%]&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">{</span><span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">/* ... */</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">}</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1" data-lang="tsx"><span data-line>&lt;div className=&quot;scroll-fade overflow-y-auto scroll-fade-[15%]&quot;&gt;{/* ... */}&lt;/div&gt;
 </span></code></pre>
 <p>To fade opposite edges by different amounts, use the per-edge modifiers <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>scroll-fade-t-&lt;number&gt;
 </span></code>, <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>scroll-fade-b-&lt;number&gt;
@@ -232,10 +227,9 @@ use the classes directly (see the <a href="installation.html">Installation</a> g
 </span></code>, and <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>scroll-fade-e-&lt;number&gt;
 </span></code>. They override <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>scroll-fade-&lt;number&gt;
 </span></code> on the edge they target and accept arbitrary values too.</p>
-<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">className</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;scroll-fade overflow-y-auto scroll-fade-b-8 scroll-fade-t-2&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>  <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">{</span><span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">/* ... */</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">}</span>
-</span><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1" data-lang="tsx"><span data-line>&lt;div className=&quot;scroll-fade overflow-y-auto scroll-fade-b-8 scroll-fade-t-2&quot;&gt;
+</span><span data-line>  {/* ... */}
+</span><span data-line>&lt;/div&gt;
 </span></code></pre>
 <p>Use the logical <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>s
 </span></code>/<code data-line-numbers data-line-numbers-max-digits="1"><span data-line>e
@@ -243,18 +237,16 @@ use the classes directly (see the <a href="installation.html">Installation</a> g
 <p>The fade eases in and out over a fixed scroll distance rather than appearing instantly. That distance is the <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>--scroll-fade-reveal
 </span></code> variable, <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>96px
 </span></code> by default and independent of the fade depth. Lower it for a snappier reveal or raise it for a more gradual one:</p>
-<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">className</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;scroll-fade overflow-y-auto [--scroll-fade-reveal:64px]&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>  <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">{</span><span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">/* ... */</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">}</span>
-</span><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1" data-lang="tsx"><span data-line>&lt;div className=&quot;scroll-fade overflow-y-auto [--scroll-fade-reveal:64px]&quot;&gt;
+</span><span data-line>  {/* ... */}
+</span><span data-line>&lt;/div&gt;
 </span></code></pre>
 <h2 id="disabling-the-fade">Disabling the Fade</h2>
 <p>Use <code data-line-numbers data-line-numbers-max-digits="1"><span data-line>scroll-fade-none
 </span></code> to remove the fade. It works in any class order, so the typical use is responsive or stateful:</p>
-<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1"><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span> <span style="--shiki-light:#0550AE;--shiki-dark:#A0A0A0">className</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">=</span><span style="--shiki-light:#0A3069;--shiki-dark:#99FFE4">&quot;scroll-fade overflow-y-auto md:scroll-fade-none&quot;</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>  <span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">{</span><span style="--shiki-light:#6E7781;--shiki-dark:#8B8B8B94">/* ... */</span><span style="--shiki-light:#CF222E;--shiki-dark:#A0A0A0">}</span>
-</span><span data-line><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&lt;/</span><span style="--shiki-light:#116329;--shiki-dark:#FFC799">div</span><span style="--shiki-light:#1F2328;--shiki-dark:#A0A0A0">&gt;</span>
-</span><span data-line>
+<pre><code class="language-tsx" data-line-numbers data-line-numbers-max-digits="1" data-lang="tsx"><span data-line>&lt;div className=&quot;scroll-fade overflow-y-auto md:scroll-fade-none&quot;&gt;
+</span><span data-line>  {/* ... */}
+</span><span data-line>&lt;/div&gt;
 </span></code></pre>
 <div data-component-preview="scroll-fade-none" data-style-name="base-rhea" data-status="unavailable" class="component-preview-ph"><span class="ph-note">demo not available in shadless (base-style demo)</span><code class="ph-name">scroll-fade-none</code><span class="ph-cross-link"> — <a href="scroll-fade.html">see guide</a></span></div>
 <h2 id="fallback">Fallback</h2>
@@ -277,5 +269,6 @@ use the classes directly (see the <a href="installation.html">Installation</a> g
 </div>
 <div class="sidebar-backdrop" data-sidebar-backdrop aria-hidden="true"></div>
 <script src="site.js"></script>
+<script src="highlight.js" defer></script>
 </body>
 </html>

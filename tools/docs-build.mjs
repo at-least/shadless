@@ -3,12 +3,13 @@
 // sources[] has {name, status:"existing-dist"} (49 components); tombstones/
 // greyed get no page in FT2 (grey index entries land in FT5). Pipeline per
 // page: strip ESM imports (fence-aware, gate hit 4) → MDX evaluate with the
-// vanilla jsx shim + component map + shiki rehype plugin → serialize to HTML
+// vanilla jsx shim + component map + line-wrapping rehype plugin → serialize to HTML
 // → heading ids + TOC → page template with meta.json sidebar. The tool
 // prints the mirror-set size it uses; acceptance requires built == mirror.
 import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, readdirSync, copyFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { evaluate } from '@mdx-js/mdx'
+import { buildSync } from 'esbuild'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkGfm from 'remark-gfm'
 import { Fragment, jsx, jsxs, serialize, el } from '../src/docs/jsx.mjs'
@@ -120,12 +121,12 @@ const replaceSpan = (raw, start, end, replacement) => raw.slice(0, start) + repl
 // path is machine-proven by tools/consumer-sim.mjs.
 function installStepsMdx(name) {
   const demo = readFileSync(join('dist/components', `${name}.html`), 'utf8')
-  const scripts = [...demo.matchAll(/<script src="(?:(\.\.)\/)?([\w./-]+\.js)"><\/script>/g)].map((m) => m[2])
   const initAll = /shadless\.initAll\(\)/.test(demo)
   // pre-paint boilerplate is filtered here (D3) — with it included, every
   // demo since FT9 looked like it carried an "inline init script" and the
-  // install steps told users to copy one that doesn't exist
-  const { inlineScripts } = extractDemoScripts(demo)
+  // install steps told users to copy one that doesn't exist. Same
+  // extractor as the docs JS tab, so the two can no longer disagree.
+  const { srcScripts: scripts, inlineScripts } = extractDemoScripts(demo)
   const inlineInit = inlineScripts.length > 0
   // a few components emit ZERO slot rules (aspect-ratio, collapsible,
   // scroll-fade, shimmer — all styling rides inline utilities + core
@@ -313,7 +314,7 @@ function guideTransform(guide, raw) {
 }
 
 // ---- compile one mdx page -------------------------------------------------------
-const highlightPlugin = await createHighlightPlugin()
+const highlightPlugin = createHighlightPlugin()
 const components = buildComponentMap()
 
 async function compilePage(page) {
@@ -485,6 +486,7 @@ ${prevNextHtml}
 </div>
 ${sidebarBackdrop}
 <script src="site.js"></script>
+<script src="highlight.js" defer></script>
 </body>
 </html>
 `
@@ -542,6 +544,7 @@ ${GUIDES.map((g) => `          <li><a href="${g.slug}.html">${g.title}</a></li>`
 </div>
 ${sidebarBackdrop}
 <script src="site.js"></script>
+<script src="highlight.js" defer></script>
 </body>
 </html>
 `
@@ -558,6 +561,15 @@ mkdirSync(OUT_DIR, { recursive: true })
 if (rtlLangsManifest !== null) writeFileSync(join(OUT_DIR, 'rtl-langs.json'), rtlLangsManifest)
 writeFileSync(join(OUT_DIR, 'site.css'), SITE_CSS)
 writeFileSync(join(OUT_DIR, 'site.js'), SITE_JS)
+// Client-side code highlighting: one self-contained IIFE (shiki core + the
+// two upstream themes + the fence grammars, JS regex engine — no wasm, no
+// network). Highlighting is presentation; baking it into the pages was
+// 137 MB of token spans. See src/docs/highlight-client.mjs.
+buildSync({
+  entryPoints: ['src/docs/highlight-client.mjs'],
+  bundle: true, format: 'iife', minify: true, target: 'es2020',
+  outfile: join(OUT_DIR, 'highlight.js'), logLevel: 'error',
+})
 // Geist skin (ui.shadcn.com parity — see FONTS_CSS in assets.mjs).
 // Vendored binaries live at docs/fonts/ (OFL); serve one copy from
 // assets/fonts/ — fonts.css's url()s resolve against its own path, so

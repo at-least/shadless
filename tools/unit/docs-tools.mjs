@@ -53,12 +53,12 @@ export function run(t) {
     const html = [
       '<script>(function(){try{var k="shadless-docs-theme",v=localStorage.getItem(k);}})()</script>', // pre-paint
       '<script src="../shadless.js"></script>',
-      '<script src="../glue/tabs-glue.js"></script>',
+      '<script src="../js/tabs.js"></script>',
       '<script>shadless.initAll()</script>',
       '<script src="../radix-kernel.iife.js"></script>',
     ].join("\n")
     const { srcScripts, inlineScripts } = extractDemoScripts(html)
-    t.eq("scripts: local srcs only (vendor excluded)", srcScripts, ["shadless.js", "glue/tabs-glue.js"])
+    t.eq("scripts: local srcs only (vendor excluded)", srcScripts, ["shadless.js", "js/tabs.js"])
     t.eq("scripts: pre-paint filtered from inline", inlineScripts, ["shadless.initAll()"])
   }
 
