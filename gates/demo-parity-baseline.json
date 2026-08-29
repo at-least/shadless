@@ -1,82 +1,386 @@
 {
  "pin": "shadcn@4.19.0",
- "note": "shipped demo DOM under our css vs the same DOM under upstream css; may only shrink",
+ "note": "shipped demo DOM under our css vs the same DOM under upstream css; may only shrink, and a recorded cell's VALUES are pinned too",
  "cells": [
-  "accordion-rtl/accordion-trigger-icon#1/margin-left@dark@rtl",
-  "accordion-rtl/accordion-trigger-icon#1/margin-left@light@rtl",
-  "accordion-rtl/accordion-trigger-icon#2/margin-left@dark@rtl",
-  "accordion-rtl/accordion-trigger-icon#2/margin-left@light@rtl",
-  "accordion-rtl/accordion-trigger-icon#3/margin-left@dark@rtl",
-  "accordion-rtl/accordion-trigger-icon#3/margin-left@light@rtl",
-  "accordion-rtl/accordion-trigger-icon#4/margin-left@dark@rtl",
-  "accordion-rtl/accordion-trigger-icon#4/margin-left@light@rtl",
-  "accordion-rtl/accordion-trigger-icon#5/margin-left@dark@rtl",
-  "accordion-rtl/accordion-trigger-icon#5/margin-left@light@rtl",
-  "accordion-rtl/accordion-trigger-icon#6/margin-left@dark@rtl",
-  "accordion-rtl/accordion-trigger-icon#6/margin-left@light@rtl",
-  "input-group-custom/input-group-control#1/box-shadow@dark@ltr",
-  "input-group-custom/input-group-control#1/box-shadow@dark@rtl",
-  "input-group-custom/input-group-control#1/box-shadow@light@ltr",
-  "input-group-custom/input-group-control#1/box-shadow@light@rtl",
-  "input-group-rtl/input-group-addon#1/padding-left@dark@ltr",
-  "input-group-rtl/input-group-addon#1/padding-left@dark@rtl",
-  "input-group-rtl/input-group-addon#1/padding-left@light@ltr",
-  "input-group-rtl/input-group-addon#1/padding-left@light@rtl",
-  "input-group-rtl/input-group-addon#1/width@dark@ltr",
-  "input-group-rtl/input-group-addon#1/width@dark@rtl",
-  "input-group-rtl/input-group-addon#1/width@light@ltr",
-  "input-group-rtl/input-group-addon#1/width@light@rtl",
-  "input-group-rtl/input-group-addon#2/padding-right@dark@ltr",
-  "input-group-rtl/input-group-addon#2/padding-right@dark@rtl",
-  "input-group-rtl/input-group-addon#2/padding-right@light@ltr",
-  "input-group-rtl/input-group-addon#2/padding-right@light@rtl",
-  "input-group-rtl/input-group-addon#2/width@dark@ltr",
-  "input-group-rtl/input-group-addon#2/width@dark@rtl",
-  "input-group-rtl/input-group-addon#2/width@light@ltr",
-  "input-group-rtl/input-group-addon#2/width@light@rtl",
-  "input-group-rtl/input-group-addon#3/padding-right@dark@ltr",
-  "input-group-rtl/input-group-addon#3/padding-right@dark@rtl",
-  "input-group-rtl/input-group-addon#3/padding-right@light@ltr",
-  "input-group-rtl/input-group-addon#3/padding-right@light@rtl",
-  "input-group-rtl/input-group-addon#3/width@dark@ltr",
-  "input-group-rtl/input-group-addon#3/width@dark@rtl",
-  "input-group-rtl/input-group-addon#3/width@light@ltr",
-  "input-group-rtl/input-group-addon#3/width@light@rtl",
-  "input-group-rtl/input-group-addon#4/padding-right@dark@ltr",
-  "input-group-rtl/input-group-addon#4/padding-right@dark@rtl",
-  "input-group-rtl/input-group-addon#4/padding-right@light@ltr",
-  "input-group-rtl/input-group-addon#4/padding-right@light@rtl",
-  "input-group-rtl/input-group-addon#4/width@dark@ltr",
-  "input-group-rtl/input-group-addon#4/width@dark@rtl",
-  "input-group-rtl/input-group-addon#4/width@light@ltr",
-  "input-group-rtl/input-group-addon#4/width@light@rtl",
-  "input-group-rtl/input-group-control#1/padding-left@dark@ltr",
-  "input-group-rtl/input-group-control#1/padding-left@dark@rtl",
-  "input-group-rtl/input-group-control#1/padding-left@light@ltr",
-  "input-group-rtl/input-group-control#1/padding-left@light@rtl",
-  "input-group-rtl/input-group-control#1/padding-right@dark@ltr",
-  "input-group-rtl/input-group-control#1/padding-right@dark@rtl",
-  "input-group-rtl/input-group-control#1/padding-right@light@ltr",
-  "input-group-rtl/input-group-control#1/padding-right@light@rtl",
-  "input-group-rtl/input-group-control#1/width@dark@ltr",
-  "input-group-rtl/input-group-control#1/width@dark@rtl",
-  "input-group-rtl/input-group-control#1/width@light@ltr",
-  "input-group-rtl/input-group-control#1/width@light@rtl",
-  "input-group-rtl/input-group-control#2/padding-left@dark@ltr",
-  "input-group-rtl/input-group-control#2/padding-left@dark@rtl",
-  "input-group-rtl/input-group-control#2/padding-left@light@ltr",
-  "input-group-rtl/input-group-control#2/padding-left@light@rtl",
-  "input-group-rtl/input-group-control#2/width@dark@ltr",
-  "input-group-rtl/input-group-control#2/width@dark@rtl",
-  "input-group-rtl/input-group-control#2/width@light@ltr",
-  "input-group-rtl/input-group-control#2/width@light@rtl",
-  "input-group-rtl/input-group-control#3/padding-left@dark@ltr",
-  "input-group-rtl/input-group-control#3/padding-left@dark@rtl",
-  "input-group-rtl/input-group-control#3/padding-left@light@ltr",
-  "input-group-rtl/input-group-control#3/padding-left@light@rtl",
-  "input-group-rtl/input-group-control#3/width@dark@ltr",
-  "input-group-rtl/input-group-control#3/width@dark@rtl",
-  "input-group-rtl/input-group-control#3/width@light@ltr",
-  "input-group-rtl/input-group-control#3/width@light@rtl"
+  {
+   "id": "accordion-rtl/accordion-trigger-icon#1/margin-left@dark@rtl",
+   "oracle": "0px",
+   "shadless": "auto"
+  },
+  {
+   "id": "accordion-rtl/accordion-trigger-icon#1/margin-left@light@rtl",
+   "oracle": "0px",
+   "shadless": "auto"
+  },
+  {
+   "id": "accordion-rtl/accordion-trigger-icon#2/margin-left@dark@rtl",
+   "oracle": "0px",
+   "shadless": "106.89px"
+  },
+  {
+   "id": "accordion-rtl/accordion-trigger-icon#2/margin-left@light@rtl",
+   "oracle": "0px",
+   "shadless": "106.89px"
+  },
+  {
+   "id": "accordion-rtl/accordion-trigger-icon#3/margin-left@dark@rtl",
+   "oracle": "0px",
+   "shadless": "89.58px"
+  },
+  {
+   "id": "accordion-rtl/accordion-trigger-icon#3/margin-left@light@rtl",
+   "oracle": "0px",
+   "shadless": "89.58px"
+  },
+  {
+   "id": "accordion-rtl/accordion-trigger-icon#4/margin-left@dark@rtl",
+   "oracle": "0px",
+   "shadless": "auto"
+  },
+  {
+   "id": "accordion-rtl/accordion-trigger-icon#4/margin-left@light@rtl",
+   "oracle": "0px",
+   "shadless": "auto"
+  },
+  {
+   "id": "accordion-rtl/accordion-trigger-icon#5/margin-left@dark@rtl",
+   "oracle": "0px",
+   "shadless": "124.89px"
+  },
+  {
+   "id": "accordion-rtl/accordion-trigger-icon#5/margin-left@light@rtl",
+   "oracle": "0px",
+   "shadless": "124.89px"
+  },
+  {
+   "id": "accordion-rtl/accordion-trigger-icon#6/margin-left@dark@rtl",
+   "oracle": "0px",
+   "shadless": "auto"
+  },
+  {
+   "id": "accordion-rtl/accordion-trigger-icon#6/margin-left@light@rtl",
+   "oracle": "0px",
+   "shadless": "auto"
+  },
+  {
+   "id": "input-group-custom/input-group-control#1/box-shadow@dark@ltr",
+   "oracle": "none",
+   "shadless": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.99 0 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+  },
+  {
+   "id": "input-group-custom/input-group-control#1/box-shadow@dark@rtl",
+   "oracle": "none",
+   "shadless": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.99 0 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+  },
+  {
+   "id": "input-group-custom/input-group-control#1/box-shadow@light@ltr",
+   "oracle": "none",
+   "shadless": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0 0 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+  },
+  {
+   "id": "input-group-custom/input-group-control#1/box-shadow@light@rtl",
+   "oracle": "none",
+   "shadless": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0 0 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#1/padding-left@dark@ltr",
+   "oracle": "0px",
+   "shadless": "8px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#1/padding-left@dark@rtl",
+   "oracle": "0px",
+   "shadless": "8px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#1/padding-left@light@ltr",
+   "oracle": "0px",
+   "shadless": "8px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#1/padding-left@light@rtl",
+   "oracle": "0px",
+   "shadless": "8px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#1/width@dark@ltr",
+   "oracle": "24px",
+   "shadless": "32px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#1/width@dark@rtl",
+   "oracle": "24px",
+   "shadless": "32px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#1/width@light@ltr",
+   "oracle": "24px",
+   "shadless": "32px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#1/width@light@rtl",
+   "oracle": "24px",
+   "shadless": "32px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#2/padding-right@dark@ltr",
+   "oracle": "0px",
+   "shadless": "8px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#2/padding-right@dark@rtl",
+   "oracle": "0px",
+   "shadless": "8px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#2/padding-right@light@ltr",
+   "oracle": "0px",
+   "shadless": "8px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#2/padding-right@light@rtl",
+   "oracle": "0px",
+   "shadless": "8px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#2/width@dark@ltr",
+   "oracle": "56.64px",
+   "shadless": "64.64px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#2/width@dark@rtl",
+   "oracle": "56.64px",
+   "shadless": "64.64px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#2/width@light@ltr",
+   "oracle": "56.64px",
+   "shadless": "64.64px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#2/width@light@rtl",
+   "oracle": "56.64px",
+   "shadless": "64.64px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#3/padding-right@dark@ltr",
+   "oracle": "0px",
+   "shadless": "8px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#3/padding-right@dark@rtl",
+   "oracle": "0px",
+   "shadless": "8px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#3/padding-right@light@ltr",
+   "oracle": "0px",
+   "shadless": "8px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#3/padding-right@light@rtl",
+   "oracle": "0px",
+   "shadless": "8px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#3/width@dark@ltr",
+   "oracle": "24px",
+   "shadless": "32px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#3/width@dark@rtl",
+   "oracle": "24px",
+   "shadless": "32px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#3/width@light@ltr",
+   "oracle": "24px",
+   "shadless": "32px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#3/width@light@rtl",
+   "oracle": "24px",
+   "shadless": "32px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#4/padding-right@dark@ltr",
+   "oracle": "0px",
+   "shadless": "8px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#4/padding-right@dark@rtl",
+   "oracle": "0px",
+   "shadless": "8px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#4/padding-right@light@ltr",
+   "oracle": "0px",
+   "shadless": "8px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#4/padding-right@light@rtl",
+   "oracle": "0px",
+   "shadless": "8px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#4/width@dark@ltr",
+   "oracle": "115.08px",
+   "shadless": "123.08px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#4/width@dark@rtl",
+   "oracle": "115.08px",
+   "shadless": "123.08px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#4/width@light@ltr",
+   "oracle": "115.08px",
+   "shadless": "123.08px"
+  },
+  {
+   "id": "input-group-rtl/input-group-addon#4/width@light@rtl",
+   "oracle": "115.08px",
+   "shadless": "123.08px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#1/padding-left@dark@ltr",
+   "oracle": "6px",
+   "shadless": "10px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#1/padding-left@dark@rtl",
+   "oracle": "6px",
+   "shadless": "10px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#1/padding-left@light@ltr",
+   "oracle": "6px",
+   "shadless": "10px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#1/padding-left@light@rtl",
+   "oracle": "6px",
+   "shadless": "10px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#1/padding-right@dark@ltr",
+   "oracle": "6px",
+   "shadless": "10px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#1/padding-right@dark@rtl",
+   "oracle": "6px",
+   "shadless": "10px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#1/padding-right@light@ltr",
+   "oracle": "6px",
+   "shadless": "10px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#1/padding-right@light@rtl",
+   "oracle": "6px",
+   "shadless": "10px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#1/width@dark@ltr",
+   "oracle": "237.36px",
+   "shadless": "221.36px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#1/width@dark@rtl",
+   "oracle": "237.36px",
+   "shadless": "221.36px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#1/width@light@ltr",
+   "oracle": "237.36px",
+   "shadless": "221.36px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#1/width@light@rtl",
+   "oracle": "237.36px",
+   "shadless": "221.36px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#2/padding-left@dark@ltr",
+   "oracle": "6px",
+   "shadless": "10px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#2/padding-left@dark@rtl",
+   "oracle": "6px",
+   "shadless": "10px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#2/padding-left@light@ltr",
+   "oracle": "6px",
+   "shadless": "10px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#2/padding-left@light@rtl",
+   "oracle": "6px",
+   "shadless": "10px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#2/width@dark@ltr",
+   "oracle": "358px",
+   "shadless": "350px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#2/width@dark@rtl",
+   "oracle": "358px",
+   "shadless": "350px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#2/width@light@ltr",
+   "oracle": "358px",
+   "shadless": "350px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#2/width@light@rtl",
+   "oracle": "358px",
+   "shadless": "350px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#3/padding-left@dark@ltr",
+   "oracle": "6px",
+   "shadless": "10px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#3/padding-left@dark@rtl",
+   "oracle": "6px",
+   "shadless": "10px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#3/padding-left@light@ltr",
+   "oracle": "6px",
+   "shadless": "10px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#3/padding-left@light@rtl",
+   "oracle": "6px",
+   "shadless": "10px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#3/width@dark@ltr",
+   "oracle": "266.92px",
+   "shadless": "258.92px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#3/width@dark@rtl",
+   "oracle": "266.92px",
+   "shadless": "258.92px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#3/width@light@ltr",
+   "oracle": "266.92px",
+   "shadless": "258.92px"
+  },
+  {
+   "id": "input-group-rtl/input-group-control#3/width@light@rtl",
+   "oracle": "266.92px",
+   "shadless": "258.92px"
+  }
  ]
 }

@@ -18,8 +18,9 @@
 //   node gates/demo-parity.mjs --record   re-record
 //   node gates/demo-parity.mjs --details  print light/ltr cells with values
 import { chromium } from "playwright"
-import { readFileSync, writeFileSync, existsSync } from "node:fs"
+import { readFileSync, existsSync } from "node:fs"
 import { resolve } from "node:path"
+import { cellMap, loadBaseline, writeBaseline, diffBaseline, showCell, showChange } from "./parity-baseline.mjs"
 
 const BASELINE = "gates/demo-parity-baseline.json"
 const RECORD = process.argv.includes("--record")
@@ -78,22 +79,21 @@ for (const t of owned) {
     const [slotKey, theme, dir] = k.split("@")
     for (const p of PROPS) {
       const a = norm(ref[p]), b = norm(got[p])
-      if (a !== b) cells.push({ id: `${t.name}/${slotKey}/${p}@${theme}@${dir}`, detail: `oracle=${a.slice(0, 50)} shadless=${b.slice(0, 50)}` })
+      if (a !== b) cells.push({ id: `${t.name}/${slotKey}/${p}@${theme}@${dir}`, oracle: a, shadless: b })
     }
   }
 }
 await browser.close()
 
-if (process.argv.includes("--details")) for (const c of cells) if (/@light@ltr$/.test(c.id)) console.log(`${c.id}: ${c.detail}`)
-const actual = new Set(cells.map((c) => c.id))
+const actual = cellMap(cells)
+if (process.argv.includes("--details")) for (const [id, v] of actual) if (/@light@ltr$/.test(id)) console.log(`${id}: ${showCell(v)}`)
 if (RECORD || !existsSync(BASELINE)) {
-  const pin = JSON.parse(readFileSync("src/registry/pin.json", "utf8")).shadcn_ui.tag
-  writeFileSync(BASELINE, JSON.stringify({ pin, note: "shipped demo DOM under our css vs the same DOM under upstream css; may only shrink", cells: [...actual].sort() }, null, 1) + "\n")
+  writeBaseline(BASELINE, { note: "shipped demo DOM under our css vs the same DOM under upstream css; may only shrink, and a recorded cell's VALUES are pinned too", cells: actual })
   console.log(`demo-parity: baseline recorded (${actual.size} cells over ${pages} pages, ${compared} element×theme×dir comparisons)`)
   process.exit(0)
 }
-const recorded = new Set(JSON.parse(readFileSync(BASELINE, "utf8")).cells)
-const appeared = cells.filter((c) => !recorded.has(c.id)), fixed = [...recorded].filter((id) => !actual.has(id))
-if (appeared.length) { console.error(`FAIL  demo-parity (${appeared.length} NEW cells where a shipped demo ≠ upstream css)\n  ` + appeared.slice(0, 40).map((c) => `${c.id}: ${c.detail}`).join("\n  ")); process.exit(1) }
+const { appeared, fixed, changed } = diffBaseline(loadBaseline(BASELINE).cells, actual)
+if (appeared.length) { console.error(`FAIL  demo-parity (${appeared.length} NEW cells where a shipped demo ≠ upstream css)\n  ` + appeared.slice(0, 40).map((id) => `${id}: ${showCell(actual.get(id))}`).join("\n  ")); process.exit(1) }
+if (changed.length) { console.error(`FAIL  demo-parity (${changed.length} recorded cells still differ, but by a DIFFERENT amount — re-look, then re-record: node gates/demo-parity.mjs --record)\n  ` + changed.slice(0, 20).map(showChange).join("\n  ")); process.exit(1) }
 if (fixed.length) { console.error(`FAIL  demo-parity (${fixed.length} recorded cells no longer differ — record the win: node gates/demo-parity.mjs --record && node gates/ledger.mjs --record)\n  ` + fixed.slice(0, 20).join("\n  ")); process.exit(1) }
-console.log(`PASS  demo-parity (${pages} pages, ${compared} comparisons, ${actual.size} cells at the recorded baseline; --strict is the end state)`)
+console.log(`PASS  demo-parity (${pages} pages, ${compared} comparisons, ${actual.size} cells at the recorded baseline incl. their values; --strict is the end state)`)

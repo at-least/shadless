@@ -1,5 +1,5 @@
 {
  "pin": "shadcn@4.19.0",
- "note": "slot-only markup via css-import / full-css vs React inline classes under upstream css; may only shrink",
+ "note": "slot-only markup via css-import / full-css vs React inline classes under upstream css; may only shrink, and a recorded cell's VALUES are pinned too",
  "cells": []
 }

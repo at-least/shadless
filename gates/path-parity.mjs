@@ -26,6 +26,7 @@ import { resolve } from "node:path"
 import { cvaSlot, splitMarkers } from "../src/emitter/css.mjs"
 import { normalizeTag } from "../src/tags.mjs"
 import { twMerge } from "tailwind-merge"
+import { cellMap, loadBaseline, writeBaseline, diffBaseline, showCell, showChange } from "./parity-baseline.mjs"
 
 const ROOT = resolve(".")
 const SIM = "build/gates/path-parity"
@@ -262,7 +263,7 @@ for (const f of readdirSync("src/registry/ir").filter((x) => x.endsWith(".json")
         compared++
         for (const p of PROPS) {
           const va = norm(ref[p]), vb = norm(got[p])
-          if (va !== vb) cells.push({ id: `${name}/${node.label}/${p}@${path}@${theme}@${dir}`, detail: `oracle=${va.slice(0, 50)} shadless=${vb.slice(0, 50)}` })
+          if (va !== vb) cells.push({ id: `${name}/${node.label}/${p}@${path}@${theme}@${dir}`, oracle: va, shadless: vb })
         }
       }
     }
@@ -271,24 +272,26 @@ for (const f of readdirSync("src/registry/ir").filter((x) => x.endsWith(".json")
 await browser.close()
 if (!process.env.PP_KEEP) rmSync(SIM, { recursive: true, force: true })
 
-if (process.argv.includes("--details")) for (const c of cells) if (/@css-import@light@ltr$/.test(c.id)) console.log(`${c.id}: ${c.detail}`)
-const actual = new Set(cells.map((c) => c.id))
+const actual = cellMap(cells)
+if (process.argv.includes("--details")) for (const [id, v] of actual) if (/@css-import@light@ltr$/.test(id)) console.log(`${id}: ${showCell(v)}`)
 if (RECORD || !existsSync(BASELINE)) {
-  const pin = JSON.parse(readFileSync("src/registry/pin.json", "utf8")).shadcn_ui.tag
-  writeFileSync(BASELINE, JSON.stringify({ pin, note: "slot-only markup via css-import / full-css vs React inline classes under upstream css; may only shrink", cells: [...actual].sort() }, null, 1) + "\n")
+  writeBaseline(BASELINE, { note: "slot-only markup via css-import / full-css vs React inline classes under upstream css; may only shrink, and a recorded cell's VALUES are pinned too", cells: actual })
   console.log(`path-parity: baseline recorded (${actual.size} cells over ${components} components, ${compared} element×path×theme×dir comparisons incl. ${variantRenders} variant + ${stateRenders} state renders)`)
   process.exit(0)
 }
-const recorded = new Set(JSON.parse(readFileSync(BASELINE, "utf8")).cells)
-const appeared = cells.filter((c) => !recorded.has(c.id))
-const fixed = [...recorded].filter((id) => !actual.has(id))
+const { appeared, fixed, changed } = diffBaseline(loadBaseline(BASELINE).cells, actual)
 if (appeared.length) {
   console.error(`FAIL  path-parity (${appeared.length} NEW cells where a consume path ≠ React under upstream css)\n  ` +
-    appeared.slice(0, 40).map((c) => `${c.id}: ${c.detail}`).join("\n  ") + (appeared.length > 40 ? `\n  … +${appeared.length - 40} more` : ""))
+    appeared.slice(0, 40).map((id) => `${id}: ${showCell(actual.get(id))}`).join("\n  ") + (appeared.length > 40 ? `\n  … +${appeared.length - 40} more` : ""))
+  process.exit(1)
+}
+if (changed.length) {
+  console.error(`FAIL  path-parity (${changed.length} recorded cells still differ, but by a DIFFERENT amount — re-look, then re-record: node gates/path-parity.mjs --record)\n  ` +
+    changed.slice(0, 20).map(showChange).join("\n  "))
   process.exit(1)
 }
 if (fixed.length) {
   console.error(`FAIL  path-parity (${fixed.length} recorded cells no longer differ — record the win: node gates/path-parity.mjs --record && node gates/ledger.mjs --record)\n  ` + fixed.slice(0, 20).join("\n  "))
   process.exit(1)
 }
-console.log(`PASS  path-parity (${components} components, ${compared} comparisons incl. ${stateRenders} state renders, ${actual.size} cells at the recorded baseline; --strict is the end state)`)
+console.log(`PASS  path-parity (${components} components, ${compared} comparisons incl. ${stateRenders} state renders, ${actual.size} cells at the recorded baseline incl. their values; --strict is the end state)`)

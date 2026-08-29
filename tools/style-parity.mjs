@@ -15,8 +15,9 @@
 // Known-difference allowances live in the def as styleIgnore (property
 // names), defaulting to the recorded runtime-style family.
 import { chromium } from "playwright"
-import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs"
+import { readFileSync, readdirSync, existsSync } from "node:fs"
 import { resolve } from "node:path"
+import { cellMap, loadBaseline, writeBaseline, diffBaseline, showCell, showChange } from "../gates/parity-baseline.mjs"
 
 const DIR = "tools/contracts/out"
 // every differing (component, slot#occurrence, property) triple
@@ -166,13 +167,13 @@ for (const f of defs) {
       const mapB = new Map(shadlessSides[variant.id].map((e) => [key(e, seenB), e]))
       for (const [k, a] of mapA) {
         const b = mapB.get(k)
-        if (!b) { diffs.push({ key: k, prop: "<presence>", detail: "present in oracle, missing in shadless" }); continue }
+        if (!b) { diffs.push({ key: k, prop: "<presence>", oracle: "present", shadless: "missing" }); continue }
         for (const p of props) {
           const va = normVal(a.style[p]), vb = normVal(b.style[p])
-          if (va !== vb) diffs.push({ key: k, prop: p, detail: `oracle=${String(va).slice(0, 60)} shadless=${String(vb).slice(0, 60)}` })
+          if (va !== vb) diffs.push({ key: k, prop: p, oracle: String(va), shadless: String(vb) })
         }
       }
-      for (const k of mapB.keys()) if (!mapA.has(k)) diffs.push({ key: k, prop: "<presence>", detail: "present in shadless, missing in oracle" })
+      for (const k of mapB.keys()) if (!mapA.has(k)) diffs.push({ key: k, prop: "<presence>", oracle: "missing", shadless: "present" })
       // light/ltr cells keep their historical ids; the other variants suffix
       for (const d of diffs) cells.push({ component: name, ...d, key: variant.id === "light@ltr" ? d.key : `${d.key}@${variant.id}` })
       compared += mapA.size
@@ -195,10 +196,10 @@ await browser.close()
 //
 // The unit of the ratchet is now the CELL: component / slot#occurrence /
 // property. 23 components became ~200 cells, so a fixed cell that is
-// replaced by a different broken one no longer hides. Cell IDENTITY is
-// pinned, not the differing VALUES — a legitimate upstream change to an
-// already-drifting cell should not churn the baseline, but a NEW drifting
-// cell must fail.
+// replaced by a different broken one no longer hides. Both the cell's
+// IDENTITY and its VALUES are pinned (gates/parity-baseline.mjs): recording
+// the id alone left every recorded cell free to drift by any amount forever,
+// which is the opposite of what "we looked at this difference" means.
 //
 // `flaky` lists components whose fixtures race their own runtime init; their
 // cells are excluded from the ratchet entirely and counted separately, so a
@@ -214,25 +215,23 @@ if (harnessErrors.length) {
   process.exit(1)
 }
 
-const base = existsSync(BASELINE_PATH)
-  ? JSON.parse(readFileSync(BASELINE_PATH, "utf8"))
-  : { pin: null, flaky: [], cells: [] }
-const flaky = new Set(base.flaky ?? [])
+// `flaky` is read from the raw file: --record must work on a baseline in the
+// pre-value format too, and loadBaseline refuses that one (correctly — the
+// COMPARE path cannot silently treat a value-less baseline as matching).
+const flaky = new Set((existsSync(BASELINE_PATH)
+  ? JSON.parse(readFileSync(BASELINE_PATH, "utf8")).flaky : null) ?? [])
 
 const ratcheted = cells.filter((c) => !flaky.has(c.component))
 const flakyCells = cells.length - ratcheted.length
-const actual = new Set(ratcheted.map(cellId))
-const recorded = new Set(base.cells ?? [])
+const actual = cellMap(ratcheted.map((c) => ({ id: cellId(c), oracle: c.oracle, shadless: c.shadless })))
 
 if (RECORD || !existsSync(BASELINE_PATH)) {
-  const pin = JSON.parse(readFileSync("src/registry/pin.json", "utf8")).shadcn_ui.tag
-  writeFileSync(BASELINE_PATH, JSON.stringify({
-    pin,
-    note: "Cells where the shadless fixture's computed style differs from the React oracle. " +
-      "This list may only shrink; see gates/ledger.mjs budget style-parity.dirty-cells.",
-    flaky: [...flaky].sort(),
-    cells: [...actual].sort(),
-  }, null, 1) + "\n")
+  writeBaseline(BASELINE_PATH, {
+    note: "Cells where the shadless fixture's computed style differs from the React oracle, " +
+      "with the two values as recorded. This list may only shrink and the values are pinned; " +
+      "see gates/ledger.mjs budget style-parity.dirty-cells.",
+    flaky, cells: actual,
+  })
   console.log(`style-parity: baseline recorded (${actual.size} cells across ` +
     `${new Set(ratcheted.map((c) => c.component)).size} components, ${flaky.size} flaky components excluded)`)
   process.exit(0)
@@ -240,18 +239,24 @@ if (RECORD || !existsSync(BASELINE_PATH)) {
 
 if (STRICT && cells.length) {
   console.error(`FAIL  style-parity --strict (${cells.length} differing cells)\n  ` +
-    cells.slice(0, 10).map((c) => `${cellId(c)}: ${c.detail}`).join("\n  "))
+    cells.slice(0, 10).map((c) => `${cellId(c)}: ${showCell(c)}`).join("\n  "))
   process.exit(1)
 }
 
-const appeared = [...actual].filter((id) => !recorded.has(id)).sort()
-const fixed = [...recorded].filter((id) => !actual.has(id)).sort()
+const { appeared, fixed, changed } = diffBaseline(loadBaseline(BASELINE_PATH).cells, actual)
 
 if (appeared.length) {
-  const detail = new Map(ratcheted.map((c) => [cellId(c), c.detail]))
   console.error(`FAIL  style-parity (${appeared.length} NEW differing cells vs the React oracle)\n  ` +
-    appeared.slice(0, 40).map((id) => `${id}: ${detail.get(id)}`).join("\n  ") +
+    appeared.slice(0, 40).map((id) => `${id}: ${showCell(actual.get(id))}`).join("\n  ") +
     (appeared.length > 40 ? `\n  … +${appeared.length - 40} more` : ""))
+  process.exit(1)
+}
+if (changed.length) {
+  console.error(`FAIL  style-parity (${changed.length} recorded cells still differ from the oracle, but by a ` +
+    `DIFFERENT amount than what was recorded — look at them again, then re-record)\n  ` +
+    changed.slice(0, 20).map(showChange).join("\n  ") +
+    (changed.length > 20 ? `\n  … +${changed.length - 20} more` : "") +
+    `\n\n  node tools/style-parity.mjs --record`)
   process.exit(1)
 }
 if (fixed.length) {
@@ -262,5 +267,5 @@ if (fixed.length) {
   process.exit(1)
 }
 console.log(`PASS  style-parity (${components} components, ${compared} elements compared, ` +
-  `${actual.size} cells at the recorded baseline, ${flakyCells} cells in ${flaky.size} flaky components excluded; ` +
+  `${actual.size} cells at the recorded baseline incl. their values, ${flakyCells} cells in ${flaky.size} flaky components excluded; ` +
   `--strict is the end state)`)
