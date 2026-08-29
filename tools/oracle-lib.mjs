@@ -25,8 +25,9 @@ import { createHash } from "node:crypto"
 // every call — the gate's whole point is re-rendering the oracle — but the
 // ~1-2s per-demo esbuild pass is skippable when nothing it reads has moved.
 // Keyed on: pin commit (upstream tree identity), the example file, the
-// stubs dir, resolve-skins (regenerates the resolved tree) and this module
-// itself (entry template + alias matrix live here), plus package-lock.json
+// stubs dir, resolve-skins + the skin tables it imports (they regenerate the
+// resolved tree the aliases point at) and this module itself (entry template
+// + alias matrix live here), plus package-lock.json
 // (react/radix/esbuild versions) now that the cache is shared and restored
 // across CI runs.
 //
@@ -47,7 +48,14 @@ function bundleCacheKey(name) {
   h.update(readFileSync(join(".upstream/shadcn-ui/apps/v4/examples/radix", `${name}.tsx`)))
   for (const f of readdirSync("tools/contracts/stubs").sort())
     h.update(f).update(readFileSync(join("tools/contracts/stubs", f)))
+  // resolve-skins is what BUILDS build/resolved-ui, which every alias below
+  // points at — so both the script and the tables it imports are part of the
+  // bundle's identity. skin.mjs was missing: editing SKIN_ALLOWLIST changed
+  // the resolved tree, wireit correctly re-ran the oracle consumers, and this
+  // key did not move — so a bundle compiled against the OLD resolved tree was
+  // reused and the gates compared against a stale oracle, green.
   h.update(readFileSync("tools/resolve-skins.mjs"))
+  h.update(readFileSync("src/emitter/skin.mjs"))
   h.update(readFileSync(new URL("./oracle-lib.mjs", import.meta.url)))
   return h.digest("hex")
 }
