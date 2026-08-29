@@ -36,7 +36,7 @@
 //   node gates/overlay.mjs --record    re-anchor every authored unit to the
 //                                      current upstream (after review)
 //   node gates/overlay.mjs --tasks     write one task packet per stale or
-//                                      orphaned unit to gates/out/tasks/
+//                                      orphaned unit to build/gates/tasks/
 //   node gates/overlay.mjs --report    audit without exiting non-zero
 import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync, rmSync } from "node:fs"
 import { createHash } from "node:crypto"
@@ -51,7 +51,7 @@ const EXAMPLES_ARIA = "apps/v4/examples/aria"
 const MDX = "apps/v4/content/docs/components/radix"
 const MANIFEST = "overlays/manifest.json"
 const PATCHES = "overlays/upstream"
-const TASKS = "gates/out/tasks"
+const TASKS = "build/gates/tasks"
 
 const argv = process.argv.slice(2)
 const has = (f) => argv.includes(`--${f}`)
@@ -237,7 +237,7 @@ function authoredUnits() {
   }
   // the trivial-tier runtime is written against every trivial component
   {
-    const { TRIVIAL } = JSON.parse(readFileSync("gates/out/.trivial.json", "utf8"))
+    const { TRIVIAL } = JSON.parse(readFileSync("build/gates/.trivial.json", "utf8"))
     units.push({ id: "runtime:core", kind: "authored", file: "src/runtime/core.js",
       inputs: TRIVIAL.map(regFile), extra: [] })
   }
@@ -283,8 +283,8 @@ function sourceState(u) {
 async function audit({ strict }) {
   // tier sets are needed by authoredUnits (runtime inputs); stash them once
   const { TRIVIAL } = await import("../src/converter/index.mjs")
-  mkdirSync("gates/out", { recursive: true })
-  writeFileSync("gates/out/.trivial.json", JSON.stringify({ TRIVIAL: [...TRIVIAL] }))
+  mkdirSync("build/gates", { recursive: true })
+  writeFileSync("build/gates/.trivial.json", JSON.stringify({ TRIVIAL: [...TRIVIAL] }))
 
   const manifest = existsSync(MANIFEST) ? JSON.parse(readFileSync(MANIFEST, "utf8")) : { pin: null, units: {} }
   const buckets = { applied: [], dissolved: [], orphaned: [], stale: [], conflict: [], unrecorded: [] }
@@ -335,8 +335,8 @@ async function audit({ strict }) {
 async function record() {
   const manifest = existsSync(MANIFEST) ? JSON.parse(readFileSync(MANIFEST, "utf8")) : { units: {} }
   const { TRIVIAL } = await import("../src/converter/index.mjs")
-  mkdirSync("gates/out", { recursive: true })
-  writeFileSync("gates/out/.trivial.json", JSON.stringify({ TRIVIAL: [...TRIVIAL] }))
+  mkdirSync("build/gates", { recursive: true })
+  writeFileSync("build/gates/.trivial.json", JSON.stringify({ TRIVIAL: [...TRIVIAL] }))
   const next = { pin: pin.shadcn_ui.tag, commit: pin.shadcn_ui.commit, units: {} }
   let changed = 0
   for (const u of authoredUnits()) {

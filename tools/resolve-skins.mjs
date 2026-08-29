@@ -20,7 +20,7 @@
 //   - each class-string literal passes twMerge (cn() = clsx+twMerge, so
 //     the DOM-side merge is replicated at source)
 //
-// Output: probes/out/resolved-ui/ — a structural copy of bases/radix
+// Output: build/resolved-ui/ — a structural copy of bases/radix
 // (ui/ transformed, lib+hooks verbatim) that the converter, contracts
 // oracle and example oracle consume instead of bases/radix directly.
 // Import specifiers are left untouched (@/registry/bases/radix/…), so
@@ -32,7 +32,7 @@ import { twMerge } from "tailwind-merge"
 import { SKIN_MAP, SKIN_ALLOWLIST } from "../src/emitter/skin.mjs"
 
 const SRC = ".upstream/shadcn-ui/apps/v4/registry/bases/radix"
-const OUT = "probes/out/resolved-ui"
+const OUT = "build/resolved-ui"
 
 // ---- class-string expansion -------------------------------------------------
 const CN_TOKEN = /(^|\s)(cn-[a-z0-9-]+)/g

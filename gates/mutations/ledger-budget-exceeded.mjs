@@ -2,7 +2,7 @@
 // only presence, so tracked numbers could grow forever while the gate stayed
 // green. This proves the ratchet actually bites.
 import { edit } from "./_util.mjs"
-const F = "probes/out/upstream-payload/exemptions.json"
+const F = "src/registry/upstream-snapshot/exemptions.json"
 export default {
   id: "ledger-budget-exceeded", gate: "ledger", files: [F],
   why: "the count of golden-exempt demos grows past its recorded budget",

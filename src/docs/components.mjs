@@ -34,8 +34,8 @@ let guidePreviewStatus = new Map()
 // FT8/Step 9: which languages have a generated file per RTL preview.
 // Written by tools/build-rtl.mjs. Used to render only the language
 // buttons whose target file exists, so the iframe never 404s on click.
-const rtlLangs = existsSync('docs/site/rtl-langs.json')
-  ? JSON.parse(readFileSync('docs/site/rtl-langs.json', 'utf8'))
+const rtlLangs = existsSync('build/rtl-langs.json')
+  ? JSON.parse(readFileSync('build/rtl-langs.json', 'utf8'))
   : {}
 // status → on-disk demo file (authored demos live in docs/demos/)
 const demoFile = (name, status) => {

@@ -1,6 +1,6 @@
 // A new exemption appearing in a source with nobody writing down why.
 import { edit } from "./_util.mjs"
-const F = "probes/out/upstream-payload/exemptions.json"
+const F = "src/registry/upstream-snapshot/exemptions.json"
 export default {
   id: "ledger-undocumented-exemption", gate: "ledger", files: [F],
   why: "a golden exemption exists in the source with no ledger entry",

@@ -50,7 +50,7 @@ jobs:
       - name: upload gate output on failure
         if: failure()
         uses: actions/upload-artifact@v4
-        with: { name: gates-out, path: gates/out, if-no-files-found: ignore }
+        with: { name: gates-out, path: build/gates, if-no-files-found: ignore }
 
   meta:
     runs-on: ubuntu-latest

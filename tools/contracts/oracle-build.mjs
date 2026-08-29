@@ -32,9 +32,9 @@ render();
       // resolved tree (tools/resolve-skins.mjs): cn-* already expanded —
       // the oracle and shadless compare against identical class semantics
       "@": resolve(".upstream/shadcn-ui/apps/v4"),
-      "@/registry/bases/radix/ui": resolve("probes/out/resolved-ui/ui"),
-      "@/registry/bases/radix/lib": resolve("probes/out/resolved-ui/lib"),
-      "@/registry/bases/radix/hooks": resolve("probes/out/resolved-ui/hooks"),
+      "@/registry/bases/radix/ui": resolve("build/resolved-ui/ui"),
+      "@/registry/bases/radix/lib": resolve("build/resolved-ui/lib"),
+      "@/registry/bases/radix/hooks": resolve("build/resolved-ui/hooks"),
       // route-group indirection + subtree cut: ui components import the
       // demo-app icon switcher @/app/(create)/components/icon-placeholder,
       // which pulls next/navigation + nuqs into the oracle bundle — stub it

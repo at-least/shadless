@@ -12,7 +12,7 @@ function loadIr(name) {
   return existsSync(path) ? JSON.parse(readFileSync(path, "utf8")) : null
 }
 
-const TIERS = JSON.parse(readFileSync("probes/out/tiers.json", "utf8"))
+const TIERS = JSON.parse(readFileSync("src/registry/tiers.json", "utf8"))
 const EXPECT_STATIC = Object.values(TIERS).filter((t) => t.tier === "static").length
 
 const pages = readdirSync("dist/components").filter((f) => f.endsWith(".html"))

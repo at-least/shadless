@@ -7,7 +7,7 @@
 // slices each <div data-slot="component-preview">'s demo DOM out of the
 // SSR payload (document order == mdx ComponentPreview order, names come
 // from the pinned mdx), normalizes runtime ids, and stores everything in
-// probes/out/upstream-payload/ as a COMMITTED artifact — CI compares
+// src/registry/upstream-snapshot/ as a COMMITTED artifact — CI compares
 // offline (deterministic, no network flake); refresh on re-pin.
 //
 //   node tools/upstream-snapshot.mjs            # all radix pages
@@ -21,7 +21,7 @@ import { join } from "node:path"
 import { fenceShadow } from "../src/docs/transforms.mjs"
 
 const RADIX_DIR = ".upstream/shadcn-ui/apps/v4/content/docs/components/radix"
-const OUT_DIR = "probes/out/upstream-payload"
+const OUT_DIR = "src/registry/upstream-snapshot"
 const BASE = "https://ui.shadcn.com/docs/components/radix"
 
 const norm = (html) => html

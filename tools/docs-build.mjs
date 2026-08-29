@@ -550,15 +550,10 @@ ${sidebarBackdrop}
 `
 
 // ---- build ---------------------------------------------------------------------
-// preserve build-rtl's manifest across the wipe: build-rtl writes
-// docs/site/rtl-langs.json, and a standalone docs-build run (without a
-// preceding build-rtl) would otherwise delete it and degrade the RTL
-// language selector to AR-only until the next full build
-let rtlLangsManifest = null
-try { rtlLangsManifest = readFileSync(join(OUT_DIR, 'rtl-langs.json'), 'utf8') } catch {}
+// build-rtl's language manifest lives in build/rtl-langs.json (outside
+// this output tree), so wiping docs/site never has to preserve it
 rmSync(OUT_DIR, { recursive: true, force: true })
 mkdirSync(OUT_DIR, { recursive: true })
-if (rtlLangsManifest !== null) writeFileSync(join(OUT_DIR, 'rtl-langs.json'), rtlLangsManifest)
 writeFileSync(join(OUT_DIR, 'site.css'), SITE_CSS)
 writeFileSync(join(OUT_DIR, 'site.js'), SITE_JS)
 // Client-side code highlighting: one self-contained IIFE (shiki core + the

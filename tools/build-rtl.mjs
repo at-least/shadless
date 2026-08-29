@@ -53,7 +53,7 @@ let emitted = 0
 const files = readdirSync(EXAMPLES).filter((f) => f.endsWith("-rtl.tsx")).sort()
 // FT8/Step 9: track which language variants exist per RTL preview so
 // the host page can emit language buttons that won't 404 on click.
-// Written to docs/site/rtl-langs.json — read by src/docs/components.mjs
+// Written to build/rtl-langs.json — read by src/docs/components.mjs
 // (via buildComponentMap()).
 const langManifest = {}
 for (const file of files) {
@@ -102,6 +102,6 @@ for (const file of files) {
 
 // Write the manifest to docs/site/ so the host page can read it via
 // fetch (avoids a server-side build dependency at mdx-compile time).
-mkdirSync("docs/site", { recursive: true })
-writeFileSync("docs/site/rtl-langs.json", JSON.stringify(langManifest, null, 2))
+mkdirSync("build", { recursive: true })
+writeFileSync("build/rtl-langs.json", JSON.stringify(langManifest, null, 2))
 console.log(`build-rtl: ${emitted} language variants emitted (excluding ar default) + manifest for ${Object.keys(langManifest).length} previews`)

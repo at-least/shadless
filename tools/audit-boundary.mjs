@@ -81,7 +81,7 @@ const PROGRAMMATIC_PATTERNS = [
   // docs/site — docs-build output
   { test: (p) => p.startsWith("docs/site/") && (p.endsWith(".html") || p.endsWith(".css") || p.endsWith(".js")),
     tool: "tools/docs-build.mjs", source: "apps/v4/content/docs/components/*/*.mdx (compiled via MDX)" },
-  { test: (p) => p === "docs/site/rtl-langs.json",
+  { test: (p) => p === "build/rtl-langs.json",
     tool: "tools/build-rtl.mjs", source: "examples/aria/*-rtl.tsx" },
   // catalog + reports
   { test: (p) => p === "docs/catalog.json",

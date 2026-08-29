@@ -58,7 +58,7 @@ function loadTargets() {
   // exist for the runtime to materialize dialog content. A -demo is
   // kernel iff its underlying component (the name without "-demo") is
   // tier=kernel in tiers.json.
-  const tiers = JSON.parse(readFileSync("probes/out/tiers.json", "utf8"))
+  const tiers = JSON.parse(readFileSync("src/registry/tiers.json", "utf8"))
   const isKernelDemo = (demoName) => {
     const m = /^(.+)-demo$/.exec(demoName); if (!m) return false
     return tiers[m[1]]?.tier === "kernel"
@@ -88,7 +88,7 @@ function loadTargets() {
 // (deferred) so the <body> stays byte-equal to the oracle render — that is
 // what --check and the golden hop compare. Kernel families need their glue
 // protocol (tools/example-fixture.mjs); static families need nothing.
-const TIERS_ALL = JSON.parse(readFileSync("probes/out/tiers.json", "utf8"))
+const TIERS_ALL = JSON.parse(readFileSync("src/registry/tiers.json", "utf8"))
 // by CONTENT: a field example with a checkbox in it needs the runtime as
 // much as checkbox-basic does
 // which trivial-js components have a behavior file (dist/js/<c>.js)

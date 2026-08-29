@@ -7,7 +7,7 @@
 //   node gates/upstream.mjs --to=shadcn@4.19.0            same tag: must be green (self-test)
 //   node gates/upstream.mjs --report-only                 re-classify the last run
 //
-// Steps, each recorded in gates/out/upstream-report.md:
+// Steps, each recorded in build/gates/upstream-report.md:
 //   1. checkout the tag in .upstream, re-record src/registry/pin.json
 //   2. gates/ledger.mjs --dissolve  — every auto-dissolve exemption is deleted;
 //      the rebuild has to re-earn each one with evidence
@@ -27,7 +27,7 @@ import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync, cpSync
 import { diffIr, loadIrFromDir, renderIrDiff } from "./ir-diff.mjs"
 
 const UP = ".upstream/shadcn-ui"
-const OUT = "gates/out"
+const OUT = "build/gates"
 const argv = process.argv.slice(2)
 const flag = (n, d = null) => { const eq = argv.find((a) => a.startsWith(`--${n}=`)); if (eq) return eq.slice(n.length + 3); return argv.includes(`--${n}`) ? true : d }
 const to = flag("to", null)

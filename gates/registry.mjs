@@ -138,14 +138,14 @@ export const NODES = [
     run: [["node", "tools/example-oracle.mjs"]],
     why: "upstream examples rendered by real React+chromium BECOME the demo pages — " +
          "1:1 with upstream by construction, not by hand-mirroring",
-    produces: ["docs/demos", "probes/out/example-oracle"],
+    produces: ["docs/demos", "build/example-oracle"],
   }),
   node({
     id: "example-fixture", kind: "build", tier: "full", needs: ["example-oracle"],
     run: [["node", "tools/example-fixture.mjs"]],
     why: "kernel-tier examples as INTERACTIVE fixtures harvested from the oracle; " +
          "the oracle alone emits static snapshots with dead buttons",
-    produces: ["probes/out/example-fixture"],
+    produces: ["build/example-fixture"],
   }),
   node({
     id: "demo-rtl", kind: "build", tier: "medium", needs: ["example-oracle"],
@@ -240,7 +240,7 @@ export const NODES = [
     run: [["node", "gates/oracle-css.mjs"]],
     why: "a stylesheet for the React oracle built from upstream's own globals/skin and the " +
          "resolved registry — reads nothing under src/, so style-parity is no longer circular",
-    produces: ["gates/out/oracle.css"],
+    produces: ["build/gates/oracle.css"],
   }),
   node({
     id: "style-parity", kind: "gate", tier: "full", needs: ["contracts", "oracle-css"],

@@ -8,11 +8,11 @@
 // cascade (0dd7391, 30 broken cells) and the skin marker rules
 // (cn-menu-translucent, five opaque menus) were both invisible to it.
 //
-// This builds gates/out/oracle.css from upstream's own inputs only:
+// This builds build/gates/oracle.css from upstream's own inputs only:
 //   apps/v4/app/globals.css          custom variants, @theme, :root/.dark tokens
 //   packages/shadcn/src/tailwind.css what @import "shadcn/tailwind.css" resolves to
 //   apps/v4/registry/styles/style-nova.css   the skin (.style-nova .cn-* rules)
-//   @source probes/out/resolved-ui   the resolved registry the oracle bundle
+//   @source build/resolved-ui   the resolved registry the oracle bundle
 //                                    renders (cn-* expanded at the source,
 //                                    exactly what the oracle DOM carries)
 // compiled with the same tailwindcss the product uses. Nothing under src/
@@ -22,7 +22,7 @@ import { execFileSync } from "node:child_process"
 import { resolve } from "node:path"
 
 const UP = ".upstream/shadcn-ui"
-const OUT_DIR = "gates/out"
+const OUT_DIR = "build/gates"
 const OUT = `${OUT_DIR}/oracle.css`
 mkdirSync(OUT_DIR, { recursive: true })
 
@@ -38,7 +38,7 @@ for (const line of app.split("\n")) {
   if (line.startsWith("@source ")) continue // the app's own style dirs; replaced below
   lines.push(line)
 }
-lines.push(`@source "${resolve("probes/out/resolved-ui")}";`)
+lines.push(`@source "${resolve("build/resolved-ui")}";`)
 lines.push(`@source "${resolve("tools/contracts/components")}";`) // usage trees carry example classes
 // the examples' own utilities (max-w-lg on an accordion demo, …): the demo
 // pages carry them inline, so the oracle stylesheet must define them

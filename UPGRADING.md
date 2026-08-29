@@ -13,7 +13,7 @@ intervention still applies, nothing for a person to do. Commit the result
 (source + regenerated `dist/` and `docs/` together — the `dist/` diff is the
 review).
 
-Exit 1 means `gates/out/upstream-report.md` exists and says exactly what is
+Exit 1 means `build/gates/upstream-report.md` exists and says exactly what is
 left. The nightly workflow (`.github/workflows/upstream.yml`) runs the same
 drill against the newest release and opens one PR carrying the report.
 
@@ -34,7 +34,7 @@ drill against the newest release and opens one PR carrying the report.
 Work it top-down:
 
 1. **UNEXPECTED failures** — ours. Fix the pipeline; `node gates/run.mjs --only=<gate>` reproduces one gate with exactly the builds it needs.
-2. **Task packets** (`gates/out/tasks/*.md`) — one per stale or orphaned manual unit. Each carries the upstream diff for its inputs, the current file, and the gates that must be green afterwards. This is the bounded LLM/human step: deterministic input, gate-verified output.
+2. **Task packets** (`build/gates/tasks/*.md`) — one per stale or orphaned manual unit. Each carries the upstream diff for its inputs, the current file, and the gates that must be green afterwards. This is the bounded LLM/human step: deterministic input, gate-verified output.
 3. **EXPECTED failures** — consequences of upstream changes, usually resolved by the packets above or by a legitimately new exemption. Record survivors: `node gates/ledger.mjs --record`.
 4. `make upstream-snapshot` (network) refreshes the ui.shadcn.com golden snapshot for the new release; hop 1 of the golden gate compares against it.
 5. `make` green → commit.

@@ -17,8 +17,7 @@ import { execFileSync } from "node:child_process"
 
 export const GENERATED = [
   "dist", "docs/site", "docs/catalog.json", "docs/demos", "docs/example-oracle.json",
-  "src/registry/ir", "probes/out/tiers.json", "probes/out/example-fixture",
-  "tools/contracts/out", "src/kernel/*.html",
+  "src/registry/ir", "tools/contracts/out", "src/kernel/*.html",
 ]
 
 const status = execFileSync("git", ["status", "--porcelain", "--untracked-files=all", "--", ...GENERATED], { encoding: "utf8" })

@@ -36,7 +36,7 @@ import { injectSiteSkin, THEME_PREPAINT_SCRIPT } from "../src/docs/theme-prepain
 const trivialScripts = (target, jsdir) => (target.trivial ?? []).map((c) => `<script src="${jsdir}${c}.js"></script>`).join("\n")
 
 const EXAMPLES = ".upstream/shadcn-ui/apps/v4/examples/radix"
-const TMP = "probes/out/example-fixture"
+const TMP = "build/example-fixture"
 const CHECK = process.argv.includes("--check")
 // glue file + how an instance is opened + where its content appears.
 //   portal   content mounts as new <body> children (harvested into a

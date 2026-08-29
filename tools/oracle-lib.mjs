@@ -32,7 +32,7 @@ import { createHash } from "node:crypto"
 //
 // Where the bundles live: a CACHE path, not the tracked tree. The bundles
 // are ~7 MB of React each and a pure function of their inputs; kept under
-// probes/out/ they were committed through reproducible's GENERATED list
+// build/ (then probes/out/) they were committed through reproducible's GENERATED list
 // (500 MB of a 670 MB checkout). node_modules/.cache is gitignored,
 // survives between runs, and is shared by every oracle consumer
 // (example-oracle, example-fixture, example-golden, contracts) — one build
@@ -60,7 +60,7 @@ function bundleCacheKey(name) {
 // alias into the resolved tree too.
 function aliases() {
   const SKINS = ["nova", "vega", "lyra", "maia", "mira", "luma", "sera", "rhea"]
-  const RESOLVED = resolve("probes/out/resolved-ui")
+  const RESOLVED = resolve("build/resolved-ui")
   const a = {
     "@": resolve(".upstream/shadcn-ui/apps/v4"),
     "@/registry/bases/radix/ui": `${RESOLVED}/ui`,
@@ -91,7 +91,7 @@ function aliases() {
 // *-rtl demos render inside DirectionProvider dir="rtl" (upstream's RTL
 // previews wrap the demo in it; radix reads direction from React context,
 // never from the DOM).
-export async function buildOracle(name, { tmp } = { tmp: "probes/out/example-oracle" }) {
+export async function buildOracle(name, { tmp } = { tmp: "build/example-oracle" }) {
   mkdirSync(tmp, { recursive: true })
   mkdirSync(CACHE_DIR, { recursive: true })
   const dir = /-rtl$/.test(name) ? "rtl" : "ltr"

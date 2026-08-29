@@ -20,7 +20,7 @@ const rtlVariants = allHtml.length - pages.length
 // hardcoded 49) + alert-demo.html (FT8/Step 1 emits this from
 // examples/radix/alert-demo.tsx).
 {
-  const TIERS = JSON.parse(readFileSync("probes/out/tiers.json", "utf8"))
+  const TIERS = JSON.parse(readFileSync("src/registry/tiers.json", "utf8"))
   const emitted = Object.values(TIERS)
     .filter((x) => ["static", "kernel", "trivial-js"].includes(x.tier)).length + 4 // field + carousel + menubar + navigation-menu
   if (pages.length !== emitted + 1) {

@@ -49,7 +49,7 @@ async function collectSourceIds() {
     for (const [slot, attrs] of Object.entries(def.ignoreAttrs ?? {}))
       for (const a of attrs) ids.set(`ignore-attrs:${name}:${slot}:${a}`, "contracts")
   }
-  const golden = JSON.parse(readFileSync("probes/out/upstream-payload/exemptions.json", "utf8"))
+  const golden = JSON.parse(readFileSync("src/registry/upstream-snapshot/exemptions.json", "utf8"))
   for (const rec of Object.values(golden.examples)) ids.set(`golden:${rec.reason}`, "golden")
   const css = (await import("../src/emitter/css.mjs")).DEAD_UTILITIES
   for (const t of css) ids.set(`dead-utility:${t}`, "emitter")
@@ -62,7 +62,7 @@ async function collectSourceIds() {
 // that reports it reads. Keep this the ONLY definition of each metric.
 async function collectBudgetValues() {
   const v = {}
-  const golden = JSON.parse(readFileSync("probes/out/upstream-payload/exemptions.json", "utf8"))
+  const golden = JSON.parse(readFileSync("src/registry/upstream-snapshot/exemptions.json", "utf8"))
   v["golden.exempt-demos"] = Object.keys(golden.examples).length
   const sweep = readFileSync("tools/interactivity-sweep.mjs", "utf8")
   const block = sweep.match(/const KNOWN_DEAD = new Set\(\[([\s\S]*?)\]\)/)
@@ -76,7 +76,7 @@ async function collectBudgetValues() {
   v["style-parity.dirty-cells"] = existsSync(bl)
     ? JSON.parse(readFileSync(bl, "utf8")).cells.length : -1
   // coverage.* budgets are enforced by gates/coverage.mjs --check (the count
-  // needs the IR, and a stale gates/out/coverage.json from a mutation run
+  // needs the IR, and a stale build/gates/coverage.json from a mutation run
   // must never feed the ledger); the ledger only validates the entry's shape
   return v
 }
@@ -184,7 +184,7 @@ async function record() {
 // an older upstream. Entries recorded at the current pin stay — a same-tag
 // drill (the self-test) must be a no-op here.
 //
-// The golden exemptions are ALSO a source file (probes/out/upstream-payload/
+// The golden exemptions are ALSO a source file (src/registry/upstream-snapshot/
 // exemptions.json, one row per demo): the demos whose reason dissolved are
 // pruned there too, otherwise the ledger and the source disagree and the
 // verify step fails for the wrong reason.
@@ -196,7 +196,7 @@ function dissolve() {
   for (const id of gone) delete ledger.entries[id]
   ledger.pin = pin
   save(ledger)
-  const goldenPath = "probes/out/upstream-payload/exemptions.json"
+  const goldenPath = "src/registry/upstream-snapshot/exemptions.json"
   const golden = JSON.parse(readFileSync(goldenPath, "utf8"))
   const goneReasons = new Set(gone.filter((id) => id.startsWith("golden:")).map((id) => id.slice(7)))
   let pruned = 0

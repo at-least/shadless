@@ -316,7 +316,7 @@ function main() {
   const files = readdirSync(IRDIR).filter((f) => f.endsWith(".json")).sort()
   const statics = files.map((f) => JSON.parse(readFileSync(join(IRDIR, f), "utf8")))
     .filter((ir) => ir.tier === "static")
-  const EXPECTED_STATIC = JSON.parse(readFileSync("probes/out/tiers.json", "utf8"))
+  const EXPECTED_STATIC = JSON.parse(readFileSync("src/registry/tiers.json", "utf8"))
   const wantStatic = Object.values(EXPECTED_STATIC).filter((t) => t.tier === "static").length
   let fail = false
   if (statics.length !== wantStatic) {

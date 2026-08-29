@@ -66,4 +66,4 @@ const by = t => Object.entries(out).filter(([, v]) => v.tier === t).map(([k]) =>
 for (const t of ["static", "kernel", "trivial-js", "medium", "logic", "external"])
   console.log(`${t} (${by(t).length}): ${by(t).join(", ")}`)
 mkdirSync("probes/out", { recursive: true })
-writeFileSync("probes/out/tiers.json", JSON.stringify(out, null, 2))
+writeFileSync("src/registry/tiers.json", JSON.stringify(out, null, 2))

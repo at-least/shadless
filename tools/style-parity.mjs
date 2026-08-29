@@ -138,13 +138,13 @@ for (const f of defs) {
     await page.goto(`file://${process.cwd()}/${dir}/oracle.html`)
     await page.waitForTimeout(400)
     if (def.open) { await eval(`(async (page) => { ${def.open} })(page)`); await page.waitForTimeout(400) }
-    // The oracle is styled by gates/out/oracle.css — built by
+    // The oracle is styled by build/gates/oracle.css — built by
     // gates/oracle-css.mjs from upstream's own globals/tailwind.css/skin and
     // the resolved registry source, reading NOTHING under src/. Styling the
     // oracle with our own dist/out.css (the previous shape) made this gate
     // blind to every css-emitter bug: same stylesheet on both sides, same
     // computed values, green. Upstream applies the skin under a root class.
-    await page.addStyleTag({ path: "gates/out/oracle.css" })
+    await page.addStyleTag({ path: "build/gates/oracle.css" })
     await page.evaluate(() => document.documentElement.classList.add("style-nova"))
     await freeze(page)
     const oracleSides = await collectMatrix()

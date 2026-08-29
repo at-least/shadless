@@ -7,7 +7,7 @@
 // markup styled by (a) the consumer build (core + that component's css)
 // and (b) the no-build shadless.full.css must compute the same resting
 // styles as the element React renders — the resolved inline class list —
-// styled by upstream's own stylesheet (gates/out/oracle.css). Neither
+// styled by upstream's own stylesheet (build/gates/oracle.css). Neither
 // reference side is touched by src/emitter, so an emitter bug cannot hide
 // on both sides at once.
 //
@@ -28,7 +28,7 @@ import { normalizeTag } from "../src/tags.mjs"
 import { twMerge } from "tailwind-merge"
 
 const ROOT = resolve(".")
-const SIM = "gates/out/path-parity"
+const SIM = "build/gates/path-parity"
 const BASELINE = "gates/path-parity-baseline.json"
 const RECORD = process.argv.includes("--record")
 
@@ -103,7 +103,7 @@ const stateConfigs = (cls) => {
 rmSync(SIM, { recursive: true, force: true })
 mkdirSync(`${SIM}/node_modules`, { recursive: true })
 symlinkSync(ROOT, `${SIM}/node_modules/shadless`, "dir")
-const oracleCss = readFileSync("gates/out/oracle.css", "utf8")
+const oracleCss = readFileSync("build/gates/oracle.css", "utf8")
 const fullCss = readFileSync("dist/shadless.full.css", "utf8")
 
 const browser = await chromium.launch()

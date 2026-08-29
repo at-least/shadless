@@ -20,12 +20,12 @@ mkdirSync(`${DIST}/components`, { recursive: true })
 // ---- tiers + names ----------------------------------------------------------
 // `field` is presentational (markup + cva, no JS) — emitted alongside
 // the static tier. The other gap components (menubar, navigation-menu,
-// combobox, sidebar) are tombstoned (recorded in probes/out/tiers.json).
+// combobox, sidebar) are tombstoned (recorded in src/registry/tiers.json).
 const TIERS = ["static", "kernel", "trivial-js"]
 const LOGIC_PRESENTATIONAL = new Set(["field"])
 // carousel is external-tier but has a clean vanilla embla port —
 // emitted alongside the other tiers. The remaining external components are
-// tombstoned (no vanilla upstream — see probes/out/tiers.json).
+// tombstoned (no vanilla upstream — see src/registry/tiers.json).
 const EXTERNAL_EMIT = new Set(["carousel"])
 // medium-tier (wireMenu/glue + custom glue) components now emitted —
 // both joined once their glue passed contract parity
@@ -38,7 +38,7 @@ const names = irAll.map((ir) => ir.name).sort()
 // expected count derives from tiers.json (single source): static+kernel+
 // trivial-js tiers + the two explicitly-emitted extras (field, carousel)
 {
-  const TIERS_COUNTED = JSON.parse(readFileSync("probes/out/tiers.json", "utf8"))
+  const TIERS_COUNTED = JSON.parse(readFileSync("src/registry/tiers.json", "utf8"))
   const expected = Object.values(TIERS_COUNTED)
     .filter((x) => TIERS.includes(x.tier)).length + LOGIC_PRESENTATIONAL.size + EXTERNAL_EMIT.size + MEDIUM_EMIT.size
   if (irAll.length !== expected)

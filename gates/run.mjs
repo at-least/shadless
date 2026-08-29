@@ -13,7 +13,7 @@
 //   node gates/run.mjs --only=path-parity     one gate + exactly what it needs
 //   node gates/run.mjs --gates-only --tier=full   assume artifacts are fresh
 //   node gates/run.mjs --builds-only --tier=full  artifacts only (meta runs gates itself)
-//   node gates/run.mjs --keep-going --tier=full   don't stop at the first red; write gates/out/run-report.json
+//   node gates/run.mjs --keep-going --tier=full   don't stop at the first red; write build/gates/run-report.json
 //   node gates/run.mjs --list                 the graph, no execution
 import { spawnSync } from "node:child_process"
 import { mkdirSync, writeFileSync } from "node:fs"
@@ -109,11 +109,11 @@ for (const n of selected) {
 }
 if (keepGoing) {
   const report = { failed: Object.fromEntries(failed), blocked, passed: timings.map(([id]) => id).filter((id) => !failed.has(id)) }
-  mkdirSync("gates/out", { recursive: true })
-  writeFileSync("gates/out/run-report.json", JSON.stringify(report, null, 2) + "\n")
+  mkdirSync("build/gates", { recursive: true })
+  writeFileSync("build/gates/run-report.json", JSON.stringify(report, null, 2) + "\n")
   if (failed.size) {
     console.error(`\nFAIL  gates (${failed.size} failed: ${[...failed.keys()].join(", ")}` +
-      (blocked.length ? `; ${blocked.length} blocked: ${blocked.join(", ")}` : "") + `)  — report: gates/out/run-report.json`)
+      (blocked.length ? `; ${blocked.length} blocked: ${blocked.join(", ")}` : "") + `)  — report: build/gates/run-report.json`)
     process.exit(1)
   }
 }

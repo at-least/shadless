@@ -1,19 +1,13 @@
 .upstream/
 node_modules/
-probes/out/example-golden/
-probes/out/example-oracle/
-probes/out/resolved-ui/
-gates/out/
-probes/out/example-fixture/contracts/
-# esbuild oracle bundles now live in node_modules/.cache/shadless (see
-# tools/oracle-lib.mjs CACHE_DIR); these patterns only keep leftovers from
-# older checkouts out of the tree.
-probes/out/example-fixture/bundle-*.js
-probes/out/example-fixture/.entry-*
-probes/out/example-fixture/.key-*
+# every cross-node intermediate: resolved registry, oracle render harnesses,
+# gate logs/reports/task packets, scratch sims. Deterministic paths (the
+# gate runner is multi-process and --only=<id> reads what earlier nodes
+# left here), never tracked. esbuild bundles go to node_modules/.cache.
+build/
+probes/scratch/
+# contracts: the ~7 MB oracle bundle goes to node_modules/.cache; oracle.html
+# is a render harness. shadless.html + result.json stay (review surface).
 tools/contracts/out/*/oracle.js
 tools/contracts/out/*/.oracle-entry.mjs
-# oracle render harnesses (div#root + script tag pointing into the cache);
-# the review surfaces (shadless.html, result.json, selftest-*) stay tracked
-probes/out/example-fixture/oracle-*.html
 tools/contracts/out/*/oracle.html

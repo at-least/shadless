@@ -12,7 +12,7 @@
 // tools/upstream-snapshot.mjs (SSR payload slice, committed artifact;
 // refresh on re-pin).
 //
-// Exemptions (probes/out/upstream-payload/exemptions.json) are explicit,
+// Exemptions (src/registry/upstream-snapshot/exemptions.json) are explicit,
 // each with a reason, and the gate fails if an exemption no longer applies
 // (stale exemption = drift in the exemption list itself).
 //
@@ -31,8 +31,8 @@ import { resolve, join } from "node:path"
 import { buildOracle, awaitOracle, norm, canonOf } from "./oracle-lib.mjs"
 
 const EXAMPLES = ".upstream/shadcn-ui/apps/v4/examples/radix"
-const SNAPSHOT_DIR = "probes/out/upstream-payload"
-const TMP = "probes/out/example-golden"
+const SNAPSHOT_DIR = "src/registry/upstream-snapshot"
+const TMP = "build/example-golden"
 const EXEMPTIONS = `${SNAPSHOT_DIR}/exemptions.json`
 
 const argv = process.argv.slice(2)

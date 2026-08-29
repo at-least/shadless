@@ -21,14 +21,14 @@
 // are recorded as "shallow", not covered. The count of UNCOVERED cells is
 // budgeted in gates/ledger.json.
 //
-//   node gates/coverage.mjs            summary + gates/out/coverage.json
+//   node gates/coverage.mjs            summary + build/gates/coverage.json
 //   node gates/coverage.mjs --cells    every uncovered cell
 //   node gates/coverage.mjs --check    the gate: UNCOVERED must not exceed the budget in
 //                                      gates/ledger.json, and a shrink must be recorded
 //   node gates/coverage.mjs --record   record the current count as the budget
 import { readdirSync, readFileSync, existsSync, writeFileSync, mkdirSync } from "node:fs"
 
-const tiers = JSON.parse(readFileSync("probes/out/tiers.json", "utf8"))
+const tiers = JSON.parse(readFileSync("src/registry/tiers.json", "utf8"))
 const ir = (n) => JSON.parse(readFileSync(`src/registry/ir/${n}.json`, "utf8"))
 const components = Object.entries(tiers).filter(([, t]) => t.tier !== "external" && t.tier !== "logic").map(([n]) => n)
   .filter((n) => existsSync(`src/registry/ir/${n}.json`)).sort()
@@ -88,8 +88,8 @@ const byDim = (key) => {
   for (const x of uncovered) m[x[key]] = (m[x[key]] ?? 0) + 1
   return Object.entries(m).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k}=${v}`).join("  ")
 }
-mkdirSync("gates/out", { recursive: true })
-writeFileSync("gates/out/coverage.json", JSON.stringify({ total: cells.length, covered: covered.length, shallow: shallowOnly.length, uncovered: uncovered.length, cells }, null, 1))
+mkdirSync("build/gates", { recursive: true })
+writeFileSync("build/gates/coverage.json", JSON.stringify({ total: cells.length, covered: covered.length, shallow: shallowOnly.length, uncovered: uncovered.length, cells }, null, 1))
 
 if (process.argv.includes("--cells")) for (const x of uncovered) console.log(`${x.component} ${x.path} ${x.theme} ${x.dir} ${x.state}`)
 console.log(`coverage: ${cells.length} cells over ${components.length} components — ` +
@@ -98,7 +98,7 @@ console.log(`  uncovered by path:  ${byDim("path")}`)
 console.log(`  uncovered by theme: ${byDim("theme")}`)
 console.log(`  uncovered by dir:   ${byDim("dir")}`)
 console.log(`  uncovered by state: ${byDim("state")}`)
-console.log(`  detail: gates/out/coverage.json  (--cells lists them)`)
+console.log(`  detail: build/gates/coverage.json  (--cells lists them)`)
 
 const LEDGER = "gates/ledger.json"
 const KEY = "coverage.uncovered-cells"

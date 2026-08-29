@@ -104,13 +104,13 @@ serve:
 	cd docs/site && $(PYTHON) -m http.server $(PORT)
 
 clean:
-	rm -rf dist gates/out node_modules/.cache/shadless
-	rm -rf docs/catalog.json docs/site/rtl-langs.json
+	rm -rf dist build node_modules/.cache/shadless
+	rm -rf docs/catalog.json
 	rm -f  docs/site/site.css docs/site/site.js docs/site/highlight.js docs/site/out.css docs/site/fonts.css
 	rm -rf docs/site/assets docs/site/components docs/site/js
 	rm -f  docs/site/shadless.js
 	rm -f  docs/site/*.html
-	@echo "cleaned: dist/ + docs/site/ generated artifacts"
+	@echo "cleaned: dist/ + build/ + docs/site/ generated artifacts"
 
 help:
 	@sed -n '2,16p' Makefile | sed 's/^# \{0,1\}//'

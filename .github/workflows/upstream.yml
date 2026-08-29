@@ -59,8 +59,8 @@ jobs:
         run: |
           { echo "Automated re-pin drill: \`${{ steps.target.outputs.current }}\` → \`${{ steps.target.outputs.tag }}\`"; echo;
             echo "Drill result: **${{ steps.drill.outcome == 'success' && 'GREEN — mergeable with zero manual work' || 'needs work — see report' }}**"; echo;
-            cat gates/out/upstream-report.md 2>/dev/null || echo "(no report — the drill crashed before classification; see the job log)";
-            if [ -d gates/out/tasks ]; then echo; echo "## Task packets"; for f in gates/out/tasks/*.md; do echo; echo "<details><summary>$(basename "$f")</summary>"; echo; cat "$f"; echo; echo "</details>"; done; fi
+            cat build/gates/upstream-report.md 2>/dev/null || echo "(no report — the drill crashed before classification; see the job log)";
+            if [ -d build/gates/tasks ]; then echo; echo "## Task packets"; for f in build/gates/tasks/*.md; do echo; echo "<details><summary>$(basename "$f")</summary>"; echo; cat "$f"; echo; echo "</details>"; done; fi
           } > /tmp/pr-body.md
       - uses: peter-evans/create-pull-request@v6
         if: steps.target.outputs.run == 'true'

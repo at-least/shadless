@@ -19,8 +19,8 @@ for f in $STAGED; do
       say "✗ REJECT — patches/ is retired. Express the change as a rule in src/, an"
       say "  authored unit under src/kernel or tools/, or a source patch in overlays/upstream/."
       exit 1 ;;
-    gates/out/*)
-      say "✗ REJECT — gates/out/ is scratch output (gitignored)"; exit 1 ;;
+    build/*)
+      say "✗ REJECT — build/ is intermediate output (gitignored)"; exit 1 ;;
   esac
 done
 

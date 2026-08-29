@@ -23,7 +23,7 @@ import { readFileSync, readdirSync } from "node:fs"
 import { resolve } from "node:path"
 
 const SITE = "docs/site/components"
-const STATIC_FAMILIES = Object.entries(JSON.parse(readFileSync("probes/out/tiers.json", "utf8"))).filter(([, t]) => t.tier === "static").map(([c]) => c)
+const STATIC_FAMILIES = Object.entries(JSON.parse(readFileSync("src/registry/tiers.json", "utf8"))).filter(([, t]) => t.tier === "static").map(([c]) => c)
 const CANDIDATE = /data-slot="[^"]*-trigger"|aria-expanded=|role="(switch|checkbox|tab)"|data-slot="(carousel-next|carousel-prev)"/
 const HOVER_FAMILIES = new Set(["tooltip", "hover-card"])
 

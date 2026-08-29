@@ -4,7 +4,7 @@
 //
 // The oracle-rendered demo pages carry React's exact DOM (golden hop 2 proves
 // it) with inline utilities plus our slot rules. Load each page twice — once
-// as shipped (../out.css), once with gates/out/oracle.css and the .style-nova
+// as shipped (../out.css), once with build/gates/oracle.css and the .style-nova
 // root — and compare getComputedStyle over every [data-slot] element in
 // light/dark x ltr/rtl. Same DOM on both sides, so every difference is the
 // emitted CSS: skin markers, slot rules leaking into inline-styled pages,
@@ -31,7 +31,7 @@ const PROPS = [
 ]
 const MATRIX = [["light", "ltr"], ["dark", "ltr"], ["light", "rtl"], ["dark", "rtl"]]
 const owned = JSON.parse(readFileSync("docs/example-oracle.json", "utf8")).filter((t) => t.out.startsWith("docs/demos/"))
-const oracleCss = readFileSync("gates/out/oracle.css", "utf8")
+const oracleCss = readFileSync("build/gates/oracle.css", "utf8")
 const outCss = readFileSync("dist/out.css", "utf8")
 // harness shell pinned on both sides: our demo globals give <body> a
 // padding and the foreground colour (docs preview conventions); upstream's

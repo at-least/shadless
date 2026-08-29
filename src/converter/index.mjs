@@ -15,12 +15,12 @@ import { NAT, externalMemberTag, normalizeTag } from "../tags.mjs"
 // expanded to nova-skin utilities — upstream generation parity. All
 // downstream consumers (IR, contracts oracle, example oracle) read the
 // RESOLVED tree so shipped markup never carries cn-* names.
-const UI = "probes/out/resolved-ui/ui"
+const UI = "build/resolved-ui/ui"
 const OUT = "src/registry/ir"
 const PIN_FILE = "src/registry/pin.json"
-const TIERS_FILE = "probes/out/tiers.json"
+const TIERS_FILE = "src/registry/tiers.json"
 
-// tier decision tables [measured] from probes/h3,h5 (probes/out/tiers.json)
+// tier decision tables [measured] from probes/h3,h5 (src/registry/tiers.json)
 export const KERNEL = new Set(["alert-dialog", "context-menu", "dialog", "dropdown-menu",
   "hover-card", "popover", "select", "slider", "scroll-area", "sheet", "tabs", "tooltip"])
 export const TRIVIAL = new Set(["accordion", "aspect-ratio", "avatar", "checkbox",

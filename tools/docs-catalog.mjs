@@ -182,7 +182,7 @@ for (const p of uniquePreviews) {
   // path: oracle's static DOM has no Portal mount target, so opening
   // popups would fail. The fixture's <template id="d1-portal"> is the
   // mount target the radix kernel runtime needs.
-  const tiers = JSON.parse(readFileSync("probes/out/tiers.json", "utf8"))
+  const tiers = JSON.parse(readFileSync("src/registry/tiers.json", "utf8"))
   // A -demo is kernel iff the underlying component is — strip "-demo"
   // suffix to look up tier (tiers.json keys are components).
   const isKernel = (name) => {

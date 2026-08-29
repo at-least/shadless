@@ -26,7 +26,7 @@ import { readFileSync, writeFileSync, mkdirSync, rmSync, symlinkSync, readdirSyn
 import { resolve } from "node:path"
 
 const ROOT = resolve(".")
-const SIM = "probes/out/consumer-sim"
+const SIM = "build/consumer-sim"
 const IMPORTED = ["button", "alert"]
 const NOT_IMPORTED = ["dialog", "accordion", "select", "tooltip", "carousel"]
 
