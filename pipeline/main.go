@@ -13,8 +13,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"os/exec"
-	"sort"
+	"runtime"
+	"strconv"
 	"time"
 )
 
@@ -121,62 +121,32 @@ func main() {
 		}
 
 	case "run":
-		k := NewKeyer(root, g)
-		rec := loadStamps(root)
-		ran, skipped, violations := 0, 0, 0
+		jobs := runtime.NumCPU()
+		if v := os.Getenv("PIPELINE_PARALLEL"); v != "" {
+			if n, err := strconv.Atoi(v); err == nil && n > 0 {
+				jobs = n
+			}
+		}
+		r := &Runner{
+			root: root, graph: g, jobs: jobs, force: force,
+			continueOnFail: os.Getenv("PIPELINE_FAILURES") == "continue",
+			stamps:         loadStamps(root),
+		}
 		start := time.Now()
-		for _, n := range plan {
-			key, skippable, err := k.Key(n.ID)
-			die(err)
-			if skippable && rec[n.ID] == key && !force {
-				skipped++
-				continue
-			}
-			fmt.Printf("→ %s\n", n.ID)
-			before, err := inputUniverse(root, g)
-			die(err)
-			for _, argv := range n.Run {
-				c := exec.Command(argv[0], argv[1:]...)
-				c.Dir, c.Stdout, c.Stderr = root, os.Stdout, os.Stderr
-				if err := c.Run(); err != nil {
-					// leave the stamp untouched: a failed node stays stale
-					delete(rec, n.ID)
-					_ = saveStamps(root, rec)
-					fmt.Fprintf(os.Stderr, "\n✗ %s failed: %v\n", n.ID, err)
-					os.Exit(1)
-				}
-			}
-			ran++
-			if after, err := inputUniverse(root, g); err == nil {
-				if vs, err := undeclaredWrites(root, g, n, before, after); err == nil {
-					reportViolations(n.ID, vs)
-					violations += len(vs)
-				}
-			}
-			if skippable {
-				// recompute: the node's own run may have changed files that
-				// feed its key (a build whose output is also its input)
-				k2 := NewKeyer(root, g)
-				if after, ok, err := k2.Key(n.ID); err == nil && ok {
-					if after != key {
-						fmt.Fprintf(os.Stderr, "  note: %s changed its own inputs (key moved during the run)\n", n.ID)
-					}
-					rec[n.ID] = after
-				}
-				die(saveStamps(root, rec))
-			}
+		ran, skipped, failed, violations := r.Run(plan)
+		fmt.Printf("ran %d, skipped %d in %.1fs (-j%d)\n", ran, skipped, time.Since(start).Seconds(), jobs)
+		if jobs > 1 && ran > 0 {
+			fmt.Println("note: the undeclared-write check only runs at -j1 (PIPELINE_PARALLEL=1)")
 		}
-		ids := make([]string, 0, len(rec))
-		for id := range rec {
-			ids = append(ids, id)
-		}
-		sort.Strings(ids)
-		fmt.Printf("ran %d, skipped %d in %.1fs\n", ran, skipped, time.Since(start).Seconds())
 		if violations > 0 {
 			fmt.Fprintf(os.Stderr, "\n%d undeclared write(s): a node is driving the graph's freshness "+
 				"through a file it does not admit to producing. Fix `produces`, or stop writing there.\n", violations)
 			os.Exit(1)
 		}
+		if failed > 0 {
+			os.Exit(1)
+		}
+
 	default:
 		fmt.Fprintln(os.Stderr, "unknown command:", cmd)
 		os.Exit(2)

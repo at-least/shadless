@@ -10,10 +10,19 @@ dependency's key is folded into its dependents', "something upstream changed"
 propagates by construction — there is no second mechanism, and no special case
 for the shadcn pin (it is just a file that some node declares as an input).
 
-    pipeline plan   <tier|node…>   the closure, topologically sorted
-    pipeline status <tier|node…>   fresh / STALE / NEVER-FRESH per node
-    pipeline run    <tier|node…>   run the stale ones, stamp on success
-    pipeline adopt  <tier|node…>   record current keys WITHOUT running
+    pipeline plan   <tier|node…>          the closure, topologically sorted
+    pipeline status <tier|node…>          fresh / STALE / NEVER-FRESH per node
+    pipeline run    [--force] <tier|node…>  run the stale ones, stamp on success
+    pipeline adopt  <tier|node…>          record current keys WITHOUT running
+
+    PIPELINE_PARALLEL=<n>       concurrency (default: NumCPU)
+    PIPELINE_FAILURES=continue  keep going past a failed node
+    PIPELINE_VERBOSE=1          print each node's output even when it passes
+
+Independent nodes run concurrently; a node is dispatched once everything it
+`needs` has finished, and its key is computed at that moment — the key folds in
+its dependencies' keys, which are only final once they have run. Each node's
+output is buffered and printed as one block, so parallel logs stay readable.
 
 `adopt` asserts the tree already is what the pipeline would produce. It is
 only valid immediately after a green full run; it exists to migrate onto an
@@ -47,10 +56,21 @@ Reconciled so far:
 `produces` — narrowed to the files some node declares as an input, since a
 write nobody reads cannot affect freshness. wireit is structurally blind to
 this: it manages declared outputs and cannot see the others. No violation has
-been found yet; the check is the guarantee, not a fix for a known bug.
+been found yet; the check is the guarantee, not a fix for a known bug. It
+compares the input universe before and after a node runs, which only means
+anything when nothing else is writing, so it is enforced at `-j1` and skipped
+above it with a note.
 
-Still missing before it can replace wireit: parallel execution and output
-caching across machines (wireit has local + GitHub Actions caching).
+Measured: forcing the medium tier (7 nodes) takes 4.7s at -j1 and 2.4s at -j8,
+tree byte-identical afterwards. A warm `run full` is 0.8s — one node
+(`reproducible`) and 40 skipped.
+
+Still missing before it can replace wireit: output caching across machines
+(wireit has local + GitHub Actions caching), and sub-node granularity — the
+point of the exercise. `contracts` is one node running 29 components serially
+(46% of the full tier) and already spawns a child process per component; each
+should be its own node with its own key, so changing one contract def re-runs
+one component.
 
 `graph.json` is generated from `gates/registry.mjs`, which stays the single
 source of truth until the reconciliation is finished.
