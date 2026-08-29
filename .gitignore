@@ -5,3 +5,11 @@ probes/out/example-oracle/
 probes/out/resolved-ui/
 gates/out/
 probes/out/example-fixture/contracts/
+# esbuild oracle bundles: pure caches (tools/oracle-lib.mjs keys them by
+# content hash; tools/contracts/oracle-build.mjs rebuilds every run).
+# 500 MB of React bundles that `npm ci` + esbuild regenerate in seconds.
+probes/out/example-fixture/bundle-*.js
+probes/out/example-fixture/.entry-*
+probes/out/example-fixture/.key-*
+tools/contracts/out/*/oracle.js
+tools/contracts/out/*/.oracle-entry.mjs
