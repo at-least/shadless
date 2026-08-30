@@ -34,7 +34,13 @@ if (!PINNED_BASE) {
 }
 const DOCS_DIR = `.upstream/shadcn-ui/apps/v4/content/docs/components/${PINNED_BASE}`
 const OUT_DIR = "src/registry/upstream-snapshot"
-const BASE = `https://ui.shadcn.com/docs/components/${PINNED_BASE}`
+// The ORIGIN is overridable; the path is not. ui.shadcn.com serves whatever is
+// deployed today, while .upstream sits at the pinned tag — so a snapshot taken
+// from the live site records a version nothing in this repo names. Point this
+// at a locally built copy of the pinned checkout and that mismatch cannot
+// happen: `dagger call upstream-snapshot` does exactly that.
+const ORIGIN = process.env.SHADLESS_SNAPSHOT_ORIGIN || "https://ui.shadcn.com"
+const BASE = `${ORIGIN}/docs/components/${PINNED_BASE}`
 
 const norm = (html) => html
   .replace(/radix-:r[a-z0-9]*:?/g, "radix-<auto>")

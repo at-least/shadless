@@ -1,0 +1,126 @@
+package main
+
+// Upstream's own docs site, built from the pinned checkout and served.
+//
+// The golden hop (hop 1) compares this repo's React render against the DOM
+// ui.shadcn.com actually ships. That comparison had an unpinned side: the live
+// site serves whatever is deployed today, while .upstream sits at the tag
+// src/registry/pin.json names. The snapshot is committed, so the gate is
+// stable — but nothing recorded which upstream version it was crawled at, so a
+// re-pin without a re-crawl silently compares pages built from one release
+// against DOM captured from another, and every cell looks like a regression.
+//
+// Building upstream's app here removes the mismatch instead of detecting it.
+// The site comes from the same commit the pin names, by construction.
+//
+// It also makes the snapshot reproducible by anyone rather than by whoever last
+// had network and remembered to run `make upstream-snapshot`, which is what
+// lets it become a graph node — and that closes one of the four reasons the
+// re-pin drill can never go green (the golden snapshot being refreshed AFTER
+// the drill compares against it).
+//
+// Nothing here names a version. node comes from the image, pnpm from
+// upstream's own `packageManager` field, every package from its lockfile, and
+// NEXT_PUBLIC_APP_URL from its own .env.example.
+
+import (
+	"context"
+	"fmt"
+	"strings"
+
+	"dagger/shadless/internal/dagger"
+)
+
+const upstreamPort = 4000
+
+// packageManagerPin reads upstream's own declaration of which pnpm to use.
+func packageManagerPin(ctx context.Context, source *dagger.Directory) (string, error) {
+	pkg, err := source.File(".upstream/shadcn-ui/package.json").Contents(ctx)
+	if err != nil {
+		return "", fmt.Errorf("reading upstream package.json: %w", err)
+	}
+	for _, line := range strings.Split(pkg, "\n") {
+		if !strings.Contains(line, `"packageManager"`) {
+			continue
+		}
+		return strings.Trim(strings.TrimSpace(strings.SplitN(line, ":", 2)[1]), `",`), nil
+	}
+	return "", fmt.Errorf(".upstream/shadcn-ui/package.json has no packageManager field to read pnpm's version from")
+}
+
+// upstreamBuilt installs and builds upstream's docs app.
+//
+// .git is filtered out: it is a third of the checkout and nothing in the build
+// reads it, so including it would put every upstream commit into this layer's
+// cache key.
+func (m *Shadless) upstreamBuilt(ctx context.Context, source *dagger.Directory) (*dagger.Container, error) {
+	pm, err := packageManagerPin(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	return dag.Container().
+		From("node:22-bookworm").
+		WithExec([]string{"npm", "install", "-g", "corepack@latest"}).
+		WithExec([]string{"corepack", "enable"}).
+		// registry:build ends in `bun run ./scripts/build-registry.mts`.
+		// build-registry.mts uses no bun API — every import is a node builtin
+		// or an npm package — and upstream's own root devDependencies carry
+		// tsx (pinned to 4.20.3 by its lockfile), which four other .mts
+		// scripts in the same package.json use. Replacing bun with tsx is the
+		// next step; until it is verified against this known-good path, bun
+		// stays, and it is the one thing here with no version to read.
+		WithExec([]string{"npm", "install", "-g", "bun"}).
+		WithDirectory("/u", source.Directory(".upstream/shadcn-ui").Filter(
+			dagger.DirectoryFilterOpts{Exclude: []string{".git/**"}})).
+		WithWorkdir("/u").
+		WithExec([]string{"corepack", "use", pm}, dagger.ContainerWithExecOpts{Expect: dagger.ReturnTypeAny}).
+		WithExec([]string{"pnpm", "install", "--frozen-lockfile"}).
+		WithWorkdir("/u/apps/v4").
+		WithEnvVariable("NEXT_TELEMETRY_DISABLED", "1").
+		// the app reads NEXT_PUBLIC_APP_URL in twelve places and throws
+		// `TypeError: Invalid URL` during page-data collection without it;
+		// .env.example is upstream's own answer for what it should be
+		WithExec([]string{"cp", ".env.example", ".env"}).
+		WithExec([]string{"pnpm", "registry:build"}).
+		WithExec([]string{"pnpm", "exec", "next", "build"}), nil
+}
+
+// UpstreamSite serves the built app. Bind it and crawl it.
+func (m *Shadless) UpstreamSite(ctx context.Context, source *dagger.Directory) (*dagger.Service, error) {
+	c, err := m.upstreamBuilt(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	return c.
+		WithExposedPort(upstreamPort).
+		AsService(dagger.ContainerAsServiceOpts{
+			Args: []string{"pnpm", "exec", "next", "start", "--port", fmt.Sprint(upstreamPort)},
+		}), nil
+}
+
+// UpstreamSnapshot crawls the pinned site and returns the golden snapshot.
+//
+// The crawler's ORIGIN is the only thing that changes; which base it reads and
+// which pages it walks still come from src/registry/pin.json and the pinned
+// checkout's own mdx, so this cannot drift from what the rest of the pipeline
+// targets.
+func (m *Shadless) UpstreamSnapshot(ctx context.Context, source *dagger.Directory) (*dagger.Directory, error) {
+	site, err := m.UpstreamSite(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	c, err := m.deps(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	return c.
+		WithServiceBinding("site", site).
+		WithEnvVariable("SHADLESS_SNAPSHOT_ORIGIN", fmt.Sprintf("http://site:%d", upstreamPort)).
+		WithFile("/w/tools/upstream-snapshot.mjs", source.File("tools/upstream-snapshot.mjs")).
+		WithDirectory("/w/src/docs", source.Directory("src/docs")).
+		WithFile("/w/src/registry/pin.json", source.File("src/registry/pin.json")).
+		WithDirectory("/w/.upstream/shadcn-ui/apps/v4/content/docs",
+			source.Directory(".upstream/shadcn-ui/apps/v4/content/docs")).
+		WithExec([]string{"node", "tools/upstream-snapshot.mjs"}).
+		Directory("/w/src/registry/upstream-snapshot"), nil
+}
