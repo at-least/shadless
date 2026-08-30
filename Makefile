@@ -121,8 +121,8 @@ hooks: $(PIPELINE)
 hooks-uninstall: $(PIPELINE)
 	./$(PIPELINE) hooks --uninstall
 
-audit-boundary:
-	$(NODE) tools/audit-boundary.mjs
+audit-boundary: $(PIPELINE)
+	./$(PIPELINE) audit-boundary
 
 # Slot-level semantic diff between two IR sets (the re-pin review surface).
 ir-diff: $(PIPELINE)
