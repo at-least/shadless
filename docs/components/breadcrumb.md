@@ -10,6 +10,132 @@ Displays the path to the current resource using a hierarchy of links.
 <iframe class="demo" src="/demos/breadcrumb-demo.html" title="breadcrumb-demo" data-status="authored" loading="lazy"></iframe>
 <p class="demo-langs">Open the demo page</p>
 
+:::: details Source
+
+::: code-group
+```text [breadcrumb-demo.html]
+<nav aria-label="breadcrumb" data-slot="breadcrumb" class=""><ol data-slot="breadcrumb-list" class="text-muted-foreground gap-1.5 text-sm flex flex-wrap items-center wrap-break-word"><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><a href="#" data-slot="breadcrumb-link" class="hover:text-foreground transition-colors">Home</a></li><li data-slot="breadcrumb-separator" role="presentation" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><button data-slot="dropdown-menu-trigger" data-variant="ghost" data-size="icon-sm" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg" type="button" id="m0-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-radixuigo-menu-trigger="m0"><span data-slot="breadcrumb-ellipsis" role="presentation" class="size-5 [&amp;&gt;svg]:size-4 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg><span class="sr-only">More</span></span><span class="sr-only">Toggle menu</span></button></li><li data-slot="breadcrumb-separator" role="presentation" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><a href="#" data-slot="breadcrumb-link" class="hover:text-foreground transition-colors">Components</a></li><li data-slot="breadcrumb-separator" role="presentation" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><span data-slot="breadcrumb-page" role="link" aria-disabled="true" aria-current="page" class="text-foreground font-normal">Breadcrumb</span></li></ol></nav>
+<template id="m0-tpl">
+<div data-side="bottom" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="ltr" id="m0" aria-labelledby="m0-trigger" data-slot="dropdown-menu-content" class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 max-h-(--radix-dropdown-menu-content-available-height) w-(--radix-dropdown-menu-trigger-width) origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-dropdown-menu-content-transform-origin: var(--radix-popper-transform-origin); --radix-dropdown-menu-content-available-width: var(--radix-popper-available-width); --radix-dropdown-menu-content-available-height: var(--radix-popper-available-height); --radix-dropdown-menu-trigger-width: var(--radix-popper-anchor-width); --radix-dropdown-menu-trigger-height: var(--radix-popper-anchor-height); pointer-events: auto;"><div role="group" data-slot="dropdown-menu-group"><div role="menuitem" data-slot="dropdown-menu-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Documentation</div><div role="menuitem" data-slot="dropdown-menu-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Themes</div><div role="menuitem" data-slot="dropdown-menu-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">GitHub</div></div></div>
+</template>
+```
+
+```js [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/dropdown-menu.js
+// generated: shadless menu behavior (wireMenu) — dropdown-menu & context-menu
+// Document-level: wireMenu owns every trigger on the page through its
+// data-radixuigo-* protocol, so the behavior installs ONCE per page and
+// ignores the root it is initialised with (a later shadless.init(subtree)
+// finds the listeners already there).
+(function () {
+  if (shadless.__menuWired && shadless.__menuWired["menu"]) return
+  shadless.__menuWired = shadless.__menuWired || {}
+  shadless.__menuWired["menu"] = true
+  shadless.register("dropdown-menu", { init: function (root) {
+    if (shadless.__menuWired.installed_menu) { if (shadless.__menuWired.fileTriggers) shadless.__menuWired.fileTriggers(root); return }
+    shadless.__menuWired.installed_menu = true
+    // shadless:open / shadless:close: the kernel has no open hook, so every
+    // path into it is followed by sync(), which diffs the ROOT layer's
+    // trigger (sub menus do not emit) and dispatches the edges
+    var openTrigger = null;
+    var sync = function () {
+      var l = handles.rootLayer();
+      var t = l ? l.trigger : null;
+      if (t === openTrigger) return;
+      var prev = openTrigger;
+      openTrigger = t;
+      if (prev) shadless.h.emit(prev, "close", prev.hasAttribute("data-radixuigo-context-trigger") ? "context-menu" : "dropdown-menu");
+      if (t) shadless.h.emit(t, "open", t.hasAttribute("data-radixuigo-context-trigger") ? "context-menu" : "dropdown-menu");
+    };
+    var handles = RadixKernel.wireMenu({
+      // radix keeps the trigger out of the background aria-hidden set and locks
+      // scroll while a root menu is open — kernel wireMenu does neither
+      isPortalMarker: function (el) {
+        return el.hasAttribute("data-radixuigo-menu-trigger")
+          || el.hasAttribute("data-radixuigo-context-trigger");
+      },
+      onAllClosed: function () {
+        document.body.removeAttribute("data-scroll-locked");
+        document.body.style.removeProperty("pointer-events");
+        sync();
+      },
+      mountLayer: function (id) {
+        var tpl = document.getElementById(id + "-tpl");
+        if (!tpl) return null;
+        var content = tpl.content.firstElementChild.cloneNode(true);
+        var wrapper = document.createElement("div");
+        wrapper.setAttribute("data-radix-popper-content-wrapper", "");
+        wrapper.appendChild(content);
+        document.body.appendChild(wrapper);
+        document.body.setAttribute("data-scroll-locked", "1");
+        document.body.style.setProperty("pointer-events", "none");
+        // modal body lock inherits down — re-enable hit-testing in the layer
+        // (radix sets pointer-events:auto on content while open)
+        content.style.setProperty("pointer-events", "auto");
+        return {
+          id: id,
+          wrapper: wrapper,
+          content: content,
+          trigger: document.getElementById(id + "-trigger"),
+        };
+      },
+    });
+    document.addEventListener("click", function (e) {
+      handles.onDocumentClick(e.target, function () { e.preventDefault(); });
+      sync();
+    });
+    // programmatic handles, one per trigger (found by the kernel's protocol
+    // attributes; a later shadless.init(root) files any new ones)
+    var noop = function () {}
+    var fileTriggers = function (root) {
+      Array.prototype.forEach.call((root || document).querySelectorAll("[data-radixuigo-menu-trigger], [data-radixuigo-context-trigger]"), function (t) {
+        if (shadless.instances.has(t)) return
+        var isOpen = function () { var l = handles.rootLayer(); return !!l && l.trigger === t }
+        var openIt = function () {
+          if (isOpen()) return
+          if (t.hasAttribute("data-radixuigo-context-trigger")) {
+            var r = t.getBoundingClientRect()
+            handles.onContextmenu(t, r.left + r.width / 2, r.top + r.height / 2, noop)
+          } else handles.onDocumentClick(t, noop)
+          sync()
+        }
+        shadless.instances.set(t, { component: "dropdown-menu",
+          open: openIt,
+          close: function () { if (isOpen()) { handles.closeAll(); sync() } },
+          toggle: function () { if (isOpen()) { handles.closeAll(); sync() } else openIt() },
+          isOpen: isOpen,
+        })
+      })
+    }
+    fileTriggers(document)
+    shadless.__menuWired.fileTriggers = fileTriggers
+    // radix opens a sub menu when the pointer moves onto its trigger; the
+    // kernel only opens it on click / ArrowRight (onDocumentClick has the sub
+    // path) — route pointer entry through the same path. openMenuLayer is
+    // idempotent for an already-open layer.
+    document.addEventListener("pointerover", function (e) {
+      if (e.pointerType && e.pointerType !== "mouse") return;
+      var sub = e.target.closest && e.target.closest("[data-radixuigo-menu-subtrigger]");
+      if (sub && sub.getAttribute("data-state") !== "open") handles.onDocumentClick(sub, function () {});
+    });
+    document.addEventListener("contextmenu", function (e) {
+      handles.onContextmenu(e.target, e.clientX, e.clientY, function () { e.preventDefault(); });
+      sync();
+    });
+    document.addEventListener("keydown", function (e) {
+      handles.onKeydown(e.target, e.key, function () { e.preventDefault(); });
+      sync();
+    });
+  } })
+})()
+```
+:::
+
+::::
+
+
 ## Installation
 
 
@@ -66,12 +192,26 @@ A basic breadcrumb with a home link and a components link.
 <iframe class="demo" src="/demos/breadcrumb-basic.html" title="breadcrumb-basic" data-status="authored" loading="lazy"></iframe>
 <p class="demo-langs">Open the demo page</p>
 
+::: details Source
+```text
+<nav aria-label="breadcrumb" data-slot="breadcrumb" class=""><ol data-slot="breadcrumb-list" class="text-muted-foreground gap-1.5 text-sm flex flex-wrap items-center wrap-break-word"><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><a data-slot="breadcrumb-link" class="hover:text-foreground transition-colors" href="#">Home</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><a data-slot="breadcrumb-link" class="hover:text-foreground transition-colors" href="#">Components</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><span data-slot="breadcrumb-page" role="link" aria-disabled="true" aria-current="page" class="text-foreground font-normal">Breadcrumb</span></li></ol></nav>
+```
+:::
+
+
 ## Custom separator
 
 Use a custom component as `children` for `<BreadcrumbSeparator />` to create a custom separator.
 
 <iframe class="demo" src="/demos/breadcrumb-separator.html" title="breadcrumb-separator" data-status="authored" loading="lazy"></iframe>
 <p class="demo-langs">Open the demo page</p>
+
+::: details Source
+```text
+<nav aria-label="breadcrumb" data-slot="breadcrumb" class=""><ol data-slot="breadcrumb-list" class="text-muted-foreground gap-1.5 text-sm flex flex-wrap items-center wrap-break-word"><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><a href="/" data-slot="breadcrumb-link" class="hover:text-foreground transition-colors">Home</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dot"><circle cx="12.1" cy="12.1" r="1"></circle></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><a href="/components" data-slot="breadcrumb-link" class="hover:text-foreground transition-colors">Components</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dot"><circle cx="12.1" cy="12.1" r="1"></circle></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><span data-slot="breadcrumb-page" role="link" aria-disabled="true" aria-current="page" class="text-foreground font-normal">Breadcrumb</span></li></ol></nav>
+```
+:::
+
 
 ## Dropdown
 
@@ -80,12 +220,145 @@ You can compose `<BreadcrumbItem />` with a `<DropdownMenu />` to create a dropd
 <iframe class="demo" src="/demos/breadcrumb-dropdown.html" title="breadcrumb-dropdown" data-status="authored" loading="lazy"></iframe>
 <p class="demo-langs">Open the demo page</p>
 
+:::: details Source
+
+::: code-group
+```text [breadcrumb-dropdown.html]
+<nav aria-label="breadcrumb" data-slot="breadcrumb" class=""><ol data-slot="breadcrumb-list" class="text-muted-foreground gap-1.5 text-sm flex flex-wrap items-center wrap-break-word"><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><a href="/" data-slot="breadcrumb-link" class="hover:text-foreground transition-colors">Home</a></li><li data-slot="breadcrumb-separator" role="presentation" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dot"><circle cx="12.1" cy="12.1" r="1"></circle></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><button class="flex items-center gap-1" type="button" id="m0-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-slot="dropdown-menu-trigger" data-radixuigo-menu-trigger="m0">Components<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down size-3.5"><path d="m6 9 6 6 6-6"></path></svg></button></li><li data-slot="breadcrumb-separator" role="presentation" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dot"><circle cx="12.1" cy="12.1" r="1"></circle></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><span data-slot="breadcrumb-page" role="link" aria-disabled="true" aria-current="page" class="text-foreground font-normal">Breadcrumb</span></li></ol></nav>
+<template id="m0-tpl">
+<div data-side="bottom" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="ltr" id="m0" aria-labelledby="m0-trigger" data-slot="dropdown-menu-content" class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 max-h-(--radix-dropdown-menu-content-available-height) w-(--radix-dropdown-menu-trigger-width) origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-dropdown-menu-content-transform-origin: var(--radix-popper-transform-origin); --radix-dropdown-menu-content-available-width: var(--radix-popper-available-width); --radix-dropdown-menu-content-available-height: var(--radix-popper-available-height); --radix-dropdown-menu-trigger-width: var(--radix-popper-anchor-width); --radix-dropdown-menu-trigger-height: var(--radix-popper-anchor-height); pointer-events: auto;"><div role="group" data-slot="dropdown-menu-group"><div role="menuitem" data-slot="dropdown-menu-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Documentation</div><div role="menuitem" data-slot="dropdown-menu-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Themes</div><div role="menuitem" data-slot="dropdown-menu-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">GitHub</div></div></div>
+</template>
+```
+
+```js [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/dropdown-menu.js
+// generated: shadless menu behavior (wireMenu) — dropdown-menu & context-menu
+// Document-level: wireMenu owns every trigger on the page through its
+// data-radixuigo-* protocol, so the behavior installs ONCE per page and
+// ignores the root it is initialised with (a later shadless.init(subtree)
+// finds the listeners already there).
+(function () {
+  if (shadless.__menuWired && shadless.__menuWired["menu"]) return
+  shadless.__menuWired = shadless.__menuWired || {}
+  shadless.__menuWired["menu"] = true
+  shadless.register("dropdown-menu", { init: function (root) {
+    if (shadless.__menuWired.installed_menu) { if (shadless.__menuWired.fileTriggers) shadless.__menuWired.fileTriggers(root); return }
+    shadless.__menuWired.installed_menu = true
+    // shadless:open / shadless:close: the kernel has no open hook, so every
+    // path into it is followed by sync(), which diffs the ROOT layer's
+    // trigger (sub menus do not emit) and dispatches the edges
+    var openTrigger = null;
+    var sync = function () {
+      var l = handles.rootLayer();
+      var t = l ? l.trigger : null;
+      if (t === openTrigger) return;
+      var prev = openTrigger;
+      openTrigger = t;
+      if (prev) shadless.h.emit(prev, "close", prev.hasAttribute("data-radixuigo-context-trigger") ? "context-menu" : "dropdown-menu");
+      if (t) shadless.h.emit(t, "open", t.hasAttribute("data-radixuigo-context-trigger") ? "context-menu" : "dropdown-menu");
+    };
+    var handles = RadixKernel.wireMenu({
+      // radix keeps the trigger out of the background aria-hidden set and locks
+      // scroll while a root menu is open — kernel wireMenu does neither
+      isPortalMarker: function (el) {
+        return el.hasAttribute("data-radixuigo-menu-trigger")
+          || el.hasAttribute("data-radixuigo-context-trigger");
+      },
+      onAllClosed: function () {
+        document.body.removeAttribute("data-scroll-locked");
+        document.body.style.removeProperty("pointer-events");
+        sync();
+      },
+      mountLayer: function (id) {
+        var tpl = document.getElementById(id + "-tpl");
+        if (!tpl) return null;
+        var content = tpl.content.firstElementChild.cloneNode(true);
+        var wrapper = document.createElement("div");
+        wrapper.setAttribute("data-radix-popper-content-wrapper", "");
+        wrapper.appendChild(content);
+        document.body.appendChild(wrapper);
+        document.body.setAttribute("data-scroll-locked", "1");
+        document.body.style.setProperty("pointer-events", "none");
+        // modal body lock inherits down — re-enable hit-testing in the layer
+        // (radix sets pointer-events:auto on content while open)
+        content.style.setProperty("pointer-events", "auto");
+        return {
+          id: id,
+          wrapper: wrapper,
+          content: content,
+          trigger: document.getElementById(id + "-trigger"),
+        };
+      },
+    });
+    document.addEventListener("click", function (e) {
+      handles.onDocumentClick(e.target, function () { e.preventDefault(); });
+      sync();
+    });
+    // programmatic handles, one per trigger (found by the kernel's protocol
+    // attributes; a later shadless.init(root) files any new ones)
+    var noop = function () {}
+    var fileTriggers = function (root) {
+      Array.prototype.forEach.call((root || document).querySelectorAll("[data-radixuigo-menu-trigger], [data-radixuigo-context-trigger]"), function (t) {
+        if (shadless.instances.has(t)) return
+        var isOpen = function () { var l = handles.rootLayer(); return !!l && l.trigger === t }
+        var openIt = function () {
+          if (isOpen()) return
+          if (t.hasAttribute("data-radixuigo-context-trigger")) {
+            var r = t.getBoundingClientRect()
+            handles.onContextmenu(t, r.left + r.width / 2, r.top + r.height / 2, noop)
+          } else handles.onDocumentClick(t, noop)
+          sync()
+        }
+        shadless.instances.set(t, { component: "dropdown-menu",
+          open: openIt,
+          close: function () { if (isOpen()) { handles.closeAll(); sync() } },
+          toggle: function () { if (isOpen()) { handles.closeAll(); sync() } else openIt() },
+          isOpen: isOpen,
+        })
+      })
+    }
+    fileTriggers(document)
+    shadless.__menuWired.fileTriggers = fileTriggers
+    // radix opens a sub menu when the pointer moves onto its trigger; the
+    // kernel only opens it on click / ArrowRight (onDocumentClick has the sub
+    // path) — route pointer entry through the same path. openMenuLayer is
+    // idempotent for an already-open layer.
+    document.addEventListener("pointerover", function (e) {
+      if (e.pointerType && e.pointerType !== "mouse") return;
+      var sub = e.target.closest && e.target.closest("[data-radixuigo-menu-subtrigger]");
+      if (sub && sub.getAttribute("data-state") !== "open") handles.onDocumentClick(sub, function () {});
+    });
+    document.addEventListener("contextmenu", function (e) {
+      handles.onContextmenu(e.target, e.clientX, e.clientY, function () { e.preventDefault(); });
+      sync();
+    });
+    document.addEventListener("keydown", function (e) {
+      handles.onKeydown(e.target, e.key, function () { e.preventDefault(); });
+      sync();
+    });
+  } })
+})()
+```
+:::
+
+::::
+
+
 ## Collapsed
 
 We provide a `<BreadcrumbEllipsis />` component to show a collapsed state when the breadcrumb is too long.
 
 <iframe class="demo" src="/demos/breadcrumb-ellipsis.html" title="breadcrumb-ellipsis" data-status="authored" loading="lazy"></iframe>
 <p class="demo-langs">Open the demo page</p>
+
+::: details Source
+```text
+<nav aria-label="breadcrumb" data-slot="breadcrumb" class=""><ol data-slot="breadcrumb-list" class="text-muted-foreground gap-1.5 text-sm flex flex-wrap items-center wrap-break-word"><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><a href="/" data-slot="breadcrumb-link" class="hover:text-foreground transition-colors">Home</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><span data-slot="breadcrumb-ellipsis" role="presentation" aria-hidden="true" class="size-5 [&amp;&gt;svg]:size-4 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg><span class="sr-only">More</span></span></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><a href="/docs/components" data-slot="breadcrumb-link" class="hover:text-foreground transition-colors">Components</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><span data-slot="breadcrumb-page" role="link" aria-disabled="true" aria-current="page" class="text-foreground font-normal">Breadcrumb</span></li></ol></nav>
+```
+:::
+
 
 ## Link component
 
@@ -94,12 +367,145 @@ To use a custom link component from your routing library, you can use the `asChi
 <iframe class="demo" src="/demos/breadcrumb-link.html" title="breadcrumb-link" data-status="authored" loading="lazy"></iframe>
 <p class="demo-langs">Open the demo page</p>
 
+::: details Source
+```text
+<nav aria-label="breadcrumb" data-slot="breadcrumb" class=""><ol data-slot="breadcrumb-list" class="text-muted-foreground gap-1.5 text-sm flex flex-wrap items-center wrap-break-word"><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><a href="/" data-slot="breadcrumb-link" class="hover:text-foreground transition-colors">Home</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><a href="/components" data-slot="breadcrumb-link" class="hover:text-foreground transition-colors">Components</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><span data-slot="breadcrumb-page" role="link" aria-disabled="true" aria-current="page" class="text-foreground font-normal">Breadcrumb</span></li></ol></nav>
+```
+:::
+
+
 ## RTL
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
 <iframe class="demo" src="/demos/breadcrumb-rtl.html" title="breadcrumb-rtl" data-status="authored" loading="lazy"></iframe>
 <p class="demo-langs">Open the demo page · HE · EN</p>
+
+:::: details Source
+
+::: code-group
+```text [breadcrumb-rtl.html]
+<nav aria-label="breadcrumb" data-slot="breadcrumb" class="" dir="rtl"><ol data-slot="breadcrumb-list" class="text-muted-foreground gap-1.5 text-sm flex flex-wrap items-center wrap-break-word"><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><a href="/" data-slot="breadcrumb-link" class="hover:text-foreground transition-colors">الرئيسية</a></li><li data-slot="breadcrumb-separator" role="presentation" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dot"><circle cx="12.1" cy="12.1" r="1"></circle></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><button class="flex items-center gap-1" type="button" id="m0-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-slot="dropdown-menu-trigger" data-radixuigo-menu-trigger="m0">المكونات<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down size-3.5"><path d="m6 9 6 6 6-6"></path></svg></button></li><li data-slot="breadcrumb-separator" role="presentation" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dot"><circle cx="12.1" cy="12.1" r="1"></circle></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><span data-slot="breadcrumb-page" role="link" aria-disabled="true" aria-current="page" class="text-foreground font-normal">مسار التنقل</span></li></ol></nav>
+<template id="m0-tpl">
+<div data-side="bottom" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="rtl" id="m0" aria-labelledby="m0-trigger" data-slot="dropdown-menu-content" class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 max-h-(--radix-dropdown-menu-content-available-height) w-(--radix-dropdown-menu-trigger-width) origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden" data-lang="ar" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-dropdown-menu-content-transform-origin: var(--radix-popper-transform-origin); --radix-dropdown-menu-content-available-width: var(--radix-popper-available-width); --radix-dropdown-menu-content-available-height: var(--radix-popper-available-height); --radix-dropdown-menu-trigger-width: var(--radix-popper-anchor-width); --radix-dropdown-menu-trigger-height: var(--radix-popper-anchor-height); pointer-events: auto;"><div role="group" data-slot="dropdown-menu-group"><div role="menuitem" data-slot="dropdown-menu-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">التوثيق</div><div role="menuitem" data-slot="dropdown-menu-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">السمات</div><div role="menuitem" data-slot="dropdown-menu-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">جيت هاب</div></div></div>
+</template>
+```
+
+```js [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/dropdown-menu.js
+// generated: shadless menu behavior (wireMenu) — dropdown-menu & context-menu
+// Document-level: wireMenu owns every trigger on the page through its
+// data-radixuigo-* protocol, so the behavior installs ONCE per page and
+// ignores the root it is initialised with (a later shadless.init(subtree)
+// finds the listeners already there).
+(function () {
+  if (shadless.__menuWired && shadless.__menuWired["menu"]) return
+  shadless.__menuWired = shadless.__menuWired || {}
+  shadless.__menuWired["menu"] = true
+  shadless.register("dropdown-menu", { init: function (root) {
+    if (shadless.__menuWired.installed_menu) { if (shadless.__menuWired.fileTriggers) shadless.__menuWired.fileTriggers(root); return }
+    shadless.__menuWired.installed_menu = true
+    // shadless:open / shadless:close: the kernel has no open hook, so every
+    // path into it is followed by sync(), which diffs the ROOT layer's
+    // trigger (sub menus do not emit) and dispatches the edges
+    var openTrigger = null;
+    var sync = function () {
+      var l = handles.rootLayer();
+      var t = l ? l.trigger : null;
+      if (t === openTrigger) return;
+      var prev = openTrigger;
+      openTrigger = t;
+      if (prev) shadless.h.emit(prev, "close", prev.hasAttribute("data-radixuigo-context-trigger") ? "context-menu" : "dropdown-menu");
+      if (t) shadless.h.emit(t, "open", t.hasAttribute("data-radixuigo-context-trigger") ? "context-menu" : "dropdown-menu");
+    };
+    var handles = RadixKernel.wireMenu({
+      // radix keeps the trigger out of the background aria-hidden set and locks
+      // scroll while a root menu is open — kernel wireMenu does neither
+      isPortalMarker: function (el) {
+        return el.hasAttribute("data-radixuigo-menu-trigger")
+          || el.hasAttribute("data-radixuigo-context-trigger");
+      },
+      onAllClosed: function () {
+        document.body.removeAttribute("data-scroll-locked");
+        document.body.style.removeProperty("pointer-events");
+        sync();
+      },
+      mountLayer: function (id) {
+        var tpl = document.getElementById(id + "-tpl");
+        if (!tpl) return null;
+        var content = tpl.content.firstElementChild.cloneNode(true);
+        var wrapper = document.createElement("div");
+        wrapper.setAttribute("data-radix-popper-content-wrapper", "");
+        wrapper.appendChild(content);
+        document.body.appendChild(wrapper);
+        document.body.setAttribute("data-scroll-locked", "1");
+        document.body.style.setProperty("pointer-events", "none");
+        // modal body lock inherits down — re-enable hit-testing in the layer
+        // (radix sets pointer-events:auto on content while open)
+        content.style.setProperty("pointer-events", "auto");
+        return {
+          id: id,
+          wrapper: wrapper,
+          content: content,
+          trigger: document.getElementById(id + "-trigger"),
+        };
+      },
+    });
+    document.addEventListener("click", function (e) {
+      handles.onDocumentClick(e.target, function () { e.preventDefault(); });
+      sync();
+    });
+    // programmatic handles, one per trigger (found by the kernel's protocol
+    // attributes; a later shadless.init(root) files any new ones)
+    var noop = function () {}
+    var fileTriggers = function (root) {
+      Array.prototype.forEach.call((root || document).querySelectorAll("[data-radixuigo-menu-trigger], [data-radixuigo-context-trigger]"), function (t) {
+        if (shadless.instances.has(t)) return
+        var isOpen = function () { var l = handles.rootLayer(); return !!l && l.trigger === t }
+        var openIt = function () {
+          if (isOpen()) return
+          if (t.hasAttribute("data-radixuigo-context-trigger")) {
+            var r = t.getBoundingClientRect()
+            handles.onContextmenu(t, r.left + r.width / 2, r.top + r.height / 2, noop)
+          } else handles.onDocumentClick(t, noop)
+          sync()
+        }
+        shadless.instances.set(t, { component: "dropdown-menu",
+          open: openIt,
+          close: function () { if (isOpen()) { handles.closeAll(); sync() } },
+          toggle: function () { if (isOpen()) { handles.closeAll(); sync() } else openIt() },
+          isOpen: isOpen,
+        })
+      })
+    }
+    fileTriggers(document)
+    shadless.__menuWired.fileTriggers = fileTriggers
+    // radix opens a sub menu when the pointer moves onto its trigger; the
+    // kernel only opens it on click / ArrowRight (onDocumentClick has the sub
+    // path) — route pointer entry through the same path. openMenuLayer is
+    // idempotent for an already-open layer.
+    document.addEventListener("pointerover", function (e) {
+      if (e.pointerType && e.pointerType !== "mouse") return;
+      var sub = e.target.closest && e.target.closest("[data-radixuigo-menu-subtrigger]");
+      if (sub && sub.getAttribute("data-state") !== "open") handles.onDocumentClick(sub, function () {});
+    });
+    document.addEventListener("contextmenu", function (e) {
+      handles.onContextmenu(e.target, e.clientX, e.clientY, function () { e.preventDefault(); });
+      sync();
+    });
+    document.addEventListener("keydown", function (e) {
+      handles.onKeydown(e.target, e.key, function () { e.preventDefault(); });
+      sync();
+    });
+  } })
+})()
+```
+:::
+
+::::
+
 
 ## API Reference
 

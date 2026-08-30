@@ -167,8 +167,45 @@ function previewMarkdown(attrs, page) {
     .join(' · ')
   return [
     `<iframe class="demo" src="/demos/${file}" title="${name}" data-status="${status}" loading="lazy"></iframe>`,
-    `\n<p class="demo-langs">[Open the demo page](/demos/${file})${others ? ` · ${others}` : ''}</p>`,
+    `\n<p class="demo-langs">[Open the demo page](/demos/${file})${others ? ` · ${others}` : ''}</p>\n`,
+    demoSource(name, file),
   ].join('')
+}
+
+// The source under the preview. Upstream's ComponentPreview shows the .tsx;
+// what a shadless consumer copies is the MARKUP, so that is what this shows —
+// the demo page's <body>, without the page scaffold (doctype, the ../out.css
+// link, the theme pre-paint boilerplate) that the old site's HTML tab dumped
+// along with it. The scaffold is not content: the Installation section above
+// already names every file the page loads.
+//
+// The behavior file is the component's own dist/js/<name>.js. The shared
+// runtime (dist/shadless.js, 163 KB, identical on every page) is REFERENCED,
+// never inlined — inlining it 121× was 90% of the old site's bytes.
+function demoSource(name, file) {
+  const path = join(PUBLIC_DIR, 'demos', file)
+  if (!existsSync(path)) return ''
+  const raw = readFileSync(path, 'utf8')
+  const markup = (/<body[^>]*>([\s\S]*?)<\/body>/.exec(raw)?.[1] ?? raw)
+    .replace(/<script[\s\S]*?<\/script>/g, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+  const { srcScripts, inlineScripts } = extractDemoScripts(raw)
+  const js = []
+  if (srcScripts.includes('shadless.js')) js.push('// <script src="shadless.js"></script>  — the shared runtime (see Installation)')
+  for (const s of srcScripts) {
+    if (s === 'shadless.js') continue
+    js.push(`// ${s}\n${readFileSync(join('dist', s), 'utf8').trim()}`)
+  }
+  js.push(...inlineScripts)
+  const jsText = js.join('\n\n').trim()
+  // `text`, not `html`, for the markup: these blocks are one long line of
+  // emitted markup, and tokenising 460 of them at build time inflated the site
+  // from 11 MB to 49 MB — the same blow-up that moved the old site's
+  // highlighting into the browser (28386e6). The behavior file is short and
+  // worth colouring.
+  if (!jsText) return `\n::: details Source\n\`\`\`text\n${markup}\n\`\`\`\n:::\n`
+  return `\n:::: details Source\n\n::: code-group\n\`\`\`text [${file}]\n${markup}\n\`\`\`\n\n\`\`\`js [behavior]\n${jsText}\n\`\`\`\n:::\n\n::::\n`
 }
 
 // <Callout variant="info" title="…"> … </Callout> → a VitePress container.
@@ -459,8 +496,12 @@ function buildPage(page) {
   const title = fm.title ?? page.name
   // frontmatter.links are upstream's "Docs / API Reference" chips. Marked so
   // docs-fidelity can find them without guessing which paragraph they are.
+  // frontmatter.links are upstream's "doc / api" chips. Emitted as an html
+  // block (markdown inside one is NOT parsed, so these are anchors, not
+  // markdown links) and marked so docs-fidelity finds them without having to
+  // guess which paragraph they are.
   const links = fm.links && Object.keys(fm.links).length
-    ? `<p class="page-links">${Object.entries(fm.links).map(([k, v]) => `[${k}](${v})`).join(' · ')}</p>\n`
+    ? `<p class="page-links">${Object.entries(fm.links).map(([k, v]) => `<a href="${v}" rel="noopener">${k}</a>`).join(' · ')}</p>\n`
     : ''
   const front = [
     '---',

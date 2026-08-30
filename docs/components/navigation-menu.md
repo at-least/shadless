@@ -7,10 +7,158 @@ description: "A collection of links for navigating websites."
 
 A collection of links for navigating websites.
 
-<p class="page-links">[doc](https://www.radix-ui.com/docs/primitives/components/navigation-menu) · [api](https://www.radix-ui.com/docs/primitives/components/navigation-menu#api-reference)</p>
+<p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/navigation-menu" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/navigation-menu#api-reference" rel="noopener">api</a></p>
 
 <iframe class="demo" src="/demos/navigation-menu-demo.html" title="navigation-menu-demo" data-status="authored" loading="lazy"></iframe>
 <p class="demo-langs">Open the demo page</p>
+
+:::: details Source
+
+::: code-group
+```text [navigation-menu-demo.html]
+<nav aria-label="Main" data-orientation="horizontal" dir="ltr" data-slot="navigation-menu" data-viewport="true" class="group/navigation-menu relative flex max-w-max flex-1 items-center justify-center"><div style="position: relative;"><ul data-orientation="horizontal" data-slot="navigation-menu-list" class="gap-0 group flex flex-1 list-none items-center justify-center" dir="ltr"><li data-slot="navigation-menu-item" class="relative"><button id="n0-trigger" data-state="closed" aria-expanded="false" aria-controls="n0-content" data-slot="navigation-menu-trigger" class="hover:bg-muted focus:bg-muted data-open:hover:bg-muted data-open:focus:bg-muted data-open:bg-muted/50 focus-visible:ring-ring/50 data-popup-open:bg-muted/50 data-popup-open:hover:bg-muted rounded-lg px-2.5 py-1.5 text-sm font-medium transition-all focus-visible:ring-3 focus-visible:outline-1 disabled:opacity-50 group/navigation-menu-trigger inline-flex h-9 w-max items-center justify-center outline-none disabled:pointer-events-none group" data-radix-collection-item="" data-radixuigo-nav-trigger="n0">Getting started <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down relative top-px ml-1 size-3 transition duration-300 group-data-open/navigation-menu-trigger:rotate-180 group-data-popup-open/navigation-menu-trigger:rotate-180"><path d="m6 9 6 6 6-6"></path></svg></button></li><li data-slot="navigation-menu-item" class="relative hidden md:flex"><button id="n1-trigger" data-state="closed" aria-expanded="false" aria-controls="n1-content" data-slot="navigation-menu-trigger" class="hover:bg-muted focus:bg-muted data-open:hover:bg-muted data-open:focus:bg-muted data-open:bg-muted/50 focus-visible:ring-ring/50 data-popup-open:bg-muted/50 data-popup-open:hover:bg-muted rounded-lg px-2.5 py-1.5 text-sm font-medium transition-all focus-visible:ring-3 focus-visible:outline-1 disabled:opacity-50 group/navigation-menu-trigger inline-flex h-9 w-max items-center justify-center outline-none disabled:pointer-events-none group" data-radix-collection-item="" data-radixuigo-nav-trigger="n1">Components <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down relative top-px ml-1 size-3 transition duration-300 group-data-open/navigation-menu-trigger:rotate-180 group-data-popup-open/navigation-menu-trigger:rotate-180"><path d="m6 9 6 6 6-6"></path></svg></button></li><li data-slot="navigation-menu-item" class="relative"><a href="/docs" data-slot="navigation-menu-link" class="data-active:focus:bg-muted data-active:hover:bg-muted data-active:bg-muted/50 gap-2 p-2 in-data-[slot=navigation-menu-content]:rounded-md [&amp;_svg:not([class*='size-'])]:size-4 hover:bg-muted focus:bg-muted data-open:hover:bg-muted data-open:focus:bg-muted data-open:bg-muted/50 focus-visible:ring-ring/50 data-popup-open:bg-muted/50 data-popup-open:hover:bg-muted rounded-lg px-2.5 py-1.5 text-sm font-medium transition-all focus-visible:ring-3 focus-visible:outline-1 disabled:opacity-50 group/navigation-menu-trigger inline-flex h-9 w-max items-center justify-center outline-none disabled:pointer-events-none" data-radix-collection-item="">Docs</a></li></ul></div><div class="absolute top-full left-0 isolate z-50 flex justify-center"></div></nav>
+<template id="n0-content-tpl">
+<div id="n0-content" aria-labelledby="n0-trigger" data-orientation="horizontal" data-slot="navigation-menu-content" class="data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 group-data-[viewport=false]/navigation-menu:bg-popover group-data-[viewport=false]/navigation-menu:text-popover-foreground group-data-[viewport=false]/navigation-menu:data-open:animate-in group-data-[viewport=false]/navigation-menu:data-closed:animate-out group-data-[viewport=false]/navigation-menu:data-closed:zoom-out-95 group-data-[viewport=false]/navigation-menu:data-open:zoom-in-95 group-data-[viewport=false]/navigation-menu:data-open:fade-in-0 group-data-[viewport=false]/navigation-menu:data-closed:fade-out-0 group-data-[viewport=false]/navigation-menu:ring-foreground/10 p-1 ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[viewport=false]/navigation-menu:rounded-lg group-data-[viewport=false]/navigation-menu:shadow group-data-[viewport=false]/navigation-menu:ring-1 group-data-[viewport=false]/navigation-menu:duration-300 top-0 left-0 w-full group-data-[viewport=false]/navigation-menu:top-full group-data-[viewport=false]/navigation-menu:mt-1.5 group-data-[viewport=false]/navigation-menu:overflow-hidden **:data-[slot=navigation-menu-link]:focus:ring-0 **:data-[slot=navigation-menu-link]:focus:outline-none md:absolute md:w-auto" dir="ltr"><ul class="w-96"><li><a href="/docs" data-slot="navigation-menu-link" class="data-active:focus:bg-muted data-active:hover:bg-muted data-active:bg-muted/50 focus-visible:ring-ring/50 hover:bg-muted focus:bg-muted flex items-center gap-2 rounded-lg p-2 text-sm transition-all outline-none focus-visible:ring-3 focus-visible:outline-1 in-data-[slot=navigation-menu-content]:rounded-md [&amp;_svg:not([class*='size-'])]:size-4" data-radix-collection-item=""><div class="flex flex-col gap-1 text-sm"><div class="leading-none font-medium">Introduction</div><div class="line-clamp-2 text-muted-foreground">Re-usable components built with Tailwind CSS.</div></div></a></li><li><a href="/docs/installation" data-slot="navigation-menu-link" class="data-active:focus:bg-muted data-active:hover:bg-muted data-active:bg-muted/50 focus-visible:ring-ring/50 hover:bg-muted focus:bg-muted flex items-center gap-2 rounded-lg p-2 text-sm transition-all outline-none focus-visible:ring-3 focus-visible:outline-1 in-data-[slot=navigation-menu-content]:rounded-md [&amp;_svg:not([class*='size-'])]:size-4" data-radix-collection-item=""><div class="flex flex-col gap-1 text-sm"><div class="leading-none font-medium">Installation</div><div class="line-clamp-2 text-muted-foreground">How to install dependencies and structure your app.</div></div></a></li><li><a href="/docs/primitives/typography" data-slot="navigation-menu-link" class="data-active:focus:bg-muted data-active:hover:bg-muted data-active:bg-muted/50 focus-visible:ring-ring/50 hover:bg-muted focus:bg-muted flex items-center gap-2 rounded-lg p-2 text-sm transition-all outline-none focus-visible:ring-3 focus-visible:outline-1 in-data-[slot=navigation-menu-content]:rounded-md [&amp;_svg:not([class*='size-'])]:size-4" data-radix-collection-item=""><div class="flex flex-col gap-1 text-sm"><div class="leading-none font-medium">Typography</div><div class="line-clamp-2 text-muted-foreground">Styles for headings, paragraphs, lists...etc</div></div></a></li></ul></div>
+</template>
+<template id="n1-content-tpl">
+<div id="n1-content" aria-labelledby="n1-trigger" data-orientation="horizontal" data-slot="navigation-menu-content" class="data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 group-data-[viewport=false]/navigation-menu:bg-popover group-data-[viewport=false]/navigation-menu:text-popover-foreground group-data-[viewport=false]/navigation-menu:data-open:animate-in group-data-[viewport=false]/navigation-menu:data-closed:animate-out group-data-[viewport=false]/navigation-menu:data-closed:zoom-out-95 group-data-[viewport=false]/navigation-menu:data-open:zoom-in-95 group-data-[viewport=false]/navigation-menu:data-open:fade-in-0 group-data-[viewport=false]/navigation-menu:data-closed:fade-out-0 group-data-[viewport=false]/navigation-menu:ring-foreground/10 p-1 ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[viewport=false]/navigation-menu:rounded-lg group-data-[viewport=false]/navigation-menu:shadow group-data-[viewport=false]/navigation-menu:ring-1 group-data-[viewport=false]/navigation-menu:duration-300 top-0 left-0 w-full group-data-[viewport=false]/navigation-menu:top-full group-data-[viewport=false]/navigation-menu:mt-1.5 group-data-[viewport=false]/navigation-menu:overflow-hidden **:data-[slot=navigation-menu-link]:focus:ring-0 **:data-[slot=navigation-menu-link]:focus:outline-none md:absolute md:w-auto" dir="ltr"><ul class="grid w-[400px] gap-2 md:w-[500px] md:grid-cols-2 lg:w-[600px]"><li><a href="/docs/primitives/alert-dialog" data-slot="navigation-menu-link" class="data-active:focus:bg-muted data-active:hover:bg-muted data-active:bg-muted/50 focus-visible:ring-ring/50 hover:bg-muted focus:bg-muted flex items-center gap-2 rounded-lg p-2 text-sm transition-all outline-none focus-visible:ring-3 focus-visible:outline-1 in-data-[slot=navigation-menu-content]:rounded-md [&amp;_svg:not([class*='size-'])]:size-4" data-radix-collection-item=""><div class="flex flex-col gap-1 text-sm"><div class="leading-none font-medium">Alert Dialog</div><div class="line-clamp-2 text-muted-foreground">A modal dialog that interrupts the user with important content and expects a response.</div></div></a></li><li><a href="/docs/primitives/hover-card" data-slot="navigation-menu-link" class="data-active:focus:bg-muted data-active:hover:bg-muted data-active:bg-muted/50 focus-visible:ring-ring/50 hover:bg-muted focus:bg-muted flex items-center gap-2 rounded-lg p-2 text-sm transition-all outline-none focus-visible:ring-3 focus-visible:outline-1 in-data-[slot=navigation-menu-content]:rounded-md [&amp;_svg:not([class*='size-'])]:size-4" data-radix-collection-item=""><div class="flex flex-col gap-1 text-sm"><div class="leading-none font-medium">Hover Card</div><div class="line-clamp-2 text-muted-foreground">For sighted users to preview content available behind a link.</div></div></a></li><li><a href="/docs/primitives/progress" data-slot="navigation-menu-link" class="data-active:focus:bg-muted data-active:hover:bg-muted data-active:bg-muted/50 focus-visible:ring-ring/50 hover:bg-muted focus:bg-muted flex items-center gap-2 rounded-lg p-2 text-sm transition-all outline-none focus-visible:ring-3 focus-visible:outline-1 in-data-[slot=navigation-menu-content]:rounded-md [&amp;_svg:not([class*='size-'])]:size-4" data-radix-collection-item=""><div class="flex flex-col gap-1 text-sm"><div class="leading-none font-medium">Progress</div><div class="line-clamp-2 text-muted-foreground">Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.</div></div></a></li><li><a href="/docs/primitives/scroll-area" data-slot="navigation-menu-link" class="data-active:focus:bg-muted data-active:hover:bg-muted data-active:bg-muted/50 focus-visible:ring-ring/50 hover:bg-muted focus:bg-muted flex items-center gap-2 rounded-lg p-2 text-sm transition-all outline-none focus-visible:ring-3 focus-visible:outline-1 in-data-[slot=navigation-menu-content]:rounded-md [&amp;_svg:not([class*='size-'])]:size-4" data-radix-collection-item=""><div class="flex flex-col gap-1 text-sm"><div class="leading-none font-medium">Scroll-area</div><div class="line-clamp-2 text-muted-foreground">Visually or semantically separates content.</div></div></a></li><li><a href="/docs/primitives/tabs" data-slot="navigation-menu-link" class="data-active:focus:bg-muted data-active:hover:bg-muted data-active:bg-muted/50 focus-visible:ring-ring/50 hover:bg-muted focus:bg-muted flex items-center gap-2 rounded-lg p-2 text-sm transition-all outline-none focus-visible:ring-3 focus-visible:outline-1 in-data-[slot=navigation-menu-content]:rounded-md [&amp;_svg:not([class*='size-'])]:size-4" data-radix-collection-item=""><div class="flex flex-col gap-1 text-sm"><div class="leading-none font-medium">Tabs</div><div class="line-clamp-2 text-muted-foreground">A set of layered sections of content—known as tab panels—that are displayed one at a time.</div></div></a></li><li><a href="/docs/primitives/tooltip" data-slot="navigation-menu-link" class="data-active:focus:bg-muted data-active:hover:bg-muted data-active:bg-muted/50 focus-visible:ring-ring/50 hover:bg-muted focus:bg-muted flex items-center gap-2 rounded-lg p-2 text-sm transition-all outline-none focus-visible:ring-3 focus-visible:outline-1 in-data-[slot=navigation-menu-content]:rounded-md [&amp;_svg:not([class*='size-'])]:size-4" data-radix-collection-item=""><div class="flex flex-col gap-1 text-sm"><div class="leading-none font-medium">Tooltip</div><div class="line-clamp-2 text-muted-foreground">A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.</div></div></a></li></ul></div>
+</template>
+```
+
+```js [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/navigation-menu.js
+// generated: shadless navigation-menu behavior — shared-viewport menu on the
+// kernel. Measured radix semantics (oracle-driven):
+//   - the viewport lives INSIDE the nav root (in flow, below the list) and
+//     is fully unmounted when closed (no empty container in the DOM);
+//   - content mounts into the viewport from the item's template, carries
+//     data-state + aria-labelledby and receives aria-controls on the trigger;
+//   - focus STAYS on the trigger while open (unlike menubar, which moves it
+//     into the content); horizontal arrows only move focus between triggers
+//     (no auto-switch, no roving tabindex — triggers keep natural focus);
+//   - Escape / outside click close; size reaches CSS through the
+//     --radix-navigation-menu-viewport-{width,height} vars.
+// Document-level: wireMenu owns every trigger on the page through its
+// data-radixuigo-* protocol, so the behavior installs ONCE per page and
+// ignores the root it is initialised with (a later shadless.init(subtree)
+// finds the listeners already there).
+(function () {
+  if (shadless.__menuWired && shadless.__menuWired["navigation-menu"]) return
+  shadless.__menuWired = shadless.__menuWired || {}
+  shadless.__menuWired["navigation-menu"] = true
+  shadless.register("navigation-menu", { init: function () {
+    if (shadless.__menuWired.installed_navigation_menu) return
+    shadless.__menuWired.installed_navigation_menu = true
+    var EXIT = 120;
+    var VIEWPORT_CLASS = "bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:zoom-out-90 data-open:zoom-in-90 ring-foreground/10 rounded-lg shadow ring-1 duration-100 origin-top-center relative mt-1.5 h-(--radix-navigation-menu-viewport-height) w-full overflow-hidden md:w-(--radix-navigation-menu-viewport-width)";
+    var root = document.querySelector("[data-slot=navigation-menu]");
+    var triggers = function () {
+      return Array.prototype.slice.call(root.querySelectorAll("[data-radixuigo-nav-trigger]"));
+    };
+    var idOf = function (t) { return t.getAttribute("data-radixuigo-nav-trigger"); };
+    var viewport = function () { return root.querySelector("[data-slot=navigation-menu-viewport]"); };
+    var openId = null;
+    var exitTimer = null;
+
+    function ensureViewport() {
+      var vp = viewport()
+      if (vp) return vp
+      vp = document.createElement("div")
+      vp.setAttribute("data-slot", "navigation-menu-viewport")
+      vp.id = (openId || idOf(triggers()[0]) || "nav") + "-viewport"
+      vp.setAttribute("data-orientation", "horizontal")
+      vp.setAttribute("data-state", "closed")
+      vp.className = VIEWPORT_CLASS
+      root.appendChild(vp)
+      return vp
+    }
+
+    function close(silent) {
+      if (!openId) return
+      var trig = root.querySelector('[data-radixuigo-nav-trigger="' + openId + '"]')
+      var content = viewport() && viewport().querySelector('[data-slot=navigation-menu-content]')
+      if (trig) {
+        trig.setAttribute("data-state", "closed")
+        trig.setAttribute("aria-expanded", "false")
+        trig.removeAttribute("aria-controls")
+      }
+      if (content) content.setAttribute("data-state", "closed")
+      var vp = viewport()
+      if (vp) {
+        vp.setAttribute("data-state", "closed")
+        clearTimeout(exitTimer)
+        exitTimer = setTimeout(function () { if (vp.parentNode && vp.getAttribute("data-state") === "closed") vp.remove() }, EXIT)
+      }
+      openId = null
+      if (trig) shadless.h.emit(trig, "close", "navigation-menu")
+    }
+
+    function open(id, trig) {
+      clearTimeout(exitTimer)
+      if (openId && openId !== id) close(true)
+      var tpl = document.getElementById(id + "-content-tpl")
+      if (!tpl) return
+      var vp = ensureViewport()
+      vp.setAttribute("data-state", "open")
+      var content = tpl.content.firstElementChild.cloneNode(true)
+      vp.replaceChildren(content)
+      content.setAttribute("data-state", "open")
+      trig.setAttribute("data-state", "open")
+      trig.setAttribute("aria-expanded", "true")
+      trig.setAttribute("aria-controls", content.id)
+      var w = content.offsetWidth, h = content.offsetHeight
+      vp.style.setProperty("--radix-navigation-menu-viewport-width", w + "px")
+      vp.style.setProperty("--radix-navigation-menu-viewport-height", h + "px")
+      openId = id
+      shadless.h.emit(trig, "open", "navigation-menu")
+    }
+
+    triggers().forEach(function (t) {
+      var id = idOf(t)
+      shadless.instances.set(t, { component: "navigation-menu",
+        open: function () { if (openId !== id) open(id, t) },
+        close: function () { if (openId === id) close() },
+        toggle: function () { openId === id ? close() : open(id, t) },
+        isOpen: function () { return openId === id },
+      })
+    })
+    document.addEventListener("click", function (e) {
+      var trig = e.target.closest && e.target.closest("[data-radixuigo-nav-trigger]")
+      if (trig) {
+        e.preventDefault()
+        var id = idOf(trig)
+        if (id === openId) close()
+        else open(id, trig)
+        return
+      }
+      var link = e.target.closest && e.target.closest("[data-slot=navigation-menu-link]")
+      if (link) { if (openId) close(); return }
+      if (openId && !root.contains(e.target)) close()
+    })
+
+    document.addEventListener("keydown", function (e) {
+      var key = e.key
+      if (key === "Escape") { if (openId) { e.preventDefault(); close() } return }
+      if (key !== "ArrowRight" && key !== "ArrowLeft" && key !== "Home" && key !== "End") return
+      var trig = e.target.closest && e.target.closest("[data-radixuigo-nav-trigger]")
+      if (!trig) return
+      e.preventDefault()
+      var ts = triggers()
+      var i = ts.indexOf(trig)
+      var next = key === "Home" ? ts[0]
+        : key === "End" ? ts[ts.length - 1]
+        : ts[(i + (key === "ArrowRight" ? 1 : ts.length - 1)) % ts.length]
+      next.focus()
+    })
+  } })
+})()
+```
+:::
+
+::::
+
 
 ## Installation
 

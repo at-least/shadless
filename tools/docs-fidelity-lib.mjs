@@ -165,8 +165,8 @@ export function mdPageFacts(md) {
     headings,
     previews: inOrder.map((n) => byName.get(n)),
     fences: scanFences(afterH1),
-    chips: [...(/<p class="page-links">(.*)<\/p>/.exec(afterH1)?.[1] ?? "").matchAll(/\[([^\]]*)\]\(([^)]*)\)/g)]
-      .map((m) => ({ label: m[1], href: m[2] })),
+    chips: [...(/<p class="page-links">(.*)<\/p>/.exec(afterH1)?.[1] ?? "").matchAll(/<a href="([^"]*)"[^>]*>([^<]*)<\/a>/g)]
+      .map((m) => ({ label: m[2], href: m[1] })),
     iframes: previews.map((p) => p.src),
     docsHrefs: [...fenceShadow(afterH1).matchAll(/\]\((\/docs\/[^)]*)\)/g)].map((m) => m[1]),
     allHrefs: [...fenceShadow(afterH1).matchAll(/\]\(([^)]*)\)/g)].map((m) => m[1]),
