@@ -8,6 +8,7 @@ package main
 // first-match-wins ORDER, which is load-bearing and has been wrong before.
 
 import (
+	"encoding/json"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -32,9 +33,12 @@ func TestUnitAuditClassifyOrder(t *testing.T) {
 		// docs/demos RTL variants are build-rtl output, not hand-authored —
 		// programmatic patterns are consulted before hand-authored ones
 		{"docs/demos/alert-rtl-he.html", "programmatic", "tools/build-rtl.mjs"},
-		// but a bare -rtl.html there IS hand-authored
-		{"docs/demos/alert-rtl.html", "hand-authored", "human (FT7 Arabic RTL defaults)"},
-		{"docs/demos/badge-demo.html", "hand-authored", "human (FT7 hand-authored demos)"},
+		// a bare -rtl.html read as hand-authored too, and is not: the oracle
+		// manifest claims it, and examples/radix/alert-rtl.tsx is its source
+		{"docs/demos/alert-rtl.html", "programmatic", "tools/example-oracle.mjs"},
+		// written by example-oracle from the React render, which its manifest
+		// records — this used to read as hand-authored
+		{"docs/demos/badge-demo.html", "programmatic", "tools/example-oracle.mjs"},
 		// IR json
 		{"src/registry/ir/badge.json", "programmatic", "src/converter/index.mjs"},
 		// tool source
@@ -257,4 +261,60 @@ func runGit(dir string, args ...string) error {
 	cmd := exec.Command("git", args...)
 	cmd.Dir = dir
 	return cmd.Run()
+}
+
+// Ownership of docs/demos comes from the manifests the generating tools write,
+// not from the path. Guessing from the path is what made this audit report 331
+// generated files as owned by nobody — the directory looked hand-authored
+// because most of it once was, and the classification was never revisited when
+// example-oracle and example-fixture took it over.
+func TestUnitAuditDemoOwnershipComesFromManifests(t *testing.T) {
+	root := repoRoot(t)
+	if _, err := os.Stat(filepath.Join(root, "docs/example-oracle.json")); err != nil {
+		t.Skip("unbuilt tree: no manifest to read")
+	}
+	wd, err := os.Getwd()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Chdir(root); err != nil { // inManifest resolves against the cwd
+		t.Fatal(err)
+	}
+	defer os.Chdir(wd)
+
+	oracle := readManifestPages(t, root, "docs/example-oracle.json", "out")
+	if len(oracle) == 0 {
+		t.Fatal("example-oracle claims no pages")
+	}
+	for _, p := range oracle {
+		c := classifyPath(p)
+		if c.Kind != "programmatic" {
+			t.Errorf("%s is written by example-oracle but classified %s", p, c.Kind)
+			break
+		}
+	}
+	// and a page no manifest claims stays hand-authored: the message-scroller
+	// examples cannot be bundled (external deps) and are recorded as exempt
+	if c := classifyPath("docs/demos/message-scroller-streaming.html"); c.Kind != "hand-authored" {
+		t.Errorf("an unclaimed demo page is classified %s, want hand-authored", c.Kind)
+	}
+}
+
+func readManifestPages(t *testing.T, root, manifest, field string) []string {
+	t.Helper()
+	b, err := os.ReadFile(filepath.Join(root, manifest))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var rows []map[string]any
+	if err := json.Unmarshal(b, &rows); err != nil {
+		t.Fatal(err)
+	}
+	var out []string
+	for _, r := range rows {
+		if v, ok := r[field].(string); ok && strings.HasPrefix(v, "docs/demos/") {
+			out = append(out, v)
+		}
+	}
+	return out
 }

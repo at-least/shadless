@@ -30,6 +30,7 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"sync"
 )
 
 // A classification pattern. Exactly one of tool/note/owner is set, matching
@@ -120,6 +121,19 @@ var programmaticPatterns = []boundaryPattern{
 		return strings.HasPrefix(p, "docs/demos/") && reRtlVariant.MatchString(p)
 	},
 		tool: "tools/build-rtl.mjs", source: "examples/aria/<name>-rtl.tsx"},
+	// The rest of docs/demos was classified as hand-authored, and 331 of the
+	// 429 files are not: example-oracle renders each upstream example with
+	// React and writes the page, and example-fixture wires the ones carrying a
+	// kernel family. Both record what they wrote, so ownership is read from
+	// those manifests rather than guessed from the path — a guess is what got
+	// this wrong, and it made the boundary audit claim no tool owned files a
+	// tool had just written.
+	{match: inManifest("docs/example-fixture-targets.json", "name"),
+		tool:   "tools/example-fixture.mjs",
+		source: "the React oracle render, with kernel-family JS wired in"},
+	{match: inManifest("docs/example-oracle.json", "out"),
+		tool:   "tools/example-oracle.mjs",
+		source: "examples/radix/<name>.tsx, rendered with real React"},
 	// dist CSS / JS — tailwind + copy
 	{match: oneOf("dist/out.css", "dist/globals.css", "dist/shadless.css", "dist/shadless-core.css"),
 		tool:   "npx @tailwindcss/cli (via make demo / make docs)",
@@ -159,15 +173,12 @@ var handAuthoredPatterns = []boundaryPattern{
 	// Vendor files (vendored from upstream release artifacts)
 	{match: oneOf("vendor/radix-kernel.iife.js"), owner: "human (vendor)"},
 	{match: oneOf("vendor/embla-carousel.iife.js"), owner: "human (vendor)"},
-	// docs/demos — Arabic RTL defaults + variant demos (FT7 batches)
-	{match: func(p string) bool {
-		return strings.HasPrefix(p, "docs/demos/") && strings.HasSuffix(p, "-rtl.html")
-	},
-		owner: "human (FT7 Arabic RTL defaults)"},
+	// what neither manifest claims: the examples no oracle can bundle
+	// (external deps, recorded in the golden exemptions)
 	{match: func(p string) bool {
 		return strings.HasPrefix(p, "docs/demos/") && !strings.Contains(p, "-rtl")
 	},
-		owner: "human (FT7 hand-authored demos)"},
+		owner: "human (examples the oracle cannot bundle — see the golden exemptions)"},
 	// Guide source content (consumed by docs-build)
 	{match: prefixSuffix("docs/content/", ".mdx"),
 		owner: "human (guide source — compiled by docs-build into docs/site/)"},
@@ -201,7 +212,7 @@ var llmPatchPoints = []llmPatchPoint{
 	{"tools/demo.mjs", "~127-230",
 		"Per-tier HTML fixtures (dialogDemoHtml, fieldDemoHtml, etc.) — kernel/trivial-js components get static HTML hand-written here; consumed by tools/demo.mjs."},
 	{"docs/demos/", "(directory)",
-		"300+ hand-authored demo HTML files (FT7 batches; docs/demos/*-rtl-{he,en,fa}.html are build-rtl vendor outputs). NO tool owns the rest currently — they're static templates. To make programmatic, extend tools/build-demo.mjs to emit each variant from upstream examples/radix/<name>-<variant>.tsx."},
+		"Almost all of this is generated: example-oracle writes 226 pages from the React render, example-fixture 105 more with kernel-family JS wired in, build-rtl the *-rtl-{he,en,fa} variants. What is left hand-authored is the message-scroller family, whose examples the oracle cannot bundle (external deps) and which is recorded in the golden exemptions and in interactivity-sweep's KNOWN_DEAD."},
 }
 
 // ---------------------------------------------------------------- scan
@@ -790,4 +801,66 @@ func runAuditBoundary(args []string) int {
 		}
 	}
 	return 0
+}
+
+// inManifest matches a path a tool recorded as its own output.
+//
+// The alternative is guessing from the path, and that guess is what made this
+// audit report 331 generated files as owned by nobody: docs/demos looked
+// hand-authored because most of it once was. A tool that writes a manifest is
+// telling you what it owns; reading that is both correct today and correct
+// after the tool's coverage changes.
+//
+// `field` is the key holding the path or the page name — example-oracle
+// records {name, out} and example-fixture records {name}. A manifest that
+// cannot be read matches nothing, so a missing file degrades to "unknown"
+// rather than to a false claim of ownership.
+func inManifest(manifest, field string) func(string) bool {
+	var mu sync.Mutex
+	var owned map[string]bool
+	return func(p string) bool {
+		mu.Lock()
+		defer mu.Unlock()
+		if owned == nil {
+			// Only a SUCCESSFUL read is remembered. Caching the failure meant
+			// one call made before the working directory was the repo root
+			// poisoned every later call with an empty set, and every generated
+			// page came back unowned.
+			//
+			// The root is found by walking up rather than taken from the cwd,
+			// so this behaves the same whether it runs from the repo root (the
+			// audit) or from pipeline/ (go test).
+			cwd, err := os.Getwd()
+			if err != nil {
+				return false
+			}
+			root, err := findRepoRoot(cwd)
+			if err != nil {
+				return false
+			}
+			b, err := os.ReadFile(filepath.Join(root, manifest))
+			if err != nil {
+				return false
+			}
+			var rows []map[string]any
+			if err := json.Unmarshal(b, &rows); err != nil {
+				return false
+			}
+			m := map[string]bool{}
+			for _, r := range rows {
+				v, ok := r[field].(string)
+				if !ok {
+					continue
+				}
+				// "out" is already a repo path; "name" is a page stem
+				if strings.Contains(v, "/") {
+					m[v] = true
+				} else {
+					m["docs/demos/"+v+".html"] = true
+				}
+			}
+			owned = m
+		}
+		return owned[p]
+	}
 }
