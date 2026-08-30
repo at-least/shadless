@@ -11,9 +11,19 @@ propagates by construction — there is no second mechanism, and no special case
 for the shadcn pin (it is just a file that some node declares as an input).
 
     pipeline plan   <tier|node…>          the closure, topologically sorted
+    pipeline list   <tier|node…>          the closure, annotated, no execution
     pipeline status <tier|node…>          fresh / STALE / NEVER-FRESH per node
     pipeline run    [--force] <tier|node…>  run the stale ones, stamp on success
     pipeline adopt  <tier|node…>          record current keys WITHOUT running
+
+A target is a tier (`fast|medium|full`), `builds`, `all`, or node ids;
+`--gates-only` / `--builds-only` filter the resolved plan and `--keep-going`
+runs past the first red, writing `build/gates/run-report.json` (which the
+re-pin drill reads to classify each failure).
+
+**Which tools are Go and which are still JS — and why — is [PORT.md](PORT.md).**
+Read it before porting anything else: the four toolchains that cannot move are
+listed there with the measurements behind each.
 
     PIPELINE_PARALLEL=<n>       concurrency (default: NumCPU)
     PIPELINE_FAILURES=continue  keep going past a failed node

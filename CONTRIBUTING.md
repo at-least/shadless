@@ -51,6 +51,10 @@ demo pages; only the full demo build restores them).
   runtime protocol text comes from `tools/fixture-families.mjs` (the same
   tables that generate the fixtures). Hand-authored demos live in
   `docs/demos/`.
+The Go/JS split in this repo is deliberate and documented in
+[pipeline/PORT.md](pipeline/PORT.md); a tool moves to Go when Go can produce
+the same bytes, and the four toolchains that cannot are listed there.
+
 - **A new gate** — a node in `pipeline/nodes.go` with a `Why`, at least one
   mutation under `gates/mutations/` that makes it fail, and a tier. `make
   meta` rejects anything less.
