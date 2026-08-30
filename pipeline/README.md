@@ -115,7 +115,6 @@ assert and produce nothing):
     pipeline product-css                            was tools/product-css.mjs
     pipeline docs-catalog                           was tools/docs-catalog.mjs
     pipeline ir-diff <ref>|<a> <b> [--json]         was gates/ir-diff.mjs
-    pipeline hooks [--uninstall]                    was tools/git-hooks/install.mjs
     pipeline pin [--check-only]                     was gates/pin.mjs
 
     TestPin TestDistComplete TestPack TestCoverage TestReproducible

@@ -13,7 +13,6 @@ ledger entry with a reason.
 npm ci
 npx playwright install --with-deps chromium   # the full tier renders in chromium
 node tools/pin.mjs                            # clones the pinned upstream into .upstream/
-make hooks                                    # pre-commit = fast tier, pre-push = medium
 ```
 
 ## The loop

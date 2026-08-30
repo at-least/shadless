@@ -143,7 +143,6 @@ make medium     # + convert/emit, ~10s (pre-push hook)
 make meta       # prove every gate can fail
 make only ID=path-parity        # one gate + exactly what it needs
 make list       # the graph
-make hooks      # install pre-commit / pre-push
 ```
 
 Upstream upgrades: `make upstream TO=shadcn@X.Y.Z` — see `UPGRADING.md`.

@@ -22,7 +22,7 @@
 # every node whose outputs are committed.
 #   make upstream TO=shadcn@X.Y.Z   re-pin drill: pin, dissolve, rebuild, classify
 #   make overlay-tasks              task packets for stale/orphaned manual work
-#   make serve / clean / hooks
+#   make serve / clean
 
 .DEFAULT_GOAL := build
 NODE   := node
@@ -36,7 +36,7 @@ PIPELINE := build/pipeline
 .PHONY: build verify fast medium full all meta only list pipeline \
         pin ledger ledger-render overlay overlay-record overlay-tasks \
         upstream upstream-snapshot reproducible \
-        hooks hooks-uninstall audit-boundary ir-diff serve clean help
+        audit-boundary ir-diff serve clean help
 
 # ----- the pipeline -------------------------------------------------------
 $(PIPELINE): $(wildcard pipeline/*.go) pipeline/go.mod
@@ -115,12 +115,6 @@ reproducible:
 	go test -C pipeline -count=1 -v -run '^TestReproducible$$' .
 
 # ----- housekeeping --------------------------------------------------------
-hooks: $(PIPELINE)
-	./$(PIPELINE) hooks
-
-hooks-uninstall: $(PIPELINE)
-	./$(PIPELINE) hooks --uninstall
-
 audit-boundary: $(PIPELINE)
 	./$(PIPELINE) audit-boundary
 

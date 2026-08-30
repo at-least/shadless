@@ -172,7 +172,6 @@ var handAuthoredPatterns = []boundaryPattern{
 	{match: prefixSuffix("docs/content/", ".mdx"),
 		owner: "human (guide source — compiled by docs-build into docs/site/)"},
 	{match: oneOf("docs/content-map.json"), owner: "human (FT7 build state)"},
-	{match: oneOf("tools/git-hooks/pre-commit"), owner: "human (git hook shell script)"},
 	// Pin tracking
 	{match: oneOf("src/registry/pin.json"),
 		owner: "pipeline upstream (re-pin) / human (vendor re-hash via ./build/pipeline pin --force)"},
