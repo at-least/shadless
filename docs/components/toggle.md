@@ -9,14 +9,18 @@ A two-state button that can be either on or off.
 
 <p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/toggle" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/toggle#api-reference" rel="noopener">api</a></p>
 
+::::demo toggle-demo
 <iframe class="demo" src="/demos/toggle-demo.html" title="toggle-demo" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/toggle-demo.html">Open the demo page</a></p>
+
+::: code-group
+```text [toggle-demo.html]
 <button type="button" aria-pressed="false" data-state="off" data-slot="toggle" class="hover:text-foreground aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted gap-1 font-medium transition-all group/toggle inline-flex items-center justify-center whitespace-nowrap outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-input hover:bg-muted border bg-transparent h-7 min-w-7 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&amp;_svg:not([class*='size-'])]:size-3.5" aria-label="Toggle bookmark"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark group-data-[state=on]/toggle:fill-foreground"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>Bookmark</button>
 ```
 :::
+
+::::
 
 
 ## Installation
@@ -74,66 +78,86 @@ runtime drives. The component's API axes are data attributes:
 
 Use `variant="outline"` for an outline style.
 
+::::demo toggle-outline
 <iframe class="demo" src="/demos/toggle-outline.html" title="toggle-outline" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/toggle-outline.html">Open the demo page</a></p>
+
+::: code-group
+```text [toggle-outline.html]
 <div class="flex flex-wrap items-center gap-2"><button type="button" aria-pressed="false" data-state="off" data-slot="toggle" class="hover:text-foreground aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted gap-1 rounded-lg text-sm font-medium transition-all [&amp;_svg:not([class*='size-'])]:size-4 group/toggle inline-flex items-center justify-center whitespace-nowrap outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-input hover:bg-muted border bg-transparent h-8 min-w-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2" aria-label="Toggle italic"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-italic"><line x1="19" x2="10" y1="4" y2="4"></line><line x1="14" x2="5" y1="20" y2="20"></line><line x1="15" x2="9" y1="4" y2="20"></line></svg>Italic</button><button type="button" aria-pressed="false" data-state="off" data-slot="toggle" class="hover:text-foreground aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted gap-1 rounded-lg text-sm font-medium transition-all [&amp;_svg:not([class*='size-'])]:size-4 group/toggle inline-flex items-center justify-center whitespace-nowrap outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-input hover:bg-muted border bg-transparent h-8 min-w-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2" aria-label="Toggle bold"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bold"><path d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8"></path></svg>Bold</button></div>
 ```
 :::
 
+::::
+
 
 ## With Text
 
+::::demo toggle-text
 <iframe class="demo" src="/demos/toggle-text.html" title="toggle-text" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/toggle-text.html">Open the demo page</a></p>
+
+::: code-group
+```text [toggle-text.html]
 <button type="button" aria-pressed="false" data-state="off" data-slot="toggle" class="hover:text-foreground aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted gap-1 rounded-lg text-sm font-medium transition-all [&amp;_svg:not([class*='size-'])]:size-4 group/toggle inline-flex items-center justify-center whitespace-nowrap outline-none hover:bg-muted focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 bg-transparent h-8 min-w-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2" aria-label="Toggle italic"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-italic"><line x1="19" x2="10" y1="4" y2="4"></line><line x1="14" x2="5" y1="20" y2="20"></line><line x1="15" x2="9" y1="4" y2="20"></line></svg>Italic</button>
 ```
 :::
+
+::::
 
 
 ## Size
 
 Use the `size` prop to change the size of the toggle.
 
+::::demo toggle-sizes
 <iframe class="demo" src="/demos/toggle-sizes.html" title="toggle-sizes" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/toggle-sizes.html">Open the demo page</a></p>
+
+::: code-group
+```text [toggle-sizes.html]
 <div class="flex flex-wrap items-center gap-2"><button type="button" aria-pressed="false" data-state="off" data-slot="toggle" class="hover:text-foreground aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted gap-1 font-medium transition-all group/toggle inline-flex items-center justify-center whitespace-nowrap outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-input hover:bg-muted border bg-transparent h-7 min-w-7 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&amp;_svg:not([class*='size-'])]:size-3.5" aria-label="Toggle small">Small</button><button type="button" aria-pressed="false" data-state="off" data-slot="toggle" class="hover:text-foreground aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted gap-1 rounded-lg text-sm font-medium transition-all [&amp;_svg:not([class*='size-'])]:size-4 group/toggle inline-flex items-center justify-center whitespace-nowrap outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-input hover:bg-muted border bg-transparent h-8 min-w-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2" aria-label="Toggle default">Default</button><button type="button" aria-pressed="false" data-state="off" data-slot="toggle" class="hover:text-foreground aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted gap-1 rounded-lg text-sm font-medium transition-all [&amp;_svg:not([class*='size-'])]:size-4 group/toggle inline-flex items-center justify-center whitespace-nowrap outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-input hover:bg-muted border bg-transparent h-9 min-w-9 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2" aria-label="Toggle large">Large</button></div>
 ```
 :::
 
+::::
+
 
 ## Disabled
 
+::::demo toggle-disabled
 <iframe class="demo" src="/demos/toggle-disabled.html" title="toggle-disabled" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/toggle-disabled.html">Open the demo page</a></p>
+
+::: code-group
+```text [toggle-disabled.html]
 <div class="flex flex-wrap items-center gap-2"><button type="button" aria-pressed="false" data-state="off" data-disabled="" data-slot="toggle" class="hover:text-foreground aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted gap-1 rounded-lg text-sm font-medium transition-all [&amp;_svg:not([class*='size-'])]:size-4 group/toggle inline-flex items-center justify-center whitespace-nowrap outline-none hover:bg-muted focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 bg-transparent h-8 min-w-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2" aria-label="Toggle disabled" disabled="">Disabled</button><button type="button" aria-pressed="false" data-state="off" data-disabled="" data-slot="toggle" class="hover:text-foreground aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted gap-1 rounded-lg text-sm font-medium transition-all [&amp;_svg:not([class*='size-'])]:size-4 group/toggle inline-flex items-center justify-center whitespace-nowrap outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-input hover:bg-muted border bg-transparent h-8 min-w-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2" aria-label="Toggle disabled outline" disabled="">Disabled</button></div>
 ```
 :::
+
+::::
 
 
 ## RTL
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
+::::demo toggle-rtl
 <iframe class="demo" src="/demos/toggle-rtl.html" title="toggle-rtl" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page · HE · EN</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/toggle-rtl.html">Open the demo page</a> · <a href="/demos/toggle-rtl-he.html">HE</a> · <a href="/demos/toggle-rtl-en.html">EN</a></p>
+
+::: code-group
+```text [toggle-rtl.html]
 <button type="button" aria-pressed="false" data-state="off" data-slot="toggle" class="hover:text-foreground aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted gap-1 font-medium transition-all group/toggle inline-flex items-center justify-center whitespace-nowrap outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-input hover:bg-muted border bg-transparent h-7 min-w-7 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pe-1.5 has-data-[icon=inline-start]:ps-1.5 [&amp;_svg:not([class*='size-'])]:size-3.5" aria-label="Toggle bookmark" dir="rtl"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark group-aria-pressed/toggle:fill-foreground"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>إشارة مرجعية</button>
 ```
 :::
+
+::::
 
 
 ## API Reference

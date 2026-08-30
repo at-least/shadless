@@ -9,10 +9,10 @@ A window overlaid on either the primary window or another dialog window, renderi
 
 <p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/dialog" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/dialog#api-reference" rel="noopener">api</a></p>
 
+::::demo dialog-demo
 <iframe class="demo" src="/demos/dialog.html" title="dialog-demo" data-status="existing-dist" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/dialog.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [dialog.html]
@@ -177,10 +177,10 @@ dialog
 
 Replace the default close control with your own button.
 
+::::demo dialog-close-button
 <iframe class="demo" src="/demos/dialog-close-button.html" title="dialog-close-button" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/dialog-close-button.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [dialog-close-button.html]
@@ -276,10 +276,10 @@ Replace the default close control with your own button.
 
 Use `showCloseButton={false}` to hide the close button.
 
+::::demo dialog-no-close-button
 <iframe class="demo" src="/demos/dialog-no-close-button.html" title="dialog-no-close-button" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/dialog-no-close-button.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [dialog-no-close-button.html]
@@ -375,10 +375,10 @@ Use `showCloseButton={false}` to hide the close button.
 
 Keep actions visible while the content scrolls.
 
+::::demo dialog-sticky-footer
 <iframe class="demo" src="/demos/dialog-sticky-footer.html" title="dialog-sticky-footer" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/dialog-sticky-footer.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [dialog-sticky-footer.html]
@@ -474,10 +474,10 @@ Keep actions visible while the content scrolls.
 
 Long content can scroll while the header stays in view.
 
+::::demo dialog-scrollable-content
 <iframe class="demo" src="/demos/dialog-scrollable-content.html" title="dialog-scrollable-content" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/dialog-scrollable-content.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [dialog-scrollable-content.html]
@@ -573,10 +573,10 @@ Long content can scroll while the header stays in view.
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
+::::demo dialog-rtl
 <iframe class="demo" src="/demos/dialog-rtl.html" title="dialog-rtl" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page · HE · EN</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/dialog-rtl.html">Open the demo page</a> · <a href="/demos/dialog-rtl-he.html">HE</a> · <a href="/demos/dialog-rtl-en.html">EN</a></p>
 
 ::: code-group
 ```text [dialog-rtl.html]

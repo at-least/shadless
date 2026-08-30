@@ -9,10 +9,10 @@ Displays a menu of actions triggered by a right click.
 
 <p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/context-menu" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/context-menu#api-reference" rel="noopener">api</a></p>
 
+::::demo context-menu-demo
 <iframe class="demo" src="/demos/context-menu.html" title="context-menu-demo" data-status="existing-dist" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/context-menu.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [context-menu.html]
@@ -229,10 +229,10 @@ context-menu
 
 A simple context menu with a few actions.
 
+::::demo context-menu-basic
 <iframe class="demo" src="/demos/context-menu-basic.html" title="context-menu-basic" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/context-menu-basic.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [context-menu-basic.html]
@@ -362,10 +362,10 @@ A simple context menu with a few actions.
 
 Use `ContextMenuSub` to nest secondary actions.
 
+::::demo context-menu-submenu
 <iframe class="demo" src="/demos/context-menu-submenu.html" title="context-menu-submenu" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/context-menu-submenu.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [context-menu-submenu.html]
@@ -498,10 +498,10 @@ Use `ContextMenuSub` to nest secondary actions.
 
 Add `ContextMenuShortcut` to show keyboard hints.
 
+::::demo context-menu-shortcuts
 <iframe class="demo" src="/demos/context-menu-shortcuts.html" title="context-menu-shortcuts" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/context-menu-shortcuts.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [context-menu-shortcuts.html]
@@ -631,10 +631,10 @@ Add `ContextMenuShortcut` to show keyboard hints.
 
 Group related actions and separate them with dividers.
 
+::::demo context-menu-groups
 <iframe class="demo" src="/demos/context-menu-groups.html" title="context-menu-groups" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/context-menu-groups.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [context-menu-groups.html]
@@ -764,10 +764,10 @@ Group related actions and separate them with dividers.
 
 Combine icons with labels for quick scanning.
 
+::::demo context-menu-icons
 <iframe class="demo" src="/demos/context-menu-icons.html" title="context-menu-icons" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/context-menu-icons.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [context-menu-icons.html]
@@ -897,10 +897,10 @@ Combine icons with labels for quick scanning.
 
 Use `ContextMenuCheckboxItem` for toggles.
 
+::::demo context-menu-checkboxes
 <iframe class="demo" src="/demos/context-menu-checkboxes.html" title="context-menu-checkboxes" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/context-menu-checkboxes.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [context-menu-checkboxes.html]
@@ -1030,10 +1030,10 @@ Use `ContextMenuCheckboxItem` for toggles.
 
 Use `ContextMenuRadioItem` for exclusive choices.
 
+::::demo context-menu-radio
 <iframe class="demo" src="/demos/context-menu-radio.html" title="context-menu-radio" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/context-menu-radio.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [context-menu-radio.html]
@@ -1163,10 +1163,10 @@ Use `ContextMenuRadioItem` for exclusive choices.
 
 Use `variant="destructive"` to style the menu item as destructive.
 
+::::demo context-menu-destructive
 <iframe class="demo" src="/demos/context-menu-destructive.html" title="context-menu-destructive" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/context-menu-destructive.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [context-menu-destructive.html]
@@ -1296,10 +1296,10 @@ Use `variant="destructive"` to style the menu item as destructive.
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
+::::demo context-menu-rtl
 <iframe class="demo" src="/demos/context-menu-rtl.html" title="context-menu-rtl" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page · HE · EN</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/context-menu-rtl.html">Open the demo page</a> · <a href="/demos/context-menu-rtl-he.html">HE</a> · <a href="/demos/context-menu-rtl-en.html">EN</a></p>
 
 ::: code-group
 ```text [context-menu-rtl.html]

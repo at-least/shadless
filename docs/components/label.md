@@ -9,14 +9,18 @@ Renders an accessible label associated with controls.
 
 <p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/label" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/label#api-reference" rel="noopener">api</a></p>
 
+::::demo label-demo
 <iframe class="demo" src="/demos/label-demo.html" title="label-demo" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/label-demo.html">Open the demo page</a></p>
+
+::: code-group
+```text [label-demo.html]
 <div class="flex gap-2"><button type="button" role="checkbox" aria-checked="false" data-state="unchecked" value="on" data-slot="checkbox" class="border-input dark:bg-input/30 data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 flex size-4 items-center justify-center rounded-[4px] border transition-colors group-has-disabled/field:opacity-50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative shrink-0 outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50" id="terms"></button><label data-slot="label" class="gap-2 text-sm leading-none font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 flex items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed" for="terms">Accept terms and conditions</label></div>
 ```
 :::
+
+::::
 
 
 ::: tip
@@ -74,10 +78,10 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
 </Field>
 ```
 
+::::demo field-demo
 <iframe class="demo" src="/demos/field-demo.html" title="field-demo" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/field-demo.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [field-demo.html]
@@ -236,14 +240,18 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
+::::demo label-rtl
 <iframe class="demo" src="/demos/label-rtl.html" title="label-rtl" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page · HE · EN</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/label-rtl.html">Open the demo page</a> · <a href="/demos/label-rtl-he.html">HE</a> · <a href="/demos/label-rtl-en.html">EN</a></p>
+
+::: code-group
+```text [label-rtl.html]
 <div class="flex gap-2" dir="rtl"><button type="button" role="checkbox" aria-checked="false" data-state="unchecked" value="on" data-slot="checkbox" class="border-input dark:bg-input/30 data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 flex size-4 items-center justify-center rounded-[4px] border transition-colors group-has-disabled/field:opacity-50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative shrink-0 outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50" id="terms-rtl" dir="rtl"></button><label data-slot="label" class="gap-2 text-sm leading-none font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 flex items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed" for="terms-rtl" dir="rtl">قبول الشروط والأحكام</label></div>
 ```
 :::
+
+::::
 
 
 ## API Reference

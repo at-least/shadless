@@ -9,10 +9,10 @@ Augments native scroll functionality for custom, cross-browser styling.
 
 <p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/scroll-area" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/scroll-area#api-reference" rel="noopener">api</a></p>
 
+::::demo scroll-area-demo
 <iframe class="demo" src="/demos/scroll-area.html" title="scroll-area-demo" data-status="existing-dist" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/scroll-area.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [scroll-area.html]
@@ -118,10 +118,10 @@ scroll-area
 
 Use `ScrollBar` with `orientation="horizontal"` for horizontal scrolling.
 
+::::demo scroll-area-horizontal-demo
 <iframe class="demo" src="/demos/scroll-area-horizontal-demo.html" title="scroll-area-horizontal-demo" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/scroll-area-horizontal-demo.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [scroll-area-horizontal-demo.html]
@@ -166,10 +166,10 @@ Use `ScrollBar` with `orientation="horizontal"` for horizontal scrolling.
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
+::::demo scroll-area-rtl
 <iframe class="demo" src="/demos/scroll-area-rtl.html" title="scroll-area-rtl" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page · HE · EN</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/scroll-area-rtl.html">Open the demo page</a> · <a href="/demos/scroll-area-rtl-he.html">HE</a> · <a href="/demos/scroll-area-rtl-en.html">EN</a></p>
 
 ::: code-group
 ```text [scroll-area-rtl.html]

@@ -9,10 +9,10 @@ Displays a menu to the user — such as a set of actions or functions — trigge
 
 <p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/dropdown-menu" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/dropdown-menu#api-reference" rel="noopener">api</a></p>
 
+::::demo dropdown-menu-demo
 <iframe class="demo" src="/demos/dropdown-menu.html" title="dropdown-menu-demo" data-status="existing-dist" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/dropdown-menu.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [dropdown-menu.html]
@@ -230,10 +230,10 @@ dropdown-menu
 
 A basic dropdown menu with labels and separators.
 
+::::demo dropdown-menu-basic
 <iframe class="demo" src="/demos/dropdown-menu-basic.html" title="dropdown-menu-basic" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/dropdown-menu-basic.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [dropdown-menu-basic.html]
@@ -363,10 +363,10 @@ A basic dropdown menu with labels and separators.
 
 Use `DropdownMenuSub` to nest secondary actions.
 
+::::demo dropdown-menu-submenu
 <iframe class="demo" src="/demos/dropdown-menu-submenu.html" title="dropdown-menu-submenu" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/dropdown-menu-submenu.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [dropdown-menu-submenu.html]
@@ -502,10 +502,10 @@ Use `DropdownMenuSub` to nest secondary actions.
 
 Add `DropdownMenuShortcut` to show keyboard hints.
 
+::::demo dropdown-menu-shortcuts
 <iframe class="demo" src="/demos/dropdown-menu-shortcuts.html" title="dropdown-menu-shortcuts" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/dropdown-menu-shortcuts.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [dropdown-menu-shortcuts.html]
@@ -635,10 +635,10 @@ Add `DropdownMenuShortcut` to show keyboard hints.
 
 Combine icons with labels for quick scanning.
 
+::::demo dropdown-menu-icons
 <iframe class="demo" src="/demos/dropdown-menu-icons.html" title="dropdown-menu-icons" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/dropdown-menu-icons.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [dropdown-menu-icons.html]
@@ -768,10 +768,10 @@ Combine icons with labels for quick scanning.
 
 Use `DropdownMenuCheckboxItem` for toggles.
 
+::::demo dropdown-menu-checkboxes
 <iframe class="demo" src="/demos/dropdown-menu-checkboxes.html" title="dropdown-menu-checkboxes" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/dropdown-menu-checkboxes.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [dropdown-menu-checkboxes.html]
@@ -901,10 +901,10 @@ Use `DropdownMenuCheckboxItem` for toggles.
 
 Add icons to checkbox items.
 
+::::demo dropdown-menu-checkboxes-icons
 <iframe class="demo" src="/demos/dropdown-menu-checkboxes-icons.html" title="dropdown-menu-checkboxes-icons" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/dropdown-menu-checkboxes-icons.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [dropdown-menu-checkboxes-icons.html]
@@ -1034,10 +1034,10 @@ Add icons to checkbox items.
 
 Use `DropdownMenuRadioGroup` for exclusive choices.
 
+::::demo dropdown-menu-radio-group
 <iframe class="demo" src="/demos/dropdown-menu-radio-group.html" title="dropdown-menu-radio-group" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/dropdown-menu-radio-group.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [dropdown-menu-radio-group.html]
@@ -1167,10 +1167,10 @@ Use `DropdownMenuRadioGroup` for exclusive choices.
 
 Show radio options with icons.
 
+::::demo dropdown-menu-radio-icons
 <iframe class="demo" src="/demos/dropdown-menu-radio-icons.html" title="dropdown-menu-radio-icons" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/dropdown-menu-radio-icons.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [dropdown-menu-radio-icons.html]
@@ -1300,10 +1300,10 @@ Show radio options with icons.
 
 Use `variant="destructive"` for irreversible actions.
 
+::::demo dropdown-menu-destructive
 <iframe class="demo" src="/demos/dropdown-menu-destructive.html" title="dropdown-menu-destructive" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/dropdown-menu-destructive.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [dropdown-menu-destructive.html]
@@ -1433,10 +1433,10 @@ Use `variant="destructive"` for irreversible actions.
 
 An account switcher dropdown triggered by an avatar.
 
+::::demo dropdown-menu-avatar
 <iframe class="demo" src="/demos/dropdown-menu-avatar.html" title="dropdown-menu-avatar" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/dropdown-menu-avatar.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [dropdown-menu-avatar.html]
@@ -1591,10 +1591,10 @@ An account switcher dropdown triggered by an avatar.
 
 A richer example combining groups, icons, and submenus.
 
+::::demo dropdown-menu-complex
 <iframe class="demo" src="/demos/dropdown-menu-complex.html" title="dropdown-menu-complex" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/dropdown-menu-complex.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [dropdown-menu-complex.html]
@@ -1739,10 +1739,10 @@ A richer example combining groups, icons, and submenus.
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
+::::demo dropdown-menu-rtl
 <iframe class="demo" src="/demos/dropdown-menu-rtl.html" title="dropdown-menu-rtl" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page · HE · EN</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/dropdown-menu-rtl.html">Open the demo page</a> · <a href="/demos/dropdown-menu-rtl-he.html">HE</a> · <a href="/demos/dropdown-menu-rtl-en.html">EN</a></p>
 
 ::: code-group
 ```text [dropdown-menu-rtl.html]

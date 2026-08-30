@@ -9,10 +9,10 @@ A carousel with motion and swipe built using Embla.
 
 <p class="page-links"><a href="https://www.embla-carousel.com/get-started/react" rel="noopener">doc</a> · <a href="https://www.embla-carousel.com/api" rel="noopener">api</a></p>
 
+::::demo carousel-demo
 <iframe class="demo" src="/demos/carousel-demo.html" title="carousel-demo" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/carousel-demo.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [carousel-demo.html]
@@ -1774,10 +1774,10 @@ carousel
 
 To set the size of the items, you can use the `basis` utility class on the `<CarouselItem />`.
 
+::::demo carousel-size
 <iframe class="demo" src="/demos/carousel-size.html" title="carousel-size" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/carousel-size.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [carousel-size.html]
@@ -3492,10 +3492,10 @@ To set the size of the items, you can use the `basis` utility class on the `<Car
 
 To set the spacing between the items, we use a `pl-[VALUE]` utility on the `<CarouselItem />` and a negative `-ml-[VALUE]` on the `<CarouselContent />`.
 
+::::demo carousel-spacing
 <iframe class="demo" src="/demos/carousel-spacing.html" title="carousel-spacing" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/carousel-spacing.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [carousel-spacing.html]
@@ -5208,10 +5208,10 @@ To set the spacing between the items, we use a `pl-[VALUE]` utility on the `<Car
 
 Use the `orientation` prop to set the orientation of the carousel.
 
+::::demo carousel-orientation
 <iframe class="demo" src="/demos/carousel-orientation.html" title="carousel-orientation" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/carousel-orientation.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [carousel-orientation.html]
@@ -6933,10 +6933,10 @@ You can pass options to the carousel using the `opts` prop. See the [Embla Carou
 
 Use a state and the `setApi` props to get an instance of the carousel API.
 
+::::demo carousel-api
 <iframe class="demo" src="/demos/carousel-api.html" title="carousel-api" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/carousel-api.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [carousel-api.html]
@@ -8657,10 +8657,10 @@ export function Example() {
 }
 ```
 
+::::demo carousel-plugin
 <iframe class="demo" src="/demos/carousel-plugin.html" title="carousel-plugin" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/carousel-plugin.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [carousel-plugin.html]
@@ -10353,10 +10353,10 @@ export function Example() {
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
+::::demo carousel-rtl
 <iframe class="demo" src="/demos/carousel-rtl.html" title="carousel-rtl" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page · HE · EN</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/carousel-rtl.html">Open the demo page</a> · <a href="/demos/carousel-rtl-he.html">HE</a> · <a href="/demos/carousel-rtl-en.html">EN</a></p>
 
 ::: code-group
 ```text [carousel-rtl.html]

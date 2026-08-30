@@ -9,10 +9,10 @@ A set of layered sections of content—known as tab panels—that are displayed 
 
 <p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/tabs" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/tabs#api-reference" rel="noopener">api</a></p>
 
+::::demo tabs-demo
 <iframe class="demo" src="/demos/tabs.html" title="tabs-demo" data-status="existing-dist" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/tabs.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [tabs.html]
@@ -207,10 +207,10 @@ tabs
 
 Use the `variant="line"` prop on `TabsList` for a line style.
 
+::::demo tabs-line
 <iframe class="demo" src="/demos/tabs-line.html" title="tabs-line" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/tabs-line.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [tabs-line.html]
@@ -334,10 +334,10 @@ Use the `variant="line"` prop on `TabsList` for a line style.
 
 Use `orientation="vertical"` for vertical tabs.
 
+::::demo tabs-vertical
 <iframe class="demo" src="/demos/tabs-vertical.html" title="tabs-vertical" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/tabs-vertical.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [tabs-vertical.html]
@@ -459,10 +459,10 @@ Use `orientation="vertical"` for vertical tabs.
 
 ## Disabled
 
+::::demo tabs-disabled
 <iframe class="demo" src="/demos/tabs-disabled.html" title="tabs-disabled" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/tabs-disabled.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [tabs-disabled.html]
@@ -584,10 +584,10 @@ Use `orientation="vertical"` for vertical tabs.
 
 ## Icons
 
+::::demo tabs-icons
 <iframe class="demo" src="/demos/tabs-icons.html" title="tabs-icons" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/tabs-icons.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [tabs-icons.html]
@@ -711,10 +711,10 @@ Use `orientation="vertical"` for vertical tabs.
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
+::::demo tabs-rtl
 <iframe class="demo" src="/demos/tabs-rtl.html" title="tabs-rtl" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page · HE · EN</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/tabs-rtl.html">Open the demo page</a> · <a href="/demos/tabs-rtl-he.html">HE</a> · <a href="/demos/tabs-rtl-en.html">EN</a></p>
 
 ::: code-group
 ```text [tabs-rtl.html]

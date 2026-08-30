@@ -9,10 +9,10 @@ A modal dialog that interrupts the user with important content and expects a res
 
 <p class="page-links"><a href="https://www.radix-ui.com/primitives/docs/components/alert-dialog" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/primitives/docs/components/alert-dialog#api-reference" rel="noopener">api</a></p>
 
+::::demo alert-dialog-demo
 <iframe class="demo" src="/demos/alert-dialog.html" title="alert-dialog-demo" data-status="existing-dist" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/alert-dialog.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [alert-dialog.html]
@@ -184,10 +184,10 @@ alert-dialog
 
 A basic alert dialog with a title, description, and cancel and continue buttons.
 
+::::demo alert-dialog-basic
 <iframe class="demo" src="/demos/alert-dialog-basic.html" title="alert-dialog-basic" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/alert-dialog-basic.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [alert-dialog-basic.html]
@@ -287,10 +287,10 @@ A basic alert dialog with a title, description, and cancel and continue buttons.
 
 Use the `size="sm"` prop to make the alert dialog smaller.
 
+::::demo alert-dialog-small
 <iframe class="demo" src="/demos/alert-dialog-small.html" title="alert-dialog-small" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/alert-dialog-small.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [alert-dialog-small.html]
@@ -390,10 +390,10 @@ Use the `size="sm"` prop to make the alert dialog smaller.
 
 Use the `AlertDialogMedia` component to add a media element such as an icon or image to the alert dialog.
 
+::::demo alert-dialog-media
 <iframe class="demo" src="/demos/alert-dialog-media.html" title="alert-dialog-media" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/alert-dialog-media.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [alert-dialog-media.html]
@@ -493,10 +493,10 @@ Use the `AlertDialogMedia` component to add a media element such as an icon or i
 
 Use the `size="sm"` prop to make the alert dialog smaller and the `AlertDialogMedia` component to add a media element such as an icon or image to the alert dialog.
 
+::::demo alert-dialog-small-media
 <iframe class="demo" src="/demos/alert-dialog-small-media.html" title="alert-dialog-small-media" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/alert-dialog-small-media.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [alert-dialog-small-media.html]
@@ -596,10 +596,10 @@ Use the `size="sm"` prop to make the alert dialog smaller and the `AlertDialogMe
 
 Use the `AlertDialogAction` component to add a destructive action button to the alert dialog.
 
+::::demo alert-dialog-destructive
 <iframe class="demo" src="/demos/alert-dialog-destructive.html" title="alert-dialog-destructive" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/alert-dialog-destructive.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [alert-dialog-destructive.html]
@@ -699,10 +699,10 @@ Use the `AlertDialogAction` component to add a destructive action button to the 
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
+::::demo alert-dialog-rtl
 <iframe class="demo" src="/demos/alert-dialog-rtl.html" title="alert-dialog-rtl" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page · HE · EN</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/alert-dialog-rtl.html">Open the demo page</a> · <a href="/demos/alert-dialog-rtl-he.html">HE</a> · <a href="/demos/alert-dialog-rtl-en.html">EN</a></p>
 
 ::: code-group
 ```text [alert-dialog-rtl.html]

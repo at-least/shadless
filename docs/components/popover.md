@@ -9,10 +9,10 @@ Displays rich content in a portal, triggered by a button.
 
 <p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/popover" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/popover#api-reference" rel="noopener">api</a></p>
 
+::::demo popover-demo
 <iframe class="demo" src="/demos/popover.html" title="popover-demo" data-status="existing-dist" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/popover.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [popover.html]
@@ -150,10 +150,10 @@ popover
 
 A simple popover with a header, title, and description.
 
+::::demo popover-basic
 <iframe class="demo" src="/demos/popover-basic.html" title="popover-basic" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/popover-basic.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [popover-basic.html]
@@ -226,10 +226,10 @@ A simple popover with a header, title, and description.
 
 Use the `align` prop on `PopoverContent` to control the horizontal alignment.
 
+::::demo popover-alignments
 <iframe class="demo" src="/demos/popover-alignments.html" title="popover-alignments" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/popover-alignments.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [popover-alignments.html]
@@ -308,10 +308,10 @@ Use the `align` prop on `PopoverContent` to control the horizontal alignment.
 
 A popover with form fields inside.
 
+::::demo popover-form
 <iframe class="demo" src="/demos/popover-form.html" title="popover-form" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/popover-form.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [popover-form.html]
@@ -384,10 +384,10 @@ A popover with form fields inside.
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
+::::demo popover-rtl
 <iframe class="demo" src="/demos/popover-rtl.html" title="popover-rtl" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page · HE · EN</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/popover-rtl.html">Open the demo page</a> · <a href="/demos/popover-rtl-he.html">HE</a> · <a href="/demos/popover-rtl-en.html">EN</a></p>
 
 ::: code-group
 ```text [popover-rtl.html]

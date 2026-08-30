@@ -161,14 +161,21 @@ function previewMarkdown(attrs, page) {
   // BASE file and the others carry a language suffix — the same rule the old
   // site's language buttons used (assets.mjs: `lang === 'ar' ? baseSrc : …`).
   // A picker would need script; markdown links reach the same files.
+  // anchors, not markdown links: this line is an html block, and markdown
+  // inside an html block is not parsed
   const others = (attrs.direction === 'rtl' ? (rtlLangs[name] ?? []) : [])
     .filter((l) => l !== 'ar')
-    .map((l) => `[${l.toUpperCase()}](/demos/${name}-${l}.html)`)
+    .map((l) => `<a href="/demos/${name}-${l}.html">${l.toUpperCase()}</a>`)
     .join(' · ')
+  // one card: the preview, then the demo's source under it — the shape
+  // upstream's ComponentPreview uses. `::::` because the source inside is a
+  // `:::` code-group.
   return [
-    `<iframe class="demo" src="/demos/${file}" title="${name}" data-status="${status}" loading="lazy"></iframe>`,
-    `\n<p class="demo-langs">[Open the demo page](/demos/${file})${others ? ` · ${others}` : ''}</p>\n`,
+    `::::demo ${name}\n`,
+    `<iframe class="demo" src="/demos/${file}" title="${name}" data-status="${status}" loading="lazy"></iframe>\n`,
+    `\n<p class="demo-langs"><a href="/demos/${file}">Open the demo page</a>${others ? ` · ${others}` : ''}</p>\n`,
     demoSource(name, file),
+    `\n::::\n`,
   ].join('')
 }
 
@@ -204,8 +211,8 @@ function demoSource(name, file) {
   // from 11 MB to 49 MB — the same blow-up that moved the old site's
   // highlighting into the browser (28386e6). The behavior file is short and
   // worth colouring.
-  if (!jsText) return `\n::: details Source\n\`\`\`text\n${markup}\n\`\`\`\n:::\n`
-  return `\n:::: details Source\n\n::: code-group\n\`\`\`text [${file}]\n${markup}\n\`\`\`\n\n\`\`\`js [behavior]\n${jsText}\n\`\`\`\n:::\n\n::::\n`
+  if (!jsText) return `\n::: code-group\n\`\`\`text [${file}]\n${markup}\n\`\`\`\n:::\n`
+  return `\n::: code-group\n\`\`\`text [${file}]\n${markup}\n\`\`\`\n\n\`\`\`js [behavior]\n${jsText}\n\`\`\`\n:::\n`
 }
 
 // <Callout variant="info" title="…"> … </Callout> → a VitePress container.
@@ -488,9 +495,13 @@ function buildPage(page) {
   body = convertKbd(body)
   body = convertLinkedCards(body)
   body = convertClassName(body)
+  // upstream's links are rewritten BEFORE the previews are injected: the
+  // rewriter greys every unroutable /-leading href, and the preview markdown
+  // carries our own (/demos/…), which would be greyed the moment it appeared
+  // in the text the rewriter sees.
+  body = rewriteLinks(body)
   body = replaceMarkup(body, /<ComponentPreview\b[\s\S]*?\/>/g,
     (whole) => previewMarkdown(parseAttrs(whole), page.name))
-  body = rewriteLinks(body)
   assertNoJsx(page.name, body)
 
   const title = fm.title ?? page.name

@@ -9,10 +9,10 @@ A popup that displays information related to an element when the element receive
 
 <p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/tooltip" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/tooltip#api-reference" rel="noopener">api</a></p>
 
+::::demo tooltip-demo
 <iframe class="demo" src="/demos/tooltip.html" title="tooltip-demo" data-status="existing-dist" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/tooltip.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [tooltip.html]
@@ -147,10 +147,10 @@ tooltip
 
 Use the `side` prop to change the position of the tooltip.
 
+::::demo tooltip-sides
 <iframe class="demo" src="/demos/tooltip-sides.html" title="tooltip-sides" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/tooltip-sides.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [tooltip-sides.html]
@@ -227,10 +227,10 @@ Use the `side` prop to change the position of the tooltip.
 
 ## With Keyboard Shortcut
 
+::::demo tooltip-keyboard
 <iframe class="demo" src="/demos/tooltip-keyboard.html" title="tooltip-keyboard" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/tooltip-keyboard.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [tooltip-keyboard.html]
@@ -300,10 +300,10 @@ Use the `side` prop to change the position of the tooltip.
 
 Show a tooltip on a disabled button by wrapping it with a span.
 
+::::demo tooltip-disabled
 <iframe class="demo" src="/demos/tooltip-disabled.html" title="tooltip-disabled" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/tooltip-disabled.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [tooltip-disabled.html]
@@ -373,10 +373,10 @@ Show a tooltip on a disabled button by wrapping it with a span.
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
+::::demo tooltip-rtl
 <iframe class="demo" src="/demos/tooltip-rtl.html" title="tooltip-rtl" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page · HE · EN</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/tooltip-rtl.html">Open the demo page</a> · <a href="/demos/tooltip-rtl-he.html">HE</a> · <a href="/demos/tooltip-rtl-en.html">EN</a></p>
 
 ::: code-group
 ```text [tooltip-rtl.html]

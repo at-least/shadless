@@ -11,10 +11,10 @@ shadless ships dark mode as CSS: `dist/out.css` defines every theme token as
 a CSS variable on `:root`, with a `.dark` override block. Dark mode is a
 class toggle — no provider, no framework.
 
+::::demo mode-toggle
 <iframe class="demo" src="/demos/mode-toggle.html" title="mode-toggle" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/mode-toggle.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [mode-toggle.html]

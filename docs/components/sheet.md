@@ -9,10 +9,10 @@ Extends the Dialog component to display content that complements the main conten
 
 <p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/dialog" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/dialog#api-reference" rel="noopener">api</a></p>
 
+::::demo sheet-demo
 <iframe class="demo" src="/demos/sheet.html" title="sheet-demo" data-status="existing-dist" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/sheet.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [sheet.html]
@@ -179,10 +179,10 @@ sheet
 
 Use the `side` prop on `SheetContent` to set the edge of the screen where the sheet appears. Values are `top`, `right`, `bottom`, or `left`.
 
+::::demo sheet-side
 <iframe class="demo" src="/demos/sheet-side.html" title="sheet-side" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/sheet-side.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [sheet-side.html]
@@ -280,10 +280,10 @@ Use the `side` prop on `SheetContent` to set the edge of the screen where the sh
 
 Use `showCloseButton={false}` on `SheetContent` to hide the close button.
 
+::::demo sheet-no-close-button
 <iframe class="demo" src="/demos/sheet-no-close-button.html" title="sheet-no-close-button" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/sheet-no-close-button.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [sheet-no-close-button.html]
@@ -381,10 +381,10 @@ Use `showCloseButton={false}` on `SheetContent` to hide the close button.
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
+::::demo sheet-rtl
 <iframe class="demo" src="/demos/sheet-rtl.html" title="sheet-rtl" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page · HE · EN</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/sheet-rtl.html">Open the demo page</a> · <a href="/demos/sheet-rtl-he.html">HE</a> · <a href="/demos/sheet-rtl-en.html">EN</a></p>
 
 ::: code-group
 ```text [sheet-rtl.html]

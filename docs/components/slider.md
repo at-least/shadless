@@ -9,10 +9,10 @@ An input where the user selects a value from within a given range.
 
 <p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/slider" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/slider#api-reference" rel="noopener">api</a></p>
 
+::::demo slider-demo
 <iframe class="demo" src="/demos/slider.html" title="slider-demo" data-status="existing-dist" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/slider.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [slider.html]
@@ -120,10 +120,10 @@ runtime drives.
 
 Use an array with two values for a range slider.
 
+::::demo slider-range
 <iframe class="demo" src="/demos/slider-range.html" title="slider-range" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/slider-range.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [slider-range.html]
@@ -177,10 +177,10 @@ Use an array with two values for a range slider.
 
 Use an array with multiple values for multiple thumbs.
 
+::::demo slider-multiple
 <iframe class="demo" src="/demos/slider-multiple.html" title="slider-multiple" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/slider-multiple.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [slider-multiple.html]
@@ -234,10 +234,10 @@ Use an array with multiple values for multiple thumbs.
 
 Use `orientation="vertical"` for a vertical slider.
 
+::::demo slider-vertical
 <iframe class="demo" src="/demos/slider-vertical.html" title="slider-vertical" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/slider-vertical.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [slider-vertical.html]
@@ -289,10 +289,10 @@ Use `orientation="vertical"` for a vertical slider.
 
 ## Controlled
 
+::::demo slider-controlled
 <iframe class="demo" src="/demos/slider-controlled.html" title="slider-controlled" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/slider-controlled.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [slider-controlled.html]
@@ -346,10 +346,10 @@ Use `orientation="vertical"` for a vertical slider.
 
 Use the `disabled` prop to disable the slider.
 
+::::demo slider-disabled
 <iframe class="demo" src="/demos/slider-disabled.html" title="slider-disabled" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/slider-disabled.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [slider-disabled.html]
@@ -403,10 +403,10 @@ Use the `disabled` prop to disable the slider.
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
+::::demo slider-rtl
 <iframe class="demo" src="/demos/slider-rtl.html" title="slider-rtl" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page · HE · EN</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/slider-rtl.html">Open the demo page</a> · <a href="/demos/slider-rtl-he.html">HE</a> · <a href="/demos/slider-rtl-en.html">EN</a></p>
 
 ::: code-group
 ```text [slider-rtl.html]

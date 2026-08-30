@@ -9,14 +9,18 @@ Displays an indicator showing the completion progress of a task, typically displ
 
 <p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/progress" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/progress#api-reference" rel="noopener">api</a></p>
 
+::::demo progress-demo
 <iframe class="demo" src="/demos/progress-demo.html" title="progress-demo" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/progress-demo.html">Open the demo page</a></p>
+
+::: code-group
+```text [progress-demo.html]
 <div aria-valuemax="100" aria-valuemin="0" role="progressbar" data-state="indeterminate" data-max="100" data-slot="progress" class="bg-muted h-1 rounded-full relative flex items-center overflow-x-hidden w-[60%]"><div data-state="indeterminate" data-max="100" data-slot="progress-indicator" class="bg-primary size-full flex-1 transition-all" style="transform: translateX(-87%);"></div></div>
 ```
 :::
+
+::::
 
 
 ## Installation
@@ -61,24 +65,28 @@ runtime drives.
 
 Use a `Field` component to add a label to the progress bar.
 
+::::demo progress-label
 <iframe class="demo" src="/demos/progress-label.html" title="progress-label" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/progress-label.html">Open the demo page</a></p>
+
+::: code-group
+```text [progress-label.html]
 <div role="group" data-slot="field" data-orientation="vertical" class="data-[invalid=true]:text-destructive gap-2 group/field flex flex-col *:w-full [&amp;&gt;.sr-only]:w-auto w-full max-w-sm"><label data-slot="field-label" class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[&gt;[data-slot=field]]:rounded-lg has-[&gt;[data-slot=field]]:border has-[&gt;[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:border-ring has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[&gt;[data-slot=field]]:w-full has-[&gt;[data-slot=field]]:flex-col" for="progress-upload"><span>Upload progress</span><span class="ml-auto">66%</span></label><div aria-valuemax="100" aria-valuemin="0" role="progressbar" data-state="indeterminate" data-max="100" data-slot="progress" class="bg-muted h-1 rounded-full relative flex w-full items-center overflow-x-hidden" id="progress-upload"><div data-state="indeterminate" data-max="100" data-slot="progress-indicator" class="bg-primary size-full flex-1 transition-all" style="transform: translateX(-34%);"></div></div></div>
 ```
 :::
+
+::::
 
 
 ## Controlled
 
 A progress bar that can be controlled by a slider.
 
+::::demo progress-controlled
 <iframe class="demo" src="/demos/progress-controlled.html" title="progress-controlled" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/progress-controlled.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [progress-controlled.html]
@@ -132,14 +140,18 @@ A progress bar that can be controlled by a slider.
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
+::::demo progress-rtl
 <iframe class="demo" src="/demos/progress-rtl.html" title="progress-rtl" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page · HE · EN</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/progress-rtl.html">Open the demo page</a> · <a href="/demos/progress-rtl-he.html">HE</a> · <a href="/demos/progress-rtl-en.html">EN</a></p>
+
+::: code-group
+```text [progress-rtl.html]
 <div role="group" data-slot="field" data-orientation="vertical" class="data-[invalid=true]:text-destructive gap-2 group/field flex flex-col *:w-full [&amp;&gt;.sr-only]:w-auto w-full max-w-sm" dir="rtl"><label data-slot="field-label" class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[&gt;[data-slot=field]]:rounded-lg has-[&gt;[data-slot=field]]:border has-[&gt;[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:border-ring has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[&gt;[data-slot=field]]:w-full has-[&gt;[data-slot=field]]:flex-col" for="progress-upload"><span>تقدم الرفع</span><span class="ms-auto">٦٦%</span></label><div aria-valuemax="100" aria-valuemin="0" role="progressbar" data-state="indeterminate" data-max="100" data-slot="progress" class="bg-muted h-1 rounded-full relative flex w-full items-center overflow-x-hidden rtl:rotate-180" id="progress-upload"><div data-state="indeterminate" data-max="100" data-slot="progress-indicator" class="bg-primary size-full flex-1 transition-all" style="transform: translateX(-34%);"></div></div></div>
 ```
 :::
+
+::::
 
 
 ## API Reference

@@ -7,11 +7,13 @@ description: "A chat scroll container that anchors turns, opens saved transcript
 
 A chat scroll container that anchors turns, opens saved transcripts, follows streamed responses, loads history without jumping, and jumps to any message.
 
+::::demo message-scroller-demo
 <iframe class="demo" src="/demos/message-scroller.html" title="message-scroller-demo" data-status="existing-dist" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/message-scroller.html">Open the demo page</a></p>
+
+::: code-group
+```text [message-scroller.html]
 <div></div>
 <div data-slot="message-scroller" class="group/message-scroller"><div data-slot="message-scroller-viewport" style="height:160px;overflow:hidden;border:1px solid var(--border);border-radius:0.5rem;padding:0.75rem;background:color-mix(in oklab, var(--muted) 30%, transparent)"><div data-slot="message-scroller-content"><div data-slot="message-scroller-item" style="margin-bottom:0.5rem">Top message</div><div data-slot="message-scroller-item" style="margin-bottom:0.5rem;margin-top:3rem">Middle message</div><div data-slot="message-scroller-item" style="margin-top:6rem">Bottom message</div></div></div></div>
 <div data-slot="message-scroller-viewport"><div style="padding:0.75rem">Scrollable content</div></div>
@@ -20,6 +22,8 @@ A chat scroll container that anchors turns, opens saved transcripts, follows str
 <button data-slot="message-scroller-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:1rem;height:1rem"><path d="M12 5v14M5 12l7 7 7-7"></path></svg></button>
 ```
 :::
+
+::::
 
 
 ## What Makes a Great Streaming Chat Experience
@@ -135,10 +139,10 @@ viewport.
 
 In the following example, the user's message is anchored. When you send a new message, the viewport anchors it near the top and appends the assistant reply below it. Toggle the anchor to the assistant's message to see the difference.
 
+::::demo message-scroller-anchoring
 <iframe class="demo" src="/demos/message-scroller-anchoring.html" title="message-scroller-anchoring" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/message-scroller-anchoring.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [message-scroller-anchoring.html]
@@ -309,10 +313,10 @@ a message.
 </MessageScrollerItem>
 ```
 
+::::demo message-scroller-group-chat
 <iframe class="demo" src="/demos/message-scroller-group-chat.html" title="message-scroller-group-chat" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/message-scroller-group-chat.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [message-scroller-group-chat.html]
@@ -518,10 +522,10 @@ conversation restarted on a blank page.
 
 Adjust the peek amount in the example below to see how it affects the conversation.
 
+::::demo message-scroller-previous-context
 <iframe class="demo" src="/demos/message-scroller-previous-context.html" title="message-scroller-previous-context" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/message-scroller-previous-context.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [message-scroller-previous-context.html]
@@ -905,10 +909,10 @@ follow-output takes over from the anchor.
 </MessageScrollerProvider>
 ```
 
+::::demo message-scroller-streaming
 <iframe class="demo" src="/demos/message-scroller-streaming.html" title="message-scroller-streaming" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/message-scroller-streaming.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [message-scroller-streaming.html]
@@ -1269,10 +1273,10 @@ the conversation from the bottom edge.
 </MessageScrollerProvider>
 ```
 
+::::demo message-scroller-opening-position
 <iframe class="demo" src="/demos/message-scroller-opening-position.html" title="message-scroller-opening-position" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/message-scroller-opening-position.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [message-scroller-opening-position.html]
@@ -1386,10 +1390,10 @@ same place while history loads above them.
 
 This is enabled by default through `preserveScrollOnPrepend`.
 
+::::demo message-scroller-load-history
 <iframe class="demo" src="/demos/message-scroller-load-history.html" title="message-scroller-load-history" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/message-scroller-load-history.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [message-scroller-load-history.html]
@@ -1602,10 +1606,10 @@ its final position so it feels like it rises from the live edge of the viewport.
 const MotionMessageScrollerItem = motion.create(MessageScrollerItem)
 ```
 
+::::demo message-scroller-animation
 <iframe class="demo" src="/demos/message-scroller-animation.html" title="message-scroller-animation" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/message-scroller-animation.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [message-scroller-animation.html]
@@ -1933,10 +1937,10 @@ in any component inside the provider, including controls rendered outside the
 const { scrollToMessage, scrollToEnd, scrollToStart } = useMessageScroller()
 ```
 
+::::demo message-scroller-commands
 <iframe class="demo" src="/demos/message-scroller-commands.html" title="message-scroller-commands" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/message-scroller-commands.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [message-scroller-commands.html]
@@ -2164,10 +2168,10 @@ highlights the current anchored turn.
 const { currentAnchorId, visibleMessageIds } = useMessageScrollerVisibility()
 ```
 
+::::demo message-scroller-visibility
 <iframe class="demo" src="/demos/message-scroller-visibility.html" title="message-scroller-visibility" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/message-scroller-visibility.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [message-scroller-visibility.html]
@@ -2347,10 +2351,10 @@ scroller itself, prefer the `data-scrollable` attribute.
 const { start, end } = useMessageScrollerScrollable()
 ```
 
+::::demo message-scroller-scrollable
 <iframe class="demo" src="/demos/message-scroller-scrollable.html" title="message-scroller-scrollable" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/message-scroller-scrollable.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [message-scroller-scrollable.html]

@@ -7,10 +7,10 @@ description: "Displays the path to the current resource using a hierarchy of lin
 
 Displays the path to the current resource using a hierarchy of links.
 
+::::demo breadcrumb-demo
 <iframe class="demo" src="/demos/breadcrumb-demo.html" title="breadcrumb-demo" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/breadcrumb-demo.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [breadcrumb-demo.html]
@@ -189,38 +189,46 @@ breadcrumb
 
 A basic breadcrumb with a home link and a components link.
 
+::::demo breadcrumb-basic
 <iframe class="demo" src="/demos/breadcrumb-basic.html" title="breadcrumb-basic" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/breadcrumb-basic.html">Open the demo page</a></p>
+
+::: code-group
+```text [breadcrumb-basic.html]
 <nav aria-label="breadcrumb" data-slot="breadcrumb" class=""><ol data-slot="breadcrumb-list" class="text-muted-foreground gap-1.5 text-sm flex flex-wrap items-center wrap-break-word"><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><a data-slot="breadcrumb-link" class="hover:text-foreground transition-colors" href="#">Home</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><a data-slot="breadcrumb-link" class="hover:text-foreground transition-colors" href="#">Components</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><span data-slot="breadcrumb-page" role="link" aria-disabled="true" aria-current="page" class="text-foreground font-normal">Breadcrumb</span></li></ol></nav>
 ```
 :::
+
+::::
 
 
 ## Custom separator
 
 Use a custom component as `children` for `<BreadcrumbSeparator />` to create a custom separator.
 
+::::demo breadcrumb-separator
 <iframe class="demo" src="/demos/breadcrumb-separator.html" title="breadcrumb-separator" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/breadcrumb-separator.html">Open the demo page</a></p>
+
+::: code-group
+```text [breadcrumb-separator.html]
 <nav aria-label="breadcrumb" data-slot="breadcrumb" class=""><ol data-slot="breadcrumb-list" class="text-muted-foreground gap-1.5 text-sm flex flex-wrap items-center wrap-break-word"><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><a href="/" data-slot="breadcrumb-link" class="hover:text-foreground transition-colors">Home</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dot"><circle cx="12.1" cy="12.1" r="1"></circle></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><a href="/components" data-slot="breadcrumb-link" class="hover:text-foreground transition-colors">Components</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dot"><circle cx="12.1" cy="12.1" r="1"></circle></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><span data-slot="breadcrumb-page" role="link" aria-disabled="true" aria-current="page" class="text-foreground font-normal">Breadcrumb</span></li></ol></nav>
 ```
 :::
+
+::::
 
 
 ## Dropdown
 
 You can compose `<BreadcrumbItem />` with a `<DropdownMenu />` to create a dropdown in the breadcrumb.
 
+::::demo breadcrumb-dropdown
 <iframe class="demo" src="/demos/breadcrumb-dropdown.html" title="breadcrumb-dropdown" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/breadcrumb-dropdown.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [breadcrumb-dropdown.html]
@@ -350,38 +358,46 @@ You can compose `<BreadcrumbItem />` with a `<DropdownMenu />` to create a dropd
 
 We provide a `<BreadcrumbEllipsis />` component to show a collapsed state when the breadcrumb is too long.
 
+::::demo breadcrumb-ellipsis
 <iframe class="demo" src="/demos/breadcrumb-ellipsis.html" title="breadcrumb-ellipsis" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/breadcrumb-ellipsis.html">Open the demo page</a></p>
+
+::: code-group
+```text [breadcrumb-ellipsis.html]
 <nav aria-label="breadcrumb" data-slot="breadcrumb" class=""><ol data-slot="breadcrumb-list" class="text-muted-foreground gap-1.5 text-sm flex flex-wrap items-center wrap-break-word"><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><a href="/" data-slot="breadcrumb-link" class="hover:text-foreground transition-colors">Home</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><span data-slot="breadcrumb-ellipsis" role="presentation" aria-hidden="true" class="size-5 [&amp;&gt;svg]:size-4 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg><span class="sr-only">More</span></span></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><a href="/docs/components" data-slot="breadcrumb-link" class="hover:text-foreground transition-colors">Components</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><span data-slot="breadcrumb-page" role="link" aria-disabled="true" aria-current="page" class="text-foreground font-normal">Breadcrumb</span></li></ol></nav>
 ```
 :::
+
+::::
 
 
 ## Link component
 
 To use a custom link component from your routing library, you can use the `asChild` prop on `<BreadcrumbLink />`.
 
+::::demo breadcrumb-link
 <iframe class="demo" src="/demos/breadcrumb-link.html" title="breadcrumb-link" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/breadcrumb-link.html">Open the demo page</a></p>
+
+::: code-group
+```text [breadcrumb-link.html]
 <nav aria-label="breadcrumb" data-slot="breadcrumb" class=""><ol data-slot="breadcrumb-list" class="text-muted-foreground gap-1.5 text-sm flex flex-wrap items-center wrap-break-word"><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><a href="/" data-slot="breadcrumb-link" class="hover:text-foreground transition-colors">Home</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><a href="/components" data-slot="breadcrumb-link" class="hover:text-foreground transition-colors">Components</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" class="[&amp;&gt;svg]:size-3.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center"><span data-slot="breadcrumb-page" role="link" aria-disabled="true" aria-current="page" class="text-foreground font-normal">Breadcrumb</span></li></ol></nav>
 ```
 :::
+
+::::
 
 
 ## RTL
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
+::::demo breadcrumb-rtl
 <iframe class="demo" src="/demos/breadcrumb-rtl.html" title="breadcrumb-rtl" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page · HE · EN</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/breadcrumb-rtl.html">Open the demo page</a> · <a href="/demos/breadcrumb-rtl-he.html">HE</a> · <a href="/demos/breadcrumb-rtl-en.html">EN</a></p>
 
 ::: code-group
 ```text [breadcrumb-rtl.html]

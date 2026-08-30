@@ -9,10 +9,10 @@ For sighted users to preview content available behind a link.
 
 <p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/hover-card" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/hover-card#api-reference" rel="noopener">api</a></p>
 
+::::demo hover-card-demo
 <iframe class="demo" src="/demos/hover-card.html" title="hover-card-demo" data-status="existing-dist" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/hover-card.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [hover-card.html]
@@ -172,10 +172,10 @@ Use the `side` and `align` props on `HoverCardContent` to control placement.
 
 ## Basic
 
+::::demo hover-card-demo
 <iframe class="demo" src="/demos/hover-card.html" title="hover-card-demo" data-status="existing-dist" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/hover-card.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [hover-card.html]
@@ -247,10 +247,10 @@ Use the `side` and `align` props on `HoverCardContent` to control placement.
 
 ## Sides
 
+::::demo hover-card-sides
 <iframe class="demo" src="/demos/hover-card-sides.html" title="hover-card-sides" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/hover-card-sides.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [hover-card-sides.html]
@@ -331,10 +331,10 @@ Use the `side` and `align` props on `HoverCardContent` to control placement.
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
+::::demo hover-card-rtl
 <iframe class="demo" src="/demos/hover-card-rtl.html" title="hover-card-rtl" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page · HE · EN</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/hover-card-rtl.html">Open the demo page</a> · <a href="/demos/hover-card-rtl-he.html">HE</a> · <a href="/demos/hover-card-rtl-en.html">EN</a></p>
 
 ::: code-group
 ```text [hover-card-rtl.html]

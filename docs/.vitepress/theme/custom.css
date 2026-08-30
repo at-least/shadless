@@ -49,3 +49,104 @@ iframe.demo {
   padding: 16px;
   color: var(--vp-c-text-2);
 }
+
+/* ---- the demo card --------------------------------------------------------
+ * One bordered card per preview: the demo iframe on top, its source below,
+ * capped behind a gradient with a button over it — the shape upstream's
+ * ComponentPreview uses (apps/v4/components/component-preview-tabs.tsx).
+ *
+ * The toggle is a checkbox + label, deliberately: no script, so the card is
+ * usable before hydration and there is nothing to re-wire when VitePress
+ * navigates client-side.
+ */
+.demo-card {
+  position: relative;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 20px 0 32px;
+}
+.demo-card .demo-toggle { position: absolute; opacity: 0; width: 0; height: 0; }
+
+.demo-card iframe.demo {
+  display: block;
+  width: 100%;
+  height: 18rem;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--vp-c-bg);
+}
+.demo-card .demo-langs {
+  margin: 0;
+  padding: 8px 16px;
+  border-top: 1px solid var(--vp-c-divider);
+  font-size: 12px;
+  color: var(--vp-c-text-2);
+}
+
+/* the code half: flush inside the card, capped until revealed */
+.demo-card .vp-code-group,
+.demo-card div[class*='language-'] {
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+.demo-card .demo-body > .vp-code-group,
+.demo-card .demo-body > div[class*='language-'] {
+  max-height: 15rem;
+  overflow: hidden;
+  border-top: 1px solid var(--vp-c-divider);
+}
+/* the language chip says "text" on every markup block — noise inside the card */
+.demo-card .demo-body span.lang { display: none; }
+.demo-card .demo-toggle:checked ~ .demo-body > .vp-code-group,
+.demo-card .demo-toggle:checked ~ .demo-body > div[class*='language-'] {
+  max-height: 28rem;
+  overflow: auto;
+}
+
+/* veil + button in one element: it IS the gradient while collapsed and a
+ * plain bar once open */
+.demo-card .demo-view-code {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  /* shorter than the code block's collapsed height so the file tabs above it
+   * stay crisp — the veil is over the CODE, not over the chrome */
+  height: 9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  background: linear-gradient(
+    to top,
+    var(--vp-code-block-bg),
+    color-mix(in oklab, var(--vp-code-block-bg) 60%, transparent),
+    transparent
+  );
+}
+.demo-card .demo-view-code::before {
+  content: 'View Code';
+  box-shadow: 0 1px 2px rgb(0 0 0 / 6%);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-1);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 14px;
+}
+.demo-card .demo-view-code:hover::before { background: var(--vp-c-bg-soft); }
+.demo-card .demo-toggle:checked ~ .demo-view-code {
+  position: static;
+  height: auto;
+  padding: 8px;
+  background: none;
+  border-top: 1px solid var(--vp-c-divider);
+}
+.demo-card .demo-toggle:checked ~ .demo-view-code::before { content: 'Hide Code'; }
+.demo-card .demo-toggle:focus-visible ~ .demo-view-code::before {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
+}

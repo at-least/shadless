@@ -9,14 +9,18 @@ An image element with a fallback for representing the user.
 
 <p class="page-links"><a href="https://www.radix-ui.com/primitives/docs/components/avatar" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/primitives/docs/components/avatar#api-reference" rel="noopener">api</a></p>
 
+::::demo avatar-demo
 <iframe class="demo" src="/demos/avatar-demo.html" title="avatar-demo" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/avatar-demo.html">Open the demo page</a></p>
+
+::: code-group
+```text [avatar-demo.html]
 <div class="flex flex-row flex-wrap items-center gap-6 md:gap-12"><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover grayscale" alt="@shadcn" src="https://github.com/shadcn.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@evilrabbit" src="https://github.com/evilrabbit.png"><span data-slot="avatar-badge" class="text-primary-foreground ring-background absolute right-0 bottom-0 z-10 inline-flex items-center justify-center rounded-full bg-blend-color ring-2 select-none group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&amp;&gt;svg]:hidden group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&amp;&gt;svg]:size-2 group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&amp;&gt;svg]:size-2 bg-green-600 dark:bg-green-800"></span></span><div data-slot="avatar-group" class="group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background grayscale"><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@shadcn" src="https://github.com/shadcn.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@maxleiter" src="https://github.com/maxleiter.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@evilrabbit" src="https://github.com/evilrabbit.png"></span><div data-slot="avatar-group-count" class="bg-muted text-muted-foreground size-8 rounded-full text-sm group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&amp;&gt;svg]:size-4 group-has-data-[size=lg]/avatar-group:[&amp;&gt;svg]:size-5 group-has-data-[size=sm]/avatar-group:[&amp;&gt;svg]:size-3 relative flex shrink-0 items-center justify-center ring-2 ring-background">+3</div></div></div>
 ```
 :::
+
+::::
 
 
 ## Installation
@@ -79,28 +83,36 @@ avatar
 
 A basic avatar component with an image and a fallback.
 
+::::demo avatar-basic
 <iframe class="demo" src="/demos/avatar-basic.html" title="avatar-basic" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/avatar-basic.html">Open the demo page</a></p>
+
+::: code-group
+```text [avatar-basic.html]
 <span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover grayscale" alt="@shadcn" src="https://github.com/shadcn.png"></span>
 ```
 :::
+
+::::
 
 
 ## Badge
 
 Use the `AvatarBadge` component to add a badge to the avatar. The badge is positioned at the bottom right of the avatar.
 
+::::demo avatar-badge
 <iframe class="demo" src="/demos/avatar-badge.html" title="avatar-badge" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/avatar-badge.html">Open the demo page</a></p>
+
+::: code-group
+```text [avatar-badge.html]
 <span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@shadcn" src="https://github.com/shadcn.png"><span data-slot="avatar-badge" class="text-primary-foreground ring-background absolute right-0 bottom-0 z-10 inline-flex items-center justify-center rounded-full bg-blend-color ring-2 select-none group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&amp;&gt;svg]:hidden group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&amp;&gt;svg]:size-2 group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&amp;&gt;svg]:size-2 bg-green-600 dark:bg-green-800"></span></span>
 ```
 :::
+
+::::
 
 
 Use the `className` prop to add custom styles to the badge such as custom colors, sizes, etc.
@@ -117,80 +129,100 @@ Use the `className` prop to add custom styles to the badge such as custom colors
 
 You can also use an icon inside `<AvatarBadge>`.
 
+::::demo avatar-badge-icon
 <iframe class="demo" src="/demos/avatar-badge-icon.html" title="avatar-badge-icon" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/avatar-badge-icon.html">Open the demo page</a></p>
+
+::: code-group
+```text [avatar-badge-icon.html]
 <span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten grayscale"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@pranathip" src="https://github.com/pranathip.png"><span data-slot="avatar-badge" class="bg-primary text-primary-foreground ring-background absolute right-0 bottom-0 z-10 inline-flex items-center justify-center rounded-full bg-blend-color ring-2 select-none group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&amp;&gt;svg]:hidden group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&amp;&gt;svg]:size-2 group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&amp;&gt;svg]:size-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></span></span>
 ```
 :::
+
+::::
 
 
 ## Avatar Group
 
 Use the `AvatarGroup` component to add a group of avatars.
 
+::::demo avatar-group
 <iframe class="demo" src="/demos/avatar-group.html" title="avatar-group" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/avatar-group.html">Open the demo page</a></p>
+
+::: code-group
+```text [avatar-group.html]
 <div data-slot="avatar-group" class="group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background grayscale"><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@shadcn" src="https://github.com/shadcn.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@maxleiter" src="https://github.com/maxleiter.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@evilrabbit" src="https://github.com/evilrabbit.png"></span></div>
 ```
 :::
+
+::::
 
 
 ## Avatar Group Count
 
 Use `<AvatarGroupCount>` to add a count to the group.
 
+::::demo avatar-group-count
 <iframe class="demo" src="/demos/avatar-group-count.html" title="avatar-group-count" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/avatar-group-count.html">Open the demo page</a></p>
+
+::: code-group
+```text [avatar-group-count.html]
 <div data-slot="avatar-group" class="group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background grayscale"><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@shadcn" src="https://github.com/shadcn.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@maxleiter" src="https://github.com/maxleiter.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@evilrabbit" src="https://github.com/evilrabbit.png"></span><div data-slot="avatar-group-count" class="bg-muted text-muted-foreground size-8 rounded-full text-sm group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&amp;&gt;svg]:size-4 group-has-data-[size=lg]/avatar-group:[&amp;&gt;svg]:size-5 group-has-data-[size=sm]/avatar-group:[&amp;&gt;svg]:size-3 relative flex shrink-0 items-center justify-center ring-2 ring-background">+3</div></div>
 ```
 :::
+
+::::
 
 
 ## Avatar Group with Icon
 
 You can also use an icon inside `<AvatarGroupCount>`.
 
+::::demo avatar-group-count-icon
 <iframe class="demo" src="/demos/avatar-group-count-icon.html" title="avatar-group-count-icon" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/avatar-group-count-icon.html">Open the demo page</a></p>
+
+::: code-group
+```text [avatar-group-count-icon.html]
 <div data-slot="avatar-group" class="group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background grayscale"><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@shadcn" src="https://github.com/shadcn.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@maxleiter" src="https://github.com/maxleiter.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@evilrabbit" src="https://github.com/evilrabbit.png"></span><div data-slot="avatar-group-count" class="bg-muted text-muted-foreground size-8 rounded-full text-sm group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&amp;&gt;svg]:size-4 group-has-data-[size=lg]/avatar-group:[&amp;&gt;svg]:size-5 group-has-data-[size=sm]/avatar-group:[&amp;&gt;svg]:size-3 relative flex shrink-0 items-center justify-center ring-2 ring-background"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></div></div>
 ```
 :::
+
+::::
 
 
 ## Sizes
 
 Use the `size` prop to change the size of the avatar.
 
+::::demo avatar-size
 <iframe class="demo" src="/demos/avatar-size.html" title="avatar-size" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/avatar-size.html">Open the demo page</a></p>
+
+::: code-group
+```text [avatar-size.html]
 <div class="flex flex-wrap items-center gap-2 grayscale"><span data-slot="avatar" data-size="sm" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@shadcn" src="https://github.com/shadcn.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@shadcn" src="https://github.com/shadcn.png"></span><span data-slot="avatar" data-size="lg" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@shadcn" src="https://github.com/shadcn.png"></span></div>
 ```
 :::
+
+::::
 
 
 ## Dropdown
 
 You can use the `Avatar` component as a trigger for a dropdown menu.
 
+::::demo avatar-dropdown
 <iframe class="demo" src="/demos/avatar-dropdown.html" title="avatar-dropdown" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/avatar-dropdown.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [avatar-dropdown.html]
@@ -345,14 +377,18 @@ You can use the `Avatar` component as a trigger for a dropdown menu.
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
+::::demo avatar-rtl
 <iframe class="demo" src="/demos/avatar-rtl.html" title="avatar-rtl" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page · HE · EN</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/avatar-rtl.html">Open the demo page</a> · <a href="/demos/avatar-rtl-he.html">HE</a> · <a href="/demos/avatar-rtl-en.html">EN</a></p>
+
+::: code-group
+```text [avatar-rtl.html]
 <div class="flex flex-row flex-wrap items-center gap-6 md:gap-12" dir="rtl"><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover grayscale" alt="@shadcn" src="https://github.com/shadcn.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@evilrabbit" src="https://github.com/evilrabbit.png"><span data-slot="avatar-badge" class="text-primary-foreground ring-background absolute end-0 bottom-0 z-10 inline-flex items-center justify-center rounded-full bg-blend-color ring-2 select-none group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&amp;&gt;svg]:hidden group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&amp;&gt;svg]:size-2 group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&amp;&gt;svg]:size-2 bg-green-600 dark:bg-green-800"></span></span><div data-slot="avatar-group" class="group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background grayscale"><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@shadcn" src="https://github.com/shadcn.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@maxleiter" src="https://github.com/maxleiter.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@evilrabbit" src="https://github.com/evilrabbit.png"></span><div data-slot="avatar-group-count" class="bg-muted text-muted-foreground size-8 rounded-full text-sm group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&amp;&gt;svg]:size-4 group-has-data-[size=lg]/avatar-group:[&amp;&gt;svg]:size-5 group-has-data-[size=sm]/avatar-group:[&amp;&gt;svg]:size-3 relative flex shrink-0 items-center justify-center ring-2 ring-background">+٣</div></div></div>
 ```
 :::
+
+::::
 
 
 ## API Reference

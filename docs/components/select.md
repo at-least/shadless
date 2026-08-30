@@ -9,10 +9,10 @@ Displays a list of options for the user to pick from—triggered by a button.
 
 <p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/select" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/select#api-reference" rel="noopener">api</a></p>
 
+::::demo select-demo
 <iframe class="demo" src="/demos/select.html" title="select-demo" data-status="existing-dist" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/select.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [select.html]
@@ -211,10 +211,10 @@ select
 
 Use the `position` prop on `SelectContent` to control alignment. When `position="item-aligned"` (default), the popup positions so the selected item appears over the trigger. When `position="popper"`, the popup aligns to the trigger edge.
 
+::::demo select-align-item
 <iframe class="demo" src="/demos/select-align-item.html" title="select-align-item" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/select-align-item.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [select-align-item.html]
@@ -367,10 +367,10 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
 
 Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
 
+::::demo select-groups
 <iframe class="demo" src="/demos/select-groups.html" title="select-groups" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/select-groups.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [select-groups.html]
@@ -494,10 +494,10 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
 
 A select with many items that scrolls.
 
+::::demo select-scrollable
 <iframe class="demo" src="/demos/select-scrollable.html" title="select-scrollable" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/select-scrollable.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [select-scrollable.html]
@@ -619,10 +619,10 @@ A select with many items that scrolls.
 
 ## Disabled
 
+::::demo select-disabled
 <iframe class="demo" src="/demos/select-disabled.html" title="select-disabled" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/select-disabled.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [select-disabled.html]
@@ -752,10 +752,10 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
 </Field>
 ```
 
+::::demo select-invalid
 <iframe class="demo" src="/demos/select-invalid.html" title="select-invalid" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/select-invalid.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [select-invalid.html]
@@ -879,10 +879,10 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
+::::demo select-rtl
 <iframe class="demo" src="/demos/select-rtl.html" title="select-rtl" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page · HE · EN</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/select-rtl.html">Open the demo page</a> · <a href="/demos/select-rtl-he.html">HE</a> · <a href="/demos/select-rtl-en.html">EN</a></p>
 
 ::: code-group
 ```text [select-rtl.html]

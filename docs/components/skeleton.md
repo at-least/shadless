@@ -7,14 +7,18 @@ description: "Use to show a placeholder while content is loading."
 
 Use to show a placeholder while content is loading.
 
+::::demo skeleton-demo
 <iframe class="demo" src="/demos/skeleton-demo.html" title="skeleton-demo" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/skeleton-demo.html">Open the demo page</a></p>
+
+::: code-group
+```text [skeleton-demo.html]
 <div class="flex items-center gap-4"><div data-slot="skeleton" class="bg-muted animate-pulse h-12 w-12 rounded-full"></div><div class="space-y-2"><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-[250px]"></div><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-[200px]"></div></div></div>
 ```
 :::
+
+::::
 
 
 ## Installation
@@ -51,73 +55,97 @@ is a `data-slot` attribute, and open/close state is a `data-state` the
 runtime drives.
 ## Avatar
 
+::::demo skeleton-avatar
 <iframe class="demo" src="/demos/skeleton-avatar.html" title="skeleton-avatar" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/skeleton-avatar.html">Open the demo page</a></p>
+
+::: code-group
+```text [skeleton-avatar.html]
 <div class="flex w-fit items-center gap-4"><div data-slot="skeleton" class="bg-muted animate-pulse size-10 shrink-0 rounded-full"></div><div class="grid gap-2"><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-[150px]"></div><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-[100px]"></div></div></div>
 ```
 :::
 
+::::
+
 
 ## Card
 
+::::demo skeleton-card
 <iframe class="demo" src="/demos/skeleton-card.html" title="skeleton-card" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/skeleton-card.html">Open the demo page</a></p>
+
+::: code-group
+```text [skeleton-card.html]
 <div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col w-full max-w-xs"><div data-slot="card-header" class="gap-1 rounded-t-xl px-(--card-spacing) [.border-b]:pb-(--card-spacing) group/card-header @container/card-header grid auto-rows-min items-start has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto]"><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-2/3"></div><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-1/2"></div></div><div data-slot="card-content" class="px-(--card-spacing)"><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse aspect-video w-full"></div></div></div>
 ```
 :::
 
+::::
+
 
 ## Text
 
+::::demo skeleton-text
 <iframe class="demo" src="/demos/skeleton-text.html" title="skeleton-text" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/skeleton-text.html">Open the demo page</a></p>
+
+::: code-group
+```text [skeleton-text.html]
 <div class="flex w-full max-w-xs flex-col gap-2"><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-full"></div><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-full"></div><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-3/4"></div></div>
 ```
 :::
 
+::::
+
 
 ## Form
 
+::::demo skeleton-form
 <iframe class="demo" src="/demos/skeleton-form.html" title="skeleton-form" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/skeleton-form.html">Open the demo page</a></p>
+
+::: code-group
+```text [skeleton-form.html]
 <div class="flex w-full max-w-xs flex-col gap-7"><div class="flex flex-col gap-3"><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-20"></div><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-8 w-full"></div></div><div class="flex flex-col gap-3"><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-24"></div><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-8 w-full"></div></div><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-8 w-24"></div></div>
 ```
 :::
 
+::::
+
 
 ## Table
 
+::::demo skeleton-table
 <iframe class="demo" src="/demos/skeleton-table.html" title="skeleton-table" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/skeleton-table.html">Open the demo page</a></p>
+
+::: code-group
+```text [skeleton-table.html]
 <div class="flex w-full max-w-sm flex-col gap-2"><div class="flex gap-4"><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 flex-1"></div><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-24"></div><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-20"></div></div><div class="flex gap-4"><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 flex-1"></div><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-24"></div><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-20"></div></div><div class="flex gap-4"><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 flex-1"></div><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-24"></div><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-20"></div></div><div class="flex gap-4"><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 flex-1"></div><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-24"></div><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-20"></div></div><div class="flex gap-4"><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 flex-1"></div><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-24"></div><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-20"></div></div></div>
 ```
 :::
+
+::::
 
 
 ## RTL
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
+::::demo skeleton-rtl
 <iframe class="demo" src="/demos/skeleton-rtl.html" title="skeleton-rtl" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page · HE · EN</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/skeleton-rtl.html">Open the demo page</a> · <a href="/demos/skeleton-rtl-he.html">HE</a> · <a href="/demos/skeleton-rtl-en.html">EN</a></p>
+
+::: code-group
+```text [skeleton-rtl.html]
 <div class="flex items-center gap-4" dir="rtl"><div data-slot="skeleton" class="bg-muted animate-pulse h-12 w-12 rounded-full"></div><div class="space-y-2"><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-[250px]"></div><div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-[200px]"></div></div></div>
 ```
 :::
+
+::::

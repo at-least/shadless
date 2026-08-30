@@ -9,10 +9,10 @@ A visually persistent menu common in desktop applications that provides quick ac
 
 <p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/menubar" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/menubar#api-reference" rel="noopener">api</a></p>
 
+::::demo menubar-demo
 <iframe class="demo" src="/demos/menubar-demo.html" title="menubar-demo" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/menubar-demo.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [menubar-demo.html]
@@ -323,10 +323,10 @@ menubar
 
 Use `MenubarCheckboxItem` for toggleable options.
 
+::::demo menubar-checkbox
 <iframe class="demo" src="/demos/menubar-checkbox.html" title="menubar-checkbox" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/menubar-checkbox.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [menubar-checkbox.html]
@@ -531,10 +531,10 @@ Use `MenubarCheckboxItem` for toggleable options.
 
 Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
 
+::::demo menubar-radio
 <iframe class="demo" src="/demos/menubar-radio.html" title="menubar-radio" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/menubar-radio.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [menubar-radio.html]
@@ -739,10 +739,10 @@ Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
 
 Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
 
+::::demo menubar-submenu
 <iframe class="demo" src="/demos/menubar-submenu.html" title="menubar-submenu" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/menubar-submenu.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [menubar-submenu.html]
@@ -951,10 +951,10 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
 
 ## With Icons
 
+::::demo menubar-icons
 <iframe class="demo" src="/demos/menubar-icons.html" title="menubar-icons" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/menubar-icons.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [menubar-icons.html]
@@ -1159,10 +1159,10 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
+::::demo menubar-rtl
 <iframe class="demo" src="/demos/menubar-rtl.html" title="menubar-rtl" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/menubar-rtl.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [menubar-rtl.html]

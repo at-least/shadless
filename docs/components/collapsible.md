@@ -9,14 +9,18 @@ An interactive component which expands/collapses a panel.
 
 <p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/collapsible" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/collapsible#api-reference" rel="noopener">api</a></p>
 
+::::demo collapsible-demo
 <iframe class="demo" src="/demos/collapsible-demo.html" title="collapsible-demo" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/collapsible-demo.html">Open the demo page</a></p>
+
+::: code-group
+```text [collapsible-demo.html]
 <div data-state="closed" data-slot="collapsible" class="flex w-[350px] flex-col gap-2"><div class="flex items-center justify-between gap-4 px-4"><h4 class="text-sm font-semibold">Order #4189</h4><button data-slot="collapsible-trigger" data-variant="ghost" data-size="icon" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8" type="button" aria-controls="radix-<auto>_" aria-expanded="false" data-state="closed"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevrons-up-down"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg><span class="sr-only">Toggle details</span></button></div><div class="flex items-center justify-between rounded-md border px-4 py-2 text-sm"><span class="text-muted-foreground">Status</span><span class="font-medium">Shipped</span></div><div data-state="closed" id="radix-<auto>_" hidden="" data-slot="collapsible-content" class="flex flex-col gap-2" style=""></div></div>
 ```
 :::
+
+::::
 
 
 ## Installation
@@ -83,38 +87,46 @@ Use the `open` and `onOpenChange` props to control the state.
 
 ## Basic
 
+::::demo collapsible-basic
 <iframe class="demo" src="/demos/collapsible-basic.html" title="collapsible-basic" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/collapsible-basic.html">Open the demo page</a></p>
+
+::: code-group
+```text [collapsible-basic.html]
 <div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col mx-auto w-full max-w-sm"><div data-slot="card-content" class="px-(--card-spacing)"><div data-state="closed" data-slot="collapsible" class="rounded-md data-[state=open]:bg-muted"><button data-slot="collapsible-trigger" data-variant="ghost" data-size="default" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 group w-full" type="button" aria-controls="radix-<auto>_" aria-expanded="false" data-state="closed">Product details<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down ml-auto group-data-[state=open]:rotate-180"><path d="m6 9 6 6 6-6"></path></svg></button><div data-state="closed" id="radix-<auto>_" hidden="" data-slot="collapsible-content" class="flex flex-col items-start gap-2 p-2.5 pt-0 text-sm" style=""></div></div></div></div>
 ```
 :::
+
+::::
 
 
 ## Settings Panel
 
 Use a trigger button to reveal additional settings.
 
+::::demo collapsible-settings
 <iframe class="demo" src="/demos/collapsible-settings.html" title="collapsible-settings" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/collapsible-settings.html">Open the demo page</a></p>
+
+::: code-group
+```text [collapsible-settings.html]
 <div data-slot="card" data-size="sm" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col mx-auto w-full max-w-xs"><div data-slot="card-header" class="gap-1 rounded-t-xl px-(--card-spacing) [.border-b]:pb-(--card-spacing) group/card-header @container/card-header grid auto-rows-min items-start has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto]"><div data-slot="card-title" class="text-base leading-snug font-medium group-data-[size=sm]/card:text-sm cn-font-heading">Radius</div><div data-slot="card-description" class="text-muted-foreground text-sm">Set the corner radius of the element.</div></div><div data-slot="card-content" class="px-(--card-spacing)"><div data-state="closed" data-slot="collapsible" class="flex items-start gap-2"><div data-slot="field-group" class="data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group @container/field-group flex-col grid w-full grid-cols-2 gap-2"><div role="group" data-slot="field" data-orientation="vertical" class="data-[invalid=true]:text-destructive gap-2 group/field flex w-full flex-col *:w-full [&amp;&gt;.sr-only]:w-auto"><label data-slot="field-label" class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[&gt;[data-slot=field]]:rounded-lg has-[&gt;[data-slot=field]]:border has-[&gt;[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:border-ring has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[&gt;[data-slot=field]]:w-full has-[&gt;[data-slot=field]]:flex-col sr-only" for="radius-x">Radius X</label><input data-slot="input" class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium focus-visible:ring-3 aria-invalid:ring-3 md:text-sm w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50" id="radius" placeholder="0" value="0"></div><div role="group" data-slot="field" data-orientation="vertical" class="data-[invalid=true]:text-destructive gap-2 group/field flex w-full flex-col *:w-full [&amp;&gt;.sr-only]:w-auto"><label data-slot="field-label" class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[&gt;[data-slot=field]]:rounded-lg has-[&gt;[data-slot=field]]:border has-[&gt;[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:border-ring has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[&gt;[data-slot=field]]:w-full has-[&gt;[data-slot=field]]:flex-col sr-only" for="radius-y">Radius Y</label><input data-slot="input" class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium focus-visible:ring-3 aria-invalid:ring-3 md:text-sm w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50" id="radius" placeholder="0" value="0"></div><div data-state="closed" id="radix-<auto>_" hidden="" data-slot="collapsible-content" class="col-span-full grid grid-cols-subgrid gap-2" style=""></div></div><button data-slot="collapsible-trigger" data-variant="outline" data-size="icon" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8" type="button" aria-controls="radix-<auto>_" aria-expanded="false" data-state="closed"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-maximize"><path d="M8 3H5a2 2 0 0 0-2 2v3"></path><path d="M21 8V5a2 2 0 0 0-2-2h-3"></path><path d="M3 16v3a2 2 0 0 0 2 2h3"></path><path d="M16 21h3a2 2 0 0 0 2-2v-3"></path></svg></button></div></div></div>
 ```
 :::
+
+::::
 
 
 ## File Tree
 
 Use nested collapsibles to build a file tree.
 
+::::demo collapsible-file-tree
 <iframe class="demo" src="/demos/collapsible-file-tree.html" title="collapsible-file-tree" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page</p>
 
-:::: details Source
+<p class="demo-langs"><a href="/demos/collapsible-file-tree.html">Open the demo page</a></p>
 
 ::: code-group
 ```text [collapsible-file-tree.html]
@@ -265,14 +277,18 @@ Use nested collapsibles to build a file tree.
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
+::::demo collapsible-rtl
 <iframe class="demo" src="/demos/collapsible-rtl.html" title="collapsible-rtl" data-status="authored" loading="lazy"></iframe>
-<p class="demo-langs">Open the demo page · HE · EN</p>
 
-::: details Source
-```text
+<p class="demo-langs"><a href="/demos/collapsible-rtl.html">Open the demo page</a> · <a href="/demos/collapsible-rtl-he.html">HE</a> · <a href="/demos/collapsible-rtl-en.html">EN</a></p>
+
+::: code-group
+```text [collapsible-rtl.html]
 <div data-state="closed" data-slot="collapsible" class="flex w-[350px] flex-col gap-2" dir="rtl"><div class="flex items-center justify-between gap-4 px-4"><h4 class="text-sm font-semibold">الطلب #4189</h4><button data-slot="collapsible-trigger" data-variant="ghost" data-size="icon" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8" type="button" aria-controls="radix-<auto>_" aria-expanded="false" data-state="closed"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevrons-up-down"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg><span class="sr-only">Toggle details</span></button></div><div class="flex items-center justify-between rounded-md border px-4 py-2 text-sm"><span class="text-muted-foreground">الحالة</span><span class="font-medium">تم الشحن</span></div><div data-state="closed" id="radix-<auto>_" hidden="" data-slot="collapsible-content" class="flex flex-col gap-2" style=""></div></div>
 ```
 :::
+
+::::
 
 
 ## API Reference
