@@ -56,7 +56,6 @@ const (
 	NEmit               NodeID = "emit"
 	NBuildJs            NodeID = "build-js"
 	NContractFixture    NodeID = "contract-fixture"
-	NDemoBuild          NodeID = "demo-build"
 	NExampleOracle      NodeID = "example-oracle"
 	NExampleFixture     NodeID = "example-fixture"
 	NDemoRtl            NodeID = "demo-rtl"
@@ -219,20 +218,17 @@ var Nodes = []Node{
 		Mutations: nil,
 	},
 	{
-		ID: NDemoBuild, Kind: "build", Tier: "full",
-		Needs:     []NodeID{NEmit},
-		Run:       [][]string{{"node", "tools/build-demo.mjs"}},
-		Inputs:    []string{"tools/build-demo.mjs", "src/docs/theme-prepaint.mjs"},
-		Produces:  []string{"dist/components/*-demo.html", "!dist/components/*-rtl-*.html"},
-		Why:       "single-demo compositions from the upstream examples",
-		Mutations: nil,
-	},
-	{
 		ID: NExampleOracle, Kind: "build", Tier: "full",
-		Needs:     []NodeID{NDemoBuild},
+		// was NDemoBuild, which sat between this node and emit running a tool
+		// whose EMITTERS table is empty. It wrote nothing; the one file it
+		// declared, dist/components/alert-demo.html, is written HERE (the
+		// alert-demo target kept the dist path when it replaced that hand
+		// emitter). The dependency on emit is real and stays: emit creates
+		// dist/components, which this node writes into.
+		Needs:     []NodeID{NEmit},
 		Run:       [][]string{{"node", "tools/example-oracle.mjs"}},
 		Inputs:    []string{"tools/example-oracle.mjs", "src/docs/theme-prepaint.mjs", "src/registry/tiers.json", "src/runtime/components/**", "docs/catalog.json", "tools/oracle-lib.mjs", "tools/contracts/stubs/**", "tools/resolve-skins.mjs", "src/registry/pin.json", "src/registry/upstream-snapshot/exemptions.json", "package-lock.json", upstreamExamplesGlob},
-		Produces:  []string{"docs/demos/*.html", "!docs/demos/*-rtl-*.html", "docs/example-oracle.json", "docs/example-fixture-targets.json"},
+		Produces:  []string{"docs/demos/*.html", "!docs/demos/*-rtl-*.html", "docs/example-oracle.json", "docs/example-fixture-targets.json", "dist/components/alert-demo.html"},
 		Why:       "upstream examples rendered by real React+chromium BECOME the demo pages — 1:1 with upstream by construction, not by hand-mirroring",
 		Mutations: []string{"example-oracle-render-failure"},
 	},
