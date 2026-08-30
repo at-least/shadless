@@ -36,7 +36,7 @@ PIPELINE := build/pipeline
 .PHONY: build verify fast medium full all meta only list pipeline \
         pin ledger ledger-render overlay overlay-record overlay-tasks \
         upstream upstream-snapshot reproducible \
-        hooks hooks-uninstall audit-boundary serve clean help
+        hooks hooks-uninstall audit-boundary ir-diff serve clean help
 
 # ----- the pipeline -------------------------------------------------------
 $(PIPELINE): $(wildcard pipeline/*.go) pipeline/go.mod
@@ -118,6 +118,11 @@ hooks-uninstall: $(PIPELINE)
 
 audit-boundary:
 	$(NODE) tools/audit-boundary.mjs
+
+# Slot-level semantic diff between two IR sets (the re-pin review surface).
+ir-diff: $(PIPELINE)
+	@test -n "$(REF)" || { echo "usage: make ir-diff REF=<git-ref>"; exit 2; }
+	./$(PIPELINE) ir-diff $(REF)
 
 serve:
 	@echo "serving docs/site/ on http://localhost:$(PORT) (Ctrl-C to stop)"

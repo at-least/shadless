@@ -115,13 +115,16 @@ func main() {
 	// product-css, hooks) take no argument. plan/status/run/adopt validate
 	// their own target list below.
 	if len(os.Args) < 2 {
-		fmt.Fprintln(os.Stderr, "usage: pipeline <plan|status|run|adopt> <fast|medium|full|builds|node…>\n       pipeline pin [--check-only]\n       pipeline tw <in> <out> [--minify] [--cwd DIR]\n       pipeline oracle-css\n       pipeline product-css\n       pipeline docs-catalog\n       pipeline hooks [--uninstall] [--force]\n       pipeline css-direction --update\n\nThe gates are Go tests: go test -C pipeline -count=1 -v [-run '^TestPack$']")
+		fmt.Fprintln(os.Stderr, "usage: pipeline <plan|status|run|adopt> <fast|medium|full|builds|node…>\n       pipeline pin [--check-only]\n       pipeline tw <in> <out> [--minify] [--cwd DIR]\n       pipeline oracle-css\n       pipeline product-css\n       pipeline docs-catalog\n       pipeline ir-diff <git-ref>|<dirA> <dirB> [--json]\n       pipeline hooks [--uninstall] [--force]\n       pipeline css-direction --update\n\nThe gates are Go tests: go test -C pipeline -count=1 -v [-run '^TestPack$']")
 		os.Exit(2)
 	}
 	cmd, args := os.Args[1], os.Args[2:]
 	if len(args) == 0 && (cmd == "plan" || cmd == "status" || cmd == "run" || cmd == "adopt") {
 		fmt.Fprintf(os.Stderr, "usage: pipeline %s <fast|medium|full|builds|node…>\n", cmd)
 		os.Exit(2)
+	}
+	if cmd == "ir-diff" {
+		os.Exit(runIrDiff(args))
 	}
 	if cmd == "docs-catalog" {
 		os.Exit(runDocsCatalog())

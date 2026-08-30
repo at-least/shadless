@@ -123,7 +123,7 @@ var Nodes = []Node{
 		ID: NEmit, Kind: "build", Tier: "medium",
 		Needs:    []NodeID{NConvert},
 		Run:      [][]string{{"node", "src/emitter/index.mjs"}, {"./build/pipeline", "tw", "build/emit/globals.css", "build/emit/out.css", "--cwd", "dist"}},
-		Inputs:   []string{"src/emitter/**", "src/tags.mjs", "src/docs/theme-prepaint.mjs", "src/registry/tiers.json", "src/registry/pin.json", "probes/h4/globals.css", "pipeline/tw.go"},
+		Inputs:   []string{"src/emitter/**", "src/tags.mjs", "src/docs/theme-prepaint.mjs", "src/registry/tiers.json", "src/registry/pin.json", "probes/h4/globals.css", "pipeline/tw.go", "pipeline/main.go"},
 		Produces: []string{"dist/components/*.html", "!dist/components/*-rtl-*.html", "dist/shadless.css", "build/emit"},
 	},
 	{
@@ -186,21 +186,21 @@ var Nodes = []Node{
 		ID: NProductCss, Kind: "build", Tier: "medium",
 		Needs:    []NodeID{NDemo},
 		Run:      [][]string{{"./build/pipeline", "product-css"}},
-		Inputs:   []string{"pipeline/product_css.go", "src/docs/theme-prepaint.mjs", "probes/h4/globals.css", "package-lock.json"},
+		Inputs:   []string{"pipeline/product_css.go", "pipeline/main.go", "src/docs/theme-prepaint.mjs", "probes/h4/globals.css", "package-lock.json"},
 		Produces: []string{"dist/shadless-core.css", "dist/shadless.product.css"},
 	},
 	{
 		ID: NDemoCss, Kind: "build", Tier: "medium",
 		Needs:    []NodeID{NDemo},
 		Run:      [][]string{{"./build/pipeline", "tw", "dist/globals.css", "dist/out.css", "--cwd", "."}},
-		Inputs:   []string{"pipeline/tw.go", "dist/globals.css", "dist/components/**", "dist/js/**", "docs/demos/**", "docs/content/**", "src/kernel/**", "tools/contracts/out/**", "src/registry/ir/**", "probes/t7/**", "probes/t8/**"},
+		Inputs:   []string{"pipeline/tw.go", "pipeline/main.go", "dist/globals.css", "dist/components/**", "dist/js/**", "docs/demos/**", "docs/content/**", "src/kernel/**", "tools/contracts/out/**", "src/registry/ir/**", "probes/t7/**", "probes/t8/**"},
 		Produces: []string{"dist/out.css"},
 	},
 	{
 		ID: NProductBuild, Kind: "build", Tier: "medium",
 		Needs:    []NodeID{NProductCss},
 		Run:      [][]string{{"./build/pipeline", "tw", "dist/shadless.product.css", "dist/shadless.full.css"}, {"./build/pipeline", "tw", "dist/shadless.product.css", "dist/shadless.full.min.css", "--minify"}},
-		Inputs:   []string{"pipeline/tw.go", "dist/shadless.product.css"},
+		Inputs:   []string{"pipeline/tw.go", "pipeline/main.go", "dist/shadless.product.css"},
 		Produces: []string{"dist/shadless.full.css", "dist/shadless.full.min.css"},
 	},
 	{
@@ -221,7 +221,7 @@ var Nodes = []Node{
 		ID: NPathParity, Kind: "gate", Tier: "full",
 		Needs:    []NodeID{NProductBuild, NOracleCss},
 		Run:      [][]string{{"node", "gates/path-parity.mjs"}},
-		Inputs:   []string{"gates/path-parity.mjs", "gates/parity-baseline.mjs", "gates/path-parity-baseline.json", "gates/ledger.json", "src/emitter/css.mjs", "src/tags.mjs", "src/registry/ir/**", "dist/css/**", "dist/shadless.full.css", "build/gates/oracle.css", "src/registry/pin.json", "pipeline/tw.go"},
+		Inputs:   []string{"gates/path-parity.mjs", "gates/parity-baseline.mjs", "gates/path-parity-baseline.json", "gates/ledger.json", "src/emitter/css.mjs", "src/tags.mjs", "src/registry/ir/**", "dist/css/**", "dist/shadless.full.css", "build/gates/oracle.css", "src/registry/pin.json", "pipeline/tw.go", "pipeline/main.go"},
 		Produces: nil,
 	},
 	{
@@ -249,7 +249,7 @@ var Nodes = []Node{
 		ID: NOracleCss, Kind: "build", Tier: "medium",
 		Needs:    []NodeID{NConvert},
 		Run:      [][]string{{"./build/pipeline", "oracle-css"}},
-		Inputs:   []string{"pipeline/oracle_css.go", "pipeline/tw.go", "src/registry/pin.json", "build/resolved-ui/**"},
+		Inputs:   []string{"pipeline/oracle_css.go", "pipeline/tw.go", "pipeline/main.go", "src/registry/pin.json", "build/resolved-ui/**"},
 		Produces: []string{"build/gates/oracle.css"},
 	},
 	{
@@ -269,8 +269,8 @@ var Nodes = []Node{
 	{
 		ID: NDocsCatalog, Kind: "build", Tier: "medium",
 		Needs:    []NodeID{NDemo},
-		Run:      [][]string{{"node", "tools/docs-catalog.mjs"}},
-		Inputs:   []string{"tools/docs-catalog.mjs", "src/registry/pin.json", "src/registry/tiers.json", "dist/components/**", "docs/demos/**"},
+		Run:      [][]string{{"./build/pipeline", "docs-catalog"}},
+		Inputs:   []string{"pipeline/docs_catalog.go", "pipeline/jsonorder.go", "pipeline/main.go", "src/registry/pin.json", "src/registry/tiers.json", "dist/components/**", "docs/demos/**"},
 		Produces: []string{"docs/catalog.json"},
 	},
 	{

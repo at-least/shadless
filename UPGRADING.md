@@ -25,7 +25,7 @@ drill against the newest release and opens one PR carrying the report.
 | 2 | `gates/ledger.mjs --dissolve` | every **auto-dissolve** exemption is deleted. The rebuild must re-earn each one with evidence; nobody walks a list by hand |
 | 3 | `git apply --3way overlays/upstream/*.patch` | source-level patches rebase onto the new tag; a conflict is a conflict, not a silent no-apply |
 | 4 | `gates/run.mjs --tier=full --keep-going` | the whole picture — every failing gate, not the first |
-| 5 | `gates/ir-diff.mjs` | slot-level semantic diff old pin → new pin: which components, slots, class lists, cva axes actually moved |
+| 5 | `pipeline ir-diff` | slot-level semantic diff old pin → new pin: which components, slots, class lists, cva axes actually moved |
 | 6 | `gates/overlay.mjs --tasks` | every hand-written unit re-proves it still applies; the ones that don't become task packets |
 | 7 | classification | each failed gate is **EXPECTED** (its components changed upstream per step 5) or **UNEXPECTED** (nothing moved upstream — our pipeline regressed) |
 

@@ -13,7 +13,7 @@
 //      the rebuild has to re-earn each one with evidence
 //   3. overlays/upstream/*.patch applied with git apply --3way
 //   4. gates/run.mjs --tier=full --keep-going — the WHOLE picture, not the first red
-//   5. IR semantic diff (gates/ir-diff.mjs) old pin -> new pin
+//   5. IR semantic diff (pipeline/ir_diff.go) old pin -> new pin
 //   6. gates/overlay.mjs --report + --tasks — stale/orphaned manual work, as packets
 //   7. classify every failed gate: EXPECTED (its components changed upstream)
 //      or UNEXPECTED (nothing upstream moved — our pipeline regressed)
@@ -24,7 +24,6 @@
 // that must be green afterwards.
 import { execFileSync, spawnSync } from "node:child_process"
 import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync, cpSync, rmSync } from "node:fs"
-import { diffIr, loadIrFromDir, renderIrDiff } from "./ir-diff.mjs"
 
 const UP = ".upstream/shadcn-ui"
 const OUT = "build/gates"
@@ -112,15 +111,18 @@ const registryNames = readdirSync(`${UP}/${REGISTRY}`).filter((f) => f.endsWith(
 const componentOfExample = (name) => registryNames.filter((r) => name === r || name.startsWith(r + "-")).sort((a, b) => b.length - a.length)[0] ?? name
 const changedComponents = new Set(changedFiles.map((f) => componentOfExample(compOf(f.path))))
 
-const irBefore = loadIrFromDir(`${OUT}/ir-before`)
-const irAfter = loadIrFromDir("src/registry/ir")
-const irDiff = diffIr(irBefore, irAfter)
+// The IR diff lives in Go (pipeline/ir_diff.go). The drill consumes it as
+// data — the --json shape is the interface, so there is one implementation of
+// the diff and no chance of the routing signal disagreeing with the report.
+const irDiffCmd = (...extra) => execFileSync("./build/pipeline",
+  ["ir-diff", `${OUT}/ir-before`, "src/registry/ir", ...extra], { encoding: "utf8" })
+const irDiff = JSON.parse(irDiffCmd("--json"))
 for (const n of Object.keys(irDiff.components)) changedComponents.add(n)
 
 H("Upstream changes in scope")
 P(changedFiles.length ? changedFiles.map((f) => `- ${f.status} \`${f.path}\``).join("\n") : "- none")
 H("IR semantic diff")
-P("```\n" + renderIrDiff(irDiff) + "\n```")
+P("```\n" + irDiffCmd().trimEnd() + "\n```")
 
 const runReport = existsSync(`${OUT}/run-report.json`) ? JSON.parse(readFileSync(`${OUT}/run-report.json`, "utf8")) : { failed: {}, blocked: [], passed: [] }
 H("Gates")

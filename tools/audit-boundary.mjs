@@ -85,7 +85,7 @@ const PROGRAMMATIC_PATTERNS = [
     tool: "tools/build-rtl.mjs", source: "examples/aria/*-rtl.tsx" },
   // catalog + reports
   { test: (p) => p === "docs/catalog.json",
-    tool: "tools/docs-catalog.mjs", source: ".upstream/.../components/*/*.mdx + dist/components state" },
+    tool: "pipeline/docs_catalog.go", source: ".upstream/.../components/*/*.mdx + dist/components state" },
   // (patches/ overlay retired — manual interventions live in overlays/ + src/)
 ]
 

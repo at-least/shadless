@@ -157,7 +157,7 @@ export const NODES = [
           ["./build/pipeline", "tw", "build/emit/globals.css", "build/emit/out.css", "--cwd", "dist"]],
     inputs: ["src/emitter/**", "src/tags.mjs", "src/docs/theme-prepaint.mjs",
              "src/registry/tiers.json", "src/registry/pin.json", "probes/h4/globals.css",
-             "pipeline/tw.go"],
+             "pipeline/tw.go", "pipeline/main.go"],
     why: "static-tier emit: IR -> component html + per-slot css",
     produces: ["dist/components/*.html", "!dist/components/*-rtl-*.html", "dist/shadless.css", "build/emit"],
   }),
@@ -261,7 +261,7 @@ export const NODES = [
     // tw-animate-css that gets inlined — both were read but undeclared.
     id: "product-css", kind: "build", tier: "medium", needs: ["demo"],
     run: [["./build/pipeline", "product-css"]],
-    inputs: ["pipeline/product_css.go", "src/docs/theme-prepaint.mjs", "probes/h4/globals.css",
+    inputs: ["pipeline/product_css.go", "pipeline/main.go", "src/docs/theme-prepaint.mjs", "probes/h4/globals.css",
              "package-lock.json"],
     why: "token extraction + the product entry — the consumer-facing surface",
     produces: ["dist/shadless-core.css", "dist/shadless.product.css"],
@@ -272,7 +272,7 @@ export const NODES = [
     // docs/demos iframes (@source not excludes tool fixtures — see tools/demo.mjs)
     run: [["./build/pipeline", "tw", "dist/globals.css", "dist/out.css", "--cwd", "."]],
     // == the @source list in tools/demo.mjs (explicit scan, no auto-detection)
-    inputs: ["pipeline/tw.go", "dist/globals.css", "dist/components/**", "dist/js/**", "docs/demos/**",
+    inputs: ["pipeline/tw.go", "pipeline/main.go", "dist/globals.css", "dist/components/**", "dist/js/**", "docs/demos/**",
              "docs/content/**", "src/kernel/**", "tools/contracts/out/**", "src/registry/ir/**",
              "probes/t7/**", "probes/t8/**"],
     why: "the stylesheet every demo page and contract fixture actually loads",
@@ -283,7 +283,7 @@ export const NODES = [
     // compiled in an empty scratch dir so ONLY @apply-driven rules survive
     run: [["./build/pipeline", "tw", "dist/shadless.product.css", "dist/shadless.full.css"],
           ["./build/pipeline", "tw", "dist/shadless.product.css", "dist/shadless.full.min.css", "--minify"]],
-    inputs: ["pipeline/tw.go", "dist/shadless.product.css"],
+    inputs: ["pipeline/tw.go", "pipeline/main.go", "dist/shadless.product.css"],
     why: "the no-build distribution artifact",
     produces: ["dist/shadless.full.css", "dist/shadless.full.min.css"],
   }),
@@ -315,7 +315,7 @@ export const NODES = [
     inputs: ["gates/path-parity.mjs", "gates/parity-baseline.mjs", "gates/path-parity-baseline.json", "gates/ledger.json",
              "src/emitter/css.mjs", "src/tags.mjs", "src/registry/ir/**", "dist/css/**",
              "dist/shadless.full.css", "build/gates/oracle.css", "src/registry/pin.json",
-             "pipeline/tw.go"],
+             "pipeline/tw.go", "pipeline/main.go"],
     why: "for EVERY slot, slot-only markup via css-import and via full.css must compute what " +
          "React's inline classes compute under upstream's own stylesheet, in both themes and " +
          "directions, at rest, per cva variant value and per attribute-driven state, with " +
@@ -356,7 +356,7 @@ export const NODES = [
   node({
     id: "oracle-css", kind: "build", tier: "medium", needs: ["convert"],
     run: [["./build/pipeline", "oracle-css"]],
-    inputs: ["pipeline/oracle_css.go", "pipeline/tw.go", "src/registry/pin.json", "build/resolved-ui/**"],
+    inputs: ["pipeline/oracle_css.go", "pipeline/tw.go", "pipeline/main.go", "src/registry/pin.json", "build/resolved-ui/**"],
     why: "a stylesheet for the React oracle built from upstream's own globals/skin and the " +
          "resolved registry — reads nothing under src/, so style-parity is no longer circular",
     produces: ["build/gates/oracle.css"],
@@ -382,8 +382,8 @@ export const NODES = [
   // ------------------------------------------------------------------ docs
   node({
     id: "docs-catalog", kind: "build", tier: "medium", needs: ["demo"],
-    run: [["node", "tools/docs-catalog.mjs"]],
-    inputs: ["tools/docs-catalog.mjs", "src/registry/pin.json", "src/registry/tiers.json",
+    run: [["./build/pipeline", "docs-catalog"]],
+    inputs: ["pipeline/docs_catalog.go", "pipeline/jsonorder.go", "pipeline/main.go", "src/registry/pin.json", "src/registry/tiers.json",
              "dist/components/**", "docs/demos/**"],
     why: "the preview catalog the site is generated from",
     produces: ["docs/catalog.json"],

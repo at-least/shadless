@@ -61,7 +61,7 @@
     "demo:smoke": "node tools/demo-smoke.mjs",
     "verify": "node gates/run.mjs --tier=full",
     "gate:direction": "node tools/css-direction-gate.mjs",
-    "docs": "node tools/build-demo.mjs && node tools/build-rtl.mjs && node tools/docs-catalog.mjs && node tools/docs-build.mjs",
+    "docs": "npm run pipeline && node tools/build-demo.mjs && node tools/build-rtl.mjs && ./build/pipeline docs-catalog && node tools/docs-build.mjs",
     "docs:verify": "npm run docs && npm run docs:links && node tools/docs-consistency.mjs && node tools/docs-fidelity.mjs && node tools/docs-smoke.mjs --all",
     "docs:links": "node tools/docs-links.mjs",
     "docs:consistency": "node tools/docs-consistency.mjs",

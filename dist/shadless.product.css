@@ -1,4 +1,4 @@
-/* shadless theme — extracted from probes/h4/globals.css by tools/product-css.mjs.
+/* shadless theme — extracted from probes/h4/globals.css by pipeline/product_css.go.
    Product surface ONLY: theme vars, @theme, custom variants, @utility helpers,
    keyframes. Deliberately excluded: docs-site chrome (prose/steps/packs),
    demo @source and demo body padding. The only @import left is "tailwindcss"

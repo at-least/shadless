@@ -41,7 +41,7 @@ const rtlLangs = existsSync('build/rtl-langs.json')
 const demoFile = (name, status) => {
   if (status === 'authored') return `docs/demos/${name}.html`
   const p = previews.get(name)
-  if (!p?.demoPath) throw new Error(`no demo path for "${name}" (status=${status}) — run tools/docs-catalog.mjs`)
+  if (!p?.demoPath) throw new Error(`no demo path for "${name}" (status=${status}) — run ./build/pipeline docs-catalog`)
   return p.demoPath
 }
 

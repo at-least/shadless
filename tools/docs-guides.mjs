@@ -19,7 +19,7 @@
 //             links to pruned targets render as unavailable-link spans
 //
 // Guide ComponentPreview names are enumerated here with the same
-// fence-stripped tag-scoped scan as docs-catalog.mjs (that tool stays
+// fence-stripped tag-scoped scan as pipeline/docs_catalog.go (that tool stays
 // radix-only by design; FT4 guide enumeration lives here, per PLAN FT4).
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs'
 import { basename, join } from 'node:path'
