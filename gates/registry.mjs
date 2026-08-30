@@ -18,9 +18,9 @@
 //             | "full" (playwright)
 //   inputs    globs of everything the node READS (its own script, the modules
 //             it imports, the data it opens). Outputs of `needs` are implied —
-//             wireit folds a dependency's fingerprint into its dependents. This
-//             is what lets `npm run w:<id>` skip a node nothing has touched
-//             (gates/wireit.mjs derives package.json's wireit block from here).
+//             the runner folds a dependency's key into its dependents'. This is
+//             what lets `make only ID=<id>` skip a node nothing has touched
+//             (pipeline/nodes.go is generated from here).
 //             `null` = judges state outside the tree, never fresh.
 //   why       one line: what breaks if this node is deleted. Not decoration —
 //             `gates/meta.mjs` requires every gate to carry one.
@@ -38,8 +38,8 @@ export const NODES = [
     id: "pin", kind: "gate", tier: "fast", needs: [],
     run: [["node", "tools/pin.mjs", "--check-only"]],
     // the checkout's HEAD file IS the state this gate judges; declaring it
-    // (rather than `null`) matters: wireit cannot consider any dependent of
-    // an untracked node fresh, and everything descends from pin
+    // (rather than `null`) matters: no dependent of a node without a declared
+    // input set can ever be fresh, and everything descends from pin
     inputs: ["tools/pin.mjs", "src/registry/pin.json", "vendor/**", ".upstream/shadcn-ui/.git/HEAD"],
     why: "the .upstream checkout must sit exactly at the pinned release tag; " +
          "upgrade tools write pin.json directly and nothing else checks the result",
@@ -68,13 +68,13 @@ export const NODES = [
   }),
 
   node({
-    id: "wireit-sync", kind: "gate", tier: "fast", needs: [],
-    run: [["node", "gates/wireit.mjs", "--check"]],
-    inputs: ["gates/wireit.mjs", "gates/registry.mjs", "package.json"],
-    why: "package.json's wireit block (the incremental runner's graph) is generated from this " +
-         "file; a registry edit without --write, or a hand edit, would make `npm run w:*` " +
-         "run a different graph from the one meta proves",
-    mutations: ["wireit-drift"],
+    id: "pipeline-sync", kind: "gate", tier: "fast", needs: [],
+    run: [["node", "pipeline/export-graph.mjs", "--check"]],
+    inputs: ["pipeline/export-graph.mjs", "pipeline/nodes.go", "gates/registry.mjs"],
+    why: "pipeline/nodes.go (the runner's graph, as typed Go) is generated from this file; " +
+         "a registry edit without regenerating, or a hand edit, would make the runner execute " +
+         "a different graph from the one meta proves",
+    mutations: ["pipeline-drift"],
   }),
   node({
     // reads dist/out.css + dist/css — must not race their producers under the parallel runner
@@ -200,7 +200,7 @@ export const NODES = [
     why: "upstream examples rendered by real React+chromium BECOME the demo pages — " +
          "1:1 with upstream by construction, not by hand-mirroring",
     // rtl language variants are demo-rtl's: output sets must be DISJOINT between
-    // nodes that can run in parallel, or wireit's output manifests race
+    // nodes that can run in parallel, or their output sets race
     // build/example-oracle is SCRATCH, not an output: each render harness is
     // rmSync'd after use and the directory ends up empty, nothing declares it
     // as an input. Declaring it made the node look unproducible on a clean

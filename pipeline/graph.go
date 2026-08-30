@@ -145,3 +145,16 @@ func (g *Graph) PlanTier(tier string) ([]Node, error) {
 	}
 	return g.Plan(targets)
 }
+
+// PlanBuilds is every build node and what it needs — every artifact, no gates.
+// gates/meta.mjs wants exactly this as its prelude: mutation testing needs the
+// tree built, but running the gates first would just be running them twice.
+func (g *Graph) PlanBuilds() ([]Node, error) {
+	var targets []NodeID
+	for _, id := range g.order {
+		if g.nodes[id].Kind == "build" {
+			targets = append(targets, id)
+		}
+	}
+	return g.Plan(targets)
+}

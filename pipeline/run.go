@@ -45,14 +45,14 @@ func (r *Runner) record(id NodeID, key string) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	r.stamps[id] = key
-	_ = saveStamps(r.root, r.stamps)
+	_ = writeStamp(r.root, id, key) // one file per node: parallel nodes do not contend
 }
 
 func (r *Runner) forget(id NodeID) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	delete(r.stamps, id)
-	_ = saveStamps(r.root, r.stamps)
+	removeStamp(r.root, id)
 }
 
 func (r *Runner) recorded(id NodeID) string {

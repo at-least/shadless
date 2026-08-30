@@ -10,44 +10,72 @@ package main
 // failed run leaves the node stale rather than claiming work it did not do.
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"runtime"
 	"strconv"
+	"strings"
 	"time"
 )
 
-// TRACKED, not under build/. The outputs this pipeline produces are committed
-// (dist/, docs/, src/registry/ir), so a fresh clone already holds them — what
-// it lacks is the record of which inputs produced them. Committing that record
-// is what makes a clone warm: on a clean checkout only the nodes whose outputs
-// are gitignored have to run.
+// One file per node under pipeline/stamps/, holding the key that produced the
+// current outputs. TRACKED, and one file per node rather than one map for all
+// of them, for two reasons:
+//
+//   - the outputs this pipeline produces are committed (dist/, docs/,
+//     src/registry/ir), so a fresh clone already holds them; what it lacks is
+//     the record of which inputs produced them. Committing that record is what
+//     makes a clone warm.
+//   - a single stamps.json changes on every build and would conflict on every
+//     concurrent branch. Per node, a conflict happens only when two branches
+//     genuinely changed the same node's inputs, and it is one line.
 //
 // Safe to commit because a stamp is verified, not trusted: the key is a hash
 // over the actual contents of every declared input, so it cannot match a tree
 // whose sources differ, and `reproducible` (which never goes fresh) is the
 // backstop against a committed output that does not match its inputs.
-const stampFile = "pipeline/stamps.json"
+//
+// Node ids carry ":" after a fan-out (contracts:dialog); it is legal in a
+// POSIX filename but not on Windows, so it is escaped in the path.
+const stampDir = "pipeline/stamps"
 
 type stamps map[NodeID]string // node id -> recorded key
 
+func stampFile(id NodeID) string { return strings.ReplaceAll(string(id), ":", "__") }
+func stampID(name string) NodeID { return NodeID(strings.ReplaceAll(name, "__", ":")) }
+func stampPath(root string, id NodeID) string {
+	return filepath.Join(root, stampDir, stampFile(id))
+}
+
 func loadStamps(root string) stamps {
 	s := stamps{}
-	b, err := os.ReadFile(root + "/" + stampFile)
+	entries, err := os.ReadDir(filepath.Join(root, stampDir))
 	if err != nil {
 		return s
 	}
-	_ = json.Unmarshal(b, &s)
+	for _, e := range entries {
+		if e.IsDir() {
+			continue
+		}
+		b, err := os.ReadFile(filepath.Join(root, stampDir, e.Name()))
+		if err != nil {
+			continue
+		}
+		s[stampID(e.Name())] = strings.TrimSpace(string(b))
+	}
 	return s
 }
 
-func saveStamps(root string, s stamps) error {
-	b, err := json.MarshalIndent(s, "", " ")
-	if err != nil {
+func writeStamp(root string, id NodeID, key string) error {
+	if err := os.MkdirAll(filepath.Join(root, stampDir), 0o755); err != nil {
 		return err
 	}
-	return os.WriteFile(root+"/"+stampFile, append(b, '\n'), 0o644)
+	return os.WriteFile(stampPath(root, id), []byte(key+"\n"), 0o644)
+}
+
+func removeStamp(root string, id NodeID) {
+	_ = os.Remove(stampPath(root, id))
 }
 
 func resolveTargets(g *Graph, args []string) ([]Node, error) {
@@ -55,6 +83,8 @@ func resolveTargets(g *Graph, args []string) ([]Node, error) {
 		switch args[0] {
 		case "fast", "medium", "full":
 			return g.PlanTier(args[0])
+		case "builds":
+			return g.PlanBuilds()
 		}
 	}
 	ids := make([]NodeID, len(args))
@@ -73,7 +103,7 @@ func die(err error) {
 
 func main() {
 	if len(os.Args) < 3 {
-		fmt.Fprintln(os.Stderr, "usage: pipeline <plan|status|run> <tier|node…>")
+		fmt.Fprintln(os.Stderr, "usage: pipeline <plan|status|run|adopt> <fast|medium|full|builds|node…>")
 		os.Exit(2)
 	}
 	cmd, args := os.Args[1], os.Args[2:]
@@ -101,7 +131,6 @@ func main() {
 		// only valid straight after a full green run. It is the migration
 		// step onto an already-built tree, and nothing else should use it.
 		k := NewKeyer(root, g)
-		rec := loadStamps(root)
 		n0 := 0
 		for _, n := range plan {
 			key, skippable, err := k.Key(n.ID)
@@ -109,10 +138,9 @@ func main() {
 			if !skippable {
 				continue
 			}
-			rec[n.ID] = key
+			die(writeStamp(root, n.ID, key))
 			n0++
 		}
-		die(saveStamps(root, rec))
 		fmt.Printf("adopted %d nodes as fresh (assumes the tree is a green full run)\n", n0)
 
 	case "status":

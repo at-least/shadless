@@ -14,11 +14,12 @@
 #   make list         the graph
 #   make all          the same graph, every node, no freshness skip (gates/run.mjs)
 #
-# build/fast/medium/only go through wireit (npm run w:<id>, config generated
-# from the registry by gates/wireit.mjs): a node whose declared inputs and
-# dependencies are unchanged since its last green run is skipped, and
-# independent nodes run in parallel. WIREIT_PARALLEL caps concurrency —
-# playwright nodes each own a chromium.
+# build/fast/medium/only go through the Go runner (pipeline/): a node whose
+# declared inputs and dependencies are unchanged since its last green run is
+# skipped, and independent nodes run in parallel. PIPELINE_PARALLEL caps
+# concurrency — playwright nodes each own a chromium. The freshness record is
+# pipeline/stamps.json, which is TRACKED, so a fresh clone is already warm for
+# every node whose outputs are committed.
 #   make upstream TO=shadcn@X.Y.Z   re-pin drill: pin, dissolve, rebuild, classify
 #   make overlay-tasks              task packets for stale/orphaned manual work
 #   make serve / clean / hooks
@@ -28,26 +29,33 @@ NODE   := node
 NPM    := npm
 PYTHON := python3
 PORT   ?= 8765
-WIREIT_PARALLEL ?= 4
-export WIREIT_PARALLEL
+PIPELINE_PARALLEL ?= 4
+export PIPELINE_PARALLEL
+PIPELINE := build/pipeline
 
-.PHONY: build verify fast medium full all meta only list \
+.PHONY: build verify fast medium full all meta only list pipeline \
         pin ledger ledger-render overlay overlay-record overlay-tasks \
         upstream upstream-snapshot reproducible \
         hooks hooks-uninstall audit-boundary serve clean help
 
 # ----- the pipeline -------------------------------------------------------
-build:
-	$(NPM) run w:full
+$(PIPELINE): $(wildcard pipeline/*.go) pipeline/go.mod
+	@mkdir -p build
+	cd pipeline && go build -o ../$(PIPELINE) .
+
+pipeline: $(PIPELINE)
+
+build: $(PIPELINE)
+	./$(PIPELINE) run full
 
 verify:
 	$(NODE) gates/run.mjs --tier=full --gates-only
 
-fast:
-	$(NPM) run w:fast
+fast: $(PIPELINE)
+	./$(PIPELINE) run fast
 
-medium:
-	$(NPM) run w:medium
+medium: $(PIPELINE)
+	./$(PIPELINE) run medium
 
 full: build
 
@@ -57,9 +65,9 @@ all:
 meta:
 	$(NODE) gates/meta.mjs
 
-only:
+only: $(PIPELINE)
 	@test -n "$(ID)" || { echo "usage: make only ID=<node-id>   (make list)"; exit 2; }
-	$(NPM) run w:$(ID)
+	./$(PIPELINE) run $(ID)
 
 list:
 	$(NODE) gates/run.mjs --tier=full --list
@@ -116,7 +124,7 @@ serve:
 	cd docs/site && $(PYTHON) -m http.server $(PORT)
 
 clean:
-	rm -rf dist build .wireit node_modules/.cache/shadless
+	rm -rf dist build node_modules/.cache/shadless
 	rm -rf docs/catalog.json
 	rm -f  docs/site/site.css docs/site/site.js docs/site/highlight.js docs/site/out.css docs/site/fonts.css
 	rm -rf docs/site/assets docs/site/components docs/site/js

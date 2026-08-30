@@ -1,11 +1,17 @@
 # CI — the "all gates green" claim, mechanized. Three jobs, all derived from
 # gates/registry.mjs so this file holds no gate list of its own:
 #
-#   build         npm run w:full — every artifact, every gate through wireit
-#                 (config generated from gates/registry.mjs; nodes whose inputs
-#                 are unchanged since the cached green run are skipped, the rest
-#                 run in parallel), ending in `reproducible`: the committed
-#                 generated trees must equal what the pipeline just produced
+#   build         make build — every artifact, every gate through the Go runner
+#                 (pipeline/, its graph generated from gates/registry.mjs; nodes
+#                 whose inputs and dependencies are unchanged since the recorded
+#                 green run are skipped, the rest run in parallel), ending in
+#                 `reproducible`: the committed generated trees must equal what
+#                 the pipeline just produced.
+#
+# There is no output cache to restore: the freshness record lives in the tree
+# (pipeline/stamps.json) and nearly every output is committed, so a checkout is
+# already warm for those nodes. Only the gitignored artifacts under build/ get
+# rebuilt.
 #   meta          node gates/meta.mjs — every gate must be provably able to fail
 #
 # The pinned upstream checkout (.upstream/) is cached keyed on pin.json — a
@@ -22,7 +28,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  WIREIT_PARALLEL: 4
+  PIPELINE_PARALLEL: 4
 
 jobs:
   build:
@@ -44,7 +50,9 @@ jobs:
           TAG=$(node -p "require('./src/registry/pin.json').shadcn_ui.tag")
           git clone --depth 1 --branch "$TAG" https://github.com/shadcn-ui/ui .upstream/shadcn-ui
       - run: npm ci
-      - uses: google/wireit@setup-github-actions-caching/v2
+      # the runner is stdlib-only, so there is nothing to cache and no go.sum
+      - uses: actions/setup-go@v5
+        with: { go-version: "1.24", cache: false }
       - name: Restore oracle bundle cache (esbuild output, keyed on pin + lockfile)
         uses: actions/cache@v4
         with:
@@ -52,7 +60,7 @@ jobs:
           key: oracle-${{ hashFiles('src/registry/pin.json', 'package-lock.json') }}
       - run: npx playwright install --with-deps chromium
       - name: full tier (build + every gate + reproducible)
-        run: npm run w:full
+        run: make build
       - name: upload gate output on failure
         if: failure()
         uses: actions/upload-artifact@v4
@@ -74,7 +82,9 @@ jobs:
         run: |
           test -d .upstream/shadcn-ui || { TAG=$(node -p "require('./src/registry/pin.json').shadcn_ui.tag"); git clone --depth 1 --branch "$TAG" https://github.com/shadcn-ui/ui .upstream/shadcn-ui; }
       - run: npm ci
-      - uses: google/wireit@setup-github-actions-caching/v2
+      # the runner is stdlib-only, so there is nothing to cache and no go.sum
+      - uses: actions/setup-go@v5
+        with: { go-version: "1.24", cache: false }
       - name: Restore oracle bundle cache (esbuild output, keyed on pin + lockfile)
         uses: actions/cache@v4
         with:
@@ -83,5 +93,5 @@ jobs:
       - run: npx playwright install --with-deps chromium
       # mutations edit built artifacts; build them first (gates skipped — the
       # build job already proved them), then prove every gate can fail
-      - run: npm run w:builds
+      - run: make pipeline && ./build/pipeline run builds
       - run: node gates/meta.mjs

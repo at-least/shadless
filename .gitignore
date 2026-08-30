@@ -11,8 +11,6 @@ probes/scratch/
 tools/contracts/out/*/oracle.js
 tools/contracts/out/*/.oracle-entry.mjs
 tools/contracts/out/*/oracle.html
-# wireit's fingerprints + local output cache
-.wireit/
 
-# Go pipeline runner (build artifact)
+# Go pipeline runner (build artifact; pipeline/stamps.json IS tracked)
 /build/pipeline

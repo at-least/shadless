@@ -14,7 +14,7 @@ const (
 	NPin                NodeID = "pin"
 	NUnit               NodeID = "unit"
 	NLedger             NodeID = "ledger"
-	NWireitSync         NodeID = "wireit-sync"
+	NPipelineSync       NodeID = "pipeline-sync"
 	NDistComplete       NodeID = "dist-complete"
 	NPack               NodeID = "pack"
 	NCoverage           NodeID = "coverage"
@@ -78,10 +78,10 @@ var Nodes = []Node{
 		Produces: nil,
 	},
 	{
-		ID: NWireitSync, Kind: "gate", Tier: "fast",
+		ID: NPipelineSync, Kind: "gate", Tier: "fast",
 		Needs:    nil,
-		Run:      [][]string{{"node", "gates/wireit.mjs", "--check"}},
-		Inputs:   []string{"gates/wireit.mjs", "gates/registry.mjs", "package.json"},
+		Run:      [][]string{{"node", "pipeline/export-graph.mjs", "--check"}},
+		Inputs:   []string{"pipeline/export-graph.mjs", "pipeline/nodes.go", "gates/registry.mjs"},
 		Produces: nil,
 	},
 	{

@@ -51,7 +51,7 @@ function bundleCacheKey(name) {
   // resolve-skins is what BUILDS build/resolved-ui, which every alias below
   // points at — so both the script and the tables it imports are part of the
   // bundle's identity. skin.mjs was missing: editing SKIN_ALLOWLIST changed
-  // the resolved tree, wireit correctly re-ran the oracle consumers, and this
+  // the resolved tree, the runner correctly re-ran the oracle consumers, and this
   // key did not move — so a bundle compiled against the OLD resolved tree was
   // reused and the gates compared against a stale oracle, green.
   h.update(readFileSync("tools/resolve-skins.mjs"))

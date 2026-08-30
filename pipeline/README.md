@@ -36,11 +36,12 @@ has no key, can never be skipped, and neither can anything downstream of it.
 
 ## Status
 
-Not the runner yet — wireit still executes the graph. This binary is being
-reconciled against it first, because a migration that silently drops a node
-would silently drop a gate.
+This IS the runner. wireit, `gates/wireit.mjs`, the generated `wireit` block in
+package.json and the `wireit-sync` gate are gone; `make build/fast/medium/only`
+and CI go through this binary. `pipeline-sync` (mutation `pipeline-drift`)
+replaces `wireit-sync` as the guard that `nodes.go` matches the registry.
 
-Reconciled so far:
+Reconciled against wireit before the switch:
 
 - `plan` is byte-identical to `gates/registry.mjs` for all 3 tiers and all
   41 nodes (44 targets).
@@ -113,7 +114,7 @@ matches while the gitignored half of the outputs is absent, and checking the
 key alone would skip the work and hand the next node an empty directory.
 
 Measured, `build/` deleted with everything else committed — 16 of 41 nodes run
-instead of 41, and the two most expensive builds are not among them:
+instead of 41 (the check that catches this is `OutputsPresent`), and the two most expensive builds are not among them:
 
     convert     STALE (output missing: build/resolved-ui)     0.4s
     emit        STALE (output missing: build/emit)            1.0s
@@ -129,9 +130,8 @@ is empty after every run and `build/example-fixture` is a `const TMP` — which
 made both look unbuildable on a clean checkout. Removing those declarations is
 what moves them into the skipped column.
 
-Still missing before it can replace wireit: the node definitions are generated
-from `gates/registry.mjs`, which stays the source of truth while both runners
-exist — that is what keeps the reconciliation honest.
+`gates/registry.mjs` remains the source of truth; `nodes.go` is generated from
+it and `pipeline-sync` fails if they drift.
 
 ## Where the definitions live
 
