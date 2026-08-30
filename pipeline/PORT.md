@@ -247,6 +247,56 @@ stale green will come from:
 It under-reports, which is the safe direction: it finds real undeclared access
 and never invents one.
 
+## The Dagger port
+
+Three slices are ported and verified byte-for-byte against the committed tree:
+`convert` (61 IR files), `emit` (dist/shadless.css + all 52 component pages),
+and `contract` (the React oracle replayed in a containerised chromium).
+
+The module names no tool versions. node comes from `.nvmrc`, the Go toolchain
+from `pipeline/go.mod` (`toolchain` if present, else `go`), and the browser is
+installed by whatever `package-lock.json` resolved, so driver and browser match
+by construction. An image tag like `mcr.microsoft.com/playwright:v1.62.1` would
+be a second declaration of a version the repo already states — the same drift
+this port exists to remove, reintroduced by the port.
+
+### What a container dissolves, and what it does not
+
+`emit` used to shell out to `pipeline tw`. That wrapper does three things, and
+a container hands over two of them for free: resolving `in`/`out` against the
+repo root rather than the compile cwd (paths are absolute), and taking the CLI
+from THIS repo's `node_modules` rather than whatever package sits above the
+scratch directory (there is exactly one). Both exist to survive running at an
+arbitrary cwd on a developer's machine, which containers do not do.
+
+The third job is real and stays: controlling the compile cwd, which is what
+Tailwind auto-scans for utility classes. In a container that is `WithWorkdir`,
+so `emit` calls the CLI directly and the Go binary left that step entirely —
+taking the `SHADLESS_ROOT` workaround with it.
+
+`tw.go` itself stays until its remaining callers move. Three are in-process Go
+calls (`oracle_css.go`, `gate_consumer_sim.go` ×2) and one graph node passes no
+`--cwd` at all, meaning "fresh empty scratch dir, zero content scanning". That
+last one is load-bearing, and it was measured rather than assumed:
+
+	scratch dir (current)   345,892 bytes  == committed dist/shadless.full.css
+	repo-root scan          606,137 bytes  (+260KB)
+
+Dropping the scratch dir leaks 260KB of scanned utilities into the shipped
+product CSS — a 75% increase, silently, with nothing failing except
+`reproducible` catching the committed diff. Deleting `tw.go` today would
+scatter that semantic across five call sites (two shell, three Go). It goes
+when `oracle-css` and `consumer-sim` become container steps and their cwd
+becomes a `WithWorkdir`, the way `emit`'s did.
+
+### Still tangled
+
+`emit` mounts host `dist/` because the Tailwind step scans it, which leaves
+`dist/` as both an input and an output of that step — the mixing this port is
+meant to remove. Untangling it means deciding what that scan is supposed to
+see, which decides which utilities reach the shipped stylesheet. That is a
+product question, not a mechanical port.
+
 ## Porting the next one
 
 1. Check the npm imports first. If any is in the four toolchains above, stop —
