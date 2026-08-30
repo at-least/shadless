@@ -5,7 +5,7 @@
 # only names the common entry points — it holds no ordering of its own, so
 # it cannot drift from what CI runs.
 #
-#   make              full pipeline + every gate            (= CI)
+#   make              full pipeline + every gate
 #   make verify       every gate, assuming artifacts are fresh
 #   make fast         browser-free gates                    (< 1s, pre-commit)
 #   make meta         prove every gate can fail (mutation testing)
@@ -17,8 +17,12 @@
 # declared inputs and dependencies are unchanged since its last green run is
 # skipped, and independent nodes run in parallel. PIPELINE_PARALLEL caps
 # concurrency — playwright nodes each own a chromium. The freshness record is
-# pipeline/stamps.json, which is TRACKED, so a fresh clone is already warm for
-# every node whose outputs are committed.
+# one file per node under pipeline/stamps/, and it is NOT tracked: a fresh
+# clone holds the committed outputs but no record of which inputs produced
+# them, so it starts cold.
+#
+# PIPELINE_PARALLEL=1 additionally enables the undeclared-WRITE check, which
+# needs a quiet tree to attribute a change to the node that made it.
 #   make upstream TO=shadcn@X.Y.Z   re-pin drill: pin, dissolve, rebuild, classify
 #   make overlay-tasks              task packets for stale/orphaned manual work
 #   make serve / clean

@@ -86,6 +86,23 @@ const (
 	NExampleGate        NodeID = "example-gate"
 )
 
+// Two pinned-upstream trees that several nodes read DIRECTLY, rather than
+// through anything this repo generates. They were declared by nobody: the
+// nodes below leaned on src/registry/pin.json as a proxy for "upstream
+// changed", which holds only as long as every upstream move rewrites pin.json.
+// A checkout that moves .upstream without touching pin.json left all of them
+// falsely fresh — 2,512 of the 2,514 undeclared opens a full run reported were
+// these two trees.
+//
+// Declared whole rather than per-file: each node reads its own subset (the
+// radix examples, the aria ones, both), and a subset that drifts is exactly
+// the under-declaration this is fixing. Over-declaring an input only costs a
+// rerun.
+const (
+	upstreamExamplesGlob = ".upstream/shadcn-ui/apps/v4/examples/**"
+	upstreamDocsGlob     = ".upstream/shadcn-ui/apps/v4/content/docs/**"
+)
+
 // Nodes is the pipeline graph, in declaration order.
 var Nodes = []Node{
 	{
@@ -99,9 +116,16 @@ var Nodes = []Node{
 	},
 	{
 		ID: NUnit, Kind: "gate", Tier: "fast",
-		Needs:     []NodeID{NBuildJs},
-		Run:       [][]string{{"node", "tools/unit-check.mjs"}, {"go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestUnit", "."}},
-		Inputs:    []string{"tools/unit-check.mjs", "tools/unit/**", "src/**", "tools/**/*.mjs", "vendor/**", "package.json", "dist/esm/**", "dist/shadless.js", "probes/h4/globals.css", ".upstream/shadcn-ui/apps/v4/registry/styles/style-nova.css", "pipeline/*_test.go", "pipeline/gate_css_direction.go", "pipeline/product_css.go"},
+		Needs: []NodeID{NBuildJs},
+		Run:   [][]string{{"node", "tools/unit-check.mjs"}, {"go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestUnit", "."}},
+		// docs/example-oracle.json and docs/example-fixture-targets.json are
+		// example-oracle's output, read here by the audit-boundary
+		// classifier's TestUnit. Declared as inputs but deliberately NOT as a
+		// `needs`: that would put a browser build in unit's closure and drag
+		// the whole fast tier to full. `pipeline/*.go` rather than the three
+		// files named before it — the test binary is the whole package, so
+		// any source in it can change the verdict.
+		Inputs:    []string{"tools/unit-check.mjs", "tools/unit/**", "src/**", "tools/**/*.mjs", "vendor/**", "package.json", "dist/esm/**", "dist/shadless.js", "probes/h4/globals.css", ".upstream/shadcn-ui/apps/v4/registry/styles/style-nova.css", "pipeline/*.go", "docs/example-oracle.json", "docs/example-fixture-targets.json"},
 		Produces:  nil,
 		Why:       "seconds-level guard over the pure functions cleanup rounds touch; born from a dead-code delete in rewritePaths that only surfaced minutes later",
 		Mutations: []string{"unit-break-pure-fn"},
@@ -146,7 +170,7 @@ var Nodes = []Node{
 		ID: NOverlay, Kind: "gate", Tier: "fast",
 		Needs:     []NodeID{NConvert, NExampleOracle},
 		Run:       [][]string{{"node", "gates/overlay.mjs", "--audit"}},
-		Inputs:    []string{"gates/overlay.mjs", "overlays/**", "src/**", "tools/**/*.mjs", "docs/example-oracle.json", "docs/example-fixture-targets.json", "docs/demos/**", "src/registry/pin.json"},
+		Inputs:    []string{"gates/overlay.mjs", "overlays/**", "src/**", "tools/**/*.mjs", "docs/example-oracle.json", "docs/example-fixture-targets.json", "docs/demos/**", "src/registry/pin.json", upstreamExamplesGlob, upstreamDocsGlob},
 		Produces:  nil,
 		Why:       "every manual intervention on top of the mechanical conversion (rule tables, hand-written fixtures/glue/runtime, upstream patches) must still apply to the pinned upstream — orphaned rules and stale authored files fail here, with task packets, instead of silently no-op'ing like the old find/replace overlay",
 		Mutations: []string{"overlay-stale-authored", "overlay-orphaned-rule"},
@@ -166,6 +190,11 @@ var Nodes = []Node{
 		Run:      [][]string{{"node", "src/emitter/index.mjs"}},
 		Inputs:   []string{"src/emitter/**", "src/tags.mjs", "src/docs/theme-prepaint.mjs", "src/registry/tiers.json", "src/registry/pin.json", "probes/h4/globals.css", "package.json", "pipeline/tw.go", "pipeline/main.go"},
 		Produces: []string{"dist/components/*.html", "!dist/components/*-rtl-*.html", "dist/shadless.css", "build/emit"},
+		// The component-page glob is NOT what it says: produces.go substitutes
+		// the 23 static-tier pages this node actually writes, read from
+		// src/registry/tiers.json. The glob covered all 51, which excused
+		// everything downstream of emit for writing any page in there.
+		//
 		// build/emit is still produced (the emitter writes globals.css and a
 		// demo index there) but nothing reads it now that emit-smoke is gone.
 		Why:       "static-tier emit: IR -> component html + per-slot css",
@@ -202,7 +231,7 @@ var Nodes = []Node{
 		ID: NExampleOracle, Kind: "build", Tier: "full",
 		Needs:     []NodeID{NDemoBuild},
 		Run:       [][]string{{"node", "tools/example-oracle.mjs"}},
-		Inputs:    []string{"tools/example-oracle.mjs", "src/docs/theme-prepaint.mjs", "src/registry/tiers.json", "src/runtime/components/**", "docs/catalog.json", "tools/oracle-lib.mjs", "tools/contracts/stubs/**", "tools/resolve-skins.mjs", "src/registry/pin.json", "src/registry/upstream-snapshot/exemptions.json", "package-lock.json"},
+		Inputs:    []string{"tools/example-oracle.mjs", "src/docs/theme-prepaint.mjs", "src/registry/tiers.json", "src/runtime/components/**", "docs/catalog.json", "tools/oracle-lib.mjs", "tools/contracts/stubs/**", "tools/resolve-skins.mjs", "src/registry/pin.json", "src/registry/upstream-snapshot/exemptions.json", "package-lock.json", upstreamExamplesGlob},
 		Produces:  []string{"docs/demos/*.html", "!docs/demos/*-rtl-*.html", "docs/example-oracle.json", "docs/example-fixture-targets.json"},
 		Why:       "upstream examples rendered by real React+chromium BECOME the demo pages — 1:1 with upstream by construction, not by hand-mirroring",
 		Mutations: []string{"example-oracle-render-failure"},
@@ -211,7 +240,7 @@ var Nodes = []Node{
 		ID: NExampleFixture, Kind: "build", Tier: "full",
 		Needs:     []NodeID{NExampleOracle},
 		Run:       [][]string{{"node", "tools/example-fixture.mjs"}},
-		Inputs:    []string{"tools/example-fixture.mjs", "tools/contracts/oracle-build.mjs", "tools/contracts/components/**", "tools/fixture-families.mjs", "src/docs/theme-prepaint.mjs", "docs/example-fixture-targets.json", "dist/js/**", "tools/oracle-lib.mjs", "tools/contracts/stubs/**", "tools/resolve-skins.mjs", "src/registry/pin.json", "package-lock.json"},
+		Inputs:    []string{"tools/example-fixture.mjs", "tools/contracts/oracle-build.mjs", "tools/contracts/components/**", "tools/fixture-families.mjs", "src/docs/theme-prepaint.mjs", "docs/example-fixture-targets.json", "dist/js/**", "tools/oracle-lib.mjs", "tools/contracts/stubs/**", "tools/resolve-skins.mjs", "src/registry/pin.json", "package-lock.json", upstreamExamplesGlob},
 		Produces:  []string{"docs/demos/*.html", "!docs/demos/*-rtl-*.html"},
 		Why:       "kernel-tier examples as INTERACTIVE fixtures harvested from the oracle; the oracle alone emits static snapshots with dead buttons",
 		Mutations: nil,
@@ -220,16 +249,20 @@ var Nodes = []Node{
 		ID: NDemoRtl, Kind: "build", Tier: "full",
 		Needs:     []NodeID{NExampleOracle},
 		Run:       [][]string{{"node", "tools/build-rtl.mjs"}},
-		Inputs:    []string{"tools/build-rtl.mjs", "tools/rtl-lib.mjs", "src/docs/theme-prepaint.mjs", "src/registry/pin.json"},
+		Inputs:    []string{"tools/build-rtl.mjs", "tools/rtl-lib.mjs", "src/docs/theme-prepaint.mjs", "src/registry/pin.json", upstreamExamplesGlob},
 		Produces:  []string{"dist/components/*-rtl-*.html", "docs/demos/*-rtl-*.html", "build/rtl-langs.json"},
 		Why:       "AR/HE/EN/FA variants derived from the Arabic oracle page + upstream dictionaries",
 		Mutations: nil,
 	},
 	{
 		ID: NDemo, Kind: "build", Tier: "full",
-		Needs:     []NodeID{NDemoRtl, NExampleFixture, NContractFixture, NBuildJs},
-		Run:       [][]string{{"node", "tools/demo.mjs"}},
-		Inputs:    []string{"tools/demo.mjs", "tools/demo-lib.mjs", "tools/build-js.mjs", "src/emitter/css.mjs", "src/docs/theme-prepaint.mjs", "src/registry/tiers.json", "src/registry/ir/**", "src/kernel/**", "probes/h4/globals.css", "probes/t7/**", "probes/t8/**"},
+		Needs:  []NodeID{NDemoRtl, NExampleFixture, NContractFixture, NBuildJs},
+		Run:    [][]string{{"node", "tools/demo.mjs"}},
+		Inputs: []string{"tools/demo.mjs", "tools/demo-lib.mjs", "tools/build-js.mjs", "src/emitter/css.mjs", "src/docs/theme-prepaint.mjs", "src/registry/tiers.json", "src/registry/ir/**", "src/kernel/**", "probes/h4/globals.css", "probes/t7/**", "probes/t8/**"},
+		// as with emit, the component-page glob is substituted in produces.go
+		// — here for the 28 shipped pages that are NOT static-tier, which is
+		// exactly the set tools/demo.mjs writes (it leaves the static ones,
+		// already emitted, alone)
 		Produces:  []string{"dist/globals.css", "dist/demo-index.html", "dist/css", "dist/components/*.html", "!dist/components/*-rtl-*.html"},
 		Why:       "unified globals.css (slot rules folded in) + the demo index + the per-component @apply sources the npm surface exports",
 		Mutations: nil,
@@ -319,7 +352,7 @@ var Nodes = []Node{
 		ID: NOracleCss, Kind: "build", Tier: "full",
 		Needs:     []NodeID{NConvert},
 		Run:       [][]string{{"./build/pipeline", "oracle-css"}},
-		Inputs:    []string{"pipeline/oracle_css.go", "pipeline/tw.go", "pipeline/main.go", "src/registry/pin.json", "build/resolved-ui/**"},
+		Inputs:    []string{"pipeline/oracle_css.go", "pipeline/tw.go", "pipeline/main.go", "src/registry/pin.json", "build/resolved-ui/**", ".upstream/shadcn-ui/apps/v4/app/legacy-themes.css", ".upstream/shadcn-ui/apps/v4/package.json", "package.json"},
 		Produces:  []string{"build/gates/oracle.css"},
 		Why:       "a stylesheet for the React oracle built from upstream's own globals/skin and the resolved registry — reads nothing under src/, so style-parity is no longer circular",
 		Mutations: nil,
@@ -355,7 +388,7 @@ var Nodes = []Node{
 		ID: NDocsBuild, Kind: "build", Tier: "full",
 		Needs:     []NodeID{NDocsCatalog, NDemoCss},
 		Run:       [][]string{{"node", "tools/docs-build.mjs"}},
-		Inputs:    []string{"tools/docs-build.mjs", "tools/docs-guides.mjs", "tools/docs-page-lib.mjs", "tools/fixture-families.mjs", "src/docs/**", "docs/catalog.json", "docs/content/**", "docs/fonts/**", "dist/**", "docs/demos/**", "build/rtl-langs.json", "src/registry/ir/**", "src/registry/pin.json", "package.json", "package-lock.json"},
+		Inputs:    []string{"tools/docs-build.mjs", "tools/docs-guides.mjs", "tools/docs-page-lib.mjs", "tools/fixture-families.mjs", "src/docs/**", "docs/catalog.json", "docs/content/**", "docs/fonts/**", "dist/**", "docs/demos/**", "build/rtl-langs.json", "src/registry/ir/**", "src/registry/pin.json", "package.json", "package-lock.json", upstreamDocsGlob},
 		Produces:  []string{"docs/site", "docs/content-map.json"},
 		Why:       "mdx -> the mirrored site, with the dist demos copied in under the site skin",
 		Mutations: nil,
@@ -382,7 +415,7 @@ var Nodes = []Node{
 		ID: NDocsFidelity, Kind: "gate", Tier: "fast",
 		Needs:     []NodeID{NDocsBuild},
 		Run:       [][]string{{"node", "tools/docs-fidelity.mjs"}},
-		Inputs:    []string{"tools/docs-fidelity.mjs", "tools/docs-fidelity-lib.mjs", "tools/docs-guides.mjs", "src/docs/transforms.mjs", "docs/site/**", "docs/content-map.json", "docs/content/**", "src/registry/pin.json"},
+		Inputs:    []string{"tools/docs-fidelity.mjs", "tools/docs-fidelity-lib.mjs", "tools/docs-guides.mjs", "src/docs/transforms.mjs", "docs/site/**", "docs/content-map.json", "docs/content/**", "src/registry/pin.json", upstreamDocsGlob},
 		Produces:  nil,
 		Why:       "every built page matches its mdx source (headings/TOC/previews/fences) — catches silent content loss that render and console checks cannot see",
 		Mutations: []string{"docs-fidelity-drop-heading"},
@@ -427,7 +460,7 @@ var Nodes = []Node{
 		ID: NGoldenGate, Kind: "gate", Tier: "full",
 		Needs:     []NodeID{NExampleOracle},
 		Run:       [][]string{{"node", "tools/example-golden.mjs"}},
-		Inputs:    []string{"tools/example-golden.mjs", "src/registry/upstream-snapshot/**", "gates/ledger.json", "tools/oracle-lib.mjs", "tools/contracts/stubs/**", "tools/resolve-skins.mjs", "src/registry/pin.json", "package-lock.json"},
+		Inputs:    []string{"tools/example-golden.mjs", "src/registry/upstream-snapshot/**", "gates/ledger.json", "tools/oracle-lib.mjs", "tools/contracts/stubs/**", "tools/resolve-skins.mjs", "src/registry/pin.json", "package-lock.json", upstreamExamplesGlob},
 		Produces:  nil,
 		Why:       "hop 1 — the local React oracle render must equal the committed ui.shadcn.com snapshot",
 		Mutations: []string{"golden-perturb-oracle"},
@@ -436,7 +469,7 @@ var Nodes = []Node{
 		ID: NExampleGate, Kind: "gate", Tier: "full",
 		Needs:     []NodeID{NDocsBuild},
 		Run:       [][]string{{"node", "tools/example-oracle.mjs", "--check"}},
-		Inputs:    []string{"tools/example-oracle.mjs", "docs/demos/**", "docs/example-oracle.json", "src/registry/tiers.json", "tools/oracle-lib.mjs", "tools/contracts/stubs/**", "tools/resolve-skins.mjs", "src/registry/pin.json", "package-lock.json"},
+		Inputs:    []string{"tools/example-oracle.mjs", "docs/demos/**", "docs/example-oracle.json", "src/registry/tiers.json", "tools/oracle-lib.mjs", "tools/contracts/stubs/**", "tools/resolve-skins.mjs", "src/registry/pin.json", "package-lock.json", upstreamExamplesGlob},
 		Produces:  nil,
 		Why:       "hop 2 — each shipped demo page must equal a fresh oracle render. hop1 + hop2 together prove shipped == React == live",
 		Mutations: []string{"example-perturb-shipped"},

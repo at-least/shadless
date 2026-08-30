@@ -56,10 +56,15 @@ func LoadGraph() (*Graph, error) {
 }
 
 // LoadGraphAt builds the graph from Nodes, expanding any node the fan-out
-// table splits into independent per-item nodes (which needs the tree, hence
-// the root).
+// table splits into independent per-item nodes and resolving the `produces`
+// entries that are derived from the tree rather than written out (both need
+// the tree, hence the root).
 func LoadGraphAt(root string) (*Graph, error) {
 	list, err := expandFanout(root, Nodes)
+	if err != nil {
+		return nil, err
+	}
+	list, err = applyDerivedProduces(root, list)
 	if err != nil {
 		return nil, err
 	}

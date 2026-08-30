@@ -2,15 +2,14 @@ package main
 
 // Declared vs actual writes.
 //
-// wireit manages a node's DECLARED outputs and is blind to anything else it
+// The runner tracks a node's DECLARED outputs and is blind to anything else it
 // writes. An undeclared write is not harmless: if some other node declares
 // that file as an input, the graph's freshness is being driven by a file that
 // no node admits to producing.
 //
-// No node is known to do this today. The check exists because nothing else
-// can see it: wireit manages a node's declared outputs and has no way to
-// notice the undeclared ones, so "the declarations are honest" was an
-// assumption the pipeline had no way to test.
+// The check exists because nothing else can see it: freshness is computed from
+// `produces`, which has no way to notice what a node wrote outside it, so "the
+// declarations are honest" was an assumption the pipeline had no way to test.
 //
 // The check is narrowed to the set that can actually do damage: the union of
 // every file any node declares as an input. A write outside `produces` that
@@ -155,11 +154,14 @@ func reportViolations(id NodeID, vs []Violation) {
 //   - `open` only, not `stat`. An open is a content access, which is what the
 //     key hashes; folding in stat would drown the report in repoRoot's own
 //     walk up the tree looking for its marker.
-//   - an `open` for WRITING looks the same in the log, so a node that writes
-//     somewhere it has not declared shows up here too. That is a feature —
-//     it catches undeclared writes on Go nodes even at -j>1, where the write
-//     check above is switched off — but it means the report has to offer both
-//     fixes, `inputs` and `produces`, rather than assume a read.
+//   - in a TESTLOG an `open` for WRITING looks the same as one for reading, so
+//     a `go test` node that writes somewhere it has not declared shows up here
+//     too. That is a feature — it catches undeclared writes on Go nodes even
+//     at -j>1, where the write check above is switched off — but it means the
+//     report has to offer both fixes, `inputs` and `produces`, rather than
+//     assume a read. It does NOT extend to the JS half: fs-record.mjs hooks
+//     the read surface and nothing else, so an undeclared write by a JS node
+//     is only ever caught by the -j1 write check.
 //
 // Under-reporting is the safe direction: this finds real undeclared reads and
 // never invents one.
