@@ -35,6 +35,59 @@ const (
 
 var releaseTagRe = regexp.MustCompile(`^shadcn@\d`)
 
+// Upstream ships THREE parallel registries under apps/v4/registry/bases —
+// radix (radix-ui), base (@base-ui/react) and aria (react-aria-components) —
+// with the same components and the same examples on different primitive
+// libraries. This repo targets exactly one, and which one is recorded in
+// pin.json's `registry` path.
+//
+// That fact was written in three places with nothing comparing them:
+// pin.json, and two constants in tools/upstream-snapshot.mjs (a docs directory
+// and the crawl URL) with "radix" baked into both. The crawler now derives
+// them; what remains to check is that the GRAPH agrees, because the convert
+// node names its base in a glob. If those two ever disagree, the golden hop
+// compares pages generated from one base against another base's live pages,
+// and every diff looks like a real regression instead of a mismatched
+// comparison.
+var registryBaseRe = regexp.MustCompile(`registry/bases/([^/]+)/`)
+
+func pinnedBase(p *pinFile) (string, error) {
+	m := registryBaseRe.FindStringSubmatch(p.ShadcnUI.Registry)
+	if m == nil {
+		return "", fmt.Errorf("pin.json `shadcn_ui.registry` is %q, not a path of the form apps/v4/registry/bases/<base>/ui",
+			p.ShadcnUI.Registry)
+	}
+	return m[1], nil
+}
+
+// checkPinnedBase verifies that the base pin.json names exists upstream and is
+// the one the graph actually converts from.
+func checkPinnedBase(root string, p *pinFile) error {
+	base, err := pinnedBase(p)
+	if err != nil {
+		return err
+	}
+	if _, err := os.Stat(filepath.Join(root, shadcnDir, "apps/v4/registry/bases", base)); err != nil {
+		return fmt.Errorf("pin.json targets base %q, which the pinned checkout does not have under apps/v4/registry/bases", base)
+	}
+	g, err := AuthoredGraph()
+	if err != nil {
+		return err
+	}
+	n, ok := g.Node(NConvert)
+	if !ok {
+		return fmt.Errorf("no %s node to check the pinned base against", NConvert)
+	}
+	want := "registry/bases/" + base + "/"
+	for _, in := range n.Inputs {
+		if strings.Contains(in, want) {
+			return nil
+		}
+	}
+	return fmt.Errorf("pin.json targets base %q but the %s node declares no input under %s — the pin and the graph name different registries",
+		base, NConvert, want)
+}
+
 type pinFile struct {
 	ShadcnUI struct {
 		Repo     string `json:"repo"`
@@ -102,6 +155,10 @@ func runPin(root string, checkOnly, force bool) int {
 			return 1
 		}
 		fail := false
+		if err := checkPinnedBase(root, recorded); err != nil {
+			fmt.Fprintf(os.Stderr, "PIN FAIL: %v\n", err)
+			fail = true
+		}
 		if recorded.ShadcnUI.Commit != head {
 			fmt.Fprintf(os.Stderr, "PIN FAIL: pin.json commit %s != upstream HEAD %s\n",
 				short(recorded.ShadcnUI.Commit, 10), short(head, 10))

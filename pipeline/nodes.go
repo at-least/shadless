@@ -112,7 +112,7 @@ var Nodes = []Node{
 		Inputs:    []string{"pipeline/gate_pin.go", "pipeline/gates_test.go", "src/registry/pin.json", "vendor/**", ".upstream/shadcn-ui/.git/HEAD"},
 		Produces:  nil,
 		Why:       "the .upstream checkout must sit exactly at the pinned release tag; upgrade tools write pin.json directly and nothing else checks the result",
-		Mutations: []string{"pin-commit-drift"},
+		Mutations: []string{"pin-commit-drift", "pin-base-drift"},
 	},
 	{
 		ID: NUnit, Kind: "gate", Tier: "fast",

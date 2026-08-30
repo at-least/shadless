@@ -20,9 +20,21 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 
 import { join } from "node:path"
 import { fenceShadow } from "../src/docs/transforms.mjs"
 
-const RADIX_DIR = ".upstream/shadcn-ui/apps/v4/content/docs/components/radix"
+// Which of upstream's three parallel registries this repo targets is recorded
+// ONCE, in src/registry/pin.json's `registry` path. It used to be spelled out
+// here twice more — a docs directory and a crawl URL, both with "radix" baked
+// in — with nothing comparing the three. Change one and the golden hop
+// compares radix-generated pages against another base's LIVE pages, where
+// every diff looks like a real regression rather than a mismatched comparison.
+const PIN = JSON.parse(readFileSync("src/registry/pin.json", "utf8"))
+const PINNED_BASE = (/registry\/bases\/([^/]+)\//.exec(PIN.shadcn_ui?.registry ?? "") ?? [])[1]
+if (!PINNED_BASE) {
+  console.error(`FAIL  upstream-snapshot: src/registry/pin.json has no \`shadcn_ui.registry\` of the form apps/v4/registry/bases/<base>/ui — cannot tell which base to crawl`)
+  process.exit(1)
+}
+const DOCS_DIR = `.upstream/shadcn-ui/apps/v4/content/docs/components/${PINNED_BASE}`
 const OUT_DIR = "src/registry/upstream-snapshot"
-const BASE = "https://ui.shadcn.com/docs/components/radix"
+const BASE = `https://ui.shadcn.com/docs/components/${PINNED_BASE}`
 
 const norm = (html) => html
   .replace(/radix-:r[a-z0-9]*:?/g, "radix-<auto>")
@@ -73,13 +85,13 @@ const only = pageArgIdx >= 0 ? process.argv[pageArgIdx + 1] : null
 const SKIP = new Set(["sidebar", "typography"])
 
 mkdirSync(OUT_DIR, { recursive: true })
-const pages = readdirSync(RADIX_DIR).filter((f) => f.endsWith(".mdx")).map((f) => f.replace(/\.mdx$/, "")).sort()
+const pages = readdirSync(DOCS_DIR).filter((f) => f.endsWith(".mdx")).map((f) => f.replace(/\.mdx$/, "")).sort()
   .filter((p) => !SKIP.has(p))
   .filter((p) => !only || p === only)
 
 let total = 0, failed = 0
 for (const page of pages) {
-  const mdx = readFileSync(join(RADIX_DIR, `${page}.mdx`), "utf8")
+  const mdx = readFileSync(join(DOCS_DIR, `${page}.mdx`), "utf8")
   const names = previewNames(mdx)
   const res = await fetch(`${BASE}/${page}`)
   if (!res.ok) { console.error(`FAIL ${page}: HTTP ${res.status}`); failed++; continue }

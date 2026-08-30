@@ -328,6 +328,19 @@ var Mutations = []Mutation{
 		},
 	},
 	{
+		ID: "pin-base-drift", Gate: "pin",
+		Why:   "pin.json names a different one of upstream's parallel registries than the graph converts from",
+		Files: []string{"src/registry/pin.json"},
+		// Upstream keeps radix, base and aria side by side with the same
+		// component names. Repointing the pin without repointing convert (or
+		// the reverse) makes the golden hop compare pages built from one
+		// primitive library against another library's live pages — every cell
+		// differs and none of it means what it looks like.
+		Apply: func(root string, f []string) error {
+			return mutReplaceOnce(root, f[0], "registry/bases/radix/ui", "registry/bases/base/ui")
+		},
+	},
+	{
 		ID: "rtl-dict-missing-dictionary", Gate: "rtl-dict",
 		Why:   "an upstream -rtl example loses its `translations` object — the extraction must fail instead of dropping that language set",
 		Files: []string{".upstream/shadcn-ui/apps/v4/examples/aria/alert-rtl.tsx"},
