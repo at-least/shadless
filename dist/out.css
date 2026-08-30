@@ -4226,9 +4226,6 @@
   .data-\[disabled\=true\]\:opacity-50[data-disabled="true"] {
     opacity: 50%;
   }
-  .data-\[error\=true\]\:text-destructive[data-error="true"] {
-    color: var(--destructive);
-  }
   .data-\[favorite\=true\]\:fill-blue-600[data-favorite="true"] {
     fill: var(--color-blue-600);
   }
