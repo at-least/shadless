@@ -23,7 +23,10 @@
      "slot": "breadcrumb",
      "classes": [],
      "spread": true,
-     "children": []
+     "children": [],
+     "attrs": {
+      "aria-label": "breadcrumb"
+     }
     }
    ]
   },
@@ -83,7 +86,12 @@
       "text-foreground font-normal"
      ],
      "spread": true,
-     "children": []
+     "children": [],
+     "attrs": {
+      "role": "link",
+      "aria-disabled": "true",
+      "aria-current": "page"
+     }
     }
    ]
   },
@@ -100,7 +108,11 @@
      "spread": true,
      "children": [
       "OPT?"
-     ]
+     ],
+     "attrs": {
+      "role": "presentation",
+      "aria-hidden": "true"
+     }
     },
     {
      "tag": "IconPlaceholder",
@@ -127,7 +139,11 @@
      "children": [
       "<IconPlaceholder>",
       "<span class=[1]>"
-     ]
+     ],
+     "attrs": {
+      "role": "presentation",
+      "aria-hidden": "true"
+     }
     },
     {
      "tag": "IconPlaceholder",

@@ -143,7 +143,10 @@
      "children": [
       "<span slot=questionnaire-choice-indicator-dot class=[1]>",
       "<IconPlaceholder slot=questionnaire-choice-indicator-check class=[1]>"
-     ]
+     ],
+     "attrs": {
+      "aria-hidden": "true"
+     }
     },
     {
      "tag": "span",

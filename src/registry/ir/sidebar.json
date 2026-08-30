@@ -257,7 +257,10 @@
       "[[data-side=right][data-collapsible=offcanvas]_&]:-left-2"
      ],
      "spread": true,
-     "children": []
+     "children": [],
+     "attrs": {
+      "aria-label": "Toggle Sidebar"
+     }
     }
    ]
   },

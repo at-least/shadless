@@ -253,12 +253,29 @@ export function classStrings(v, acc, ctx, el) {
   if (v.type === "LogicalExpression") classStrings(v.right, acc, ctx, el)
 }
 
+// Attributes that are part of the element's identity in the rendered DOM but
+// are neither structure nor styling: role, aria-*, type, and the like. The IR
+// recorded tag, slot and classes and dropped these, which was enough for the
+// emitter (its pages carry data-slot and let the CSS supply the rest) but not
+// for assembling an EXAMPLE page, where the output has to match what React
+// actually rendered — `<div role="alert">` is in that render and cannot be
+// derived from anything else in the IR.
+//
+// Literal values only. A computed attribute depends on props or state, which
+// is not something the IR can carry.
+const IDENTITY_ATTR = /^(role|type|aria-[\w-]+|dir|lang|scope|colspan|rowspan|target|rel|tabindex)$/i
+
 export function extractAttrs(el, ctx) {
   let slot = null, classes = [], spread = false
+  const attrs = {}
   for (const a of el.openingElement.attributes) {
     if (a.type === "JSXSpreadAttribute") { spread = true; continue }
     if (a.name.name === "data-slot") slot = str(a.value)
     if (a.name.name === "className") classStrings(a.value, classes, ctx, el)
+    if (IDENTITY_ATTR.test(a.name.name ?? "")) {
+      const v = str(a.value)
+      if (v != null) attrs[a.name.name] = v
+    }
   }
   // component-wrap: an imported component (e.g. Button) renders with the
   // wrapped table's classes — resolve them onto this element (bounded: axis
@@ -285,7 +302,7 @@ export function extractAttrs(el, ctx) {
       classes.unshift(...wrapped)
     }
   }
-  return { slot, classes: classes.filter((c) => c !== null && c !== ""), spread }
+  return { slot, classes: classes.filter((c) => c !== null && c !== ""), spread, attrs }
 }
 
 export function sketchChildren(el) {
@@ -494,8 +511,11 @@ function extractFn(fnName, fnNode, src, conditionals, isExport, fileCtx) {
   walk(fnNode.body, (node) => {
     if (node.type !== "JSXElement") return
     const tag = jsxName(node.openingElement.name)
-    const { slot, classes, spread } = extractAttrs(node, ctx)
-    elements.push({ tag, slot, classes, spread, children: sketchChildren(node) })
+    const { slot, classes, spread, attrs } = extractAttrs(node, ctx)
+    const el = { tag, slot, classes, spread, children: sketchChildren(node) }
+    // additive and omitted when empty, so 60 of the 61 IR files are unchanged
+    if (Object.keys(attrs).length) el.attrs = attrs
+    elements.push(el)
     // child-cond
     for (const c of node.children)
       if (c.type === "JSXExpressionContainer" &&

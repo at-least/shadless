@@ -86,7 +86,10 @@
       "flex-col *:w-full [&>.sr-only]:w-auto"
      ],
      "spread": true,
-     "children": []
+     "children": [],
+     "attrs": {
+      "role": "group"
+     }
     }
    ]
   },
@@ -224,7 +227,10 @@
      "spread": true,
      "children": [
       "{content}"
-     ]
+     ],
+     "attrs": {
+      "role": "alert"
+     }
     }
    ]
   }

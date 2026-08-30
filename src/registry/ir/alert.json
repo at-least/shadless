@@ -38,7 +38,10 @@
       "bg-card text-card-foreground"
      ],
      "spread": true,
-     "children": []
+     "children": [],
+     "attrs": {
+      "role": "alert"
+     }
     }
    ]
   },

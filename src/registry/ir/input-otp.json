@@ -95,7 +95,10 @@
      "spread": true,
      "children": [
       "<IconPlaceholder>"
-     ]
+     ],
+     "attrs": {
+      "role": "separator"
+     }
     },
     {
      "tag": "IconPlaceholder",

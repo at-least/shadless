@@ -25,7 +25,11 @@
       "mx-auto flex w-full justify-center"
      ],
      "spread": true,
-     "children": []
+     "children": [],
+     "attrs": {
+      "role": "navigation",
+      "aria-label": "pagination"
+     }
     }
    ]
   },
@@ -100,7 +104,10 @@
      "children": [
       "<IconPlaceholder class=[1]>",
       "<span class=[1]>"
-     ]
+     ],
+     "attrs": {
+      "aria-label": "Go to previous page"
+     }
     },
     {
      "tag": "IconPlaceholder",
@@ -141,7 +148,10 @@
      "children": [
       "<span class=[1]>",
       "<IconPlaceholder class=[1]>"
-     ]
+     ],
+     "attrs": {
+      "aria-label": "Go to next page"
+     }
     },
     {
      "tag": "span",

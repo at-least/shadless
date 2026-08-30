@@ -42,7 +42,11 @@
      "spread": true,
      "children": [
       "{children}"
-     ]
+     ],
+     "attrs": {
+      "role": "region",
+      "aria-roledescription": "carousel"
+     }
     }
    ]
   },
@@ -87,7 +91,11 @@
       "pt-4"
      ],
      "spread": true,
-     "children": []
+     "children": [],
+     "attrs": {
+      "role": "group",
+      "aria-roledescription": "slide"
+     }
     }
    ]
   },

@@ -23,7 +23,11 @@
       "size-4 animate-spin"
      ],
      "spread": true,
-     "children": []
+     "children": [],
+     "attrs": {
+      "role": "status",
+      "aria-label": "Loading"
+     }
     }
    ]
   }
