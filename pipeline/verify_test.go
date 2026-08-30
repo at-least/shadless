@@ -86,7 +86,7 @@ func TestUnitUndeclaredReadsFindsTheGap(t *testing.T) {
 		"dist/x.css": "x",
 	})
 	n := Node{ID: "g", Kind: "gate", Inputs: []string{"src/**"}}
-	got, err := undeclaredReads(root, n, []string{"src/a.mjs", "dist/x.css"})
+	got, err := undeclaredReads(root, nil, n, []string{"src/a.mjs", "dist/x.css"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -104,7 +104,7 @@ func TestUnitUndeclaredReadsHonoursGlobShapes(t *testing.T) {
 	})
 	n := Node{ID: "g", Kind: "gate",
 		Inputs: []string{"src/**", "gates/*.json", "one.txt"}}
-	got, err := undeclaredReads(root, n, []string{"src/deep/a.mjs", "gates/l.json", "one.txt"})
+	got, err := undeclaredReads(root, nil, n, []string{"src/deep/a.mjs", "gates/l.json", "one.txt"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -124,7 +124,7 @@ func TestUnitUndeclaredReadsAllowsOwnOutput(t *testing.T) {
 		Inputs:   []string{},
 		Produces: []string{"dist/out.css", "dist/css"},
 	}
-	got, err := undeclaredReads(root, n, []string{"dist/out.css", "dist/css/a.css"})
+	got, err := undeclaredReads(root, nil, n, []string{"dist/out.css", "dist/css/a.css"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -138,7 +138,7 @@ func TestUnitUndeclaredReadsAllowsOwnOutput(t *testing.T) {
 func TestUnitUndeclaredReadsSkipsNeverFresh(t *testing.T) {
 	root := writeTree(t, map[string]string{"anything.txt": "x"})
 	n := Node{ID: "reproducible", Kind: "gate", Inputs: nil}
-	got, err := undeclaredReads(root, n, []string{"anything.txt"})
+	got, err := undeclaredReads(root, nil, n, []string{"anything.txt"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -205,12 +205,70 @@ func TestUnitDeclaredInputsCoverRealReads(t *testing.T) {
 			t.Errorf("%s: the gate opened no file in the repo — the testlog is not being captured", id)
 			continue
 		}
-		bad, err := undeclaredReads(root, n, opens)
+		bad, err := undeclaredReads(root, g, n, opens)
 		if err != nil {
 			t.Fatal(err)
 		}
 		if len(bad) > 0 {
 			t.Errorf("%s reads files it does not declare in `inputs`: %v", id, bad)
 		}
+	}
+}
+
+// The merkle chain already covers a dependency's declarations: its key hashes
+// its own inputs, and that key is folded into this node's. So reading either
+// a dependency's input or its output is not a stale-green risk, and reporting
+// it would teach people to ignore the report — on `emit` it was the
+// difference between 64 findings and one real one.
+func TestUnitUndeclaredReadsExemptsDependencyClosure(t *testing.T) {
+	root := writeTree(t, map[string]string{
+		"up/src.tsx":     "x", // dep's INPUT
+		"ir/out.json":    "y", // dep's OUTPUT
+		"other/loose.js": "z", // nobody's
+	})
+	g, err := newGraph([]Node{
+		{ID: "dep", Kind: "build", Tier: "fast", Run: [][]string{{"true"}},
+			Inputs: []string{"up/**"}, Produces: []string{"ir"}},
+		{ID: "me", Kind: "build", Tier: "fast", Run: [][]string{{"true"}},
+			Needs: []NodeID{"dep"}, Inputs: []string{}, Produces: []string{"dist"}},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	me, _ := g.Node("me")
+	got, err := undeclaredReads(root, g, me, []string{"up/src.tsx", "ir/out.json", "other/loose.js"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(got) != 1 || got[0] != "other/loose.js" {
+		t.Errorf("got %v, want only [other/loose.js] — the dependency's input and output are already in the key", got)
+	}
+	// and without the graph the exemption cannot apply, so everything shows
+	bare, err := undeclaredReads(root, nil, me, []string{"up/src.tsx", "ir/out.json"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(bare) != 2 {
+		t.Errorf("with no graph, got %v, want both reported", bare)
+	}
+}
+
+// The real graph's most important build node: convert reads the pinned
+// registry sources it converts. Relying on `pin`'s key — which hashes only
+// .git/HEAD — left every working-tree edit invisible, including the overlay
+// patch series the re-pin drill applies with `git apply --3way`.
+func TestUnitConvertDeclaresUpstreamRegistry(t *testing.T) {
+	g, err := AuthoredGraph()
+	if err != nil {
+		t.Fatal(err)
+	}
+	n, ok := g.Node(NConvert)
+	if !ok {
+		t.Fatal("no convert node")
+	}
+	want := ".upstream/shadcn-ui/apps/v4/registry/bases/radix/**"
+	if !contains(n.Inputs, want) {
+		t.Errorf("convert must declare %q, or an edit to the registry it converts "+
+			"leaves it falsely fresh; inputs = %v", want, n.Inputs)
 	}
 }

@@ -200,38 +200,78 @@ func testlogOpens(root, logPath string) ([]string, error) {
 	return out, nil
 }
 
-// undeclaredReads reports files the node read that its `inputs` do not cover.
-// A node may freely read back what it produces, so `produces` counts as
-// covered too — declaring your own output as your own input would be circular.
-func undeclaredReads(root string, n Node, opens []string) ([]string, error) {
+// undeclaredReads reports files the node opened that nothing puts in its key.
+//
+// Three things count as covered, and the third is the one that makes this
+// check usable rather than merely noisy:
+//
+//   - the node's own `inputs`, obviously.
+//
+//   - the node's own `produces`: reading back what you just wrote is not a
+//     missing declaration, and declaring your own output as your own input
+//     would be circular.
+//
+//   - anything a node in its dependency CLOSURE declares, as an input OR as an
+//     output. The key folds in each dependency's key, and that key already
+//     hashes that dependency's inputs — so a change to either reaches this
+//     node transitively. That is the merkle chain the whole design rests on,
+//     and pipeline/README.md states half of it: "outputs of `needs` are
+//     implied". The inputs half follows from the same identity.
+//
+//     Without this, `emit` reading src/registry/ir (which `convert` produces
+//     and `emit` needs) would be reported, and declaring it would be
+//     redundant noise that teaches people to ignore the report. It is the
+//     difference between 64 findings on `emit` and 1 real one.
+func undeclaredReads(root string, g *Graph, n Node, opens []string) ([]string, error) {
 	if n.NeverFresh() {
 		return nil, nil // it can never be skipped, so nothing can go stale-green
 	}
-	declared, err := Files(root, n.Inputs)
-	if err != nil {
-		return nil, err
-	}
 	covered := map[string]bool{}
-	for _, f := range declared {
-		covered[f] = true
+	add := func(patterns []string) error {
+		fs, err := Files(root, patterns)
+		if err != nil {
+			return err
+		}
+		for _, f := range fs {
+			covered[f] = true
+		}
+		return nil
 	}
-	produced, err := Files(root, n.Produces)
-	if err != nil {
+	if err := add(n.Inputs); err != nil {
 		return nil, err
 	}
-	for _, f := range produced {
-		covered[f] = true
+
+	// everything the closure declares, in either direction
+	producePatterns := append([]string(nil), n.Produces...)
+	if g != nil {
+		closure, err := g.Plan([]NodeID{n.ID})
+		if err == nil {
+			for _, d := range closure {
+				if d.ID == n.ID {
+					continue
+				}
+				producePatterns = append(producePatterns, d.Produces...)
+				if err := add(d.Inputs); err != nil {
+					return nil, err
+				}
+			}
+		}
 	}
-	// `produces` may name a directory, matching the same allowance the write
-	// check makes
+	if err := add(producePatterns); err != nil {
+		return nil, err
+	}
+	// a `produces` entry may name a directory that did not exist when the
+	// patterns were expanded, so also treat anything under a literal prefix
+	// as covered — the same allowance the write check makes
 	underProduces := func(p string) bool {
-		for _, pat := range n.Produces {
+		for _, pat := range producePatterns {
 			if lp := literalPrefix(pat); lp == pat && strings.HasPrefix(p, lp+"/") {
 				return true
 			}
 		}
 		return false
 	}
+
 	var out []string
 	for _, p := range opens {
 		if covered[p] || underProduces(p) {
@@ -252,4 +292,57 @@ func reportUndeclaredReads(id NodeID, paths []string) {
 	}
 	fmt.Printf("      a file it READS belongs in `inputs` (it is not in the node's key, so a\n" +
 		"      change to it leaves the node falsely fresh); a file it WRITES belongs in `produces`\n")
+}
+
+// fsRecordOpens parses the log tools/fs-record.mjs writes: one absolute path
+// per line, already de-duplicated per process, possibly appended to by several
+// processes in a node's command list.
+//
+// Two exclusions, and both are judgement calls worth stating:
+//
+//   - node_modules. A tool that bundles (esbuild) or compiles mdx reads
+//     thousands of files under it, and requiring a node to enumerate its npm
+//     dependency tree in `inputs` would be absurd. package-lock.json is this
+//     repo's accepted proxy for "the dependency set changed" and several
+//     nodes already declare it. The cost is real: the tailwind CLI binary that
+//     the Go side flagged for consumer-sim would be invisible here.
+//   - build/. The pipeline's own scratch space, where a node's intermediate
+//     output is neither an input nor something worth declaring.
+func fsRecordOpens(root, logPath string) ([]string, error) {
+	b, err := os.ReadFile(logPath)
+	if err != nil {
+		return nil, err
+	}
+	seen := map[string]bool{}
+	var out []string
+	for _, line := range strings.Split(string(b), "\n") {
+		path := strings.TrimSpace(line)
+		if path == "" || !filepath.IsAbs(path) {
+			continue
+		}
+		rel, err := filepath.Rel(root, path)
+		if err != nil || strings.HasPrefix(rel, "..") {
+			continue // outside the repo
+		}
+		if seen[rel] || excludedFromAccessCheck(rel) {
+			continue
+		}
+		info, err := os.Stat(path)
+		if err != nil || info.IsDir() {
+			continue
+		}
+		seen[rel] = true
+		out = append(out, rel)
+	}
+	sort.Strings(out)
+	return out, nil
+}
+
+func excludedFromAccessCheck(rel string) bool {
+	for _, prefix := range []string{"node_modules/", "build/", ".git/"} {
+		if strings.HasPrefix(rel, prefix) {
+			return true
+		}
+	}
+	return false
 }

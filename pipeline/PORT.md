@@ -191,10 +191,61 @@ It found three real holes on its first run, two of them long-standing:
   dependency on the node that builds it. The assertion belonged to the
   `css-direction` gate, which declares both; it now lives there.
 
-Its limits are stated in `verify.go` and are worth repeating: only `go test`
-nodes produce a testlog, subprocess reads are invisible, and it tracks `open`
-rather than `stat`. It under-reports, which is the safe direction — it finds
-real undeclared reads and never invents one.
+The JS half works the same way through a different door. `tools/fs-record.mjs`
+is loaded into every node command via `NODE_OPTIONS=--import` and records the
+files the tool reads; no tool imports it and no tool knows it exists.
+`NODE_OPTIONS` is inherited by child processes, so a tool that spawns another
+node tool is covered with no extra wiring.
+
+The trick there is worth writing down, because the obvious version does not
+work: patching the ESM default export (`import fs from "node:fs";
+fs.readFileSync = ...`) does NOT affect `import { readFileSync } from
+"node:fs"`, which is how every tool here reads files — Node snapshots the
+builtin's default export separately. Patching the CJS exports object through
+`createRequire` DOES, because the ESM named exports are live bindings onto it.
+
+That half found the worst hole yet, in the most important build node in the
+graph. `convert` — registry `.tsx` → IR — declared nothing under `.upstream/`
+at all. It relied on `pin`'s key, and `pin` hashes only `.git/HEAD`, so a
+change to the registry sources it converts left it fresh. Demonstrated
+directly: edit a registry `.tsx` and `pipeline status convert` still said
+`fresh`. That is not a theoretical case — `overlays/upstream/*.patch` is
+applied with `git apply --3way`, which modifies the working tree and leaves
+HEAD alone, so the re-pin drill would apply the patch series and then skip
+conversion entirely.
+
+### What counts as covered
+
+A file is not a violation merely because the node does not name it. The key
+folds in each dependency's key, and that key already hashes the dependency's
+own inputs, so anything a node in the dependency CLOSURE declares — input or
+output — reaches this node transitively. `pipeline/README.md` states half of
+it ("outputs of `needs` are implied"); the inputs half follows from the same
+identity. Without that exemption `emit` reports 64 findings for reading
+`src/registry/ir`, which `convert` produces and `emit` needs; with it, one
+real finding remains. A check that cries wolf 64 times teaches people to stop
+reading it.
+
+Two exclusions are deliberate, in `fsRecordOpens`: `node_modules/` (a bundler
+reads thousands of files under it, and `package-lock.json` is this repo's
+accepted proxy for "the dependency set changed") and `build/` (the pipeline's
+own scratch space).
+
+### Limits
+
+Stated in `verify.go`, and worth repeating because the gaps are where the next
+stale green will come from:
+
+- Non-node subprocesses are invisible. `pin` shells out to git, so its
+  declarations are still unverified.
+- A browser's reads are invisible. The playwright gates load `file://` pages;
+  chromium opens them, not node, so a demo page a gate renders is not
+  recorded.
+- The Go side tracks `open`, not `stat`, and an `open` for WRITING looks the
+  same — which is why the report names both `inputs` and `produces` as fixes.
+
+It under-reports, which is the safe direction: it finds real undeclared access
+and never invents one.
 
 ## Porting the next one
 

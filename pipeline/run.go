@@ -128,6 +128,11 @@ func isGoTest(argv []string) bool {
 	return len(argv) >= 2 && argv[0] == "go" && argv[1] == "test"
 }
 
+// fsRecorder is the JS half of the same evidence. NODE_OPTIONS is inherited by
+// child processes, so one variable covers a tool and everything it spawns —
+// including the tailwind CLI, which is itself a node script.
+const fsRecorder = "tools/fs-record.mjs"
+
 // exec runs one node's commands, capturing output so parallel logs stay
 // readable: a node's output is printed as one block when it finishes.
 //
@@ -142,15 +147,14 @@ func (r *Runner) exec(n Node) ([]byte, []string, error) {
 	// only create the scratch dir when there is a go test command to log:
 	// a JS node would otherwise leak an empty temp dir on every run, since
 	// readsFrom only cleans up when it has a log to clean up after.
-	dir := ""
-	for _, argv := range n.Run {
-		if isGoTest(argv) {
-			d, err := os.MkdirTemp("", "pipeline-testlog-")
-			if err == nil {
-				dir = d // on failure: run without the read check rather than fail the node
-			}
-			break
-		}
+	dir, err := os.MkdirTemp("", "pipeline-access-")
+	if err != nil {
+		dir = "" // no scratch dir: run without the check rather than fail the node
+	}
+	// the JS recorder appends to one log for the whole node, children included
+	jsLog := ""
+	if dir != "" {
+		jsLog = filepath.Join(dir, "js.log")
 	}
 	for i, argv := range n.Run {
 		cmd := argv
@@ -161,11 +165,17 @@ func (r *Runner) exec(n Node) ([]byte, []string, error) {
 		}
 		c := exec.Command(cmd[0], cmd[1:]...)
 		c.Dir, c.Stdout, c.Stderr = r.root, &buf, &buf
+		if jsLog != "" {
+			c.Env = append(os.Environ(),
+				"SHADLESS_FSLOG="+jsLog,
+				"NODE_OPTIONS="+strings.TrimSpace(os.Getenv("NODE_OPTIONS")+
+					" --import "+filepath.Join(r.root, fsRecorder)))
+		}
 		if err := c.Run(); err != nil {
-			return buf.Bytes(), logs, err
+			return buf.Bytes(), append(logs, jsLog), err
 		}
 	}
-	return buf.Bytes(), logs, nil
+	return buf.Bytes(), append(logs, jsLog), nil
 }
 
 // readsFrom collects the undeclared reads across a node's testlogs, then
@@ -178,7 +188,16 @@ func (r *Runner) readsFrom(n Node, logs []string) []string {
 	seen := map[string]bool{}
 	var all []string
 	for _, log := range logs {
-		opens, err := testlogOpens(r.root, log)
+		if log == "" {
+			continue
+		}
+		var opens []string
+		var err error
+		if strings.HasSuffix(log, "js.log") {
+			opens, err = fsRecordOpens(r.root, log)
+		} else {
+			opens, err = testlogOpens(r.root, log)
+		}
 		if err != nil {
 			continue // a missing log means no evidence, not a violation
 		}
@@ -189,7 +208,7 @@ func (r *Runner) readsFrom(n Node, logs []string) []string {
 			}
 		}
 	}
-	undeclared, err := undeclaredReads(r.root, n, all)
+	undeclared, err := undeclaredReads(r.root, r.graph, n, all)
 	if err != nil {
 		return nil
 	}
