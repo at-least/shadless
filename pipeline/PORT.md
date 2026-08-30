@@ -63,6 +63,21 @@ fences. There is no Go stack that emits the same HTML, and `reproducible`
 compares every built page byte for byte, so a different renderer changes every
 page in `docs/site/`.
 
+This one is permanent, and for a stronger reason than the missing Go library:
+upstream authors its documentation in MDX, and mirroring that content is the
+point — `docs-fidelity` exists to assert that every built page still matches
+its `.mdx` source. Escaping mdx+shiki would mean giving up the mirror and
+generating our own pages from the IR instead, which is a different product,
+not a port. The toolchain stays JS; under Dagger it runs in a container like
+everything else.
+
+Worth separating, because the two are easy to conflate: the IR drives what is
+INSIDE the preview iframes (the React-free demo pages, which load only the
+compiled Tailwind CSS, shadless.js and the component's own js). MDX compiles
+the page AROUND them — the prose, headings, install instructions and fenced
+code. `convert` already removed React from the components; docs-build is not
+converting components at all, it is compiling upstream's documentation.
+
 This is also why the docs *gates* stay: `docs-links`, `docs-consistency` and
 `docs-fidelity` are pure logic and would port cleanly on their own, but they
 share `docs-guides.mjs` (`resolveDocsRoute` + the `GUIDES` table),

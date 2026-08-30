@@ -1,318 +1,322 @@
 {
-  "accordion": {
-    "tier": "trivial-js",
-    "radix": [
-      "Accordion"
-    ]
-  },
-  "alert": {
-    "tier": "static",
-    "radix": []
-  },
-  "alert-dialog": {
-    "tier": "kernel",
-    "radix": [
-      "AlertDialog"
-    ]
-  },
-  "aspect-ratio": {
-    "tier": "trivial-js",
-    "radix": [
-      "AspectRatio"
-    ]
-  },
-  "attachment": {
-    "tier": "static",
-    "radix": []
-  },
-  "avatar": {
-    "tier": "trivial-js",
-    "radix": [
-      "Avatar"
-    ]
-  },
-  "badge": {
-    "tier": "static",
-    "radix": []
-  },
-  "breadcrumb": {
-    "tier": "static",
-    "radix": []
-  },
-  "bubble": {
-    "tier": "static",
-    "radix": []
-  },
-  "button": {
-    "tier": "static",
-    "radix": []
-  },
-  "button-group": {
-    "tier": "static",
-    "radix": []
-  },
-  "calendar": {
-    "tier": "external",
-    "ext": [
-      "react-day-picker"
-    ]
-  },
-  "card": {
-    "tier": "static",
-    "radix": []
-  },
-  "carousel": {
-    "tier": "external",
-    "ext": [
-      "embla-carousel-react"
-    ]
-  },
-  "chart": {
-    "tier": "external",
-    "ext": [
-      "recharts",
-      "recharts"
-    ]
-  },
-  "checkbox": {
-    "tier": "trivial-js",
-    "radix": [
-      "Checkbox"
-    ]
-  },
-  "collapsible": {
-    "tier": "trivial-js",
-    "radix": [
-      "Collapsible"
-    ]
-  },
-  "combobox": {
-    "tier": "logic"
-  },
-  "command": {
-    "tier": "external",
-    "ext": [
-      "cmdk"
-    ]
-  },
-  "context-menu": {
-    "tier": "kernel",
-    "radix": [
-      "ContextMenu"
-    ]
-  },
-  "dialog": {
-    "tier": "kernel",
-    "radix": [
-      "Dialog"
-    ]
-  },
-  "direction": {
-    "tier": "static",
-    "radix": []
-  },
-  "drawer": {
-    "tier": "external",
-    "ext": [
-      "vaul"
-    ]
-  },
-  "dropdown-menu": {
-    "tier": "kernel",
-    "radix": [
-      "DropdownMenu"
-    ]
-  },
-  "empty": {
-    "tier": "static",
-    "radix": []
-  },
-  "field": {
-    "tier": "logic",
-    "hooks": [
-      "useMemo"
-    ]
-  },
-  "hover-card": {
-    "tier": "kernel",
-    "radix": [
-      "HoverCard"
-    ]
-  },
-  "input": {
-    "tier": "static",
-    "radix": []
-  },
-  "input-group": {
-    "tier": "static",
-    "radix": []
-  },
-  "input-otp": {
-    "tier": "external",
-    "ext": [
-      "input-otp"
-    ]
-  },
-  "item": {
-    "tier": "static",
-    "radix": []
-  },
-  "kbd": {
-    "tier": "static",
-    "radix": []
-  },
-  "label": {
-    "tier": "trivial-js",
-    "radix": [
-      "Label"
-    ]
-  },
-  "marker": {
-    "tier": "static",
-    "radix": []
-  },
-  "menubar": {
-    "tier": "medium",
-    "radix": [
-      "Menubar"
-    ]
-  },
-  "message": {
-    "tier": "static",
-    "radix": []
-  },
-  "message-scroller": {
-    "tier": "static",
-    "radix": []
-  },
-  "native-select": {
-    "tier": "static",
-    "radix": []
-  },
-  "navigation-menu": {
-    "tier": "medium",
-    "radix": [
-      "NavigationMenu"
-    ]
-  },
-  "pagination": {
-    "tier": "static",
-    "radix": []
-  },
-  "popover": {
-    "tier": "kernel",
-    "radix": [
-      "Popover"
-    ]
-  },
-  "progress": {
-    "tier": "trivial-js",
-    "radix": [
-      "Progress"
-    ]
-  },
-  "questionnaire": {
-    "tier": "external",
-    "ext": [
-      "@shadcn/react/questionnaire"
-    ]
-  },
-  "radio-group": {
-    "tier": "trivial-js",
-    "radix": [
-      "RadioGroup"
-    ]
-  },
-  "resizable": {
-    "tier": "external",
-    "ext": [
-      "react-resizable-panels"
-    ]
-  },
-  "scroll-area": {
-    "tier": "kernel",
-    "radix": [
-      "ScrollArea"
-    ]
-  },
-  "select": {
-    "tier": "kernel",
-    "radix": [
-      "Select"
-    ]
-  },
-  "separator": {
-    "tier": "trivial-js",
-    "radix": [
-      "Separator"
-    ]
-  },
-  "sheet": {
-    "tier": "kernel",
-    "radix": [
-      "Sheet"
-    ]
-  },
-  "sidebar": {
-    "tier": "logic"
-  },
-  "skeleton": {
-    "tier": "static",
-    "radix": []
-  },
-  "slider": {
-    "tier": "kernel",
-    "radix": [
-      "Slider"
-    ]
-  },
-  "sonner": {
-    "tier": "external",
-    "ext": [
-      "next-themes",
-      "sonner"
-    ]
-  },
-  "spinner": {
-    "tier": "static",
-    "radix": []
-  },
-  "switch": {
-    "tier": "trivial-js",
-    "radix": [
-      "Switch"
-    ]
-  },
-  "table": {
-    "tier": "static",
-    "radix": []
-  },
-  "tabs": {
-    "tier": "kernel",
-    "radix": [
-      "Tabs"
-    ]
-  },
-  "textarea": {
-    "tier": "static",
-    "radix": []
-  },
-  "toggle": {
-    "tier": "trivial-js",
-    "radix": [
-      "Toggle"
-    ]
-  },
-  "toggle-group": {
-    "tier": "trivial-js",
-    "radix": [
-      "ToggleGroup"
-    ]
-  },
-  "tooltip": {
-    "tier": "kernel",
-    "radix": [
-      "Tooltip"
-    ]
-  }
+ "accordion": {
+  "tier": "trivial-js",
+  "radix": [
+   "Accordion"
+  ]
+ },
+ "alert": {
+  "tier": "static",
+  "radix": []
+ },
+ "alert-dialog": {
+  "tier": "kernel",
+  "radix": [
+   "AlertDialog"
+  ]
+ },
+ "aspect-ratio": {
+  "tier": "trivial-js",
+  "radix": [
+   "AspectRatio"
+  ]
+ },
+ "attachment": {
+  "tier": "static",
+  "radix": []
+ },
+ "avatar": {
+  "tier": "trivial-js",
+  "radix": [
+   "Avatar"
+  ]
+ },
+ "badge": {
+  "tier": "static",
+  "radix": []
+ },
+ "breadcrumb": {
+  "tier": "static",
+  "radix": []
+ },
+ "bubble": {
+  "tier": "static",
+  "radix": []
+ },
+ "button": {
+  "tier": "static",
+  "radix": []
+ },
+ "button-group": {
+  "tier": "static",
+  "radix": []
+ },
+ "calendar": {
+  "tier": "external",
+  "ext": [
+   "react-day-picker"
+  ]
+ },
+ "card": {
+  "tier": "static",
+  "radix": []
+ },
+ "carousel": {
+  "tier": "external",
+  "ext": [
+   "embla-carousel-react"
+  ],
+  "emit": true
+ },
+ "chart": {
+  "tier": "external",
+  "ext": [
+   "recharts",
+   "recharts"
+  ]
+ },
+ "checkbox": {
+  "tier": "trivial-js",
+  "radix": [
+   "Checkbox"
+  ]
+ },
+ "collapsible": {
+  "tier": "trivial-js",
+  "radix": [
+   "Collapsible"
+  ]
+ },
+ "combobox": {
+  "tier": "logic"
+ },
+ "command": {
+  "tier": "external",
+  "ext": [
+   "cmdk"
+  ]
+ },
+ "context-menu": {
+  "tier": "kernel",
+  "radix": [
+   "ContextMenu"
+  ]
+ },
+ "dialog": {
+  "tier": "kernel",
+  "radix": [
+   "Dialog"
+  ]
+ },
+ "direction": {
+  "tier": "static",
+  "radix": []
+ },
+ "drawer": {
+  "tier": "external",
+  "ext": [
+   "vaul"
+  ]
+ },
+ "dropdown-menu": {
+  "tier": "kernel",
+  "radix": [
+   "DropdownMenu"
+  ]
+ },
+ "empty": {
+  "tier": "static",
+  "radix": []
+ },
+ "field": {
+  "tier": "logic",
+  "hooks": [
+   "useMemo"
+  ],
+  "emit": true
+ },
+ "hover-card": {
+  "tier": "kernel",
+  "radix": [
+   "HoverCard"
+  ]
+ },
+ "input": {
+  "tier": "static",
+  "radix": []
+ },
+ "input-group": {
+  "tier": "static",
+  "radix": []
+ },
+ "input-otp": {
+  "tier": "external",
+  "ext": [
+   "input-otp"
+  ]
+ },
+ "item": {
+  "tier": "static",
+  "radix": []
+ },
+ "kbd": {
+  "tier": "static",
+  "radix": []
+ },
+ "label": {
+  "tier": "trivial-js",
+  "radix": [
+   "Label"
+  ]
+ },
+ "marker": {
+  "tier": "static",
+  "radix": []
+ },
+ "menubar": {
+  "tier": "medium",
+  "radix": [
+   "Menubar"
+  ],
+  "emit": true
+ },
+ "message": {
+  "tier": "static",
+  "radix": []
+ },
+ "message-scroller": {
+  "tier": "static",
+  "radix": []
+ },
+ "native-select": {
+  "tier": "static",
+  "radix": []
+ },
+ "navigation-menu": {
+  "tier": "medium",
+  "radix": [
+   "NavigationMenu"
+  ],
+  "emit": true
+ },
+ "pagination": {
+  "tier": "static",
+  "radix": []
+ },
+ "popover": {
+  "tier": "kernel",
+  "radix": [
+   "Popover"
+  ]
+ },
+ "progress": {
+  "tier": "trivial-js",
+  "radix": [
+   "Progress"
+  ]
+ },
+ "questionnaire": {
+  "tier": "external",
+  "ext": [
+   "@shadcn/react/questionnaire"
+  ]
+ },
+ "radio-group": {
+  "tier": "trivial-js",
+  "radix": [
+   "RadioGroup"
+  ]
+ },
+ "resizable": {
+  "tier": "external",
+  "ext": [
+   "react-resizable-panels"
+  ]
+ },
+ "scroll-area": {
+  "tier": "kernel",
+  "radix": [
+   "ScrollArea"
+  ]
+ },
+ "select": {
+  "tier": "kernel",
+  "radix": [
+   "Select"
+  ]
+ },
+ "separator": {
+  "tier": "trivial-js",
+  "radix": [
+   "Separator"
+  ]
+ },
+ "sheet": {
+  "tier": "kernel",
+  "radix": [
+   "Sheet"
+  ]
+ },
+ "sidebar": {
+  "tier": "logic"
+ },
+ "skeleton": {
+  "tier": "static",
+  "radix": []
+ },
+ "slider": {
+  "tier": "kernel",
+  "radix": [
+   "Slider"
+  ]
+ },
+ "sonner": {
+  "tier": "external",
+  "ext": [
+   "next-themes",
+   "sonner"
+  ]
+ },
+ "spinner": {
+  "tier": "static",
+  "radix": []
+ },
+ "switch": {
+  "tier": "trivial-js",
+  "radix": [
+   "Switch"
+  ]
+ },
+ "table": {
+  "tier": "static",
+  "radix": []
+ },
+ "tabs": {
+  "tier": "kernel",
+  "radix": [
+   "Tabs"
+  ]
+ },
+ "textarea": {
+  "tier": "static",
+  "radix": []
+ },
+ "toggle": {
+  "tier": "trivial-js",
+  "radix": [
+   "Toggle"
+  ]
+ },
+ "toggle-group": {
+  "tier": "trivial-js",
+  "radix": [
+   "ToggleGroup"
+  ]
+ },
+ "tooltip": {
+  "tier": "kernel",
+  "radix": [
+   "Tooltip"
+  ]
+ }
 }

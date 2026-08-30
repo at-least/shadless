@@ -21,28 +21,30 @@ mkdirSync(`${DIST}/components`, { recursive: true })
 // `field` is presentational (markup + cva, no JS) — emitted alongside
 // the static tier. The other gap components (menubar, navigation-menu,
 // combobox, sidebar) are tombstoned (recorded in src/registry/tiers.json).
+// What ships is a property of the component, so it is recorded with the
+// component. src/registry/tiers.json marks the four that ship despite their
+// tier: field (logic, presentational only), carousel (external, but there is
+// a clean vanilla embla port), menubar and navigation-menu (medium, joined
+// once their glue passed contract parity). The remaining external components
+// are tombstoned — no vanilla upstream exists.
+//
+// This used to be four hardcoded sets here, written again in demo-smoke.mjs
+// and a third time as a "+ 4" in its expected count. The sets also drove the
+// fixture dispatch below, but each was exactly "emit:true components of one
+// tier", so the dispatch is tier-based now and the sets are gone entirely.
 const TIERS = ["static", "kernel", "trivial-js"]
-const LOGIC_PRESENTATIONAL = new Set(["field"])
-// carousel is external-tier but has a clean vanilla embla port —
-// emitted alongside the other tiers. The remaining external components are
-// tombstoned (no vanilla upstream — see src/registry/tiers.json).
-const EXTERNAL_EMIT = new Set(["carousel"])
-// medium-tier (wireMenu/glue + custom glue) components now emitted —
-// both joined once their glue passed contract parity
-const MEDIUM_EMIT = new Set(["menubar", "navigation-menu"])
+const REGISTRY_TIERS = JSON.parse(readFileSync("src/registry/tiers.json", "utf8"))
+const shipped = (name, tier) => TIERS.includes(tier) || REGISTRY_TIERS[name]?.emit === true
 const irAll = readdirSync(IRDIR).filter((f) => f.endsWith(".json"))
   .map((f) => JSON.parse(readFileSync(join(IRDIR, f), "utf8")))
-  .filter((ir) => TIERS.includes(ir.tier) || LOGIC_PRESENTATIONAL.has(ir.name) || EXTERNAL_EMIT.has(ir.name) || MEDIUM_EMIT.has(ir.name))
+  .filter((ir) => shipped(ir.name, ir.tier))
 const byName = new Map(irAll.map((ir) => [ir.name, ir]))
 const names = irAll.map((ir) => ir.name).sort()
-// expected count derives from tiers.json (single source): static+kernel+
-// trivial-js tiers + the two explicitly-emitted extras (field, carousel)
+// expected count derives from the same predicate, so the two cannot disagree
 {
-  const TIERS_COUNTED = JSON.parse(readFileSync("src/registry/tiers.json", "utf8"))
-  const expected = Object.values(TIERS_COUNTED)
-    .filter((x) => TIERS.includes(x.tier)).length + LOGIC_PRESENTATIONAL.size + EXTERNAL_EMIT.size + MEDIUM_EMIT.size
+  const expected = Object.entries(REGISTRY_TIERS).filter(([n, x]) => shipped(n, x.tier)).length
   if (irAll.length !== expected)
-    throw new Error(`expected ${expected} emitted components (${TIERS.join("/")} + field + carousel), got ${irAll.length}`)
+    throw new Error(`expected ${expected} emitted components (${TIERS.join("/")} + tiers.json emit:true), got ${irAll.length}`)
 }
 
 // ---- 1. unified globals.css (base + all-47 slot rules + @source per page) ---
@@ -132,16 +134,16 @@ for (const name of names) {
     if (name === "dialog" || KERNEL_T6.includes(name)) {
       html = rewritePaths(readFileSync(`src/kernel/${name}.html`, "utf8"))
     } else throw new Error(`no kernel fixture for ${name}`)
-  } else if (MEDIUM_EMIT.has(name)) {
+  } else if (ir.tier === "medium") {
     if (name === "menubar" || name === "navigation-menu") html = ensureLink(rewritePaths(readFileSync(`src/kernel/${name}.html`, "utf8")))
     else throw new Error(`no medium fixture for ${name}`)
   } else if (ir.tier === "trivial-js") {
     if (!TRIVIAL_T7.includes(name)) throw new Error(`no trivial fixture for ${name}`)
     html = ensureLink(rewritePaths(readFileSync(`probes/t7/${name}.html`, "utf8")))
-  } else if (LOGIC_PRESENTATIONAL.has(name)) {
+  } else if (ir.tier === "logic") {
     if (name === "field") html = fieldDemoHtml()
     else throw new Error(`no presentational fixture for ${name}`)
-  } else if (EXTERNAL_EMIT.has(name)) {
+  } else if (ir.tier === "external") {
     if (name === "carousel") html = ensureLink(rewritePaths(readFileSync("probes/t8/carousel.html", "utf8")))
     else throw new Error(`no external fixture for ${name}`)
   } else throw new Error(`unhandled tier ${ir.tier}`)
@@ -165,7 +167,7 @@ const indexHtml = `<!doctype html><html><head><meta charset="utf-8"><title>shadl
 <body>
 <h1>shadless demo</h1>
 ${groups.map(([tier, label]) => {
-  const ns = irAll.filter((ir) => ir.tier === tier || (tier === "kernel" && MEDIUM_EMIT.has(ir.name))).map((ir) => ir.name).sort()
+  const ns = irAll.filter((ir) => ir.tier === tier || (tier === "kernel" && ir.tier === "medium")).map((ir) => ir.name).sort()
   return `<h2>${label} <small>(${ns.length})</small></h2><ul>${
     ns.map((n) => `<li><a href="components/${n}.html">${n}</a></li>`).join("")}</ul>`
 }).join("\n")}

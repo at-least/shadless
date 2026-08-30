@@ -13,6 +13,15 @@ import { readdirSync, readFileSync } from "node:fs"
 // The original 49 base components are the ones that have corresponding
 // IRs and slots to verify; the language variants just re-use those slots
 // with translated text and don't need a separate smoke pass.
+// What ships is recorded per component in src/registry/tiers.json: the three
+// shipped tiers, plus `emit: true` on the four that ship despite their tier.
+// demo.mjs reads the same field, so the page count here and the set it builds
+// cannot disagree — this was three separate encodings of one predicate, two
+// hand-written filters and a "+ 4".
+const REGISTRY_TIERS = JSON.parse(readFileSync("src/registry/tiers.json", "utf8"))
+const shipped = (name, tier) =>
+  ["static", "kernel", "trivial-js"].includes(tier) || REGISTRY_TIERS[name]?.emit === true
+
 const allHtml = readdirSync("dist/components").filter((f) => f.endsWith(".html")).sort()
 const pages = allHtml.filter((f) => !/-rtl-(en|he|fa)\.html$/.test(f))
 const rtlVariants = allHtml.length - pages.length
@@ -20,9 +29,7 @@ const rtlVariants = allHtml.length - pages.length
 // hardcoded 49) + alert-demo.html (FT8/Step 1 emits this from
 // examples/radix/alert-demo.tsx).
 {
-  const TIERS = JSON.parse(readFileSync("src/registry/tiers.json", "utf8"))
-  const emitted = Object.values(TIERS)
-    .filter((x) => ["static", "kernel", "trivial-js"].includes(x.tier)).length + 4 // field + carousel + menubar + navigation-menu
+  const emitted = Object.entries(REGISTRY_TIERS).filter(([n, x]) => shipped(n, x.tier)).length
   if (pages.length !== emitted + 1) {
     console.error(`FAIL demo-smoke: expected ${emitted + 1} base pages (${emitted} IR + alert-demo), got ${pages.length} (${rtlVariants} RTL variants skipped)`); process.exit(1)
   }
@@ -31,10 +38,9 @@ const rtlVariants = allHtml.length - pages.length
 // Global slot vocabulary across all emitted components — demo fixtures
 // legitimately compose multiple components (e.g. label + input), so a slot
 // is valid if ANY IR declares it.
-const MEDIUM_EMIT = ["menubar", "navigation-menu"]
 const ALL_SLOTS = new Set(readdirSync("src/registry/ir")
   .map((f) => JSON.parse(readFileSync(`src/registry/ir/${f}`, "utf8")))
-  .filter((ir) => ["static", "kernel", "trivial-js"].includes(ir.tier) || ir.name === "field" || ir.name === "carousel" || MEDIUM_EMIT.includes(ir.name))
+  .filter((ir) => shipped(ir.name, ir.tier))
   .flatMap((ir) => ir.components.flatMap((c) => c.elements.filter((e) => e.slot).map((e) => e.slot))))
 
 const irSlots = (name) => {
