@@ -63,7 +63,7 @@ if (!reportOnly) {
   }
   try { git(["checkout", "--quiet", to]) } catch (e) { console.error(`cannot checkout ${to}: ${e.message.split("\n").slice(-1)[0]}  (try --fetch)`); process.exit(1) }
   cpSync("src/registry/ir", `${OUT}/ir-before`, { recursive: true, force: true })
-  if (!run("node", ["tools/pin.mjs", "--force"])) process.exit(1)
+  if (!run("./build/pipeline", ["pin", "--force"])) process.exit(1)
   const toPin = pin().shadcn_ui
   H(`Re-pin ${from.tag} → ${toPin.tag}`)
   P(`- from: \`${from.tag}\` (${from.commit.slice(0, 10)})\n- to:   \`${toPin.tag}\` (${toPin.commit.slice(0, 10)})`)

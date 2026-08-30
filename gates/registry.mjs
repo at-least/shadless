@@ -36,11 +36,11 @@ export const NODES = [
   // ---------------------------------------------------------------- inputs
   node({
     id: "pin", kind: "gate", tier: "fast", needs: [],
-    run: [["node", "tools/pin.mjs", "--check-only"]],
+    run: [["./build/pipeline", "pin", "--check-only"]],
     // the checkout's HEAD file IS the state this gate judges; declaring it
     // (rather than `null`) matters: no dependent of a node without a declared
     // input set can ever be fresh, and everything descends from pin
-    inputs: ["tools/pin.mjs", "src/registry/pin.json", "vendor/**", ".upstream/shadcn-ui/.git/HEAD"],
+    inputs: ["pipeline/gate_pin.go", "src/registry/pin.json", "vendor/**", ".upstream/shadcn-ui/.git/HEAD"],
     why: "the .upstream checkout must sit exactly at the pinned release tag; " +
          "upgrade tools write pin.json directly and nothing else checks the result",
     mutations: ["pin-commit-drift"],
@@ -79,8 +79,8 @@ export const NODES = [
   node({
     // reads dist/out.css + dist/css — must not race their producers under the parallel runner
     id: "dist-complete", kind: "gate", tier: "fast", needs: ["demo-css", "product-css"],
-    run: [["node", "gates/dist-complete.mjs"]],
-    inputs: ["gates/dist-complete.mjs", "dist/css/**", "dist/out.css"],
+    run: [["./build/pipeline", "gate", "dist-complete"]],
+    inputs: ["pipeline/gate_dist_complete.go", "dist/css/**", "dist/out.css"],
     why: "the tracked no-build dist/out.css must carry every slot selector its per-component " +
          "sources declare — a partial-build out.css (static pages only) got committed once and " +
          "no gate asked whether the file was whole",
@@ -442,7 +442,7 @@ export const NODES = [
   node({
     id: "reproducible", kind: "gate", tier: "medium",
     needs: ["docs-build", "product-build", "demo-rtl", "example-fixture"],
-    run: [["node", "gates/reproducible.mjs"]],
+    run: [["./build/pipeline", "gate", "reproducible"]],
     inputs: null, // never fresh: judges state outside the tree
     why: "the committed generated trees must equal a fresh pipeline run — the only " +
          "authority on hand-edited outputs, replacing the pre-commit hook's guesswork",

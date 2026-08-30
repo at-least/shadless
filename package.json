@@ -51,7 +51,7 @@
     "dist/shadless.min.js"
   ],
   "scripts": {
-    "pin": "node tools/pin.mjs",
+    "pin": "./build/pipeline pin",
     "unit": "node tools/unit-check.mjs",
     "contracts": "node tools/contracts/run.mjs",
     "convert": "node tools/resolve-skins.mjs && node src/converter/index.mjs",

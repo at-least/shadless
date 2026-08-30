@@ -59,8 +59,8 @@ var Nodes = []Node{
 	{
 		ID: NPin, Kind: "gate", Tier: "fast",
 		Needs:    nil,
-		Run:      [][]string{{"node", "tools/pin.mjs", "--check-only"}},
-		Inputs:   []string{"tools/pin.mjs", "src/registry/pin.json", "vendor/**", ".upstream/shadcn-ui/.git/HEAD"},
+		Run:      [][]string{{"./build/pipeline", "pin", "--check-only"}},
+		Inputs:   []string{"pipeline/gate_pin.go", "src/registry/pin.json", "vendor/**", ".upstream/shadcn-ui/.git/HEAD"},
 		Produces: nil,
 	},
 	{
@@ -87,8 +87,8 @@ var Nodes = []Node{
 	{
 		ID: NDistComplete, Kind: "gate", Tier: "fast",
 		Needs:    []NodeID{NDemoCss, NProductCss},
-		Run:      [][]string{{"node", "gates/dist-complete.mjs"}},
-		Inputs:   []string{"gates/dist-complete.mjs", "dist/css/**", "dist/out.css"},
+		Run:      [][]string{{"./build/pipeline", "gate", "dist-complete"}},
+		Inputs:   []string{"pipeline/gate_dist_complete.go", "dist/css/**", "dist/out.css"},
 		Produces: nil,
 	},
 	{
@@ -325,7 +325,7 @@ var Nodes = []Node{
 	{
 		ID: NReproducible, Kind: "gate", Tier: "medium",
 		Needs:    []NodeID{NDocsBuild, NProductBuild, NDemoRtl, NExampleFixture},
-		Run:      [][]string{{"node", "gates/reproducible.mjs"}},
+		Run:      [][]string{{"./build/pipeline", "gate", "reproducible"}},
 		Inputs:   nil, // judges state outside the tree: never fresh
 		Produces: nil,
 	},

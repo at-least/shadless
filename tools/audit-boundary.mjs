@@ -107,7 +107,7 @@ const HAND_AUTHORED_PATTERNS = [
     owner: "human (git hook shell script)" },
   // Pin tracking
   { test: (p) => p === "src/registry/pin.json",
-    owner: "gates/upstream.mjs (re-pin) / human (vendor re-hash via tools/pin.mjs --force)" },
+    owner: "gates/upstream.mjs (re-pin) / human (vendor re-hash via ./build/pipeline pin --force)" },
   // Docs / orchestration (mix of programmatic generation and human prose)
   { test: (p) => ["Makefile", "README.md", "UPGRADING.md", "package.json", ".gitignore", "package-lock.json"].includes(p)
     || /^FINDING-.*\.md$/.test(p),
