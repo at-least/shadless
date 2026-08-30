@@ -89,20 +89,33 @@ func (m *Shadless) renderBase(ctx context.Context, source *dagger.Directory) (*d
 // Only docs/catalog.json is mounted from docs/: it is the target list, and it
 // is the one file under docs/ this step reads.
 //
-// KNOWN DIVERGENCE, one page. docs/demos/accordion-rtl.html renders here with
-// --radix-collapsible-content-height: 36px where the committed page says 19px:
-// the same Arabic string wrapping to two lines instead of one. The oracle
-// harness loads no CSS at all (oracle-lib.mjs:141), so every measured value in
-// a rendered page is a function of the browser's default font and whatever the
-// system offers for that script — 32 Arabic faces on the machine that produced
-// the committed tree, declared nowhere. Installing fonts-noto-core here does
-// NOT reproduce 19px (measured), so it is not simply a missing font.
+// KNOWN DIVERGENCE: the committed pages embed MEASURED geometry, so they are
+// reproducible only on a machine whose font rendering matches the one that
+// produced them. Measured across this slice, 27 files of 635 differ, from six
+// base pages:
 //
-// That page is also the base tools/build-rtl.mjs derives four more from. The
-// fix is not a font package in this file: either the oracle stops baking a
-// measured pixel value into a committed page, or the repo declares its font
-// set and those pages are regenerated under it. Until then `reproducible`
-// cannot see the problem, because everyone runs it on the same laptop.
+//	docs/demos/accordion-rtl.html   --radix-collapsible-content-height
+//	                                36px here, 19px committed — the same
+//	                                Arabic string wrapping to two lines
+//	tooltip-*, popover-rtl,         --radix-popper-transform-origin and the
+//	hover-card-rtl, kbd-tooltip     arrow's left: floating-ui positions
+//	                                computed from rendered TEXT WIDTH, e.g.
+//	                                28.1485px here against
+//	                                27.991999999999997px committed
+//
+// plus the 16 RTL variants tools/build-rtl.mjs derives from those bases.
+//
+// Note the second group is LATIN text ("Save Changes"). This is not an Arabic
+// font gap: the default sans differs enough to move a sub-pixel position, and
+// radix serializes that position into the DOM at full float precision. The
+// oracle harness loads no CSS at all (oracle-lib.mjs:141), so the default font
+// is whatever the system supplies. Installing fonts-noto-core does NOT
+// reproduce the committed values (measured), so it is not a missing font.
+//
+// The fix is not a font package in this file: either these tools stop baking
+// measured geometry into committed pages, or the repo declares its font set
+// and the pages are regenerated under it. Until then `reproducible` cannot see
+// the problem, because everyone runs it on the laptop that produced the bytes.
 //
 // dist/components exists but is empty for the same reason, and because of what
 // the first run in this sandbox found: one target, alert-demo, is written to
