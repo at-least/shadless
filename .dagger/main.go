@@ -216,25 +216,14 @@ func (m *Shadless) pipelineBin(ctx context.Context, source *dagger.Directory) (*
 // tree happens to hold. In the current graph that correspondence holds only by
 // ordering luck — emit declares no IR input at all and relies on `needs`.
 //
-// dist/ IS mounted from the host, and that is a deliberate compromise worth
-// naming: the second command is `tw … --cwd dist`, which makes Tailwind scan
-// dist for utility classes, so the emitted out.css depends on what else is in
-// there. Starting from an empty dist would change the result. That makes dist
-// both an input and an output of this step — exactly the mixing this port is
-// meant to remove — so it is the next thing to untangle, not the last word.
+// dist/ is NOT mounted, and that is the point. This step used to also run
+// `tw … --cwd dist`, which made Tailwind scan dist for utility classes, so
+// emit's output depended on what other steps had left there — an input that
+// no declaration mentioned, and an output written into one of its own input
+// mounts. That compile existed only to feed emit-smoke, which is deleted, so
+// the whole entanglement went with it. emit now reads its sources and writes
+// dist/; nothing more.
 func (m *Shadless) emitted(ctx context.Context, source *dagger.Directory) (*dagger.Container, error) {
-	return m.emittedWith(ctx, source, true)
-}
-
-// emittedWith exists to answer one question with evidence rather than
-// argument: does the Tailwind scan of dist/ actually depend on what OTHER
-// steps left there, or only on what emit itself just wrote?
-//
-// hostDist=false starts dist/ empty, so the scan sees exactly emit's own
-// output. If out.css comes back identical, mounting the host's dist was never
-// load-bearing and the rule-2 violation (output written into an input mount)
-// can simply go.
-func (m *Shadless) emittedWith(ctx context.Context, source *dagger.Directory, hostDist bool) (*dagger.Container, error) {
 	c, err := m.deps(ctx, source)
 	if err != nil {
 		return nil, err
@@ -252,30 +241,7 @@ func (m *Shadless) emittedWith(ctx context.Context, source *dagger.Directory, ho
 		// undeclared input until today, and the sandbox caught it missing here
 		WithDirectory("/w/.upstream/shadcn-ui/apps/v4/registry",
 			source.Directory(".upstream/shadcn-ui/apps/v4/registry")).
-		With(func(c *dagger.Container) *dagger.Container {
-			if !hostDist {
-				return c
-			}
-			return c.WithDirectory("/w/dist", source.Directory("dist"))
-		}).
-		WithExec([]string{"node", "src/emitter/index.mjs"}).
-		// `pipeline tw` on the host, invoked directly here. The wrapper exists
-		// to do three things, and a container gives two of them for free:
-		//
-		//   resolve in/out against the repo root, not the compile cwd → they
-		//     are absolute below
-		//   take the CLI from THIS repo's node_modules rather than whatever
-		//     package sits above the scratch dir → there is only one
-		//   control the compile cwd, which is what Tailwind auto-scans for
-		//     utility classes → WithWorkdir
-		//
-		// Only the third is real here, and it is the one thing the wrapper was
-		// actually written for. Calling the CLI directly drops the Go binary
-		// out of this step entirely.
-		WithWorkdir("/w/dist").
-		WithExec([]string{"/w/node_modules/.bin/tailwindcss",
-			"-i", "/w/build/emit/globals.css", "-o", "/w/build/emit/out.css"}).
-		WithWorkdir("/w"), nil
+		WithExec([]string{"node", "src/emitter/index.mjs"}), nil
 }
 
 // Emit returns the static tier's shipped output: the component pages and the
@@ -472,32 +438,4 @@ func (m *Shadless) Contracts(ctx context.Context, source *dagger.Directory) (str
 	}
 	fmt.Fprintf(&b, "\nPASS  contracts (%d/%d)\n", len(names), len(names))
 	return b.String(), nil
-}
-
-// EmitOutCSS returns build/emit/out.css, the stylesheet whose content depends
-// on what the Tailwind step scans. hostDist selects whether dist/ arrives
-// pre-populated from the working tree or starts empty.
-func (m *Shadless) EmitOutCSS(ctx context.Context, source *dagger.Directory, hostDist bool) (*dagger.File, error) {
-	c, err := m.emittedWith(ctx, source, hostDist)
-	if err != nil {
-		return nil, err
-	}
-	return c.File("/w/build/emit/out.css"), nil
-}
-
-// EmitSmoke runs the emit gate, which asserts that every slot rule the emitter
-// generated survives the Tailwind compile into out.css — the check that
-// catches a component's CSS vanishing.
-//
-// hostDist decides what that compile scanned. Running it both ways answers
-// whether the scan of OTHER steps' output in dist/ is load-bearing for this
-// gate, or merely incidental.
-func (m *Shadless) EmitSmoke(ctx context.Context, source *dagger.Directory, hostDist bool) (string, error) {
-	c, err := m.emittedWith(ctx, source, hostDist)
-	if err != nil {
-		return "", err
-	}
-	return withBrowser(c).
-		WithExec([]string{"node", "src/emitter/smoke.mjs"}).
-		Stdout(ctx)
 }
