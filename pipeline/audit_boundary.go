@@ -114,13 +114,13 @@ var programmaticPatterns = []boundaryPattern{
 	{match: func(p string) bool {
 		return strings.HasPrefix(p, "dist/components/") && reRtlVariant.MatchString(p)
 	},
-		tool: "tools/build-rtl.mjs", source: "examples/aria/<name>-rtl.tsx"},
+		tool: "tools/build-rtl.mjs", source: "src/registry/rtl-translations.json (lifted from examples/aria by tools/rtl-dict.mjs)"},
 	// docs/demos — build-rtl writes here too (so the host page can serve the
 	// iframes even before docs-build copies them into docs/site/).
 	{match: func(p string) bool {
 		return strings.HasPrefix(p, "docs/demos/") && reRtlVariant.MatchString(p)
 	},
-		tool: "tools/build-rtl.mjs", source: "examples/aria/<name>-rtl.tsx"},
+		tool: "tools/build-rtl.mjs", source: "src/registry/rtl-translations.json (lifted from examples/aria by tools/rtl-dict.mjs)"},
 	// The rest of docs/demos was classified as hand-authored, and 331 of the
 	// 429 files are not: example-oracle renders each upstream example with
 	// React and writes the page, and example-fixture wires the ones carrying a
@@ -161,7 +161,7 @@ var programmaticPatterns = []boundaryPattern{
 		tool:   "tools/docs-build.mjs",
 		source: "apps/v4/content/docs/components/*/*.mdx (compiled via MDX)"},
 	{match: oneOf("build/rtl-langs.json"),
-		tool: "tools/build-rtl.mjs", source: "examples/aria/*-rtl.tsx"},
+		tool: "tools/build-rtl.mjs", source: "src/registry/rtl-translations.json (lifted from examples/aria by tools/rtl-dict.mjs)"},
 	// catalog + reports
 	{match: oneOf("docs/catalog.json"),
 		tool:   "pipeline/docs_catalog.go",
@@ -382,9 +382,9 @@ type heuristicHint struct {
 
 var heuristicHints = []heuristicHint{
 	{re: re(`^dist/components/[^/]+-rtl-(en|he|fa)\.html$`),
-		kind: "programmatic", tool: "tools/build-rtl.mjs", source: "examples/aria/<name>-rtl.tsx"},
+		kind: "programmatic", tool: "tools/build-rtl.mjs", source: "src/registry/rtl-translations.json (lifted from examples/aria by tools/rtl-dict.mjs)"},
 	{re: re(`^docs/demos/[^/]+-rtl-(en|he|fa)\.html$`),
-		kind: "programmatic", tool: "tools/build-rtl.mjs", source: "examples/aria/<name>-rtl.tsx"},
+		kind: "programmatic", tool: "tools/build-rtl.mjs", source: "src/registry/rtl-translations.json (lifted from examples/aria by tools/rtl-dict.mjs)"},
 	{re: re(`^docs/demos/[^/]+-demo\.html$`),
 		kind: "programmatic", tool: "tools/build-demo.mjs", source: "examples/radix/<name>-demo.tsx"},
 	{re: re(`^dist/glue/`),

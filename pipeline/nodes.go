@@ -58,6 +58,7 @@ const (
 	NContractFixture    NodeID = "contract-fixture"
 	NExampleOracle      NodeID = "example-oracle"
 	NExampleFixture     NodeID = "example-fixture"
+	NRtlDict            NodeID = "rtl-dict"
 	NDemoRtl            NodeID = "demo-rtl"
 	NDemo               NodeID = "demo"
 	NProductCss         NodeID = "product-css"
@@ -242,6 +243,21 @@ var Nodes = []Node{
 		Mutations: nil,
 	},
 	{
+		ID: NRtlDict, Kind: "build", Tier: "fast",
+		Needs: []NodeID{NPin},
+		Run:   [][]string{{"node", "tools/rtl-dict.mjs"}},
+		// The ONLY node that reads examples/aria. This repo targets the radix
+		// registry (src/registry/pin.json); aria is a tree we deliberately do
+		// not build from, and one page emitter reaching into it for string
+		// data was the only thing keeping that dependency alive. The data is
+		// not aria-specific — it is {en,ar,he} -> {dir,values}, the same
+		// strings whichever primitive library renders them.
+		Inputs:    []string{"tools/rtl-dict.mjs", "tools/rtl-lib.mjs", "src/registry/tiers.json", ".upstream/shadcn-ui/apps/v4/examples/aria/**"},
+		Produces:  []string{"src/registry/rtl-translations.json"},
+		Why:       "the RTL translation dictionaries, lifted out of upstream's aria registry into a file this repo owns — so exactly one declared edge reaches a registry we do not build from, and `reproducible` catches it drifting",
+		Mutations: []string{"rtl-dict-missing-dictionary"},
+	},
+	{
 		ID: NDemoRtl, Kind: "build", Tier: "full",
 		// example-fixture is NOT optional here, and it was missing. build-rtl
 		// derives each variant from docs/demos/<name>.html, and four of those
@@ -257,9 +273,9 @@ var Nodes = []Node{
 		// check treats a dependency's `produces` as covered — so reading a
 		// fixture-owned page looked declared. Same over-declared glob, same
 		// blindness, as emit's dist/components/*.html.
-		Needs:     []NodeID{NExampleOracle, NExampleFixture},
+		Needs:     []NodeID{NExampleOracle, NExampleFixture, NRtlDict},
 		Run:       [][]string{{"node", "tools/build-rtl.mjs"}},
-		Inputs:    []string{"tools/build-rtl.mjs", "tools/rtl-lib.mjs", "src/docs/theme-prepaint.mjs", "src/registry/pin.json", upstreamExamplesGlob},
+		Inputs:    []string{"tools/build-rtl.mjs", "tools/rtl-lib.mjs", "src/docs/theme-prepaint.mjs", "src/registry/pin.json", "src/registry/tiers.json"},
 		Produces:  []string{"dist/components/*-rtl-*.html", "docs/demos/*-rtl-*.html", "build/rtl-langs.json"},
 		Why:       "AR/HE/EN/FA variants derived from the Arabic oracle page + upstream dictionaries",
 		Mutations: nil,

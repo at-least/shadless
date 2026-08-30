@@ -113,8 +113,32 @@ func (m *Shadless) ExampleFixtureCheck(ctx context.Context, source *dagger.Direc
 	return c.Stdout(ctx)
 }
 
+// RtlDict lifts the RTL translation dictionaries out of upstream's aria
+// registry into a file this repo owns.
+//
+// It is the only step that touches examples/aria. This repo targets the radix
+// registry, and the dictionaries are the one thing anything wanted from aria —
+// plain {en,ar,he} -> {dir,values} strings, not a React Aria artifact.
+func (m *Shadless) RtlDict(ctx context.Context, source *dagger.Directory) (*dagger.File, error) {
+	c, err := m.deps(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	return c.
+		WithFile("/w/tools/rtl-dict.mjs", source.File("tools/rtl-dict.mjs")).
+		WithFile("/w/tools/rtl-lib.mjs", source.File("tools/rtl-lib.mjs")).
+		WithFile("/w/src/registry/tiers.json", source.File("src/registry/tiers.json")).
+		WithDirectory("/w/.upstream/shadcn-ui/apps/v4/examples/aria",
+			source.Directory(".upstream/shadcn-ui/apps/v4/examples/aria")).
+		WithExec([]string{"node", "tools/rtl-dict.mjs"}).
+		File("/w/src/registry/rtl-translations.json"), nil
+}
+
 // DemoRtl derives the AR/HE/EN/FA variants from the Arabic oracle page and
 // upstream's own aria dictionaries.
+//
+// The dictionaries come from RtlDict; this step no longer reads examples/aria
+// at all.
 //
 // docs/demos comes from the two steps that write it rather than from the host:
 // the tool reads docs/demos/<name>.html as the base it substitutes into, and
@@ -139,12 +163,16 @@ func (m *Shadless) demoRtl(ctx context.Context, source *dagger.Directory) (*dagg
 	if err != nil {
 		return nil, err
 	}
+	dict, err := m.RtlDict(ctx, source)
+	if err != nil {
+		return nil, err
+	}
 	return c.
 		WithFile("/w/tools/build-rtl.mjs", source.File("tools/build-rtl.mjs")).
 		WithFile("/w/tools/rtl-lib.mjs", source.File("tools/rtl-lib.mjs")).
 		WithDirectory("/w/src", source.Directory("src")).
-		WithDirectory("/w/.upstream/shadcn-ui/apps/v4/examples/aria",
-			source.Directory(".upstream/shadcn-ui/apps/v4/examples/aria")).
+		// from the step that produces it, not the committed copy
+		WithFile("/w/src/registry/rtl-translations.json", dict).
 		WithDirectory("/w/docs/demos", oracle.Directory("docs/demos")).
 		// The fixture pages OVERWRITE the oracle's for the 105 targets that
 		// carry kernel families, and four of the -rtl base pages this step

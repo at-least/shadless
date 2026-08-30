@@ -48,6 +48,12 @@ const UP = ".upstream/shadcn-ui"
 const REG = "apps/v4/registry/bases/radix/ui"
 const EXAMPLES = "apps/v4/examples/radix"
 const EXAMPLES_ARIA = "apps/v4/examples/aria"
+// The dictionaries, read from the file this repo owns rather than from
+// upstream directly — tools/rtl-dict.mjs is the one PRODUCER that reads
+// examples/aria, and what it writes is checked against upstream by its own
+// node plus reproducible. The aria corpus below stays: this gate audits manual
+// overlays against the whole pinned upstream, which is a different job.
+const RTL_DICT = JSON.parse(readFileSync("src/registry/rtl-translations.json", "utf8"))
 const MDX = "apps/v4/content/docs/components/radix"
 const MANIFEST = "overlays/manifest.json"
 const PATCHES = "overlays/upstream"
@@ -183,15 +189,17 @@ async function ruleUnits() {
     units.push({
       id: "rtl:persian-dictionary", kind: "rule", home: "tools/build-rtl.mjs PERSIAN",
       requires: () => {
-        const p = `${EXAMPLES_ARIA}/alert-rtl.tsx`
-        if (!upExists(p)) return "alert-rtl.tsx gone from examples/aria"
-        const t = extractTranslations(parseTs(upRead(p)))
-        if (!t?.ar) return "alert-rtl.tsx has no Arabic dictionary"
+        // the vendored dictionary, not examples/aria: tools/rtl-dict.mjs is
+        // the one reader of that tree now, and what it writes is itself
+        // checked against upstream by the rtl-dict node + reproducible
+        const t = RTL_DICT["alert-rtl"]
+        if (!t) return "alert-rtl gone from src/registry/rtl-translations.json"
+        if (!t.ar) return "alert-rtl has no Arabic dictionary"
         const missing = keys.filter((k) => !(k in t.ar.values))
         return missing.length ? `Persian keys with no Arabic counterpart upstream: ${missing.join(", ")}` : null
       },
       dissolved: () => {
-        const t = extractTranslations(parseTs(upRead(`${EXAMPLES_ARIA}/alert-rtl.tsx`)))
+        const t = RTL_DICT["alert-rtl"]
         return t?.fa ? "upstream now ships a Persian dictionary — use it instead" : null
       },
     })

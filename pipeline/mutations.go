@@ -328,6 +328,20 @@ var Mutations = []Mutation{
 		},
 	},
 	{
+		ID: "rtl-dict-missing-dictionary", Gate: "rtl-dict",
+		Why:   "an upstream -rtl example loses its `translations` object — the extraction must fail instead of dropping that language set",
+		Files: []string{".upstream/shadcn-ui/apps/v4/examples/aria/alert-rtl.tsx"},
+		// alert-rtl because `alert` is static-tier and therefore SHIPPED: the
+		// step skips a missing dictionary only for components this repo does
+		// not build, so the mutation has to land on one it does. Before the
+		// two-phase rewrite this whole class was a `continue` — the run stayed
+		// green and rtl-langs.json quietly came back smaller, which is exactly
+		// how demo-rtl's missing `needs: example-fixture` stayed hidden.
+		Apply: func(root string, f []string) error {
+			return mutReplaceOnce(root, f[0], "const translations", "const translationsRenamedByMutation")
+		},
+	},
+	{
 		ID: "example-oracle-render-failure", Gate: "example-oracle",
 		Why: "an upstream example stops rendering — the build must fail instead of dropping that page from the ownership manifest",
 		// The oracle build used to SURVIVE a broken example: a render failure
