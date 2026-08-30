@@ -33,6 +33,10 @@ import (
 
 const upstreamPort = 4000
 
+// The bun upstream's registry:build needs and upstream does not pin. See the
+// note in upstreamBuilt for why this is named here rather than read.
+const upstreamBunVersion = "1.4.0"
+
 // packageManagerPin reads upstream's own declaration of which pnpm to use.
 func packageManagerPin(ctx context.Context, source *dagger.Directory) (string, error) {
 	pkg, err := source.File(".upstream/shadcn-ui/package.json").Contents(ctx)
@@ -62,14 +66,28 @@ func (m *Shadless) upstreamBuilt(ctx context.Context, source *dagger.Directory) 
 		From("node:22-bookworm").
 		WithExec([]string{"npm", "install", "-g", "corepack@latest"}).
 		WithExec([]string{"corepack", "enable"}).
-		// registry:build ends in `bun run ./scripts/build-registry.mts`.
-		// build-registry.mts uses no bun API — every import is a node builtin
-		// or an npm package — and upstream's own root devDependencies carry
-		// tsx (pinned to 4.20.3 by its lockfile), which four other .mts
-		// scripts in the same package.json use. Replacing bun with tsx is the
-		// next step; until it is verified against this known-good path, bun
-		// stays, and it is the one thing here with no version to read.
-		WithExec([]string{"npm", "install", "-g", "bun"}).
+		// registry:build ends in `bun run ./scripts/build-registry.mts`, and
+		// upstream declares bun NOWHERE — not in a package.json, not in the
+		// lockfile. So unlike everything else here, this version has no source
+		// to be read from and is named below.
+		//
+		// That is not the thing this module's header refuses. It refuses a
+		// SECOND declaration of a version the repo already records, free to
+		// drift from the first (an image tag beside a lockfile). bun has no
+		// first declaration anywhere, so recording it once, here, IS the
+		// human decision the header asks for.
+		//
+		// tsx was tried instead and does not work, twice. build-registry.mts
+		// uses no bun API, and upstream's root devDependencies carry tsx
+		// (4.20.3, lockfile-pinned) which four other .mts scripts use — but
+		// the script imports registry/styles.tsx, whose `<svg>` JSX sits
+		// outside tsconfig.scripts.json's `scripts/**` include. esbuild falls
+		// back to the classic transform there, emits React.createElement and
+		// dies with `ReferenceError: React is not defined`; bun defaults to
+		// the automatic runtime. A tsconfig extending upstream's and forcing
+		// their own react-jsx setting did not reach the imported file either.
+		// Do not re-attempt without solving that specifically.
+		WithExec([]string{"npm", "install", "-g", "bun@" + upstreamBunVersion}).
 		WithDirectory("/u", source.Directory(".upstream/shadcn-ui").Filter(
 			dagger.DirectoryFilterOpts{Exclude: []string{".git/**"}})).
 		WithWorkdir("/u").
