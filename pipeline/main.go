@@ -148,7 +148,7 @@ func main() {
 	// product-css, hooks) take no argument. plan/status/run/adopt validate
 	// their own target list below.
 	if len(os.Args) < 2 {
-		fmt.Fprintln(os.Stderr, "usage: pipeline <plan|list|status|run|adopt> <fast|medium|full|builds|all|node…>\n       pipeline pin [--check-only]\n       pipeline tw <in> <out> [--minify] [--cwd DIR]\n       pipeline oracle-css\n       pipeline product-css\n       pipeline docs-catalog\n       pipeline ir-diff <git-ref>|<dirA> <dirB> [--json]\n       pipeline hooks [--uninstall] [--force]\n       pipeline css-direction --update\n       pipeline ledger --record|--render|--dissolve\n       pipeline audit-boundary [--strict|discover]\n       pipeline upstream --to=shadcn@X.Y.Z [--fetch] [--no-build]\n\nThe gates are Go tests: go test -C pipeline -count=1 -v [-run '^TestPack$']")
+		fmt.Fprintln(os.Stderr, "usage: pipeline <plan|list|status|run|adopt> <fast|medium|full|builds|all|node…>\n       pipeline pin [--check-only]\n       pipeline tw <in> <out> [--minify] [--cwd DIR]\n       pipeline oracle-css\n       pipeline product-css\n       pipeline docs-catalog\n       pipeline ir-diff <git-ref>|<dirA> <dirB> [--json]\n       pipeline hooks [--uninstall] [--force]\n       pipeline css-direction --update\n       pipeline ledger --record|--render|--dissolve\n       pipeline audit-boundary [--strict|discover]\n       pipeline upstream --to=shadcn@X.Y.Z [--fetch] [--no-build]\n       pipeline build-js\n\nThe gates are Go tests: go test -C pipeline -count=1 -v [-run '^TestPack$']")
 		os.Exit(2)
 	}
 	cmd, args := os.Args[1], os.Args[2:]
@@ -187,6 +187,9 @@ func main() {
 	}
 	if cmd == "upstream" {
 		os.Exit(runUpstream(args))
+	}
+	if cmd == "build-js" {
+		os.Exit(runBuildJs())
 	}
 	if cmd == "tw" {
 		os.Exit(runTw(args))

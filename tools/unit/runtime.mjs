@@ -10,7 +10,16 @@
 import { readFileSync } from "node:fs"
 import { JSDOM } from "jsdom"
 import { build as esbuild } from "esbuild"
-import { esmBase, esmComponent, NAMED_EXPORTS } from "../build-js.mjs"
+// The ESM surface is composed by the Go builder (pipeline/jsbuild.go). This
+// suite reads the SHIPPED files rather than recomposing them: recomposing
+// meant a second implementation of the same format, and the point of the
+// assertions below is what a bundler sees in dist/, not what a helper agrees
+// to produce.
+const dist = (rel) => readFileSync(new URL(`../../dist/esm/${rel}`, import.meta.url), "utf8")
+// the base's public members, read back out of the shipped module so the list
+// cannot drift from what is actually exported
+const NAMED_EXPORTS = (dist("shadless.mjs").match(/export const \{ ([^}]*) \} = shadless/) ?? [, ""])[1]
+  .split(",").map((s) => s.trim()).filter(Boolean)
 
 // the runtime is now a base + one file per component: boot the base with
 // every trivial-tier behavior registered (what a page that uses them loads)
@@ -566,10 +575,10 @@ export async function run(t) {
 
   // ---- ESM entry: what a bundler sees — base + component modules, any import order ----
   {
-    // compose the ESM surface from source (no dist/ dependency) and bundle a
-    // consumer that imports the COMPONENT before the base: the component
-    // module's own `import "./shadless.mjs"` must still evaluate the base first
-    const files = { "/esm/shadless.mjs": esmBase(KERNEL, CORE), "/esm/dialog.mjs": esmComponent(component("dialog")) }
+    // take the SHIPPED esm surface and bundle a consumer that imports the
+    // COMPONENT before the base: the component module's own
+    // `import "./shadless.mjs"` must still evaluate the base first
+    const files = { "/esm/shadless.mjs": dist("shadless.mjs"), "/esm/dialog.mjs": dist("dialog.mjs") }
     const consumer = `import "./esm/dialog.mjs"
 import shadless, { get, theme, init } from "./esm/shadless.mjs"
 import * as ns from "./esm/shadless.mjs"

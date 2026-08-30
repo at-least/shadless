@@ -50,9 +50,10 @@ jobs:
           TAG=$(node -p "require('./src/registry/pin.json').shadcn_ui.tag")
           git clone --depth 1 --branch "$TAG" https://github.com/shadcn-ui/ui .upstream/shadcn-ui
       - run: npm ci
-      # the runner is stdlib-only, so there is nothing to cache and no go.sum
+      # one dependency: esbuild, pinned to the exact version package.json
+      # carries so the minified output stays byte-identical
       - uses: actions/setup-go@v5
-        with: { go-version: "1.24", cache: false }
+        with: { go-version: "1.24", cache: true, cache-dependency-path: pipeline/go.sum }
       - name: Restore oracle bundle cache (esbuild output, keyed on pin + lockfile)
         uses: actions/cache@v4
         with:
@@ -82,9 +83,10 @@ jobs:
         run: |
           test -d .upstream/shadcn-ui || { TAG=$(node -p "require('./src/registry/pin.json').shadcn_ui.tag"); git clone --depth 1 --branch "$TAG" https://github.com/shadcn-ui/ui .upstream/shadcn-ui; }
       - run: npm ci
-      # the runner is stdlib-only, so there is nothing to cache and no go.sum
+      # one dependency: esbuild, pinned to the exact version package.json
+      # carries so the minified output stays byte-identical
       - uses: actions/setup-go@v5
-        with: { go-version: "1.24", cache: false }
+        with: { go-version: "1.24", cache: true, cache-dependency-path: pipeline/go.sum }
       - name: Restore oracle bundle cache (esbuild output, keyed on pin + lockfile)
         uses: actions/cache@v4
         with:

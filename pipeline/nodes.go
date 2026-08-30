@@ -101,9 +101,9 @@ var Nodes = []Node{
 	},
 	{
 		ID: NUnit, Kind: "gate", Tier: "fast",
-		Needs:     nil,
+		Needs:     []NodeID{NBuildJs},
 		Run:       [][]string{{"node", "tools/unit-check.mjs"}, {"go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestUnit", "."}},
-		Inputs:    []string{"tools/unit-check.mjs", "tools/unit/**", "src/**", "tools/**/*.mjs", "vendor/**", "package.json", "dist/esm/shadless.d.ts", "pipeline/*_test.go", "pipeline/gate_css_direction.go", "pipeline/product_css.go"},
+		Inputs:    []string{"tools/unit-check.mjs", "tools/unit/**", "src/**", "tools/**/*.mjs", "vendor/**", "package.json", "dist/esm/**", "pipeline/*_test.go", "pipeline/gate_css_direction.go", "pipeline/product_css.go"},
 		Produces:  nil,
 		Why:       "seconds-level guard over the pure functions cleanup rounds touch; born from a dead-code delete in rewritePaths that only surfaced minutes later",
 		Mutations: []string{"unit-break-pure-fn"},
@@ -183,8 +183,8 @@ var Nodes = []Node{
 	{
 		ID: NBuildJs, Kind: "build", Tier: "fast",
 		Needs:     nil,
-		Run:       [][]string{{"node", "tools/build-js.mjs"}},
-		Inputs:    []string{"tools/build-js.mjs", "src/runtime/**", "vendor/**"},
+		Run:       [][]string{{"./build/pipeline", "build-js"}},
+		Inputs:    []string{"pipeline/jsbuild.go", "src/runtime/**", "vendor/**"},
 		Produces:  []string{"dist/shadless.js", "dist/js", "dist/shadless.min.js", "dist/esm"},
 		Why:       "the JS surface: dist/shadless.js (kernel + base) and dist/js/<name>.js per component",
 		Mutations: nil,

@@ -5,9 +5,9 @@
 // and a single dist/out.css styles every page.
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, copyFileSync, existsSync, rmSync } from "node:fs"
 import { join } from "node:path"
+import { spawnSync } from "node:child_process"
 import { transformSync as esbuildMinify } from "esbuild"
 import { componentCss, wrapComponentCss } from "../src/emitter/css.mjs"
-import { buildJs } from "./build-js.mjs"
 import { injectPrePaint, SHADLESS_CSS_FIXES } from "../src/docs/theme-prepaint.mjs"
 
 import { rewritePaths, ensureLink } from "./demo-lib.mjs"
@@ -103,7 +103,12 @@ writeFileSync(`${DIST}/globals.css`,
   "\n@layer base { body { @apply bg-background text-foreground p-8; } }\n")
 
 // ---- 2. copy shared assets into dist/ --------------------------------------
-buildJs(DIST)
+// the JS surface is built by the Go pipeline (pipeline/jsbuild.go); it is
+// spawned rather than imported because the builder no longer lives in JS
+{
+  const r = spawnSync("./build/pipeline", ["build-js"], { stdio: "inherit" })
+  if (r.status !== 0) { console.error("demo: build-js failed"); process.exit(1) }
+}
 
 // ---- 3. per-component demo pages -------------------------------------------
 // path rewrites live in tools/demo-lib.mjs (shared, unit-tested)
