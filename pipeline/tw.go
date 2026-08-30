@@ -28,18 +28,18 @@ import (
 	"path/filepath"
 )
 
-// findRepoRoot walks up from dir to the tree holding gates/registry.mjs. The
+// findRepoRoot walks up from dir to the tree holding pipeline/nodes.go. The
 // pipeline's own commands all run with the root as their cwd, but tw is also
 // spawned by JS gates from wherever they happen to be, and its whole job is
 // to control the cwd of something else.
 func findRepoRoot(dir string) (string, error) {
 	for {
-		if _, err := os.Stat(filepath.Join(dir, "gates", "registry.mjs")); err == nil {
+		if _, err := os.Stat(filepath.Join(dir, "pipeline", "nodes.go")); err == nil {
 			return dir, nil
 		}
 		parent := filepath.Dir(dir)
 		if parent == dir {
-			return "", fmt.Errorf("repo root (the tree holding gates/registry.mjs) not found above the working directory")
+			return "", fmt.Errorf("repo root (the tree holding pipeline/nodes.go) not found above the working directory")
 		}
 		dir = parent
 	}

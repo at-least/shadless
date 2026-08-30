@@ -12,19 +12,24 @@ package main
 
 import (
 	"os"
+	"path/filepath"
 	"sort"
 	"strings"
 )
 
 // fanout maps a node id to a splitter. Returning nil leaves the node alone.
-var fanout = map[NodeID]func(Node) ([]Node, error){
+// The splitter takes the repo root explicitly: the runner happens to run with
+// the root as its cwd, but `go test -C pipeline` does not, and a graph that
+// silently comes back without its fan-out parts is the kind of difference
+// nothing downstream would notice.
+var fanout = map[NodeID]func(root string, n Node) ([]Node, error){
 	NContracts: fanContracts,
 }
 
 // contracts runs 29 components, already one child process each, serially:
 // 46% of the full tier spent on jobs that never touch one another.
-func fanContracts(n Node) ([]Node, error) {
-	entries, err := os.ReadDir("tools/contracts/components")
+func fanContracts(root string, n Node) ([]Node, error) {
+	entries, err := os.ReadDir(filepath.Join(root, "tools/contracts/components"))
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +68,7 @@ func fanContracts(n Node) ([]Node, error) {
 
 // expandFanout rewrites the node list, rewiring every `needs` that pointed at
 // a split node to point at all of its parts.
-func expandFanout(in []Node) ([]Node, error) {
+func expandFanout(root string, in []Node) ([]Node, error) {
 	replaced := map[NodeID][]NodeID{}
 	var out []Node
 	for _, n := range in {
@@ -72,7 +77,7 @@ func expandFanout(in []Node) ([]Node, error) {
 			out = append(out, n)
 			continue
 		}
-		parts, err := split(n)
+		parts, err := split(root, n)
 		if err != nil {
 			return nil, err
 		}

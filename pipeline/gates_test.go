@@ -34,8 +34,8 @@ import (
 
 // repoRoot resolves the tree a gate judges. Gates run as `go test -C
 // pipeline`, so the working directory is pipeline/ — but rather than hardcode
-// "..", walk up to the marker so `go test ./...` from anywhere inside the
-// repo lands on the same root.
+// "..", walk up to pipeline/nodes.go (the graph, and the repo's root marker)
+// so `go test ./...` from anywhere inside the repo lands on the same root.
 func repoRoot(t *testing.T) string {
 	t.Helper()
 	dir, err := os.Getwd()
@@ -43,7 +43,7 @@ func repoRoot(t *testing.T) string {
 		t.Fatal(err)
 	}
 	for {
-		if _, err := os.Stat(filepath.Join(dir, "gates", "registry.mjs")); err == nil {
+		if _, err := os.Stat(filepath.Join(dir, "pipeline", "nodes.go")); err == nil {
 			return dir
 		}
 		parent := filepath.Dir(dir)

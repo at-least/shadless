@@ -104,8 +104,8 @@ which is outside mechanical-conversion scope. The docs site marks them
 
 ## Why it stays honest
 
-Every check is a node in one graph — `gates/registry.mjs` — and every gate
-in that graph is proven able to fail (`gates/meta.mjs` mutates a real
+Every check is a node in one graph — `pipeline/nodes.go` — and every gate
+in that graph is proven able to fail (`make meta` mutates a real
 artifact and requires the gate to go red). Nothing is verified by a list
 that lives in two places, and nothing is trusted because it happened to be
 green once.

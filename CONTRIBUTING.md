@@ -3,8 +3,8 @@
 shadless is a mechanical conversion of the pinned shadcn-ui registry. The
 rule that shapes every change: **nothing is verified by a list that lives
 in two places, and nothing is trusted because it was green once.** Every
-check is a node in `gates/registry.mjs`, every gate is proven able to fail
-by `gates/meta.mjs`, and every accepted difference from upstream is a
+check is a node in `pipeline/nodes.go`, every gate is proven able to fail
+by `make meta`, and every accepted difference from upstream is a
 ledger entry with a reason.
 
 ## Setup
@@ -51,7 +51,7 @@ demo pages; only the full demo build restores them).
   runtime protocol text comes from `tools/fixture-families.mjs` (the same
   tables that generate the fixtures). Hand-authored demos live in
   `docs/demos/`.
-- **A new gate** — a node in `gates/registry.mjs` with a `why`, at least one
+- **A new gate** — a node in `pipeline/nodes.go` with a `Why`, at least one
   mutation under `gates/mutations/` that makes it fail, and a tier. `make
   meta` rejects anything less.
 - **An accepted difference from upstream** — `gates/ledger.json` (never a

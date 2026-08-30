@@ -374,7 +374,7 @@ async function tasks() {
         ? `The upstream inputs this file was written against changed. Read the diff below, update \`${u.file}\` so it reflects the new upstream, then run the gates listed and \`node gates/overlay.mjs --record\`.`
         : bucket === "orphaned" ? `The thing this rule attaches to no longer exists upstream. Either delete the rule at its home, or re-anchor it. Then run the full tier.`
         : `Rebase the patch onto the pinned upstream (\`git -C ${UP} apply --3way\`), resolve, regenerate with \`git -C ${UP} diff > ${u.file}\`.`,
-      "", `**gates to satisfy**: ${gateFor(u)}  —  \`node gates/run.mjs --only=<gate>\``, "",
+      "", `**gates to satisfy**: ${gateFor(u)}  —  \`./build/pipeline run <gate>\``, "",
       diff ? `## Upstream diff (${manifest.commit?.slice(0, 10)} → ${pin.shadcn_ui.commit.slice(0, 10)})\n\n\`\`\`diff\n${diff}\`\`\`` : "",
       u.file && existsSync(u.file) ? `## Current file\n\n\`\`\`\n${readFileSync(u.file, "utf8")}\n\`\`\`` : "",
     ].filter((s) => s !== undefined).join("\n")

@@ -1,8 +1,8 @@
-# CI — the "all gates green" claim, mechanized. Three jobs, all derived from
-# gates/registry.mjs so this file holds no gate list of its own:
+# CI — the "all gates green" claim, mechanized. Two jobs, both derived from
+# pipeline/nodes.go so this file holds no gate list of its own:
 #
 #   build         make build — every artifact, every gate through the Go runner
-#                 (pipeline/, its graph generated from gates/registry.mjs; nodes
+#                 (pipeline/, whose graph IS nodes.go; nodes
 #                 whose inputs and dependencies are unchanged since the recorded
 #                 green run are skipped, the rest run in parallel), ending in
 #                 `reproducible`: the committed generated trees must equal what
@@ -12,7 +12,7 @@
 # (pipeline/stamps.json) and nearly every output is committed, so a checkout is
 # already warm for those nodes. Only the gitignored artifacts under build/ get
 # rebuilt.
-#   meta          node gates/meta.mjs — every gate must be provably able to fail
+#   meta          make meta — every gate must be provably able to fail
 #
 # The pinned upstream checkout (.upstream/) is cached keyed on pin.json — a
 # re-pin changes the key and forces a fresh clone at the new tag.
@@ -94,4 +94,4 @@ jobs:
       # mutations edit built artifacts; build them first (gates skipped — the
       # build job already proved them), then prove every gate can fail
       - run: make pipeline && ./build/pipeline run builds
-      - run: node gates/meta.mjs
+      - run: make meta

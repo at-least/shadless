@@ -84,7 +84,7 @@ for (const f of readdirSync(`${DIST}/css`).filter((x) => x.endsWith(".css") && !
 // rules scraped from committed bundles). `source(none)` turns detection
 // off; every directory whose pages load out.css is listed here, relative
 // to dist/globals.css. This list == the `demo-css` inputs in
-// gates/registry.mjs — keep them in step.
+// pipeline/nodes.go — keep them in step.
 // ./js: the runtime injects utility classes at wire time (navigation-menu's
 // viewport, portal wrappers) — they exist in no page's markup
 // ../src/registry/ir: the IR's raw upstream class strings. Load-bearing

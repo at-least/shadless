@@ -1,6 +1,6 @@
 # shadless — pipeline orchestration
 #
-# Every build step and gate is a node in gates/registry.mjs; gates/run.mjs
+# Every build step and gate is a node in pipeline/nodes.go; the Go runner
 # executes the topologically sorted closure of what you ask for. This file
 # only names the common entry points — it holds no ordering of its own, so
 # it cannot drift from what CI runs.
@@ -12,7 +12,7 @@
 #   make meta         prove every gate can fail (mutation testing)
 #   make only ID=x    one node + exactly what it needs      (make only ID=path-parity)
 #   make list         the graph
-#   make all          the same graph, every node, no freshness skip (gates/run.mjs)
+#   make all          the same graph, every node, no freshness skip
 #
 # build/fast/medium/only go through the Go runner (pipeline/): a node whose
 # declared inputs and dependencies are unchanged since its last green run is
@@ -48,8 +48,8 @@ pipeline: $(PIPELINE)
 build: $(PIPELINE)
 	./$(PIPELINE) run full
 
-verify:
-	$(NODE) gates/run.mjs --tier=full --gates-only
+verify: $(PIPELINE)
+	./$(PIPELINE) run all --gates-only
 
 fast: $(PIPELINE)
 	./$(PIPELINE) run fast
@@ -59,18 +59,23 @@ medium: $(PIPELINE)
 
 full: build
 
-all:
-	$(NODE) gates/run.mjs --tier=full
+all: $(PIPELINE)
+	./$(PIPELINE) run all --force
 
+# Mutation testing: prove every gate can fail. Needs a built tree, runs the
+# real gates, so it is opt-in rather than part of `go test ./...`.
+#   make meta TIER=fast   only mutations whose gate is browser-free
+#   make meta ONLY=<id>   one mutation
 meta:
-	$(NODE) gates/meta.mjs
+	SHADLESS_META=1 META_TIER=$(TIER) META_ONLY=$(ONLY) \
+	  go test -C pipeline -count=1 -v -timeout 2h -run '^TestMeta$$' .
 
 only: $(PIPELINE)
 	@test -n "$(ID)" || { echo "usage: make only ID=<node-id>   (make list)"; exit 2; }
 	./$(PIPELINE) run $(ID)
 
-list:
-	$(NODE) gates/run.mjs --tier=full --list
+list: $(PIPELINE)
+	./$(PIPELINE) list all
 
 # ----- ledgers -------------------------------------------------------------
 # gates/ledger.json  — accepted differences, with class + budget

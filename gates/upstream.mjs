@@ -12,7 +12,7 @@
 //   2. gates/ledger.mjs --dissolve  — every auto-dissolve exemption is deleted;
 //      the rebuild has to re-earn each one with evidence
 //   3. overlays/upstream/*.patch applied with git apply --3way
-//   4. gates/run.mjs --tier=full --keep-going — the WHOLE picture, not the first red
+//   4. pipeline run all --keep-going — the WHOLE picture, not the first red
 //   5. IR semantic diff (pipeline/ir_diff.go) old pin -> new pin
 //   6. gates/overlay.mjs --report + --tasks — stale/orphaned manual work, as packets
 //   7. classify every failed gate: EXPECTED (its components changed upstream)
@@ -87,7 +87,8 @@ if (!reportOnly) {
   // ------------------------------------------------------------------ 4. run
   if (!noBuild) {
     step("full tier, keep going")
-    run("node", ["gates/run.mjs", "--tier=full", "--keep-going"])
+    run("make", ["pipeline"])
+    run("./build/pipeline", ["run", "all", "--keep-going"])
   }
 }
 
@@ -131,7 +132,7 @@ const expected = [], unexpected = []
 for (const [id, f] of Object.entries(runReport.failed)) {
   const mentioned = registryNames.filter((n) => new RegExp(`\\b${n}\\b`).test(f.tail))
   const hits = mentioned.filter((n) => changedComponents.has(n))
-  const entry = `### ${id}\n\n${hits.length ? `EXPECTED — upstream changed: ${hits.join(", ")}` : mentioned.length ? `UNEXPECTED — mentions ${mentioned.slice(0, 6).join(", ")}, none changed upstream` : "UNEXPECTED — no component attribution; read the tail"}\n\n\`\`\`\n${f.tail}\n\`\`\`\nrepro: \`node gates/run.mjs --only=${id}\``
+  const entry = `### ${id}\n\n${hits.length ? `EXPECTED — upstream changed: ${hits.join(", ")}` : mentioned.length ? `UNEXPECTED — mentions ${mentioned.slice(0, 6).join(", ")}, none changed upstream` : "UNEXPECTED — no component attribution; read the tail"}\n\n\`\`\`\n${f.tail}\n\`\`\`\nrepro: \`./build/pipeline run ${id}\``
   ;(hits.length ? expected : unexpected).push(entry)
 }
 if (unexpected.length) { H(`UNEXPECTED failures (${unexpected.length}) — our pipeline, not upstream`); P(unexpected.join("\n\n")) }

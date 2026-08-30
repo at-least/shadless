@@ -12,7 +12,10 @@ package main
 // file is simply an input of the node that reads it, and its key flows
 // downstream from there.
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 type Node struct {
 	ID       NodeID
@@ -22,6 +25,14 @@ type Node struct {
 	Run      [][]string
 	Inputs   []string // nil = judges state outside the tree, never fresh
 	Produces []string
+
+	// Why is one line: what breaks if this node is deleted. Not decoration —
+	// TestMeta requires every gate to carry one, and the runner prints it when
+	// the node goes red.
+	Why string
+	// Mutations are ids under gates/mutations/ that MUST make this gate fail.
+	// A gate with no mutation is unproven and TestMeta rejects it.
+	Mutations []string
 }
 
 // NeverFresh reports whether the node declares no input set. Such a node
@@ -33,13 +44,36 @@ type Graph struct {
 	order []NodeID // declaration order, for stable output
 }
 
-// LoadGraph builds the graph from the generated Nodes, expanding any node the
-// fan-out table splits into independent per-item nodes.
+// LoadGraph builds the graph rooted at the working directory. The runner runs
+// with the repo root as its cwd; anything else (a test, a tool) should say
+// which root it means with LoadGraphAt.
 func LoadGraph() (*Graph, error) {
-	list, err := expandFanout(Nodes)
+	root, err := os.Getwd()
 	if err != nil {
 		return nil, err
 	}
+	return LoadGraphAt(root)
+}
+
+// LoadGraphAt builds the graph from Nodes, expanding any node the fan-out
+// table splits into independent per-item nodes (which needs the tree, hence
+// the root).
+func LoadGraphAt(root string) (*Graph, error) {
+	list, err := expandFanout(root, Nodes)
+	if err != nil {
+		return nil, err
+	}
+	return newGraph(list)
+}
+
+// AuthoredGraph is the graph exactly as declared in nodes.go, with no fan-out
+// applied. This is the graph a human reviews and the one mutations name: a
+// mutation targets the gate `contracts`, which the runner splits into
+// `contracts:dialog` and 28 siblings. Meta works at this level so a mutation
+// keeps naming the reviewable node rather than one arbitrary shard of it.
+func AuthoredGraph() (*Graph, error) { return newGraph(Nodes) }
+
+func newGraph(list []Node) (*Graph, error) {
 	g := &Graph{nodes: make(map[NodeID]Node, len(list))}
 	for _, n := range list {
 		if _, dup := g.nodes[n.ID]; dup {

@@ -3,8 +3,13 @@ package main
 // shadless pipeline runner.
 //
 //   pipeline plan   <tier|node…>   the closure, topologically sorted
+//   pipeline list   <tier|node…>   the closure, annotated, no execution
 //   pipeline status <tier|node…>   fresh / stale, per node
 //   pipeline run    <tier|node…>   run the stale ones, record on success
+//
+// A target is a tier (fast|medium|full), "builds", "all", or node ids.
+// --gates-only / --builds-only filter the resolved plan; --force ignores
+// freshness; --keep-going runs past the first red and writes a report.
 //
 // Stamps are written ONLY after a node's commands all exit 0, so a killed or
 // failed run leaves the node stale rather than claiming work it did not do.
@@ -85,13 +90,41 @@ func resolveTargets(g *Graph, args []string) ([]Node, error) {
 			return g.PlanTier(args[0])
 		case "builds":
 			return g.PlanBuilds()
+		case "all":
+			// every node, including build artifacts no gate depends on —
+			// PlanTier("full") reaches only what some gate needs
+			return g.Plan(g.IDs())
 		}
 	}
 	ids := make([]NodeID, len(args))
 	for i, a := range args {
+		if _, ok := g.Node(NodeID(a)); !ok {
+			return nil, fmt.Errorf("unknown node: %s\nknown: %s", a, strings.Join(idStrings(g.IDs()), ", "))
+		}
 		ids[i] = NodeID(a)
 	}
 	return g.Plan(ids)
+}
+
+func idStrings(ids []NodeID) []string {
+	out := make([]string, len(ids))
+	for i, id := range ids {
+		out[i] = string(id)
+	}
+	return out
+}
+
+// keepOnly filters a plan to gates or to builds. --gates-only assumes the
+// artifacts are already fresh (`make verify`); --builds-only is the mutation
+// harness's prelude, which runs the gates itself.
+func keepOnly(plan []Node, kind string) []Node {
+	var out []Node
+	for _, n := range plan {
+		if n.Kind == kind {
+			out = append(out, n)
+		}
+	}
+	return out
 }
 
 func has(args []string, f string) bool {
@@ -115,12 +148,12 @@ func main() {
 	// product-css, hooks) take no argument. plan/status/run/adopt validate
 	// their own target list below.
 	if len(os.Args) < 2 {
-		fmt.Fprintln(os.Stderr, "usage: pipeline <plan|status|run|adopt> <fast|medium|full|builds|node…>\n       pipeline pin [--check-only]\n       pipeline tw <in> <out> [--minify] [--cwd DIR]\n       pipeline oracle-css\n       pipeline product-css\n       pipeline docs-catalog\n       pipeline ir-diff <git-ref>|<dirA> <dirB> [--json]\n       pipeline hooks [--uninstall] [--force]\n       pipeline css-direction --update\n\nThe gates are Go tests: go test -C pipeline -count=1 -v [-run '^TestPack$']")
+		fmt.Fprintln(os.Stderr, "usage: pipeline <plan|list|status|run|adopt> <fast|medium|full|builds|all|node…>\n       pipeline pin [--check-only]\n       pipeline tw <in> <out> [--minify] [--cwd DIR]\n       pipeline oracle-css\n       pipeline product-css\n       pipeline docs-catalog\n       pipeline ir-diff <git-ref>|<dirA> <dirB> [--json]\n       pipeline hooks [--uninstall] [--force]\n       pipeline css-direction --update\n\nThe gates are Go tests: go test -C pipeline -count=1 -v [-run '^TestPack$']")
 		os.Exit(2)
 	}
 	cmd, args := os.Args[1], os.Args[2:]
-	if len(args) == 0 && (cmd == "plan" || cmd == "status" || cmd == "run" || cmd == "adopt") {
-		fmt.Fprintf(os.Stderr, "usage: pipeline %s <fast|medium|full|builds|node…>\n", cmd)
+	if len(args) == 0 && (cmd == "plan" || cmd == "list" || cmd == "status" || cmd == "run" || cmd == "adopt") {
+		fmt.Fprintf(os.Stderr, "usage: pipeline %s <fast|medium|full|builds|all|node…>\n", cmd)
 		os.Exit(2)
 	}
 	if cmd == "ir-diff" {
@@ -154,23 +187,72 @@ func main() {
 		die(err)
 		os.Exit(runPin(root, has(args, "--check-only"), has(args, "--force")))
 	}
-	force := false
-	if len(args) > 0 && args[0] == "--force" {
-		force, args = true, args[1:]
+	force, gatesOnly, buildsOnly, keepGoing := false, false, false, false
+	var targets []string
+	for _, a := range args {
+		switch a {
+		case "--force":
+			force = true
+		case "--gates-only":
+			gatesOnly = true
+		case "--builds-only":
+			buildsOnly = true
+		case "--keep-going":
+			keepGoing = true
+		default:
+			targets = append(targets, a)
+		}
+	}
+	if gatesOnly && buildsOnly {
+		die(fmt.Errorf("--gates-only and --builds-only are mutually exclusive"))
 	}
 	root, err := os.Getwd()
 	die(err)
 
 	g, err := LoadGraph()
 	die(err)
-	plan, err := resolveTargets(g, args)
+	plan, err := resolveTargets(g, targets)
 	die(err)
+	if gatesOnly {
+		plan = keepOnly(plan, "gate")
+	}
+	if buildsOnly {
+		plan = keepOnly(plan, "build")
+	}
 
 	switch cmd {
 	case "plan":
 		for _, n := range plan {
 			fmt.Println(n.ID)
 		}
+
+	case "list":
+		width := 0
+		for _, n := range plan {
+			if len(n.ID) > width {
+				width = len(n.ID)
+			}
+		}
+		ngates := 0
+		for _, n := range plan {
+			kind := "build"
+			if n.Kind == "gate" {
+				kind, ngates = "GATE ", ngates+1
+			}
+			// the EFFECTIVE tier is what decides whether a tier run picks the
+			// node up; show the declared one only when they disagree
+			eff := g.EffectiveTier(n.ID)
+			self := ""
+			if eff != n.Tier {
+				self = fmt.Sprintf(" (self %s)", n.Tier)
+			}
+			needs := ""
+			if len(n.Needs) > 0 {
+				needs = "  needs: " + strings.Join(idStrings(n.Needs), ", ")
+			}
+			fmt.Printf("%s %-*s  [%s%s]%s\n", kind, width, n.ID, eff, self, needs)
+		}
+		fmt.Printf("\n%d nodes (%d gates)\n", len(plan), ngates)
 
 	case "adopt":
 		// Record every node's current key WITHOUT running anything. This
@@ -219,7 +301,7 @@ func main() {
 		}
 		r := &Runner{
 			root: root, graph: g, jobs: jobs, force: force,
-			continueOnFail: os.Getenv("PIPELINE_FAILURES") == "continue",
+			continueOnFail: keepGoing || os.Getenv("PIPELINE_FAILURES") == "continue",
 			stamps:         loadStamps(root),
 		}
 		start := time.Now()

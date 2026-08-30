@@ -17,6 +17,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 	"sync"
 	"time"
 )
@@ -202,7 +203,17 @@ func (r *Runner) Run(plan []Node) (ran, skipped, failed, violations int) {
 		violations += len(res.violations)
 		if res.err != nil {
 			failed++
-			fmt.Fprintf(os.Stderr, "  %s failed: %v\n", id, res.err)
+			// The `why` is the point of the report: a red gate is only
+			// actionable if you know what it was protecting. Printed here
+			// rather than left to the reader to look up in nodes.go.
+			fmt.Fprintf(os.Stderr, "\nFAIL  %s: %v\n", id, res.err)
+			if res.node.Why != "" {
+				fmt.Fprintf(os.Stderr, "\n  why this node exists:\n    %s\n", res.node.Why)
+			}
+			fmt.Fprintf(os.Stderr, "\n  reproduce just this node (rebuilds only what it needs):\n    pipeline run %s\n", id)
+			for _, argv := range res.node.Run {
+				fmt.Fprintf(os.Stderr, "  run the command alone:\n    %s\n", strings.Join(argv, " "))
+			}
 			if !r.continueOnFail {
 				stop = true
 			}

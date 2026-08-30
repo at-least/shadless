@@ -49,7 +49,7 @@ upstream drill (`.github/workflows/upstream.yml`) and are listed here by tag.
 
 Initial release: 48 components with CSS, 23 with behavior, converted
 mechanically from the pinned registry and proven against the React
-original by the gate graph in `gates/registry.mjs`. Not included (React-only
+original by the gate graph in `pipeline/nodes.go`. Not included (React-only
 dependencies): calendar, chart, combobox, command, data-table,
 date-picker, drawer, form, input-otp, questionnaire, resizable, sidebar,
 sonner, toast, typography.

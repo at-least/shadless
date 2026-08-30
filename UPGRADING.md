@@ -24,7 +24,7 @@ drill against the newest release and opens one PR carrying the report.
 | 1 | `git -C .upstream checkout <tag>` + `tools/pin.mjs --force` | the pin |
 | 2 | `gates/ledger.mjs --dissolve` | every **auto-dissolve** exemption is deleted. The rebuild must re-earn each one with evidence; nobody walks a list by hand |
 | 3 | `git apply --3way overlays/upstream/*.patch` | source-level patches rebase onto the new tag; a conflict is a conflict, not a silent no-apply |
-| 4 | `gates/run.mjs --tier=full --keep-going` | the whole picture — every failing gate, not the first |
+| 4 | `./build/pipeline run all --keep-going` | the whole picture — every failing gate, not the first |
 | 5 | `pipeline ir-diff` | slot-level semantic diff old pin → new pin: which components, slots, class lists, cva axes actually moved |
 | 6 | `gates/overlay.mjs --tasks` | every hand-written unit re-proves it still applies; the ones that don't become task packets |
 | 7 | classification | each failed gate is **EXPECTED** (its components changed upstream per step 5) or **UNEXPECTED** (nothing moved upstream — our pipeline regressed) |
@@ -33,7 +33,7 @@ drill against the newest release and opens one PR carrying the report.
 
 Work it top-down:
 
-1. **UNEXPECTED failures** — ours. Fix the pipeline; `node gates/run.mjs --only=<gate>` reproduces one gate with exactly the builds it needs.
+1. **UNEXPECTED failures** — ours. Fix the pipeline; `./build/pipeline run <gate>` reproduces one gate with exactly the builds it needs.
 2. **Task packets** (`build/gates/tasks/*.md`) — one per stale or orphaned manual unit. Each carries the upstream diff for its inputs, the current file, and the gates that must be green afterwards. This is the bounded LLM/human step: deterministic input, gate-verified output.
 3. **EXPECTED failures** — consequences of upstream changes, usually resolved by the packets above or by a legitimately new exemption. Record survivors: `node gates/ledger.mjs --record`.
 4. `make upstream-snapshot` (network) refreshes the ui.shadcn.com golden snapshot for the new release; hop 1 of the golden gate compares against it.
