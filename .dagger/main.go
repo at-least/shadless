@@ -24,37 +24,70 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"strings"
 
 	"dagger/shadless/internal/dagger"
 )
 
+// This file names no tool versions, on purpose.
+//
+// Versioning the repo's tools is a human decision recorded in the repo, and a
+// build should depend on CONTENT rather than on a version string. Two
+// consequences:
+//
+//   - the node runtime comes from .nvmrc, which the human edits. It is read,
+//     not hardcoded. That declaration used to live only in ci.yml's
+//     node-version, and deleting the workflow took it with it.
+//   - the browser is installed by the playwright that package-lock.json
+//     resolves, so it matches the locked package by construction. Naming an
+//     image tag like mcr.microsoft.com/playwright:v1.62.1 would be a SECOND
+//     declaration of the same version, free to drift from the lockfile — the
+//     exact failure this port exists to remove.
+//
+// Dagger caches on the content of the files these come from, so a bump is a
+// lockfile or .nvmrc edit, and the rebuild happens when the human makes one.
 const (
-	// nodeImage pins the runtime the tools already run under (CI uses node 22).
-	nodeImage = "node:22-bookworm-slim"
-	// playwrightImage must match the playwright version in package.json, or the
-	// npm package looks for a browser build the image does not carry. It also
-	// ships its own node — 24 at v1.62.1, where the repo and CI target 22 — so
-	// the runtime is pinned back down in oracleBase rather than inherited.
-	playwrightImage = "mcr.microsoft.com/playwright:v1.62.1-noble"
 	// oracleCache is the esbuild bundle cache oracle-lib keys on (upstream +
 	// lockfile). A ~7MB bundle per demo and 1-2s of esbuild per demo, so it is
-	// worth persisting across runs — CI already restores it as a cache.
+	// worth persisting across runs.
 	oracleCache = "/w/node_modules/.cache/shadless"
 )
 
 type Shadless struct{}
 
+// nodeImage resolves the runtime from the repo's own declaration.
+func nodeImage(ctx context.Context, source *dagger.Directory) (string, error) {
+	v, err := source.File(".nvmrc").Contents(ctx)
+	if err != nil {
+		return "", fmt.Errorf("reading .nvmrc: %w (the node version is the repo's "+
+			"to declare, not this file's)", err)
+	}
+	return "node:" + strings.TrimSpace(v) + "-bookworm-slim", nil
+}
+
 // deps is the npm dependency set, installed once and cached on the lockfile.
 //
-// --ignore-scripts skips playwright's browser download: the conversion path
-// does not need one, and the browser steps get theirs from the image.
-func (m *Shadless) deps(source *dagger.Directory, image string) *dagger.Container {
+// --ignore-scripts skips playwright's browser download here; the steps that
+// need a browser ask for one explicitly through withBrowser.
+func (m *Shadless) deps(ctx context.Context, source *dagger.Directory) (*dagger.Container, error) {
+	img, err := nodeImage(ctx, source)
+	if err != nil {
+		return nil, err
+	}
 	return dag.Container().
-		From(image).
+		From(img).
 		WithWorkdir("/w").
 		WithFile("/w/package.json", source.File("package.json")).
 		WithFile("/w/package-lock.json", source.File("package-lock.json")).
-		WithExec([]string{"npm", "ci", "--ignore-scripts", "--no-audit", "--no-fund"})
+		WithExec([]string{"npm", "ci", "--ignore-scripts", "--no-audit", "--no-fund"}), nil
+}
+
+// withBrowser installs chromium using the playwright the lockfile resolved, so
+// the browser and its driver match by construction rather than through an
+// image tag somebody has to remember to bump.
+func withBrowser(c *dagger.Container) *dagger.Container {
+	return c.WithExec([]string{"npx", "playwright", "install", "--with-deps", "chromium"})
 }
 
 // converted is the container after the registry has been converted: it holds
@@ -75,100 +108,56 @@ func (m *Shadless) deps(source *dagger.Directory, image string) *dagger.Containe
 // ships, because the converter writes in place and nothing removed it. Every
 // gate missed it — including `reproducible`, which rebuilds in place too, so
 // the orphan sat in both trees and never differed.
-func (m *Shadless) converted(source *dagger.Directory) *dagger.Container {
-	return m.deps(source, nodeImage).
+func (m *Shadless) converted(ctx context.Context, source *dagger.Directory) (*dagger.Container, error) {
+	c, err := m.deps(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	return c.
 		WithDirectory("/w/src", source.Directory("src"),
 			dagger.ContainerWithDirectoryOpts{Exclude: []string{"registry/ir/**"}}).
 		WithDirectory("/w/tools", source.Directory("tools")).
 		WithDirectory("/w/.upstream/shadcn-ui/apps/v4/registry",
 			source.Directory(".upstream/shadcn-ui/apps/v4/registry")).
 		WithExec([]string{"node", "tools/resolve-skins.mjs"}).
-		WithExec([]string{"node", "src/converter/index.mjs"})
+		WithExec([]string{"node", "src/converter/index.mjs"}), nil
 }
 
 // Convert turns the pinned registry .tsx into the versioned IR.
-func (m *Shadless) Convert(source *dagger.Directory) *dagger.Directory {
-	return m.converted(source).Directory("/w/src/registry/ir")
+func (m *Shadless) Convert(ctx context.Context, source *dagger.Directory) (*dagger.Directory, error) {
+	c, err := m.converted(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	return c.Directory("/w/src/registry/ir"), nil
 }
 
 // ResolvedUI is the skin-flattened registry: upstream's cn-* utilities already
 // expanded, which is what the oracle bundles React against.
-func (m *Shadless) ResolvedUI(source *dagger.Directory) *dagger.Directory {
-	return m.converted(source).Directory("/w/build/resolved-ui")
+func (m *Shadless) ResolvedUI(ctx context.Context, source *dagger.Directory) (*dagger.Directory, error) {
+	c, err := m.converted(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	return c.Directory("/w/build/resolved-ui"), nil
 }
 
 // ConvertCheck reports the conversion's own verdict without exporting anything.
 func (m *Shadless) ConvertCheck(ctx context.Context, source *dagger.Directory) (string, error) {
-	return m.converted(source).Stdout(ctx)
-}
-
-// oracleBase is the browser half of the pipeline: a playwright image carrying
-// its own chromium, plus everything the React oracle bundles.
-//
-// This is the part that decided Dagger over Bazel. The oracle renders the
-// pinned registry with real React and radix and replays real input against the
-// shipped page; there is no Go equivalent and never will be. Bazel would need
-// a hermetic browser toolchain in its sandbox — the hardest part of any JS
-// Bazel migration — where here it is an image that already has one.
-//
-// build/resolved-ui comes from the conversion step rather than the host, so
-// the oracle bundles what this pipeline just produced instead of whatever the
-// working tree happens to hold.
-func (m *Shadless) oracleBase(source *dagger.Directory) *dagger.Container {
-	// The image's own node is 24; the repo and CI run 22. Copying /usr/local
-	// from the pinned node image puts the runtime back where it belongs while
-	// keeping the image's chromium, which is the half that actually has to
-	// match — style-parity and demo-parity compare computed styles against
-	// this browser, so its version is the one that must not drift.
-	node22 := dag.Container().From(nodeImage).Directory("/usr/local")
-	return m.deps(source, playwrightImage).
-		WithDirectory("/usr/local", node22).
-		WithDirectory("/w/tools", source.Directory("tools")).
-		WithDirectory("/w/gates", source.Directory("gates")).
-		WithDirectory("/w/src", source.Directory("src")).
-		WithDirectory("/w/dist", source.Directory("dist")).
-		// The contract defs point at the shipped fixture pages under probes/
-		// (shadlessPage: "probes/t7/<name>.html"). The `contracts` node in
-		// pipeline/nodes.go declares no probes/ input at all — the sandbox
-		// found that on its first run, as an ENOENT at the point of use rather
-		// than a silently stale-fresh node.
-		WithDirectory("/w/probes", source.Directory("probes")).
-		WithDirectory("/w/.upstream/shadcn-ui/apps/v4",
-			source.Directory(".upstream/shadcn-ui/apps/v4")).
-		WithDirectory("/w/build/resolved-ui", m.ResolvedUI(source)).
-		WithMountedCache(oracleCache, dag.CacheVolume("shadless-oracle-bundles"))
-}
-
-// Contract replays one component's contract against the React oracle: the
-// pinned registry bundled with real React+radix, driven with real mouse and
-// keyboard, compared to the shipped page under the same input.
-//
-// `name` is a contract def under tools/contracts/components (label is the
-// cheapest — native `for`, zero JS).
-func (m *Shadless) Contract(ctx context.Context, source *dagger.Directory, name string) (string, error) {
-	return m.oracleBase(source).
-		WithExec([]string{"node", "tools/contracts/run.mjs", name}).
-		Stdout(ctx)
-}
-
-// Doctor reports the toolchain each half of the pipeline actually runs, so a
-// drift is visible rather than assumed. The playwright image ships its own
-// node (24 at v1.62.1) and the repo targets 22; the browser must stay the
-// image's, because style-parity and demo-parity compare computed styles
-// against it.
-func (m *Shadless) Doctor(ctx context.Context, source *dagger.Directory) (string, error) {
-	return m.oracleBase(source).
-		WithExec([]string{"sh", "-c",
-			`echo "node:      $(node --version)"; ` +
-				`echo "npm:       $(npm --version)"; ` +
-				`echo "playwright: $(node -p "require('playwright/package.json').version")"; ` +
-				`echo "chromium:  $(node -e "console.log(require('playwright').chromium.executablePath())")"`}).
-		Stdout(ctx)
+	c, err := m.converted(ctx, source)
+	if err != nil {
+		return "", err
+	}
+	return c.Stdout(ctx)
 }
 
 // pipelineBin builds the Go runner. `emit` shells out to `pipeline tw`, the
 // hermetic @tailwindcss/cli wrapper whose whole job is controlling the compile
 // CWD, so the step needs the real binary rather than a reimplementation.
+//
+// The Go toolchain is named here rather than read from the repo because the
+// repo does not declare one — go.mod's `go 1.24` is a language version, not a
+// toolchain pin. Worth fixing at the same place .nvmrc lives.
 func (m *Shadless) pipelineBin(source *dagger.Directory) *dagger.File {
 	return dag.Container().
 		From("golang:1.24-bookworm").
@@ -192,11 +181,19 @@ func (m *Shadless) pipelineBin(source *dagger.Directory) *dagger.File {
 // there. Starting from an empty dist would change the result. That makes dist
 // both an input and an output of this step — exactly the mixing this port is
 // meant to remove — so it is the next thing to untangle, not the last word.
-func (m *Shadless) emitted(source *dagger.Directory) *dagger.Container {
-	return m.deps(source, nodeImage).
+func (m *Shadless) emitted(ctx context.Context, source *dagger.Directory) (*dagger.Container, error) {
+	c, err := m.deps(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	ir, err := m.Convert(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	return c.
 		WithDirectory("/w/src", source.Directory("src"),
 			dagger.ContainerWithDirectoryOpts{Exclude: []string{"registry/ir/**"}}).
-		WithDirectory("/w/src/registry/ir", m.Convert(source)).
+		WithDirectory("/w/src/registry/ir", ir).
 		WithDirectory("/w/probes", source.Directory("probes")).
 		// the emitter reads style-nova.css directly; it was itself an
 		// undeclared input until today, and the sandbox caught it missing here
@@ -210,16 +207,96 @@ func (m *Shadless) emitted(source *dagger.Directory) *dagger.Container {
 		WithEnvVariable("SHADLESS_ROOT", "/w").
 		WithExec([]string{"node", "src/emitter/index.mjs"}).
 		WithExec([]string{"./build/pipeline", "tw",
-			"build/emit/globals.css", "build/emit/out.css", "--cwd", "dist"})
+			"build/emit/globals.css", "build/emit/out.css", "--cwd", "dist"}), nil
 }
 
 // Emit returns the static tier's shipped output: the component pages and the
 // per-slot stylesheet.
-func (m *Shadless) Emit(source *dagger.Directory) *dagger.Directory {
-	return m.emitted(source).Directory("/w/dist")
+func (m *Shadless) Emit(ctx context.Context, source *dagger.Directory) (*dagger.Directory, error) {
+	c, err := m.emitted(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	return c.Directory("/w/dist"), nil
 }
 
 // EmitCheck reports the emitter's own verdict without exporting anything.
 func (m *Shadless) EmitCheck(ctx context.Context, source *dagger.Directory) (string, error) {
-	return m.emitted(source).Stdout(ctx)
+	c, err := m.emitted(ctx, source)
+	if err != nil {
+		return "", err
+	}
+	return c.Stdout(ctx)
+}
+
+// oracleBase is the browser half of the pipeline: chromium plus everything the
+// React oracle bundles.
+//
+// This is the part that decided Dagger over Bazel. The oracle renders the
+// pinned registry with real React and radix and replays real input against the
+// shipped page; there is no Go equivalent and never will be. Bazel would need
+// a hermetic browser toolchain inside its sandbox — the hardest part of any JS
+// Bazel migration — where here it is one exec against the locked playwright.
+//
+// build/resolved-ui comes from the conversion step rather than the host, so
+// the oracle bundles what this pipeline just produced instead of whatever the
+// working tree happens to hold.
+func (m *Shadless) oracleBase(ctx context.Context, source *dagger.Directory) (*dagger.Container, error) {
+	c, err := m.deps(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	resolved, err := m.ResolvedUI(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	return withBrowser(c).
+		WithDirectory("/w/tools", source.Directory("tools")).
+		WithDirectory("/w/gates", source.Directory("gates")).
+		WithDirectory("/w/src", source.Directory("src")).
+		WithDirectory("/w/dist", source.Directory("dist")).
+		// The contract defs point at the shipped fixture pages under probes/
+		// (shadlessPage: "probes/t7/<name>.html"). The `contracts` node in
+		// pipeline/nodes.go declares no probes/ input at all — the sandbox
+		// found that on its first run, as an ENOENT at the point of use rather
+		// than a silently stale-fresh node.
+		WithDirectory("/w/probes", source.Directory("probes")).
+		WithDirectory("/w/.upstream/shadcn-ui/apps/v4",
+			source.Directory(".upstream/shadcn-ui/apps/v4")).
+		WithDirectory("/w/build/resolved-ui", resolved).
+		WithMountedCache(oracleCache, dag.CacheVolume("shadless-oracle-bundles")), nil
+}
+
+// Contract replays one component's contract against the React oracle: the
+// pinned registry bundled with real React+radix, driven with real mouse and
+// keyboard, compared to the shipped page under the same input.
+//
+// `name` is a contract def under tools/contracts/components (label is the
+// cheapest — native `for`, zero JS).
+func (m *Shadless) Contract(ctx context.Context, source *dagger.Directory, name string) (string, error) {
+	c, err := m.oracleBase(ctx, source)
+	if err != nil {
+		return "", err
+	}
+	return c.WithExec([]string{"node", "tools/contracts/run.mjs", name}).Stdout(ctx)
+}
+
+// Doctor reports the toolchain each half of the pipeline actually resolved to,
+// so what the build used is visible rather than assumed. Nothing here is
+// pinned by this file: node comes from .nvmrc and the browser from the locked
+// playwright.
+func (m *Shadless) Doctor(ctx context.Context, source *dagger.Directory) (string, error) {
+	c, err := m.oracleBase(ctx, source)
+	if err != nil {
+		return "", err
+	}
+	return c.
+		WithExec([]string{"sh", "-c",
+			`echo "node:       $(node --version)"; ` +
+				`echo "npm:        $(npm --version)"; ` +
+				`echo "playwright: $(node -p "require('playwright/package.json').version")"; ` +
+				`echo "tailwind:   $(node -p "require('@tailwindcss/cli/package.json').version")"; ` +
+				`echo "esbuild:    $(node -p "require('esbuild/package.json').version")"; ` +
+				`echo "chromium:   $(node -e "console.log(require('playwright').chromium.executablePath())")"`}).
+		Stdout(ctx)
 }
