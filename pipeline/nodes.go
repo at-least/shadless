@@ -243,7 +243,21 @@ var Nodes = []Node{
 	},
 	{
 		ID: NDemoRtl, Kind: "build", Tier: "full",
-		Needs:     []NodeID{NExampleOracle},
+		// example-fixture is NOT optional here, and it was missing. build-rtl
+		// derives each variant from docs/demos/<name>.html, and four of those
+		// base pages (alert-dialog-rtl, breadcrumb-rtl, button-group-rtl,
+		// carousel-rtl) are written by example-fixture, not by the oracle —
+		// they carry kernel families, so the oracle hands them over. With only
+		// example-oracle declared the two were SIBLINGS: at -j>1 they race,
+		// and the variants come from whichever version of the base page is on
+		// disk when build-rtl reads it.
+		//
+		// Nothing could see it. example-oracle declares `docs/demos/*.html`,
+		// all 429 pages including the 105 it does not write, and the read
+		// check treats a dependency's `produces` as covered — so reading a
+		// fixture-owned page looked declared. Same over-declared glob, same
+		// blindness, as emit's dist/components/*.html.
+		Needs:     []NodeID{NExampleOracle, NExampleFixture},
 		Run:       [][]string{{"node", "tools/build-rtl.mjs"}},
 		Inputs:    []string{"tools/build-rtl.mjs", "tools/rtl-lib.mjs", "src/docs/theme-prepaint.mjs", "src/registry/pin.json", upstreamExamplesGlob},
 		Produces:  []string{"dist/components/*-rtl-*.html", "docs/demos/*-rtl-*.html", "build/rtl-langs.json"},
