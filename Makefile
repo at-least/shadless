@@ -110,11 +110,11 @@ reproducible:
 	go test -C pipeline -count=1 -v -run '^TestReproducible$$' .
 
 # ----- housekeeping --------------------------------------------------------
-hooks:
-	$(NODE) tools/git-hooks/install.mjs
+hooks: $(PIPELINE)
+	./$(PIPELINE) hooks
 
-hooks-uninstall:
-	$(NODE) tools/git-hooks/install.mjs --uninstall
+hooks-uninstall: $(PIPELINE)
+	./$(PIPELINE) hooks --uninstall
 
 audit-boundary:
 	$(NODE) tools/audit-boundary.mjs

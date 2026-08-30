@@ -66,8 +66,8 @@ var Nodes = []Node{
 	{
 		ID: NUnit, Kind: "gate", Tier: "fast",
 		Needs:    nil,
-		Run:      [][]string{{"node", "tools/unit-check.mjs"}},
-		Inputs:   []string{"tools/unit-check.mjs", "tools/unit/**", "src/**", "tools/**/*.mjs", "vendor/**", "package.json", "dist/esm/shadless.d.ts"},
+		Run:      [][]string{{"node", "tools/unit-check.mjs"}, {"go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestUnit", "."}},
+		Inputs:   []string{"tools/unit-check.mjs", "tools/unit/**", "src/**", "tools/**/*.mjs", "vendor/**", "package.json", "dist/esm/shadless.d.ts", "pipeline/*_test.go", "pipeline/gate_css_direction.go", "pipeline/product_css.go"},
 		Produces: nil,
 	},
 	{
@@ -122,8 +122,8 @@ var Nodes = []Node{
 	{
 		ID: NEmit, Kind: "build", Tier: "medium",
 		Needs:    []NodeID{NConvert},
-		Run:      [][]string{{"node", "src/emitter/index.mjs"}, {"node", "tools/tw.mjs", "build/emit/globals.css", "build/emit/out.css", "--cwd", "dist"}},
-		Inputs:   []string{"src/emitter/**", "src/tags.mjs", "src/docs/theme-prepaint.mjs", "src/registry/tiers.json", "src/registry/pin.json", "probes/h4/globals.css", "tools/tw.mjs"},
+		Run:      [][]string{{"node", "src/emitter/index.mjs"}, {"./build/pipeline", "tw", "build/emit/globals.css", "build/emit/out.css", "--cwd", "dist"}},
+		Inputs:   []string{"src/emitter/**", "src/tags.mjs", "src/docs/theme-prepaint.mjs", "src/registry/tiers.json", "src/registry/pin.json", "probes/h4/globals.css", "pipeline/tw.go"},
 		Produces: []string{"dist/components/*.html", "!dist/components/*-rtl-*.html", "dist/shadless.css", "build/emit"},
 	},
 	{
@@ -185,43 +185,43 @@ var Nodes = []Node{
 	{
 		ID: NProductCss, Kind: "build", Tier: "medium",
 		Needs:    []NodeID{NDemo},
-		Run:      [][]string{{"node", "tools/product-css.mjs"}},
-		Inputs:   []string{"tools/product-css.mjs", "src/docs/theme-prepaint.mjs", "probes/h4/globals.css", "package-lock.json"},
+		Run:      [][]string{{"./build/pipeline", "product-css"}},
+		Inputs:   []string{"pipeline/product_css.go", "src/docs/theme-prepaint.mjs", "probes/h4/globals.css", "package-lock.json"},
 		Produces: []string{"dist/shadless-core.css", "dist/shadless.product.css"},
 	},
 	{
 		ID: NDemoCss, Kind: "build", Tier: "medium",
 		Needs:    []NodeID{NDemo},
-		Run:      [][]string{{"node", "tools/tw.mjs", "dist/globals.css", "dist/out.css", "--cwd", "."}},
-		Inputs:   []string{"tools/tw.mjs", "dist/globals.css", "dist/components/**", "dist/js/**", "docs/demos/**", "docs/content/**", "src/kernel/**", "tools/contracts/out/**", "src/registry/ir/**", "probes/t7/**", "probes/t8/**"},
+		Run:      [][]string{{"./build/pipeline", "tw", "dist/globals.css", "dist/out.css", "--cwd", "."}},
+		Inputs:   []string{"pipeline/tw.go", "dist/globals.css", "dist/components/**", "dist/js/**", "docs/demos/**", "docs/content/**", "src/kernel/**", "tools/contracts/out/**", "src/registry/ir/**", "probes/t7/**", "probes/t8/**"},
 		Produces: []string{"dist/out.css"},
 	},
 	{
 		ID: NProductBuild, Kind: "build", Tier: "medium",
 		Needs:    []NodeID{NProductCss},
-		Run:      [][]string{{"node", "tools/tw.mjs", "dist/shadless.product.css", "dist/shadless.full.css"}, {"node", "tools/tw.mjs", "dist/shadless.product.css", "dist/shadless.full.min.css", "--minify"}},
-		Inputs:   []string{"tools/tw.mjs", "dist/shadless.product.css"},
+		Run:      [][]string{{"./build/pipeline", "tw", "dist/shadless.product.css", "dist/shadless.full.css"}, {"./build/pipeline", "tw", "dist/shadless.product.css", "dist/shadless.full.min.css", "--minify"}},
+		Inputs:   []string{"pipeline/tw.go", "dist/shadless.product.css"},
 		Produces: []string{"dist/shadless.full.css", "dist/shadless.full.min.css"},
 	},
 	{
 		ID: NProductVerify, Kind: "gate", Tier: "medium",
 		Needs:    []NodeID{NProductBuild, NDemoCss},
-		Run:      [][]string{{"node", "tools/product-css.mjs", "--verify"}},
-		Inputs:   []string{"tools/product-css.mjs", "dist/**"},
+		Run:      [][]string{{"go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestProductVerify$", "."}},
+		Inputs:   []string{"pipeline/product_css.go", "pipeline/gates_test.go", "dist/**"},
 		Produces: nil,
 	},
 	{
 		ID: NConsumerSim, Kind: "gate", Tier: "medium",
 		Needs:    []NodeID{NProductCss},
-		Run:      [][]string{{"node", "tools/consumer-sim.mjs"}},
-		Inputs:   []string{"tools/consumer-sim.mjs", "dist/css/**", "dist/shadless-core.css", "package.json"},
+		Run:      [][]string{{"go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestConsumerSim$", "."}},
+		Inputs:   []string{"pipeline/gate_consumer_sim.go", "pipeline/tw.go", "pipeline/gates_test.go", "dist/css/**", "dist/shadless-core.css", "package.json"},
 		Produces: nil,
 	},
 	{
 		ID: NPathParity, Kind: "gate", Tier: "full",
 		Needs:    []NodeID{NProductBuild, NOracleCss},
 		Run:      [][]string{{"node", "gates/path-parity.mjs"}},
-		Inputs:   []string{"gates/path-parity.mjs", "gates/parity-baseline.mjs", "gates/path-parity-baseline.json", "gates/ledger.json", "src/emitter/css.mjs", "src/tags.mjs", "src/registry/ir/**", "dist/css/**", "dist/shadless.full.css", "build/gates/oracle.css", "src/registry/pin.json", "tools/tw.mjs"},
+		Inputs:   []string{"gates/path-parity.mjs", "gates/parity-baseline.mjs", "gates/path-parity-baseline.json", "gates/ledger.json", "src/emitter/css.mjs", "src/tags.mjs", "src/registry/ir/**", "dist/css/**", "dist/shadless.full.css", "build/gates/oracle.css", "src/registry/pin.json", "pipeline/tw.go"},
 		Produces: nil,
 	},
 	{
@@ -234,8 +234,8 @@ var Nodes = []Node{
 	{
 		ID: NCssDirection, Kind: "gate", Tier: "fast",
 		Needs:    []NodeID{NDemoCss},
-		Run:      [][]string{{"node", "tools/css-direction-gate.mjs"}},
-		Inputs:   []string{"tools/css-direction-gate.mjs", "dist/shadless.css"},
+		Run:      [][]string{{"go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestCssDirection$", "."}},
+		Inputs:   []string{"pipeline/gate_css_direction.go", "pipeline/gates_test.go", "dist/shadless.css"},
 		Produces: nil,
 	},
 	{
@@ -248,8 +248,8 @@ var Nodes = []Node{
 	{
 		ID: NOracleCss, Kind: "build", Tier: "medium",
 		Needs:    []NodeID{NConvert},
-		Run:      [][]string{{"node", "gates/oracle-css.mjs"}},
-		Inputs:   []string{"gates/oracle-css.mjs", "tools/tw.mjs", "src/registry/pin.json", "build/resolved-ui/**"},
+		Run:      [][]string{{"./build/pipeline", "oracle-css"}},
+		Inputs:   []string{"pipeline/oracle_css.go", "pipeline/tw.go", "src/registry/pin.json", "build/resolved-ui/**"},
 		Produces: []string{"build/gates/oracle.css"},
 	},
 	{

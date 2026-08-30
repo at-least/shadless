@@ -241,7 +241,7 @@ for (const f of readdirSync("src/registry/ir").filter((x) => x.endsWith(".json")
 
   // (a) consumer build: core + this component's css
   writeFileSync(`${SIM}/entry.css`, `@import "shadless";\n@import "shadless/${name}.css";\n`)
-  try { execFileSync(process.execPath, ["tools/tw.mjs", `${SIM}/entry.css`, `${SIM}/out.css`, "--cwd", SIM], { stdio: "pipe" }) }
+  try { execFileSync("./build/pipeline", ["tw", `${SIM}/entry.css`, `${SIM}/out.css`, "--cwd", SIM], { stdio: "pipe" }) }
   catch (e) { console.error(`FAIL  path-parity: shadless/${name}.css does not compile alone\n${e.stderr}`); process.exit(1) }
   const consumerCss = readFileSync(`${SIM}/out.css`, "utf8")
   const shell = "body{margin:0;padding:0;color:var(--foreground);background:var(--background)} *{transition:none!important;animation:none!important}"

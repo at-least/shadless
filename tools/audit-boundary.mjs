@@ -68,9 +68,9 @@ const PROGRAMMATIC_PATTERNS = [
     tool: "npx @tailwindcss/cli (via make demo / make docs)", source: "dist/components/*.html + shadless CSS fixes" },
   // J2 product surface — per-component @apply sources + tokens + compiled
   { test: (p) => p.startsWith("dist/css/") && p.endsWith(".css"),
-    tool: "tools/demo.mjs (parts) + tools/product-css.mjs (tokens)", source: "src/registry/ir/*.json + probes/h4/globals.css" },
+    tool: "tools/demo.mjs (parts) + pipeline/product_css.go (tokens)", source: "src/registry/ir/*.json + probes/h4/globals.css" },
   { test: (p) => ["dist/shadless.product.css", "dist/shadless.full.css", "dist/shadless.full.min.css"].includes(p),
-    tool: "tools/product-css.mjs + npx @tailwindcss/cli", source: "dist/css/* (tokens + component parts + fixes)" },
+    tool: "pipeline/product_css.go + pipeline/tw.go", source: "dist/css/* (tokens + component parts + fixes)" },
   // J4: server-stack template macros — regenerated from IR
   { test: (p) => ["dist/shadless.js", "dist/shadless.min.js"].includes(p),
     tool: "tools/build-js.mjs", source: "vendor/radix-kernel.iife.js + src/runtime/core.js" },

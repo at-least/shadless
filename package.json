@@ -51,12 +51,13 @@
     "dist/shadless.min.js"
   ],
   "scripts": {
-    "pin": "./build/pipeline pin",
+    "pipeline": "cd pipeline && go build -o ../build/pipeline .",
+    "pin": "npm run pipeline && ./build/pipeline pin",
     "unit": "node tools/unit-check.mjs",
     "contracts": "node tools/contracts/run.mjs",
     "convert": "node tools/resolve-skins.mjs && node src/converter/index.mjs",
-    "emit": "node src/emitter/index.mjs && node tools/tw.mjs build/emit/globals.css build/emit/out.css --cwd dist && node src/emitter/smoke.mjs",
-    "demo": "npm run emit && node tools/build-demo.mjs && node tools/example-oracle.mjs && node tools/example-fixture.mjs && node tools/build-rtl.mjs && node tools/demo.mjs && node tools/product-css.mjs && node tools/tw.mjs dist/globals.css dist/out.css --cwd . && node tools/tw.mjs dist/shadless.product.css dist/shadless.full.css && node tools/tw.mjs dist/shadless.product.css dist/shadless.full.min.css --minify",
+    "emit": "npm run pipeline && node src/emitter/index.mjs && ./build/pipeline tw build/emit/globals.css build/emit/out.css --cwd dist && node src/emitter/smoke.mjs",
+    "demo": "npm run emit && node tools/build-demo.mjs && node tools/example-oracle.mjs && node tools/example-fixture.mjs && node tools/build-rtl.mjs && node tools/demo.mjs && ./build/pipeline product-css && ./build/pipeline tw dist/globals.css dist/out.css --cwd . && ./build/pipeline tw dist/shadless.product.css dist/shadless.full.css && ./build/pipeline tw dist/shadless.product.css dist/shadless.full.min.css --minify",
     "demo:smoke": "node tools/demo-smoke.mjs",
     "verify": "node gates/run.mjs --tier=full",
     "gate:direction": "node tools/css-direction-gate.mjs",

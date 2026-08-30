@@ -111,11 +111,41 @@ func die(err error) {
 }
 
 func main() {
-	if len(os.Args) < 3 {
-		fmt.Fprintln(os.Stderr, "usage: pipeline <plan|status|run|adopt> <fast|medium|full|builds|node…>\n       pipeline pin [--check-only]\n\nThe gates are Go tests: go test -C pipeline -count=1 -v [-run '^TestPack$']")
+	// < 2, not < 3: the single-word subcommands (docs-catalog, oracle-css,
+	// product-css, hooks) take no argument. plan/status/run/adopt validate
+	// their own target list below.
+	if len(os.Args) < 2 {
+		fmt.Fprintln(os.Stderr, "usage: pipeline <plan|status|run|adopt> <fast|medium|full|builds|node…>\n       pipeline pin [--check-only]\n       pipeline tw <in> <out> [--minify] [--cwd DIR]\n       pipeline oracle-css\n       pipeline product-css\n       pipeline docs-catalog\n       pipeline hooks [--uninstall] [--force]\n       pipeline css-direction --update\n\nThe gates are Go tests: go test -C pipeline -count=1 -v [-run '^TestPack$']")
 		os.Exit(2)
 	}
 	cmd, args := os.Args[1], os.Args[2:]
+	if len(args) == 0 && (cmd == "plan" || cmd == "status" || cmd == "run" || cmd == "adopt") {
+		fmt.Fprintf(os.Stderr, "usage: pipeline %s <fast|medium|full|builds|node…>\n", cmd)
+		os.Exit(2)
+	}
+	if cmd == "docs-catalog" {
+		os.Exit(runDocsCatalog())
+	}
+	if cmd == "hooks" {
+		os.Exit(runHooks(args))
+	}
+	if cmd == "product-css" {
+		os.Exit(runProductCSS())
+	}
+	if cmd == "css-direction" {
+		if !has(args, "--update") {
+			fmt.Fprintln(os.Stderr, "the css-direction GATE is a Go test: go test -C pipeline -run '^TestCssDirection$'\n"+
+				"this subcommand only re-records the baseline: pipeline css-direction --update")
+			os.Exit(2)
+		}
+		os.Exit(runCSSDirectionUpdate())
+	}
+	if cmd == "oracle-css" {
+		os.Exit(runOracleCSS())
+	}
+	if cmd == "tw" {
+		os.Exit(runTw(args))
+	}
 	if cmd == "pin" {
 		root, err := os.Getwd()
 		die(err)

@@ -12,6 +12,10 @@
 // Wave H (2026-08-26): assertions live in tools/unit/*.mjs modules by
 // area; this file is just the runner. Zero framework, same convention as
 // every other gate: inline asserts, exit 1 on any failure, honest PASS.
+//
+// A suite moves out of this file when the tool it tests moves to Go — the
+// assertions go with the implementation (`go test -run ^TestUnit`), so there
+// is never a JS test standing over a Go function. The `unit` node runs both.
 import { makeT } from "./unit/harness.mjs"
 import * as frontmatter from "./unit/frontmatter.mjs"
 import * as css from "./unit/css.mjs"
@@ -24,8 +28,6 @@ import * as docsTools from "./unit/docs-tools.mjs"
 import * as docsFidelity from "./unit/docs-fidelity.mjs"
 import * as transforms from "./unit/transforms.mjs"
 import * as rtl from "./unit/rtl.mjs"
-import * as cssDirection from "./unit/css-direction.mjs"
-import * as productCss from "./unit/product-css.mjs"
 import * as types from "./unit/types.mjs"
 
 const suites = [
@@ -40,8 +42,6 @@ const suites = [
   ["docs-fidelity", docsFidelity],
   ["transforms", transforms],
   ["rtl", rtl],
-  ["css-direction", cssDirection],
-  ["product-css", productCss],
   ["types", types],
 ]
 

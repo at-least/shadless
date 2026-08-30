@@ -56,9 +56,12 @@ export const NODES = [
   // ------------------------------------------------------------ pure logic
   node({
     id: "unit", kind: "gate", tier: "fast", needs: [],
-    run: [["node", "tools/unit-check.mjs"]],
+    // two suites, one gate: pure functions that still live in JS, and the ones
+    // that moved to Go with the tool they belong to (`TestUnit*`)
+    run: [["node", "tools/unit-check.mjs"],
+          ["go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestUnit", "."]],
     inputs: ["tools/unit-check.mjs", "tools/unit/**", "src/**", "tools/**/*.mjs", "vendor/**",
-             "package.json", "dist/esm/shadless.d.ts"],
+             "package.json", "dist/esm/shadless.d.ts", "pipeline/*_test.go", "pipeline/gate_css_direction.go", "pipeline/product_css.go"],
     why: "seconds-level guard over the pure functions cleanup rounds touch; " +
          "born from a dead-code delete in rewritePaths that only surfaced minutes later",
     mutations: ["unit-break-pure-fn"],
@@ -151,10 +154,10 @@ export const NODES = [
     // globals/out.css/index live in build/emit/ so a medium-tier run never
     // damages the committed demo chain outputs (it used to wipe dist/components)
     run: [["node", "src/emitter/index.mjs"],
-          ["node", "tools/tw.mjs", "build/emit/globals.css", "build/emit/out.css", "--cwd", "dist"]],
+          ["./build/pipeline", "tw", "build/emit/globals.css", "build/emit/out.css", "--cwd", "dist"]],
     inputs: ["src/emitter/**", "src/tags.mjs", "src/docs/theme-prepaint.mjs",
              "src/registry/tiers.json", "src/registry/pin.json", "probes/h4/globals.css",
-             "tools/tw.mjs"],
+             "pipeline/tw.go"],
     why: "static-tier emit: IR -> component html + per-slot css",
     produces: ["dist/components/*.html", "!dist/components/*-rtl-*.html", "dist/shadless.css", "build/emit"],
   }),
@@ -257,8 +260,8 @@ export const NODES = [
     // theme-prepaint supplies SHADLESS_CSS_FIXES and package-lock pins the
     // tw-animate-css that gets inlined — both were read but undeclared.
     id: "product-css", kind: "build", tier: "medium", needs: ["demo"],
-    run: [["node", "tools/product-css.mjs"]],
-    inputs: ["tools/product-css.mjs", "src/docs/theme-prepaint.mjs", "probes/h4/globals.css",
+    run: [["./build/pipeline", "product-css"]],
+    inputs: ["pipeline/product_css.go", "src/docs/theme-prepaint.mjs", "probes/h4/globals.css",
              "package-lock.json"],
     why: "token extraction + the product entry — the consumer-facing surface",
     produces: ["dist/shadless-core.css", "dist/shadless.product.css"],
@@ -267,9 +270,9 @@ export const NODES = [
     id: "demo-css", kind: "build", tier: "medium", needs: ["demo"],
     // repo-root cwd: the repo-wide content scan is load-bearing for the
     // docs/demos iframes (@source not excludes tool fixtures — see tools/demo.mjs)
-    run: [["node", "tools/tw.mjs", "dist/globals.css", "dist/out.css", "--cwd", "."]],
+    run: [["./build/pipeline", "tw", "dist/globals.css", "dist/out.css", "--cwd", "."]],
     // == the @source list in tools/demo.mjs (explicit scan, no auto-detection)
-    inputs: ["tools/tw.mjs", "dist/globals.css", "dist/components/**", "dist/js/**", "docs/demos/**",
+    inputs: ["pipeline/tw.go", "dist/globals.css", "dist/components/**", "dist/js/**", "docs/demos/**",
              "docs/content/**", "src/kernel/**", "tools/contracts/out/**", "src/registry/ir/**",
              "probes/t7/**", "probes/t8/**"],
     why: "the stylesheet every demo page and contract fixture actually loads",
@@ -278,9 +281,9 @@ export const NODES = [
   node({
     id: "product-build", kind: "build", tier: "medium", needs: ["product-css"],
     // compiled in an empty scratch dir so ONLY @apply-driven rules survive
-    run: [["node", "tools/tw.mjs", "dist/shadless.product.css", "dist/shadless.full.css"],
-          ["node", "tools/tw.mjs", "dist/shadless.product.css", "dist/shadless.full.min.css", "--minify"]],
-    inputs: ["tools/tw.mjs", "dist/shadless.product.css"],
+    run: [["./build/pipeline", "tw", "dist/shadless.product.css", "dist/shadless.full.css"],
+          ["./build/pipeline", "tw", "dist/shadless.product.css", "dist/shadless.full.min.css", "--minify"]],
+    inputs: ["pipeline/tw.go", "dist/shadless.product.css"],
     why: "the no-build distribution artifact",
     produces: ["dist/shadless.full.css", "dist/shadless.full.min.css"],
   }),
@@ -291,15 +294,16 @@ export const NODES = [
     // out.css fresh — a targeted run that rebuilt emit (whose out.css has no
     // slot rules) but not demo-css reported every slot as dropped
     id: "product-verify", kind: "gate", tier: "medium", needs: ["product-build", "demo-css"],
-    run: [["node", "tools/product-css.mjs", "--verify"]],
-    inputs: ["tools/product-css.mjs", "dist/**"],
+    run: goTest("TestProductVerify"),
+    inputs: ["pipeline/product_css.go", "pipeline/gates_test.go", "dist/**"],
     why: "slot rules survive the product compile and docs chrome stays out of it",
     mutations: ["product-drop-slot-rule"],
   }),
   node({
     id: "consumer-sim", kind: "gate", tier: "medium", needs: ["product-css"],
-    run: [["node", "tools/consumer-sim.mjs"]],
-    inputs: ["tools/consumer-sim.mjs", "dist/css/**", "dist/shadless-core.css", "package.json"],
+    run: goTest("TestConsumerSim"),
+    inputs: ["pipeline/gate_consumer_sim.go", "pipeline/tw.go", "pipeline/gates_test.go",
+             "dist/css/**", "dist/shadless-core.css", "package.json"],
     why: "the PRIMARY consume path, machine-checked: a scratch consumer importing " +
          "core + N component files gets exactly those styles, and every component " +
          "compiles ALONE (not only as part of the full product entry)",
@@ -311,7 +315,7 @@ export const NODES = [
     inputs: ["gates/path-parity.mjs", "gates/parity-baseline.mjs", "gates/path-parity-baseline.json", "gates/ledger.json",
              "src/emitter/css.mjs", "src/tags.mjs", "src/registry/ir/**", "dist/css/**",
              "dist/shadless.full.css", "build/gates/oracle.css", "src/registry/pin.json",
-             "tools/tw.mjs"],
+             "pipeline/tw.go"],
     why: "for EVERY slot, slot-only markup via css-import and via full.css must compute what " +
          "React's inline classes compute under upstream's own stylesheet, in both themes and " +
          "directions, at rest, per cva variant value and per attribute-driven state, with " +
@@ -332,8 +336,8 @@ export const NODES = [
   }),
   node({
     id: "css-direction", kind: "gate", tier: "fast", needs: ["demo-css"],
-    run: [["node", "tools/css-direction-gate.mjs"]],
-    inputs: ["tools/css-direction-gate.mjs", "dist/shadless.css"],
+    run: goTest("TestCssDirection"),
+    inputs: ["pipeline/gate_css_direction.go", "pipeline/gates_test.go", "dist/shadless.css"],
     why: "emitted physical reading-direction utilities must match the recorded set — " +
          "new/gone entries mean upstream moved the RTL story",
     mutations: ["css-direction-new-physical"],
@@ -351,8 +355,8 @@ export const NODES = [
   }),
   node({
     id: "oracle-css", kind: "build", tier: "medium", needs: ["convert"],
-    run: [["node", "gates/oracle-css.mjs"]],
-    inputs: ["gates/oracle-css.mjs", "tools/tw.mjs", "src/registry/pin.json", "build/resolved-ui/**"],
+    run: [["./build/pipeline", "oracle-css"]],
+    inputs: ["pipeline/oracle_css.go", "pipeline/tw.go", "src/registry/pin.json", "build/resolved-ui/**"],
     why: "a stylesheet for the React oracle built from upstream's own globals/skin and the " +
          "resolved registry — reads nothing under src/, so style-parity is no longer circular",
     produces: ["build/gates/oracle.css"],

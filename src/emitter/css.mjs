@@ -375,7 +375,7 @@ export function componentCss(ir) {
   // bg-popover/70 wins over the inline `bg-popover` on the same element.
   // Emitting the rule inside @layer components (the first fix) lost to the
   // inline utility and still rendered opaque; the independent CSS oracle
-  // (gates/oracle-css.mjs) is what showed it. Hence `unlayered`.
+  // (pipeline/oracle_css.go) is what showed it. Hence `unlayered`.
   const usedAllowlist = new Set([...Object.values(markers).flat(), ...[...anchorMarkers.values()].flat()]
     .filter((t) => SKIN_ALLOWLIST.has(t) && SKIN_MAP[t]))
   const unlayered = [...usedAllowlist].sort().map((t) => `.${t} { @apply ${SKIN_MAP[t]}; }`)

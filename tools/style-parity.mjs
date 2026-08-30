@@ -140,7 +140,7 @@ for (const f of defs) {
     await page.waitForTimeout(400)
     if (def.open) { await eval(`(async (page) => { ${def.open} })(page)`); await page.waitForTimeout(400) }
     // The oracle is styled by build/gates/oracle.css — built by
-    // gates/oracle-css.mjs from upstream's own globals/tailwind.css/skin and
+    // pipeline/oracle_css.go from upstream's own globals/tailwind.css/skin and
     // the resolved registry source, reading NOTHING under src/. Styling the
     // oracle with our own dist/out.css (the previous shape) made this gate
     // blind to every css-emitter bug: same stylesheet on both sides, same

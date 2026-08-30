@@ -118,7 +118,7 @@ const replaceSpan = (raw, start, end, replacement) => raw.slice(0, start) + repl
 // file copying. The no-build alternative (precompiled dist/out.css) is a
 // footnote. Artifact list is derived from the REAL dist demo page (source
 // of truth — script tags exactly as the demo loads them); the css-import
-// path is machine-proven by tools/consumer-sim.mjs.
+// path is machine-proven by pipeline/gate_consumer_sim.go.
 function installStepsMdx(name) {
   const demo = readFileSync(join('dist/components', `${name}.html`), 'utf8')
   const initAll = /shadless\.initAll\(\)/.test(demo)
