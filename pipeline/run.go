@@ -30,6 +30,7 @@ type result struct {
 	err        error
 	output     []byte
 	violations []Violation
+	reads      []string // files read but not declared in `inputs`
 	elapsed    time.Duration
 }
 
@@ -121,18 +122,78 @@ func (r *Runner) recorded(id NodeID) string {
 	return r.stamps[id]
 }
 
+// isGoTest reports whether a command is a `go test` invocation, which is the
+// only kind that can be asked for a testlog.
+func isGoTest(argv []string) bool {
+	return len(argv) >= 2 && argv[0] == "go" && argv[1] == "test"
+}
+
 // exec runs one node's commands, capturing output so parallel logs stay
 // readable: a node's output is printed as one block when it finishes.
-func (r *Runner) exec(n Node) ([]byte, error) {
+//
+// Every `go test` command additionally gets -test.testlogfile, which makes the
+// test binary record the files it opens. That is the evidence for the
+// undeclared-read check and it costs nothing: the gate was going to run
+// anyway. The path must be ABSOLUTE — these commands carry `-C pipeline`, and
+// a relative one would land inside the package directory.
+func (r *Runner) exec(n Node) ([]byte, []string, error) {
 	var buf bytes.Buffer
+	var logs []string
+	// only create the scratch dir when there is a go test command to log:
+	// a JS node would otherwise leak an empty temp dir on every run, since
+	// readsFrom only cleans up when it has a log to clean up after.
+	dir := ""
 	for _, argv := range n.Run {
-		c := exec.Command(argv[0], argv[1:]...)
-		c.Dir, c.Stdout, c.Stderr = r.root, &buf, &buf
-		if err := c.Run(); err != nil {
-			return buf.Bytes(), err
+		if isGoTest(argv) {
+			d, err := os.MkdirTemp("", "pipeline-testlog-")
+			if err == nil {
+				dir = d // on failure: run without the read check rather than fail the node
+			}
+			break
 		}
 	}
-	return buf.Bytes(), nil
+	for i, argv := range n.Run {
+		cmd := argv
+		if dir != "" && isGoTest(argv) {
+			log := filepath.Join(dir, fmt.Sprintf("%s-%d.log", stampFile(n.ID), i))
+			cmd = append(append([]string{}, argv...), "-test.testlogfile="+log)
+			logs = append(logs, log)
+		}
+		c := exec.Command(cmd[0], cmd[1:]...)
+		c.Dir, c.Stdout, c.Stderr = r.root, &buf, &buf
+		if err := c.Run(); err != nil {
+			return buf.Bytes(), logs, err
+		}
+	}
+	return buf.Bytes(), logs, nil
+}
+
+// readsFrom collects the undeclared reads across a node's testlogs, then
+// removes the temp directory holding them.
+func (r *Runner) readsFrom(n Node, logs []string) []string {
+	if len(logs) == 0 {
+		return nil
+	}
+	defer os.RemoveAll(filepath.Dir(logs[0]))
+	seen := map[string]bool{}
+	var all []string
+	for _, log := range logs {
+		opens, err := testlogOpens(r.root, log)
+		if err != nil {
+			continue // a missing log means no evidence, not a violation
+		}
+		for _, p := range opens {
+			if !seen[p] {
+				seen[p] = true
+				all = append(all, p)
+			}
+		}
+	}
+	undeclared, err := undeclaredReads(r.root, n, all)
+	if err != nil {
+		return nil
+	}
+	return undeclared
 }
 
 func (r *Runner) runOne(n Node, key string, skippable bool) result {
@@ -141,8 +202,11 @@ func (r *Runner) runOne(n Node, key string, skippable bool) result {
 	if r.jobs == 1 {
 		before, _ = inputUniverse(r.root, r.graph)
 	}
-	out, err := r.exec(n)
+	out, logs, err := r.exec(n)
 	res := result{node: n, output: out, err: err, elapsed: time.Since(start)}
+	// computed even for a failed node: a gate that went red still read what it
+	// read, and the declaration is wrong either way
+	res.reads = r.readsFrom(n, logs)
 	if err != nil {
 		r.forget(n.ID) // a failed node stays stale; it claims nothing
 		return res
@@ -165,8 +229,10 @@ func (r *Runner) runOne(n Node, key string, skippable bool) result {
 }
 
 // Run dispatches the plan, honouring `needs`, and returns the number of nodes
-// run, skipped, failed and the undeclared writes seen.
-func (r *Runner) Run(plan []Node) (ran, skipped, failed, violations int) {
+// run, skipped and failed, plus the two declaration violations seen: writes
+// outside `produces` and reads outside `inputs`. They are counted separately
+// because they are different bugs with different fixes.
+func (r *Runner) Run(plan []Node) (ran, skipped, failed, violations, badReads int) {
 	inPlan := map[NodeID]bool{}
 	for _, n := range plan {
 		inPlan[n.ID] = true
@@ -260,6 +326,8 @@ func (r *Runner) Run(plan []Node) (ran, skipped, failed, violations int) {
 		}
 		reportViolations(id, res.violations)
 		violations += len(res.violations)
+		reportUndeclaredReads(id, res.reads)
+		badReads += len(res.reads)
 		if res.err != nil {
 			failed++
 			if r.report.Failed == nil {

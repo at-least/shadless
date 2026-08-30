@@ -134,6 +134,68 @@ instead would let a gate pass over nothing — the vacuous-green failure mode th
 meta-gate exists to catch, and the hardest one to notice, because the report
 still says PASS.
 
+## Why the pipeline has its own freshness, and not Go's test cache
+
+A reasonable question is why the gates run with `-count=1` instead of letting
+Go's build cache decide. Measured, on this repo:
+
+| what a test reads | cached? | invalidates on change? |
+|---|---|---|
+| a fixed file **inside** the module | yes | yes |
+| a fixed file **outside** the module | yes | **no — silently stale** |
+| a directory it enumerates (`os.ReadDir`) | never | — |
+
+The module root is `pipeline/`, and every input the gates read — `gates/*.json`,
+`src/**`, `dist/**` — is above it. Editing `gates/ledger.json` and re-running
+`TestLedger` still reports `(cached)`. So `-count=1` is load-bearing: without
+it the gates would replay stale verdicts.
+
+Moving `go.mod` to the repo root would fix the second row, but not the third,
+and the third is the common case here: `ledger` enumerates
+`tools/contracts/components/`, `coverage` the IR, `pack` and `dist-complete`
+walk `dist/`. Those are never cached anyway. Gates that shell out (`pin` runs
+git, several run node) are invisible to the cache regardless, since a
+subprocess's file access is not in the testlog.
+
+`go:embed` would close both holes — embedded content is part of the package
+hash, so even "a new file appeared in that directory" changes the build — but
+it cannot be used here: embed patterns may not contain `..`, so from
+`pipeline/` there is no way to reach `.upstream` (129MB, 70MB of it `.git`)
+without moving the module root, and embedding build OUTPUTS would be circular
+— `reproducible`, `pack` and `dist-complete` must judge the tree on disk, not
+a compile-time snapshot of it.
+
+The stamp mechanism also does something Go's cache cannot: it folds each
+dependency's key into its dependents', so "something upstream changed"
+propagates by construction, and it covers the JS build nodes, which are
+outside Go entirely.
+
+### What was worth taking from the idea
+
+The cache is the wrong lever, but the concern behind it was right: `inputs` in
+`nodes.go` was hand-maintained and nothing compared it against reality. A glob
+that misses a file the gate actually reads is a stale green — the same failure
+class, arrived at from the other side.
+
+So the runner now attaches `-test.testlogfile` to every `go test` command it
+runs and checks the files the gate actually opened against its declared
+`inputs` (`verify.go`, mirroring the existing undeclared-**write** check). It
+costs no extra execution: the gate was going to run anyway.
+
+It found three real holes on its first run, two of them long-standing:
+
+- `unit` read `probes/h4/globals.css` and `dist/shadless.js` without declaring
+  either.
+- `TestUnitCssDirectionRealCSS` read `dist/shadless.css` — an `emit` output —
+  from inside the `unit` gate, which declares neither the input nor a
+  dependency on the node that builds it. The assertion belonged to the
+  `css-direction` gate, which declares both; it now lives there.
+
+Its limits are stated in `verify.go` and are worth repeating: only `go test`
+nodes produce a testlog, subprocess reads are invisible, and it tracks `open`
+rather than `stat`. It under-reports, which is the safe direction — it finds
+real undeclared reads and never invents one.
+
 ## Porting the next one
 
 1. Check the npm imports first. If any is in the four toolchains above, stop —

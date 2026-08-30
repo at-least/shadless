@@ -86,7 +86,12 @@ func TestUnitCssDirectionScan(t *testing.T) {
 	}
 }
 
-func TestUnitCssDirectionRealCSS(t *testing.T) {
+// Named TestCssDirection*, not TestUnit*, ON PURPOSE: it reads
+// dist/shadless.css, which `emit` produces. The css-direction GATE declares
+// that file as an input and needs the node that builds it; the `unit` gate
+// declares neither, so running this there judged an artifact whose freshness
+// and ordering nothing tied to it. The undeclared-read check found it.
+func TestCssDirectionRealCSS(t *testing.T) {
 	// the real emitted CSS must stay scannable (catches syntax drift in the
 	// @apply extraction regex when the emitter changes shape)
 	b, err := os.ReadFile(filepath.Join(repoRoot(t), "dist/shadless.css"))

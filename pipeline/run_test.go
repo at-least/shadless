@@ -33,7 +33,7 @@ func TestUnitRunReportRecordsFailedBlockedPassed(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, _, failed, _ := r.Run(plan)
+	_, _, failed, _, _ := r.Run(plan)
 	if failed != 1 {
 		t.Fatalf("failed = %d, want 1", failed)
 	}

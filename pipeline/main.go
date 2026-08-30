@@ -317,7 +317,7 @@ func main() {
 			stamps:         loadStamps(root),
 		}
 		start := time.Now()
-		ran, skipped, failed, violations := r.Run(plan)
+		ran, skipped, failed, violations, badReads := r.Run(plan)
 		if keepGoing {
 			// the re-pin drill reads this to classify each red gate
 			if err := r.writeReport(); err != nil {
@@ -331,6 +331,14 @@ func main() {
 		if violations > 0 {
 			fmt.Fprintf(os.Stderr, "\n%d undeclared write(s): a node is driving the graph's freshness "+
 				"through a file it does not admit to producing. Fix `produces`, or stop writing there.\n", violations)
+		}
+		if badReads > 0 {
+			fmt.Fprintf(os.Stderr, "\n%d undeclared file access(es): a node opened a file it declares in "+
+				"neither `inputs` nor `produces`. If it reads the file, it is not in the node's key and a "+
+				"change to it leaves the node falsely fresh — add it to `inputs`, and if the file is another "+
+				"node's output add that node to `needs` too. If it writes the file, add it to `produces`.\n", badReads)
+		}
+		if violations > 0 || badReads > 0 {
 			os.Exit(1)
 		}
 		if failed > 0 {
