@@ -112,7 +112,7 @@ func die(err error) {
 
 func main() {
 	if len(os.Args) < 3 {
-		fmt.Fprintln(os.Stderr, "usage: pipeline <plan|status|run|adopt> <fast|medium|full|builds|node…>\n       pipeline gate <name>")
+		fmt.Fprintln(os.Stderr, "usage: pipeline <plan|status|run|adopt> <fast|medium|full|builds|node…>\n       pipeline pin [--check-only]\n\nThe gates are Go tests: go test -C pipeline -count=1 -v [-run '^TestPack$']")
 		os.Exit(2)
 	}
 	cmd, args := os.Args[1], os.Args[2:]
@@ -120,16 +120,6 @@ func main() {
 		root, err := os.Getwd()
 		die(err)
 		os.Exit(runPin(root, has(args, "--check-only"), has(args, "--force")))
-	}
-	if cmd == "gate" {
-		root, err := os.Getwd()
-		die(err)
-		if len(args) < 1 {
-			fmt.Fprintln(os.Stderr, "usage: pipeline gate <name> [flags]")
-			os.Exit(2)
-		}
-		runGate(root, args[0])
-		return
 	}
 	force := false
 	if len(args) > 0 && args[0] == "--force" {

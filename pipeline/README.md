@@ -51,7 +51,7 @@ Reconciled against wireit before the switch:
   `contracts` reproduces the registry's plan for all 44 targets.
 - Propagation, checked against the graph: touching `src/emitter/skin.mjs`
   marks convert + its whole downstream stale, plus `unit` and `ledger`
-  (which declare `src/**` directly). Touching `gates/coverage.mjs` marks
+  (which declare `src/**` directly). Touching `pipeline/gate_coverage.go` marks
   `coverage` and nothing else.
 - Whole-graph `status` costs 0.2s.
 
@@ -67,6 +67,32 @@ above it with a note.
 Measured: forcing the medium tier (7 nodes) takes 4.7s at -j1 and 2.4s at -j8,
 tree byte-identical afterwards. A warm `run full` is 0.8s — one node
 (`reproducible`) and 40 skipped.
+
+## The gates are Go tests
+
+A gate asserts and produces nothing, which is what a test is. The ported
+gates live in `pipeline/gate_*.go` and are entered from `pipeline/gates_test.go`:
+
+    go test -C pipeline -count=1 -v                     every ported gate
+    go test -C pipeline -count=1 -v -run '^TestPack$'   one gate
+
+`-count=1` is load-bearing rather than a habit: the test cache keys on the
+package's own sources, not on `dist/` or `docs/site/`, so a cached verdict
+would be replayed over a tree that has since changed. The registry's `goTest()`
+helper is the only place that argv is written, so no node can forget it. `-v`
+is what surfaces the gate's own PASS line instead of a bare `ok`.
+
+Why tests rather than the `pipeline gate <name>` subcommand they replaced: that
+subcommand dispatched through a hand-maintained `map[string]gateFn` populated
+by `init()`. That map was a SECOND registry of gates that the compiler never
+checked — a ported gate that nobody added to it was simply absent, and nothing
+said so. `go test` enumerates them from the toolchain instead.
+
+Only gates that are pure file and process I/O are ported. A gate that imports a
+module from `src/` reads the pipeline's own definitions as data; porting one
+would mean a second implementation of an emitter or converter rule, and two
+implementations that must agree is the failure mode this repo spends most of
+its effort on. Those stay in JS.
 
 ## Fan-out
 

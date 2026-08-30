@@ -25,8 +25,6 @@ import (
 
 var slotSelector = regexp.MustCompile(`\[data-slot="[^"]+"\]`)
 
-func init() { gates["dist-complete"] = gateDistComplete }
-
 func gateDistComplete(root string) error {
 	outPath := filepath.Join(root, "dist/out.css")
 	outBytes, err := os.ReadFile(outPath)

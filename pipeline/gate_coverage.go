@@ -29,8 +29,6 @@ import (
 	"strings"
 )
 
-func init() { gates["coverage"] = func(root string) error { return gateCoverage(root, os.Args[3:]) } }
-
 type covCell struct {
 	Component string   `json:"component"`
 	Path      string   `json:"path"`

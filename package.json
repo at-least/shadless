@@ -82,7 +82,7 @@
     "ledger": "node gates/ledger.mjs --verify",
     "gate:path": "node gates/path-parity.mjs",
     "test": "node gates/run.mjs --tier=fast",
-    "gate:pack": "node gates/pack.mjs"
+    "gate:pack": "go test -C pipeline -count=1 -v -run '^TestPack$' ."
   },
   "keywords": [
     "shadcn",

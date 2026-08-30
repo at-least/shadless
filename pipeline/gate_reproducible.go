@@ -25,8 +25,6 @@ var generatedRoots = []string{
 	"src/registry/ir", "tools/contracts/out", "src/kernel/*.html",
 }
 
-func init() { gates["reproducible"] = gateReproducible }
-
 func gateReproducible(root string) error {
 	args := append([]string{"status", "--porcelain", "--untracked-files=all", "--"}, generatedRoots...)
 	cmd := exec.Command("git", args...)

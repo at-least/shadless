@@ -59,8 +59,8 @@ var Nodes = []Node{
 	{
 		ID: NPin, Kind: "gate", Tier: "fast",
 		Needs:    nil,
-		Run:      [][]string{{"./build/pipeline", "pin", "--check-only"}},
-		Inputs:   []string{"pipeline/gate_pin.go", "src/registry/pin.json", "vendor/**", ".upstream/shadcn-ui/.git/HEAD"},
+		Run:      [][]string{{"go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestPin$", "."}},
+		Inputs:   []string{"pipeline/gate_pin.go", "pipeline/gates_test.go", "src/registry/pin.json", "vendor/**", ".upstream/shadcn-ui/.git/HEAD"},
 		Produces: nil,
 	},
 	{
@@ -87,22 +87,22 @@ var Nodes = []Node{
 	{
 		ID: NDistComplete, Kind: "gate", Tier: "fast",
 		Needs:    []NodeID{NDemoCss, NProductCss},
-		Run:      [][]string{{"./build/pipeline", "gate", "dist-complete"}},
-		Inputs:   []string{"pipeline/gate_dist_complete.go", "dist/css/**", "dist/out.css"},
+		Run:      [][]string{{"go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestDistComplete$", "."}},
+		Inputs:   []string{"pipeline/gate_dist_complete.go", "pipeline/gates_test.go", "dist/css/**", "dist/out.css"},
 		Produces: nil,
 	},
 	{
 		ID: NPack, Kind: "gate", Tier: "fast",
 		Needs:    []NodeID{NBuildJs, NProductBuild},
-		Run:      [][]string{{"./build/pipeline", "gate", "pack"}},
-		Inputs:   []string{"pipeline/gate_pack.go", "package.json", "README.md", "dist/**"},
+		Run:      [][]string{{"go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestPack$", "."}},
+		Inputs:   []string{"pipeline/gate_pack.go", "pipeline/gates_test.go", "package.json", "README.md", "dist/**"},
 		Produces: nil,
 	},
 	{
 		ID: NCoverage, Kind: "gate", Tier: "fast",
 		Needs:    []NodeID{NConvert, NExampleOracle},
-		Run:      [][]string{{"./build/pipeline", "gate", "coverage", "--check"}},
-		Inputs:   []string{"pipeline/gate_coverage.go", "pipeline/gate_coverage_budget.go", "gates/ledger.json", "src/registry/tiers.json", "src/registry/ir/**", "docs/example-oracle.json", "docs/demos/**", "tools/contracts/components/**", "tools/interactivity-sweep.mjs"},
+		Run:      [][]string{{"go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestCoverage$", "."}},
+		Inputs:   []string{"pipeline/gate_coverage.go", "pipeline/gate_coverage_budget.go", "pipeline/gates_test.go", "gates/ledger.json", "src/registry/tiers.json", "src/registry/ir/**", "docs/example-oracle.json", "docs/demos/**", "tools/contracts/components/**", "tools/interactivity-sweep.mjs"},
 		Produces: nil,
 	},
 	{
@@ -325,7 +325,7 @@ var Nodes = []Node{
 	{
 		ID: NReproducible, Kind: "gate", Tier: "medium",
 		Needs:    []NodeID{NDocsBuild, NProductBuild, NDemoRtl, NExampleFixture},
-		Run:      [][]string{{"./build/pipeline", "gate", "reproducible"}},
+		Run:      [][]string{{"go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestReproducible$", "."}},
 		Inputs:   nil, // judges state outside the tree: never fresh
 		Produces: nil,
 	},

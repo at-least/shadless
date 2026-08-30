@@ -32,15 +32,22 @@
 
 const node = (n) => n
 
+// A gate ported to Go is a Go TEST, not a subcommand: `go test` finds it by
+// itself, so a ported gate cannot go missing from a hand-maintained dispatch
+// map. -count=1 is load-bearing — the test cache would otherwise replay a
+// stale verdict over a tree that has since changed — and -v is what surfaces
+// the gate's own PASS line instead of a bare "ok".
+const goTest = (test) => [["go", "test", "-C", "pipeline", "-count=1", "-v", "-run", `^${test}$`, "."]]
+
 export const NODES = [
   // ---------------------------------------------------------------- inputs
   node({
     id: "pin", kind: "gate", tier: "fast", needs: [],
-    run: [["./build/pipeline", "pin", "--check-only"]],
+    run: goTest("TestPin"),
     // the checkout's HEAD file IS the state this gate judges; declaring it
     // (rather than `null`) matters: no dependent of a node without a declared
     // input set can ever be fresh, and everything descends from pin
-    inputs: ["pipeline/gate_pin.go", "src/registry/pin.json", "vendor/**", ".upstream/shadcn-ui/.git/HEAD"],
+    inputs: ["pipeline/gate_pin.go", "pipeline/gates_test.go", "src/registry/pin.json", "vendor/**", ".upstream/shadcn-ui/.git/HEAD"],
     why: "the .upstream checkout must sit exactly at the pinned release tag; " +
          "upgrade tools write pin.json directly and nothing else checks the result",
     mutations: ["pin-commit-drift"],
@@ -79,8 +86,8 @@ export const NODES = [
   node({
     // reads dist/out.css + dist/css — must not race their producers under the parallel runner
     id: "dist-complete", kind: "gate", tier: "fast", needs: ["demo-css", "product-css"],
-    run: [["./build/pipeline", "gate", "dist-complete"]],
-    inputs: ["pipeline/gate_dist_complete.go", "dist/css/**", "dist/out.css"],
+    run: goTest("TestDistComplete"),
+    inputs: ["pipeline/gate_dist_complete.go", "pipeline/gates_test.go", "dist/css/**", "dist/out.css"],
     why: "the tracked no-build dist/out.css must carry every slot selector its per-component " +
          "sources declare — a partial-build out.css (static pages only) got committed once and " +
          "no gate asked whether the file was whole",
@@ -89,8 +96,8 @@ export const NODES = [
   node({
     // reads dist/ — must not race build-js / product-build under the parallel runner
     id: "pack", kind: "gate", tier: "fast", needs: ["build-js", "product-build"],
-    run: [["./build/pipeline", "gate", "pack"]],
-    inputs: ["pipeline/gate_pack.go", "package.json", "README.md", "dist/**"],
+    run: goTest("TestPack"),
+    inputs: ["pipeline/gate_pack.go", "pipeline/gates_test.go", "package.json", "README.md", "dist/**"],
     why: "the npm surface — exports map, tarball contents, README specifiers, an empty " +
          "dependencies — must agree: a bare-string ./runtime.min export served an IIFE to " +
          "`import`, README documented a specifier that does not resolve, and a React-free " +
@@ -103,8 +110,8 @@ export const NODES = [
     // the PREVIOUS run left behind — a full run could regenerate the
     // manifest after coverage had already passed over the old one.
     id: "coverage", kind: "gate", tier: "fast", needs: ["convert", "example-oracle"],
-    run: [["./build/pipeline", "gate", "coverage", "--check"]],
-    inputs: ["pipeline/gate_coverage.go", "pipeline/gate_coverage_budget.go", "gates/ledger.json", "src/registry/tiers.json",
+    run: goTest("TestCoverage"),
+    inputs: ["pipeline/gate_coverage.go", "pipeline/gate_coverage_budget.go", "pipeline/gates_test.go", "gates/ledger.json", "src/registry/tiers.json",
              "src/registry/ir/**", "docs/example-oracle.json", "docs/demos/**",
              "tools/contracts/components/**", "tools/interactivity-sweep.mjs"],
     why: "the product surface (component x path x theme x dir x state) as a matrix with the " +
@@ -442,7 +449,7 @@ export const NODES = [
   node({
     id: "reproducible", kind: "gate", tier: "medium",
     needs: ["docs-build", "product-build", "demo-rtl", "example-fixture"],
-    run: [["./build/pipeline", "gate", "reproducible"]],
+    run: goTest("TestReproducible"),
     inputs: null, // never fresh: judges state outside the tree
     why: "the committed generated trees must equal a fresh pipeline run — the only " +
          "authority on hand-edited outputs, replacing the pre-commit hook's guesswork",

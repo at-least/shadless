@@ -32,8 +32,6 @@ import (
 	"strings"
 )
 
-func init() { gates["pack"] = gatePack }
-
 var (
 	reExportStmt   = regexp.MustCompile(`\bexport[\s{]`)
 	reSpecBacktick = regexp.MustCompile("`(shadless(?:/[^`\\s]*)?)`")

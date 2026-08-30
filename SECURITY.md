@@ -17,7 +17,7 @@ reproduces it.
 
 ## Supply chain
 
-- The package installs **no dependencies** (`gates/pack.mjs` fails the
+- The package installs **no dependencies** (`TestPack` (pipeline/gate_pack.go) fails the
   build if `dependencies` is ever non-empty); `tailwindcss` is an optional
   peer for the CSS-import path.
 - The vendored radix kernel (`vendor/radix-kernel.iife.js`) is pinned by

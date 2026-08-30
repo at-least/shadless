@@ -107,7 +107,7 @@ upstream-snapshot:
 # Committed generated trees must equal a clean rebuild. CI's only authority
 # on hand-edits to dist/ and docs/site/ — the pre-commit hook no longer guesses.
 reproducible:
-	$(NODE) gates/reproducible.mjs
+	go test -C pipeline -count=1 -v -run '^TestReproducible$$' .
 
 # ----- housekeeping --------------------------------------------------------
 hooks:
