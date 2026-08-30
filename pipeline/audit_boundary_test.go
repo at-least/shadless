@@ -25,8 +25,8 @@ func TestUnitAuditClassifyOrder(t *testing.T) {
 		{"dist/components/alert-rtl-he.html", "programmatic", "tools/build-rtl.mjs"},
 		{"dist/components/alert-rtl-en.html", "programmatic", "tools/build-rtl.mjs"},
 		{"dist/components/alert-rtl-fa.html", "programmatic", "tools/build-rtl.mjs"},
-		// alert-demo is build-demo's, carved out of the same rule
-		{"dist/components/alert-demo.html", "programmatic", "tools/build-demo.mjs"},
+		// alert-demo is the oracle's, carved out of the same rule
+		{"dist/components/alert-demo.html", "programmatic", "tools/example-oracle.mjs"},
 		// a plain component page belongs to the emitter/demo rule
 		{"dist/components/accordion.html", "programmatic",
 			"src/emitter/index.mjs OR tools/demo.mjs (per-tier fixture)"},
@@ -109,7 +109,7 @@ func TestUnitAuditPatternsAreWellFormed(t *testing.T) {
 func TestUnitAuditHeuristicOrder(t *testing.T) {
 	for path, wantTool := range map[string]string{
 		"dist/components/alert-rtl-he.html": "tools/build-rtl.mjs",
-		"docs/demos/thing-demo.html":        "tools/build-demo.mjs",
+		"docs/demos/thing-demo.html":        "tools/example-oracle.mjs",
 		"dist/glue/dialog-glue.js":          "tools/demo.mjs",
 		// only the catch-all matches this one
 		"dist/widgets/new.html": "src/emitter/index.mjs OR tools/demo.mjs (per-tier fixture)",

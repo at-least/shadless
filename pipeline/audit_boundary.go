@@ -83,7 +83,7 @@ var reRtlVariant = re(`-rtl-(en|he|fa)\.html$`)
 
 var toolSourcePatterns = []boundaryPattern{
 	{re: re(`^tools/.*\.mjs$`),
-		note: "tools/*.mjs — builder tools + gates (build-demo, build-rtl, demo, docs-*, etc.); gates/*.mjs — the pipeline graph, meta, ledger, overlay, upstream drill"},
+		note: "tools/*.mjs — builder tools + gates (build-rtl, demo, docs-*, etc.); gates/*.mjs — the pipeline graph, meta, ledger, overlay, upstream drill"},
 	{re: re(`^src/converter/.*\.mjs$`),
 		note: "src/converter/*.mjs — registry .tsx → IR JSON (src/registry/ir/*.json)"},
 	{re: re(`^src/emitter/.*\.mjs$`),
@@ -102,15 +102,13 @@ var programmaticPatterns = []boundaryPattern{
 		return strings.HasPrefix(p, "src/registry/ir/") && strings.HasSuffix(p, ".json")
 	},
 		tool: "src/converter/index.mjs", source: "apps/v4/registry/bases/radix/ui/*.tsx"},
-	// dist/components — emitter + build-demo + build-rtl + demo (multi-source)
+	// dist/components — emitter + build-rtl + demo (multi-source)
 	{match: func(p string) bool {
 		return strings.HasPrefix(p, "dist/components/") && strings.HasSuffix(p, ".html") &&
-			!reRtlVariant.MatchString(p) && p != "dist/components/alert-demo.html"
+			!reRtlVariant.MatchString(p) && !strings.HasSuffix(p, "-demo.html")
 	},
 		tool:   "src/emitter/index.mjs OR tools/demo.mjs (per-tier fixture)",
 		source: "src/registry/ir/*.json + probes/t{6,7,8,9}/* (per tier)"},
-	{match: oneOf("dist/components/alert-demo.html"),
-		tool: "tools/build-demo.mjs", source: "examples/radix/alert-demo.tsx"},
 	{match: func(p string) bool {
 		return strings.HasPrefix(p, "dist/components/") && reRtlVariant.MatchString(p)
 	},
@@ -207,8 +205,6 @@ type llmPatchPoint struct{ File, Lines, What string }
 var llmPatchPoints = []llmPatchPoint{
 	{"tools/build-rtl.mjs", "32-37",
 		"PERSIAN translations dict — 4 keys × 2 alerts for alert-rtl only. Upstream ships en/ar/he; Persian isn't in upstream so hand-coded. When upstream adds a new language, add it here (or generalize to read from upstream)."},
-	{"tools/build-demo.mjs", "~158",
-		"EMITTERS map — one entry per <name>-demo.tsx. Currently only alert-demo.tsx is wired. Add new entries to extend programmatic demo generation to other components."},
 	{"tools/demo.mjs", "~127-230",
 		"Per-tier HTML fixtures (dialogDemoHtml, fieldDemoHtml, etc.) — kernel/trivial-js components get static HTML hand-written here; consumed by tools/demo.mjs."},
 	{"docs/demos/", "(directory)",
@@ -385,8 +381,8 @@ var heuristicHints = []heuristicHint{
 		kind: "programmatic", tool: "tools/build-rtl.mjs", source: "src/registry/rtl-translations.json (lifted from examples/aria by tools/rtl-dict.mjs)"},
 	{re: re(`^docs/demos/[^/]+-rtl-(en|he|fa)\.html$`),
 		kind: "programmatic", tool: "tools/build-rtl.mjs", source: "src/registry/rtl-translations.json (lifted from examples/aria by tools/rtl-dict.mjs)"},
-	{re: re(`^docs/demos/[^/]+-demo\.html$`),
-		kind: "programmatic", tool: "tools/build-demo.mjs", source: "examples/radix/<name>-demo.tsx"},
+	{re: re(`^(docs/demos|dist/components)/[^/]+-demo\.html$`),
+		kind: "programmatic", tool: "tools/example-oracle.mjs", source: "examples/radix/<name>-demo.tsx, rendered with real React"},
 	{re: re(`^dist/glue/`),
 		kind: "programmatic", tool: "tools/demo.mjs", source: "src/kernel/*-glue.js"},
 	// Catch-all: any HTML under dist/ is a build artifact. The specific rules
@@ -416,7 +412,7 @@ var heuristicHints = []heuristicHint{
 	{re: re(`^probes/`),
 		kind: "hand-authored", owner: "human (test fixture)"},
 	{re: re(`^docs/demos/`),
-		kind: "hand-authored", owner: "human (FT7 demo batch — extend build-demo.mjs to make programmatic)"},
+		kind: "hand-authored", owner: "human (remaining hand-written demos only — all programmatic demos come from example-oracle)"},
 	{re: re(`^docs/content/[^/]+\.mdx$`),
 		kind: "hand-authored", owner: "human (guide source — compiled by docs-build)"},
 	{re: re(`^src/registry/pin\.json$`),

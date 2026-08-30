@@ -64,8 +64,7 @@ const PERSIAN = {
 let emitted = 0
 // FT8/Step 9: track which language variants exist per RTL preview so
 // the host page can emit language buttons that won't 404 on click.
-// Written to build/rtl-langs.json — read by src/docs/components.mjs
-// (via buildComponentMap()).
+// Written to build/rtl-langs.json — read by tools/docs-build.mjs.
 const langManifest = {}
 // Two-phase, for the reason ddc03fb gave when example-oracle had the same
 // shape of bug: this loop used to `continue` past every problem and still exit

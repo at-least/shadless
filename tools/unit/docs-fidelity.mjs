@@ -5,7 +5,7 @@
 // replacement heading, chips key-order, radix unknown-status rule.
 import {
   scanFences, blankFences, withoutCodeTabs, withoutInstallSection, withoutRtlMigrate,
-  mdxPageFacts, htmlPageFacts, comparePage,
+  mdxPageFacts, mdPageFacts, comparePage,
 } from "../docs-fidelity-lib.mjs"
 
 const FENCE_OK = [
@@ -129,7 +129,12 @@ export function run(t) {
     t.ok("facts: generic kept in fence content (no tag stripping)", M.fences[0].content.includes("useChat<ChatMessage>({"))
   }
 
-  // ---- htmlPageFacts + comparePage: detections ----
+  // ---- mdPageFacts + comparePage: detections ----
+  // The comparison target used to be htmlPageFacts over the hand-rolled
+  // site's rendered HTML. VitePress renders the pages now, so the gate
+  // compares mdx source facts against the markdown docs-build wrote — what
+  // follows exercises the same comparison through mdPageFacts on an
+  // equivalent of the built markdown.
   const mdx = [
     "---",
     "title: Accordion",
@@ -147,57 +152,77 @@ export function run(t) {
     "",
     "### Nested",
   ].join("\n")
-  const goodHtml = [
-    "<html><body>",
-    "<h1>Accordion</h1>",
-    '<p class="lead">A stacked set.</p>',
-    '<p class="links"><a href="https://example.com/doc" rel="noopener">doc</a></p>',
-    "<article>",
-    '<h2 id="usage">Usage</h2>',
-    '<pre><code class="language-tsx">&lt;Accordion /&gt;\n</code></pre>',
-    '<div data-component-preview="accordion-demo" data-status="authored"></div>',
-    '<h3 id="nested">Nested</h3>',
-    "</article>",
-    '<nav class="toc"><ul><li class="toc-2"><a href="#usage">Usage</a></li><li class="toc-3"><a href="#nested">Nested</a></li></ul></nav>',
-    "</body></html>",
+  const goodMd = [
+    "---",
+    "title: Accordion",
+    "description: A stacked set.",
+    "---",
+    "",
+    "# Accordion",
+    "",
+    "A stacked set.",
+    "",
+    '<p class="page-links"><a href="https://example.com/doc" rel="noopener">doc</a></p>',
+    "",
+    "## Usage",
+    "",
+    "```tsx",
+    "<Accordion />",
+    "```",
+    "",
+    '<iframe class="demo" src="../demos/accordion-demo.html" title="accordion-demo" data-status="authored"></iframe>',
+    "",
+    "### Nested",
+    "",
   ].join("\n")
 
   {
-    const issues = comparePage(mdxPageFacts(mdx), htmlPageFacts(goodHtml), { pageName: "accordion", isComponentPage: true, expectedManualRef: null })
+    const issues = comparePage(mdxPageFacts(mdx), mdPageFacts(goodMd), { pageName: "accordion", isComponentPage: true, expectedManualRef: null })
     t.eq("compare: clean pair → no issues", issues, [])
   }
   {
-    // heading dropped from html
-    const bad = goodHtml.replace('<h3 id="nested">Nested</h3>', "")
-    const kinds = comparePage(mdxPageFacts(mdx), htmlPageFacts(bad), { pageName: "accordion", isComponentPage: true, expectedManualRef: null }).map((x) => x.split(": ")[0]).sort()
-    t.ok("compare: heading loss detected (headings + toc)", kinds.includes("headings") && kinds.includes("toc"), kinds.join(","))
+    // heading dropped from the built page
+    const bad = goodMd.replace("### Nested\n", "")
+    const kinds = comparePage(mdxPageFacts(mdx), mdPageFacts(bad), { pageName: "accordion", isComponentPage: true, expectedManualRef: null }).map((x) => x.split(": ")[0]).sort()
+    t.ok("compare: heading loss detected", kinds.includes("headings"), kinds.join(","))
   }
   {
-    // fence content dropped from html
-    const bad = goodHtml.replace('<pre><code class="language-tsx">&lt;Accordion /&gt;\n</code></pre>', "")
-    const kinds = comparePage(mdxPageFacts(mdx), htmlPageFacts(bad), { pageName: "accordion", isComponentPage: true, expectedManualRef: null }).map((x) => x.split(": ")[0])
+    // fence content dropped from the built page
+    const bad = goodMd.replace("```tsx\n<Accordion />\n```\n", "")
+    const kinds = comparePage(mdxPageFacts(mdx), mdPageFacts(bad), { pageName: "accordion", isComponentPage: true, expectedManualRef: null }).map((x) => x.split(": ")[0])
     t.ok("compare: dropped fence detected", kinds.includes("fence"), kinds.join(","))
   }
   {
     // unknown preview status on a component page
-    const bad = goodHtml.replace('data-status="authored"', 'data-status="unknown"')
-    const kinds = comparePage(mdxPageFacts(mdx), htmlPageFacts(bad), { pageName: "accordion", isComponentPage: true, expectedManualRef: null }).map((x) => x.split(": ")[0])
+    const bad = goodMd.replace('data-status="authored"', 'data-status="unknown"')
+    const kinds = comparePage(mdxPageFacts(mdx), mdPageFacts(bad), { pageName: "accordion", isComponentPage: true, expectedManualRef: null }).map((x) => x.split(": ")[0])
     t.ok("compare: unknown status on component page flagged", kinds.includes("preview-status"), kinds.join(","))
     // off-component pages (guides) don't carry the radix-catalog
     // completeness rule
-    const okGuide = comparePage(mdxPageFacts(mdx), htmlPageFacts(bad), { pageName: "intro", isComponentPage: false, expectedManualRef: null })
+    const okGuide = comparePage(mdxPageFacts(mdx), mdPageFacts(bad), { pageName: "intro", isComponentPage: false, expectedManualRef: null })
     t.eq("compare: unknown status tolerated off-component", okGuide, [])
   }
   {
     // chips mismatch (key-order-safe comparison)
-    const bad = goodHtml.replace('href="https://example.com/doc" rel="noopener">doc<', 'href="https://example.com/other" rel="noopener">doc<')
-    const kinds = comparePage(mdxPageFacts(mdx), htmlPageFacts(bad), { pageName: "accordion", isComponentPage: true, expectedManualRef: null }).map((x) => x.split(": ")[0])
+    const bad = goodMd.replace('href="https://example.com/doc"', 'href="https://example.com/other"')
+    const kinds = comparePage(mdxPageFacts(mdx), mdPageFacts(bad), { pageName: "accordion", isComponentPage: true, expectedManualRef: null }).map((x) => x.split(": ")[0])
     t.ok("compare: chip href drift detected", kinds.includes("chips"), kinds.join(","))
   }
   {
-    // shim headings (data-slot) are excluded from comparison
-    const withShim = goodHtml.replace("</article>", '<h3 class="flex"><button data-slot="accordion-trigger">Q</button></h3></article>')
-    const issues = comparePage(mdxPageFacts(mdx), htmlPageFacts(withShim), { pageName: "accordion", isComponentPage: true, expectedManualRef: null })
-    t.eq("compare: Accordion-shim h3 ignored", issues, [])
+    // raw <hN> headings (e.g. component-markup fragments embedded in the
+    // markdown) DO count as document headings on the page — mdPageFacts
+    // merges markdown and raw tags in document order, because the text
+    // transform copies both through. Adding one therefore desyncs the
+    // heading comparison.
+    const withRaw = goodMd.replace("### Nested", '<h3 class="demo">Extra</h3>\n\n### Nested')
+    const kinds = comparePage(mdxPageFacts(mdx), mdPageFacts(withRaw), { pageName: "accordion", isComponentPage: true, expectedManualRef: null }).map((x) => x.split(": ")[0])
+    t.ok("compare: extra raw-heading detected", kinds.includes("headings"), kinds.join(","))
+  }
+  {
+    // an inline-code look-alike must not open a phantom raw heading: a
+    // table cell saying `<h3>` is prose, not markup
+    const withInline = goodMd.replace("### Nested", "| `h3` | `<h3>` |\n\n### Nested")
+    const issues = comparePage(mdxPageFacts(mdx), mdPageFacts(withInline), { pageName: "accordion", isComponentPage: true, expectedManualRef: null })
+    t.eq("compare: inline-code `<h3>` not a phantom heading", issues, [])
   }
 }
