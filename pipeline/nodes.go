@@ -94,8 +94,8 @@ var Nodes = []Node{
 	{
 		ID: NPack, Kind: "gate", Tier: "fast",
 		Needs:    []NodeID{NBuildJs, NProductBuild},
-		Run:      [][]string{{"node", "gates/pack.mjs"}},
-		Inputs:   []string{"gates/pack.mjs", "package.json", "README.md", "dist/**"},
+		Run:      [][]string{{"./build/pipeline", "gate", "pack"}},
+		Inputs:   []string{"pipeline/gate_pack.go", "package.json", "README.md", "dist/**"},
 		Produces: nil,
 	},
 	{

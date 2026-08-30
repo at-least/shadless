@@ -89,8 +89,8 @@ export const NODES = [
   node({
     // reads dist/ — must not race build-js / product-build under the parallel runner
     id: "pack", kind: "gate", tier: "fast", needs: ["build-js", "product-build"],
-    run: [["node", "gates/pack.mjs"]],
-    inputs: ["gates/pack.mjs", "package.json", "README.md", "dist/**"],
+    run: [["./build/pipeline", "gate", "pack"]],
+    inputs: ["pipeline/gate_pack.go", "package.json", "README.md", "dist/**"],
     why: "the npm surface — exports map, tarball contents, README specifiers, an empty " +
          "dependencies — must agree: a bare-string ./runtime.min export served an IIFE to " +
          "`import`, README documented a specifier that does not resolve, and a React-free " +
