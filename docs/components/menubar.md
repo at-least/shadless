@@ -15,29 +15,783 @@ A visually persistent menu common in desktop applications that provides quick ac
 <p class="demo-langs"><a href="/demos/menubar-demo.html">Open the demo page</a></p>
 
 ::: code-group
-```text [menubar-demo.html]
-<div role="menubar" data-slot="menubar" class="h-8 gap-0.5 rounded-lg border p-[3px] flex items-center w-72" tabindex="0" data-orientation="horizontal" style="outline: none;"><button type="button" role="menuitem" id="m0-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-slot="menubar-trigger" class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none" tabindex="-1" data-orientation="horizontal" data-radix-collection-item="" data-radixuigo-menu-trigger="m0">File</button><button type="button" role="menuitem" id="m1-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-slot="menubar-trigger" class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none" tabindex="-1" data-orientation="horizontal" data-radix-collection-item="" data-radixuigo-menu-trigger="m1">Edit</button><button type="button" role="menuitem" id="m2-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-slot="menubar-trigger" class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none" tabindex="-1" data-orientation="horizontal" data-radix-collection-item="" data-radixuigo-menu-trigger="m2">View</button><button type="button" role="menuitem" id="m3-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-slot="menubar-trigger" class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none" tabindex="0" data-orientation="horizontal" data-radix-collection-item="" data-highlighted="" data-radixuigo-menu-trigger="m3">Profiles</button></div>
+```text:line-numbers [menubar-demo.html]
+<div
+  role="menubar"
+  data-slot="menubar"
+  class="h-8 gap-0.5 rounded-lg border p-[3px] flex items-center w-72"
+  tabindex="0"
+  data-orientation="horizontal"
+  style="outline: none"
+>
+  <button
+    type="button"
+    role="menuitem"
+    id="m0-trigger"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    data-state="closed"
+    data-slot="menubar-trigger"
+    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
+    tabindex="-1"
+    data-orientation="horizontal"
+    data-radix-collection-item=""
+    data-radixuigo-menu-trigger="m0"
+  >
+    File</button
+  ><button
+    type="button"
+    role="menuitem"
+    id="m1-trigger"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    data-state="closed"
+    data-slot="menubar-trigger"
+    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
+    tabindex="-1"
+    data-orientation="horizontal"
+    data-radix-collection-item=""
+    data-radixuigo-menu-trigger="m1"
+  >
+    Edit</button
+  ><button
+    type="button"
+    role="menuitem"
+    id="m2-trigger"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    data-state="closed"
+    data-slot="menubar-trigger"
+    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
+    tabindex="-1"
+    data-orientation="horizontal"
+    data-radix-collection-item=""
+    data-radixuigo-menu-trigger="m2"
+  >
+    View</button
+  ><button
+    type="button"
+    role="menuitem"
+    id="m3-trigger"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    data-state="closed"
+    data-slot="menubar-trigger"
+    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
+    tabindex="0"
+    data-orientation="horizontal"
+    data-radix-collection-item=""
+    data-highlighted=""
+    data-radixuigo-menu-trigger="m3"
+  >
+    Profiles
+  </button>
+</div>
 <template id="m0-tpl">
-<div data-side="bottom" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="ltr" id="m0" aria-labelledby="m0-trigger" data-radix-menubar-content="" data-slot="menubar-content" class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);"><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">New Tab <span data-slot="menubar-shortcut" class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto">⌘T</span></div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">New Window <span data-slot="menubar-shortcut" class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto">⌘N</span></div><div role="menuitem" aria-disabled="true" data-disabled="" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">New Incognito Window</div></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="group" data-slot="menubar-group"><div role="menuitem" id="m0s0-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="m0s0" data-state="closed" data-radix-menubar-subtrigger="" data-slot="menubar-sub-trigger" class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-none select-none" tabindex="-1" data-orientation="vertical" data-radix-collection-item="" data-radixuigo-menu-subtrigger="m0s0">Share<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip ml-auto size-4"><path d="m9 18 6-6-6-6"></path></svg></div></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Print... <span data-slot="menubar-shortcut" class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto">⌘P</span></div></div></div>
+  <div
+    data-side="bottom"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="ltr"
+    id="m0"
+    aria-labelledby="m0-trigger"
+    data-radix-menubar-content=""
+    data-slot="menubar-content"
+    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-menubar-content-available-width: var(--radix-popper-available-width);
+      --radix-menubar-content-available-height: var(--radix-popper-available-height);
+      --radix-menubar-trigger-width: var(--radix-popper-anchor-width);
+      --radix-menubar-trigger-height: var(--radix-popper-anchor-height);
+    "
+  >
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        New Tab
+        <span
+          data-slot="menubar-shortcut"
+          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+          >⌘T</span
+        >
+      </div>
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        New Window
+        <span
+          data-slot="menubar-shortcut"
+          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+          >⌘N</span
+        >
+      </div>
+      <div
+        role="menuitem"
+        aria-disabled="true"
+        data-disabled=""
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        New Incognito Window
+      </div>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        id="m0s0-trigger"
+        aria-haspopup="menu"
+        aria-expanded="false"
+        aria-controls="m0s0"
+        data-state="closed"
+        data-radix-menubar-subtrigger=""
+        data-slot="menubar-sub-trigger"
+        class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-none select-none"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+        data-radixuigo-menu-subtrigger="m0s0"
+      >
+        Share<svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-chevron-right cn-rtl-flip ml-auto size-4"
+        >
+          <path d="m9 18 6-6-6-6"></path>
+        </svg>
+      </div>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Print...
+        <span
+          data-slot="menubar-shortcut"
+          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+          >⌘P</span
+        >
+      </div>
+    </div>
+  </div>
 </template>
 <template id="m0s0-tpl">
-<div data-side="right" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="ltr" id="m0s0" aria-labelledby="m0-trigger" data-radix-menubar-content="" data-slot="menubar-sub-content" class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-32 rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);"><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Email link</div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Messages</div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Notes</div></div></div>
+  <div
+    data-side="right"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="ltr"
+    id="m0s0"
+    aria-labelledby="m0-trigger"
+    data-radix-menubar-content=""
+    data-slot="menubar-sub-content"
+    class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-32 rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-menubar-content-available-width: var(--radix-popper-available-width);
+      --radix-menubar-content-available-height: var(--radix-popper-available-height);
+      --radix-menubar-trigger-width: var(--radix-popper-anchor-width);
+      --radix-menubar-trigger-height: var(--radix-popper-anchor-height);
+    "
+  >
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Email link
+      </div>
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Messages
+      </div>
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Notes
+      </div>
+    </div>
+  </div>
 </template>
 <template id="m1-tpl">
-<div data-side="bottom" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="ltr" id="m1" aria-labelledby="m1-trigger" data-radix-menubar-content="" data-slot="menubar-content" class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);"><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Undo <span data-slot="menubar-shortcut" class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto">⌘Z</span></div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Redo <span data-slot="menubar-shortcut" class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto">⇧⌘Z</span></div></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="group" data-slot="menubar-group"><div role="menuitem" id="m1s0-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="m1s0" data-state="closed" data-radix-menubar-subtrigger="" data-slot="menubar-sub-trigger" class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-none select-none" tabindex="-1" data-orientation="vertical" data-radix-collection-item="" data-radixuigo-menu-subtrigger="m1s0">Find<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip ml-auto size-4"><path d="m9 18 6-6-6-6"></path></svg></div></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Cut</div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Copy</div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Paste</div></div></div>
+  <div
+    data-side="bottom"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="ltr"
+    id="m1"
+    aria-labelledby="m1-trigger"
+    data-radix-menubar-content=""
+    data-slot="menubar-content"
+    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-menubar-content-available-width: var(--radix-popper-available-width);
+      --radix-menubar-content-available-height: var(--radix-popper-available-height);
+      --radix-menubar-trigger-width: var(--radix-popper-anchor-width);
+      --radix-menubar-trigger-height: var(--radix-popper-anchor-height);
+    "
+  >
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Undo
+        <span
+          data-slot="menubar-shortcut"
+          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+          >⌘Z</span
+        >
+      </div>
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Redo
+        <span
+          data-slot="menubar-shortcut"
+          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+          >⇧⌘Z</span
+        >
+      </div>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        id="m1s0-trigger"
+        aria-haspopup="menu"
+        aria-expanded="false"
+        aria-controls="m1s0"
+        data-state="closed"
+        data-radix-menubar-subtrigger=""
+        data-slot="menubar-sub-trigger"
+        class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-none select-none"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+        data-radixuigo-menu-subtrigger="m1s0"
+      >
+        Find<svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-chevron-right cn-rtl-flip ml-auto size-4"
+        >
+          <path d="m9 18 6-6-6-6"></path>
+        </svg>
+      </div>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Cut
+      </div>
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Copy
+      </div>
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Paste
+      </div>
+    </div>
+  </div>
 </template>
 <template id="m1s0-tpl">
-<div data-side="right" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="ltr" id="m1s0" aria-labelledby="m1-trigger" data-radix-menubar-content="" data-slot="menubar-sub-content" class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-32 rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);"><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Search the web</div></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Find...</div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Find Next</div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Find Previous</div></div></div>
+  <div
+    data-side="right"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="ltr"
+    id="m1s0"
+    aria-labelledby="m1-trigger"
+    data-radix-menubar-content=""
+    data-slot="menubar-sub-content"
+    class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-32 rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-menubar-content-available-width: var(--radix-popper-available-width);
+      --radix-menubar-content-available-height: var(--radix-popper-available-height);
+      --radix-menubar-trigger-width: var(--radix-popper-anchor-width);
+      --radix-menubar-trigger-height: var(--radix-popper-anchor-height);
+    "
+  >
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Search the web
+      </div>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Find...
+      </div>
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Find Next
+      </div>
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Find Previous
+      </div>
+    </div>
+  </div>
 </template>
 <template id="m2-tpl">
-<div data-side="bottom" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="ltr" id="m2" aria-labelledby="m2-trigger" data-radix-menubar-content="" data-slot="menubar-content" class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden w-44" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);"><div role="group" data-slot="menubar-group"><div role="menuitemcheckbox" aria-checked="false" data-slot="menubar-checkbox-item" class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" data-state="unchecked" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><span class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"></span>Bookmarks Bar</div><div role="menuitemcheckbox" aria-checked="true" data-slot="menubar-checkbox-item" class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" data-state="checked" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><span class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"><span data-state="checked"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"></path></svg></span></span>Full URLs</div></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-inset="true" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Reload <span data-slot="menubar-shortcut" class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto">⌘R</span></div><div role="menuitem" aria-disabled="true" data-disabled="" data-slot="menubar-item" data-inset="true" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Force Reload <span data-slot="menubar-shortcut" class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto">⇧⌘R</span></div></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-inset="true" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Toggle Fullscreen</div></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-inset="true" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Hide Sidebar</div></div></div>
+  <div
+    data-side="bottom"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="ltr"
+    id="m2"
+    aria-labelledby="m2-trigger"
+    data-radix-menubar-content=""
+    data-slot="menubar-content"
+    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden w-44"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-menubar-content-available-width: var(--radix-popper-available-width);
+      --radix-menubar-content-available-height: var(--radix-popper-available-height);
+      --radix-menubar-trigger-width: var(--radix-popper-anchor-width);
+      --radix-menubar-trigger-height: var(--radix-popper-anchor-height);
+    "
+  >
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitemcheckbox"
+        aria-checked="false"
+        data-slot="menubar-checkbox-item"
+        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        data-state="unchecked"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <span
+          class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+        ></span
+        >Bookmarks Bar
+      </div>
+      <div
+        role="menuitemcheckbox"
+        aria-checked="true"
+        data-slot="menubar-checkbox-item"
+        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        data-state="checked"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <span
+          class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+          ><span data-state="checked"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-check"
+            >
+              <path d="M20 6 9 17l-5-5"></path></svg></span></span
+        >Full URLs
+      </div>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-inset="true"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Reload
+        <span
+          data-slot="menubar-shortcut"
+          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+          >⌘R</span
+        >
+      </div>
+      <div
+        role="menuitem"
+        aria-disabled="true"
+        data-disabled=""
+        data-slot="menubar-item"
+        data-inset="true"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Force Reload
+        <span
+          data-slot="menubar-shortcut"
+          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+          >⇧⌘R</span
+        >
+      </div>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-inset="true"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Toggle Fullscreen
+      </div>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-inset="true"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Hide Sidebar
+      </div>
+    </div>
+  </div>
 </template>
 <template id="m3-tpl">
-<div data-side="bottom" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="ltr" id="m3" aria-labelledby="m3-trigger" data-radix-menubar-content="" data-slot="menubar-content" class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);"><div role="group" data-slot="menubar-radio-group"><div role="menuitemradio" aria-checked="false" data-slot="menubar-radio-item" class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" data-state="unchecked" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><span class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"></span>Andy</div><div role="menuitemradio" aria-checked="true" data-slot="menubar-radio-item" class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" data-state="checked" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><span class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"><span data-state="checked"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"></path></svg></span></span>Benoit</div><div role="menuitemradio" aria-checked="false" data-slot="menubar-radio-item" class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" data-state="unchecked" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><span class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"></span>Luis</div></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-inset="true" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Edit...</div></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-inset="true" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Add Profile...</div></div></div>
+  <div
+    data-side="bottom"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="ltr"
+    id="m3"
+    aria-labelledby="m3-trigger"
+    data-radix-menubar-content=""
+    data-slot="menubar-content"
+    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-menubar-content-available-width: var(--radix-popper-available-width);
+      --radix-menubar-content-available-height: var(--radix-popper-available-height);
+      --radix-menubar-trigger-width: var(--radix-popper-anchor-width);
+      --radix-menubar-trigger-height: var(--radix-popper-anchor-height);
+    "
+  >
+    <div role="group" data-slot="menubar-radio-group">
+      <div
+        role="menuitemradio"
+        aria-checked="false"
+        data-slot="menubar-radio-item"
+        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        data-state="unchecked"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <span
+          class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+        ></span
+        >Andy
+      </div>
+      <div
+        role="menuitemradio"
+        aria-checked="true"
+        data-slot="menubar-radio-item"
+        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        data-state="checked"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <span
+          class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+          ><span data-state="checked"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-check"
+            >
+              <path d="M20 6 9 17l-5-5"></path></svg></span></span
+        >Benoit
+      </div>
+      <div
+        role="menuitemradio"
+        aria-checked="false"
+        data-slot="menubar-radio-item"
+        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        data-state="unchecked"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <span
+          class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+        ></span
+        >Luis
+      </div>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-inset="true"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Edit...
+      </div>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-inset="true"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Add Profile...
+      </div>
+    </div>
+  </div>
 </template>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/menubar.js
@@ -329,17 +1083,248 @@ Use `MenubarCheckboxItem` for toggleable options.
 <p class="demo-langs"><a href="/demos/menubar-checkbox.html">Open the demo page</a></p>
 
 ::: code-group
-```text [menubar-checkbox.html]
-<div role="menubar" data-slot="menubar" class="h-8 gap-0.5 rounded-lg border p-[3px] flex items-center w-72" tabindex="0" data-orientation="horizontal" style="outline: none;"><button type="button" role="menuitem" id="m0-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-slot="menubar-trigger" class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none" tabindex="-1" data-orientation="horizontal" data-radix-collection-item="" data-radixuigo-menu-trigger="m0">View</button><button type="button" role="menuitem" id="m1-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-slot="menubar-trigger" class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none" tabindex="0" data-orientation="horizontal" data-radix-collection-item="" data-highlighted="" data-radixuigo-menu-trigger="m1">Format</button></div>
+```text:line-numbers [menubar-checkbox.html]
+<div
+  role="menubar"
+  data-slot="menubar"
+  class="h-8 gap-0.5 rounded-lg border p-[3px] flex items-center w-72"
+  tabindex="0"
+  data-orientation="horizontal"
+  style="outline: none"
+>
+  <button
+    type="button"
+    role="menuitem"
+    id="m0-trigger"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    data-state="closed"
+    data-slot="menubar-trigger"
+    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
+    tabindex="-1"
+    data-orientation="horizontal"
+    data-radix-collection-item=""
+    data-radixuigo-menu-trigger="m0"
+  >
+    View</button
+  ><button
+    type="button"
+    role="menuitem"
+    id="m1-trigger"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    data-state="closed"
+    data-slot="menubar-trigger"
+    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
+    tabindex="0"
+    data-orientation="horizontal"
+    data-radix-collection-item=""
+    data-highlighted=""
+    data-radixuigo-menu-trigger="m1"
+  >
+    Format
+  </button>
+</div>
 <template id="m0-tpl">
-<div data-side="bottom" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="ltr" id="m0" aria-labelledby="m0-trigger" data-radix-menubar-content="" data-slot="menubar-content" class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden w-64" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);"><div role="menuitemcheckbox" aria-checked="false" data-slot="menubar-checkbox-item" class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" data-state="unchecked" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><span class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"></span>Always Show Bookmarks Bar</div><div role="menuitemcheckbox" aria-checked="true" data-slot="menubar-checkbox-item" class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" data-state="checked" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><span class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"><span data-state="checked"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"></path></svg></span></span>Always Show Full URLs</div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="menuitem" data-slot="menubar-item" data-inset="true" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Reload <span data-slot="menubar-shortcut" class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto">⌘R</span></div><div role="menuitem" aria-disabled="true" data-disabled="" data-slot="menubar-item" data-inset="true" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Force Reload <span data-slot="menubar-shortcut" class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto">⇧⌘R</span></div></div>
+  <div
+    data-side="bottom"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="ltr"
+    id="m0"
+    aria-labelledby="m0-trigger"
+    data-radix-menubar-content=""
+    data-slot="menubar-content"
+    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden w-64"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-menubar-content-available-width: var(--radix-popper-available-width);
+      --radix-menubar-content-available-height: var(--radix-popper-available-height);
+      --radix-menubar-trigger-width: var(--radix-popper-anchor-width);
+      --radix-menubar-trigger-height: var(--radix-popper-anchor-height);
+    "
+  >
+    <div
+      role="menuitemcheckbox"
+      aria-checked="false"
+      data-slot="menubar-checkbox-item"
+      class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      data-state="unchecked"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      <span
+        class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+      ></span
+      >Always Show Bookmarks Bar
+    </div>
+    <div
+      role="menuitemcheckbox"
+      aria-checked="true"
+      data-slot="menubar-checkbox-item"
+      class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      data-state="checked"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      <span
+        class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+        ><span data-state="checked"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-check"
+          >
+            <path d="M20 6 9 17l-5-5"></path></svg></span></span
+      >Always Show Full URLs
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div
+      role="menuitem"
+      data-slot="menubar-item"
+      data-inset="true"
+      data-variant="default"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      Reload
+      <span
+        data-slot="menubar-shortcut"
+        class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+        >⌘R</span
+      >
+    </div>
+    <div
+      role="menuitem"
+      aria-disabled="true"
+      data-disabled=""
+      data-slot="menubar-item"
+      data-inset="true"
+      data-variant="default"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      Force Reload
+      <span
+        data-slot="menubar-shortcut"
+        class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+        >⇧⌘R</span
+      >
+    </div>
+  </div>
 </template>
 <template id="m1-tpl">
-<div data-side="bottom" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="ltr" id="m1" aria-labelledby="m1-trigger" data-radix-menubar-content="" data-slot="menubar-content" class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);"><div role="menuitemcheckbox" aria-checked="true" data-slot="menubar-checkbox-item" class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" data-state="checked" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><span class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"><span data-state="checked"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"></path></svg></span></span>Strikethrough</div><div role="menuitemcheckbox" aria-checked="false" data-slot="menubar-checkbox-item" class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" data-state="unchecked" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><span class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"></span>Code</div><div role="menuitemcheckbox" aria-checked="false" data-slot="menubar-checkbox-item" class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" data-state="unchecked" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><span class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"></span>Superscript</div></div>
+  <div
+    data-side="bottom"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="ltr"
+    id="m1"
+    aria-labelledby="m1-trigger"
+    data-radix-menubar-content=""
+    data-slot="menubar-content"
+    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-menubar-content-available-width: var(--radix-popper-available-width);
+      --radix-menubar-content-available-height: var(--radix-popper-available-height);
+      --radix-menubar-trigger-width: var(--radix-popper-anchor-width);
+      --radix-menubar-trigger-height: var(--radix-popper-anchor-height);
+    "
+  >
+    <div
+      role="menuitemcheckbox"
+      aria-checked="true"
+      data-slot="menubar-checkbox-item"
+      class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      data-state="checked"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      <span
+        class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+        ><span data-state="checked"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-check"
+          >
+            <path d="M20 6 9 17l-5-5"></path></svg></span></span
+      >Strikethrough
+    </div>
+    <div
+      role="menuitemcheckbox"
+      aria-checked="false"
+      data-slot="menubar-checkbox-item"
+      class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      data-state="unchecked"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      <span
+        class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+      ></span
+      >Code
+    </div>
+    <div
+      role="menuitemcheckbox"
+      aria-checked="false"
+      data-slot="menubar-checkbox-item"
+      class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      data-state="unchecked"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      <span
+        class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+      ></span
+      >Superscript
+    </div>
+  </div>
 </template>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/menubar.js
@@ -537,17 +1522,255 @@ Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
 <p class="demo-langs"><a href="/demos/menubar-radio.html">Open the demo page</a></p>
 
 ::: code-group
-```text [menubar-radio.html]
-<div role="menubar" data-slot="menubar" class="h-8 gap-0.5 rounded-lg border p-[3px] flex items-center w-72" tabindex="0" data-orientation="horizontal" style="outline: none;"><button type="button" role="menuitem" id="m0-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-slot="menubar-trigger" class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none" tabindex="-1" data-orientation="horizontal" data-radix-collection-item="" data-radixuigo-menu-trigger="m0">Profiles</button><button type="button" role="menuitem" id="m1-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-slot="menubar-trigger" class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none" tabindex="0" data-orientation="horizontal" data-radix-collection-item="" data-highlighted="" data-radixuigo-menu-trigger="m1">Theme</button></div>
+```text:line-numbers [menubar-radio.html]
+<div
+  role="menubar"
+  data-slot="menubar"
+  class="h-8 gap-0.5 rounded-lg border p-[3px] flex items-center w-72"
+  tabindex="0"
+  data-orientation="horizontal"
+  style="outline: none"
+>
+  <button
+    type="button"
+    role="menuitem"
+    id="m0-trigger"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    data-state="closed"
+    data-slot="menubar-trigger"
+    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
+    tabindex="-1"
+    data-orientation="horizontal"
+    data-radix-collection-item=""
+    data-radixuigo-menu-trigger="m0"
+  >
+    Profiles</button
+  ><button
+    type="button"
+    role="menuitem"
+    id="m1-trigger"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    data-state="closed"
+    data-slot="menubar-trigger"
+    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
+    tabindex="0"
+    data-orientation="horizontal"
+    data-radix-collection-item=""
+    data-highlighted=""
+    data-radixuigo-menu-trigger="m1"
+  >
+    Theme
+  </button>
+</div>
 <template id="m0-tpl">
-<div data-side="bottom" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="ltr" id="m0" aria-labelledby="m0-trigger" data-radix-menubar-content="" data-slot="menubar-content" class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);"><div role="group" data-slot="menubar-radio-group"><div role="menuitemradio" aria-checked="false" data-slot="menubar-radio-item" class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" data-state="unchecked" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><span class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"></span>Andy</div><div role="menuitemradio" aria-checked="true" data-slot="menubar-radio-item" class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" data-state="checked" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><span class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"><span data-state="checked"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"></path></svg></span></span>Benoit</div><div role="menuitemradio" aria-checked="false" data-slot="menubar-radio-item" class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" data-state="unchecked" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><span class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"></span>Luis</div></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="menuitem" data-slot="menubar-item" data-inset="true" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Edit...</div><div role="menuitem" data-slot="menubar-item" data-inset="true" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Add Profile...</div></div>
+  <div
+    data-side="bottom"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="ltr"
+    id="m0"
+    aria-labelledby="m0-trigger"
+    data-radix-menubar-content=""
+    data-slot="menubar-content"
+    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-menubar-content-available-width: var(--radix-popper-available-width);
+      --radix-menubar-content-available-height: var(--radix-popper-available-height);
+      --radix-menubar-trigger-width: var(--radix-popper-anchor-width);
+      --radix-menubar-trigger-height: var(--radix-popper-anchor-height);
+    "
+  >
+    <div role="group" data-slot="menubar-radio-group">
+      <div
+        role="menuitemradio"
+        aria-checked="false"
+        data-slot="menubar-radio-item"
+        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        data-state="unchecked"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <span
+          class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+        ></span
+        >Andy
+      </div>
+      <div
+        role="menuitemradio"
+        aria-checked="true"
+        data-slot="menubar-radio-item"
+        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        data-state="checked"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <span
+          class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+          ><span data-state="checked"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-check"
+            >
+              <path d="M20 6 9 17l-5-5"></path></svg></span></span
+        >Benoit
+      </div>
+      <div
+        role="menuitemradio"
+        aria-checked="false"
+        data-slot="menubar-radio-item"
+        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        data-state="unchecked"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <span
+          class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+        ></span
+        >Luis
+      </div>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div
+      role="menuitem"
+      data-slot="menubar-item"
+      data-inset="true"
+      data-variant="default"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      Edit...
+    </div>
+    <div
+      role="menuitem"
+      data-slot="menubar-item"
+      data-inset="true"
+      data-variant="default"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      Add Profile...
+    </div>
+  </div>
 </template>
 <template id="m1-tpl">
-<div data-side="bottom" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="ltr" id="m1" aria-labelledby="m1-trigger" data-radix-menubar-content="" data-slot="menubar-content" class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);"><div role="group" data-slot="menubar-radio-group"><div role="menuitemradio" aria-checked="false" data-slot="menubar-radio-item" class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" data-state="unchecked" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><span class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"></span>Light</div><div role="menuitemradio" aria-checked="false" data-slot="menubar-radio-item" class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" data-state="unchecked" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><span class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"></span>Dark</div><div role="menuitemradio" aria-checked="true" data-slot="menubar-radio-item" class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" data-state="checked" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><span class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"><span data-state="checked"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"></path></svg></span></span>System</div></div></div>
+  <div
+    data-side="bottom"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="ltr"
+    id="m1"
+    aria-labelledby="m1-trigger"
+    data-radix-menubar-content=""
+    data-slot="menubar-content"
+    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-menubar-content-available-width: var(--radix-popper-available-width);
+      --radix-menubar-content-available-height: var(--radix-popper-available-height);
+      --radix-menubar-trigger-width: var(--radix-popper-anchor-width);
+      --radix-menubar-trigger-height: var(--radix-popper-anchor-height);
+    "
+  >
+    <div role="group" data-slot="menubar-radio-group">
+      <div
+        role="menuitemradio"
+        aria-checked="false"
+        data-slot="menubar-radio-item"
+        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        data-state="unchecked"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <span
+          class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+        ></span
+        >Light
+      </div>
+      <div
+        role="menuitemradio"
+        aria-checked="false"
+        data-slot="menubar-radio-item"
+        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        data-state="unchecked"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <span
+          class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+        ></span
+        >Dark
+      </div>
+      <div
+        role="menuitemradio"
+        aria-checked="true"
+        data-slot="menubar-radio-item"
+        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        data-state="checked"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <span
+          class="left-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+          ><span data-state="checked"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-check"
+            >
+              <path d="M20 6 9 17l-5-5"></path></svg></span></span
+        >System
+      </div>
+    </div>
+  </div>
 </template>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/menubar.js
@@ -745,23 +1968,384 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
 <p class="demo-langs"><a href="/demos/menubar-submenu.html">Open the demo page</a></p>
 
 ::: code-group
-```text [menubar-submenu.html]
-<div role="menubar" data-slot="menubar" class="h-8 gap-0.5 rounded-lg border p-[3px] flex items-center w-72" tabindex="0" data-orientation="horizontal" style="outline: none;"><button type="button" role="menuitem" id="m0-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-slot="menubar-trigger" class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none" tabindex="-1" data-orientation="horizontal" data-radix-collection-item="" data-radixuigo-menu-trigger="m0">File</button><button type="button" role="menuitem" id="m1-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-slot="menubar-trigger" class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none" tabindex="0" data-orientation="horizontal" data-radix-collection-item="" data-highlighted="" data-radixuigo-menu-trigger="m1">Edit</button></div>
+```text:line-numbers [menubar-submenu.html]
+<div
+  role="menubar"
+  data-slot="menubar"
+  class="h-8 gap-0.5 rounded-lg border p-[3px] flex items-center w-72"
+  tabindex="0"
+  data-orientation="horizontal"
+  style="outline: none"
+>
+  <button
+    type="button"
+    role="menuitem"
+    id="m0-trigger"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    data-state="closed"
+    data-slot="menubar-trigger"
+    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
+    tabindex="-1"
+    data-orientation="horizontal"
+    data-radix-collection-item=""
+    data-radixuigo-menu-trigger="m0"
+  >
+    File</button
+  ><button
+    type="button"
+    role="menuitem"
+    id="m1-trigger"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    data-state="closed"
+    data-slot="menubar-trigger"
+    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
+    tabindex="0"
+    data-orientation="horizontal"
+    data-radix-collection-item=""
+    data-highlighted=""
+    data-radixuigo-menu-trigger="m1"
+  >
+    Edit
+  </button>
+</div>
 <template id="m0-tpl">
-<div data-side="bottom" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="ltr" id="m0" aria-labelledby="m0-trigger" data-radix-menubar-content="" data-slot="menubar-content" class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);"><div role="menuitem" id="m0s0-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="m0s0" data-state="closed" data-radix-menubar-subtrigger="" data-slot="menubar-sub-trigger" class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-none select-none" tabindex="-1" data-orientation="vertical" data-radix-collection-item="" data-radixuigo-menu-subtrigger="m0s0">Share<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip ml-auto size-4"><path d="m9 18 6-6-6-6"></path></svg></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Print... <span data-slot="menubar-shortcut" class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto">⌘P</span></div></div>
+  <div
+    data-side="bottom"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="ltr"
+    id="m0"
+    aria-labelledby="m0-trigger"
+    data-radix-menubar-content=""
+    data-slot="menubar-content"
+    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-menubar-content-available-width: var(--radix-popper-available-width);
+      --radix-menubar-content-available-height: var(--radix-popper-available-height);
+      --radix-menubar-trigger-width: var(--radix-popper-anchor-width);
+      --radix-menubar-trigger-height: var(--radix-popper-anchor-height);
+    "
+  >
+    <div
+      role="menuitem"
+      id="m0s0-trigger"
+      aria-haspopup="menu"
+      aria-expanded="false"
+      aria-controls="m0s0"
+      data-state="closed"
+      data-radix-menubar-subtrigger=""
+      data-slot="menubar-sub-trigger"
+      class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-none select-none"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+      data-radixuigo-menu-subtrigger="m0s0"
+    >
+      Share<svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-chevron-right cn-rtl-flip ml-auto size-4"
+      >
+        <path d="m9 18 6-6-6-6"></path>
+      </svg>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div
+      role="menuitem"
+      data-slot="menubar-item"
+      data-variant="default"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      Print...
+      <span
+        data-slot="menubar-shortcut"
+        class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+        >⌘P</span
+      >
+    </div>
+  </div>
 </template>
 <template id="m0s0-tpl">
-<div data-side="right" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="ltr" id="m0s0" aria-labelledby="m0-trigger" data-radix-menubar-content="" data-slot="menubar-sub-content" class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-32 rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);"><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Email link</div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Messages</div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Notes</div></div>
+  <div
+    data-side="right"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="ltr"
+    id="m0s0"
+    aria-labelledby="m0-trigger"
+    data-radix-menubar-content=""
+    data-slot="menubar-sub-content"
+    class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-32 rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-menubar-content-available-width: var(--radix-popper-available-width);
+      --radix-menubar-content-available-height: var(--radix-popper-available-height);
+      --radix-menubar-trigger-width: var(--radix-popper-anchor-width);
+      --radix-menubar-trigger-height: var(--radix-popper-anchor-height);
+    "
+  >
+    <div
+      role="menuitem"
+      data-slot="menubar-item"
+      data-variant="default"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      Email link
+    </div>
+    <div
+      role="menuitem"
+      data-slot="menubar-item"
+      data-variant="default"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      Messages
+    </div>
+    <div
+      role="menuitem"
+      data-slot="menubar-item"
+      data-variant="default"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      Notes
+    </div>
+  </div>
 </template>
 <template id="m1-tpl">
-<div data-side="bottom" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="ltr" id="m1" aria-labelledby="m1-trigger" data-radix-menubar-content="" data-slot="menubar-content" class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);"><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Undo <span data-slot="menubar-shortcut" class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto">⌘Z</span></div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Redo <span data-slot="menubar-shortcut" class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto">⇧⌘Z</span></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="menuitem" id="m1s0-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="m1s0" data-state="closed" data-radix-menubar-subtrigger="" data-slot="menubar-sub-trigger" class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-none select-none" tabindex="-1" data-orientation="vertical" data-radix-collection-item="" data-radixuigo-menu-subtrigger="m1s0">Find<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip ml-auto size-4"><path d="m9 18 6-6-6-6"></path></svg></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Cut</div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Copy</div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Paste</div></div>
+  <div
+    data-side="bottom"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="ltr"
+    id="m1"
+    aria-labelledby="m1-trigger"
+    data-radix-menubar-content=""
+    data-slot="menubar-content"
+    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-menubar-content-available-width: var(--radix-popper-available-width);
+      --radix-menubar-content-available-height: var(--radix-popper-available-height);
+      --radix-menubar-trigger-width: var(--radix-popper-anchor-width);
+      --radix-menubar-trigger-height: var(--radix-popper-anchor-height);
+    "
+  >
+    <div
+      role="menuitem"
+      data-slot="menubar-item"
+      data-variant="default"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      Undo
+      <span
+        data-slot="menubar-shortcut"
+        class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+        >⌘Z</span
+      >
+    </div>
+    <div
+      role="menuitem"
+      data-slot="menubar-item"
+      data-variant="default"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      Redo
+      <span
+        data-slot="menubar-shortcut"
+        class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+        >⇧⌘Z</span
+      >
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div
+      role="menuitem"
+      id="m1s0-trigger"
+      aria-haspopup="menu"
+      aria-expanded="false"
+      aria-controls="m1s0"
+      data-state="closed"
+      data-radix-menubar-subtrigger=""
+      data-slot="menubar-sub-trigger"
+      class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-none select-none"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+      data-radixuigo-menu-subtrigger="m1s0"
+    >
+      Find<svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-chevron-right cn-rtl-flip ml-auto size-4"
+      >
+        <path d="m9 18 6-6-6-6"></path>
+      </svg>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div
+      role="menuitem"
+      data-slot="menubar-item"
+      data-variant="default"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      Cut
+    </div>
+    <div
+      role="menuitem"
+      data-slot="menubar-item"
+      data-variant="default"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      Copy
+    </div>
+    <div
+      role="menuitem"
+      data-slot="menubar-item"
+      data-variant="default"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      Paste
+    </div>
+  </div>
 </template>
 <template id="m1s0-tpl">
-<div data-side="right" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="ltr" id="m1s0" aria-labelledby="m1-trigger" data-radix-menubar-content="" data-slot="menubar-sub-content" class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-32 rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);"><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Find...</div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Find Next</div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Find Previous</div></div>
+  <div
+    data-side="right"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="ltr"
+    id="m1s0"
+    aria-labelledby="m1-trigger"
+    data-radix-menubar-content=""
+    data-slot="menubar-sub-content"
+    class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-32 rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-menubar-content-available-width: var(--radix-popper-available-width);
+      --radix-menubar-content-available-height: var(--radix-popper-available-height);
+      --radix-menubar-trigger-width: var(--radix-popper-anchor-width);
+      --radix-menubar-trigger-height: var(--radix-popper-anchor-height);
+    "
+  >
+    <div
+      role="menuitem"
+      data-slot="menubar-item"
+      data-variant="default"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      Find...
+    </div>
+    <div
+      role="menuitem"
+      data-slot="menubar-item"
+      data-variant="default"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      Find Next
+    </div>
+    <div
+      role="menuitem"
+      data-slot="menubar-item"
+      data-variant="default"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      Find Previous
+    </div>
+  </div>
 </template>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/menubar.js
@@ -957,17 +2541,287 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
 <p class="demo-langs"><a href="/demos/menubar-icons.html">Open the demo page</a></p>
 
 ::: code-group
-```text [menubar-icons.html]
-<div role="menubar" data-slot="menubar" class="h-8 gap-0.5 rounded-lg border p-[3px] flex items-center w-72" tabindex="0" data-orientation="horizontal" style="outline: none;"><button type="button" role="menuitem" id="m0-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-slot="menubar-trigger" class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none" tabindex="-1" data-orientation="horizontal" data-radix-collection-item="" data-radixuigo-menu-trigger="m0">File</button><button type="button" role="menuitem" id="m1-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-slot="menubar-trigger" class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none" tabindex="0" data-orientation="horizontal" data-radix-collection-item="" data-highlighted="" data-radixuigo-menu-trigger="m1">More</button></div>
+```text:line-numbers [menubar-icons.html]
+<div
+  role="menubar"
+  data-slot="menubar"
+  class="h-8 gap-0.5 rounded-lg border p-[3px] flex items-center w-72"
+  tabindex="0"
+  data-orientation="horizontal"
+  style="outline: none"
+>
+  <button
+    type="button"
+    role="menuitem"
+    id="m0-trigger"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    data-state="closed"
+    data-slot="menubar-trigger"
+    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
+    tabindex="-1"
+    data-orientation="horizontal"
+    data-radix-collection-item=""
+    data-radixuigo-menu-trigger="m0"
+  >
+    File</button
+  ><button
+    type="button"
+    role="menuitem"
+    id="m1-trigger"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    data-state="closed"
+    data-slot="menubar-trigger"
+    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
+    tabindex="0"
+    data-orientation="horizontal"
+    data-radix-collection-item=""
+    data-highlighted=""
+    data-radixuigo-menu-trigger="m1"
+  >
+    More
+  </button>
+</div>
 <template id="m0-tpl">
-<div data-side="bottom" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="ltr" id="m0" aria-labelledby="m0-trigger" data-radix-menubar-content="" data-slot="menubar-content" class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);"><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path></svg>New File <span data-slot="menubar-shortcut" class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto">⌘N</span></div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>Open Folder</div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-save"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"></path><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"></path><path d="M7 3v4a1 1 0 0 0 1 1h7"></path></svg>Save <span data-slot="menubar-shortcut" class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto">⌘S</span></div></div>
+  <div
+    data-side="bottom"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="ltr"
+    id="m0"
+    aria-labelledby="m0-trigger"
+    data-radix-menubar-content=""
+    data-slot="menubar-content"
+    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-menubar-content-available-width: var(--radix-popper-available-width);
+      --radix-menubar-content-available-height: var(--radix-popper-available-height);
+      --radix-menubar-trigger-width: var(--radix-popper-anchor-width);
+      --radix-menubar-trigger-height: var(--radix-popper-anchor-height);
+    "
+  >
+    <div
+      role="menuitem"
+      data-slot="menubar-item"
+      data-variant="default"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-file"
+      >
+        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
+        <path d="M14 2v4a2 2 0 0 0 2 2h4"></path></svg
+      >New File
+      <span
+        data-slot="menubar-shortcut"
+        class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+        >⌘N</span
+      >
+    </div>
+    <div
+      role="menuitem"
+      data-slot="menubar-item"
+      data-variant="default"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-folder"
+      >
+        <path
+          d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"
+        ></path></svg
+      >Open Folder
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div
+      role="menuitem"
+      data-slot="menubar-item"
+      data-variant="default"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-save"
+      >
+        <path
+          d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"
+        ></path>
+        <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"></path>
+        <path d="M7 3v4a1 1 0 0 0 1 1h7"></path></svg
+      >Save
+      <span
+        data-slot="menubar-shortcut"
+        class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+        >⌘S</span
+      >
+    </div>
+  </div>
 </template>
 <template id="m1-tpl">
-<div data-side="bottom" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="ltr" id="m1" aria-labelledby="m1-trigger" data-radix-menubar-content="" data-slot="menubar-content" class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);"><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>Settings</div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-help"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><path d="M12 17h.01"></path></svg>Help</div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="menuitem" data-slot="menubar-item" data-variant="destructive" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>Delete</div></div></div>
+  <div
+    data-side="bottom"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="ltr"
+    id="m1"
+    aria-labelledby="m1-trigger"
+    data-radix-menubar-content=""
+    data-slot="menubar-content"
+    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-menubar-content-available-width: var(--radix-popper-available-width);
+      --radix-menubar-content-available-height: var(--radix-popper-available-height);
+      --radix-menubar-trigger-width: var(--radix-popper-anchor-width);
+      --radix-menubar-trigger-height: var(--radix-popper-anchor-height);
+    "
+  >
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-settings"
+        >
+          <path
+            d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"
+          ></path>
+          <circle cx="12" cy="12" r="3"></circle></svg
+        >Settings
+      </div>
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-circle-help"
+        >
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <path d="M12 17h.01"></path></svg
+        >Help
+      </div>
+      <div
+        role="separator"
+        aria-orientation="horizontal"
+        data-slot="menubar-separator"
+        class="bg-border -mx-1 my-1 h-px"
+      ></div>
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="destructive"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-trash"
+        >
+          <path d="M3 6h18"></path>
+          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg
+        >Delete
+      </div>
+    </div>
+  </div>
 </template>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/menubar.js
@@ -1165,29 +3019,789 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 <p class="demo-langs"><a href="/demos/menubar-rtl.html">Open the demo page</a></p>
 
 ::: code-group
-```text [menubar-rtl.html]
-<div role="menubar" data-slot="menubar" class="h-8 gap-0.5 rounded-lg border p-[3px] flex items-center w-72" tabindex="0" data-orientation="horizontal" style="outline: none;"><button type="button" role="menuitem" id="m0-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-slot="menubar-trigger" class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none" tabindex="-1" data-orientation="horizontal" data-radix-collection-item="" data-radixuigo-menu-trigger="m0">ملف</button><button type="button" role="menuitem" id="m1-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-slot="menubar-trigger" class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none" tabindex="-1" data-orientation="horizontal" data-radix-collection-item="" data-radixuigo-menu-trigger="m1">تعديل</button><button type="button" role="menuitem" id="m2-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-slot="menubar-trigger" class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none" tabindex="-1" data-orientation="horizontal" data-radix-collection-item="" data-radixuigo-menu-trigger="m2">عرض</button><button type="button" role="menuitem" id="m3-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-slot="menubar-trigger" class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none" tabindex="0" data-orientation="horizontal" data-radix-collection-item="" data-highlighted="" data-radixuigo-menu-trigger="m3">الملفات الشخصية</button></div>
+```text:line-numbers [menubar-rtl.html]
+<div
+  role="menubar"
+  data-slot="menubar"
+  class="h-8 gap-0.5 rounded-lg border p-[3px] flex items-center w-72"
+  tabindex="0"
+  data-orientation="horizontal"
+  style="outline: none"
+>
+  <button
+    type="button"
+    role="menuitem"
+    id="m0-trigger"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    data-state="closed"
+    data-slot="menubar-trigger"
+    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
+    tabindex="-1"
+    data-orientation="horizontal"
+    data-radix-collection-item=""
+    data-radixuigo-menu-trigger="m0"
+  >
+    ملف</button
+  ><button
+    type="button"
+    role="menuitem"
+    id="m1-trigger"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    data-state="closed"
+    data-slot="menubar-trigger"
+    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
+    tabindex="-1"
+    data-orientation="horizontal"
+    data-radix-collection-item=""
+    data-radixuigo-menu-trigger="m1"
+  >
+    تعديل</button
+  ><button
+    type="button"
+    role="menuitem"
+    id="m2-trigger"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    data-state="closed"
+    data-slot="menubar-trigger"
+    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
+    tabindex="-1"
+    data-orientation="horizontal"
+    data-radix-collection-item=""
+    data-radixuigo-menu-trigger="m2"
+  >
+    عرض</button
+  ><button
+    type="button"
+    role="menuitem"
+    id="m3-trigger"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    data-state="closed"
+    data-slot="menubar-trigger"
+    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
+    tabindex="0"
+    data-orientation="horizontal"
+    data-radix-collection-item=""
+    data-highlighted=""
+    data-radixuigo-menu-trigger="m3"
+  >
+    الملفات الشخصية
+  </button>
+</div>
 <template id="m0-tpl">
-<div data-side="bottom" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="rtl" id="m0" aria-labelledby="m0-trigger" data-radix-menubar-content="" data-slot="menubar-content" class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden" data-lang="ar" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);"><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">علامة تبويب جديدة <span data-slot="menubar-shortcut" class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ms-auto">⌘T</span></div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">نافذة جديدة <span data-slot="menubar-shortcut" class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ms-auto">⌘N</span></div><div role="menuitem" aria-disabled="true" data-disabled="" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">نافذة التصفح المتخفي الجديدة</div></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="group" data-slot="menubar-group"><div role="menuitem" id="m0s0-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="m0s0" data-state="closed" data-radix-menubar-subtrigger="" data-slot="menubar-sub-trigger" class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-none select-none" tabindex="-1" data-orientation="vertical" data-radix-collection-item="" data-radixuigo-menu-subtrigger="m0s0">مشاركة<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right rtl:rotate-180 ms-auto size-4"><path d="m9 18 6-6-6-6"></path></svg></div></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">طباعة... <span data-slot="menubar-shortcut" class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ms-auto">⌘P</span></div></div></div>
+  <div
+    data-side="bottom"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="rtl"
+    id="m0"
+    aria-labelledby="m0-trigger"
+    data-radix-menubar-content=""
+    data-slot="menubar-content"
+    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    data-lang="ar"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-menubar-content-available-width: var(--radix-popper-available-width);
+      --radix-menubar-content-available-height: var(--radix-popper-available-height);
+      --radix-menubar-trigger-width: var(--radix-popper-anchor-width);
+      --radix-menubar-trigger-height: var(--radix-popper-anchor-height);
+    "
+  >
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        علامة تبويب جديدة
+        <span
+          data-slot="menubar-shortcut"
+          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ms-auto"
+          >⌘T</span
+        >
+      </div>
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        نافذة جديدة
+        <span
+          data-slot="menubar-shortcut"
+          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ms-auto"
+          >⌘N</span
+        >
+      </div>
+      <div
+        role="menuitem"
+        aria-disabled="true"
+        data-disabled=""
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        نافذة التصفح المتخفي الجديدة
+      </div>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        id="m0s0-trigger"
+        aria-haspopup="menu"
+        aria-expanded="false"
+        aria-controls="m0s0"
+        data-state="closed"
+        data-radix-menubar-subtrigger=""
+        data-slot="menubar-sub-trigger"
+        class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-none select-none"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+        data-radixuigo-menu-subtrigger="m0s0"
+      >
+        مشاركة<svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-chevron-right rtl:rotate-180 ms-auto size-4"
+        >
+          <path d="m9 18 6-6-6-6"></path>
+        </svg>
+      </div>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        طباعة...
+        <span
+          data-slot="menubar-shortcut"
+          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ms-auto"
+          >⌘P</span
+        >
+      </div>
+    </div>
+  </div>
 </template>
 <template id="m0s0-tpl">
-<div data-side="left" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="rtl" id="m0s0" aria-labelledby="m0-trigger" data-radix-menubar-content="" data-slot="menubar-sub-content" class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-32 rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden" data-lang="ar" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);"><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">رابط البريد الإلكتروني</div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">الرسائل</div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">الملاحظات</div></div></div>
+  <div
+    data-side="left"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="rtl"
+    id="m0s0"
+    aria-labelledby="m0-trigger"
+    data-radix-menubar-content=""
+    data-slot="menubar-sub-content"
+    class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-32 rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    data-lang="ar"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-menubar-content-available-width: var(--radix-popper-available-width);
+      --radix-menubar-content-available-height: var(--radix-popper-available-height);
+      --radix-menubar-trigger-width: var(--radix-popper-anchor-width);
+      --radix-menubar-trigger-height: var(--radix-popper-anchor-height);
+    "
+  >
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        رابط البريد الإلكتروني
+      </div>
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        الرسائل
+      </div>
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        الملاحظات
+      </div>
+    </div>
+  </div>
 </template>
 <template id="m1-tpl">
-<div data-side="bottom" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="rtl" id="m1" aria-labelledby="m1-trigger" data-radix-menubar-content="" data-slot="menubar-content" class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden" data-lang="ar" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);"><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">تراجع <span data-slot="menubar-shortcut" class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ms-auto">⌘Z</span></div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">إعادة <span data-slot="menubar-shortcut" class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ms-auto">⇧⌘Z</span></div></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="group" data-slot="menubar-group"><div role="menuitem" id="m1s0-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="m1s0" data-state="closed" data-radix-menubar-subtrigger="" data-slot="menubar-sub-trigger" class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-none select-none" tabindex="-1" data-orientation="vertical" data-radix-collection-item="" data-radixuigo-menu-subtrigger="m1s0">بحث<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right rtl:rotate-180 ms-auto size-4"><path d="m9 18 6-6-6-6"></path></svg></div></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">قص</div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">نسخ</div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">لصق</div></div></div>
+  <div
+    data-side="bottom"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="rtl"
+    id="m1"
+    aria-labelledby="m1-trigger"
+    data-radix-menubar-content=""
+    data-slot="menubar-content"
+    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    data-lang="ar"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-menubar-content-available-width: var(--radix-popper-available-width);
+      --radix-menubar-content-available-height: var(--radix-popper-available-height);
+      --radix-menubar-trigger-width: var(--radix-popper-anchor-width);
+      --radix-menubar-trigger-height: var(--radix-popper-anchor-height);
+    "
+  >
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        تراجع
+        <span
+          data-slot="menubar-shortcut"
+          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ms-auto"
+          >⌘Z</span
+        >
+      </div>
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        إعادة
+        <span
+          data-slot="menubar-shortcut"
+          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ms-auto"
+          >⇧⌘Z</span
+        >
+      </div>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        id="m1s0-trigger"
+        aria-haspopup="menu"
+        aria-expanded="false"
+        aria-controls="m1s0"
+        data-state="closed"
+        data-radix-menubar-subtrigger=""
+        data-slot="menubar-sub-trigger"
+        class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-none select-none"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+        data-radixuigo-menu-subtrigger="m1s0"
+      >
+        بحث<svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-chevron-right rtl:rotate-180 ms-auto size-4"
+        >
+          <path d="m9 18 6-6-6-6"></path>
+        </svg>
+      </div>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        قص
+      </div>
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        نسخ
+      </div>
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        لصق
+      </div>
+    </div>
+  </div>
 </template>
 <template id="m1s0-tpl">
-<div data-side="left" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="rtl" id="m1s0" aria-labelledby="m1-trigger" data-radix-menubar-content="" data-slot="menubar-sub-content" class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-32 rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden" data-lang="ar" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);"><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">البحث على الويب</div></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">بحث...</div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">البحث التالي</div><div role="menuitem" data-slot="menubar-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">البحث السابق</div></div></div>
+  <div
+    data-side="left"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="rtl"
+    id="m1s0"
+    aria-labelledby="m1-trigger"
+    data-radix-menubar-content=""
+    data-slot="menubar-sub-content"
+    class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-32 rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    data-lang="ar"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-menubar-content-available-width: var(--radix-popper-available-width);
+      --radix-menubar-content-available-height: var(--radix-popper-available-height);
+      --radix-menubar-trigger-width: var(--radix-popper-anchor-width);
+      --radix-menubar-trigger-height: var(--radix-popper-anchor-height);
+    "
+  >
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        البحث على الويب
+      </div>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        بحث...
+      </div>
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        البحث التالي
+      </div>
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        البحث السابق
+      </div>
+    </div>
+  </div>
 </template>
 <template id="m2-tpl">
-<div data-side="bottom" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="rtl" id="m2" aria-labelledby="m2-trigger" data-radix-menubar-content="" data-slot="menubar-content" class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden w-44" data-lang="ar" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);"><div role="group" data-slot="menubar-group"><div role="menuitemcheckbox" aria-checked="false" data-slot="menubar-checkbox-item" class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pe-1.5 ps-7 text-sm data-inset:ps-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" data-state="unchecked" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><span class="start-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"></span>شريط الإشارات المرجعية</div><div role="menuitemcheckbox" aria-checked="true" data-slot="menubar-checkbox-item" class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pe-1.5 ps-7 text-sm data-inset:ps-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" data-state="checked" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><span class="start-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"><span data-state="checked"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"></path></svg></span></span>عناوين URL الكاملة</div></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-inset="true" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">إعادة تحميل <span data-slot="menubar-shortcut" class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ms-auto">⌘R</span></div><div role="menuitem" aria-disabled="true" data-disabled="" data-slot="menubar-item" data-inset="true" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">إعادة تحميل قسري <span data-slot="menubar-shortcut" class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ms-auto">⇧⌘R</span></div></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-inset="true" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">تبديل وضع ملء الشاشة</div></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-inset="true" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">إخفاء الشريط الجانبي</div></div></div>
+  <div
+    data-side="bottom"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="rtl"
+    id="m2"
+    aria-labelledby="m2-trigger"
+    data-radix-menubar-content=""
+    data-slot="menubar-content"
+    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden w-44"
+    data-lang="ar"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-menubar-content-available-width: var(--radix-popper-available-width);
+      --radix-menubar-content-available-height: var(--radix-popper-available-height);
+      --radix-menubar-trigger-width: var(--radix-popper-anchor-width);
+      --radix-menubar-trigger-height: var(--radix-popper-anchor-height);
+    "
+  >
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitemcheckbox"
+        aria-checked="false"
+        data-slot="menubar-checkbox-item"
+        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pe-1.5 ps-7 text-sm data-inset:ps-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        data-state="unchecked"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <span
+          class="start-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+        ></span
+        >شريط الإشارات المرجعية
+      </div>
+      <div
+        role="menuitemcheckbox"
+        aria-checked="true"
+        data-slot="menubar-checkbox-item"
+        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pe-1.5 ps-7 text-sm data-inset:ps-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        data-state="checked"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <span
+          class="start-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+          ><span data-state="checked"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-check"
+            >
+              <path d="M20 6 9 17l-5-5"></path></svg></span></span
+        >عناوين URL الكاملة
+      </div>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-inset="true"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        إعادة تحميل
+        <span
+          data-slot="menubar-shortcut"
+          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ms-auto"
+          >⌘R</span
+        >
+      </div>
+      <div
+        role="menuitem"
+        aria-disabled="true"
+        data-disabled=""
+        data-slot="menubar-item"
+        data-inset="true"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        إعادة تحميل قسري
+        <span
+          data-slot="menubar-shortcut"
+          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ms-auto"
+          >⇧⌘R</span
+        >
+      </div>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-inset="true"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        تبديل وضع ملء الشاشة
+      </div>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-inset="true"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        إخفاء الشريط الجانبي
+      </div>
+    </div>
+  </div>
 </template>
 <template id="m3-tpl">
-<div data-side="bottom" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="rtl" id="m3" aria-labelledby="m3-trigger" data-radix-menubar-content="" data-slot="menubar-content" class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden" data-lang="ar" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin); --radix-menubar-content-available-width: var(--radix-popper-available-width); --radix-menubar-content-available-height: var(--radix-popper-available-height); --radix-menubar-trigger-width: var(--radix-popper-anchor-width); --radix-menubar-trigger-height: var(--radix-popper-anchor-height);"><div role="group" data-slot="menubar-radio-group"><div role="menuitemradio" aria-checked="false" data-slot="menubar-radio-item" class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pe-1.5 ps-7 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" data-state="unchecked" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><span class="start-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"></span>Andy</div><div role="menuitemradio" aria-checked="true" data-slot="menubar-radio-item" class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pe-1.5 ps-7 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" data-state="checked" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><span class="start-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"><span data-state="checked"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><path d="M20 6 9 17l-5-5"></path></svg></span></span>Benoit</div><div role="menuitemradio" aria-checked="false" data-slot="menubar-radio-item" class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pe-1.5 ps-7 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" data-state="unchecked" tabindex="-1" data-orientation="vertical" data-radix-collection-item=""><span class="start-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"></span>Luis</div></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-inset="true" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">تعديل...</div></div><div role="separator" aria-orientation="horizontal" data-slot="menubar-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="group" data-slot="menubar-group"><div role="menuitem" data-slot="menubar-item" data-inset="true" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">إضافة ملف شخصي...</div></div></div>
+  <div
+    data-side="bottom"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="rtl"
+    id="m3"
+    aria-labelledby="m3-trigger"
+    data-radix-menubar-content=""
+    data-slot="menubar-content"
+    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    data-lang="ar"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-menubar-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-menubar-content-available-width: var(--radix-popper-available-width);
+      --radix-menubar-content-available-height: var(--radix-popper-available-height);
+      --radix-menubar-trigger-width: var(--radix-popper-anchor-width);
+      --radix-menubar-trigger-height: var(--radix-popper-anchor-height);
+    "
+  >
+    <div role="group" data-slot="menubar-radio-group">
+      <div
+        role="menuitemradio"
+        aria-checked="false"
+        data-slot="menubar-radio-item"
+        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pe-1.5 ps-7 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        data-state="unchecked"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <span
+          class="start-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+        ></span
+        >Andy
+      </div>
+      <div
+        role="menuitemradio"
+        aria-checked="true"
+        data-slot="menubar-radio-item"
+        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pe-1.5 ps-7 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        data-state="checked"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <span
+          class="start-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+          ><span data-state="checked"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-check"
+            >
+              <path d="M20 6 9 17l-5-5"></path></svg></span></span
+        >Benoit
+      </div>
+      <div
+        role="menuitemradio"
+        aria-checked="false"
+        data-slot="menubar-radio-item"
+        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pe-1.5 ps-7 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        data-state="unchecked"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <span
+          class="start-1.5 size-4 [&amp;_svg:not([class*='size-'])]:size-4 pointer-events-none absolute flex items-center justify-center"
+        ></span
+        >Luis
+      </div>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-inset="true"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        تعديل...
+      </div>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="menubar-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div role="group" data-slot="menubar-group">
+      <div
+        role="menuitem"
+        data-slot="menubar-item"
+        data-inset="true"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:ps-7 [&amp;_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        إضافة ملف شخصي...
+      </div>
+    </div>
+  </div>
 </template>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/menubar.js

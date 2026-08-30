@@ -15,8 +15,70 @@ An image element with a fallback for representing the user.
 <p class="demo-langs"><a href="/demos/avatar-demo.html">Open the demo page</a></p>
 
 ::: code-group
-```text [avatar-demo.html]
-<div class="flex flex-row flex-wrap items-center gap-6 md:gap-12"><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover grayscale" alt="@shadcn" src="https://github.com/shadcn.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@evilrabbit" src="https://github.com/evilrabbit.png"><span data-slot="avatar-badge" class="text-primary-foreground ring-background absolute right-0 bottom-0 z-10 inline-flex items-center justify-center rounded-full bg-blend-color ring-2 select-none group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&amp;&gt;svg]:hidden group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&amp;&gt;svg]:size-2 group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&amp;&gt;svg]:size-2 bg-green-600 dark:bg-green-800"></span></span><div data-slot="avatar-group" class="group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background grayscale"><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@shadcn" src="https://github.com/shadcn.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@maxleiter" src="https://github.com/maxleiter.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@evilrabbit" src="https://github.com/evilrabbit.png"></span><div data-slot="avatar-group-count" class="bg-muted text-muted-foreground size-8 rounded-full text-sm group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&amp;&gt;svg]:size-4 group-has-data-[size=lg]/avatar-group:[&amp;&gt;svg]:size-5 group-has-data-[size=sm]/avatar-group:[&amp;&gt;svg]:size-3 relative flex shrink-0 items-center justify-center ring-2 ring-background">+3</div></div></div>
+```text:line-numbers [avatar-demo.html]
+<div class="flex flex-row flex-wrap items-center gap-6 md:gap-12">
+  <span
+    data-slot="avatar"
+    data-size="default"
+    class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+    ><img
+      data-slot="avatar-image"
+      class="rounded-full aspect-square size-full object-cover grayscale"
+      alt="@shadcn"
+      src="https://github.com/shadcn.png" /></span
+  ><span
+    data-slot="avatar"
+    data-size="default"
+    class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+    ><img
+      data-slot="avatar-image"
+      class="rounded-full aspect-square size-full object-cover"
+      alt="@evilrabbit"
+      src="https://github.com/evilrabbit.png" /><span
+      data-slot="avatar-badge"
+      class="text-primary-foreground ring-background absolute right-0 bottom-0 z-10 inline-flex items-center justify-center rounded-full bg-blend-color ring-2 select-none group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&amp;&gt;svg]:hidden group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&amp;&gt;svg]:size-2 group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&amp;&gt;svg]:size-2 bg-green-600 dark:bg-green-800"
+    ></span
+  ></span>
+  <div
+    data-slot="avatar-group"
+    class="group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background grayscale"
+  >
+    <span
+      data-slot="avatar"
+      data-size="default"
+      class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+      ><img
+        data-slot="avatar-image"
+        class="rounded-full aspect-square size-full object-cover"
+        alt="@shadcn"
+        src="https://github.com/shadcn.png" /></span
+    ><span
+      data-slot="avatar"
+      data-size="default"
+      class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+      ><img
+        data-slot="avatar-image"
+        class="rounded-full aspect-square size-full object-cover"
+        alt="@maxleiter"
+        src="https://github.com/maxleiter.png" /></span
+    ><span
+      data-slot="avatar"
+      data-size="default"
+      class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+      ><img
+        data-slot="avatar-image"
+        class="rounded-full aspect-square size-full object-cover"
+        alt="@evilrabbit"
+        src="https://github.com/evilrabbit.png"
+    /></span>
+    <div
+      data-slot="avatar-group-count"
+      class="bg-muted text-muted-foreground size-8 rounded-full text-sm group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&amp;&gt;svg]:size-4 group-has-data-[size=lg]/avatar-group:[&amp;&gt;svg]:size-5 group-has-data-[size=sm]/avatar-group:[&amp;&gt;svg]:size-3 relative flex shrink-0 items-center justify-center ring-2 ring-background"
+    >
+      +3
+    </div>
+  </div>
+</div>
 ```
 :::
 
@@ -89,8 +151,17 @@ A basic avatar component with an image and a fallback.
 <p class="demo-langs"><a href="/demos/avatar-basic.html">Open the demo page</a></p>
 
 ::: code-group
-```text [avatar-basic.html]
-<span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover grayscale" alt="@shadcn" src="https://github.com/shadcn.png"></span>
+```text:line-numbers [avatar-basic.html]
+<span
+  data-slot="avatar"
+  data-size="default"
+  class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+  ><img
+    data-slot="avatar-image"
+    class="rounded-full aspect-square size-full object-cover grayscale"
+    alt="@shadcn"
+    src="https://github.com/shadcn.png"
+/></span>
 ```
 :::
 
@@ -107,8 +178,20 @@ Use the `AvatarBadge` component to add a badge to the avatar. The badge is posit
 <p class="demo-langs"><a href="/demos/avatar-badge.html">Open the demo page</a></p>
 
 ::: code-group
-```text [avatar-badge.html]
-<span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@shadcn" src="https://github.com/shadcn.png"><span data-slot="avatar-badge" class="text-primary-foreground ring-background absolute right-0 bottom-0 z-10 inline-flex items-center justify-center rounded-full bg-blend-color ring-2 select-none group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&amp;&gt;svg]:hidden group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&amp;&gt;svg]:size-2 group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&amp;&gt;svg]:size-2 bg-green-600 dark:bg-green-800"></span></span>
+```text:line-numbers [avatar-badge.html]
+<span
+  data-slot="avatar"
+  data-size="default"
+  class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+  ><img
+    data-slot="avatar-image"
+    class="rounded-full aspect-square size-full object-cover"
+    alt="@shadcn"
+    src="https://github.com/shadcn.png" /><span
+    data-slot="avatar-badge"
+    class="text-primary-foreground ring-background absolute right-0 bottom-0 z-10 inline-flex items-center justify-center rounded-full bg-blend-color ring-2 select-none group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&amp;&gt;svg]:hidden group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&amp;&gt;svg]:size-2 group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&amp;&gt;svg]:size-2 bg-green-600 dark:bg-green-800"
+  ></span
+></span>
 ```
 :::
 
@@ -135,8 +218,33 @@ You can also use an icon inside `<AvatarBadge>`.
 <p class="demo-langs"><a href="/demos/avatar-badge-icon.html">Open the demo page</a></p>
 
 ::: code-group
-```text [avatar-badge-icon.html]
-<span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten grayscale"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@pranathip" src="https://github.com/pranathip.png"><span data-slot="avatar-badge" class="bg-primary text-primary-foreground ring-background absolute right-0 bottom-0 z-10 inline-flex items-center justify-center rounded-full bg-blend-color ring-2 select-none group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&amp;&gt;svg]:hidden group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&amp;&gt;svg]:size-2 group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&amp;&gt;svg]:size-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></span></span>
+```text:line-numbers [avatar-badge-icon.html]
+<span
+  data-slot="avatar"
+  data-size="default"
+  class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten grayscale"
+  ><img
+    data-slot="avatar-image"
+    class="rounded-full aspect-square size-full object-cover"
+    alt="@pranathip"
+    src="https://github.com/pranathip.png" /><span
+    data-slot="avatar-badge"
+    class="bg-primary text-primary-foreground ring-background absolute right-0 bottom-0 z-10 inline-flex items-center justify-center rounded-full bg-blend-color ring-2 select-none group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&amp;&gt;svg]:hidden group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&amp;&gt;svg]:size-2 group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&amp;&gt;svg]:size-2"
+    ><svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-plus"
+    >
+      <path d="M5 12h14"></path>
+      <path d="M12 5v14"></path></svg></span
+></span>
 ```
 :::
 
@@ -153,8 +261,40 @@ Use the `AvatarGroup` component to add a group of avatars.
 <p class="demo-langs"><a href="/demos/avatar-group.html">Open the demo page</a></p>
 
 ::: code-group
-```text [avatar-group.html]
-<div data-slot="avatar-group" class="group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background grayscale"><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@shadcn" src="https://github.com/shadcn.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@maxleiter" src="https://github.com/maxleiter.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@evilrabbit" src="https://github.com/evilrabbit.png"></span></div>
+```text:line-numbers [avatar-group.html]
+<div
+  data-slot="avatar-group"
+  class="group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background grayscale"
+>
+  <span
+    data-slot="avatar"
+    data-size="default"
+    class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+    ><img
+      data-slot="avatar-image"
+      class="rounded-full aspect-square size-full object-cover"
+      alt="@shadcn"
+      src="https://github.com/shadcn.png" /></span
+  ><span
+    data-slot="avatar"
+    data-size="default"
+    class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+    ><img
+      data-slot="avatar-image"
+      class="rounded-full aspect-square size-full object-cover"
+      alt="@maxleiter"
+      src="https://github.com/maxleiter.png" /></span
+  ><span
+    data-slot="avatar"
+    data-size="default"
+    class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+    ><img
+      data-slot="avatar-image"
+      class="rounded-full aspect-square size-full object-cover"
+      alt="@evilrabbit"
+      src="https://github.com/evilrabbit.png"
+  /></span>
+</div>
 ```
 :::
 
@@ -171,8 +311,46 @@ Use `<AvatarGroupCount>` to add a count to the group.
 <p class="demo-langs"><a href="/demos/avatar-group-count.html">Open the demo page</a></p>
 
 ::: code-group
-```text [avatar-group-count.html]
-<div data-slot="avatar-group" class="group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background grayscale"><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@shadcn" src="https://github.com/shadcn.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@maxleiter" src="https://github.com/maxleiter.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@evilrabbit" src="https://github.com/evilrabbit.png"></span><div data-slot="avatar-group-count" class="bg-muted text-muted-foreground size-8 rounded-full text-sm group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&amp;&gt;svg]:size-4 group-has-data-[size=lg]/avatar-group:[&amp;&gt;svg]:size-5 group-has-data-[size=sm]/avatar-group:[&amp;&gt;svg]:size-3 relative flex shrink-0 items-center justify-center ring-2 ring-background">+3</div></div>
+```text:line-numbers [avatar-group-count.html]
+<div
+  data-slot="avatar-group"
+  class="group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background grayscale"
+>
+  <span
+    data-slot="avatar"
+    data-size="default"
+    class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+    ><img
+      data-slot="avatar-image"
+      class="rounded-full aspect-square size-full object-cover"
+      alt="@shadcn"
+      src="https://github.com/shadcn.png" /></span
+  ><span
+    data-slot="avatar"
+    data-size="default"
+    class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+    ><img
+      data-slot="avatar-image"
+      class="rounded-full aspect-square size-full object-cover"
+      alt="@maxleiter"
+      src="https://github.com/maxleiter.png" /></span
+  ><span
+    data-slot="avatar"
+    data-size="default"
+    class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+    ><img
+      data-slot="avatar-image"
+      class="rounded-full aspect-square size-full object-cover"
+      alt="@evilrabbit"
+      src="https://github.com/evilrabbit.png"
+  /></span>
+  <div
+    data-slot="avatar-group-count"
+    class="bg-muted text-muted-foreground size-8 rounded-full text-sm group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&amp;&gt;svg]:size-4 group-has-data-[size=lg]/avatar-group:[&amp;&gt;svg]:size-5 group-has-data-[size=sm]/avatar-group:[&amp;&gt;svg]:size-3 relative flex shrink-0 items-center justify-center ring-2 ring-background"
+  >
+    +3
+  </div>
+</div>
 ```
 :::
 
@@ -189,8 +367,60 @@ You can also use an icon inside `<AvatarGroupCount>`.
 <p class="demo-langs"><a href="/demos/avatar-group-count-icon.html">Open the demo page</a></p>
 
 ::: code-group
-```text [avatar-group-count-icon.html]
-<div data-slot="avatar-group" class="group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background grayscale"><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@shadcn" src="https://github.com/shadcn.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@maxleiter" src="https://github.com/maxleiter.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@evilrabbit" src="https://github.com/evilrabbit.png"></span><div data-slot="avatar-group-count" class="bg-muted text-muted-foreground size-8 rounded-full text-sm group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&amp;&gt;svg]:size-4 group-has-data-[size=lg]/avatar-group:[&amp;&gt;svg]:size-5 group-has-data-[size=sm]/avatar-group:[&amp;&gt;svg]:size-3 relative flex shrink-0 items-center justify-center ring-2 ring-background"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></div></div>
+```text:line-numbers [avatar-group-count-icon.html]
+<div
+  data-slot="avatar-group"
+  class="group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background grayscale"
+>
+  <span
+    data-slot="avatar"
+    data-size="default"
+    class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+    ><img
+      data-slot="avatar-image"
+      class="rounded-full aspect-square size-full object-cover"
+      alt="@shadcn"
+      src="https://github.com/shadcn.png" /></span
+  ><span
+    data-slot="avatar"
+    data-size="default"
+    class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+    ><img
+      data-slot="avatar-image"
+      class="rounded-full aspect-square size-full object-cover"
+      alt="@maxleiter"
+      src="https://github.com/maxleiter.png" /></span
+  ><span
+    data-slot="avatar"
+    data-size="default"
+    class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+    ><img
+      data-slot="avatar-image"
+      class="rounded-full aspect-square size-full object-cover"
+      alt="@evilrabbit"
+      src="https://github.com/evilrabbit.png"
+  /></span>
+  <div
+    data-slot="avatar-group-count"
+    class="bg-muted text-muted-foreground size-8 rounded-full text-sm group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&amp;&gt;svg]:size-4 group-has-data-[size=lg]/avatar-group:[&amp;&gt;svg]:size-5 group-has-data-[size=sm]/avatar-group:[&amp;&gt;svg]:size-3 relative flex shrink-0 items-center justify-center ring-2 ring-background"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-plus"
+    >
+      <path d="M5 12h14"></path>
+      <path d="M12 5v14"></path>
+    </svg>
+  </div>
+</div>
 ```
 :::
 
@@ -207,8 +437,37 @@ Use the `size` prop to change the size of the avatar.
 <p class="demo-langs"><a href="/demos/avatar-size.html">Open the demo page</a></p>
 
 ::: code-group
-```text [avatar-size.html]
-<div class="flex flex-wrap items-center gap-2 grayscale"><span data-slot="avatar" data-size="sm" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@shadcn" src="https://github.com/shadcn.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@shadcn" src="https://github.com/shadcn.png"></span><span data-slot="avatar" data-size="lg" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@shadcn" src="https://github.com/shadcn.png"></span></div>
+```text:line-numbers [avatar-size.html]
+<div class="flex flex-wrap items-center gap-2 grayscale">
+  <span
+    data-slot="avatar"
+    data-size="sm"
+    class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+    ><img
+      data-slot="avatar-image"
+      class="rounded-full aspect-square size-full object-cover"
+      alt="@shadcn"
+      src="https://github.com/shadcn.png" /></span
+  ><span
+    data-slot="avatar"
+    data-size="default"
+    class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+    ><img
+      data-slot="avatar-image"
+      class="rounded-full aspect-square size-full object-cover"
+      alt="@shadcn"
+      src="https://github.com/shadcn.png" /></span
+  ><span
+    data-slot="avatar"
+    data-size="lg"
+    class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+    ><img
+      data-slot="avatar-image"
+      class="rounded-full aspect-square size-full object-cover"
+      alt="@shadcn"
+      src="https://github.com/shadcn.png"
+  /></span>
+</div>
 ```
 :::
 
@@ -225,14 +484,114 @@ You can use the `Avatar` component as a trigger for a dropdown menu.
 <p class="demo-langs"><a href="/demos/avatar-dropdown.html">Open the demo page</a></p>
 
 ::: code-group
-```text [avatar-dropdown.html]
-<button data-slot="dropdown-menu-trigger" data-variant="ghost" data-size="icon" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8 rounded-full" type="button" id="m0-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-radixuigo-menu-trigger="m0"><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><span data-slot="avatar-fallback" class="bg-muted text-muted-foreground rounded-full flex size-full items-center justify-center text-sm group-data-[size=sm]/avatar:text-xs">CN</span></span></button>
+```text:line-numbers [avatar-dropdown.html]
+<button
+  data-slot="dropdown-menu-trigger"
+  data-variant="ghost"
+  data-size="icon"
+  class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8 rounded-full"
+  type="button"
+  id="m0-trigger"
+  aria-haspopup="menu"
+  aria-expanded="false"
+  data-state="closed"
+  data-radixuigo-menu-trigger="m0"
+>
+  <span
+    data-slot="avatar"
+    data-size="default"
+    class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+    ><span
+      data-slot="avatar-fallback"
+      class="bg-muted text-muted-foreground rounded-full flex size-full items-center justify-center text-sm group-data-[size=sm]/avatar:text-xs"
+      >CN</span
+    ></span
+  >
+</button>
 <template id="m0-tpl">
-<div data-side="bottom" data-align="start" role="menu" aria-orientation="vertical" data-state="open" data-radix-menu-content="" dir="ltr" id="m0" aria-labelledby="m0-trigger" data-slot="dropdown-menu-content" class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 max-h-(--radix-dropdown-menu-content-available-height) origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden w-32" tabindex="-1" data-orientation="vertical" style="outline: none; --radix-dropdown-menu-content-transform-origin: var(--radix-popper-transform-origin); --radix-dropdown-menu-content-available-width: var(--radix-popper-available-width); --radix-dropdown-menu-content-available-height: var(--radix-popper-available-height); --radix-dropdown-menu-trigger-width: var(--radix-popper-anchor-width); --radix-dropdown-menu-trigger-height: var(--radix-popper-anchor-height); pointer-events: auto;"><div role="group" data-slot="dropdown-menu-group"><div role="menuitem" data-slot="dropdown-menu-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Profile</div><div role="menuitem" data-slot="dropdown-menu-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Billing</div><div role="menuitem" data-slot="dropdown-menu-item" data-variant="default" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Settings</div></div><div role="separator" aria-orientation="horizontal" data-slot="dropdown-menu-separator" class="bg-border -mx-1 my-1 h-px"></div><div role="group" data-slot="dropdown-menu-group"><div role="menuitem" data-slot="dropdown-menu-item" data-variant="destructive" class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">Log out</div></div></div>
+  <div
+    data-side="bottom"
+    data-align="start"
+    role="menu"
+    aria-orientation="vertical"
+    data-state="open"
+    data-radix-menu-content=""
+    dir="ltr"
+    id="m0"
+    aria-labelledby="m0-trigger"
+    data-slot="dropdown-menu-content"
+    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 max-h-(--radix-dropdown-menu-content-available-height) origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden w-32"
+    tabindex="-1"
+    data-orientation="vertical"
+    style="
+      outline: none;
+      --radix-dropdown-menu-content-transform-origin: var(--radix-popper-transform-origin);
+      --radix-dropdown-menu-content-available-width: var(--radix-popper-available-width);
+      --radix-dropdown-menu-content-available-height: var(--radix-popper-available-height);
+      --radix-dropdown-menu-trigger-width: var(--radix-popper-anchor-width);
+      --radix-dropdown-menu-trigger-height: var(--radix-popper-anchor-height);
+      pointer-events: auto;
+    "
+  >
+    <div role="group" data-slot="dropdown-menu-group">
+      <div
+        role="menuitem"
+        data-slot="dropdown-menu-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Profile
+      </div>
+      <div
+        role="menuitem"
+        data-slot="dropdown-menu-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Billing
+      </div>
+      <div
+        role="menuitem"
+        data-slot="dropdown-menu-item"
+        data-variant="default"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Settings
+      </div>
+    </div>
+    <div
+      role="separator"
+      aria-orientation="horizontal"
+      data-slot="dropdown-menu-separator"
+      class="bg-border -mx-1 my-1 h-px"
+    ></div>
+    <div role="group" data-slot="dropdown-menu-group">
+      <div
+        role="menuitem"
+        data-slot="dropdown-menu-item"
+        data-variant="destructive"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        Log out
+      </div>
+    </div>
+  </div>
 </template>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/dropdown-menu.js
@@ -383,8 +742,70 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 <p class="demo-langs"><a href="/demos/avatar-rtl.html">Open the demo page</a> · <a href="/demos/avatar-rtl-he.html">HE</a> · <a href="/demos/avatar-rtl-en.html">EN</a></p>
 
 ::: code-group
-```text [avatar-rtl.html]
-<div class="flex flex-row flex-wrap items-center gap-6 md:gap-12" dir="rtl"><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover grayscale" alt="@shadcn" src="https://github.com/shadcn.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@evilrabbit" src="https://github.com/evilrabbit.png"><span data-slot="avatar-badge" class="text-primary-foreground ring-background absolute end-0 bottom-0 z-10 inline-flex items-center justify-center rounded-full bg-blend-color ring-2 select-none group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&amp;&gt;svg]:hidden group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&amp;&gt;svg]:size-2 group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&amp;&gt;svg]:size-2 bg-green-600 dark:bg-green-800"></span></span><div data-slot="avatar-group" class="group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background grayscale"><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@shadcn" src="https://github.com/shadcn.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@maxleiter" src="https://github.com/maxleiter.png"></span><span data-slot="avatar" data-size="default" class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"><img data-slot="avatar-image" class="rounded-full aspect-square size-full object-cover" alt="@evilrabbit" src="https://github.com/evilrabbit.png"></span><div data-slot="avatar-group-count" class="bg-muted text-muted-foreground size-8 rounded-full text-sm group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&amp;&gt;svg]:size-4 group-has-data-[size=lg]/avatar-group:[&amp;&gt;svg]:size-5 group-has-data-[size=sm]/avatar-group:[&amp;&gt;svg]:size-3 relative flex shrink-0 items-center justify-center ring-2 ring-background">+٣</div></div></div>
+```text:line-numbers [avatar-rtl.html]
+<div class="flex flex-row flex-wrap items-center gap-6 md:gap-12" dir="rtl">
+  <span
+    data-slot="avatar"
+    data-size="default"
+    class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+    ><img
+      data-slot="avatar-image"
+      class="rounded-full aspect-square size-full object-cover grayscale"
+      alt="@shadcn"
+      src="https://github.com/shadcn.png" /></span
+  ><span
+    data-slot="avatar"
+    data-size="default"
+    class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+    ><img
+      data-slot="avatar-image"
+      class="rounded-full aspect-square size-full object-cover"
+      alt="@evilrabbit"
+      src="https://github.com/evilrabbit.png" /><span
+      data-slot="avatar-badge"
+      class="text-primary-foreground ring-background absolute end-0 bottom-0 z-10 inline-flex items-center justify-center rounded-full bg-blend-color ring-2 select-none group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&amp;&gt;svg]:hidden group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&amp;&gt;svg]:size-2 group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&amp;&gt;svg]:size-2 bg-green-600 dark:bg-green-800"
+    ></span
+  ></span>
+  <div
+    data-slot="avatar-group"
+    class="group/avatar-group flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background grayscale"
+  >
+    <span
+      data-slot="avatar"
+      data-size="default"
+      class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+      ><img
+        data-slot="avatar-image"
+        class="rounded-full aspect-square size-full object-cover"
+        alt="@shadcn"
+        src="https://github.com/shadcn.png" /></span
+    ><span
+      data-slot="avatar"
+      data-size="default"
+      class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+      ><img
+        data-slot="avatar-image"
+        class="rounded-full aspect-square size-full object-cover"
+        alt="@maxleiter"
+        src="https://github.com/maxleiter.png" /></span
+    ><span
+      data-slot="avatar"
+      data-size="default"
+      class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
+      ><img
+        data-slot="avatar-image"
+        class="rounded-full aspect-square size-full object-cover"
+        alt="@evilrabbit"
+        src="https://github.com/evilrabbit.png"
+    /></span>
+    <div
+      data-slot="avatar-group-count"
+      class="bg-muted text-muted-foreground size-8 rounded-full text-sm group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&amp;&gt;svg]:size-4 group-has-data-[size=lg]/avatar-group:[&amp;&gt;svg]:size-5 group-has-data-[size=sm]/avatar-group:[&amp;&gt;svg]:size-3 relative flex shrink-0 items-center justify-center ring-2 ring-background"
+    >
+      +٣
+    </div>
+  </div>
+</div>
 ```
 :::
 

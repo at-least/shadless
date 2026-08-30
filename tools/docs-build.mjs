@@ -34,6 +34,7 @@
 // never seen, and it stops the build (assertNoJsx) rather than reaching a page
 // as a broken Vue component.
 import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, readdirSync, copyFileSync } from 'node:fs'
+import prettier from 'prettier'
 import { basename, join } from 'node:path'
 import { parseFrontmatter, stripImports } from '../src/docs/frontmatter.mjs'
 import { GUIDES, resolveDocsRoute, writeContentMap } from './docs-guides.mjs'
@@ -193,10 +194,8 @@ function demoSource(name, file) {
   const path = join(PUBLIC_DIR, 'demos', file)
   if (!existsSync(path)) return ''
   const raw = readFileSync(path, 'utf8')
-  const markup = (/<body[^>]*>([\s\S]*?)<\/body>/.exec(raw)?.[1] ?? raw)
-    .replace(/<script[\s\S]*?<\/script>/g, '')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim()
+  const markup = markupByFile.get(file)
+  if (markup === undefined) return ''
   const { srcScripts, inlineScripts } = extractDemoScripts(raw)
   const js = []
   if (srcScripts.includes('shadless.js')) js.push('// <script src="shadless.js"></script>  — the shared runtime (see Installation)')
@@ -211,8 +210,8 @@ function demoSource(name, file) {
   // from 11 MB to 49 MB — the same blow-up that moved the old site's
   // highlighting into the browser (28386e6). The behavior file is short and
   // worth colouring.
-  if (!jsText) return `\n::: code-group\n\`\`\`text [${file}]\n${markup}\n\`\`\`\n:::\n`
-  return `\n::: code-group\n\`\`\`text [${file}]\n${markup}\n\`\`\`\n\n\`\`\`js [behavior]\n${jsText}\n\`\`\`\n:::\n`
+  if (!jsText) return `\n::: code-group\n\`\`\`text:line-numbers [${file}]\n${markup}\n\`\`\`\n:::\n`
+  return `\n::: code-group\n\`\`\`text:line-numbers [${file}]\n${markup}\n\`\`\`\n\n\`\`\`js:line-numbers [behavior]\n${jsText}\n\`\`\`\n:::\n`
 }
 
 // <Callout variant="info" title="…"> … </Callout> → a VitePress container.
@@ -531,6 +530,46 @@ mkdirSync(GUIDE_DIR, { recursive: true })
 
 writeContentMap(componentPages.map((p) => ({ name: p.name, source: p.source })))
 
+// ---- demos + their assets into the served tree -------------------------------------
+// The pages iframe /demos/<file>.html. A demo's relative asset refs
+// (../out.css, ../shadless.js, ../js/*) resolve one level up, so the shared
+// assets sit at the public root. This is a copy of two trees this repo already
+// reviews — it is a build artifact, and docs/public is gitignored.
+rmSync(PUBLIC_DIR, { recursive: true, force: true })
+mkdirSync(join(PUBLIC_DIR, 'demos'), { recursive: true })
+mkdirSync(join(PUBLIC_DIR, 'js'), { recursive: true })
+let copied = 0
+for (const tree of ['dist/components', 'docs/demos']) {
+  for (const f of readdirSync(tree)) {
+    if (!f.endsWith('.html')) continue
+    copyFileSync(join(tree, f), join(PUBLIC_DIR, 'demos', f))
+    copied++
+  }
+}
+for (const asset of ['out.css', 'shadless.js']) copyFileSync(join('dist', asset), join(PUBLIC_DIR, asset))
+let glue = 0
+for (const f of readdirSync('dist/js')) { copyFileSync(join('dist/js', f), join(PUBLIC_DIR, 'js', f)); glue++ }
+console.log(`demos copied: ${copied} pages, ${glue} behavior files + out.css/shadless.js`)
+
+// The markup shown under each preview, pretty-printed ONCE per file. The demo
+// pages are emitted as one line per block, which is unreadable in a doc — and
+// unusable as the thing the install steps tell you to copy.
+//
+// prettier's html printer is whitespace-sensitivity aware (htmlWhitespace
+// Sensitivity: "css"), so it does not introduce breaks that would change how
+// inline content renders. This is a DISPLAY transform either way: the file in
+// dist/components is the artifact, and it is unchanged.
+const markupByFile = new Map()
+for (const f of readdirSync(join(PUBLIC_DIR, 'demos'))) {
+  if (!f.endsWith('.html')) continue
+  const raw = readFileSync(join(PUBLIC_DIR, 'demos', f), 'utf8')
+  const body = (/<body[^>]*>([\s\S]*?)<\/body>/.exec(raw)?.[1] ?? raw)
+    .replace(/<script[\s\S]*?<\/script>/g, '')
+    .trim()
+  markupByFile.set(f, (await prettier.format(body, { parser: 'html', printWidth: 100 })).trim())
+}
+
+
 const allPages = [
   ...componentPages.map((c) => ({
     name: c.name, source: c.source, dir: COMPONENT_DIR,
@@ -605,27 +644,6 @@ const sidebar = [
 ]
 mkdirSync(join(ROOT, '.vitepress'), { recursive: true })
 writeFileSync(join(ROOT, '.vitepress/sidebar.json'), JSON.stringify(sidebar, null, 2) + '\n')
-
-// ---- demos + their assets into the served tree -------------------------------------
-// The pages iframe /demos/<file>.html. A demo's relative asset refs
-// (../out.css, ../shadless.js, ../js/*) resolve one level up, so the shared
-// assets sit at the public root. This is a copy of two trees this repo already
-// reviews — it is a build artifact, and docs/public is gitignored.
-rmSync(PUBLIC_DIR, { recursive: true, force: true })
-mkdirSync(join(PUBLIC_DIR, 'demos'), { recursive: true })
-mkdirSync(join(PUBLIC_DIR, 'js'), { recursive: true })
-let copied = 0
-for (const tree of ['dist/components', 'docs/demos']) {
-  for (const f of readdirSync(tree)) {
-    if (!f.endsWith('.html')) continue
-    copyFileSync(join(tree, f), join(PUBLIC_DIR, 'demos', f))
-    copied++
-  }
-}
-for (const asset of ['out.css', 'shadless.js']) copyFileSync(join('dist', asset), join(PUBLIC_DIR, asset))
-let glue = 0
-for (const f of readdirSync('dist/js')) { copyFileSync(join('dist/js', f), join(PUBLIC_DIR, 'js', f)); glue++ }
-console.log(`demos copied: ${copied} pages, ${glue} behavior files + out.css/shadless.js`)
 
 if (errors.length) {
   for (const e of errors) console.error(`  - ${e}`)

@@ -15,8 +15,20 @@ Visually or semantically separates content.
 <p class="demo-langs"><a href="/demos/separator-demo.html">Open the demo page</a></p>
 
 ::: code-group
-```text [separator-demo.html]
-<div class="flex max-w-sm flex-col gap-4 text-sm"><div class="flex flex-col gap-1.5"><div class="leading-none font-medium">shadcn/ui</div><div class="text-muted-foreground">The Foundation for your Design System</div></div><div data-orientation="horizontal" role="none" data-slot="separator" class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch"></div><div>A set of beautifully designed components that you can customize, extend, and build on.</div></div>
+```text:line-numbers [separator-demo.html]
+<div class="flex max-w-sm flex-col gap-4 text-sm">
+  <div class="flex flex-col gap-1.5">
+    <div class="leading-none font-medium">shadcn/ui</div>
+    <div class="text-muted-foreground">The Foundation for your Design System</div>
+  </div>
+  <div
+    data-orientation="horizontal"
+    role="none"
+    data-slot="separator"
+    class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch"
+  ></div>
+  <div>A set of beautifully designed components that you can customize, extend, and build on.</div>
+</div>
 ```
 :::
 
@@ -71,8 +83,24 @@ Use `orientation="vertical"` for a vertical separator.
 <p class="demo-langs"><a href="/demos/separator-vertical.html">Open the demo page</a></p>
 
 ::: code-group
-```text [separator-vertical.html]
-<div class="flex h-5 items-center gap-4 text-sm"><div>Blog</div><div data-orientation="vertical" role="none" data-slot="separator" class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch"></div><div>Docs</div><div data-orientation="vertical" role="none" data-slot="separator" class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch"></div><div>Source</div></div>
+```text:line-numbers [separator-vertical.html]
+<div class="flex h-5 items-center gap-4 text-sm">
+  <div>Blog</div>
+  <div
+    data-orientation="vertical"
+    role="none"
+    data-slot="separator"
+    class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch"
+  ></div>
+  <div>Docs</div>
+  <div
+    data-orientation="vertical"
+    role="none"
+    data-slot="separator"
+    class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch"
+  ></div>
+  <div>Source</div>
+</div>
 ```
 :::
 
@@ -89,8 +117,33 @@ Vertical separators between menu items with descriptions.
 <p class="demo-langs"><a href="/demos/separator-menu.html">Open the demo page</a></p>
 
 ::: code-group
-```text [separator-menu.html]
-<div class="flex items-center gap-2 text-sm md:gap-4"><div class="flex flex-col gap-1"><span class="font-medium">Settings</span><span class="text-xs text-muted-foreground">Manage preferences</span></div><div data-orientation="vertical" role="none" data-slot="separator" class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch"></div><div class="flex flex-col gap-1"><span class="font-medium">Account</span><span class="text-xs text-muted-foreground">Profile &amp; security</span></div><div data-orientation="vertical" role="none" data-slot="separator" class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch hidden md:block"></div><div class="hidden flex-col gap-1 md:flex"><span class="font-medium">Help</span><span class="text-xs text-muted-foreground">Support &amp; docs</span></div></div>
+```text:line-numbers [separator-menu.html]
+<div class="flex items-center gap-2 text-sm md:gap-4">
+  <div class="flex flex-col gap-1">
+    <span class="font-medium">Settings</span
+    ><span class="text-xs text-muted-foreground">Manage preferences</span>
+  </div>
+  <div
+    data-orientation="vertical"
+    role="none"
+    data-slot="separator"
+    class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch"
+  ></div>
+  <div class="flex flex-col gap-1">
+    <span class="font-medium">Account</span
+    ><span class="text-xs text-muted-foreground">Profile &amp; security</span>
+  </div>
+  <div
+    data-orientation="vertical"
+    role="none"
+    data-slot="separator"
+    class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch hidden md:block"
+  ></div>
+  <div class="hidden flex-col gap-1 md:flex">
+    <span class="font-medium">Help</span
+    ><span class="text-xs text-muted-foreground">Support &amp; docs</span>
+  </div>
+</div>
 ```
 :::
 
@@ -107,8 +160,33 @@ Horizontal separators between list items.
 <p class="demo-langs"><a href="/demos/separator-list.html">Open the demo page</a></p>
 
 ::: code-group
-```text [separator-list.html]
-<div class="flex w-full max-w-sm flex-col gap-2 text-sm"><dl class="flex items-center justify-between"><dt>Item 1</dt><dd class="text-muted-foreground">Value 1</dd></dl><div data-orientation="horizontal" role="none" data-slot="separator" class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch"></div><dl class="flex items-center justify-between"><dt>Item 2</dt><dd class="text-muted-foreground">Value 2</dd></dl><div data-orientation="horizontal" role="none" data-slot="separator" class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch"></div><dl class="flex items-center justify-between"><dt>Item 3</dt><dd class="text-muted-foreground">Value 3</dd></dl></div>
+```text:line-numbers [separator-list.html]
+<div class="flex w-full max-w-sm flex-col gap-2 text-sm">
+  <dl class="flex items-center justify-between">
+    <dt>Item 1</dt>
+    <dd class="text-muted-foreground">Value 1</dd>
+  </dl>
+  <div
+    data-orientation="horizontal"
+    role="none"
+    data-slot="separator"
+    class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch"
+  ></div>
+  <dl class="flex items-center justify-between">
+    <dt>Item 2</dt>
+    <dd class="text-muted-foreground">Value 2</dd>
+  </dl>
+  <div
+    data-orientation="horizontal"
+    role="none"
+    data-slot="separator"
+    class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch"
+  ></div>
+  <dl class="flex items-center justify-between">
+    <dt>Item 3</dt>
+    <dd class="text-muted-foreground">Value 3</dd>
+  </dl>
+</div>
 ```
 :::
 
@@ -125,8 +203,20 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 <p class="demo-langs"><a href="/demos/separator-rtl.html">Open the demo page</a> · <a href="/demos/separator-rtl-he.html">HE</a> · <a href="/demos/separator-rtl-en.html">EN</a></p>
 
 ::: code-group
-```text [separator-rtl.html]
-<div class="flex max-w-sm flex-col gap-4 text-sm" dir="rtl"><div class="flex flex-col gap-1.5"><div class="leading-none font-medium">shadcn/ui</div><div class="text-muted-foreground">الأساس لنظام التصميم الخاص بك</div></div><div data-orientation="horizontal" role="none" data-slot="separator" class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch"></div><div>مجموعة من المكونات المصممة بشكل جميل يمكنك تخصيصها وتوسيعها والبناء عليها.</div></div>
+```text:line-numbers [separator-rtl.html]
+<div class="flex max-w-sm flex-col gap-4 text-sm" dir="rtl">
+  <div class="flex flex-col gap-1.5">
+    <div class="leading-none font-medium">shadcn/ui</div>
+    <div class="text-muted-foreground">الأساس لنظام التصميم الخاص بك</div>
+  </div>
+  <div
+    data-orientation="horizontal"
+    role="none"
+    data-slot="separator"
+    class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch"
+  ></div>
+  <div>مجموعة من المكونات المصممة بشكل جميل يمكنك تخصيصها وتوسيعها والبناء عليها.</div>
+</div>
 ```
 :::
 

@@ -13,13 +13,48 @@ A chat scroll container that anchors turns, opens saved transcripts, follows str
 <p class="demo-langs"><a href="/demos/message-scroller.html">Open the demo page</a></p>
 
 ::: code-group
-```text [message-scroller.html]
+```text:line-numbers [message-scroller.html]
 <div></div>
-<div data-slot="message-scroller" class="group/message-scroller"><div data-slot="message-scroller-viewport" style="height:160px;overflow:hidden;border:1px solid var(--border);border-radius:0.5rem;padding:0.75rem;background:color-mix(in oklab, var(--muted) 30%, transparent)"><div data-slot="message-scroller-content"><div data-slot="message-scroller-item" style="margin-bottom:0.5rem">Top message</div><div data-slot="message-scroller-item" style="margin-bottom:0.5rem;margin-top:3rem">Middle message</div><div data-slot="message-scroller-item" style="margin-top:6rem">Bottom message</div></div></div></div>
-<div data-slot="message-scroller-viewport"><div style="padding:0.75rem">Scrollable content</div></div>
-<div data-slot="message-scroller-content"><div style="padding:0.75rem">Item content</div></div>
-<div data-slot="message-scroller-item"><div style="padding:0.5rem;border:1px solid var(--border);border-radius:0.375rem">Item</div></div>
-<button data-slot="message-scroller-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:1rem;height:1rem"><path d="M12 5v14M5 12l7 7 7-7"></path></svg></button>
+<div data-slot="message-scroller" class="group/message-scroller">
+  <div
+    data-slot="message-scroller-viewport"
+    style="
+      height: 160px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+      background: color-mix(in oklab, var(--muted) 30%, transparent);
+    "
+  >
+    <div data-slot="message-scroller-content">
+      <div data-slot="message-scroller-item" style="margin-bottom: 0.5rem">Top message</div>
+      <div data-slot="message-scroller-item" style="margin-bottom: 0.5rem; margin-top: 3rem">
+        Middle message
+      </div>
+      <div data-slot="message-scroller-item" style="margin-top: 6rem">Bottom message</div>
+    </div>
+  </div>
+</div>
+<div data-slot="message-scroller-viewport">
+  <div style="padding: 0.75rem">Scrollable content</div>
+</div>
+<div data-slot="message-scroller-content"><div style="padding: 0.75rem">Item content</div></div>
+<div data-slot="message-scroller-item">
+  <div style="padding: 0.5rem; border: 1px solid var(--border); border-radius: 0.375rem">Item</div>
+</div>
+<button data-slot="message-scroller-button">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    style="width: 1rem; height: 1rem"
+  >
+    <path d="M12 5v14M5 12l7 7 7-7"></path>
+  </svg>
+</button>
 ```
 :::
 
@@ -145,55 +180,180 @@ In the following example, the user's message is anchored. When you send a new me
 <p class="demo-langs"><a href="/demos/message-scroller-anchoring.html">Open the demo page</a></p>
 
 ::: code-group
-```text [message-scroller-anchoring.html]
+```text:line-numbers [message-scroller-anchoring.html]
 <div class="mx-auto flex flex-col gap-4 w-full max-w-sm">
-    <div data-slot="card" class="w-full" style="height:35rem;gap:0">
-      <div data-slot="card-header" class="border-b">
-        <div data-slot="card-title">Anchoring Turns</div>
-        <div data-slot="card-description">Choose which role settles near the top edge.</div>
-        <div data-slot="card-action">
-          <button data-slot="button" type="button" data-variant="outline" data-size="icon" id="reset-btn" aria-label="Reset anchored turns" disabled>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path></svg>
-          </button>
-        </div>
-      </div>
-      <div data-slot="card-content" class="flex-1 min-h-0" style="overflow:hidden;padding:0">
-        <div data-slot="empty" id="empty-state" class="h-full">
-          <div data-slot="empty-header">
-            <div data-slot="empty-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.1 2.182a10 10 0 0 1 3.8 0"></path><path d="M13.9 21.818a10 10 0 0 1-3.8 0"></path><path d="M17.609 3.72a10 10 0 0 1 2.69 2.7"></path><path d="M2.182 13.9a10 10 0 0 1 0-3.8"></path><path d="M20.28 17.61a10 10 0 0 1-2.7 2.69"></path><path d="M21.818 10.1a10 10 0 0 1 0 3.8"></path><path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"></path><path d="m6.163 21.117-2.906.85a1 1 0 0 1-1.236-1.169l.965-2.98"></path></svg>
-            </div>
-            <div data-slot="empty-title">No anchored messages yet</div>
-            <div data-slot="empty-description">Send the first message to see the selected role anchor.</div>
-          </div>
-        </div>
-        <div data-slot="message-scroller" class="group/message-scroller" id="scroller" hidden>
-          <div data-slot="message-scroller-viewport" id="ms-viewport" role="region" aria-label="Messages" tabindex="0">
-            <div data-slot="message-scroller-content" id="ms-content" role="log" aria-relevant="additions" style="padding:var(--card-spacing)">
-            </div>
-          </div>
-          <button data-slot="message-scroller-button" id="ms-button" type="button" data-active="false" aria-label="Scroll to latest" style="bottom:calc(var(--spacing)*2)">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
-            <span class="sr-only">Scroll to latest</span>
-          </button>
-        </div>
-      </div>
-      <div data-slot="card-footer">
-        <div data-slot="toggle-group" id="tg1" dir="ltr" role="radiogroup" aria-label="Select scroll anchor role" data-spacing="2" style="--gap:2" tabindex="0">
-          <button data-slot="toggle-group-item" type="button" value="user" aria-label="Anchor user messages" data-state="on" role="radio" aria-checked="true" data-spacing="2" tabindex="0">User</button>
-          <button data-slot="toggle-group-item" type="button" value="assistant" aria-label="Anchor assistant messages" data-state="off" role="radio" aria-checked="false" data-spacing="2" tabindex="-1">Assistant</button>
-        </div>
-        <button data-slot="button" type="button" data-size="icon" id="send-btn" style="margin-inline-start:auto">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"></path></svg>
-          <span class="sr-only">Send Message</span>
+  <div data-slot="card" class="w-full" style="height: 35rem; gap: 0">
+    <div data-slot="card-header" class="border-b">
+      <div data-slot="card-title">Anchoring Turns</div>
+      <div data-slot="card-description">Choose which role settles near the top edge.</div>
+      <div data-slot="card-action">
+        <button
+          data-slot="button"
+          type="button"
+          data-variant="outline"
+          data-size="icon"
+          id="reset-btn"
+          aria-label="Reset anchored turns"
+          disabled
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path>
+            <path d="M21 3v5h-5"></path>
+          </svg>
         </button>
       </div>
     </div>
-    <p class="text-center text-xs" style="color:var(--muted-foreground);padding-inline:calc(var(--spacing)*0.5)">Toggle the anchor role, then send messages to compare where turns settle.</p>
+    <div data-slot="card-content" class="flex-1 min-h-0" style="overflow: hidden; padding: 0">
+      <div data-slot="empty" id="empty-state" class="h-full">
+        <div data-slot="empty-header">
+          <div data-slot="empty-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M10.1 2.182a10 10 0 0 1 3.8 0"></path>
+              <path d="M13.9 21.818a10 10 0 0 1-3.8 0"></path>
+              <path d="M17.609 3.72a10 10 0 0 1 2.69 2.7"></path>
+              <path d="M2.182 13.9a10 10 0 0 1 0-3.8"></path>
+              <path d="M20.28 17.61a10 10 0 0 1-2.7 2.69"></path>
+              <path d="M21.818 10.1a10 10 0 0 1 0 3.8"></path>
+              <path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"></path>
+              <path d="m6.163 21.117-2.906.85a1 1 0 0 1-1.236-1.169l.965-2.98"></path>
+            </svg>
+          </div>
+          <div data-slot="empty-title">No anchored messages yet</div>
+          <div data-slot="empty-description">
+            Send the first message to see the selected role anchor.
+          </div>
+        </div>
+      </div>
+      <div data-slot="message-scroller" class="group/message-scroller" id="scroller" hidden>
+        <div
+          data-slot="message-scroller-viewport"
+          id="ms-viewport"
+          role="region"
+          aria-label="Messages"
+          tabindex="0"
+        >
+          <div
+            data-slot="message-scroller-content"
+            id="ms-content"
+            role="log"
+            aria-relevant="additions"
+            style="padding: var(--card-spacing)"
+          ></div>
+        </div>
+        <button
+          data-slot="message-scroller-button"
+          id="ms-button"
+          type="button"
+          data-active="false"
+          aria-label="Scroll to latest"
+          style="bottom: calc(var(--spacing) * 2)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="m6 9 6 6 6-6"></path>
+          </svg>
+          <span class="sr-only">Scroll to latest</span>
+        </button>
+      </div>
+    </div>
+    <div data-slot="card-footer">
+      <div
+        data-slot="toggle-group"
+        id="tg1"
+        dir="ltr"
+        role="radiogroup"
+        aria-label="Select scroll anchor role"
+        data-spacing="2"
+        style="--gap: 2"
+        tabindex="0"
+      >
+        <button
+          data-slot="toggle-group-item"
+          type="button"
+          value="user"
+          aria-label="Anchor user messages"
+          data-state="on"
+          role="radio"
+          aria-checked="true"
+          data-spacing="2"
+          tabindex="0"
+        >
+          User
+        </button>
+        <button
+          data-slot="toggle-group-item"
+          type="button"
+          value="assistant"
+          aria-label="Anchor assistant messages"
+          data-state="off"
+          role="radio"
+          aria-checked="false"
+          data-spacing="2"
+          tabindex="-1"
+        >
+          Assistant
+        </button>
+      </div>
+      <button
+        data-slot="button"
+        type="button"
+        data-size="icon"
+        id="send-btn"
+        style="margin-inline-start: auto"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="m5 12 7-7 7 7"></path>
+          <path d="M12 19V5"></path>
+        </svg>
+        <span class="sr-only">Send Message</span>
+      </button>
+    </div>
   </div>
+  <p
+    class="text-center text-xs"
+    style="color: var(--muted-foreground); padding-inline: calc(var(--spacing) * 0.5)"
+  >
+    Toggle the anchor role, then send messages to compare where turns settle.
+  </p>
+</div>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 (function () {
@@ -319,45 +479,119 @@ a message.
 <p class="demo-langs"><a href="/demos/message-scroller-group-chat.html">Open the demo page</a></p>
 
 ::: code-group
-```text [message-scroller-group-chat.html]
+```text:line-numbers [message-scroller-group-chat.html]
 <div class="mx-auto flex flex-col gap-4 w-full max-w-sm">
-    <div data-slot="card" class="w-full" style="height:35rem;gap:0">
-      <div data-slot="card-header" class="border-b" style="gap:calc(var(--spacing)*1)">
-        <div data-slot="card-title">Group Chat</div>
-        <div data-slot="card-description">A group chat with several participants and an assistant. The Marker is marked as a turn.</div>
-        <div data-slot="card-action">
-          <button data-slot="button" type="button" data-variant="outline" data-size="icon" id="t1-trigger" aria-label="Reset conversation" data-state="closed" disabled>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path></svg>
-          </button>
-        </div>
+  <div data-slot="card" class="w-full" style="height: 35rem; gap: 0">
+    <div data-slot="card-header" class="border-b" style="gap: calc(var(--spacing) * 1)">
+      <div data-slot="card-title">Group Chat</div>
+      <div data-slot="card-description">
+        A group chat with several participants and an assistant. The Marker is marked as a turn.
       </div>
-      <div data-slot="card-content" class="flex-1 min-h-0" style="overflow:hidden;padding:0">
-        <div data-slot="message-scroller" class="group/message-scroller">
-          <div data-slot="message-scroller-viewport" id="ms-viewport" role="region" aria-label="Messages" tabindex="0">
-            <div data-slot="message-scroller-content" id="ms-content" role="log" aria-relevant="additions" style="padding:var(--card-spacing)">
-            </div>
-          </div>
-          <button data-slot="message-scroller-button" id="ms-button" type="button" data-active="false" aria-label="Scroll to latest" style="bottom:calc(var(--spacing)*2)">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
-            <span class="sr-only">Scroll to latest</span>
-          </button>
-        </div>
-      </div>
-      <div data-slot="card-footer" class="border-t" style="flex-direction:column;align-items:center;gap:calc(var(--spacing)*2)">
-        <button data-slot="button" type="button" data-variant="secondary" id="action-btn" style="width:100%">Add Rocky</button>
-        <p id="footer-hint" class="text-xs" style="color:var(--muted-foreground)">This will create a marker and make it the anchor.</p>
+      <div data-slot="card-action">
+        <button
+          data-slot="button"
+          type="button"
+          data-variant="outline"
+          data-size="icon"
+          id="t1-trigger"
+          aria-label="Reset conversation"
+          data-state="closed"
+          disabled
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path>
+            <path d="M21 3v5h-5"></path>
+          </svg>
+        </button>
       </div>
     </div>
-    <p class="text-center text-xs" style="color:var(--muted-foreground);padding-inline:calc(var(--spacing)*0.5)">When a user joins, a marker is created. scrollAnchor on the marker marks it as the next turn.</p>
+    <div data-slot="card-content" class="flex-1 min-h-0" style="overflow: hidden; padding: 0">
+      <div data-slot="message-scroller" class="group/message-scroller">
+        <div
+          data-slot="message-scroller-viewport"
+          id="ms-viewport"
+          role="region"
+          aria-label="Messages"
+          tabindex="0"
+        >
+          <div
+            data-slot="message-scroller-content"
+            id="ms-content"
+            role="log"
+            aria-relevant="additions"
+            style="padding: var(--card-spacing)"
+          ></div>
+        </div>
+        <button
+          data-slot="message-scroller-button"
+          id="ms-button"
+          type="button"
+          data-active="false"
+          aria-label="Scroll to latest"
+          style="bottom: calc(var(--spacing) * 2)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="m6 9 6 6 6-6"></path>
+          </svg>
+          <span class="sr-only">Scroll to latest</span>
+        </button>
+      </div>
+    </div>
+    <div
+      data-slot="card-footer"
+      class="border-t"
+      style="flex-direction: column; align-items: center; gap: calc(var(--spacing) * 2)"
+    >
+      <button
+        data-slot="button"
+        type="button"
+        data-variant="secondary"
+        id="action-btn"
+        style="width: 100%"
+      >
+        Add Rocky
+      </button>
+      <p id="footer-hint" class="text-xs" style="color: var(--muted-foreground)">
+        This will create a marker and make it the anchor.
+      </p>
+    </div>
   </div>
-  <template id="t1-portal">
-    <div data-slot="tooltip-content" id="d1" role="tooltip" data-state="closed">Reset
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
-    </div>
-  </template>
+  <p
+    class="text-center text-xs"
+    style="color: var(--muted-foreground); padding-inline: calc(var(--spacing) * 0.5)"
+  >
+    When a user joins, a marker is created. scrollAnchor on the marker marks it as the next turn.
+  </p>
+</div>
+<template id="t1-portal">
+  <div data-slot="tooltip-content" id="d1" role="tooltip" data-state="closed">
+    Reset
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M12 5v14M5 12h14"></path>
+    </svg>
+  </div>
+</template>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/tooltip.js
@@ -528,78 +762,334 @@ Adjust the peek amount in the example below to see how it affects the conversati
 <p class="demo-langs"><a href="/demos/message-scroller-previous-context.html">Open the demo page</a></p>
 
 ::: code-group
-```text [message-scroller-previous-context.html]
+```text:line-numbers [message-scroller-previous-context.html]
 <div class="mx-auto flex flex-col gap-4 w-full max-w-sm">
-    <div data-slot="card" class="w-full" style="height:35rem;gap:0">
-      <div data-slot="card-header" class="border-b" style="gap:calc(var(--spacing)*1)">
-        <div data-slot="card-title">Keeping Context Visible</div>
-        <div data-slot="card-description">New turns keep part of the previous reply in view.</div>
-        <div data-slot="card-action">
-          <button data-slot="button" type="button" data-variant="outline" data-size="icon" id="t1-trigger" aria-label="Reset context example" data-state="closed" disabled>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path></svg>
-          </button>
-        </div>
+  <div data-slot="card" class="w-full" style="height: 35rem; gap: 0">
+    <div data-slot="card-header" class="border-b" style="gap: calc(var(--spacing) * 1)">
+      <div data-slot="card-title">Keeping Context Visible</div>
+      <div data-slot="card-description">New turns keep part of the previous reply in view.</div>
+      <div data-slot="card-action">
+        <button
+          data-slot="button"
+          type="button"
+          data-variant="outline"
+          data-size="icon"
+          id="t1-trigger"
+          aria-label="Reset context example"
+          data-state="closed"
+          disabled
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path>
+            <path d="M21 3v5h-5"></path>
+          </svg>
+        </button>
       </div>
-      <div data-slot="card-content" class="flex-1 min-h-0" style="overflow:hidden;padding:0">
-        <div data-slot="message-scroller" class="group/message-scroller" id="scroller">
-          <div data-slot="message-scroller-viewport" id="ms-viewport" role="region" aria-label="Messages" tabindex="0">
-            <div data-slot="message-scroller-content" id="ms-content" role="log" aria-relevant="additions" style="padding:var(--card-spacing)"></div>
+    </div>
+    <div data-slot="card-content" class="flex-1 min-h-0" style="overflow: hidden; padding: 0">
+      <div data-slot="message-scroller" class="group/message-scroller" id="scroller">
+        <div
+          data-slot="message-scroller-viewport"
+          id="ms-viewport"
+          role="region"
+          aria-label="Messages"
+          tabindex="0"
+        >
+          <div
+            data-slot="message-scroller-content"
+            id="ms-content"
+            role="log"
+            aria-relevant="additions"
+            style="padding: var(--card-spacing)"
+          ></div>
+        </div>
+        <button
+          data-slot="message-scroller-button"
+          id="ms-button"
+          type="button"
+          data-active="false"
+          aria-label="Scroll to latest"
+          style="bottom: calc(var(--spacing) * 2)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="m6 9 6 6 6-6"></path>
+          </svg>
+          <span class="sr-only">Scroll to latest</span>
+        </button>
+      </div>
+    </div>
+    <div data-slot="card-footer" style="flex-direction: column; gap: calc(var(--spacing) * 2)">
+      <form id="composer" style="width: 100%">
+        <div
+          data-slot="input-group"
+          class="group/input-group"
+          style="height: auto; flex-direction: column; align-items: stretch"
+        >
+          <div style="height: 3.5rem; width: 100%; padding: 0.625rem 0.75rem">
+            <span
+              id="next-msg"
+              class="line-clamp-2"
+              style="
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+              "
+            ></span>
           </div>
-          <button data-slot="message-scroller-button" id="ms-button" type="button" data-active="false" aria-label="Scroll to latest" style="bottom:calc(var(--spacing)*2)">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
-            <span class="sr-only">Scroll to latest</span>
-          </button>
-        </div>
-      </div>
-      <div data-slot="card-footer" style="flex-direction:column;gap:calc(var(--spacing)*2)">
-        <form id="composer" style="width:100%">
-          <div data-slot="input-group" class="group/input-group" style="height:auto;flex-direction:column;align-items:stretch">
-            <div style="height:3.5rem;width:100%;padding:0.625rem 0.75rem">
-              <span id="next-msg" class="line-clamp-2" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden"></span>
-            </div>
-            <div data-slot="input-group-addon" role="group" data-align="block-end" style="padding-top:0.25rem;justify-content:flex-start;width:100%;gap:calc(var(--spacing)*2)">
-              <button data-slot="button" type="button" data-variant="outline" data-size="icon-sm" id="d1-trigger" aria-label="Add files" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-radixuigo-menu-trigger="d1">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
-              </button>
-              <div style="display:flex;width:7rem;align-items:center;gap:calc(var(--spacing)*2)">
-                <span class="text-xs tabular-nums" id="peek-px" style="color:var(--muted-foreground)">64px</span>
-                <span data-slot="slider" id="s1" data-orientation="horizontal" dir="ltr" class="w-full">
-                  <span data-slot="slider-track" data-orientation="horizontal">
-                    <span data-slot="slider-range" data-orientation="horizontal" style="left:0%;right:100%"></span>
-                  </span>
-                  <span style="position:absolute;transform:var(--radix-slider-thumb-transform);left:0%">
-                    <span data-slot="slider-thumb" role="slider" tabindex="0" aria-label="Previous context peek" aria-valuemin="64" aria-valuemax="128" aria-valuenow="64" aria-orientation="horizontal"></span>
-                  </span>
+          <div
+            data-slot="input-group-addon"
+            role="group"
+            data-align="block-end"
+            style="
+              padding-top: 0.25rem;
+              justify-content: flex-start;
+              width: 100%;
+              gap: calc(var(--spacing) * 2);
+            "
+          >
+            <button
+              data-slot="button"
+              type="button"
+              data-variant="outline"
+              data-size="icon-sm"
+              id="d1-trigger"
+              aria-label="Add files"
+              aria-haspopup="menu"
+              aria-expanded="false"
+              data-state="closed"
+              data-radixuigo-menu-trigger="d1"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14"></path>
+                <path d="M12 5v14"></path>
+              </svg>
+            </button>
+            <div
+              style="display: flex; width: 7rem; align-items: center; gap: calc(var(--spacing) * 2)"
+            >
+              <span class="text-xs tabular-nums" id="peek-px" style="color: var(--muted-foreground)"
+                >64px</span
+              >
+              <span
+                data-slot="slider"
+                id="s1"
+                data-orientation="horizontal"
+                dir="ltr"
+                class="w-full"
+              >
+                <span data-slot="slider-track" data-orientation="horizontal">
+                  <span
+                    data-slot="slider-range"
+                    data-orientation="horizontal"
+                    style="left: 0%; right: 100%"
+                  ></span>
                 </span>
-              </div>
-              <button data-slot="button" type="submit" data-variant="default" data-size="icon-sm" id="send-btn" style="margin-inline-start:auto" disabled>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"></path></svg>
-                <span class="sr-only">Send</span>
-              </button>
+                <span
+                  style="
+                    position: absolute;
+                    transform: var(--radix-slider-thumb-transform);
+                    left: 0%;
+                  "
+                >
+                  <span
+                    data-slot="slider-thumb"
+                    role="slider"
+                    tabindex="0"
+                    aria-label="Previous context peek"
+                    aria-valuemin="64"
+                    aria-valuemax="128"
+                    aria-valuenow="64"
+                    aria-orientation="horizontal"
+                  ></span>
+                </span>
+              </span>
             </div>
+            <button
+              data-slot="button"
+              type="submit"
+              data-variant="default"
+              data-size="icon-sm"
+              id="send-btn"
+              style="margin-inline-start: auto"
+              disabled
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="m5 12 7-7 7 7"></path>
+                <path d="M12 19V5"></path>
+              </svg>
+              <span class="sr-only">Send</span>
+            </button>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
-    <p class="text-center text-xs" style="color:var(--muted-foreground);padding-inline:calc(var(--spacing)*0.5)">Adjust the slider and send. Observe the previous message peek.</p>
   </div>
-  <template id="t1-portal">
-    <div data-slot="tooltip-content" id="tt1" role="tooltip" data-state="closed">Reset
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+  <p
+    class="text-center text-xs"
+    style="color: var(--muted-foreground); padding-inline: calc(var(--spacing) * 0.5)"
+  >
+    Adjust the slider and send. Observe the previous message peek.
+  </p>
+</div>
+<template id="t1-portal">
+  <div data-slot="tooltip-content" id="tt1" role="tooltip" data-state="closed">
+    Reset
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M12 5v14M5 12h14"></path>
+    </svg>
+  </div>
+</template>
+<template id="d1-tpl">
+  <div
+    data-slot="dropdown-menu-content"
+    id="d1"
+    role="menu"
+    tabindex="-1"
+    data-state="closed"
+    dir="ltr"
+    aria-orientation="vertical"
+    data-orientation="vertical"
+    aria-labelledby="d1-trigger"
+    style="width: 11rem"
+  >
+    <div
+      data-slot="dropdown-menu-item"
+      role="menuitem"
+      tabindex="-1"
+      data-variant="default"
+      data-orientation="vertical"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path
+          d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"
+        ></path></svg
+      >Add Photos &amp; Files
     </div>
-  </template>
-  <template id="d1-tpl">
-    <div data-slot="dropdown-menu-content" id="d1" role="menu" tabindex="-1" data-state="closed" dir="ltr" aria-orientation="vertical" data-orientation="vertical" aria-labelledby="d1-trigger" style="width:11rem">
-      <div data-slot="dropdown-menu-item" role="menuitem" tabindex="-1" data-variant="default" data-orientation="vertical"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"></path></svg>Add Photos &amp; Files</div>
-      <div data-slot="dropdown-menu-separator" role="separator" aria-orientation="horizontal"></div>
-      <div data-slot="dropdown-menu-item" role="menuitem" tabindex="-1" data-variant="default" data-orientation="vertical"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>Create Image</div>
-      <div data-slot="dropdown-menu-item" role="menuitem" tabindex="-1" data-variant="default" data-orientation="vertical"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10.065 12.493-6.18 1.318a.934.934 0 0 1-1.108-.702l-.537-2.15a1.07 1.07 0 0 1 .691-1.265l13.504-4.44"></path><path d="m13.56 11.747 4.332-.924"></path><path d="m16 21-3.105-6.21"></path><path d="M16.485 5.94a2 2 0 0 1 1.455-2.425l1.09-.272a1 1 0 0 1 1.212.727l1.515 6.06a1 1 0 0 1-.727 1.213l-1.09.272a2 2 0 0 1-2.425-1.455z"></path><path d="m6.158 8.633 1.114 4.456"></path><path d="m8 21 3.105-6.21"></path></svg>Deep Research</div>
-      <div data-slot="dropdown-menu-item" role="menuitem" tabindex="-1" data-variant="default" data-orientation="vertical"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>Web Search</div>
+    <div data-slot="dropdown-menu-separator" role="separator" aria-orientation="horizontal"></div>
+    <div
+      data-slot="dropdown-menu-item"
+      role="menuitem"
+      tabindex="-1"
+      data-variant="default"
+      data-orientation="vertical"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+        <circle cx="9" cy="9" r="2"></circle>
+        <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg
+      >Create Image
     </div>
-  </template>
+    <div
+      data-slot="dropdown-menu-item"
+      role="menuitem"
+      tabindex="-1"
+      data-variant="default"
+      data-orientation="vertical"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path
+          d="m10.065 12.493-6.18 1.318a.934.934 0 0 1-1.108-.702l-.537-2.15a1.07 1.07 0 0 1 .691-1.265l13.504-4.44"
+        ></path>
+        <path d="m13.56 11.747 4.332-.924"></path>
+        <path d="m16 21-3.105-6.21"></path>
+        <path
+          d="M16.485 5.94a2 2 0 0 1 1.455-2.425l1.09-.272a1 1 0 0 1 1.212.727l1.515 6.06a1 1 0 0 1-.727 1.213l-1.09.272a2 2 0 0 1-2.425-1.455z"
+        ></path>
+        <path d="m6.158 8.633 1.114 4.456"></path>
+        <path d="m8 21 3.105-6.21"></path></svg
+      >Deep Research
+    </div>
+    <div
+      data-slot="dropdown-menu-item"
+      role="menuitem"
+      tabindex="-1"
+      data-variant="default"
+      data-orientation="vertical"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+        <path d="M2 12h20"></path></svg
+      >Web Search
+    </div>
+  </div>
+</template>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/dropdown-menu.js
@@ -915,76 +1405,322 @@ follow-output takes over from the anchor.
 <p class="demo-langs"><a href="/demos/message-scroller-streaming.html">Open the demo page</a></p>
 
 ::: code-group
-```text [message-scroller-streaming.html]
+```text:line-numbers [message-scroller-streaming.html]
 <div class="mx-auto flex flex-col gap-4 w-full max-w-sm">
-    <div data-slot="card" class="w-full" style="height:35rem;gap:0">
-      <div data-slot="card-header" class="border-b" style="gap:calc(var(--spacing)*1)">
-        <div data-slot="card-title">Streaming Messages</div>
-        <div data-slot="card-description">Auto-scroll follows the live edge of the conversation.</div>
-        <div data-slot="card-action">
-          <button data-slot="button" type="button" data-variant="outline" data-size="icon" id="t1-trigger" aria-label="Reset stream" data-state="closed" disabled>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path></svg>
-          </button>
-        </div>
-      </div>
-      <div data-slot="card-content" class="flex-1 min-h-0" style="overflow:hidden;padding:0">
-        <div data-slot="empty" id="empty-state" class="h-full">
-          <div data-slot="empty-header">
-            <div data-slot="empty-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.1 2.182a10 10 0 0 1 3.8 0"></path><path d="M13.9 21.818a10 10 0 0 1-3.8 0"></path><path d="M17.609 3.72a10 10 0 0 1 2.69 2.7"></path><path d="M2.182 13.9a10 10 0 0 1 0-3.8"></path><path d="M20.28 17.61a10 10 0 0 1-2.7 2.69"></path><path d="M21.818 10.1a10 10 0 0 1 0 3.8"></path><path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"></path><path d="m6.163 21.117-2.906.85a1 1 0 0 1-1.236-1.169l.965-2.98"></path></svg>
-            </div>
-            <div data-slot="empty-title">Ready to Stream</div>
-            <div data-slot="empty-description">Press send to stream a scripted launch summary.</div>
-          </div>
-        </div>
-        <div data-slot="message-scroller" class="group/message-scroller" id="scroller" hidden data-autoscroll="">
-          <div data-slot="message-scroller-viewport" id="ms-viewport" role="region" aria-label="Messages" tabindex="0">
-            <div data-slot="message-scroller-content" id="ms-content" role="log" aria-relevant="additions" style="padding:var(--card-spacing)"></div>
-          </div>
-          <button data-slot="message-scroller-button" id="ms-button" type="button" data-active="false" aria-label="Scroll to latest" style="bottom:calc(var(--spacing)*2)">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
-            <span class="sr-only">Scroll to latest</span>
-          </button>
-        </div>
-      </div>
-      <div data-slot="card-footer" style="flex-direction:column;gap:calc(var(--spacing)*2)">
-        <form id="composer" style="width:100%">
-          <div data-slot="input-group" class="group/input-group" style="height:auto;flex-direction:column;align-items:stretch">
-            <div style="height:3.5rem;width:100%;padding:0.625rem 0.75rem">
-              <span id="next-msg" class="line-clamp-2" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden"></span>
-            </div>
-            <div data-slot="input-group-addon" role="group" data-align="block-end" style="padding-top:0.25rem;justify-content:flex-start;width:100%">
-              <button data-slot="button" type="button" data-variant="outline" data-size="icon-sm" id="d1-trigger" aria-label="Add files" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-radixuigo-menu-trigger="d1">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
-              </button>
-              <button data-slot="button" type="submit" data-variant="default" data-size="icon-sm" id="send-btn" style="margin-inline-start:auto" disabled>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"></path></svg>
-                <span class="sr-only">Send</span>
-              </button>
-            </div>
-          </div>
-        </form>
+  <div data-slot="card" class="w-full" style="height: 35rem; gap: 0">
+    <div data-slot="card-header" class="border-b" style="gap: calc(var(--spacing) * 1)">
+      <div data-slot="card-title">Streaming Messages</div>
+      <div data-slot="card-description">Auto-scroll follows the live edge of the conversation.</div>
+      <div data-slot="card-action">
+        <button
+          data-slot="button"
+          type="button"
+          data-variant="outline"
+          data-size="icon"
+          id="t1-trigger"
+          aria-label="Reset stream"
+          data-state="closed"
+          disabled
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path>
+            <path d="M21 3v5h-5"></path>
+          </svg>
+        </button>
       </div>
     </div>
-    <p class="text-center text-xs" style="color:var(--muted-foreground);padding-inline:calc(var(--spacing)*0.5)">Streaming is simulated. autoScroll is enabled.</p>
+    <div data-slot="card-content" class="flex-1 min-h-0" style="overflow: hidden; padding: 0">
+      <div data-slot="empty" id="empty-state" class="h-full">
+        <div data-slot="empty-header">
+          <div data-slot="empty-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M10.1 2.182a10 10 0 0 1 3.8 0"></path>
+              <path d="M13.9 21.818a10 10 0 0 1-3.8 0"></path>
+              <path d="M17.609 3.72a10 10 0 0 1 2.69 2.7"></path>
+              <path d="M2.182 13.9a10 10 0 0 1 0-3.8"></path>
+              <path d="M20.28 17.61a10 10 0 0 1-2.7 2.69"></path>
+              <path d="M21.818 10.1a10 10 0 0 1 0 3.8"></path>
+              <path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"></path>
+              <path d="m6.163 21.117-2.906.85a1 1 0 0 1-1.236-1.169l.965-2.98"></path>
+            </svg>
+          </div>
+          <div data-slot="empty-title">Ready to Stream</div>
+          <div data-slot="empty-description">Press send to stream a scripted launch summary.</div>
+        </div>
+      </div>
+      <div
+        data-slot="message-scroller"
+        class="group/message-scroller"
+        id="scroller"
+        hidden
+        data-autoscroll=""
+      >
+        <div
+          data-slot="message-scroller-viewport"
+          id="ms-viewport"
+          role="region"
+          aria-label="Messages"
+          tabindex="0"
+        >
+          <div
+            data-slot="message-scroller-content"
+            id="ms-content"
+            role="log"
+            aria-relevant="additions"
+            style="padding: var(--card-spacing)"
+          ></div>
+        </div>
+        <button
+          data-slot="message-scroller-button"
+          id="ms-button"
+          type="button"
+          data-active="false"
+          aria-label="Scroll to latest"
+          style="bottom: calc(var(--spacing) * 2)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="m6 9 6 6 6-6"></path>
+          </svg>
+          <span class="sr-only">Scroll to latest</span>
+        </button>
+      </div>
+    </div>
+    <div data-slot="card-footer" style="flex-direction: column; gap: calc(var(--spacing) * 2)">
+      <form id="composer" style="width: 100%">
+        <div
+          data-slot="input-group"
+          class="group/input-group"
+          style="height: auto; flex-direction: column; align-items: stretch"
+        >
+          <div style="height: 3.5rem; width: 100%; padding: 0.625rem 0.75rem">
+            <span
+              id="next-msg"
+              class="line-clamp-2"
+              style="
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+              "
+            ></span>
+          </div>
+          <div
+            data-slot="input-group-addon"
+            role="group"
+            data-align="block-end"
+            style="padding-top: 0.25rem; justify-content: flex-start; width: 100%"
+          >
+            <button
+              data-slot="button"
+              type="button"
+              data-variant="outline"
+              data-size="icon-sm"
+              id="d1-trigger"
+              aria-label="Add files"
+              aria-haspopup="menu"
+              aria-expanded="false"
+              data-state="closed"
+              data-radixuigo-menu-trigger="d1"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14"></path>
+                <path d="M12 5v14"></path>
+              </svg>
+            </button>
+            <button
+              data-slot="button"
+              type="submit"
+              data-variant="default"
+              data-size="icon-sm"
+              id="send-btn"
+              style="margin-inline-start: auto"
+              disabled
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="m5 12 7-7 7 7"></path>
+                <path d="M12 19V5"></path>
+              </svg>
+              <span class="sr-only">Send</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
-  <template id="t1-portal">
-    <div data-slot="tooltip-content" id="tt1" role="tooltip" data-state="closed">Reset
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+  <p
+    class="text-center text-xs"
+    style="color: var(--muted-foreground); padding-inline: calc(var(--spacing) * 0.5)"
+  >
+    Streaming is simulated. autoScroll is enabled.
+  </p>
+</div>
+<template id="t1-portal">
+  <div data-slot="tooltip-content" id="tt1" role="tooltip" data-state="closed">
+    Reset
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M12 5v14M5 12h14"></path>
+    </svg>
+  </div>
+</template>
+<template id="d1-tpl">
+  <div
+    data-slot="dropdown-menu-content"
+    id="d1"
+    role="menu"
+    tabindex="-1"
+    data-state="closed"
+    dir="ltr"
+    aria-orientation="vertical"
+    data-orientation="vertical"
+    aria-labelledby="d1-trigger"
+    style="width: 11rem"
+  >
+    <div
+      data-slot="dropdown-menu-item"
+      role="menuitem"
+      tabindex="-1"
+      data-variant="default"
+      data-orientation="vertical"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path
+          d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"
+        ></path></svg
+      >Add Photos &amp; Files
     </div>
-  </template>
-  <template id="d1-tpl">
-    <div data-slot="dropdown-menu-content" id="d1" role="menu" tabindex="-1" data-state="closed" dir="ltr" aria-orientation="vertical" data-orientation="vertical" aria-labelledby="d1-trigger" style="width:11rem">
-      <div data-slot="dropdown-menu-item" role="menuitem" tabindex="-1" data-variant="default" data-orientation="vertical"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"></path></svg>Add Photos &amp; Files</div>
-      <div data-slot="dropdown-menu-separator" role="separator" aria-orientation="horizontal"></div>
-      <div data-slot="dropdown-menu-item" role="menuitem" tabindex="-1" data-variant="default" data-orientation="vertical"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>Create Image</div>
-      <div data-slot="dropdown-menu-item" role="menuitem" tabindex="-1" data-variant="default" data-orientation="vertical"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10.065 12.493-6.18 1.318a.934.934 0 0 1-1.108-.702l-.537-2.15a1.07 1.07 0 0 1 .691-1.265l13.504-4.44"></path><path d="m13.56 11.747 4.332-.924"></path><path d="m16 21-3.105-6.21"></path><path d="M16.485 5.94a2 2 0 0 1 1.455-2.425l1.09-.272a1 1 0 0 1 1.212.727l1.515 6.06a1 1 0 0 1-.727 1.213l-1.09.272a2 2 0 0 1-2.425-1.455z"></path><path d="m6.158 8.633 1.114 4.456"></path><path d="m8 21 3.105-6.21"></path></svg>Deep Research</div>
-      <div data-slot="dropdown-menu-item" role="menuitem" tabindex="-1" data-variant="default" data-orientation="vertical"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>Web Search</div>
+    <div data-slot="dropdown-menu-separator" role="separator" aria-orientation="horizontal"></div>
+    <div
+      data-slot="dropdown-menu-item"
+      role="menuitem"
+      tabindex="-1"
+      data-variant="default"
+      data-orientation="vertical"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+        <circle cx="9" cy="9" r="2"></circle>
+        <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg
+      >Create Image
     </div>
-  </template>
+    <div
+      data-slot="dropdown-menu-item"
+      role="menuitem"
+      tabindex="-1"
+      data-variant="default"
+      data-orientation="vertical"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path
+          d="m10.065 12.493-6.18 1.318a.934.934 0 0 1-1.108-.702l-.537-2.15a1.07 1.07 0 0 1 .691-1.265l13.504-4.44"
+        ></path>
+        <path d="m13.56 11.747 4.332-.924"></path>
+        <path d="m16 21-3.105-6.21"></path>
+        <path
+          d="M16.485 5.94a2 2 0 0 1 1.455-2.425l1.09-.272a1 1 0 0 1 1.212.727l1.515 6.06a1 1 0 0 1-.727 1.213l-1.09.272a2 2 0 0 1-2.425-1.455z"
+        ></path>
+        <path d="m6.158 8.633 1.114 4.456"></path>
+        <path d="m8 21 3.105-6.21"></path></svg
+      >Deep Research
+    </div>
+    <div
+      data-slot="dropdown-menu-item"
+      role="menuitem"
+      tabindex="-1"
+      data-variant="default"
+      data-orientation="vertical"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+        <path d="M2 12h20"></path></svg
+      >Web Search
+    </div>
+  </div>
+</template>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/dropdown-menu.js
@@ -1279,40 +2015,114 @@ the conversation from the bottom edge.
 <p class="demo-langs"><a href="/demos/message-scroller-opening-position.html">Open the demo page</a></p>
 
 ::: code-group
-```text [message-scroller-opening-position.html]
+```text:line-numbers [message-scroller-opening-position.html]
 <div class="mx-auto flex flex-col gap-4 w-full max-w-sm">
-    <div data-slot="card" class="w-full" style="height:35rem;gap:0">
-      <div data-slot="card-header" class="border-b" style="gap:calc(var(--spacing)*1)">
-        <div data-slot="card-title">Opening Position</div>
-        <div data-slot="card-description">Choose where a saved transcript opens.</div>
+  <div data-slot="card" class="w-full" style="height: 35rem; gap: 0">
+    <div data-slot="card-header" class="border-b" style="gap: calc(var(--spacing) * 1)">
+      <div data-slot="card-title">Opening Position</div>
+      <div data-slot="card-description">Choose where a saved transcript opens.</div>
+    </div>
+    <div data-slot="card-content" class="flex-1 min-h-0" style="overflow: hidden; padding: 0">
+      <div data-slot="message-scroller" class="group/message-scroller">
+        <div
+          data-slot="message-scroller-viewport"
+          id="ms-viewport"
+          role="region"
+          aria-label="Messages"
+          tabindex="0"
+        >
+          <div
+            data-slot="message-scroller-content"
+            id="ms-content"
+            role="log"
+            aria-relevant="additions"
+            style="padding: var(--card-spacing)"
+          ></div>
+        </div>
+        <button
+          data-slot="message-scroller-button"
+          id="ms-button"
+          type="button"
+          data-active="false"
+          aria-label="Scroll to latest"
+          style="bottom: calc(var(--spacing) * 2)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="m6 9 6 6 6-6"></path>
+          </svg>
+          <span class="sr-only">Scroll to latest</span>
+        </button>
       </div>
-      <div data-slot="card-content" class="flex-1 min-h-0" style="overflow:hidden;padding:0">
-        <div data-slot="message-scroller" class="group/message-scroller">
-          <div data-slot="message-scroller-viewport" id="ms-viewport" role="region" aria-label="Messages" tabindex="0">
-            <div data-slot="message-scroller-content" id="ms-content" role="log" aria-relevant="additions" style="padding:var(--card-spacing)">
-            </div>
-          </div>
-          <button data-slot="message-scroller-button" id="ms-button" type="button" data-active="false" aria-label="Scroll to latest" style="bottom:calc(var(--spacing)*2)">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
-            <span class="sr-only">Scroll to latest</span>
+    </div>
+    <div data-slot="card-footer" class="border-t" style="justify-content: center">
+      <div
+        data-slot="tabs"
+        data-orientation="horizontal"
+        dir="ltr"
+        class="group/tabs"
+        style="width: 100%"
+      >
+        <div
+          data-slot="tabs-list"
+          role="tablist"
+          aria-orientation="horizontal"
+          data-orientation="horizontal"
+          data-variant="default"
+          style="width: 100%"
+        >
+          <button
+            data-slot="tabs-trigger"
+            type="button"
+            role="tab"
+            data-pos="start"
+            aria-selected="false"
+            data-state="inactive"
+          >
+            start
+          </button>
+          <button
+            data-slot="tabs-trigger"
+            type="button"
+            role="tab"
+            data-pos="end"
+            aria-selected="false"
+            data-state="inactive"
+          >
+            end
+          </button>
+          <button
+            data-slot="tabs-trigger"
+            type="button"
+            role="tab"
+            data-pos="last-anchor"
+            aria-selected="true"
+            data-state="active"
+          >
+            last-anchor
           </button>
         </div>
       </div>
-      <div data-slot="card-footer" class="border-t" style="justify-content:center">
-        <div data-slot="tabs" data-orientation="horizontal" dir="ltr" class="group/tabs" style="width:100%">
-          <div data-slot="tabs-list" role="tablist" aria-orientation="horizontal" data-orientation="horizontal" data-variant="default" style="width:100%">
-            <button data-slot="tabs-trigger" type="button" role="tab" data-pos="start" aria-selected="false" data-state="inactive">start</button>
-            <button data-slot="tabs-trigger" type="button" role="tab" data-pos="end" aria-selected="false" data-state="inactive">end</button>
-            <button data-slot="tabs-trigger" type="button" role="tab" data-pos="last-anchor" aria-selected="true" data-state="active">last-anchor</button>
-          </div>
-        </div>
-      </div>
     </div>
-    <p class="text-center text-xs" style="color:var(--muted-foreground);padding-inline:calc(var(--spacing)*0.5)">Toggle the defaultScrollPosition to see where the transcript starts when you open the thread.</p>
   </div>
+  <p
+    class="text-center text-xs"
+    style="color: var(--muted-foreground); padding-inline: calc(var(--spacing) * 0.5)"
+  >
+    Toggle the defaultScrollPosition to see where the transcript starts when you open the thread.
+  </p>
+</div>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 (function () {
       var msgs = [
         { id: "open-1", role: "user", text: "This is the first message the user sent in the conversation." },
@@ -1396,51 +2206,141 @@ This is enabled by default through `preserveScrollOnPrepend`.
 <p class="demo-langs"><a href="/demos/message-scroller-load-history.html">Open the demo page</a></p>
 
 ::: code-group
-```text [message-scroller-load-history.html]
+```text:line-numbers [message-scroller-load-history.html]
 <div class="mx-auto flex flex-col gap-4 w-full max-w-sm">
-    <div data-slot="card" class="w-full" style="height:35rem;gap:0">
-      <div data-slot="card-header" class="border-b" style="gap:calc(var(--spacing)*1)">
-        <div data-slot="card-title">Load History</div>
-        <div data-slot="card-description">Prepended messages keep your place.</div>
-        <div data-slot="card-action">
-          <button data-slot="button" type="button" data-variant="outline" data-size="icon" id="t1-trigger" aria-label="Reset loaded messages" data-state="closed">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path></svg>
-          </button>
-        </div>
-      </div>
-      <div data-slot="card-content" class="flex-1 min-h-0" style="overflow:hidden;padding:0">
-        <div data-slot="message-scroller" class="group/message-scroller">
-          <div data-slot="message-scroller-viewport" id="ms-viewport" role="region" aria-label="Messages" tabindex="0">
-            <div data-slot="message-scroller-content" id="ms-content" role="log" aria-relevant="additions" style="padding:var(--card-spacing)">
-            </div>
-          </div>
-          <button data-slot="message-scroller-button" id="ms-button" type="button" data-active="false" aria-label="Scroll to latest" style="bottom:calc(var(--spacing)*2)">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
-            <span class="sr-only">Scroll to latest</span>
-          </button>
-        </div>
-      </div>
-      <div data-slot="card-footer" class="border-t" style="flex-direction:column;align-items:center;gap:calc(var(--spacing)*2)">
-        <button data-slot="button" type="button" data-variant="secondary" id="load-btn" style="width:100%">Load History</button>
-        <p class="text-xs" style="color:var(--muted-foreground)">Restore earlier messages while keeping your place.</p>
+  <div data-slot="card" class="w-full" style="height: 35rem; gap: 0">
+    <div data-slot="card-header" class="border-b" style="gap: calc(var(--spacing) * 1)">
+      <div data-slot="card-title">Load History</div>
+      <div data-slot="card-description">Prepended messages keep your place.</div>
+      <div data-slot="card-action">
+        <button
+          data-slot="button"
+          type="button"
+          data-variant="outline"
+          data-size="icon"
+          id="t1-trigger"
+          aria-label="Reset loaded messages"
+          data-state="closed"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path>
+            <path d="M21 3v5h-5"></path>
+          </svg>
+        </button>
       </div>
     </div>
-    <p class="text-center text-xs" style="color:var(--muted-foreground);padding-inline:calc(var(--spacing)*0.5)">Click Load History to load the entire conversation.</p>
+    <div data-slot="card-content" class="flex-1 min-h-0" style="overflow: hidden; padding: 0">
+      <div data-slot="message-scroller" class="group/message-scroller">
+        <div
+          data-slot="message-scroller-viewport"
+          id="ms-viewport"
+          role="region"
+          aria-label="Messages"
+          tabindex="0"
+        >
+          <div
+            data-slot="message-scroller-content"
+            id="ms-content"
+            role="log"
+            aria-relevant="additions"
+            style="padding: var(--card-spacing)"
+          ></div>
+        </div>
+        <button
+          data-slot="message-scroller-button"
+          id="ms-button"
+          type="button"
+          data-active="false"
+          aria-label="Scroll to latest"
+          style="bottom: calc(var(--spacing) * 2)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="m6 9 6 6 6-6"></path>
+          </svg>
+          <span class="sr-only">Scroll to latest</span>
+        </button>
+      </div>
+    </div>
+    <div
+      data-slot="card-footer"
+      class="border-t"
+      style="flex-direction: column; align-items: center; gap: calc(var(--spacing) * 2)"
+    >
+      <button
+        data-slot="button"
+        type="button"
+        data-variant="secondary"
+        id="load-btn"
+        style="width: 100%"
+      >
+        Load History
+      </button>
+      <p class="text-xs" style="color: var(--muted-foreground)">
+        Restore earlier messages while keeping your place.
+      </p>
+    </div>
   </div>
-  <template id="t1-portal">
-    <div data-slot="tooltip-content" id="d1" role="tooltip" data-state="closed">Reset
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
-    </div>
-  </template>
-  <div id="toast" class="toast" hidden></div>
-  <style>
-    .toast{position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;gap:2px;padding:12px 16px;border-radius:8px;background:var(--popover);color:var(--popover-foreground);border:1px solid var(--border);box-shadow:0 6px 16px rgba(0,0,0,.18);font-size:.875rem}
-    .toast strong{font-weight:600}
-    .toast span{color:var(--muted-foreground)}
-  </style>
+  <p
+    class="text-center text-xs"
+    style="color: var(--muted-foreground); padding-inline: calc(var(--spacing) * 0.5)"
+  >
+    Click Load History to load the entire conversation.
+  </p>
+</div>
+<template id="t1-portal">
+  <div data-slot="tooltip-content" id="d1" role="tooltip" data-state="closed">
+    Reset
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M12 5v14M5 12h14"></path>
+    </svg>
+  </div>
+</template>
+<div id="toast" class="toast" hidden></div>
+<style>
+  .toast {
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: var(--popover);
+    color: var(--popover-foreground);
+    border: 1px solid var(--border);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    font-size: 0.875rem;
+  }
+  .toast strong {
+    font-weight: 600;
+  }
+  .toast span {
+    color: var(--muted-foreground);
+  }
+</style>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/tooltip.js
@@ -1612,74 +2512,256 @@ const MotionMessageScrollerItem = motion.create(MessageScrollerItem)
 <p class="demo-langs"><a href="/demos/message-scroller-animation.html">Open the demo page</a></p>
 
 ::: code-group
-```text [message-scroller-animation.html]
+```text:line-numbers [message-scroller-animation.html]
 <div class="mx-auto flex flex-col gap-4 w-full max-w-sm">
-    <div data-slot="card" class="w-full" style="height:35rem;gap:0">
-      <div data-slot="card-header" class="border-b">
-        <div data-slot="card-title">Animation</div>
-        <div data-slot="card-description">Choose how user messages are animated when they are added to the conversation.</div>
-        <div data-slot="card-action">
-          <button data-slot="button" type="button" data-variant="outline" data-size="icon" id="reset-btn" aria-label="Reset animated messages" disabled>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path></svg>
-          </button>
-        </div>
+  <div data-slot="card" class="w-full" style="height: 35rem; gap: 0">
+    <div data-slot="card-header" class="border-b">
+      <div data-slot="card-title">Animation</div>
+      <div data-slot="card-description">
+        Choose how user messages are animated when they are added to the conversation.
       </div>
-      <div data-slot="card-content" class="flex-1 min-h-0" style="overflow:hidden;padding:0">
-        <div data-slot="empty" id="empty-state" class="h-full">
-          <div data-slot="empty-header">
-            <div data-slot="empty-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.1 2.182a10 10 0 0 1 3.8 0"></path><path d="M13.9 21.818a10 10 0 0 1-3.8 0"></path><path d="M17.609 3.72a10 10 0 0 1 2.69 2.7"></path><path d="M2.182 13.9a10 10 0 0 1 0-3.8"></path><path d="M20.28 17.61a10 10 0 0 1-2.7 2.69"></path><path d="M21.818 10.1a10 10 0 0 1 0 3.8"></path><path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"></path><path d="m6.163 21.117-2.906.85a1 1 0 0 1-1.236-1.169l.965-2.98"></path></svg>
-            </div>
-            <div data-slot="empty-title">No Messages Yet</div>
-            <div data-slot="empty-description">Click the button below to send the first message.</div>
-          </div>
-        </div>
-        <div data-slot="message-scroller" class="group/message-scroller" id="scroller" hidden>
-          <div data-slot="message-scroller-viewport" id="ms-viewport" role="region" aria-label="Messages" tabindex="0">
-            <div data-slot="message-scroller-content" id="ms-content" role="log" aria-relevant="additions" style="padding:var(--card-spacing)"></div>
-          </div>
-          <button data-slot="message-scroller-button" id="ms-button" type="button" data-active="false" aria-label="Scroll to latest" style="bottom:calc(var(--spacing)*2)">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
-            <span class="sr-only">Scroll to latest</span>
-          </button>
-        </div>
-      </div>
-      <div data-slot="card-footer">
-        <button data-slot="select-trigger" id="s1-trigger" type="button" role="combobox" aria-expanded="false" data-state="closed" data-size="default" dir="ltr" aria-autocomplete="none" aria-label="Animation preset">
-          <span data-slot="select-value" style="pointer-events:none">Fade</span>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
-        </button>
-        <button data-slot="button" type="button" data-size="icon" id="send-btn" style="margin-inline-start:auto" disabled>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"></path></svg>
-          <span class="sr-only">Send Message</span>
+      <div data-slot="card-action">
+        <button
+          data-slot="button"
+          type="button"
+          data-variant="outline"
+          data-size="icon"
+          id="reset-btn"
+          aria-label="Reset animated messages"
+          disabled
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path>
+            <path d="M21 3v5h-5"></path>
+          </svg>
         </button>
       </div>
     </div>
-    <p class="text-center text-xs" style="color:var(--muted-foreground);padding-inline:calc(var(--spacing)*0.5)">Select an animation then click send to see it in action.</p>
+    <div data-slot="card-content" class="flex-1 min-h-0" style="overflow: hidden; padding: 0">
+      <div data-slot="empty" id="empty-state" class="h-full">
+        <div data-slot="empty-header">
+          <div data-slot="empty-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M10.1 2.182a10 10 0 0 1 3.8 0"></path>
+              <path d="M13.9 21.818a10 10 0 0 1-3.8 0"></path>
+              <path d="M17.609 3.72a10 10 0 0 1 2.69 2.7"></path>
+              <path d="M2.182 13.9a10 10 0 0 1 0-3.8"></path>
+              <path d="M20.28 17.61a10 10 0 0 1-2.7 2.69"></path>
+              <path d="M21.818 10.1a10 10 0 0 1 0 3.8"></path>
+              <path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"></path>
+              <path d="m6.163 21.117-2.906.85a1 1 0 0 1-1.236-1.169l.965-2.98"></path>
+            </svg>
+          </div>
+          <div data-slot="empty-title">No Messages Yet</div>
+          <div data-slot="empty-description">Click the button below to send the first message.</div>
+        </div>
+      </div>
+      <div data-slot="message-scroller" class="group/message-scroller" id="scroller" hidden>
+        <div
+          data-slot="message-scroller-viewport"
+          id="ms-viewport"
+          role="region"
+          aria-label="Messages"
+          tabindex="0"
+        >
+          <div
+            data-slot="message-scroller-content"
+            id="ms-content"
+            role="log"
+            aria-relevant="additions"
+            style="padding: var(--card-spacing)"
+          ></div>
+        </div>
+        <button
+          data-slot="message-scroller-button"
+          id="ms-button"
+          type="button"
+          data-active="false"
+          aria-label="Scroll to latest"
+          style="bottom: calc(var(--spacing) * 2)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="m6 9 6 6 6-6"></path>
+          </svg>
+          <span class="sr-only">Scroll to latest</span>
+        </button>
+      </div>
+    </div>
+    <div data-slot="card-footer">
+      <button
+        data-slot="select-trigger"
+        id="s1-trigger"
+        type="button"
+        role="combobox"
+        aria-expanded="false"
+        data-state="closed"
+        data-size="default"
+        dir="ltr"
+        aria-autocomplete="none"
+        aria-label="Animation preset"
+      >
+        <span data-slot="select-value" style="pointer-events: none">Fade</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="m6 9 6 6 6-6"></path>
+        </svg>
+      </button>
+      <button
+        data-slot="button"
+        type="button"
+        data-size="icon"
+        id="send-btn"
+        style="margin-inline-start: auto"
+        disabled
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="m5 12 7-7 7 7"></path>
+          <path d="M12 19V5"></path>
+        </svg>
+        <span class="sr-only">Send Message</span>
+      </button>
+    </div>
   </div>
-  <template id="s1-tpl">
-    <div data-slot="select-content" id="d1" role="listbox" tabindex="-1" data-state="closed" dir="ltr">
-      <div data-slot="select-scroll-up-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg></div>
-      <div>
-        <div data-slot="select-item" role="option" aria-selected="true" tabindex="-1" data-state="checked" data-highlighted="" data-value="fade" aria-labelledby="d1-a">
-          <span data-slot="select-item-indicator"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
-          <span id="d1-a">Fade</span>
-        </div>
-        <div data-slot="select-item" role="option" aria-selected="false" tabindex="-1" data-state="unchecked" data-value="pop" aria-labelledby="d1-b">
-          <span data-slot="select-item-indicator"></span>
-          <span id="d1-b">Pop</span>
-        </div>
-        <div data-slot="select-item" role="option" aria-selected="false" tabindex="-1" data-state="unchecked" data-value="tilt" aria-labelledby="d1-c">
-          <span data-slot="select-item-indicator"></span>
-          <span id="d1-c">Tilt</span>
-        </div>
-      </div>
-      <div data-slot="select-scroll-down-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></div>
+  <p
+    class="text-center text-xs"
+    style="color: var(--muted-foreground); padding-inline: calc(var(--spacing) * 0.5)"
+  >
+    Select an animation then click send to see it in action.
+  </p>
+</div>
+<template id="s1-tpl">
+  <div
+    data-slot="select-content"
+    id="d1"
+    role="listbox"
+    tabindex="-1"
+    data-state="closed"
+    dir="ltr"
+  >
+    <div data-slot="select-scroll-up-button">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="m18 15-6-6-6 6"></path>
+      </svg>
     </div>
-  </template>
+    <div>
+      <div
+        data-slot="select-item"
+        role="option"
+        aria-selected="true"
+        tabindex="-1"
+        data-state="checked"
+        data-highlighted=""
+        data-value="fade"
+        aria-labelledby="d1-a"
+      >
+        <span data-slot="select-item-indicator"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M20 6 9 17l-5-5"></path></svg
+        ></span>
+        <span id="d1-a">Fade</span>
+      </div>
+      <div
+        data-slot="select-item"
+        role="option"
+        aria-selected="false"
+        tabindex="-1"
+        data-state="unchecked"
+        data-value="pop"
+        aria-labelledby="d1-b"
+      >
+        <span data-slot="select-item-indicator"></span>
+        <span id="d1-b">Pop</span>
+      </div>
+      <div
+        data-slot="select-item"
+        role="option"
+        aria-selected="false"
+        tabindex="-1"
+        data-state="unchecked"
+        data-value="tilt"
+        aria-labelledby="d1-c"
+      >
+        <span data-slot="select-item-indicator"></span>
+        <span id="d1-c">Tilt</span>
+      </div>
+    </div>
+    <div data-slot="select-scroll-down-button">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="m6 9 6 6 6-6"></path>
+      </svg>
+    </div>
+  </div>
+</template>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/select.js
@@ -1943,43 +3025,143 @@ const { scrollToMessage, scrollToEnd, scrollToStart } = useMessageScroller()
 <p class="demo-langs"><a href="/demos/message-scroller-commands.html">Open the demo page</a></p>
 
 ::: code-group
-```text [message-scroller-commands.html]
+```text:line-numbers [message-scroller-commands.html]
 <div class="mx-auto flex flex-col gap-4 w-full max-w-sm">
-    <div data-slot="card" class="w-full" style="height:35rem;gap:0">
-      <div data-slot="card-header" class="border-b" style="gap:calc(var(--spacing)*1)">
-        <div data-slot="card-title">Commands</div>
-        <div data-slot="card-description">Drive the transcript from outside.</div>
-        <div data-slot="card-action">
-          <button data-slot="button" type="button" data-variant="secondary" id="d1-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-radixuigo-menu-trigger="d1">Jump to...</button>
-        </div>
-      </div>
-      <div data-slot="card-content" class="flex-1 min-h-0" style="overflow:hidden;padding:0">
-        <div data-slot="message-scroller" class="group/message-scroller">
-          <div data-slot="message-scroller-viewport" id="ms-viewport" role="region" aria-label="Messages" tabindex="0">
-            <div data-slot="message-scroller-content" id="ms-content" role="log" aria-relevant="additions" style="padding:var(--card-spacing)">
-            </div>
-          </div>
-          <button data-slot="message-scroller-button" id="ms-button" type="button" data-active="false" aria-label="Scroll to latest" style="bottom:calc(var(--spacing)*2)">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
-            <span class="sr-only">Scroll to latest</span>
-          </button>
-        </div>
+  <div data-slot="card" class="w-full" style="height: 35rem; gap: 0">
+    <div data-slot="card-header" class="border-b" style="gap: calc(var(--spacing) * 1)">
+      <div data-slot="card-title">Commands</div>
+      <div data-slot="card-description">Drive the transcript from outside.</div>
+      <div data-slot="card-action">
+        <button
+          data-slot="button"
+          type="button"
+          data-variant="secondary"
+          id="d1-trigger"
+          aria-haspopup="menu"
+          aria-expanded="false"
+          data-state="closed"
+          data-radixuigo-menu-trigger="d1"
+        >
+          Jump to...
+        </button>
       </div>
     </div>
-    <p class="text-center text-xs" style="color:var(--muted-foreground);padding-inline:calc(var(--spacing)*0.5)">Use the controls to jump to any message in the conversation.</p>
+    <div data-slot="card-content" class="flex-1 min-h-0" style="overflow: hidden; padding: 0">
+      <div data-slot="message-scroller" class="group/message-scroller">
+        <div
+          data-slot="message-scroller-viewport"
+          id="ms-viewport"
+          role="region"
+          aria-label="Messages"
+          tabindex="0"
+        >
+          <div
+            data-slot="message-scroller-content"
+            id="ms-content"
+            role="log"
+            aria-relevant="additions"
+            style="padding: var(--card-spacing)"
+          ></div>
+        </div>
+        <button
+          data-slot="message-scroller-button"
+          id="ms-button"
+          type="button"
+          data-active="false"
+          aria-label="Scroll to latest"
+          style="bottom: calc(var(--spacing) * 2)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="m6 9 6 6 6-6"></path>
+          </svg>
+          <span class="sr-only">Scroll to latest</span>
+        </button>
+      </div>
+    </div>
   </div>
-  <template id="d1-tpl">
-    <div data-slot="dropdown-menu-content" id="d1" role="menu" tabindex="-1" data-state="closed" dir="ltr" aria-orientation="vertical" data-orientation="vertical" aria-labelledby="d1-trigger" style="width:calc(var(--spacing)*40)">
-      <div data-slot="dropdown-menu-label">Conversations</div>
-      <div data-slot="dropdown-menu-item" role="menuitem" tabindex="-1" data-variant="default" data-orientation="vertical" data-jump="command-activation"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">We're seeing activation dip after workspace creation...</span></div>
-      <div data-slot="dropdown-menu-item" role="menuitem" tabindex="-1" data-variant="default" data-orientation="vertical" data-jump="command-compare"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">What should I compare before we change the onboarding...</span></div>
-      <div data-slot="dropdown-menu-item" role="menuitem" tabindex="-1" data-variant="default" data-orientation="vertical" data-jump="command-experiment"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">Can you turn that into an experiment?</span></div>
-      <div data-slot="dropdown-menu-item" role="menuitem" tabindex="-1" data-variant="default" data-orientation="vertical" data-jump="command-risk"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">What's the risk if we delay the invite prompt?</span></div>
+  <p
+    class="text-center text-xs"
+    style="color: var(--muted-foreground); padding-inline: calc(var(--spacing) * 0.5)"
+  >
+    Use the controls to jump to any message in the conversation.
+  </p>
+</div>
+<template id="d1-tpl">
+  <div
+    data-slot="dropdown-menu-content"
+    id="d1"
+    role="menu"
+    tabindex="-1"
+    data-state="closed"
+    dir="ltr"
+    aria-orientation="vertical"
+    data-orientation="vertical"
+    aria-labelledby="d1-trigger"
+    style="width: calc(var(--spacing) * 40)"
+  >
+    <div data-slot="dropdown-menu-label">Conversations</div>
+    <div
+      data-slot="dropdown-menu-item"
+      role="menuitem"
+      tabindex="-1"
+      data-variant="default"
+      data-orientation="vertical"
+      data-jump="command-activation"
+    >
+      <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0"
+        >We're seeing activation dip after workspace creation...</span
+      >
     </div>
-  </template>
+    <div
+      data-slot="dropdown-menu-item"
+      role="menuitem"
+      tabindex="-1"
+      data-variant="default"
+      data-orientation="vertical"
+      data-jump="command-compare"
+    >
+      <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0"
+        >What should I compare before we change the onboarding...</span
+      >
+    </div>
+    <div
+      data-slot="dropdown-menu-item"
+      role="menuitem"
+      tabindex="-1"
+      data-variant="default"
+      data-orientation="vertical"
+      data-jump="command-experiment"
+    >
+      <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0"
+        >Can you turn that into an experiment?</span
+      >
+    </div>
+    <div
+      data-slot="dropdown-menu-item"
+      role="menuitem"
+      tabindex="-1"
+      data-variant="default"
+      data-orientation="vertical"
+      data-jump="command-risk"
+    >
+      <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0"
+        >What's the risk if we delay the invite prompt?</span
+      >
+    </div>
+  </div>
+</template>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/dropdown-menu.js
@@ -2174,50 +3356,139 @@ const { currentAnchorId, visibleMessageIds } = useMessageScrollerVisibility()
 <p class="demo-langs"><a href="/demos/message-scroller-visibility.html">Open the demo page</a></p>
 
 ::: code-group
-```text [message-scroller-visibility.html]
+```text:line-numbers [message-scroller-visibility.html]
 <div class="mx-auto flex flex-col gap-4 w-full max-w-sm">
-    <div style="position:relative">
-      <div data-slot="card" class="w-full" style="height:35rem;gap:0">
-        <div data-slot="card-header" class="border-b" style="gap:calc(var(--spacing)*1)">
-          <div data-slot="card-title">Transcript Outline</div>
-          <div data-slot="card-description">Track the current anchored turn.</div>
-        </div>
-        <div data-slot="card-content" class="flex-1 min-h-0" style="overflow:hidden;padding:0">
-          <div data-slot="message-scroller" class="group/message-scroller">
-            <div data-slot="message-scroller-viewport" id="ms-viewport" role="region" aria-label="Messages" tabindex="0">
-              <div data-slot="message-scroller-content" id="ms-content" role="log" aria-relevant="additions" style="padding:var(--card-spacing)">
-              </div>
-            </div>
-            <button data-slot="message-scroller-button" id="ms-button" type="button" data-active="false" aria-label="Scroll to latest" style="bottom:calc(var(--spacing)*2)">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
-              <span class="sr-only">Scroll to latest</span>
-            </button>
+  <div style="position: relative">
+    <div data-slot="card" class="w-full" style="height: 35rem; gap: 0">
+      <div data-slot="card-header" class="border-b" style="gap: calc(var(--spacing) * 1)">
+        <div data-slot="card-title">Transcript Outline</div>
+        <div data-slot="card-description">Track the current anchored turn.</div>
+      </div>
+      <div data-slot="card-content" class="flex-1 min-h-0" style="overflow: hidden; padding: 0">
+        <div data-slot="message-scroller" class="group/message-scroller">
+          <div
+            data-slot="message-scroller-viewport"
+            id="ms-viewport"
+            role="region"
+            aria-label="Messages"
+            tabindex="0"
+          >
+            <div
+              data-slot="message-scroller-content"
+              id="ms-content"
+              role="log"
+              aria-relevant="additions"
+              style="padding: var(--card-spacing)"
+            ></div>
           </div>
+          <button
+            data-slot="message-scroller-button"
+            id="ms-button"
+            type="button"
+            data-active="false"
+            aria-label="Scroll to latest"
+            style="bottom: calc(var(--spacing) * 2)"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6"></path>
+            </svg>
+            <span class="sr-only">Scroll to latest</span>
+          </button>
         </div>
       </div>
-      <div style="position:absolute;top:50%;right:-3rem;transform:translateY(-50%)">
-        <button id="outline-trigger" type="button" aria-label="Open transcript outline" class="outline-btn">
-        </button>
-      </div>
     </div>
-    <p class="text-center text-xs" style="color:var(--muted-foreground);padding-inline:calc(var(--spacing)*0.5)">Open the outline to jump between anchored turns as you read.</p>
+    <div style="position: absolute; top: 50%; right: -3rem; transform: translateY(-50%)">
+      <button
+        id="outline-trigger"
+        type="button"
+        aria-label="Open transcript outline"
+        class="outline-btn"
+      ></button>
+    </div>
   </div>
-  <template id="outline-portal">
-    <div data-slot="hover-card-content" data-state="closed" data-side="left" class="outline-card">
-    </div>
-  </template>
-  <style>
-    .outline-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;width:36px;height:36px;border:none;border-radius:8px;background:transparent;cursor:pointer;outline:none}
-    .outline-btn span{display:block;height:2px;width:16px;border-radius:9999px;background:color-mix(in oklab,var(--muted-foreground) 40%,transparent)}
-    .outline-btn span[data-current="true"]{background:var(--foreground)}
-    .outline-card{display:flex;flex-direction:column;gap:4px;width:16rem;padding:4px;border-radius:1rem}
-    .outline-card button{display:flex;min-height:1.75rem;align-items:center;border:none;border-radius:0.75rem;padding:6px 8px;text-align:left;font-size:.875rem;background:transparent;color:var(--foreground);cursor:pointer;outline:none}
-    .outline-card button:hover{background:var(--accent);color:var(--accent-foreground)}
-    .outline-card button[aria-current]{background:var(--accent);color:var(--accent-foreground)}
-  </style>
+  <p
+    class="text-center text-xs"
+    style="color: var(--muted-foreground); padding-inline: calc(var(--spacing) * 0.5)"
+  >
+    Open the outline to jump between anchored turns as you read.
+  </p>
+</div>
+<template id="outline-portal">
+  <div
+    data-slot="hover-card-content"
+    data-state="closed"
+    data-side="left"
+    class="outline-card"
+  ></div>
+</template>
+<style>
+  .outline-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    cursor: pointer;
+    outline: none;
+  }
+  .outline-btn span {
+    display: block;
+    height: 2px;
+    width: 16px;
+    border-radius: 9999px;
+    background: color-mix(in oklab, var(--muted-foreground) 40%, transparent);
+  }
+  .outline-btn span[data-current="true"] {
+    background: var(--foreground);
+  }
+  .outline-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 16rem;
+    padding: 4px;
+    border-radius: 1rem;
+  }
+  .outline-card button {
+    display: flex;
+    min-height: 1.75rem;
+    align-items: center;
+    border: none;
+    border-radius: 0.75rem;
+    padding: 6px 8px;
+    text-align: left;
+    font-size: 0.875rem;
+    background: transparent;
+    color: var(--foreground);
+    cursor: pointer;
+    outline: none;
+  }
+  .outline-card button:hover {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+  .outline-card button[aria-current] {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+</style>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 (function () {
@@ -2357,34 +3628,75 @@ const { start, end } = useMessageScrollerScrollable()
 <p class="demo-langs"><a href="/demos/message-scroller-scrollable.html">Open the demo page</a></p>
 
 ::: code-group
-```text [message-scroller-scrollable.html]
+```text:line-numbers [message-scroller-scrollable.html]
 <div class="mx-auto flex flex-col gap-4 w-full max-w-sm">
-    <div data-slot="card" class="w-full" style="height:35rem;gap:0;overflow:hidden">
-      <div data-slot="card-header" class="border-b" style="gap:calc(var(--spacing)*1)">
-        <div data-slot="card-title">Scroll Status</div>
-        <div data-slot="card-description">Where the reader can scroll to based on current scroll position.</div>
-      </div>
-      <div data-slot="card-content" class="flex-1 min-h-0" style="overflow:hidden;padding:0">
-        <div data-slot="message-scroller" class="group/message-scroller">
-          <div data-slot="message-scroller-viewport" id="ms-viewport" role="region" aria-label="Messages" tabindex="0">
-            <div data-slot="message-scroller-content" role="log" aria-relevant="additions" style="padding:var(--card-spacing);gap:calc(var(--spacing)*4)">
-            </div>
-          </div>
-          <button data-slot="message-scroller-button" id="ms-button" type="button" data-active="false" aria-label="Scroll to latest" style="bottom:calc(var(--spacing)*2)">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
-            <span class="sr-only">Scroll to latest</span>
-          </button>
-        </div>
-      </div>
-      <div data-slot="card-footer" class="border-t" style="justify-content:center;text-align:center">
-        <p id="scroll-status" class="text-sm" style="color:var(--muted-foreground)">You are at the top. You can only scroll down.</p>
+  <div data-slot="card" class="w-full" style="height: 35rem; gap: 0; overflow: hidden">
+    <div data-slot="card-header" class="border-b" style="gap: calc(var(--spacing) * 1)">
+      <div data-slot="card-title">Scroll Status</div>
+      <div data-slot="card-description">
+        Where the reader can scroll to based on current scroll position.
       </div>
     </div>
-    <p class="text-center text-xs" style="color:var(--muted-foreground);padding-inline:calc(var(--spacing)*0.5)">Scroll the transcript to see the footer update.</p>
+    <div data-slot="card-content" class="flex-1 min-h-0" style="overflow: hidden; padding: 0">
+      <div data-slot="message-scroller" class="group/message-scroller">
+        <div
+          data-slot="message-scroller-viewport"
+          id="ms-viewport"
+          role="region"
+          aria-label="Messages"
+          tabindex="0"
+        >
+          <div
+            data-slot="message-scroller-content"
+            role="log"
+            aria-relevant="additions"
+            style="padding: var(--card-spacing); gap: calc(var(--spacing) * 4)"
+          ></div>
+        </div>
+        <button
+          data-slot="message-scroller-button"
+          id="ms-button"
+          type="button"
+          data-active="false"
+          aria-label="Scroll to latest"
+          style="bottom: calc(var(--spacing) * 2)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="m6 9 6 6 6-6"></path>
+          </svg>
+          <span class="sr-only">Scroll to latest</span>
+        </button>
+      </div>
+    </div>
+    <div
+      data-slot="card-footer"
+      class="border-t"
+      style="justify-content: center; text-align: center"
+    >
+      <p id="scroll-status" class="text-sm" style="color: var(--muted-foreground)">
+        You are at the top. You can only scroll down.
+      </p>
+    </div>
   </div>
+  <p
+    class="text-center text-xs"
+    style="color: var(--muted-foreground); padding-inline: calc(var(--spacing) * 0.5)"
+  >
+    Scroll the transcript to see the footer update.
+  </p>
+</div>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 (function () {
       var messages = Array.from({ length: 12 }, function (_, i) {
         return {

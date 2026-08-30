@@ -15,13 +15,50 @@ An input where the user selects a value from within a given range.
 <p class="demo-langs"><a href="/demos/slider.html">Open the demo page</a></p>
 
 ::: code-group
-```text [slider.html]
+```text:line-numbers [slider.html]
 <div>
-<span dir="ltr" data-orientation="horizontal" aria-disabled="false" data-slot="slider" class="data-vertical:min-h-40 relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col" id="s1" style="--radix-slider-thumb-transform: translateX(-50%);"><span data-orientation="horizontal" data-slot="slider-track" class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"><span data-orientation="horizontal" data-slot="slider-range" class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full" style="left: 0%; right: 50%;"></span></span><span style="transform: var(--radix-slider-thumb-transform); position: absolute; left: calc(50% + 0px);"><span role="slider" aria-valuemin="0" aria-valuemax="100" aria-orientation="horizontal" data-orientation="horizontal" tabindex="0" data-slot="slider-thumb" class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50" data-radix-collection-item="" aria-valuenow="50" style=""></span></span></span>
+  <span
+    dir="ltr"
+    data-orientation="horizontal"
+    aria-disabled="false"
+    data-slot="slider"
+    class="data-vertical:min-h-40 relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col"
+    id="s1"
+    style="--radix-slider-thumb-transform: translateX(-50%)"
+    ><span
+      data-orientation="horizontal"
+      data-slot="slider-track"
+      class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"
+      ><span
+        data-orientation="horizontal"
+        data-slot="slider-range"
+        class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full"
+        style="left: 0%; right: 50%"
+      ></span></span
+    ><span
+      style="
+        transform: var(--radix-slider-thumb-transform);
+        position: absolute;
+        left: calc(50% + 0px);
+      "
+      ><span
+        role="slider"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-orientation="horizontal"
+        data-orientation="horizontal"
+        tabindex="0"
+        data-slot="slider-thumb"
+        class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+        data-radix-collection-item=""
+        aria-valuenow="50"
+        style=""
+      ></span></span
+  ></span>
 </div>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/slider.js
@@ -126,11 +163,68 @@ Use an array with two values for a range slider.
 <p class="demo-langs"><a href="/demos/slider-range.html">Open the demo page</a></p>
 
 ::: code-group
-```text [slider-range.html]
-<span dir="ltr" data-orientation="horizontal" aria-disabled="false" data-slot="slider" class="data-vertical:min-h-40 relative flex touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col mx-auto w-full max-w-xs" style="--radix-slider-thumb-transform: translateX(-50%);"><span data-orientation="horizontal" data-slot="slider-track" class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"><span data-orientation="horizontal" data-slot="slider-range" class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full" style="left: 25%; right: 50%;"></span></span><span style="transform: var(--radix-slider-thumb-transform); position: absolute; left: calc(25% + 0px);"><span role="slider" aria-valuemin="0" aria-valuemax="100" aria-orientation="horizontal" data-orientation="horizontal" tabindex="0" data-slot="slider-thumb" class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50" data-radix-collection-item="" aria-label="Minimum" aria-valuenow="25" style=""></span></span><span style="transform: var(--radix-slider-thumb-transform); position: absolute; left: calc(50% + 0px);"><span role="slider" aria-valuemin="0" aria-valuemax="100" aria-orientation="horizontal" data-orientation="horizontal" tabindex="0" data-slot="slider-thumb" class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50" data-radix-collection-item="" aria-label="Maximum" aria-valuenow="50" style=""></span></span></span>
+```text:line-numbers [slider-range.html]
+<span
+  dir="ltr"
+  data-orientation="horizontal"
+  aria-disabled="false"
+  data-slot="slider"
+  class="data-vertical:min-h-40 relative flex touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col mx-auto w-full max-w-xs"
+  style="--radix-slider-thumb-transform: translateX(-50%)"
+  ><span
+    data-orientation="horizontal"
+    data-slot="slider-track"
+    class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"
+    ><span
+      data-orientation="horizontal"
+      data-slot="slider-range"
+      class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full"
+      style="left: 25%; right: 50%"
+    ></span></span
+  ><span
+    style="
+      transform: var(--radix-slider-thumb-transform);
+      position: absolute;
+      left: calc(25% + 0px);
+    "
+    ><span
+      role="slider"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-orientation="horizontal"
+      data-orientation="horizontal"
+      tabindex="0"
+      data-slot="slider-thumb"
+      class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+      data-radix-collection-item=""
+      aria-label="Minimum"
+      aria-valuenow="25"
+      style=""
+    ></span></span
+  ><span
+    style="
+      transform: var(--radix-slider-thumb-transform);
+      position: absolute;
+      left: calc(50% + 0px);
+    "
+    ><span
+      role="slider"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-orientation="horizontal"
+      data-orientation="horizontal"
+      tabindex="0"
+      data-slot="slider-thumb"
+      class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+      data-radix-collection-item=""
+      aria-label="Maximum"
+      aria-valuenow="50"
+      style=""
+    ></span></span
+></span>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/slider.js
@@ -183,11 +277,88 @@ Use an array with multiple values for multiple thumbs.
 <p class="demo-langs"><a href="/demos/slider-multiple.html">Open the demo page</a></p>
 
 ::: code-group
-```text [slider-multiple.html]
-<span dir="ltr" data-orientation="horizontal" aria-disabled="false" data-slot="slider" class="data-vertical:min-h-40 relative flex touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col mx-auto w-full max-w-xs" style="--radix-slider-thumb-transform: translateX(-50%);"><span data-orientation="horizontal" data-slot="slider-track" class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"><span data-orientation="horizontal" data-slot="slider-range" class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full" style="left: 10%; right: 30%;"></span></span><span style="transform: var(--radix-slider-thumb-transform); position: absolute; left: calc(10% + 0px);"><span role="slider" aria-label="Value 1 of 3" aria-valuemin="0" aria-valuemax="100" aria-orientation="horizontal" data-orientation="horizontal" tabindex="0" data-slot="slider-thumb" class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50" data-radix-collection-item="" aria-valuenow="10" style=""></span></span><span style="transform: var(--radix-slider-thumb-transform); position: absolute; left: calc(20% + 0px);"><span role="slider" aria-label="Value 2 of 3" aria-valuemin="0" aria-valuemax="100" aria-orientation="horizontal" data-orientation="horizontal" tabindex="0" data-slot="slider-thumb" class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50" data-radix-collection-item="" aria-valuenow="20" style=""></span></span><span style="transform: var(--radix-slider-thumb-transform); position: absolute; left: calc(70% + 0px);"><span role="slider" aria-label="Value 3 of 3" aria-valuemin="0" aria-valuemax="100" aria-orientation="horizontal" data-orientation="horizontal" tabindex="0" data-slot="slider-thumb" class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50" data-radix-collection-item="" aria-valuenow="70" style=""></span></span></span>
+```text:line-numbers [slider-multiple.html]
+<span
+  dir="ltr"
+  data-orientation="horizontal"
+  aria-disabled="false"
+  data-slot="slider"
+  class="data-vertical:min-h-40 relative flex touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col mx-auto w-full max-w-xs"
+  style="--radix-slider-thumb-transform: translateX(-50%)"
+  ><span
+    data-orientation="horizontal"
+    data-slot="slider-track"
+    class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"
+    ><span
+      data-orientation="horizontal"
+      data-slot="slider-range"
+      class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full"
+      style="left: 10%; right: 30%"
+    ></span></span
+  ><span
+    style="
+      transform: var(--radix-slider-thumb-transform);
+      position: absolute;
+      left: calc(10% + 0px);
+    "
+    ><span
+      role="slider"
+      aria-label="Value 1 of 3"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-orientation="horizontal"
+      data-orientation="horizontal"
+      tabindex="0"
+      data-slot="slider-thumb"
+      class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+      data-radix-collection-item=""
+      aria-valuenow="10"
+      style=""
+    ></span></span
+  ><span
+    style="
+      transform: var(--radix-slider-thumb-transform);
+      position: absolute;
+      left: calc(20% + 0px);
+    "
+    ><span
+      role="slider"
+      aria-label="Value 2 of 3"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-orientation="horizontal"
+      data-orientation="horizontal"
+      tabindex="0"
+      data-slot="slider-thumb"
+      class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+      data-radix-collection-item=""
+      aria-valuenow="20"
+      style=""
+    ></span></span
+  ><span
+    style="
+      transform: var(--radix-slider-thumb-transform);
+      position: absolute;
+      left: calc(70% + 0px);
+    "
+    ><span
+      role="slider"
+      aria-label="Value 3 of 3"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-orientation="horizontal"
+      data-orientation="horizontal"
+      tabindex="0"
+      data-slot="slider-thumb"
+      class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+      data-radix-collection-item=""
+      aria-valuenow="70"
+      style=""
+    ></span></span
+></span>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/slider.js
@@ -240,11 +411,83 @@ Use `orientation="vertical"` for a vertical slider.
 <p class="demo-langs"><a href="/demos/slider-vertical.html">Open the demo page</a></p>
 
 ::: code-group
-```text [slider-vertical.html]
-<div class="mx-auto flex w-full max-w-xs items-center justify-center gap-6"><span data-orientation="vertical" aria-disabled="false" data-slot="slider" class="data-vertical:min-h-40 relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col h-40" style="--radix-slider-thumb-transform: translateY(50%);"><span data-orientation="vertical" data-slot="slider-track" class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"><span data-orientation="vertical" data-slot="slider-range" class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full" style="bottom: 0%; top: 50%;"></span></span><span style="transform: var(--radix-slider-thumb-transform); position: absolute; bottom: calc(50% + 0px);"><span role="slider" aria-valuemin="0" aria-valuemax="100" aria-orientation="vertical" data-orientation="vertical" tabindex="0" data-slot="slider-thumb" class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50" data-radix-collection-item="" aria-valuenow="50" style=""></span></span></span><span data-orientation="vertical" aria-disabled="false" data-slot="slider" class="data-vertical:min-h-40 relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col h-40" style="--radix-slider-thumb-transform: translateY(50%);"><span data-orientation="vertical" data-slot="slider-track" class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"><span data-orientation="vertical" data-slot="slider-range" class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full" style="bottom: 0%; top: 75%;"></span></span><span style="transform: var(--radix-slider-thumb-transform); position: absolute; bottom: calc(25% + 0px);"><span role="slider" aria-valuemin="0" aria-valuemax="100" aria-orientation="vertical" data-orientation="vertical" tabindex="0" data-slot="slider-thumb" class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50" data-radix-collection-item="" aria-valuenow="25" style=""></span></span></span></div>
+```text:line-numbers [slider-vertical.html]
+<div class="mx-auto flex w-full max-w-xs items-center justify-center gap-6">
+  <span
+    data-orientation="vertical"
+    aria-disabled="false"
+    data-slot="slider"
+    class="data-vertical:min-h-40 relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col h-40"
+    style="--radix-slider-thumb-transform: translateY(50%)"
+    ><span
+      data-orientation="vertical"
+      data-slot="slider-track"
+      class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"
+      ><span
+        data-orientation="vertical"
+        data-slot="slider-range"
+        class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full"
+        style="bottom: 0%; top: 50%"
+      ></span></span
+    ><span
+      style="
+        transform: var(--radix-slider-thumb-transform);
+        position: absolute;
+        bottom: calc(50% + 0px);
+      "
+      ><span
+        role="slider"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-orientation="vertical"
+        data-orientation="vertical"
+        tabindex="0"
+        data-slot="slider-thumb"
+        class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+        data-radix-collection-item=""
+        aria-valuenow="50"
+        style=""
+      ></span></span></span
+  ><span
+    data-orientation="vertical"
+    aria-disabled="false"
+    data-slot="slider"
+    class="data-vertical:min-h-40 relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col h-40"
+    style="--radix-slider-thumb-transform: translateY(50%)"
+    ><span
+      data-orientation="vertical"
+      data-slot="slider-track"
+      class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"
+      ><span
+        data-orientation="vertical"
+        data-slot="slider-range"
+        class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full"
+        style="bottom: 0%; top: 75%"
+      ></span></span
+    ><span
+      style="
+        transform: var(--radix-slider-thumb-transform);
+        position: absolute;
+        bottom: calc(25% + 0px);
+      "
+      ><span
+        role="slider"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-orientation="vertical"
+        data-orientation="vertical"
+        tabindex="0"
+        data-slot="slider-thumb"
+        class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+        data-radix-collection-item=""
+        aria-valuenow="25"
+        style=""
+      ></span></span
+  ></span>
+</div>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/slider.js
@@ -295,11 +538,79 @@ Use `orientation="vertical"` for a vertical slider.
 <p class="demo-langs"><a href="/demos/slider-controlled.html">Open the demo page</a></p>
 
 ::: code-group
-```text [slider-controlled.html]
-<div class="mx-auto grid w-full max-w-xs gap-3"><div class="flex items-center justify-between gap-2"><label data-slot="label" class="gap-2 text-sm leading-none font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 flex items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed" for="slider-demo-temperature">Temperature</label><span class="text-sm text-muted-foreground">0.3, 0.7</span></div><span dir="ltr" data-orientation="horizontal" aria-disabled="false" data-slot="slider" class="data-vertical:min-h-40 relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col" id="slider-demo-temperature" style="--radix-slider-thumb-transform: translateX(-50%);"><span data-orientation="horizontal" data-slot="slider-track" class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"><span data-orientation="horizontal" data-slot="slider-range" class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full" style="left: 30%; right: 30%;"></span></span><span style="transform: var(--radix-slider-thumb-transform); position: absolute; left: calc(30% + 0px);"><span role="slider" aria-valuemin="0" aria-valuemax="1" aria-orientation="horizontal" data-orientation="horizontal" tabindex="0" data-slot="slider-thumb" class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50" data-radix-collection-item="" aria-label="Minimum" aria-valuenow="0.3" style=""></span></span><span style="transform: var(--radix-slider-thumb-transform); position: absolute; left: calc(70% + 0px);"><span role="slider" aria-valuemin="0" aria-valuemax="1" aria-orientation="horizontal" data-orientation="horizontal" tabindex="0" data-slot="slider-thumb" class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50" data-radix-collection-item="" aria-label="Maximum" aria-valuenow="0.7" style=""></span></span></span></div>
+```text:line-numbers [slider-controlled.html]
+<div class="mx-auto grid w-full max-w-xs gap-3">
+  <div class="flex items-center justify-between gap-2">
+    <label
+      data-slot="label"
+      class="gap-2 text-sm leading-none font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 flex items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed"
+      for="slider-demo-temperature"
+      >Temperature</label
+    ><span class="text-sm text-muted-foreground">0.3, 0.7</span>
+  </div>
+  <span
+    dir="ltr"
+    data-orientation="horizontal"
+    aria-disabled="false"
+    data-slot="slider"
+    class="data-vertical:min-h-40 relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col"
+    id="slider-demo-temperature"
+    style="--radix-slider-thumb-transform: translateX(-50%)"
+    ><span
+      data-orientation="horizontal"
+      data-slot="slider-track"
+      class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"
+      ><span
+        data-orientation="horizontal"
+        data-slot="slider-range"
+        class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full"
+        style="left: 30%; right: 30%"
+      ></span></span
+    ><span
+      style="
+        transform: var(--radix-slider-thumb-transform);
+        position: absolute;
+        left: calc(30% + 0px);
+      "
+      ><span
+        role="slider"
+        aria-valuemin="0"
+        aria-valuemax="1"
+        aria-orientation="horizontal"
+        data-orientation="horizontal"
+        tabindex="0"
+        data-slot="slider-thumb"
+        class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+        data-radix-collection-item=""
+        aria-label="Minimum"
+        aria-valuenow="0.3"
+        style=""
+      ></span></span
+    ><span
+      style="
+        transform: var(--radix-slider-thumb-transform);
+        position: absolute;
+        left: calc(70% + 0px);
+      "
+      ><span
+        role="slider"
+        aria-valuemin="0"
+        aria-valuemax="1"
+        aria-orientation="horizontal"
+        data-orientation="horizontal"
+        tabindex="0"
+        data-slot="slider-thumb"
+        class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+        data-radix-collection-item=""
+        aria-label="Maximum"
+        aria-valuenow="0.7"
+        style=""
+      ></span></span
+  ></span>
+</div>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/slider.js
@@ -352,11 +663,50 @@ Use the `disabled` prop to disable the slider.
 <p class="demo-langs"><a href="/demos/slider-disabled.html">Open the demo page</a></p>
 
 ::: code-group
-```text [slider-disabled.html]
-<span dir="ltr" data-orientation="horizontal" aria-disabled="true" data-disabled="" data-slot="slider" class="data-vertical:min-h-40 relative flex touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col mx-auto w-full max-w-xs" style="--radix-slider-thumb-transform: translateX(-50%);"><span data-disabled="" data-orientation="horizontal" data-slot="slider-track" class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"><span data-orientation="horizontal" data-disabled="" data-slot="slider-range" class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full" style="left: 0%; right: 50%;"></span></span><span style="transform: var(--radix-slider-thumb-transform); position: absolute; left: calc(50% + 0px);"><span role="slider" aria-valuemin="0" aria-valuemax="100" aria-orientation="horizontal" data-orientation="horizontal" data-disabled="" data-slot="slider-thumb" class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50" data-radix-collection-item="" aria-valuenow="50" style=""></span></span></span>
+```text:line-numbers [slider-disabled.html]
+<span
+  dir="ltr"
+  data-orientation="horizontal"
+  aria-disabled="true"
+  data-disabled=""
+  data-slot="slider"
+  class="data-vertical:min-h-40 relative flex touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col mx-auto w-full max-w-xs"
+  style="--radix-slider-thumb-transform: translateX(-50%)"
+  ><span
+    data-disabled=""
+    data-orientation="horizontal"
+    data-slot="slider-track"
+    class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"
+    ><span
+      data-orientation="horizontal"
+      data-disabled=""
+      data-slot="slider-range"
+      class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full"
+      style="left: 0%; right: 50%"
+    ></span></span
+  ><span
+    style="
+      transform: var(--radix-slider-thumb-transform);
+      position: absolute;
+      left: calc(50% + 0px);
+    "
+    ><span
+      role="slider"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-orientation="horizontal"
+      data-orientation="horizontal"
+      data-disabled=""
+      data-slot="slider-thumb"
+      class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+      data-radix-collection-item=""
+      aria-valuenow="50"
+      style=""
+    ></span></span
+></span>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/slider.js
@@ -409,11 +759,47 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 <p class="demo-langs"><a href="/demos/slider-rtl.html">Open the demo page</a> · <a href="/demos/slider-rtl-he.html">HE</a> · <a href="/demos/slider-rtl-en.html">EN</a></p>
 
 ::: code-group
-```text [slider-rtl.html]
-<span dir="rtl" data-orientation="horizontal" aria-disabled="false" data-slot="slider" class="data-vertical:min-h-40 relative flex touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col mx-auto w-full max-w-xs" style="--radix-slider-thumb-transform: translateX(-50%);"><span data-orientation="horizontal" data-slot="slider-track" class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"><span data-orientation="horizontal" data-slot="slider-range" class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full" style="right: 0%; left: 25%;"></span></span><span style="transform: var(--radix-slider-thumb-transform); position: absolute; right: calc(75% + 0px);"><span role="slider" aria-valuemin="0" aria-valuemax="100" aria-orientation="horizontal" data-orientation="horizontal" tabindex="0" data-slot="slider-thumb" class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50" data-radix-collection-item="" aria-valuenow="75" style=""></span></span></span>
+```text:line-numbers [slider-rtl.html]
+<span
+  dir="rtl"
+  data-orientation="horizontal"
+  aria-disabled="false"
+  data-slot="slider"
+  class="data-vertical:min-h-40 relative flex touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col mx-auto w-full max-w-xs"
+  style="--radix-slider-thumb-transform: translateX(-50%)"
+  ><span
+    data-orientation="horizontal"
+    data-slot="slider-track"
+    class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"
+    ><span
+      data-orientation="horizontal"
+      data-slot="slider-range"
+      class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full"
+      style="right: 0%; left: 25%"
+    ></span></span
+  ><span
+    style="
+      transform: var(--radix-slider-thumb-transform);
+      position: absolute;
+      right: calc(75% + 0px);
+    "
+    ><span
+      role="slider"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-orientation="horizontal"
+      data-orientation="horizontal"
+      tabindex="0"
+      data-slot="slider-thumb"
+      class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+      data-radix-collection-item=""
+      aria-valuenow="75"
+      style=""
+    ></span></span
+></span>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/slider.js

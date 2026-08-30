@@ -15,16 +15,48 @@ For sighted users to preview content available behind a link.
 <p class="demo-langs"><a href="/demos/hover-card.html">Open the demo page</a></p>
 
 ::: code-group
-```text [hover-card.html]
+```text:line-numbers [hover-card.html]
 <div>
-<a data-state="closed" data-slot="hover-card-trigger" id="d1-trigger">Hover me</a>
+  <a data-state="closed" data-slot="hover-card-trigger" id="d1-trigger">Hover me</a>
 </div>
 <template id="d1-portal">
-<div data-radix-popper-content-wrapper="" style="position: fixed; left: 0px; top: 0px; transform: translate(0px, 29px); min-width: max-content; --radix-popper-transform-origin: 50% 0px; z-index: auto; --radix-popper-available-width: 1280px; --radix-popper-available-height: 691px; --radix-popper-anchor-width: 63.53125px; --radix-popper-anchor-height: 17px;"><div data-side="bottom" data-align="center" data-state="open" data-slot="hover-card-content" class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground w-64 rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-hover-card-content-transform-origin) outline-hidden" style="--radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin); --radix-hover-card-content-available-width: var(--radix-popper-available-width); --radix-hover-card-content-available-height: var(--radix-popper-available-height); --radix-hover-card-trigger-width: var(--radix-popper-anchor-width); --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);">The React Framework for web and native user interfaces.</div></div>
+  <div
+    data-radix-popper-content-wrapper=""
+    style="
+      position: fixed;
+      left: 0px;
+      top: 0px;
+      transform: translate(0px, 29px);
+      min-width: max-content;
+      --radix-popper-transform-origin: 50% 0px;
+      z-index: auto;
+      --radix-popper-available-width: 1280px;
+      --radix-popper-available-height: 691px;
+      --radix-popper-anchor-width: 63.53125px;
+      --radix-popper-anchor-height: 17px;
+    "
+  >
+    <div
+      data-side="bottom"
+      data-align="center"
+      data-state="open"
+      data-slot="hover-card-content"
+      class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground w-64 rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-hover-card-content-transform-origin) outline-hidden"
+      style="
+        --radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin);
+        --radix-hover-card-content-available-width: var(--radix-popper-available-width);
+        --radix-hover-card-content-available-height: var(--radix-popper-available-height);
+        --radix-hover-card-trigger-width: var(--radix-popper-anchor-width);
+        --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);
+      "
+    >
+      The React Framework for web and native user interfaces.
+    </div>
+  </div>
 </template>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/hover-card.js
@@ -178,16 +210,48 @@ Use the `side` and `align` props on `HoverCardContent` to control placement.
 <p class="demo-langs"><a href="/demos/hover-card.html">Open the demo page</a></p>
 
 ::: code-group
-```text [hover-card.html]
+```text:line-numbers [hover-card.html]
 <div>
-<a data-state="closed" data-slot="hover-card-trigger" id="d1-trigger">Hover me</a>
+  <a data-state="closed" data-slot="hover-card-trigger" id="d1-trigger">Hover me</a>
 </div>
 <template id="d1-portal">
-<div data-radix-popper-content-wrapper="" style="position: fixed; left: 0px; top: 0px; transform: translate(0px, 29px); min-width: max-content; --radix-popper-transform-origin: 50% 0px; z-index: auto; --radix-popper-available-width: 1280px; --radix-popper-available-height: 691px; --radix-popper-anchor-width: 63.53125px; --radix-popper-anchor-height: 17px;"><div data-side="bottom" data-align="center" data-state="open" data-slot="hover-card-content" class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground w-64 rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-hover-card-content-transform-origin) outline-hidden" style="--radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin); --radix-hover-card-content-available-width: var(--radix-popper-available-width); --radix-hover-card-content-available-height: var(--radix-popper-available-height); --radix-hover-card-trigger-width: var(--radix-popper-anchor-width); --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);">The React Framework for web and native user interfaces.</div></div>
+  <div
+    data-radix-popper-content-wrapper=""
+    style="
+      position: fixed;
+      left: 0px;
+      top: 0px;
+      transform: translate(0px, 29px);
+      min-width: max-content;
+      --radix-popper-transform-origin: 50% 0px;
+      z-index: auto;
+      --radix-popper-available-width: 1280px;
+      --radix-popper-available-height: 691px;
+      --radix-popper-anchor-width: 63.53125px;
+      --radix-popper-anchor-height: 17px;
+    "
+  >
+    <div
+      data-side="bottom"
+      data-align="center"
+      data-state="open"
+      data-slot="hover-card-content"
+      class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground w-64 rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-hover-card-content-transform-origin) outline-hidden"
+      style="
+        --radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin);
+        --radix-hover-card-content-available-width: var(--radix-popper-available-width);
+        --radix-hover-card-content-available-height: var(--radix-popper-available-height);
+        --radix-hover-card-trigger-width: var(--radix-popper-anchor-width);
+        --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);
+      "
+    >
+      The React Framework for web and native user interfaces.
+    </div>
+  </div>
 </template>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/hover-card.js
@@ -253,23 +317,201 @@ Use the `side` and `align` props on `HoverCardContent` to control placement.
 <p class="demo-langs"><a href="/demos/hover-card-sides.html">Open the demo page</a></p>
 
 ::: code-group
-```text [hover-card-sides.html]
-<div class="flex flex-wrap justify-center gap-2"><button data-slot="hover-card-trigger" data-variant="outline" data-size="default" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 capitalize" data-state="closed" id="k0-trigger">left</button><button data-slot="hover-card-trigger" data-variant="outline" data-size="default" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 capitalize" data-state="closed" id="k1-trigger">top</button><button data-slot="hover-card-trigger" data-variant="outline" data-size="default" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 capitalize" data-state="closed" id="k2-trigger">bottom</button><button data-slot="hover-card-trigger" data-variant="outline" data-size="default" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 capitalize" data-state="closed" id="k3-trigger">right</button></div>
+```text:line-numbers [hover-card-sides.html]
+<div class="flex flex-wrap justify-center gap-2">
+  <button
+    data-slot="hover-card-trigger"
+    data-variant="outline"
+    data-size="default"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 capitalize"
+    data-state="closed"
+    id="k0-trigger"
+  >
+    left</button
+  ><button
+    data-slot="hover-card-trigger"
+    data-variant="outline"
+    data-size="default"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 capitalize"
+    data-state="closed"
+    id="k1-trigger"
+  >
+    top</button
+  ><button
+    data-slot="hover-card-trigger"
+    data-variant="outline"
+    data-size="default"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 capitalize"
+    data-state="closed"
+    id="k2-trigger"
+  >
+    bottom</button
+  ><button
+    data-slot="hover-card-trigger"
+    data-variant="outline"
+    data-size="default"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 capitalize"
+    data-state="closed"
+    id="k3-trigger"
+  >
+    right
+  </button>
+</div>
 <template id="k0-portal">
-<div data-radix-popper-content-wrapper="" style="position: fixed; left: 0px; top: 0px; transform: translate(46px, 0px); min-width: max-content; --radix-popper-transform-origin: 0px 50%; z-index: auto; --radix-popper-available-width: 1234.21875px; --radix-popper-available-height: 720px; --radix-popper-anchor-width: 33.78125px; --radix-popper-anchor-height: 21px;"><div data-side="right" data-align="center" data-state="open" data-slot="hover-card-content" class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground w-64 rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-hover-card-content-transform-origin) outline-hidden" style="--radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin); --radix-hover-card-content-available-width: var(--radix-popper-available-width); --radix-hover-card-content-available-height: var(--radix-popper-available-height); --radix-hover-card-trigger-width: var(--radix-popper-anchor-width); --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);"><div class="flex flex-col gap-1"><h4 class="font-medium">Hover Card</h4><p>This hover card appears on the left side of the trigger.</p></div></div></div>
+  <div
+    data-radix-popper-content-wrapper=""
+    style="
+      position: fixed;
+      left: 0px;
+      top: 0px;
+      transform: translate(46px, 0px);
+      min-width: max-content;
+      --radix-popper-transform-origin: 0px 50%;
+      z-index: auto;
+      --radix-popper-available-width: 1234.21875px;
+      --radix-popper-available-height: 720px;
+      --radix-popper-anchor-width: 33.78125px;
+      --radix-popper-anchor-height: 21px;
+    "
+  >
+    <div
+      data-side="right"
+      data-align="center"
+      data-state="open"
+      data-slot="hover-card-content"
+      class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground w-64 rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-hover-card-content-transform-origin) outline-hidden"
+      style="
+        --radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin);
+        --radix-hover-card-content-available-width: var(--radix-popper-available-width);
+        --radix-hover-card-content-available-height: var(--radix-popper-available-height);
+        --radix-hover-card-trigger-width: var(--radix-popper-anchor-width);
+        --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);
+      "
+    >
+      <div class="flex flex-col gap-1">
+        <h4 class="font-medium">Hover Card</h4>
+        <p>This hover card appears on the left side of the trigger.</p>
+      </div>
+    </div>
+  </div>
 </template>
 <template id="k1-portal">
-<div data-radix-popper-content-wrapper="" style="position: fixed; left: 0px; top: 0px; transform: translate(0px, 33px); min-width: max-content; --radix-popper-transform-origin: 50% 0px; z-index: auto; --radix-popper-available-width: 1280px; --radix-popper-available-height: 687px; --radix-popper-anchor-width: 34.53125px; --radix-popper-anchor-height: 21px;"><div data-side="bottom" data-align="center" data-state="open" data-slot="hover-card-content" class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground w-64 rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-hover-card-content-transform-origin) outline-hidden" style="--radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin); --radix-hover-card-content-available-width: var(--radix-popper-available-width); --radix-hover-card-content-available-height: var(--radix-popper-available-height); --radix-hover-card-trigger-width: var(--radix-popper-anchor-width); --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);"><div class="flex flex-col gap-1"><h4 class="font-medium">Hover Card</h4><p>This hover card appears on the top side of the trigger.</p></div></div></div>
+  <div
+    data-radix-popper-content-wrapper=""
+    style="
+      position: fixed;
+      left: 0px;
+      top: 0px;
+      transform: translate(0px, 33px);
+      min-width: max-content;
+      --radix-popper-transform-origin: 50% 0px;
+      z-index: auto;
+      --radix-popper-available-width: 1280px;
+      --radix-popper-available-height: 687px;
+      --radix-popper-anchor-width: 34.53125px;
+      --radix-popper-anchor-height: 21px;
+    "
+  >
+    <div
+      data-side="bottom"
+      data-align="center"
+      data-state="open"
+      data-slot="hover-card-content"
+      class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground w-64 rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-hover-card-content-transform-origin) outline-hidden"
+      style="
+        --radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin);
+        --radix-hover-card-content-available-width: var(--radix-popper-available-width);
+        --radix-hover-card-content-available-height: var(--radix-popper-available-height);
+        --radix-hover-card-trigger-width: var(--radix-popper-anchor-width);
+        --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);
+      "
+    >
+      <div class="flex flex-col gap-1">
+        <h4 class="font-medium">Hover Card</h4>
+        <p>This hover card appears on the top side of the trigger.</p>
+      </div>
+    </div>
+  </div>
 </template>
 <template id="k2-portal">
-<div data-radix-popper-content-wrapper="" style="position: fixed; left: 0px; top: 0px; transform: translate(0px, 33px); min-width: max-content; --radix-popper-transform-origin: 50% 0px; z-index: auto; --radix-popper-available-width: 1280px; --radix-popper-available-height: 687px; --radix-popper-anchor-width: 56.75px; --radix-popper-anchor-height: 21px;"><div data-side="bottom" data-align="center" data-state="open" data-slot="hover-card-content" class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground w-64 rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-hover-card-content-transform-origin) outline-hidden" style="--radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin); --radix-hover-card-content-available-width: var(--radix-popper-available-width); --radix-hover-card-content-available-height: var(--radix-popper-available-height); --radix-hover-card-trigger-width: var(--radix-popper-anchor-width); --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);"><div class="flex flex-col gap-1"><h4 class="font-medium">Hover Card</h4><p>This hover card appears on the bottom side of the trigger.</p></div></div></div>
+  <div
+    data-radix-popper-content-wrapper=""
+    style="
+      position: fixed;
+      left: 0px;
+      top: 0px;
+      transform: translate(0px, 33px);
+      min-width: max-content;
+      --radix-popper-transform-origin: 50% 0px;
+      z-index: auto;
+      --radix-popper-available-width: 1280px;
+      --radix-popper-available-height: 687px;
+      --radix-popper-anchor-width: 56.75px;
+      --radix-popper-anchor-height: 21px;
+    "
+  >
+    <div
+      data-side="bottom"
+      data-align="center"
+      data-state="open"
+      data-slot="hover-card-content"
+      class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground w-64 rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-hover-card-content-transform-origin) outline-hidden"
+      style="
+        --radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin);
+        --radix-hover-card-content-available-width: var(--radix-popper-available-width);
+        --radix-hover-card-content-available-height: var(--radix-popper-available-height);
+        --radix-hover-card-trigger-width: var(--radix-popper-anchor-width);
+        --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);
+      "
+    >
+      <div class="flex flex-col gap-1">
+        <h4 class="font-medium">Hover Card</h4>
+        <p>This hover card appears on the bottom side of the trigger.</p>
+      </div>
+    </div>
+  </div>
 </template>
 <template id="k3-portal">
-<div data-radix-popper-content-wrapper="" style="position: fixed; left: 0px; top: 0px; transform: translate(179px, 0px); min-width: max-content; --radix-popper-transform-origin: 0px 50%; z-index: auto; --radix-popper-available-width: 1101px; --radix-popper-available-height: 720px; --radix-popper-anchor-width: 41.9375px; --radix-popper-anchor-height: 21px;"><div data-side="right" data-align="center" data-state="open" data-slot="hover-card-content" class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground w-64 rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-hover-card-content-transform-origin) outline-hidden" style="--radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin); --radix-hover-card-content-available-width: var(--radix-popper-available-width); --radix-hover-card-content-available-height: var(--radix-popper-available-height); --radix-hover-card-trigger-width: var(--radix-popper-anchor-width); --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);"><div class="flex flex-col gap-1"><h4 class="font-medium">Hover Card</h4><p>This hover card appears on the right side of the trigger.</p></div></div></div>
+  <div
+    data-radix-popper-content-wrapper=""
+    style="
+      position: fixed;
+      left: 0px;
+      top: 0px;
+      transform: translate(179px, 0px);
+      min-width: max-content;
+      --radix-popper-transform-origin: 0px 50%;
+      z-index: auto;
+      --radix-popper-available-width: 1101px;
+      --radix-popper-available-height: 720px;
+      --radix-popper-anchor-width: 41.9375px;
+      --radix-popper-anchor-height: 21px;
+    "
+  >
+    <div
+      data-side="right"
+      data-align="center"
+      data-state="open"
+      data-slot="hover-card-content"
+      class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground w-64 rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-hover-card-content-transform-origin) outline-hidden"
+      style="
+        --radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin);
+        --radix-hover-card-content-available-width: var(--radix-popper-available-width);
+        --radix-hover-card-content-available-height: var(--radix-popper-available-height);
+        --radix-hover-card-trigger-width: var(--radix-popper-anchor-width);
+        --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);
+      "
+    >
+      <div class="flex flex-col gap-1">
+        <h4 class="font-medium">Hover Card</h4>
+        <p>This hover card appears on the right side of the trigger.</p>
+      </div>
+    </div>
+  </div>
 </template>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/hover-card.js
@@ -337,23 +579,201 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 <p class="demo-langs"><a href="/demos/hover-card-rtl.html">Open the demo page</a> · <a href="/demos/hover-card-rtl-he.html">HE</a> · <a href="/demos/hover-card-rtl-en.html">EN</a></p>
 
 ::: code-group
-```text [hover-card-rtl.html]
-<div class="flex flex-wrap justify-center gap-2"><button data-slot="hover-card-trigger" data-variant="outline" data-size="default" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2" data-state="closed" id="k0-trigger">يسار</button><button data-slot="hover-card-trigger" data-variant="outline" data-size="default" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2" data-state="closed" id="k1-trigger">أعلى</button><button data-slot="hover-card-trigger" data-variant="outline" data-size="default" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2" data-state="closed" id="k2-trigger">أسفل</button><button data-slot="hover-card-trigger" data-variant="outline" data-size="default" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2" data-state="closed" id="k3-trigger">يمين</button></div>
+```text:line-numbers [hover-card-rtl.html]
+<div class="flex flex-wrap justify-center gap-2">
+  <button
+    data-slot="hover-card-trigger"
+    data-variant="outline"
+    data-size="default"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2"
+    data-state="closed"
+    id="k0-trigger"
+  >
+    يسار</button
+  ><button
+    data-slot="hover-card-trigger"
+    data-variant="outline"
+    data-size="default"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2"
+    data-state="closed"
+    id="k1-trigger"
+  >
+    أعلى</button
+  ><button
+    data-slot="hover-card-trigger"
+    data-variant="outline"
+    data-size="default"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2"
+    data-state="closed"
+    id="k2-trigger"
+  >
+    أسفل</button
+  ><button
+    data-slot="hover-card-trigger"
+    data-variant="outline"
+    data-size="default"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2"
+    data-state="closed"
+    id="k3-trigger"
+  >
+    يمين
+  </button>
+</div>
 <template id="k0-portal">
-<div data-radix-popper-content-wrapper="" dir="rtl" style="position: fixed; left: 0px; top: 0px; transform: translate(1115px, 0px); min-width: max-content; --radix-popper-transform-origin: 111px 50%; z-index: auto; --radix-popper-available-width: 1226px; --radix-popper-available-height: 720px; --radix-popper-anchor-width: 42px; --radix-popper-anchor-height: 21px;"><div data-side="left" data-align="center" data-state="open" data-slot="hover-card-content" class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-hover-card-content-transform-origin) outline-hidden flex w-64 flex-col gap-1" dir="rtl" style="--radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin); --radix-hover-card-content-available-width: var(--radix-popper-available-width); --radix-hover-card-content-available-height: var(--radix-popper-available-height); --radix-hover-card-trigger-width: var(--radix-popper-anchor-width); --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);"><div class="font-semibold">سماعات لاسلكية</div><div class="text-sm text-muted-foreground">٩٩.٩٩ $</div></div></div>
+  <div
+    data-radix-popper-content-wrapper=""
+    dir="rtl"
+    style="
+      position: fixed;
+      left: 0px;
+      top: 0px;
+      transform: translate(1115px, 0px);
+      min-width: max-content;
+      --radix-popper-transform-origin: 111px 50%;
+      z-index: auto;
+      --radix-popper-available-width: 1226px;
+      --radix-popper-available-height: 720px;
+      --radix-popper-anchor-width: 42px;
+      --radix-popper-anchor-height: 21px;
+    "
+  >
+    <div
+      data-side="left"
+      data-align="center"
+      data-state="open"
+      data-slot="hover-card-content"
+      class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-hover-card-content-transform-origin) outline-hidden flex w-64 flex-col gap-1"
+      dir="rtl"
+      style="
+        --radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin);
+        --radix-hover-card-content-available-width: var(--radix-popper-available-width);
+        --radix-hover-card-content-available-height: var(--radix-popper-available-height);
+        --radix-hover-card-trigger-width: var(--radix-popper-anchor-width);
+        --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);
+      "
+    >
+      <div class="font-semibold">سماعات لاسلكية</div>
+      <div class="text-sm text-muted-foreground">٩٩.٩٩ $</div>
+    </div>
+  </div>
 </template>
 <template id="k1-portal">
-<div data-radix-popper-content-wrapper="" dir="rtl" style="position: fixed; left: 0px; top: 0px; transform: translate(1153px, 33px); min-width: max-content; --radix-popper-transform-origin: 50% 0px; z-index: auto; --radix-popper-available-width: 1280px; --radix-popper-available-height: 687px; --radix-popper-anchor-width: 43px; --radix-popper-anchor-height: 21px;"><div data-side="bottom" data-align="center" data-state="open" data-slot="hover-card-content" class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-hover-card-content-transform-origin) outline-hidden flex w-64 flex-col gap-1" dir="rtl" style="--radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin); --radix-hover-card-content-available-width: var(--radix-popper-available-width); --radix-hover-card-content-available-height: var(--radix-popper-available-height); --radix-hover-card-trigger-width: var(--radix-popper-anchor-width); --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);"><div class="font-semibold">سماعات لاسلكية</div><div class="text-sm text-muted-foreground">٩٩.٩٩ $</div></div></div>
+  <div
+    data-radix-popper-content-wrapper=""
+    dir="rtl"
+    style="
+      position: fixed;
+      left: 0px;
+      top: 0px;
+      transform: translate(1153px, 33px);
+      min-width: max-content;
+      --radix-popper-transform-origin: 50% 0px;
+      z-index: auto;
+      --radix-popper-available-width: 1280px;
+      --radix-popper-available-height: 687px;
+      --radix-popper-anchor-width: 43px;
+      --radix-popper-anchor-height: 21px;
+    "
+  >
+    <div
+      data-side="bottom"
+      data-align="center"
+      data-state="open"
+      data-slot="hover-card-content"
+      class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-hover-card-content-transform-origin) outline-hidden flex w-64 flex-col gap-1"
+      dir="rtl"
+      style="
+        --radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin);
+        --radix-hover-card-content-available-width: var(--radix-popper-available-width);
+        --radix-hover-card-content-available-height: var(--radix-popper-available-height);
+        --radix-hover-card-trigger-width: var(--radix-popper-anchor-width);
+        --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);
+      "
+    >
+      <div class="font-semibold">سماعات لاسلكية</div>
+      <div class="text-sm text-muted-foreground">٩٩.٩٩ $</div>
+    </div>
+  </div>
 </template>
 <template id="k2-portal">
-<div data-radix-popper-content-wrapper="" dir="rtl" style="position: fixed; left: 0px; top: 0px; transform: translate(1108px, 33px); min-width: max-content; --radix-popper-transform-origin: 50% 0px; z-index: auto; --radix-popper-available-width: 1280px; --radix-popper-available-height: 687px; --radix-popper-anchor-width: 48px; --radix-popper-anchor-height: 21px;"><div data-side="bottom" data-align="center" data-state="open" data-slot="hover-card-content" class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-hover-card-content-transform-origin) outline-hidden flex w-64 flex-col gap-1" dir="rtl" style="--radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin); --radix-hover-card-content-available-width: var(--radix-popper-available-width); --radix-hover-card-content-available-height: var(--radix-popper-available-height); --radix-hover-card-trigger-width: var(--radix-popper-anchor-width); --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);"><div class="font-semibold">سماعات لاسلكية</div><div class="text-sm text-muted-foreground">٩٩.٩٩ $</div></div></div>
+  <div
+    data-radix-popper-content-wrapper=""
+    dir="rtl"
+    style="
+      position: fixed;
+      left: 0px;
+      top: 0px;
+      transform: translate(1108px, 33px);
+      min-width: max-content;
+      --radix-popper-transform-origin: 50% 0px;
+      z-index: auto;
+      --radix-popper-available-width: 1280px;
+      --radix-popper-available-height: 687px;
+      --radix-popper-anchor-width: 48px;
+      --radix-popper-anchor-height: 21px;
+    "
+  >
+    <div
+      data-side="bottom"
+      data-align="center"
+      data-state="open"
+      data-slot="hover-card-content"
+      class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-hover-card-content-transform-origin) outline-hidden flex w-64 flex-col gap-1"
+      dir="rtl"
+      style="
+        --radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin);
+        --radix-hover-card-content-available-width: var(--radix-popper-available-width);
+        --radix-hover-card-content-available-height: var(--radix-popper-available-height);
+        --radix-hover-card-trigger-width: var(--radix-popper-anchor-width);
+        --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);
+      "
+    >
+      <div class="font-semibold">سماعات لاسلكية</div>
+      <div class="text-sm text-muted-foreground">٩٩.٩٩ $</div>
+    </div>
+  </div>
 </template>
 <template id="k3-portal">
-<div data-radix-popper-content-wrapper="" dir="rtl" style="position: fixed; left: 0px; top: 0px; transform: translate(1143px, 0px); min-width: max-content; --radix-popper-transform-origin: 0px 50%; z-index: auto; --radix-popper-available-width: 137px; --radix-popper-available-height: 720px; --radix-popper-anchor-width: 42px; --radix-popper-anchor-height: 21px;"><div data-side="right" data-align="center" data-state="open" data-slot="hover-card-content" class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-hover-card-content-transform-origin) outline-hidden flex w-64 flex-col gap-1" dir="rtl" style="--radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin); --radix-hover-card-content-available-width: var(--radix-popper-available-width); --radix-hover-card-content-available-height: var(--radix-popper-available-height); --radix-hover-card-trigger-width: var(--radix-popper-anchor-width); --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);"><div class="font-semibold">سماعات لاسلكية</div><div class="text-sm text-muted-foreground">٩٩.٩٩ $</div></div></div>
+  <div
+    data-radix-popper-content-wrapper=""
+    dir="rtl"
+    style="
+      position: fixed;
+      left: 0px;
+      top: 0px;
+      transform: translate(1143px, 0px);
+      min-width: max-content;
+      --radix-popper-transform-origin: 0px 50%;
+      z-index: auto;
+      --radix-popper-available-width: 137px;
+      --radix-popper-available-height: 720px;
+      --radix-popper-anchor-width: 42px;
+      --radix-popper-anchor-height: 21px;
+    "
+  >
+    <div
+      data-side="right"
+      data-align="center"
+      data-state="open"
+      data-slot="hover-card-content"
+      class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-hover-card-content-transform-origin) outline-hidden flex w-64 flex-col gap-1"
+      dir="rtl"
+      style="
+        --radix-hover-card-content-transform-origin: var(--radix-popper-transform-origin);
+        --radix-hover-card-content-available-width: var(--radix-popper-available-width);
+        --radix-hover-card-content-available-height: var(--radix-popper-available-height);
+        --radix-hover-card-trigger-width: var(--radix-popper-anchor-width);
+        --radix-hover-card-trigger-height: var(--radix-popper-anchor-height);
+      "
+    >
+      <div class="font-semibold">سماعات لاسلكية</div>
+      <div class="text-sm text-muted-foreground">٩٩.٩٩ $</div>
+    </div>
+  </div>
 </template>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/hover-card.js

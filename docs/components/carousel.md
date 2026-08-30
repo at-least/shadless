@@ -15,11 +15,169 @@ A carousel with motion and swipe built using Embla.
 <p class="demo-langs"><a href="/demos/carousel-demo.html">Open the demo page</a></p>
 
 ::: code-group
-```text [carousel-demo.html]
-<div class="relative w-full max-w-[12rem] sm:max-w-xs" role="region" aria-roledescription="carousel" data-slot="carousel"><div class="overflow-hidden" data-slot="carousel-content"><div class="flex -ml-4" style="transform: translate3d(0px, 0px, 0px);"><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-full pl-4"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-4xl font-semibold">1</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-full pl-4"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-4xl font-semibold">2</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-full pl-4"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-4xl font-semibold">3</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-full pl-4"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-4xl font-semibold">4</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-full pl-4"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-4xl font-semibold">5</span></div></div></div></div></div></div><button data-slot="carousel-previous" data-variant="outline" data-size="icon-sm" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -left-12 my-auto" disabled=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left cn-rtl-flip"><path d="m15 18-6-6 6-6"></path></svg><span class="sr-only">Previous slide</span></button><button data-slot="carousel-next" data-variant="outline" data-size="icon-sm" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -right-12 my-auto" disabled=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg><span class="sr-only">Next slide</span></button></div>
+```text:line-numbers [carousel-demo.html]
+<div
+  class="relative w-full max-w-[12rem] sm:max-w-xs"
+  role="region"
+  aria-roledescription="carousel"
+  data-slot="carousel"
+>
+  <div class="overflow-hidden" data-slot="carousel-content">
+    <div class="flex -ml-4" style="transform: translate3d(0px, 0px, 0px)">
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-full pl-4"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-4xl font-semibold">1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-full pl-4"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-4xl font-semibold">2</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-full pl-4"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-4xl font-semibold">3</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-full pl-4"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-4xl font-semibold">4</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-full pl-4"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-4xl font-semibold">5</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button
+    data-slot="carousel-previous"
+    data-variant="outline"
+    data-size="icon-sm"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -left-12 my-auto"
+    disabled=""
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-chevron-left cn-rtl-flip"
+    >
+      <path d="m15 18-6-6 6-6"></path></svg
+    ><span class="sr-only">Previous slide</span></button
+  ><button
+    data-slot="carousel-next"
+    data-variant="outline"
+    data-size="icon-sm"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -right-12 my-auto"
+    disabled=""
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-chevron-right cn-rtl-flip"
+    >
+      <path d="m9 18 6-6-6-6"></path></svg
+    ><span class="sr-only">Next slide</span>
+  </button>
+</div>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/carousel.js
@@ -1780,11 +1938,169 @@ To set the size of the items, you can use the `basis` utility class on the `<Car
 <p class="demo-langs"><a href="/demos/carousel-size.html">Open the demo page</a></p>
 
 ::: code-group
-```text [carousel-size.html]
-<div class="relative w-full max-w-[12rem] sm:max-w-xs md:max-w-sm" role="region" aria-roledescription="carousel" data-slot="carousel"><div class="overflow-hidden" data-slot="carousel-content"><div class="flex -ml-4" style="transform: translate3d(0px, 0px, 0px);"><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 pl-4 basis-1/2 lg:basis-1/3"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-3xl font-semibold">1</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 pl-4 basis-1/2 lg:basis-1/3"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-3xl font-semibold">2</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 pl-4 basis-1/2 lg:basis-1/3"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-3xl font-semibold">3</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 pl-4 basis-1/2 lg:basis-1/3"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-3xl font-semibold">4</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 pl-4 basis-1/2 lg:basis-1/3"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-3xl font-semibold">5</span></div></div></div></div></div></div><button data-slot="carousel-previous" data-variant="outline" data-size="icon-sm" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -left-12 my-auto" disabled=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left cn-rtl-flip"><path d="m15 18-6-6 6-6"></path></svg><span class="sr-only">Previous slide</span></button><button data-slot="carousel-next" data-variant="outline" data-size="icon-sm" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -right-12 my-auto" disabled=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg><span class="sr-only">Next slide</span></button></div>
+```text:line-numbers [carousel-size.html]
+<div
+  class="relative w-full max-w-[12rem] sm:max-w-xs md:max-w-sm"
+  role="region"
+  aria-roledescription="carousel"
+  data-slot="carousel"
+>
+  <div class="overflow-hidden" data-slot="carousel-content">
+    <div class="flex -ml-4" style="transform: translate3d(0px, 0px, 0px)">
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 pl-4 basis-1/2 lg:basis-1/3"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-3xl font-semibold">1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 pl-4 basis-1/2 lg:basis-1/3"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-3xl font-semibold">2</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 pl-4 basis-1/2 lg:basis-1/3"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-3xl font-semibold">3</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 pl-4 basis-1/2 lg:basis-1/3"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-3xl font-semibold">4</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 pl-4 basis-1/2 lg:basis-1/3"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-3xl font-semibold">5</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button
+    data-slot="carousel-previous"
+    data-variant="outline"
+    data-size="icon-sm"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -left-12 my-auto"
+    disabled=""
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-chevron-left cn-rtl-flip"
+    >
+      <path d="m15 18-6-6 6-6"></path></svg
+    ><span class="sr-only">Previous slide</span></button
+  ><button
+    data-slot="carousel-next"
+    data-variant="outline"
+    data-size="icon-sm"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -right-12 my-auto"
+    disabled=""
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-chevron-right cn-rtl-flip"
+    >
+      <path d="m9 18 6-6-6-6"></path></svg
+    ><span class="sr-only">Next slide</span>
+  </button>
+</div>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/carousel.js
@@ -3498,11 +3814,169 @@ To set the spacing between the items, we use a `pl-[VALUE]` utility on the `<Car
 <p class="demo-langs"><a href="/demos/carousel-spacing.html">Open the demo page</a></p>
 
 ::: code-group
-```text [carousel-spacing.html]
-<div class="relative w-full max-w-[12rem] sm:max-w-xs md:max-w-sm" role="region" aria-roledescription="carousel" data-slot="carousel"><div class="overflow-hidden" data-slot="carousel-content"><div class="flex -ml-1" style="transform: translate3d(0px, 0px, 0px);"><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-1/2 pl-1 lg:basis-1/3"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-2xl font-semibold">1</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-1/2 pl-1 lg:basis-1/3"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-2xl font-semibold">2</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-1/2 pl-1 lg:basis-1/3"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-2xl font-semibold">3</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-1/2 pl-1 lg:basis-1/3"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-2xl font-semibold">4</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-1/2 pl-1 lg:basis-1/3"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-2xl font-semibold">5</span></div></div></div></div></div></div><button data-slot="carousel-previous" data-variant="outline" data-size="icon-sm" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -left-12 my-auto" disabled=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left cn-rtl-flip"><path d="m15 18-6-6 6-6"></path></svg><span class="sr-only">Previous slide</span></button><button data-slot="carousel-next" data-variant="outline" data-size="icon-sm" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -right-12 my-auto" disabled=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg><span class="sr-only">Next slide</span></button></div>
+```text:line-numbers [carousel-spacing.html]
+<div
+  class="relative w-full max-w-[12rem] sm:max-w-xs md:max-w-sm"
+  role="region"
+  aria-roledescription="carousel"
+  data-slot="carousel"
+>
+  <div class="overflow-hidden" data-slot="carousel-content">
+    <div class="flex -ml-1" style="transform: translate3d(0px, 0px, 0px)">
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-1/2 pl-1 lg:basis-1/3"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-2xl font-semibold">1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-1/2 pl-1 lg:basis-1/3"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-2xl font-semibold">2</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-1/2 pl-1 lg:basis-1/3"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-2xl font-semibold">3</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-1/2 pl-1 lg:basis-1/3"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-2xl font-semibold">4</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-1/2 pl-1 lg:basis-1/3"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-2xl font-semibold">5</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button
+    data-slot="carousel-previous"
+    data-variant="outline"
+    data-size="icon-sm"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -left-12 my-auto"
+    disabled=""
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-chevron-left cn-rtl-flip"
+    >
+      <path d="m15 18-6-6 6-6"></path></svg
+    ><span class="sr-only">Previous slide</span></button
+  ><button
+    data-slot="carousel-next"
+    data-variant="outline"
+    data-size="icon-sm"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -right-12 my-auto"
+    disabled=""
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-chevron-right cn-rtl-flip"
+    >
+      <path d="m9 18 6-6-6-6"></path></svg
+    ><span class="sr-only">Next slide</span>
+  </button>
+</div>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/carousel.js
@@ -5214,11 +5688,154 @@ Use the `orientation` prop to set the orientation of the carousel.
 <p class="demo-langs"><a href="/demos/carousel-orientation.html">Open the demo page</a></p>
 
 ::: code-group
-```text [carousel-orientation.html]
-<div class="relative w-full max-w-xs" role="region" aria-roledescription="carousel" data-slot="carousel"><div class="overflow-hidden" data-slot="carousel-content"><div class="flex flex-col -mt-1 h-[270px]" style="transform: translate3d(0px, 0px, 0px);"><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-1/2 pt-1"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex items-center justify-center p-6"><span class="text-3xl font-semibold">1</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-1/2 pt-1"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex items-center justify-center p-6"><span class="text-3xl font-semibold">2</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-1/2 pt-1"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex items-center justify-center p-6"><span class="text-3xl font-semibold">3</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-1/2 pt-1"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex items-center justify-center p-6"><span class="text-3xl font-semibold">4</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-1/2 pt-1"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex items-center justify-center p-6"><span class="text-3xl font-semibold">5</span></div></div></div></div></div></div><button data-slot="carousel-previous" data-variant="outline" data-size="icon-sm" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation -top-12 left-1/2 -translate-x-1/2 rotate-90" disabled=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left cn-rtl-flip"><path d="m15 18-6-6 6-6"></path></svg><span class="sr-only">Previous slide</span></button><button data-slot="carousel-next" data-variant="outline" data-size="icon-sm" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation -bottom-12 left-1/2 -translate-x-1/2 rotate-90" disabled=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg><span class="sr-only">Next slide</span></button></div>
+```text:line-numbers [carousel-orientation.html]
+<div
+  class="relative w-full max-w-xs"
+  role="region"
+  aria-roledescription="carousel"
+  data-slot="carousel"
+>
+  <div class="overflow-hidden" data-slot="carousel-content">
+    <div class="flex flex-col -mt-1 h-[270px]" style="transform: translate3d(0px, 0px, 0px)">
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-1/2 pt-1"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div data-slot="card-content" class="flex items-center justify-center p-6">
+              <span class="text-3xl font-semibold">1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-1/2 pt-1"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div data-slot="card-content" class="flex items-center justify-center p-6">
+              <span class="text-3xl font-semibold">2</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-1/2 pt-1"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div data-slot="card-content" class="flex items-center justify-center p-6">
+              <span class="text-3xl font-semibold">3</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-1/2 pt-1"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div data-slot="card-content" class="flex items-center justify-center p-6">
+              <span class="text-3xl font-semibold">4</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-1/2 pt-1"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div data-slot="card-content" class="flex items-center justify-center p-6">
+              <span class="text-3xl font-semibold">5</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button
+    data-slot="carousel-previous"
+    data-variant="outline"
+    data-size="icon-sm"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation -top-12 left-1/2 -translate-x-1/2 rotate-90"
+    disabled=""
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-chevron-left cn-rtl-flip"
+    >
+      <path d="m15 18-6-6 6-6"></path></svg
+    ><span class="sr-only">Previous slide</span></button
+  ><button
+    data-slot="carousel-next"
+    data-variant="outline"
+    data-size="icon-sm"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation -bottom-12 left-1/2 -translate-x-1/2 rotate-90"
+    disabled=""
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-chevron-right cn-rtl-flip"
+    >
+      <path d="m9 18 6-6-6-6"></path></svg
+    ><span class="sr-only">Next slide</span>
+  </button>
+</div>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/carousel.js
@@ -6939,11 +7556,162 @@ Use a state and the `setApi` props to get an instance of the carousel API.
 <p class="demo-langs"><a href="/demos/carousel-api.html">Open the demo page</a></p>
 
 ::: code-group
-```text [carousel-api.html]
-<div class="mx-auto max-w-[10rem] sm:max-w-xs"><div class="relative w-full max-w-xs" role="region" aria-roledescription="carousel" data-slot="carousel"><div class="overflow-hidden" data-slot="carousel-content"><div class="flex -ml-4" style="transform: translate3d(0px, 0px, 0px);"><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-full pl-4"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col m-px"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-4xl font-semibold">1</span></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-full pl-4"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col m-px"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-4xl font-semibold">2</span></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-full pl-4"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col m-px"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-4xl font-semibold">3</span></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-full pl-4"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col m-px"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-4xl font-semibold">4</span></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-full pl-4"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col m-px"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-4xl font-semibold">5</span></div></div></div></div></div><button data-slot="carousel-previous" data-variant="outline" data-size="icon-sm" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -left-12 my-auto" disabled=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left cn-rtl-flip"><path d="m15 18-6-6 6-6"></path></svg><span class="sr-only">Previous slide</span></button><button data-slot="carousel-next" data-variant="outline" data-size="icon-sm" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -right-12 my-auto" disabled=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg><span class="sr-only">Next slide</span></button></div><div class="py-2 text-center text-sm text-muted-foreground">Slide 1 of 1</div></div>
+```text:line-numbers [carousel-api.html]
+<div class="mx-auto max-w-[10rem] sm:max-w-xs">
+  <div
+    class="relative w-full max-w-xs"
+    role="region"
+    aria-roledescription="carousel"
+    data-slot="carousel"
+  >
+    <div class="overflow-hidden" data-slot="carousel-content">
+      <div class="flex -ml-4" style="transform: translate3d(0px, 0px, 0px)">
+        <div
+          role="group"
+          aria-roledescription="slide"
+          data-slot="carousel-item"
+          class="min-w-0 shrink-0 grow-0 basis-full pl-4"
+        >
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col m-px"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-4xl font-semibold">1</span>
+            </div>
+          </div>
+        </div>
+        <div
+          role="group"
+          aria-roledescription="slide"
+          data-slot="carousel-item"
+          class="min-w-0 shrink-0 grow-0 basis-full pl-4"
+        >
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col m-px"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-4xl font-semibold">2</span>
+            </div>
+          </div>
+        </div>
+        <div
+          role="group"
+          aria-roledescription="slide"
+          data-slot="carousel-item"
+          class="min-w-0 shrink-0 grow-0 basis-full pl-4"
+        >
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col m-px"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-4xl font-semibold">3</span>
+            </div>
+          </div>
+        </div>
+        <div
+          role="group"
+          aria-roledescription="slide"
+          data-slot="carousel-item"
+          class="min-w-0 shrink-0 grow-0 basis-full pl-4"
+        >
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col m-px"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-4xl font-semibold">4</span>
+            </div>
+          </div>
+        </div>
+        <div
+          role="group"
+          aria-roledescription="slide"
+          data-slot="carousel-item"
+          class="min-w-0 shrink-0 grow-0 basis-full pl-4"
+        >
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col m-px"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-4xl font-semibold">5</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button
+      data-slot="carousel-previous"
+      data-variant="outline"
+      data-size="icon-sm"
+      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -left-12 my-auto"
+      disabled=""
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-chevron-left cn-rtl-flip"
+      >
+        <path d="m15 18-6-6 6-6"></path></svg
+      ><span class="sr-only">Previous slide</span></button
+    ><button
+      data-slot="carousel-next"
+      data-variant="outline"
+      data-size="icon-sm"
+      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -right-12 my-auto"
+      disabled=""
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-chevron-right cn-rtl-flip"
+      >
+        <path d="m9 18 6-6-6-6"></path></svg
+      ><span class="sr-only">Next slide</span>
+    </button>
+  </div>
+  <div class="py-2 text-center text-sm text-muted-foreground">Slide 1 of 1</div>
+</div>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/carousel.js
@@ -8663,11 +9431,169 @@ export function Example() {
 <p class="demo-langs"><a href="/demos/carousel-plugin.html">Open the demo page</a></p>
 
 ::: code-group
-```text [carousel-plugin.html]
-<div class="relative w-full max-w-[10rem] sm:max-w-xs" role="region" aria-roledescription="carousel" data-slot="carousel"><div class="overflow-hidden" data-slot="carousel-content"><div class="flex -ml-4" style="transform: translate3d(0px, 0px, 0px);"><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-full pl-4"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-4xl font-semibold">1</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-full pl-4"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-4xl font-semibold">2</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-full pl-4"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-4xl font-semibold">3</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-full pl-4"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-4xl font-semibold">4</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-full pl-4"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-4xl font-semibold">5</span></div></div></div></div></div></div><button data-slot="carousel-previous" data-variant="outline" data-size="icon-sm" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -left-12 my-auto" disabled=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left cn-rtl-flip"><path d="m15 18-6-6 6-6"></path></svg><span class="sr-only">Previous slide</span></button><button data-slot="carousel-next" data-variant="outline" data-size="icon-sm" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -right-12 my-auto" disabled=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right cn-rtl-flip"><path d="m9 18 6-6-6-6"></path></svg><span class="sr-only">Next slide</span></button></div>
+```text:line-numbers [carousel-plugin.html]
+<div
+  class="relative w-full max-w-[10rem] sm:max-w-xs"
+  role="region"
+  aria-roledescription="carousel"
+  data-slot="carousel"
+>
+  <div class="overflow-hidden" data-slot="carousel-content">
+    <div class="flex -ml-4" style="transform: translate3d(0px, 0px, 0px)">
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-full pl-4"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-4xl font-semibold">1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-full pl-4"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-4xl font-semibold">2</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-full pl-4"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-4xl font-semibold">3</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-full pl-4"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-4xl font-semibold">4</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-full pl-4"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-4xl font-semibold">5</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button
+    data-slot="carousel-previous"
+    data-variant="outline"
+    data-size="icon-sm"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -left-12 my-auto"
+    disabled=""
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-chevron-left cn-rtl-flip"
+    >
+      <path d="m15 18-6-6 6-6"></path></svg
+    ><span class="sr-only">Previous slide</span></button
+  ><button
+    data-slot="carousel-next"
+    data-variant="outline"
+    data-size="icon-sm"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -right-12 my-auto"
+    disabled=""
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-chevron-right cn-rtl-flip"
+    >
+      <path d="m9 18 6-6-6-6"></path></svg
+    ><span class="sr-only">Next slide</span>
+  </button>
+</div>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/carousel.js
@@ -10359,11 +11285,175 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 <p class="demo-langs"><a href="/demos/carousel-rtl.html">Open the demo page</a> · <a href="/demos/carousel-rtl-he.html">HE</a> · <a href="/demos/carousel-rtl-en.html">EN</a></p>
 
 ::: code-group
-```text [carousel-rtl.html]
-<div class="relative w-full max-w-[12rem] sm:max-w-xs" role="region" aria-roledescription="carousel" data-slot="carousel" dir="rtl"><div class="overflow-hidden" data-slot="carousel-content"><div class="flex -ml-4" style="transform: translate3d(0px, 0px, 0px);"><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-full ps-4"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col" dir="rtl"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-4xl font-semibold">١</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-full ps-4"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col" dir="rtl"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-4xl font-semibold">٢</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-full ps-4"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col" dir="rtl"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-4xl font-semibold">٣</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-full ps-4"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col" dir="rtl"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-4xl font-semibold">٤</span></div></div></div></div><div role="group" aria-roledescription="slide" data-slot="carousel-item" class="min-w-0 shrink-0 grow-0 basis-full ps-4"><div class="p-1"><div data-slot="card" data-size="default" class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col" dir="rtl"><div data-slot="card-content" class="flex aspect-square items-center justify-center p-6"><span class="text-4xl font-semibold">٥</span></div></div></div></div></div></div><button data-slot="carousel-previous" data-variant="outline" data-size="icon-sm" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -left-12 my-auto" disabled=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left rtl:rotate-180"><path d="m15 18-6-6 6-6"></path></svg><span class="sr-only">Previous slide</span></button><button data-slot="carousel-next" data-variant="outline" data-size="icon-sm" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -right-12 my-auto" disabled=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right rtl:rotate-180"><path d="m9 18 6-6-6-6"></path></svg><span class="sr-only">Next slide</span></button></div>
+```text:line-numbers [carousel-rtl.html]
+<div
+  class="relative w-full max-w-[12rem] sm:max-w-xs"
+  role="region"
+  aria-roledescription="carousel"
+  data-slot="carousel"
+  dir="rtl"
+>
+  <div class="overflow-hidden" data-slot="carousel-content">
+    <div class="flex -ml-4" style="transform: translate3d(0px, 0px, 0px)">
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-full ps-4"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            dir="rtl"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-4xl font-semibold">١</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-full ps-4"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            dir="rtl"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-4xl font-semibold">٢</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-full ps-4"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            dir="rtl"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-4xl font-semibold">٣</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-full ps-4"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            dir="rtl"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-4xl font-semibold">٤</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        role="group"
+        aria-roledescription="slide"
+        data-slot="carousel-item"
+        class="min-w-0 shrink-0 grow-0 basis-full ps-4"
+      >
+        <div class="p-1">
+          <div
+            data-slot="card"
+            data-size="default"
+            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            dir="rtl"
+          >
+            <div
+              data-slot="card-content"
+              class="flex aspect-square items-center justify-center p-6"
+            >
+              <span class="text-4xl font-semibold">٥</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button
+    data-slot="carousel-previous"
+    data-variant="outline"
+    data-size="icon-sm"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -left-12 my-auto"
+    disabled=""
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-chevron-left rtl:rotate-180"
+    >
+      <path d="m15 18-6-6 6-6"></path></svg
+    ><span class="sr-only">Previous slide</span></button
+  ><button
+    data-slot="carousel-next"
+    data-variant="outline"
+    data-size="icon-sm"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -right-12 my-auto"
+    disabled=""
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-chevron-right rtl:rotate-180"
+    >
+      <path d="m9 18 6-6-6-6"></path></svg
+    ><span class="sr-only">Next slide</span>
+  </button>
+</div>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/carousel.js

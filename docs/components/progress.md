@@ -15,8 +15,24 @@ Displays an indicator showing the completion progress of a task, typically displ
 <p class="demo-langs"><a href="/demos/progress-demo.html">Open the demo page</a></p>
 
 ::: code-group
-```text [progress-demo.html]
-<div aria-valuemax="100" aria-valuemin="0" role="progressbar" data-state="indeterminate" data-max="100" data-slot="progress" class="bg-muted h-1 rounded-full relative flex items-center overflow-x-hidden w-[60%]"><div data-state="indeterminate" data-max="100" data-slot="progress-indicator" class="bg-primary size-full flex-1 transition-all" style="transform: translateX(-87%);"></div></div>
+```text:line-numbers [progress-demo.html]
+<div
+  aria-valuemax="100"
+  aria-valuemin="0"
+  role="progressbar"
+  data-state="indeterminate"
+  data-max="100"
+  data-slot="progress"
+  class="bg-muted h-1 rounded-full relative flex items-center overflow-x-hidden w-[60%]"
+>
+  <div
+    data-state="indeterminate"
+    data-max="100"
+    data-slot="progress-indicator"
+    class="bg-primary size-full flex-1 transition-all"
+    style="transform: translateX(-87%)"
+  ></div>
+</div>
 ```
 :::
 
@@ -71,8 +87,38 @@ Use a `Field` component to add a label to the progress bar.
 <p class="demo-langs"><a href="/demos/progress-label.html">Open the demo page</a></p>
 
 ::: code-group
-```text [progress-label.html]
-<div role="group" data-slot="field" data-orientation="vertical" class="data-[invalid=true]:text-destructive gap-2 group/field flex flex-col *:w-full [&amp;&gt;.sr-only]:w-auto w-full max-w-sm"><label data-slot="field-label" class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[&gt;[data-slot=field]]:rounded-lg has-[&gt;[data-slot=field]]:border has-[&gt;[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:border-ring has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[&gt;[data-slot=field]]:w-full has-[&gt;[data-slot=field]]:flex-col" for="progress-upload"><span>Upload progress</span><span class="ml-auto">66%</span></label><div aria-valuemax="100" aria-valuemin="0" role="progressbar" data-state="indeterminate" data-max="100" data-slot="progress" class="bg-muted h-1 rounded-full relative flex w-full items-center overflow-x-hidden" id="progress-upload"><div data-state="indeterminate" data-max="100" data-slot="progress-indicator" class="bg-primary size-full flex-1 transition-all" style="transform: translateX(-34%);"></div></div></div>
+```text:line-numbers [progress-label.html]
+<div
+  role="group"
+  data-slot="field"
+  data-orientation="vertical"
+  class="data-[invalid=true]:text-destructive gap-2 group/field flex flex-col *:w-full [&amp;&gt;.sr-only]:w-auto w-full max-w-sm"
+>
+  <label
+    data-slot="field-label"
+    class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[&gt;[data-slot=field]]:rounded-lg has-[&gt;[data-slot=field]]:border has-[&gt;[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:border-ring has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[&gt;[data-slot=field]]:w-full has-[&gt;[data-slot=field]]:flex-col"
+    for="progress-upload"
+    ><span>Upload progress</span><span class="ml-auto">66%</span></label
+  >
+  <div
+    aria-valuemax="100"
+    aria-valuemin="0"
+    role="progressbar"
+    data-state="indeterminate"
+    data-max="100"
+    data-slot="progress"
+    class="bg-muted h-1 rounded-full relative flex w-full items-center overflow-x-hidden"
+    id="progress-upload"
+  >
+    <div
+      data-state="indeterminate"
+      data-max="100"
+      data-slot="progress-indicator"
+      class="bg-primary size-full flex-1 transition-all"
+      style="transform: translateX(-34%)"
+    ></div>
+  </div>
+</div>
 ```
 :::
 
@@ -89,11 +135,66 @@ A progress bar that can be controlled by a slider.
 <p class="demo-langs"><a href="/demos/progress-controlled.html">Open the demo page</a></p>
 
 ::: code-group
-```text [progress-controlled.html]
-<div class="flex w-full max-w-sm flex-col gap-4"><div aria-valuemax="100" aria-valuemin="0" role="progressbar" data-state="indeterminate" data-max="100" data-slot="progress" class="bg-muted h-1 rounded-full relative flex w-full items-center overflow-x-hidden"><div data-state="indeterminate" data-max="100" data-slot="progress-indicator" class="bg-primary size-full flex-1 transition-all" style="transform: translateX(-50%);"></div></div><span dir="ltr" data-orientation="horizontal" aria-disabled="false" data-slot="slider" class="data-vertical:min-h-40 relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col" style="--radix-slider-thumb-transform: translateX(-50%);"><span data-orientation="horizontal" data-slot="slider-track" class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"><span data-orientation="horizontal" data-slot="slider-range" class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full" style="left: 0%; right: 50%;"></span></span><span style="transform: var(--radix-slider-thumb-transform); position: absolute; left: calc(50% + 0px);"><span role="slider" aria-valuemin="0" aria-valuemax="100" aria-orientation="horizontal" data-orientation="horizontal" tabindex="0" data-slot="slider-thumb" class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50" data-radix-collection-item="" aria-valuenow="50" style=""></span></span></span></div>
+```text:line-numbers [progress-controlled.html]
+<div class="flex w-full max-w-sm flex-col gap-4">
+  <div
+    aria-valuemax="100"
+    aria-valuemin="0"
+    role="progressbar"
+    data-state="indeterminate"
+    data-max="100"
+    data-slot="progress"
+    class="bg-muted h-1 rounded-full relative flex w-full items-center overflow-x-hidden"
+  >
+    <div
+      data-state="indeterminate"
+      data-max="100"
+      data-slot="progress-indicator"
+      class="bg-primary size-full flex-1 transition-all"
+      style="transform: translateX(-50%)"
+    ></div>
+  </div>
+  <span
+    dir="ltr"
+    data-orientation="horizontal"
+    aria-disabled="false"
+    data-slot="slider"
+    class="data-vertical:min-h-40 relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col"
+    style="--radix-slider-thumb-transform: translateX(-50%)"
+    ><span
+      data-orientation="horizontal"
+      data-slot="slider-track"
+      class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"
+      ><span
+        data-orientation="horizontal"
+        data-slot="slider-range"
+        class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full"
+        style="left: 0%; right: 50%"
+      ></span></span
+    ><span
+      style="
+        transform: var(--radix-slider-thumb-transform);
+        position: absolute;
+        left: calc(50% + 0px);
+      "
+      ><span
+        role="slider"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-orientation="horizontal"
+        data-orientation="horizontal"
+        tabindex="0"
+        data-slot="slider-thumb"
+        class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+        data-radix-collection-item=""
+        aria-valuenow="50"
+        style=""
+      ></span></span
+  ></span>
+</div>
 ```
 
-```js [behavior]
+```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/slider.js
@@ -146,8 +247,39 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 <p class="demo-langs"><a href="/demos/progress-rtl.html">Open the demo page</a> · <a href="/demos/progress-rtl-he.html">HE</a> · <a href="/demos/progress-rtl-en.html">EN</a></p>
 
 ::: code-group
-```text [progress-rtl.html]
-<div role="group" data-slot="field" data-orientation="vertical" class="data-[invalid=true]:text-destructive gap-2 group/field flex flex-col *:w-full [&amp;&gt;.sr-only]:w-auto w-full max-w-sm" dir="rtl"><label data-slot="field-label" class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[&gt;[data-slot=field]]:rounded-lg has-[&gt;[data-slot=field]]:border has-[&gt;[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:border-ring has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[&gt;[data-slot=field]]:w-full has-[&gt;[data-slot=field]]:flex-col" for="progress-upload"><span>تقدم الرفع</span><span class="ms-auto">٦٦%</span></label><div aria-valuemax="100" aria-valuemin="0" role="progressbar" data-state="indeterminate" data-max="100" data-slot="progress" class="bg-muted h-1 rounded-full relative flex w-full items-center overflow-x-hidden rtl:rotate-180" id="progress-upload"><div data-state="indeterminate" data-max="100" data-slot="progress-indicator" class="bg-primary size-full flex-1 transition-all" style="transform: translateX(-34%);"></div></div></div>
+```text:line-numbers [progress-rtl.html]
+<div
+  role="group"
+  data-slot="field"
+  data-orientation="vertical"
+  class="data-[invalid=true]:text-destructive gap-2 group/field flex flex-col *:w-full [&amp;&gt;.sr-only]:w-auto w-full max-w-sm"
+  dir="rtl"
+>
+  <label
+    data-slot="field-label"
+    class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[&gt;[data-slot=field]]:rounded-lg has-[&gt;[data-slot=field]]:border has-[&gt;[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:border-ring has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[&gt;[data-slot=field]]:w-full has-[&gt;[data-slot=field]]:flex-col"
+    for="progress-upload"
+    ><span>تقدم الرفع</span><span class="ms-auto">٦٦%</span></label
+  >
+  <div
+    aria-valuemax="100"
+    aria-valuemin="0"
+    role="progressbar"
+    data-state="indeterminate"
+    data-max="100"
+    data-slot="progress"
+    class="bg-muted h-1 rounded-full relative flex w-full items-center overflow-x-hidden rtl:rotate-180"
+    id="progress-upload"
+  >
+    <div
+      data-state="indeterminate"
+      data-max="100"
+      data-slot="progress-indicator"
+      class="bg-primary size-full flex-1 transition-all"
+      style="transform: translateX(-34%)"
+    ></div>
+  </div>
+</div>
 ```
 :::
 
