@@ -134,11 +134,11 @@ data. What stays in JS, and why:
   implementations that must agree is the failure mode this repo spends most of
   its effort on.
 - **Needs a Node-only runtime.** playwright (`demo-parity`, `style-parity`,
-  `demo-smoke`, `docs-smoke`, `docs-upstream`, `example-oracle`,
+  `demo-smoke`, `docs-smoke`, `example-oracle`,
   `example-fixture`, `example-golden`, `interactivity-sweep`, `contracts`),
   esbuild + React + radix (`oracle-lib`, `contracts/oracle-build`, `build-js`,
   `demo`, `docs-build`), `@babel/parser` (`build-demo`, `rtl-lib`),
-  mdx/remark/shiki (`docs-build`, `docs-upstream`).
+  mdx/remark/shiki (`docs-build`).
 - **Shares a table with a JS consumer.** `docs-links` resolves `/docs/…` routes
   through `resolveDocsRoute` + `GUIDES` in `tools/docs-guides.mjs`, which
   `docs-build` also imports to rewrite and grey those same links. One table, no

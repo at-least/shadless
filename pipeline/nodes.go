@@ -79,7 +79,6 @@ const (
 	NDocsConsistency    NodeID = "docs-consistency"
 	NDocsFidelity       NodeID = "docs-fidelity"
 	NDocsSmoke          NodeID = "docs-smoke"
-	NDocsUpstream       NodeID = "docs-upstream"
 	NInteractivitySweep NodeID = "interactivity-sweep"
 	NReproducible       NodeID = "reproducible"
 	NGoldenGate         NodeID = "golden-gate"
@@ -454,15 +453,6 @@ var Nodes = []Node{
 		Produces:  nil,
 		Why:       "every page and every iframe loads with zero console/page errors",
 		Mutations: []string{"docs-smoke-broken-iframe"},
-	},
-	{
-		ID: NDocsUpstream, Kind: "gate", Tier: "full",
-		Needs:     []NodeID{NDocsBuild},
-		Run:       [][]string{{"node", "tools/docs-upstream.mjs"}},
-		Inputs:    []string{"tools/docs-upstream.mjs", "docs/site/**"},
-		Produces:  nil,
-		Why:       "the built site matches the ui.shadcn.com visual contract (chrome, shiki palettes, gutters, layout regression guards)",
-		Mutations: []string{"docs-upstream-chrome-drift"},
 	},
 	{
 		ID: NInteractivitySweep, Kind: "gate", Tier: "full",

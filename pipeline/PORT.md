@@ -55,7 +55,7 @@ avoiding.
 ### `mdx` + `remark` + `shiki` — compiling the docs
 
 `tools/docs-build.mjs`, `src/docs/components.mjs`, `src/docs/highlight.mjs`,
-`src/docs/assets.mjs`, `tools/docs-upstream.mjs`.
+`src/docs/assets.mjs`.
 
 `docs-build` runs MDX's `evaluate()` over upstream `.mdx` and renders it
 through the vanilla JSX shim in `src/docs/jsx.mjs`; `shiki` highlights the
@@ -95,7 +95,7 @@ gives the emitter a DOM to manipulate. Neither has a faithful Go port.
 ### `playwright` — the browser gates
 
 `style-parity`, `demo-parity`, `path-parity`, `demo-smoke`, `docs-smoke`,
-`docs-upstream`, `interactivity-sweep`, `emit-smoke`, and the oracle chain
+`interactivity-sweep`, `emit-smoke`, and the oracle chain
 (`oracle-lib`, `example-oracle`, `example-fixture`, `example-golden`,
 `contracts/run`).
 

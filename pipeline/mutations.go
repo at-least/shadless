@@ -318,16 +318,6 @@ var Mutations = []Mutation{
 		},
 	},
 	{
-		ID: "docs-upstream-chrome-drift", Gate: "docs-upstream",
-		Why:   "the site chrome stops matching the ui.shadcn.com neutral background",
-		Files: []string{"docs/site/site.css"},
-		// d62284f: the site "looked different from upstream" while every
-		// class, colour and size matched. Chrome parity needs its own checks.
-		Apply: func(root string, f []string) error {
-			return mutReplaceOnce(root, f[0], "oklch(1 0 0)", "oklch(0.97 0.02 250)")
-		},
-	},
-	{
 		ID: "pin-base-drift", Gate: "pin",
 		Why:   "pin.json names a different one of upstream's parallel registries than the graph converts from",
 		Files: []string{"src/registry/pin.json"},

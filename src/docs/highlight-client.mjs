@@ -9,8 +9,7 @@
 // text, ×70 pages). The build now ships plain text inside the same
 // <span data-line> line structure (gutter, counters, textContent and every
 // grep-based gate unchanged); this file colours the tokens after load,
-// emitting the exact inline vars the build used to, so site.css and
-// tools/docs-upstream.mjs (palette ⊆ theme) still hold.
+// emitting the exact inline vars the build used to, so site.css still holds.
 import { createHighlighterCoreSync } from 'shiki/core'
 import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
 import tsx from '@shikijs/langs/tsx'
