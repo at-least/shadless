@@ -20,7 +20,7 @@ node tools/pin.mjs                            # clones the pinned upstream into 
 | Command | What | When |
 |---|---|---|
 | `make fast` / `npm test` | pin, unit, ledger, dist-complete, pack — seconds, no browser | every commit (the hook runs it) |
-| `make medium` | + convert, emit, coverage, overlay, emit-smoke | every push |
+| `make medium` | + convert, emit, coverage, overlay | every push |
 | `make` | the full pipeline + every gate, ending in `reproducible` — what CI runs | before a PR |
 | `make meta` | mutation-test every gate (each must go red on its declared mutation) | when you add or change a gate |
 | `make only ID=<node>` | one node and exactly what it needs | iterating on one gate |

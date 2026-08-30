@@ -55,7 +55,6 @@ const (
 	NOverlay            NodeID = "overlay"
 	NConvert            NodeID = "convert"
 	NEmit               NodeID = "emit"
-	NEmitSmoke          NodeID = "emit-smoke"
 	NBuildJs            NodeID = "build-js"
 	NContractFixture    NodeID = "contract-fixture"
 	NDemoBuild          NodeID = "demo-build"
@@ -164,21 +163,14 @@ var Nodes = []Node{
 	},
 	{
 		ID: NEmit, Kind: "build", Tier: "medium",
-		Needs:     []NodeID{NConvert},
-		Run:       [][]string{{"node", "src/emitter/index.mjs"}, {"./build/pipeline", "tw", "build/emit/globals.css", "build/emit/out.css", "--cwd", "dist"}},
-		Inputs:    []string{"src/emitter/**", "src/tags.mjs", "src/docs/theme-prepaint.mjs", "src/registry/tiers.json", "src/registry/pin.json", "probes/h4/globals.css", "package.json", "pipeline/tw.go", "pipeline/main.go"},
-		Produces:  []string{"dist/components/*.html", "!dist/components/*-rtl-*.html", "dist/shadless.css", "build/emit"},
+		Needs:    []NodeID{NConvert},
+		Run:      [][]string{{"node", "src/emitter/index.mjs"}},
+		Inputs:   []string{"src/emitter/**", "src/tags.mjs", "src/docs/theme-prepaint.mjs", "src/registry/tiers.json", "src/registry/pin.json", "probes/h4/globals.css", "package.json", "pipeline/tw.go", "pipeline/main.go"},
+		Produces: []string{"dist/components/*.html", "!dist/components/*-rtl-*.html", "dist/shadless.css", "build/emit"},
+		// build/emit is still produced (the emitter writes globals.css and a
+		// demo index there) but nothing reads it now that emit-smoke is gone.
 		Why:       "static-tier emit: IR -> component html + per-slot css",
 		Mutations: nil,
-	},
-	{
-		ID: NEmitSmoke, Kind: "gate", Tier: "medium",
-		Needs:     []NodeID{NEmit},
-		Run:       [][]string{{"node", "src/emitter/smoke.mjs"}},
-		Inputs:    []string{"src/emitter/smoke.mjs", "src/registry/tiers.json", "src/registry/ir/**", "dist/components/**"},
-		Produces:  nil,
-		Why:       "emitted markup parses to exactly the expected tags and nesting (jsdom)",
-		Mutations: []string{"emit-smoke-slotless-page"},
 	},
 	{
 		ID: NBuildJs, Kind: "build", Tier: "fast",

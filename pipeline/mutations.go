@@ -328,16 +328,6 @@ var Mutations = []Mutation{
 		},
 	},
 	{
-		ID: "emit-smoke-slotless-page", Gate: "emit-smoke",
-		Why:   "an emitted static page loses every data-slot — it renders, but as nothing",
-		Files: []string{"dist/components/badge.html"},
-		// The emitter has shipped literal <ChevronLeftIcon> and <button
-		// placeholder> tags before (Wave H).
-		Apply: func(root string, f []string) error {
-			return mutReplaceAll(root, f[0], "data-slot=", "data-mutated=")
-		},
-	},
-	{
 		ID: "example-oracle-render-failure", Gate: "example-oracle",
 		Why: "an upstream example stops rendering — the build must fail instead of dropping that page from the ownership manifest",
 		// The oracle build used to SURVIVE a broken example: a render failure

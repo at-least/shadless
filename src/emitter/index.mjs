@@ -1,7 +1,7 @@
 // T5 emitter: IR (tier=static) → semantic usage HTML + slot-keyed CSS.
 // Gates: static file count, no non-anchor class= in HTML, jsdom slot-tree vs
 // IR (exact tags + nesting edges), no literal PascalCase tags, no escaped
-// markup artifacts. Playwright smoke runs separately (src/emitter/smoke.mjs).
+// markup artifacts.
 //
 // Pure helpers are exported for unit tests (tools/unit/emitter.mjs); the
 // pipeline + gates run under the main guard only.
@@ -322,8 +322,12 @@ function main() {
   // out.css / demo-index.html with static-only versions that the demo chain
   // (full tier) later replaced — so every medium-tier run left a committed
   // tree broken until the next full build, and twice a partial out.css got
-  // committed. Its own stylesheet/index now go to build/emit/ (emit-smoke
-  // reads them there); dist/components is written into, never wiped.
+  // committed. Its own stylesheet/index go to build/emit/ instead;
+  // dist/components is written into, never wiped.
+  //
+  // Nothing reads build/emit/ now that emit-smoke is deleted. Kept because
+  // the point of writing there is to keep these OUT of dist/, which still
+  // holds; removing the writes is a separate change to the emitter.
   mkdirSync("dist/components", { recursive: true })
   mkdirSync("build/emit", { recursive: true })
 
