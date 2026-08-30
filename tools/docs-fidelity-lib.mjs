@@ -128,34 +128,48 @@ export function mdxPageFacts(raw, { dropCodeTabs = false, dropInstallSection = f
   return { frontmatter: parseFrontmatter(raw), headings, previews, sources, fences: scanFences(src) }
 }
 
-export function htmlPageFacts(html) {
-  const article = (html.match(/<article[\s\S]*?<\/article>/) || [""])[0]
-  const headings = [...article.matchAll(/<h([234])\b([^>]*)>([\s\S]*?)<\/h\1>/g)].map((m) => ({
-    depth: +m[1],
-    id: (/id="([^"]*)"/.exec(m[2]) || [])[1] ?? null,
-    shim: m[3].includes("data-slot="), // component-embedded heading (Accordion shim) — excluded from TOC
-    text: htmlText(m[3]),
-  }))
-  const toc = [...html.matchAll(/<li class="toc-(\d)"><a href="#([^"]*)">([\s\S]*?)<\/a>/g)]
-    .map((m) => ({ depth: +m[1], id: m[2], text: htmlText(m[3]) }))
-  const previews = [...article.matchAll(/<div data-component-preview="([^"]*)"[^>]*data-status="([^"]*)"/g)]
-    .map((m) => ({ name: m[1], status: m[2] }))
-  const pres = [...article.matchAll(/<pre\b[^>]*>([\s\S]*?)<\/pre>/g)].map((m) => htmlText(m[1]))
-  const iframes = [...article.matchAll(/<iframe src="([^"]*)"/g)].map((m) => m[1])
-  const chips = [...html.matchAll(/<p class="links">([\s\S]*?)<\/p>/g)].flatMap((m) =>
-    [...m[1].matchAll(/<a href="([^"]*)" rel="noopener">([^<]*)<\/a>/g)].map((a) => ({ href: a[1], label: htmlText(a[2]) })))
-  const pnPrev = (html.match(/class="pn-prev" href="([^"]*)\.html"/) || [])[1] ?? null
-  const pnNext = (html.match(/class="pn-next" href="([^"]*)\.html"/) || [])[1] ?? null
-  // variant-tabs extraction stays ONLY as a retirement detector — the
-  // base/aria mirror is gone; the gate FAILs if any strip reappears
-  const variantTabs = [...html.matchAll(/<nav class="variant-tabs"[\s\S]*?<\/nav>/g)].map((m) => m[0])
+// The BUILT page is markdown now (tools/docs-build.mjs writes docs/components
+// and docs/guides; VitePress renders them). The facts that used to be read out
+// of our own HTML template — the TOC list, the prev/next pager, the breadcrumb —
+// are VitePress's to generate and are gone from this comparison. What remains
+// is what the CONTENT transform is responsible for.
+export function mdPageFacts(md) {
+  const front = parseFrontmatter(md)
+  const body = md.replace(/^---\n[\s\S]*?\n---\n/, "")
+  const h1 = (/^# (.+)$/m.exec(body) || [])[1] ?? ""
+  const afterH1 = body.slice(body.indexOf(`# ${h1}`) + h1.length + 3)
+  // markdown headings AND raw <hN> tags, in document order — the same two
+  // views mdxPageFacts takes of the source, because a text transform copies
+  // both through (the typography guide demonstrates heading styles with raw
+  // tags and labels them with markdown ones)
+  const shadow = fenceShadow(afterH1)
+  const noInlineCode = shadow.replace(/`[^`\n]+`/g, (m) => " ".repeat(m.length))
+  const headings = [
+    ...[...shadow.matchAll(/^(#{2,4})[ \t]+(.+)$/gm)]
+      .map((m) => ({ at: m.index, depth: m[1].length, text: stripInlineCode(mdText(m[2])) })),
+    ...[...noInlineCode.matchAll(/<h([234])\b[^>]*>([\s\S]*?)<\/h\1>/g)]
+      .map((m) => ({ at: m.index, depth: +m[1], text: htmlText(m[2]) })),
+  ].sort((a, b) => a.at - b.at).map(({ depth, text }) => ({ depth, text }))
+  const previews = [
+    ...afterH1.matchAll(/<iframe class="demo" src="([^"]*)" title="([^"]*)" data-status="([^"]*)"/g),
+  ].map((m) => ({ name: m[2], status: m[3], src: m[1] }))
+  const missing = [...afterH1.matchAll(/<div class="demo-missing" data-demo="([^"]*)" data-status="([^"]*)"/g)]
+    .map((m) => ({ name: m[1], status: m[2], src: null }))
+  const inOrder = [...afterH1.matchAll(/<iframe class="demo"[^>]*title="([^"]*)"|<div class="demo-missing" data-demo="([^"]*)"/g)]
+    .map((m) => m[1] ?? m[2])
+  const byName = new Map([...previews, ...missing].map((p) => [p.name, p]))
   return {
-    article,
-    h1: htmlText((html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/) || [])[1] ?? ""),
-    lead: htmlText((html.match(/<p class="lead">([\s\S]*?)<\/p>/) || [])[1] ?? ""),
-    headings, toc, previews, pres, iframes, chips, pnPrev, pnNext, variantTabs,
-    allHrefs: [...html.matchAll(/href="([^"]*)"/g)].map((m) => m[1]),
-    docsHrefs: [...html.matchAll(/href="(\/docs\/[^"]*)"/g)].map((m) => m[1]),
+    text: body,
+    h1: mdText(h1),
+    lead: mdText(front.description ?? ""),
+    headings,
+    previews: inOrder.map((n) => byName.get(n)),
+    fences: scanFences(afterH1),
+    chips: [...(/<p class="page-links">(.*)<\/p>/.exec(afterH1)?.[1] ?? "").matchAll(/\[([^\]]*)\]\(([^)]*)\)/g)]
+      .map((m) => ({ label: m[1], href: m[2] })),
+    iframes: previews.map((p) => p.src),
+    docsHrefs: [...fenceShadow(afterH1).matchAll(/\]\((\/docs\/[^)]*)\)/g)].map((m) => m[1]),
+    allHrefs: [...fenceShadow(afterH1).matchAll(/\]\(([^)]*)\)/g)].map((m) => m[1]),
   }
 }
 
@@ -168,38 +182,35 @@ export function comparePage(m, h, { pageName, isComponentPage, expectedManualRef
 
   // 1. h1 + lead vs frontmatter
   const wantTitle = m.frontmatter.title ?? pageName
-  if (h.h1 !== mdText(wantTitle)) issue("h1", `html="${h.h1}" mdx="${mdText(wantTitle)}"`)
-  if (h.lead !== mdText(m.frontmatter.description ?? "")) issue("lead", `html="${h.lead.slice(0, 70)}" mdx="${mdText(m.frontmatter.description ?? "").slice(0, 70)}"`)
+  if (h.h1 !== mdText(wantTitle)) issue("h1", `built="${h.h1}" mdx="${mdText(wantTitle)}"`)
+  if (h.lead !== mdText(m.frontmatter.description ?? "")) issue("lead", `built="${h.lead.slice(0, 70)}" mdx="${mdText(m.frontmatter.description ?? "").slice(0, 70)}"`)
 
   // 2. headings in order (shim headings excluded on the html side)
   const wantHeads = JSON.stringify(m.headings)
-  const gotHeads = JSON.stringify(h.headings.filter((x) => !x.shim).map((x) => ({ depth: x.depth, text: x.text })))
-  if (wantHeads !== gotHeads) issue("headings", `mdx ${wantHeads.slice(0, 140)} != html ${gotHeads.slice(0, 140)}`)
+  const gotHeads = JSON.stringify(h.headings)
+  if (wantHeads !== gotHeads) issue("headings", `mdx ${wantHeads.slice(0, 140)} != built ${gotHeads.slice(0, 140)}`)
 
-  // 3. TOC mirrors the id'd h2/h3 exactly
-  const tocable = h.headings.filter((x) => !x.shim && x.id && x.depth <= 3)
-    .map((x) => ({ depth: x.depth, id: x.id, text: x.text }))
-  if (JSON.stringify(h.toc) !== JSON.stringify(tocable))
-    issue("toc", `toc=${h.toc.length} id-headings=${tocable.length} ${h.toc.map((t) => t.id).slice(0, 6).join(",")}|${tocable.map((t) => t.id).slice(0, 6).join(",")}`)
+  // 3. (the TOC was ours to build and is VitePress's now — nothing to compare)
 
   // 4. preview names in order + known statuses (unknown is tolerable
   // nowhere now — every page comes from the radix catalog)
   const wantPrev = JSON.stringify(m.previews.map((p) => p.name))
   const gotPrev = JSON.stringify(h.previews.map((p) => p.name))
-  if (wantPrev !== gotPrev) issue("previews", `mdx ${wantPrev.slice(0, 120)} != html ${gotPrev.slice(0, 120)}`)
+  if (wantPrev !== gotPrev) issue("previews", `mdx ${wantPrev.slice(0, 120)} != built ${gotPrev.slice(0, 120)}`)
   for (const p of h.previews) {
     if (!KNOWN_STATUSES.has(p.status)) issue("preview-status", `${p.name}: status "${p.status}" not emitted by the catalog`)
     if (p.status === "unknown" && isComponentPage) issue("preview-status", `${p.name}: unknown status on a component page (radix catalog must be complete)`)
   }
 
-  // 5. every mdx fence content survives into some html <pre> (full-text,
-  //    normalized — first-line matching missed nothing but false-alarmed
-  //    on generics)
+  // 5. every mdx fence survives into a fence on the built page. Weaker than it
+  //    was against rendered HTML — a text transform copies fences through
+  //    verbatim — but it still catches a fence eaten by a span replacement
+  //    reaching past its section.
   for (const f of m.fences) {
     const want = mdText(f.content)
     if (!want) continue
-    if (!h.pres.some((p) => p === want || p.includes(want)))
-      issue("fence", `[${f.lang}] "${want.slice(0, 80)}" has no matching <pre> in the built page`)
+    if (!h.fences.some((p) => mdText(p.content).includes(want)))
+      issue("fence", `[${f.lang}] "${want.slice(0, 80)}" has no matching fence in the built page`)
   }
 
   // 6. link chips == frontmatter.links (order-insensitive, key-order-safe)
@@ -210,7 +221,7 @@ export function comparePage(m, h, { pageName, isComponentPage, expectedManualRef
     issue("chips", `mdx ${wantChips.join(" | ")} != html ${gotChips.join(" | ")}`)
 
   // 7. rewritten manual tab references the real dist demo (component pages)
-  if (expectedManualRef && !h.article.includes(expectedManualRef))
+  if (expectedManualRef && !h.text.includes(expectedManualRef))
     issue("manual-tab", `rewritten manual tab never mentions ${expectedManualRef}`)
 
   return issues

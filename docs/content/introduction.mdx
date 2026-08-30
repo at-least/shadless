@@ -43,53 +43,30 @@ Plain HTML + a slot convention is what LLMs already operate on. shadless compone
 
 ## Open questions, answered
 
-<Accordion type="single" collapsible>
-  <AccordionItem value="faq-1" className="border-none">
-    <AccordionTrigger>
-      How is this different from a CDN-loaded component library?
-    </AccordionTrigger>
-    <AccordionContent className="flex flex-col gap-4">
-      <p>
-        CDN libraries ship a fixed set of styles and behaviors. shadless ships the
-        source — you copy it into your project and edit it. The runtime (`shadless.js`)
-        is generic slot-dispatched event delegation; if you want to extend a component,
-        you edit the markup directly, not a framework wrapper.
-      </p>
-      <p>
-        The topmost layer (your markup) is open for modification; the runtime/kernel
-        are vendor-pinned.
-      </p>
-    </AccordionContent>
-  </AccordionItem>
-  <AccordionItem value="faq-2" className="border-none">
-    <AccordionTrigger>
-      Can I use this with React / Vue / Svelte / Astro?
-    </AccordionTrigger>
-    <AccordionContent className="flex flex-col gap-4">
-      <p>
-        Yes — shadless output is plain HTML and works in any framework that renders
-        HTML. In React, render the markup via <code>dangerouslySetInnerHTML</code> or
-        import the static HTML. In Astro/SSR frameworks, include the markup directly.
-      </p>
-      <p>
-        The included <code>shadless.js</code> runtime attaches DOM event listeners,
-        which works regardless of how the markup got there.
-      </p>
-    </AccordionContent>
-  </AccordionItem>
-  <AccordionItem value="faq-3" className="border-none">
-    <AccordionTrigger>
-      Where does the "no React" come from?
-    </AccordionTrigger>
-    <AccordionContent className="flex flex-col gap-4">
-      <p>
-        shadcn/ui components are React JSX. shadless converts them via an AST
-        pipeline (babel → IR → emit) that drops the JSX wrappers, inlines cva
-        branches, and rewrites event handlers to attach through vanilla DOM.
-        Contract tests replay real-browser recordings of the original React
-        components against the emitted pages, so behavior parity is proven,
-        not assumed.
-      </p>
-    </AccordionContent>
-  </AccordionItem>
-</Accordion>
+::: details How is this different from a CDN-loaded component library?
+CDN libraries ship a fixed set of styles and behaviors. shadless ships the
+source — you copy it into your project and edit it. The runtime (`shadless.js`)
+is generic slot-dispatched event delegation; if you want to extend a component,
+you edit the markup directly, not a framework wrapper.
+
+The topmost layer (your markup) is open for modification; the runtime/kernel
+are vendor-pinned.
+:::
+
+::: details Can I use this with React / Vue / Svelte / Astro?
+Yes — shadless output is plain HTML and works in any framework that renders
+HTML. In React, render the markup via `dangerouslySetInnerHTML` or import the
+static HTML. In Astro/SSR frameworks, include the markup directly.
+
+The included `shadless.js` runtime attaches DOM event listeners, which works
+regardless of how the markup got there.
+:::
+
+::: details Where does the "no React" come from?
+shadcn/ui components are React JSX. shadless converts them via an AST
+pipeline (babel → IR → emit) that drops the JSX wrappers, inlines cva
+branches, and rewrites event handlers to attach through vanilla DOM.
+Contract tests replay real-browser recordings of the original React
+components against the emitted pages, so behavior parity is proven,
+not assumed.
+:::

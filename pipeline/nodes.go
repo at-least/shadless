@@ -75,7 +75,7 @@ const (
 	NDemoSmoke          NodeID = "demo-smoke"
 	NDocsCatalog        NodeID = "docs-catalog"
 	NDocsBuild          NodeID = "docs-build"
-	NDocsLinks          NodeID = "docs-links"
+	NDocsSite           NodeID = "docs-site"
 	NDocsConsistency    NodeID = "docs-consistency"
 	NDocsFidelity       NodeID = "docs-fidelity"
 	NDocsSmoke          NodeID = "docs-smoke"
@@ -413,25 +413,27 @@ var Nodes = []Node{
 		ID: NDocsBuild, Kind: "build", Tier: "full",
 		Needs:     []NodeID{NDocsCatalog, NDemoCss},
 		Run:       [][]string{{"node", "tools/docs-build.mjs"}},
-		Inputs:    []string{"tools/docs-build.mjs", "tools/docs-guides.mjs", "tools/docs-page-lib.mjs", "tools/fixture-families.mjs", "src/docs/**", "docs/catalog.json", "docs/content/**", "docs/fonts/**", "dist/**", "docs/demos/**", "build/rtl-langs.json", "src/registry/ir/**", "src/registry/pin.json", "package.json", "package-lock.json", upstreamDocsGlob},
-		Produces:  []string{"docs/site", "docs/content-map.json"},
+		Inputs:    []string{"tools/docs-build.mjs", "tools/docs-guides.mjs", "tools/fixture-families.mjs", "src/docs/**", "docs/catalog.json", "docs/content/**", "dist/**", "docs/demos/**", "build/rtl-langs.json", "src/registry/ir/**", "src/registry/pin.json", "package.json", "package-lock.json", upstreamDocsGlob},
+		Produces:  []string{"docs/components", "docs/guides", "docs/index.md", "docs/.vitepress/sidebar.json", "docs/content-map.json", "docs/public"},
 		Why:       "mdx -> the mirrored site, with the dist demos copied in under the site skin",
 		Mutations: nil,
 	},
 	{
-		ID: NDocsLinks, Kind: "gate", Tier: "fast",
-		Needs:     []NodeID{NDocsBuild},
-		Run:       [][]string{{"node", "tools/docs-links.mjs"}},
-		Inputs:    []string{"tools/docs-links.mjs", "tools/docs-guides.mjs", "docs/site/**"},
-		Produces:  nil,
-		Why:       "no dangling internal link across the built pages",
-		Mutations: []string{"docs-dangling-link"},
+		ID: NDocsSite, Kind: "build", Tier: "full",
+		Needs: []NodeID{NDocsBuild},
+		Run:   [][]string{{"npx", "vitepress", "build", "docs"}},
+		// The site generator. It also FAILS on a dead internal link, which is
+		// what tools/docs-links.mjs asserted over our own HTML template —
+		// deleted with the template.
+		Inputs:   []string{"docs/components/**", "docs/guides/**", "docs/index.md", "docs/.vitepress/config.mts", "docs/.vitepress/theme/**", "docs/.vitepress/sidebar.json", "docs/public/**", "package.json", "package-lock.json"},
+		Produces: []string{"docs/.vitepress/dist"},
+		Why:      "the markdown becomes a site, and a link to a page this mirror does not carry stops the build",
 	},
 	{
 		ID: NDocsConsistency, Kind: "gate", Tier: "fast",
 		Needs:     []NodeID{NDocsBuild},
 		Run:       [][]string{{"node", "tools/docs-consistency.mjs"}},
-		Inputs:    []string{"tools/docs-consistency.mjs", "src/emitter/skin.mjs", "docs/site/**", "dist/components/**", "dist/css/**", "docs/demos/**", "package.json"},
+		Inputs:    []string{"tools/docs-consistency.mjs", "src/emitter/skin.mjs", "docs/components/**", "docs/guides/**", "dist/components/**", "dist/css/**", "docs/demos/**", "package.json"},
 		Produces:  nil,
 		Why:       "no shipped page carries skin residue, every taught @import resolves to a file, and no page teaches React imports",
 		Mutations: []string{"docs-consistency-react-import"},
@@ -440,16 +442,16 @@ var Nodes = []Node{
 		ID: NDocsFidelity, Kind: "gate", Tier: "fast",
 		Needs:     []NodeID{NDocsBuild},
 		Run:       [][]string{{"node", "tools/docs-fidelity.mjs"}},
-		Inputs:    []string{"tools/docs-fidelity.mjs", "tools/docs-fidelity-lib.mjs", "tools/docs-guides.mjs", "src/docs/transforms.mjs", "docs/site/**", "docs/content-map.json", "docs/content/**", "src/registry/pin.json", upstreamDocsGlob},
+		Inputs:    []string{"tools/docs-fidelity.mjs", "tools/docs-fidelity-lib.mjs", "tools/docs-guides.mjs", "src/docs/transforms.mjs", "docs/components/**", "docs/guides/**", "docs/public/demos/**", "docs/content-map.json", "docs/content/**", "src/registry/pin.json", upstreamDocsGlob},
 		Produces:  nil,
 		Why:       "every built page matches its mdx source (headings/TOC/previews/fences) — catches silent content loss that render and console checks cannot see",
 		Mutations: []string{"docs-fidelity-drop-heading"},
 	},
 	{
 		ID: NDocsSmoke, Kind: "gate", Tier: "full",
-		Needs:     []NodeID{NDocsBuild},
+		Needs:     []NodeID{NDocsSite},
 		Run:       [][]string{{"node", "tools/docs-smoke.mjs", "--all"}},
-		Inputs:    []string{"tools/docs-smoke.mjs", "tools/docs-guides.mjs", "docs/site/**"},
+		Inputs:    []string{"tools/docs-smoke.mjs", "tools/docs-guides.mjs", "docs/.vitepress/dist/**"},
 		Produces:  nil,
 		Why:       "every page and every iframe loads with zero console/page errors",
 		Mutations: []string{"docs-smoke-broken-iframe"},
@@ -458,7 +460,7 @@ var Nodes = []Node{
 		ID: NInteractivitySweep, Kind: "gate", Tier: "full",
 		Needs:     []NodeID{NDocsBuild},
 		Run:       [][]string{{"node", "tools/interactivity-sweep.mjs"}},
-		Inputs:    []string{"tools/interactivity-sweep.mjs", "docs/site/**", "src/registry/tiers.json", "gates/ledger.json"},
+		Inputs:    []string{"tools/interactivity-sweep.mjs", "docs/public/demos/**", "src/registry/tiers.json", "gates/ledger.json"},
 		Produces:  nil,
 		Why:       "every page that OFFERS an interaction must RESPOND — contracts click fixtures, golden compares snapshots, smoke listens to the console; the dead-button bug lived in exactly that responsibility gap",
 		Mutations: []string{"interactivity-strip-script"},

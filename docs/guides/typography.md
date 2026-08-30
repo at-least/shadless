@@ -1,0 +1,119 @@
+---
+title: "Typography"
+description: "How to style text with the Tailwind utilities shadless ships — no Typography component needed."
+---
+
+# Typography
+
+How to style text with the Tailwind utilities shadless ships — no Typography component needed.
+
+shadless does not ship a `<Typography>` component. The same typographic roles
+that shadcn-ui's `Typography` wrapper produces are plain Tailwind utilities in
+`dist/out.css` — apply them directly to your HTML.
+
+## Why no component?
+
+`<Typography>` in shadcn-ui is a thin wrapper that maps a single `variant` prop
+to a className. In shadless's vanilla stack, the wrapper is just noise — write
+the classes directly. The mapping below mirrors shadcn's default scale.
+
+## Reference
+
+| Role | Classes | HTML |
+| --- | --- | --- |
+| `h1` | `scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl` | `<h1>` |
+| `h2` | `scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0` | `<h2>` |
+| `h3` | `scroll-m-20 text-2xl font-semibold tracking-tight` | `<h3>` |
+| `h4` | `scroll-m-20 text-xl font-semibold tracking-tight` | `<h4>` |
+| `p` | `leading-7 [&:not(:first-child)]:mt-6` | `<p>` |
+| `lead` | `text-xl text-muted-foreground` | `<p>` |
+| `large` | `text-lg font-semibold` | `<div>` |
+| `small` | `text-sm font-medium leading-none` | `<small>` |
+| `muted` | `text-sm text-muted-foreground` | `<p>` |
+| `blockquote` | `mt-6 border-l-2 pl-6 italic` | `<blockquote>` |
+| `inline-code` | `relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm` | `<code>` (inline) |
+| `list` | `my-6 ml-6 list-disc [&>li]:mt-2` | `<ul>` / `<ol>` |
+| `table` | `my-6 w-full overflow-y-auto` (wrapping div) + `<table class="w-full">` | `<table>` |
+
+## Examples
+
+### h1
+
+<h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Taxing Laughter: The Joke Tax Chronicles</h1>
+
+### h2
+
+<h2 class="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">The People of the Kingdom</h2>
+
+### h3
+
+<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">The Joke Tax</h3>
+
+### h4
+
+<h4 class="scroll-m-20 text-xl font-semibold tracking-tight">People stopped telling jokes</h4>
+
+### p
+
+<p class="leading-7 [&:not(:first-child)]:mt-6">The king, seeing how much happier his subjects were, realized the error of his ways and repealed the joke tax.</p>
+
+### blockquote
+
+<blockquote class="mt-6 border-l-2 pl-6 italic">"After all," he said, "everyone enjoys a good joke, so it's only fair that they should pay for the privilege."</blockquote>
+
+### list
+
+<ul class="my-6 ml-6 list-disc [&>li]:mt-2">
+  <li>1st level of puns: 5 gold coins</li>
+  <li>2nd level of jokes: 10 gold coins</li>
+  <li>3rd level of one-liners: 20 gold coins</li>
+</ul>
+
+### lead
+
+<p class="text-xl text-muted-foreground">A modal dialog that interrupts the user with important content and expects a response.</p>
+
+### large
+
+<div class="text-lg font-semibold">Are you absolutely sure?</div>
+
+### small
+
+<small class="text-sm font-medium leading-none">Email address</small>
+
+### muted
+
+<p class="text-sm text-muted-foreground">Enter your email address.</p>
+
+### inline code
+
+Use the <code class="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">data-slot</code> attribute to mark component slots.
+
+### table
+
+<div class="my-6 w-full overflow-y-auto">
+<table class="w-full">
+  <thead>
+    <tr class="m-0 border-t p-0 even:bg-muted">
+      <th class="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">Prop</th>
+      <th class="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">Type</th>
+      <th class="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="m-0 border-t p-0 even:bg-muted">
+      <td class="border px-4 py-2 text-left">[align]</td>
+      <td class="border px-4 py-2 text-left">"center" | "left" | "right"</td>
+      <td class="border px-4 py-2 text-left">—</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+## Note on the utility set
+
+A few shadcn-Typography classes (e.g. `font-extrabold`, `tracking-tight`, the
+`[&[align=…]]` arbitrary variants, `first:mt-0`) are auto-included by Tailwind
+v4 when they're referenced in HTML shadless ships — no `tailwind.config` edit
+needed. If you write your own custom classes that aren't shown above, you'll
+need to ensure Tailwind picks them up at compile time.

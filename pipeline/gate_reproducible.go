@@ -27,6 +27,8 @@ import (
 // committed, so there is no committed tree to compare it against.
 var generatedRoots = []string{
 	"dist", "docs/catalog.json", "docs/demos", "docs/example-oracle.json",
+	"docs/components", "docs/guides", "docs/index.md", "docs/content-map.json",
+	"docs/.vitepress/sidebar.json",
 	"src/registry/ir", "src/kernel/*.html",
 }
 

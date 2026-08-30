@@ -1,5 +1,5 @@
-// FT3 docs smoke: serve docs/site/ over http (python3 http.server on an
-// ephemeral port — one tree, killed on exit) and drive playwright with the
+// docs smoke: serve the built VitePress site over http (python3 http.server on
+// an ephemeral port — one tree, killed on exit) and drive playwright with the
 // REAL mouse (lesson 2: synthetic PointerEvents are rejected by radix-like
 // filters; take click points off centered content).
 //   1. dialog.html: primary preview (dialog-demo) opens via a real-mouse
@@ -9,9 +9,7 @@
 //      closes via Escape with focus inside the frame; portal nodes removed.
 //   2. avatar.html: preview page loads over http with 0 console/page
 //      errors (FT3 avatar data-URI fix), images settled.
-//   3. dialog.html source tab: HTML tab shows the REAL demo file content
-//      (contains data-slot="dialog-trigger"), not a placeholder.
-// FT5 --all (npm run docs:verify): additionally visit EVERY built page —
+// --all: additionally visit EVERY built page —
 // render (non-empty article), no raw mdx leaking (ComponentPreview/
 // ComponentSource text outside pre/code), 0 console errors + 0 pageerrors.
 // Lazy preview iframes are scrolled into view so demo-page errors count
@@ -26,13 +24,17 @@ import { chromium } from 'playwright'
 import { GUIDES } from './docs-guides.mjs'
 
 const ALL = process.argv.includes('--all')
+// VitePress's output. cleanUrls is on, so a page's file keeps the .html
+// suffix even though the site links it without one.
+const SITE_DIR = 'docs/.vitepress/dist'
+const pageUrl = (rel) => `${base}/${rel}`
 
 // ---- ephemeral-port static server (python3 http.server) ------------------------
 const freePort = await new Promise((res) => {
   const s = createServer()
   s.listen(0, '127.0.0.1', () => { const p = s.address().port; s.close(() => res(p)) })
 })
-const server = spawn('python3', ['-m', 'http.server', String(freePort), '--bind', '127.0.0.1', '--directory', 'docs/site'], { stdio: 'ignore' })
+const server = spawn('python3', ['-m', 'http.server', String(freePort), '--bind', '127.0.0.1', '--directory', SITE_DIR], { stdio: 'ignore' })
 const shutdown = () => { try { server.kill('SIGTERM') } catch {} }
 process.on('exit', shutdown)
 process.on('SIGINT', () => { shutdown(); process.exit(130) })
@@ -57,13 +59,12 @@ const check = (label, ok, detail = '') => {
 
 // ---- 1. dialog preview: real-mouse open + Escape close inside the iframe -------
 const page = await browser.newPage()
-await page.goto(`${base}/dialog.html`)
+await page.goto(pageUrl('components/dialog.html'))
 // let every lazy iframe on the page settle first — recomputing the trigger
 // box mid-layout-shift made the real-mouse click land outside the trigger
 // (flake appeared once authored demos went live: 6 iframes per page)
 await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {})
-const dialogPreview = page.locator('[data-component-preview="dialog-demo"]')
-const frame = dialogPreview.locator('iframe[data-preview-frame]').contentFrame()
+const frame = page.locator('iframe.demo[title="dialog-demo"]').contentFrame()
 
 const trigger = frame.locator('[data-slot="dialog-trigger"]')
 await trigger.waitFor()
@@ -102,43 +103,27 @@ avPage.on('pageerror', (e) => avErrors.push(String(e)))
 // external (fonts/CDN) network failures are out of scope — same policy as
 // the --all sweep below; only same-origin failures count
 avPage.on('requestfailed', (r) => { if (r.url().startsWith(base)) avErrors.push(`requestfailed: ${r.url()} ${r.failure()?.errorText || ''}`) })
-await avPage.goto(`${base}/avatar.html`)
-const avFrame = avPage.locator('[data-component-preview="avatar-demo"] iframe[data-preview-frame]').contentFrame()
+await avPage.goto(pageUrl('components/avatar.html'))
+const avFrame = avPage.locator('iframe.demo[title="avatar-demo"]').contentFrame()
 await avFrame.locator('[data-slot="avatar"]').first().waitFor()
 const avBox = await avFrame.locator('[data-slot="avatar"]').first().boundingBox()
 await avPage.mouse.click(avBox.x + 2, avBox.y + 2) // click into the demo, then let it settle
 const avImages = await avFrame.locator('[data-slot="avatar-image"]').elementHandles()
-const settled = await Promise.all(avImages.map((h) => h.evaluate((i) => i.complete && i.naturalWidth > 0)))
+// the avatar demo's images are remote (github.com/<user>.png) — poll until they
+// settle rather than reading naturalWidth the instant the frame appears
+let settled = []
+for (let i = 0; i < 40; i++) {
+  settled = await Promise.all(avImages.map((h) => h.evaluate((img) => img.complete && img.naturalWidth > 0)))
+  if (settled.every(Boolean)) break
+  await avPage.waitForTimeout(250)
+}
 check(`avatar: preview over http reports 0 console errors (images=${avImages.length} settled=${settled})`,
   avErrors.length === 0 && avImages.length > 0 && settled.every(Boolean), JSON.stringify(avErrors))
 
-// ---- 3. dialog source: collapsed veil + View Code reveal (upstream style) ---
-// Source code sits below the preview inside .preview-source, capped to a
-// sliver behind a gradient veil with a centered "View Code" button
-// (upstream ComponentPreview). Assert: starts collapsed, the CTA is
-// visible, clicking reveals the full body (veil hidden), and the content
-// is the real demo file.
-const sourceRoot = page.locator('[data-component-preview="dialog-demo"] .preview-source')
-const htmlSource = page.locator('[data-component-preview="dialog-demo"] .source-block:has(.source-label:text-is("HTML")) .preview-code')
-const src = await htmlSource.textContent()
-const initiallyCollapsed = await sourceRoot.evaluate((n) => n.getAttribute('data-open') !== 'true')
-check('dialog: source starts collapsed (no data-open)',
-  initiallyCollapsed, 'preview-source must not start revealed')
-const ctaVisible = await page.locator('[data-component-preview="dialog-demo"] button[data-view-code]').isVisible()
-check('dialog: View Code button visible while collapsed', ctaVisible, 'veil CTA not visible')
-await page.locator('[data-component-preview="dialog-demo"] button[data-view-code]').click()
-const revealed = await sourceRoot.evaluate((n) => n.getAttribute('data-open') === 'true')
-const veilHidden = !(await page.locator('[data-component-preview="dialog-demo"] .source-veil').isVisible())
-check('dialog: View Code click reveals source (veil hidden)',
-  revealed && veilHidden, `data-open=${revealed} veilHidden=${veilHidden}`)
-check('dialog: source block shows real demo file (contains data-slot="dialog-trigger")',
-  src.includes('data-slot="dialog-trigger"') && src.includes('d1-trigger'),
-  `len=${src.length} hasTrigger=${src.includes('data-slot="dialog-trigger"')}`)
-
-// ---- 4. dialog page preview wiring counts ---------------------------------------
-const previews = await page.locator('[data-component-preview]').count()
-const iframes = await page.locator('[data-component-preview] iframe[data-preview-frame]').count()
-const unavailable = await page.locator('[data-component-preview][data-status="to-author"]').count()
+// ---- 3. dialog page preview wiring counts ---------------------------------------
+const iframes = await page.locator('iframe.demo').count()
+const unavailable = await page.locator('.demo-missing').count()
+const previews = iframes + unavailable
 console.log(`dialog page wiring: previews=${previews} iframes=${iframes} unavailable-notes=${unavailable}`)
 // FT7 batches convert to-author notes into iframes; the invariant is every
 // preview resolves to exactly one of the two (no orphans, no double) and at
@@ -147,10 +132,14 @@ check('dialog page wiring: every preview is an iframe or an unavailable note',
   previews > 0 && iframes + unavailable === previews && iframes >= 1,
   `previews=${previews} iframes=${iframes} unavailable=${unavailable}`)
 
-// ---- 5. FT5 --all: every-page sweep (render + mdx leak + 0 console errors) -------
+// ---- 4. --all: every-page sweep (render + mdx leak + 0 console errors) -------
 if (ALL) {
-  const guideSlugs = new Set(GUIDES.map((g) => `${g.slug}.html`))
-  const pageFiles = readdirSync('docs/site').filter((f) => f.endsWith('.html')).sort()
+  const guideSlugs = new Set(GUIDES.map((g) => `guides/${g.slug}.html`))
+  const pageFiles = [
+    'index.html',
+    ...readdirSync(`${SITE_DIR}/components`).filter((f) => f.endsWith('.html')).map((f) => `components/${f}`),
+    ...readdirSync(`${SITE_DIR}/guides`).filter((f) => f.endsWith('.html')).map((f) => `guides/${f}`),
+  ].sort()
   let renderFail = 0, leakFail = 0, consoleErrCount = 0, pageErrCount = 0, iframesLoaded = 0
   let nComponents = 0, nGuides = 0, nIndex = 0
   for (const f of pageFiles) {
@@ -163,13 +152,13 @@ if (ALL) {
     p.on('requestfailed', (r) => { if (r.url().startsWith(base)) consoleErrs.push(`requestfailed: ${r.url()} ${r.failure()?.errorText || ''}`) })
     await p.goto(`${base}/${f}`, { waitUntil: 'load' })
     // force lazy preview iframes to load so demo-page errors are counted
-    for (const fr of await p.locator('iframe[data-preview-frame]').all()) {
+    for (const fr of await p.locator('iframe.demo').all()) {
       await fr.scrollIntoViewIfNeeded().catch(() => {})
       iframesLoaded++
     }
     try { await p.waitForLoadState('networkidle', { timeout: 2000 }) } catch { /* static site: settle best-effort */ }
     const res = await p.evaluate(() => {
-      const article = document.querySelector('article')
+      const article = document.querySelector('.vp-doc')
       const text = article?.innerText?.trim() ?? ''
       // raw mdx leak = ComponentPreview/ComponentSource as visible text
       // OUTSIDE pre/code (fenced/inline code legitimately mentions them)
@@ -204,4 +193,4 @@ if (failures.length) {
   process.exit(1)
 }
 if (ALL) console.log(`PASS  docs verify (${verifyN} pages, 0 console errors)`)
-else console.log('PASS  docs smoke (dialog iframe open/close, avatar 0 errors, real source tab)')
+else console.log('PASS  docs smoke (dialog iframe open/close, avatar 0 errors, preview wiring)')

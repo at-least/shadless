@@ -124,14 +124,14 @@ ir-diff: $(PIPELINE)
 	./$(PIPELINE) ir-diff $(REF)
 
 serve:
-	@echo "serving docs/site/ on http://localhost:$(PORT) (Ctrl-C to stop)"
-	cd docs/site && $(PYTHON) -m http.server $(PORT)
+	@echo "serving the built docs on http://localhost:$(PORT) (Ctrl-C to stop)"
+	npx vitepress preview docs --port $(PORT)
 
 clean:
 	rm -rf dist build node_modules/.cache/shadless
 	rm -rf docs/catalog.json
-	rm -rf docs/site
-	@echo "cleaned: dist/ + build/ + docs/site/ generated artifacts"
+	rm -rf docs/site docs/public docs/.vitepress/dist docs/.vitepress/cache
+	@echo "cleaned: dist/ + build/ + the docs site and its served tree"
 
 help:
 	@sed -n '2,16p' Makefile | sed 's/^# \{0,1\}//'

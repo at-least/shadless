@@ -5,7 +5,7 @@
 // because contracts click FIXTURES, golden compares SNAPSHOTS, and smoke
 // only listens to the console — "does the page respond" was nobody's job.
 //
-// Method: pages under docs/site/components (the tree iframes serve) are
+// Method: pages under docs/public/demos (the tree the pages iframe) are
 // pre-filtered statically for interactive candidates (triggers, switches,
 // tabs, carousel arrows). Each candidate page is loaded, the first
 // candidate is clicked (hovered for hover-driven families), and a state
@@ -22,7 +22,7 @@ import { chromium } from "playwright"
 import { readFileSync, readdirSync } from "node:fs"
 import { resolve } from "node:path"
 
-const SITE = "docs/site/components"
+const SITE = "docs/public/demos"
 const STATIC_FAMILIES = Object.entries(JSON.parse(readFileSync("src/registry/tiers.json", "utf8"))).filter(([, t]) => t.tier === "static").map(([c]) => c)
 const CANDIDATE = /data-slot="[^"]*-trigger"|aria-expanded=|role="(switch|checkbox|tab)"|data-slot="(carousel-next|carousel-prev)"/
 const HOVER_FAMILIES = new Set(["tooltip", "hover-card"])

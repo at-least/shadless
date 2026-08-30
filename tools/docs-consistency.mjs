@@ -22,14 +22,17 @@
 import { readFileSync, existsSync, readdirSync } from "node:fs"
 import { join } from "node:path"
 
-const SITE = "docs/site"
+// the built pages are markdown now (VitePress renders them); the two checks
+// below read what the pages TEACH, which is the same text either way
+const PAGE_DIRS = ["docs/components", "docs/guides"]
 const problems = []
 const problem = (kind, file, detail) => problems.push({ kind, file, detail })
 
-if (!existsSync(SITE)) {
-  console.error("FAIL  docs-consistency: docs/site/ not found — run the docs chain first (make docs / npm run docs)")
+if (!PAGE_DIRS.every(existsSync)) {
+  console.error("FAIL  docs-consistency: the markdown pages are not built — run the docs chain first (make docs)")
   process.exit(1)
 }
+const sitePages = PAGE_DIRS.flatMap((d) => readdirSync(d).filter((f) => f.endsWith(".md")).map((f) => join(d, f)))
 
 // ---- 1. skin residue: shipped HTML must carry zero non-allowlist cn-* ---------
 // Source-resolve (tools/resolve-skins.mjs) expands cn-* at the source;
@@ -57,7 +60,6 @@ let skinScanned = 0
 // through the package's exports semantics (".": core, "./*": dist/css/*,
 // exact keys). Born from: aspect-ratio/collapsible/scroll-fade/shimmer have
 // no dist/css file, yet their install steps told users to import one.
-const sitePages = readdirSync(SITE).filter((x) => x.endsWith(".html"))
 let importsChecked = 0
 {
   const pkg = JSON.parse(readFileSync("package.json", "utf8"))
@@ -72,10 +74,10 @@ let importsChecked = 0
   }
   const seen = new Set()
   for (const f of sitePages) {
-    const html = readFileSync(join(SITE, f), "utf8")
-    // the pages carry HTML-ENTITY quotes inside the highlighted fences —
-    // match both raw and &quot; forms (a plain-quote-only regex matched
-    // nothing and passed vacuously; caught by the negative test)
+    const html = readFileSync(f, "utf8")
+    // markdown fences carry plain quotes; the entity form is kept because the
+    // check outlived one rendering pipeline already and a plain-quote-only
+    // regex once passed vacuously against entity-escaped pages
     for (const spec of [...new Set(html.match(/@import\s+(?:"|&quot;)shadless[^"&]*/g) ?? [])]) {
       const key = spec.replace(/@import\s+|"|&quot;/g, "")
       if (seen.has(key)) continue
@@ -94,7 +96,7 @@ let importsChecked = 0
 // upstream mdx shape the predicate misses lands here, loudly.
 {
   for (const f of sitePages) {
-    if (readFileSync(join(SITE, f), "utf8").includes("@/components/ui"))
+    if (readFileSync(f, "utf8").includes("@/components/ui"))
       problem("react-import", f, "built page still teaches a React import")
   }
 }

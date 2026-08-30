@@ -1,0 +1,51 @@
+/* The only site CSS this repo owns.
+ *
+ * Everything else — layout, sidebar, TOC, code blocks, dark mode — is
+ * VitePress's default theme. What is left is the three shapes the content
+ * transform emits that VitePress has no opinion about: the demo iframe, the
+ * placeholder for a demo shadless does not carry, and the greyed framework
+ * cards in the RTL guide.
+ */
+
+/* An iframe has no intrinsic height, so this is not optional styling: without
+ * it every demo renders in the browser's default 150px box and is cut off. */
+iframe.demo {
+  display: block;
+  width: 100%;
+  height: 22rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  background: var(--vp-c-bg);
+  margin: 16px 0;
+}
+
+.demo-langs {
+  margin-top: -8px;
+  font-size: 13px;
+  color: var(--vp-c-text-2);
+}
+
+.demo-missing {
+  border: 1px dashed var(--vp-c-divider);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+  color: var(--vp-c-text-2);
+  font-size: 14px;
+}
+
+/* Components with no shadless implementation: listed, never linked. */
+.unavailable {
+  color: var(--vp-c-text-3);
+  font-size: 13px;
+}
+
+/* RTL guide: upstream's per-framework setup cards. The pages they link are
+ * pruned here (shadless has no framework setup step), so they keep their
+ * contents and lose the link. */
+.linked-card {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  padding: 16px;
+  color: var(--vp-c-text-2);
+}

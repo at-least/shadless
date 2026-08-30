@@ -270,41 +270,34 @@ var Mutations = []Mutation{
 	{
 		ID: "docs-consistency-react-import", Gate: "docs-consistency",
 		Why:   "a built page teaches `@/components/ui` again after an upstream mdx reshape",
-		Files: []string{"docs/site/accordion.html"},
+		Files: []string{"docs/components/accordion.md"},
 		// bc755b5: a no-React product must not teach React imports. The
 		// detector exists so a NEW upstream mdx shape lands loudly.
 		Apply: func(root string, f []string) error {
-			return mutReplaceOnce(root, f[0], "</body>",
-				`<pre><code>import { Accordion } from "@/components/ui/accordion"</code></pre></body>`)
-		},
-	},
-	{
-		ID: "docs-dangling-link", Gate: "docs-links",
-		Why:   "a built page links to a route that does not exist",
-		Files: []string{"docs/site/accordion.html"},
-		Apply: func(root string, f []string) error {
-			return mutReplaceOnce(root, f[0], "</body>",
-				`<a href="./this-page-does-not-exist.html">mutation</a></body>`)
+			return mutReplaceOnce(root, f[0], "## Installation",
+				"```tsx\nimport { Accordion } from \"@/components/ui/accordion\"\n```\n\n## Installation")
 		},
 	},
 	{
 		ID: "docs-fidelity-drop-heading", Gate: "docs-fidelity",
 		Why:   "a built page silently loses a heading its mdx source has",
-		Files: []string{"docs/site/accordion.html"},
+		Files: []string{"docs/components/accordion.md"},
 		// One missing newline in a transform once glued a heading into the
 		// previous paragraph and silently removed it from 51 pages. Render
 		// and console checks cannot see content loss; only the mdx compare can.
 		Apply: func(root string, f []string) error {
-			return mutReplaceOnce(root, f[0], `<h2 id="installation">`, `<h2 id="installation-mutated">`)
+			return mutReplaceOnce(root, f[0], "## Installation", "## Installation-mutated")
 		},
 	},
 	{
 		ID: "docs-smoke-broken-iframe", Gate: "docs-smoke",
 		Why:   "a preview iframe points at a page that does not exist",
-		Files: []string{"docs/site/accordion.html"},
+		// the BUILT page: docs-smoke drives the rendered site, and rebuilding
+		// it is not part of running the gate
+		Files: []string{"docs/.vitepress/dist/components/accordion.html"},
 		Apply: func(root string, f []string) error {
 			return mutReplaceOnce(root, f[0],
-				`src="components/accordion-demo.html"`, `src="components/mutation-missing.html"`)
+				`src="/demos/accordion-demo.html"`, `src="/demos/mutation-missing.html"`)
 		},
 	},
 	{
@@ -384,7 +377,7 @@ var Mutations = []Mutation{
 	{
 		ID: "interactivity-strip-script", Gate: "interactivity-sweep",
 		Why:   "an interactive example ships without its behavior — a dead button",
-		Files: []string{"docs/site/components/dialog.html"},
+		Files: []string{"docs/public/demos/dialog.html"},
 		// f4759ef: contracts click FIXTURES, golden compares SNAPSHOTS, smoke
 		// listens to the CONSOLE — the dead-button bug lived in the gap where
 		// nobody asked whether the shipped page RESPONDS.

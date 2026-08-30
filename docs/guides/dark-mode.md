@@ -1,0 +1,70 @@
+---
+title: "Dark Mode"
+description: "Dark mode with the .dark class and CSS variables — no framework."
+---
+
+# Dark Mode
+
+Dark mode with the .dark class and CSS variables — no framework.
+
+shadless ships dark mode as CSS: `dist/out.css` defines every theme token as
+a CSS variable on `:root`, with a `.dark` override block. Dark mode is a
+class toggle — no provider, no framework.
+
+<iframe class="demo" src="/demos/mode-toggle.html" title="mode-toggle" data-status="authored" loading="lazy"></iframe>
+<p class="demo-langs">Open the demo page</p>
+
+## How it works
+
+```css
+/* inside dist/out.css */
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  /* … */
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  /* … */
+}
+```
+
+Every component consumes the variables through utility classes
+(`bg-background`, `text-foreground`, …), so flipping the class re-themes the
+whole page.
+
+## Toggle without a framework
+
+Apply `.dark` to `<html>` and persist the choice:
+
+```html
+<script>
+  const stored = localStorage.getItem("theme")
+  const dark = stored ? stored === "dark"
+    : matchMedia("(prefers-color-scheme: dark)").matches
+  document.documentElement.classList.toggle("dark", dark)
+</script>
+```
+
+```js
+// a toggle button — shadless components work as the trigger
+document.querySelector("#theme-toggle").addEventListener("click", () => {
+  const dark = document.documentElement.classList.toggle("dark")
+  localStorage.setItem("theme", dark ? "dark" : "light")
+})
+```
+
+Put the inline script in `<head>` (before paint) to avoid a flash of the
+wrong theme.
+
+## System preference
+
+Follow the OS setting instead of persisting a choice:
+
+```js
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+  document.documentElement.classList.toggle("dark", e.matches)
+})
+```

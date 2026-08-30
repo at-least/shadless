@@ -5,257 +5,541 @@
     "accordion": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/accordion.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "alert": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/alert.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "alert-dialog": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/alert-dialog.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "aspect-ratio": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/aspect-ratio.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "installation",
+        "usage"
+      ]
     },
     "attachment": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/attachment.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "avatar": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/avatar.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "badge": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/badge.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "installation",
+        "usage"
+      ]
     },
     "breadcrumb": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/breadcrumb.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "bubble": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/bubble.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "button": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/button.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "installation",
+        "usage"
+      ]
     },
     "button-group": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/button-group.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "card": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/card.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "carousel": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/carousel.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "checkbox": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/checkbox.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "installation",
+        "usage"
+      ]
     },
     "collapsible": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/collapsible.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "context-menu": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/context-menu.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "dialog": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/dialog.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "direction": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/direction.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "installation",
+        "usage"
+      ]
     },
     "dropdown-menu": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/dropdown-menu.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "empty": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/empty.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "field": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/field.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "hover-card": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/hover-card.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "input": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/input.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "installation",
+        "usage"
+      ]
     },
     "input-group": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/input-group.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "item": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/item.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "kbd": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/kbd.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "label": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/label.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "installation",
+        "usage"
+      ]
     },
     "marker": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/marker.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "menubar": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/menubar.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "message": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/message.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "message-scroller": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/message-scroller.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "native-select": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/native-select.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "navigation-menu": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/navigation-menu.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "pagination": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/pagination.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "popover": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/popover.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "progress": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/progress.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "installation",
+        "usage"
+      ]
     },
     "radio-group": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/radio-group.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "scroll-area": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/scroll-area.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "select": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/select.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "separator": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/separator.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "installation",
+        "usage"
+      ]
     },
     "sheet": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/sheet.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "skeleton": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/skeleton.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "installation",
+        "usage"
+      ]
     },
     "slider": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/slider.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "installation",
+        "usage"
+      ]
     },
     "spinner": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/spinner.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "installation",
+        "usage"
+      ]
     },
     "switch": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/switch.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "installation",
+        "usage"
+      ]
     },
     "table": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/table.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "tabs": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/tabs.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "textarea": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/textarea.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "installation",
+        "usage"
+      ]
     },
     "toggle": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/toggle.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "installation",
+        "usage"
+      ]
     },
     "toggle-group": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/toggle-group.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "tooltip": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/tooltip.mdx",
       "disposition": "adapted",
-      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)"
+      "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
+      "sections": [
+        "api-reference",
+        "composition",
+        "installation",
+        "usage"
+      ]
     },
     "introduction": {
       "source": "docs/content/introduction.mdx",
