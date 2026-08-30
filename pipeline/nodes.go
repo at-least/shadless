@@ -23,8 +23,7 @@
 //	          preference: the runner topo-sorts and, for a targeted run,
 //	          builds exactly the transitive closure and nothing else.
 //	Run       argv arrays, executed in order
-//	Tier      "fast" (~seconds, no browser) | "medium" (compiles, no browser)
-//	          | "full" (playwright)
+//	Tier      "fast" (~seconds, no browser) | "full" (everything else)
 //	Inputs    globs of everything the node READS (its own script, the modules
 //	          it imports, the data it opens). Outputs of Needs are implied —
 //	          the runner folds a dependency's key into its dependents'. This
@@ -153,7 +152,7 @@ var Nodes = []Node{
 		Mutations: []string{"overlay-stale-authored", "overlay-orphaned-rule"},
 	},
 	{
-		ID: NConvert, Kind: "build", Tier: "medium",
+		ID: NConvert, Kind: "build", Tier: "full",
 		Needs:     []NodeID{NPin},
 		Run:       [][]string{{"node", "tools/resolve-skins.mjs"}, {"node", "src/converter/index.mjs"}},
 		Inputs:    []string{"tools/resolve-skins.mjs", "src/converter/**", "src/tags.mjs", "src/emitter/skin.mjs", "src/registry/tiers.json", "src/registry/pin.json", "src/kernel/**", ".upstream/shadcn-ui/apps/v4/registry/bases/radix/**", ".upstream/shadcn-ui/apps/v4/registry/styles/style-nova.css"},
@@ -162,7 +161,7 @@ var Nodes = []Node{
 		Mutations: nil,
 	},
 	{
-		ID: NEmit, Kind: "build", Tier: "medium",
+		ID: NEmit, Kind: "build", Tier: "full",
 		Needs:    []NodeID{NConvert},
 		Run:      [][]string{{"node", "src/emitter/index.mjs"}},
 		Inputs:   []string{"src/emitter/**", "src/tags.mjs", "src/docs/theme-prepaint.mjs", "src/registry/tiers.json", "src/registry/pin.json", "probes/h4/globals.css", "package.json", "pipeline/tw.go", "pipeline/main.go"},
@@ -191,7 +190,7 @@ var Nodes = []Node{
 		Mutations: nil,
 	},
 	{
-		ID: NDemoBuild, Kind: "build", Tier: "medium",
+		ID: NDemoBuild, Kind: "build", Tier: "full",
 		Needs:     []NodeID{NEmit},
 		Run:       [][]string{{"node", "tools/build-demo.mjs"}},
 		Inputs:    []string{"tools/build-demo.mjs", "src/docs/theme-prepaint.mjs"},
@@ -218,7 +217,7 @@ var Nodes = []Node{
 		Mutations: nil,
 	},
 	{
-		ID: NDemoRtl, Kind: "build", Tier: "medium",
+		ID: NDemoRtl, Kind: "build", Tier: "full",
 		Needs:     []NodeID{NExampleOracle},
 		Run:       [][]string{{"node", "tools/build-rtl.mjs"}},
 		Inputs:    []string{"tools/build-rtl.mjs", "tools/rtl-lib.mjs", "src/docs/theme-prepaint.mjs", "src/registry/pin.json"},
@@ -227,7 +226,7 @@ var Nodes = []Node{
 		Mutations: nil,
 	},
 	{
-		ID: NDemo, Kind: "build", Tier: "medium",
+		ID: NDemo, Kind: "build", Tier: "full",
 		Needs:     []NodeID{NDemoRtl, NExampleFixture, NContractFixture, NBuildJs},
 		Run:       [][]string{{"node", "tools/demo.mjs"}},
 		Inputs:    []string{"tools/demo.mjs", "tools/demo-lib.mjs", "tools/build-js.mjs", "src/emitter/css.mjs", "src/docs/theme-prepaint.mjs", "src/registry/tiers.json", "src/registry/ir/**", "src/kernel/**", "probes/h4/globals.css", "probes/t7/**", "probes/t8/**"},
@@ -236,7 +235,7 @@ var Nodes = []Node{
 		Mutations: nil,
 	},
 	{
-		ID: NProductCss, Kind: "build", Tier: "medium",
+		ID: NProductCss, Kind: "build", Tier: "full",
 		Needs:     []NodeID{NDemo},
 		Run:       [][]string{{"./build/pipeline", "product-css"}},
 		Inputs:    []string{"pipeline/product_css.go", "pipeline/main.go", "src/docs/theme-prepaint.mjs", "probes/h4/globals.css", "package-lock.json"},
@@ -245,7 +244,7 @@ var Nodes = []Node{
 		Mutations: nil,
 	},
 	{
-		ID: NDemoCss, Kind: "build", Tier: "medium",
+		ID: NDemoCss, Kind: "build", Tier: "full",
 		Needs:     []NodeID{NDemo},
 		Run:       [][]string{{"./build/pipeline", "tw", "dist/globals.css", "dist/out.css", "--cwd", "."}},
 		Inputs:    []string{"pipeline/tw.go", "pipeline/main.go", "dist/globals.css", "dist/components/**", "dist/js/**", "docs/demos/**", "docs/content/**", "src/kernel/**", "tools/contracts/out/**", "src/registry/ir/**", "probes/t7/**", "probes/t8/**"},
@@ -254,7 +253,7 @@ var Nodes = []Node{
 		Mutations: nil,
 	},
 	{
-		ID: NProductBuild, Kind: "build", Tier: "medium",
+		ID: NProductBuild, Kind: "build", Tier: "full",
 		Needs:     []NodeID{NProductCss},
 		Run:       [][]string{{"./build/pipeline", "tw", "dist/shadless.product.css", "dist/shadless.full.css"}, {"./build/pipeline", "tw", "dist/shadless.product.css", "dist/shadless.full.min.css", "--minify"}},
 		Inputs:    []string{"pipeline/tw.go", "pipeline/main.go", "dist/shadless.product.css"},
@@ -263,7 +262,7 @@ var Nodes = []Node{
 		Mutations: nil,
 	},
 	{
-		ID: NProductVerify, Kind: "gate", Tier: "medium",
+		ID: NProductVerify, Kind: "gate", Tier: "full",
 		Needs:     []NodeID{NProductBuild, NDemoCss},
 		Run:       [][]string{{"go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestProductVerify$", "."}},
 		Inputs:    []string{"pipeline/product_css.go", "pipeline/gates_test.go", "dist/**"},
@@ -272,7 +271,7 @@ var Nodes = []Node{
 		Mutations: []string{"product-drop-slot-rule"},
 	},
 	{
-		ID: NConsumerSim, Kind: "gate", Tier: "medium",
+		ID: NConsumerSim, Kind: "gate", Tier: "full",
 		Needs:     []NodeID{NProductCss},
 		Run:       [][]string{{"go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestConsumerSim$", "."}},
 		Inputs:    []string{"pipeline/gate_consumer_sim.go", "pipeline/tw.go", "pipeline/gates_test.go", "dist/css/**", "dist/shadless-core.css", "package.json", "node_modules/.bin/tailwindcss"},
@@ -317,7 +316,7 @@ var Nodes = []Node{
 		Mutations: []string{"contracts-strip-glue"},
 	},
 	{
-		ID: NOracleCss, Kind: "build", Tier: "medium",
+		ID: NOracleCss, Kind: "build", Tier: "full",
 		Needs:     []NodeID{NConvert},
 		Run:       [][]string{{"./build/pipeline", "oracle-css"}},
 		Inputs:    []string{"pipeline/oracle_css.go", "pipeline/tw.go", "pipeline/main.go", "src/registry/pin.json", "build/resolved-ui/**"},
@@ -344,7 +343,7 @@ var Nodes = []Node{
 		Mutations: []string{"demo-smoke-console-error"},
 	},
 	{
-		ID: NDocsCatalog, Kind: "build", Tier: "medium",
+		ID: NDocsCatalog, Kind: "build", Tier: "full",
 		Needs:     []NodeID{NDemo},
 		Run:       [][]string{{"./build/pipeline", "docs-catalog"}},
 		Inputs:    []string{"pipeline/docs_catalog.go", "pipeline/jsonorder.go", "pipeline/main.go", "src/registry/pin.json", "src/registry/tiers.json", "dist/components/**", "docs/demos/**"},
@@ -353,7 +352,7 @@ var Nodes = []Node{
 		Mutations: nil,
 	},
 	{
-		ID: NDocsBuild, Kind: "build", Tier: "medium",
+		ID: NDocsBuild, Kind: "build", Tier: "full",
 		Needs:     []NodeID{NDocsCatalog, NDemoCss},
 		Run:       [][]string{{"node", "tools/docs-build.mjs"}},
 		Inputs:    []string{"tools/docs-build.mjs", "tools/docs-guides.mjs", "tools/docs-page-lib.mjs", "tools/fixture-families.mjs", "src/docs/**", "docs/catalog.json", "docs/content/**", "docs/fonts/**", "dist/**", "docs/demos/**", "build/rtl-langs.json", "src/registry/ir/**", "src/registry/pin.json", "package.json", "package-lock.json"},
@@ -416,7 +415,7 @@ var Nodes = []Node{
 		Mutations: []string{"interactivity-strip-script"},
 	},
 	{
-		ID: NReproducible, Kind: "gate", Tier: "medium",
+		ID: NReproducible, Kind: "gate", Tier: "full",
 		Needs:     []NodeID{NDocsBuild, NProductBuild, NDemoRtl, NExampleFixture},
 		Run:       [][]string{{"go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestReproducible$", "."}},
 		Inputs:    nil, // judges state outside the tree: never fresh

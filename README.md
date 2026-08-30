@@ -139,7 +139,6 @@ green once.
 ```sh
 make            # full pipeline + every gate (= CI)
 make fast       # browser-free gates, < 1s (pre-commit hook)
-make medium     # + convert/emit, ~10s (pre-push hook)
 make meta       # prove every gate can fail
 make only ID=path-parity        # one gate + exactly what it needs
 make list       # the graph

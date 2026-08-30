@@ -326,7 +326,7 @@ func selectMutations(g *Graph, muts []Mutation, only, tier string) ([]Mutation, 
 	case tier != "":
 		max := tierRank(tier)
 		if max >= len(tiers) {
-			return nil, fmt.Errorf("unknown tier: %s (fast|medium|full)", tier)
+			return nil, fmt.Errorf("unknown tier: %s (fast|full)", tier)
 		}
 		for _, m := range muts {
 			if _, ok := g.Node(m.Gate); !ok {

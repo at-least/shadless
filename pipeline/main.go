@@ -83,7 +83,7 @@ func removeStamp(root string, id NodeID) {
 func resolveTargets(g *Graph, args []string) ([]Node, error) {
 	if len(args) == 1 {
 		switch args[0] {
-		case "fast", "medium", "full":
+		case "fast", "full":
 			return g.PlanTier(args[0])
 		case "builds":
 			return g.PlanBuilds()
@@ -145,12 +145,12 @@ func main() {
 	// product-css, build-js) take no argument. plan/status/run/adopt validate
 	// their own target list below.
 	if len(os.Args) < 2 {
-		fmt.Fprintln(os.Stderr, "usage: pipeline <plan|list|status|run|adopt> <fast|medium|full|builds|all|node…>\n       pipeline pin [--check-only]\n       pipeline tw <in> <out> [--minify] [--cwd DIR]\n       pipeline oracle-css\n       pipeline product-css\n       pipeline docs-catalog\n       pipeline ir-diff <git-ref>|<dirA> <dirB> [--json]\n       pipeline css-direction --update\n       pipeline ledger --record|--render|--dissolve\n       pipeline audit-boundary [--strict|discover]\n       pipeline upstream --to=shadcn@X.Y.Z [--fetch] [--no-build]\n       pipeline build-js\n       pipeline inputs <node> [--produces]\n\nThe gates are Go tests: go test -C pipeline -count=1 -v [-run '^TestPack$']")
+		fmt.Fprintln(os.Stderr, "usage: pipeline <plan|list|status|run|adopt> <fast|full|builds|all|node…>\n       pipeline pin [--check-only]\n       pipeline tw <in> <out> [--minify] [--cwd DIR]\n       pipeline oracle-css\n       pipeline product-css\n       pipeline docs-catalog\n       pipeline ir-diff <git-ref>|<dirA> <dirB> [--json]\n       pipeline css-direction --update\n       pipeline ledger --record|--render|--dissolve\n       pipeline audit-boundary [--strict|discover]\n       pipeline upstream --to=shadcn@X.Y.Z [--fetch] [--no-build]\n       pipeline build-js\n       pipeline inputs <node> [--produces]\n\nThe gates are Go tests: go test -C pipeline -count=1 -v [-run '^TestPack$']")
 		os.Exit(2)
 	}
 	cmd, args := os.Args[1], os.Args[2:]
 	if len(args) == 0 && (cmd == "plan" || cmd == "list" || cmd == "status" || cmd == "run" || cmd == "adopt") {
-		fmt.Fprintf(os.Stderr, "usage: pipeline %s <fast|medium|full|builds|all|node…>\n", cmd)
+		fmt.Fprintf(os.Stderr, "usage: pipeline %s <fast|full|builds|all|node…>\n", cmd)
 		os.Exit(2)
 	}
 	if cmd == "ir-diff" {

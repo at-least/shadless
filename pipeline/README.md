@@ -16,7 +16,7 @@ for the shadcn pin (it is just a file that some node declares as an input).
     pipeline run    [--force] <tier|node…>  run the stale ones, stamp on success
     pipeline adopt  <tier|node…>          record current keys WITHOUT running
 
-A target is a tier (`fast|medium|full`), `builds`, `all`, or node ids;
+A target is a tier (`fast|full`), `builds`, `all`, or node ids;
 `--gates-only` / `--builds-only` filter the resolved plan and `--keep-going`
 runs past the first red, writing `build/gates/run-report.json` (which the
 re-pin drill reads to classify each failure).
@@ -47,7 +47,7 @@ has no key, can never be skipped, and neither can anything downstream of it.
 ## Status
 
 This IS the runner. wireit, `gates/wireit.mjs`, the generated `wireit` block in
-package.json and the `wireit-sync` gate are gone; `make build/fast/medium/only`
+package.json and the `wireit-sync` gate are gone; `make build/fast/only`
 and CI go through this binary. `nodes.go` is now the graph itself rather than a
 copy of one, so the sync guards (`wireit-sync`, then `pipeline-sync`) are gone
 with the second copy they were guarding.
@@ -75,7 +75,7 @@ compares the input universe before and after a node runs, which only means
 anything when nothing else is writing, so it is enforced at `-j1` and skipped
 above it with a note.
 
-Measured: forcing the medium tier (7 nodes) takes 4.7s at -j1 and 2.4s at -j8,
+Measured when a medium rung still existed: forcing it (7 nodes) took 4.7s at -j1 and 2.4s at -j8,
 tree byte-identical afterwards. A warm `run full` is 0.8s — one node
 (`reproducible`) and 40 skipped.
 

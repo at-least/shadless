@@ -132,7 +132,12 @@ func (g *Graph) Plan(targets []NodeID) ([]Node, error) {
 	return out, nil
 }
 
-var tiers = []string{"fast", "medium", "full"}
+// Two rungs, not three. "medium" meant "compiles, no browser" and existed for
+// emit-smoke, the only gate that ever declared it; with that gate gone nothing
+// selected the rung and `run medium` returned the fast set. The nodes that
+// declared it are now "full" — which changes no plan, because no fast gate
+// reaches them and the full tier already did.
+var tiers = []string{"fast", "full"}
 
 func tierRank(t string) int {
 	for i, x := range tiers {

@@ -8,13 +8,12 @@
 #   make              full pipeline + every gate            (= CI)
 #   make verify       every gate, assuming artifacts are fresh
 #   make fast         browser-free gates                    (< 1s, pre-commit)
-#   make medium       + convert/emit                        (~10s, pre-push)
 #   make meta         prove every gate can fail (mutation testing)
 #   make only ID=x    one node + exactly what it needs      (make only ID=path-parity)
 #   make list         the graph
 #   make all          the same graph, every node, no freshness skip
 #
-# build/fast/medium/only go through the Go runner (pipeline/): a node whose
+# build/fast/only go through the Go runner (pipeline/): a node whose
 # declared inputs and dependencies are unchanged since its last green run is
 # skipped, and independent nodes run in parallel. PIPELINE_PARALLEL caps
 # concurrency — playwright nodes each own a chromium. The freshness record is
@@ -33,7 +32,7 @@ PIPELINE_PARALLEL ?= 4
 export PIPELINE_PARALLEL
 PIPELINE := build/pipeline
 
-.PHONY: build verify fast medium full all meta only list pipeline \
+.PHONY: build verify fast full all meta only list pipeline \
         pin ledger ledger-render overlay overlay-record overlay-tasks \
         upstream upstream-snapshot reproducible \
         audit-boundary ir-diff serve clean help
@@ -53,9 +52,6 @@ verify: $(PIPELINE)
 
 fast: $(PIPELINE)
 	./$(PIPELINE) run fast
-
-medium: $(PIPELINE)
-	./$(PIPELINE) run medium
 
 full: build
 

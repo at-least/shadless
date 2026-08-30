@@ -151,11 +151,11 @@ func TestUnitGraphTiersNest(t *testing.T) {
 		}
 		return out
 	}
-	fast, medium, full := ids("fast"), ids("medium"), ids("full")
+	fast, full := ids("fast"), ids("full")
 	for _, pair := range []struct {
 		small, large map[NodeID]bool
 		names        string
-	}{{fast, medium, "fast ⊄ medium"}, {medium, full, "medium ⊄ full"}} {
+	}{{fast, full, "fast ⊄ full"}} {
 		for id := range pair.small {
 			if !pair.large[id] {
 				t.Errorf("%s: %s is planned in the cheaper tier but not the dearer one", pair.names, id)
@@ -164,6 +164,13 @@ func TestUnitGraphTiersNest(t *testing.T) {
 	}
 	if len(fast) == 0 {
 		t.Error("the fast tier plans nothing")
+	}
+	// A tier that does not exist must not resolve to "everything". tierRank
+	// returns len(tiers) for an unknown name, which compares as cheaper-than-
+	// nothing and selected every gate — this test called ids("medium") after
+	// that rung was removed and kept passing over the full set.
+	if _, err := resolveTargets(g, []string{"medium"}); err == nil {
+		t.Error("a removed tier still resolved as a target")
 	}
 }
 
