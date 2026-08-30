@@ -1,8 +1,8 @@
 # Changelog
 
 All notable changes to the npm surface and the runtime contract. The pinned
-upstream is `src/registry/pin.json`; re-pins land through the nightly
-upstream drill (`.github/workflows/upstream.yml`) and are listed here by tag.
+upstream is `src/registry/pin.json`; re-pins land through the upstream drill
+(`pipeline upstream --to=shadcn@X.Y.Z`) and are listed here by tag.
 
 ## Unreleased
 

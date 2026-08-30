@@ -14,8 +14,8 @@ intervention still applies, nothing for a person to do. Commit the result
 review).
 
 Exit 1 means `build/gates/upstream-report.md` exists and says exactly what is
-left. The nightly workflow (`.github/workflows/upstream.yml`) runs the same
-drill against the newest release and opens one PR carrying the report.
+left. The drill used to run nightly and open a PR carrying the report; that
+workflow is gone, so it is invoked by hand until the Dagger port replaces it.
 
 ## What the drill does
 
