@@ -39,7 +39,7 @@ export function loadBaseline(path) {
   for (const c of b.cells ?? []) {
     if (typeof c === "string")
       throw new Error(`${path} is in the pre-value format (bare cell ids). Re-record it:\n` +
-        `  the gate's own --record, then node gates/ledger.mjs --record`)
+        `  the gate's own --record, then ./build/pipeline ledger --record`)
     cells.set(c.id, { oracle: c.oracle, shadless: c.shadless })
   }
   return { ...b, cells }

@@ -76,8 +76,15 @@ func jsonString(s string) string {
 }
 
 // marshalJS renders v the way JSON.stringify(v, null, 2) would.
-func marshalJS(v any, indent string) string {
-	inner := indent + "  "
+// marshalJS renders with JSON.stringify(v, null, 2) semantics. `indent` is
+// the CURRENT prefix (callers start with ""), not the per-level step.
+func marshalJS(v any, indent string) string { return marshalJSStep(v, indent, "  ") }
+
+// marshalJSStep is the same with an explicit per-level step, for the files
+// JSON.stringify wrote with a different one — src/registry/upstream-snapshot/
+// exemptions.json is written with indent 1.
+func marshalJSStep(v any, indent, step string) string {
+	inner := indent + step
 	switch x := v.(type) {
 	case jsonObj:
 		if len(x) == 0 {
@@ -85,7 +92,7 @@ func marshalJS(v any, indent string) string {
 		}
 		parts := make([]string, len(x))
 		for i, p := range x {
-			parts[i] = inner + jsonString(p.K) + ": " + marshalJS(p.V, inner)
+			parts[i] = inner + jsonString(p.K) + ": " + marshalJSStep(p.V, inner, step)
 		}
 		return "{\n" + strings.Join(parts, ",\n") + "\n" + indent + "}"
 	case []any:
@@ -94,7 +101,7 @@ func marshalJS(v any, indent string) string {
 		}
 		parts := make([]string, len(x))
 		for i, e := range x {
-			parts[i] = inner + marshalJS(e, inner)
+			parts[i] = inner + marshalJSStep(e, inner, step)
 		}
 		return "[\n" + strings.Join(parts, ",\n") + "\n" + indent + "]"
 	case []string:
@@ -102,7 +109,7 @@ func marshalJS(v any, indent string) string {
 		for i, s := range x {
 			as[i] = s
 		}
-		return marshalJS(as, indent)
+		return marshalJSStep(as, indent, step)
 	case string:
 		return jsonString(x)
 	case int:

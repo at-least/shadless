@@ -1,15 +1,15 @@
 # EXEMPTIONS — the recorded-difference ledger
 
-<!-- GENERATED from gates/ledger.json by `node gates/ledger.mjs --render`.
-     Do not edit by hand: `gates/ledger.mjs --verify` checks the JSON, not
+<!-- GENERATED from gates/ledger.json by `pipeline ledger --render`.
+     Do not edit by hand: the `ledger` gate checks the JSON, not
      this file, and the next render will overwrite whatever you wrote. -->
 
 Pin: `shadcn@4.19.0` · 66 exemptions · 6 budgets
 
 Every "known difference, accepted for a reason" lives here, and every entry
-declares **how it ends**. `gates/ledger.mjs --verify` (the `ledger` gate)
-keeps this list in lockstep with the sources in both directions: a new
-exemption with no entry fails, an entry whose source flag vanished fails.
+declares **how it ends**. The `ledger` gate keeps this list in lockstep
+with the sources in both directions: a new exemption with no entry fails,
+an entry whose source flag vanished fails.
 
 ## Permanent (54)
 
@@ -78,16 +78,16 @@ Deploy lag, SSR-frame lag and other pin-relative differences. `make upstream` DE
 
 | Id | Reason | Recorded at |
 |---|---|---|
+| `golden:ICU Arabic percent-usage spacing differs between local chromium and upstream's SSR ICU — environment; re-check on re-pin` | ICU Arabic percent-usage spacing differs between local chromium and upstream's SSR ICU — environment; re-check on re-pin | shadcn@4.19.0 |
 | `golden:embla live-region text (Slide N of N) computed after mount (SSR frame 0/0) — frame lag; re-check on re-pin` | embla live-region text (Slide N of N) computed after mount (SSR frame 0/0) — frame lag; re-check on re-pin | shadcn@4.19.0 |
 | `golden:example copy drift vs live ("font-normal" vs "font- normal") — deploy lag; re-check on re-pin` | example copy drift vs live ("font-normal" vs "font- normal") — deploy lag; re-check on re-pin | shadcn@4.19.0 |
-| `golden:ICU Arabic percent-usage spacing differs between local chromium and upstream's SSR ICU — environment; re-check on re-pin` | ICU Arabic percent-usage spacing differs between local chromium and upstream's SSR ICU — environment; re-check on re-pin | shadcn@4.19.0 |
 | `golden:lucide icon path encoding drift vs live — deploy lag; re-check on re-pin` | lucide icon path encoding drift vs live — deploy lag; re-check on re-pin | shadcn@4.19.0 |
 | `golden:physical→logical utility drift vs live (-ml-4 vs -ms-4, pinned carousel skin) — deploy lag; re-check on re-pin` | physical→logical utility drift vs live (-ml-4 vs -ms-4, pinned carousel skin) — deploy lag; re-check on re-pin | shadcn@4.19.0 |
 | `golden:physical→logical utility drift vs live (-right-1 vs -end-1, pinned tabs.tsx) — deploy lag; re-check on re-pin` | physical→logical utility drift vs live (-right-1 vs -end-1, pinned tabs.tsx) — deploy lag; re-check on re-pin | shadcn@4.19.0 |
 | `golden:physical→logical utility drift vs live (pinned skin pr-2 vs live pe-2) — deploy lag; re-check on re-pin` | physical→logical utility drift vs live (pinned skin pr-2 vs live pe-2) — deploy lag; re-check on re-pin | shadcn@4.19.0 |
+| `golden:radix SelectValue renders value only after hydration on live (SSR frame empty) — deploy lag; re-check on re-pin` | radix SelectValue renders value only after hydration on live (SSR frame empty) — deploy lag; re-check on re-pin | shadcn@4.19.0 |
 | `golden:radix context-menu trigger vendor style (-webkit-touch-callout) added after pin — deploy lag; re-check on re-pin` | radix context-menu trigger vendor style (-webkit-touch-callout) added after pin — deploy lag; re-check on re-pin | shadcn@4.19.0 |
 | `golden:radix scroll-area viewport overflow differs in SSR frame (hidden vs settled scroll) — deploy lag; re-check on re-pin` | radix scroll-area viewport overflow differs in SSR frame (hidden vs settled scroll) — deploy lag; re-check on re-pin | shadcn@4.19.0 |
-| `golden:radix SelectValue renders value only after hydration on live (SSR frame empty) — deploy lag; re-check on re-pin` | radix SelectValue renders value only after hydration on live (SSR frame empty) — deploy lag; re-check on re-pin | shadcn@4.19.0 |
 | `golden:slider/progress thumb position is runtime-measured (SSR frame at 0%) — frame lag; re-check on re-pin` | slider/progress thumb position is runtime-measured (SSR frame at 0%) — frame lag; re-check on re-pin | shadcn@4.19.0 |
 | `golden:token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin` | token drift vs live (ring-ring/50 vs /30) — deploy lag; re-check on re-pin | shadcn@4.19.0 |
 
@@ -122,7 +122,7 @@ Not cross-checked — these track work, not accepted differences.
 - [ ] JSX composition examples remain in feature sections (in React syntax, imports stripped): translating them to vanilla markup is the deeper completion of the docs de-Reactification.
 - [ ] Example pages that still ship as static oracle snapshots (dead buttons) are counted by tools/interactivity-sweep.mjs every run and budgeted as `interactivity.dead-families` (families in KNOWN_DEAD, currently message-scroller only — pages, not families, is the larger number; run the sweep for it). example-fixture.mjs covers the dialog family, tabs, slider, scroll-area, select, tooltip, popover, hover-card and the menus; each remaining family needs its glue protocol mapped there.
 - [ ] Controlled-open oracles (dialog/alert-dialog/sheet/select): switch the usage to trigger-driven so the mounted-DOM check applies, then drop the mounted-check/mounted-classes exemptions.
-- [ ] Coverage matrix scope: pipeline/gate_coverage.go enumerates tiers other than `external` and `logic`, so `carousel` (external, ported onto vendored embla — contract-tested and in the golden gate) and `field` (logic — ships CSS + a hand-authored demo in tools/demo.mjs, no contract, no oracle) sit outside the uncovered-cells count. field is the one shipped component with no oracle-backed assertion; adding it to the matrix (or a contract) is the work item.
+- [ ] Coverage matrix scope: gates/coverage.mjs enumerates tiers other than `external` and `logic`, so `carousel` (external, ported onto vendored embla — contract-tested and in the golden gate) and `field` (logic — ships CSS + a hand-authored demo in tools/demo.mjs, no contract, no oracle) sit outside the uncovered-cells count. field is the one shipped component with no oracle-backed assertion; adding it to the matrix (or a contract) is the work item.
 - [ ] Not gated at all (outside the CSS-parity surface): accessibility beyond attribute equality (no axe, no Tab / focus-trap / roving-focus scenario in contracts — 16 of 30 defs press a key, mostly Escape), animations (every parity gate freezes them), browsers other than chromium, TypeScript (dist/esm/*.d.ts are concatenated, never type-checked), a bundle-size budget, a no-JS render. The npm surface is gated since gates/pack.mjs.
 - [ ] Big-ticket gaps, recorded so they are not rediscovered: (1) 15 grey components have no vanilla port (calendar/date-picker → react-day-picker, chart → recharts, command/combobox → cmdk/@base-ui, drawer → vaul, resizable → react-resizable-panels, input-otp, sonner/toast, form → react-hook-form, sidebar, questionnaire, data-table → tanstack, typography) — each is a dependency rewrite, not a conversion. (2) The JS base is not tree-shakeable: tools/build-js.mjs concatenates the whole 143 KB radix kernel into dist/shadless.js unconditionally and the ESM entry re-exports a runtime global; a checkbox-only page pays for the kernel. Splitting the kernel per feature needs the kernel's source, which this repo does not hold (vendor/radix-kernel.iife.js is a pinned blob, no source map). (3) No a11y gate (axe, Tab / focus-trap scenarios), chromium only, animations frozen in every parity gate, no no-JS render — see the previous note. (4) The dialog family's mounted-DOM check is off (controlled-open oracles) and navigation-menu carries a real structural difference — see the notes above.
 - [ ] Plain (non-cva) path @apply order: src/emitter/css.mjs joins a slot's class strings into ONE @apply, where Tailwind's internal utility order — not composition order — resolves same-group conflicts. Concrete case: attachment-action ships `rounded-lg … rounded-[min(var(--radius-md),10px)]` in one @apply and compiles to `var(--radius)` while React/twMerge keeps the later `rounded-[min(...)]`. The cva path was fixed with twin blocks (2026-08-28; regression-gated by path-parity); extending path-parity to plain-path slots with intra-list same-group conflicts would close the family.

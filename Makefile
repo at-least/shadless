@@ -84,10 +84,10 @@ pin:
 	$(NPM) run pin
 
 ledger:
-	$(NODE) gates/ledger.mjs --verify
+	go test -C pipeline -count=1 -v -run '^TestLedger$$' .
 
-ledger-render:
-	$(NODE) gates/ledger.mjs --render
+ledger-render: $(PIPELINE)
+	./$(PIPELINE) ledger --render
 
 overlay:
 	$(NODE) gates/overlay.mjs --audit

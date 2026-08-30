@@ -9,7 +9,7 @@
 //
 // Steps, each recorded in build/gates/upstream-report.md:
 //   1. checkout the tag in .upstream, re-record src/registry/pin.json
-//   2. gates/ledger.mjs --dissolve  — every auto-dissolve exemption is deleted;
+//   2. pipeline ledger --dissolve  — every auto-dissolve exemption is deleted;
 //      the rebuild has to re-earn each one with evidence
 //   3. overlays/upstream/*.patch applied with git apply --3way
 //   4. pipeline run all --keep-going — the WHOLE picture, not the first red
@@ -71,7 +71,7 @@ if (!reportOnly) {
 
   // ------------------------------------------------------------- 2. dissolve
   step("dissolve auto-dissolve exemptions")
-  run("node", ["gates/ledger.mjs", "--dissolve"])
+  run("./build/pipeline", ["ledger", "--dissolve"])
 
   // ------------------------------------------------------- 3. source patches
   step("apply overlays/upstream")
@@ -152,7 +152,7 @@ H("Next")
 P([
   "1. read UNEXPECTED failures first — those are ours",
   "2. work the task packets (each names the gates that must be green)",
-  "3. `node gates/ledger.mjs --record` for exemptions that legitimately survive; `node gates/overlay.mjs --record` after re-authoring",
+  "3. `./build/pipeline ledger --record` for exemptions that legitimately survive; `node gates/overlay.mjs --record` after re-authoring",
   "4. `make upstream-snapshot` (network) to refresh the ui.shadcn.com golden snapshot for the new release",
   "5. `make` must be green; then commit source + regenerated output together (the dist/ diff IS the review)",
 ].map((s) => `- ${s}`).join("\n"))

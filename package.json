@@ -80,7 +80,7 @@
     "gates": "npm run pipeline && ./build/pipeline list all",
     "meta": "SHADLESS_META=1 go test -C pipeline -count=1 -v -timeout 2h -run '^TestMeta$' .",
     "overlay": "node gates/overlay.mjs --audit",
-    "ledger": "node gates/ledger.mjs --verify",
+    "ledger": "go test -C pipeline -count=1 -v -run '^TestLedger$' .",
     "gate:path": "node gates/path-parity.mjs",
     "test": "npm run pipeline && ./build/pipeline run fast",
     "gate:pack": "go test -C pipeline -count=1 -v -run '^TestPack$' ."

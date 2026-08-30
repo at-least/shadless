@@ -22,7 +22,7 @@ drill against the newest release and opens one PR carrying the report.
 | Step | Command | What it settles |
 |---|---|---|
 | 1 | `git -C .upstream checkout <tag>` + `tools/pin.mjs --force` | the pin |
-| 2 | `gates/ledger.mjs --dissolve` | every **auto-dissolve** exemption is deleted. The rebuild must re-earn each one with evidence; nobody walks a list by hand |
+| 2 | `pipeline ledger --dissolve` | every **auto-dissolve** exemption is deleted. The rebuild must re-earn each one with evidence; nobody walks a list by hand |
 | 3 | `git apply --3way overlays/upstream/*.patch` | source-level patches rebase onto the new tag; a conflict is a conflict, not a silent no-apply |
 | 4 | `./build/pipeline run all --keep-going` | the whole picture — every failing gate, not the first |
 | 5 | `pipeline ir-diff` | slot-level semantic diff old pin → new pin: which components, slots, class lists, cva axes actually moved |
@@ -35,7 +35,7 @@ Work it top-down:
 
 1. **UNEXPECTED failures** — ours. Fix the pipeline; `./build/pipeline run <gate>` reproduces one gate with exactly the builds it needs.
 2. **Task packets** (`build/gates/tasks/*.md`) — one per stale or orphaned manual unit. Each carries the upstream diff for its inputs, the current file, and the gates that must be green afterwards. This is the bounded LLM/human step: deterministic input, gate-verified output.
-3. **EXPECTED failures** — consequences of upstream changes, usually resolved by the packets above or by a legitimately new exemption. Record survivors: `node gates/ledger.mjs --record`.
+3. **EXPECTED failures** — consequences of upstream changes, usually resolved by the packets above or by a legitimately new exemption. Record survivors: `./build/pipeline ledger --record`.
 4. `make upstream-snapshot` (network) refreshes the ui.shadcn.com golden snapshot for the new release; hop 1 of the golden gate compares against it.
 5. `make` green → commit.
 
@@ -55,7 +55,7 @@ generated output (the retired `patches/` mechanism).
 
 `gates/ledger.json` (rendered to `EXEMPTIONS.md`, never edited by hand). Every
 entry has a class — `permanent`, `auto-dissolve`, `debt` — and budgets that
-may only shrink. `node gates/ledger.mjs --verify` fails on growth and on
+may only shrink. The `ledger` gate fails on growth and on
 unrecorded improvement alike.
 
 ## Vendored engines

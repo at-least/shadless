@@ -291,7 +291,7 @@ if (changed.length) {
   process.exit(1)
 }
 if (fixed.length) {
-  console.error(`FAIL  path-parity (${fixed.length} recorded cells no longer differ — record the win: node gates/path-parity.mjs --record && node gates/ledger.mjs --record)\n  ` + fixed.slice(0, 20).join("\n  "))
+  console.error(`FAIL  path-parity (${fixed.length} recorded cells no longer differ — record the win: node gates/path-parity.mjs --record && ./build/pipeline ledger --record)\n  ` + fixed.slice(0, 20).join("\n  "))
   process.exit(1)
 }
 console.log(`PASS  path-parity (${components} components, ${compared} comparisons incl. ${stateRenders} state renders, ${actual.size} cells at the recorded baseline incl. their values; --strict is the end state)`)

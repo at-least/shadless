@@ -229,7 +229,7 @@ if (RECORD || !existsSync(BASELINE_PATH)) {
   writeBaseline(BASELINE_PATH, {
     note: "Cells where the shadless fixture's computed style differs from the React oracle, " +
       "with the two values as recorded. This list may only shrink and the values are pinned; " +
-      "see gates/ledger.mjs budget style-parity.dirty-cells.",
+      "see the ledger budget style-parity.dirty-cells.",
     flaky, cells: actual,
   })
   console.log(`style-parity: baseline recorded (${actual.size} cells across ` +
@@ -263,7 +263,7 @@ if (fixed.length) {
   console.error(`FAIL  style-parity (${fixed.length} recorded cells no longer differ — record the win so ` +
     `the slack cannot be silently re-spent)\n  ` + fixed.slice(0, 12).join("\n  ") +
     (fixed.length > 12 ? `\n  … +${fixed.length - 12} more` : "") +
-    `\n\n  node tools/style-parity.mjs --record && node gates/ledger.mjs --record`)
+    `\n\n  node tools/style-parity.mjs --record && ./build/pipeline ledger --record`)
   process.exit(1)
 }
 console.log(`PASS  style-parity (${components} components, ${compared} elements compared, ` +

@@ -95,5 +95,5 @@ if (RECORD || !existsSync(BASELINE)) {
 const { appeared, fixed, changed } = diffBaseline(loadBaseline(BASELINE).cells, actual)
 if (appeared.length) { console.error(`FAIL  demo-parity (${appeared.length} NEW cells where a shipped demo ≠ upstream css)\n  ` + appeared.slice(0, 40).map((id) => `${id}: ${showCell(actual.get(id))}`).join("\n  ")); process.exit(1) }
 if (changed.length) { console.error(`FAIL  demo-parity (${changed.length} recorded cells still differ, but by a DIFFERENT amount — re-look, then re-record: node gates/demo-parity.mjs --record)\n  ` + changed.slice(0, 20).map(showChange).join("\n  ")); process.exit(1) }
-if (fixed.length) { console.error(`FAIL  demo-parity (${fixed.length} recorded cells no longer differ — record the win: node gates/demo-parity.mjs --record && node gates/ledger.mjs --record)\n  ` + fixed.slice(0, 20).join("\n  ")); process.exit(1) }
+if (fixed.length) { console.error(`FAIL  demo-parity (${fixed.length} recorded cells no longer differ — record the win: node gates/demo-parity.mjs --record && ./build/pipeline ledger --record)\n  ` + fixed.slice(0, 20).join("\n  ")); process.exit(1) }
 console.log(`PASS  demo-parity (${pages} pages, ${compared} comparisons, ${actual.size} cells at the recorded baseline incl. their values; --strict is the end state)`)
