@@ -14,3 +14,9 @@ tools/contracts/out/*/oracle.html
 
 # Go pipeline runner (build artifact; pipeline/stamps.json IS tracked)
 /build/pipeline
+
+# Freshness bookkeeping and oracle scratch: intermediate products, not source.
+# stamps/ was tracked so a fresh clone was warm; that trade is off now — the
+# Dagger cache is content-addressed and does not live in git.
+/pipeline/stamps/
+/tools/contracts/out/

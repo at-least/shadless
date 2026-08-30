@@ -192,3 +192,53 @@ func (g *Graph) PlanBuilds() ([]Node, error) {
 	}
 	return g.Plan(targets)
 }
+
+// runInputs prints the files a node's patterns actually resolve to. The
+// globs are prose until you see what they expand to — this is what makes a
+// declaration reviewable, and it is what the sandbox builds its tree from.
+func runInputs(args []string) int {
+	root, err := os.Getwd()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "pipeline:", err)
+		return 1
+	}
+	var id string
+	produces := false
+	for _, a := range args {
+		if a == "--produces" {
+			produces = true
+			continue
+		}
+		id = a
+	}
+	if id == "" {
+		fmt.Fprintln(os.Stderr, "usage: pipeline inputs <node> [--produces]")
+		return 2
+	}
+	g, err := LoadGraphAt(root)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "pipeline:", err)
+		return 1
+	}
+	n, ok := g.Node(NodeID(id))
+	if !ok {
+		fmt.Fprintf(os.Stderr, "unknown node: %s\n", id)
+		return 2
+	}
+	patterns := n.Inputs
+	if produces {
+		patterns = n.Produces
+	}
+	if patterns == nil {
+		return 0 // never-fresh: no declared set at all
+	}
+	files, err := Files(root, patterns)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "pipeline:", err)
+		return 1
+	}
+	for _, f := range files {
+		fmt.Println(f)
+	}
+	return 0
+}

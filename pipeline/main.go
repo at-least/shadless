@@ -25,21 +25,18 @@ import (
 )
 
 // One file per node under pipeline/stamps/, holding the key that produced the
-// current outputs. TRACKED, and one file per node rather than one map for all
-// of them, for two reasons:
+// current outputs. NOT tracked: a freshness record is an intermediate product,
+// and the .dagger/ port makes it a transitional one — Dagger's cache is
+// content-addressed and lives in the engine, not in git.
 //
-//   - the outputs this pipeline produces are committed (dist/, docs/,
-//     src/registry/ir), so a fresh clone already holds them; what it lacks is
-//     the record of which inputs produced them. Committing that record is what
-//     makes a clone warm.
-//   - a single stamps.json changes on every build and would conflict on every
-//     concurrent branch. Per node, a conflict happens only when two branches
-//     genuinely changed the same node's inputs, and it is one line.
+// It was tracked, deliberately: the outputs are committed (dist/, docs/,
+// src/registry/ir), so a fresh clone already held them and what it lacked was
+// the record of which inputs produced them. Committing that record made a
+// clone warm. That trade is off now, and the cost is real — a fresh clone and
+// a new CI runner both start cold under this runner.
 //
-// Safe to commit because a stamp is verified, not trusted: the key is a hash
-// over the actual contents of every declared input, so it cannot match a tree
-// whose sources differ, and `reproducible` (which never goes fresh) is the
-// backstop against a committed output that does not match its inputs.
+// Still one file per node rather than one map: a single stamps.json changes on
+// every build and would conflict on every concurrent branch.
 //
 // Node ids carry ":" after a fan-out (contracts:dialog); it is legal in a
 // POSIX filename but not on Windows, so it is escaped in the path.
@@ -148,7 +145,7 @@ func main() {
 	// product-css, hooks) take no argument. plan/status/run/adopt validate
 	// their own target list below.
 	if len(os.Args) < 2 {
-		fmt.Fprintln(os.Stderr, "usage: pipeline <plan|list|status|run|adopt> <fast|medium|full|builds|all|node…>\n       pipeline pin [--check-only]\n       pipeline tw <in> <out> [--minify] [--cwd DIR]\n       pipeline oracle-css\n       pipeline product-css\n       pipeline docs-catalog\n       pipeline ir-diff <git-ref>|<dirA> <dirB> [--json]\n       pipeline hooks [--uninstall] [--force]\n       pipeline css-direction --update\n       pipeline ledger --record|--render|--dissolve\n       pipeline audit-boundary [--strict|discover]\n       pipeline upstream --to=shadcn@X.Y.Z [--fetch] [--no-build]\n       pipeline build-js\n\nThe gates are Go tests: go test -C pipeline -count=1 -v [-run '^TestPack$']")
+		fmt.Fprintln(os.Stderr, "usage: pipeline <plan|list|status|run|adopt> <fast|medium|full|builds|all|node…>\n       pipeline pin [--check-only]\n       pipeline tw <in> <out> [--minify] [--cwd DIR]\n       pipeline oracle-css\n       pipeline product-css\n       pipeline docs-catalog\n       pipeline ir-diff <git-ref>|<dirA> <dirB> [--json]\n       pipeline hooks [--uninstall] [--force]\n       pipeline css-direction --update\n       pipeline ledger --record|--render|--dissolve\n       pipeline audit-boundary [--strict|discover]\n       pipeline upstream --to=shadcn@X.Y.Z [--fetch] [--no-build]\n       pipeline build-js\n       pipeline inputs <node> [--produces]\n\nThe gates are Go tests: go test -C pipeline -count=1 -v [-run '^TestPack$']")
 		os.Exit(2)
 	}
 	cmd, args := os.Args[1], os.Args[2:]
@@ -190,6 +187,9 @@ func main() {
 	}
 	if cmd == "build-js" {
 		os.Exit(runBuildJs())
+	}
+	if cmd == "inputs" {
+		os.Exit(runInputs(args))
 	}
 	if cmd == "tw" {
 		os.Exit(runTw(args))

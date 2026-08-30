@@ -20,9 +20,11 @@ import (
 
 // Generated roots, in the order the JS gate listed them (the count appears in
 // the PASS line).
+// tools/contracts/out is deliberately absent: it is oracle scratch, no longer
+// committed, so there is no committed tree to compare it against.
 var generatedRoots = []string{
 	"dist", "docs/site", "docs/catalog.json", "docs/demos", "docs/example-oracle.json",
-	"src/registry/ir", "tools/contracts/out", "src/kernel/*.html",
+	"src/registry/ir", "src/kernel/*.html",
 }
 
 func gateReproducible(root string) error {
