@@ -263,56 +263,24 @@ func (m *Shadless) EmitCheck(ctx context.Context, source *dagger.Directory) (str
 	return c.Stdout(ctx)
 }
 
-// oracleBase is the browser half of the pipeline: chromium plus everything the
-// React oracle bundles.
+// oracleBase is renderBase plus the SHIPPED tree.
 //
-// This is the part that decided Dagger over Bazel. The oracle renders the
-// pinned registry with real React and radix and replays real input against the
-// shipped page; there is no Go equivalent and never will be. Bazel would need
-// a hermetic browser toolchain inside its sandbox — the hardest part of any JS
-// Bazel migration — where here it is one exec against the locked playwright.
-//
-// build/resolved-ui comes from the conversion step rather than the host, so
-// the oracle bundles what this pipeline just produced instead of whatever the
-// working tree happens to hold.
+// The contract replays compare the oracle against the page this repo ships, so
+// they need dist/ and probes/. Nothing else does: a pure upstream render reads
+// neither, which is why they sit here rather than one level down.
 func (m *Shadless) oracleBase(ctx context.Context, source *dagger.Directory) (*dagger.Container, error) {
-	c, err := m.deps(ctx, source)
+	c, err := m.renderBase(ctx, source)
 	if err != nil {
 		return nil, err
 	}
-	resolved, err := m.ResolvedUI(ctx, source)
-	if err != nil {
-		return nil, err
-	}
-	return withBrowser(c).
-		// The contract DEFS are filtered out and mounted per contract instead.
-		//
-		// Filter, not WithDirectory's Exclude: Exclude narrows what gets
-		// WRITTEN but the cache key still comes from the source directory's
-		// full digest, so editing an excluded file invalidated the layer
-		// anyway. Filter produces a new snapshot whose digest reflects only
-		// what it kept. Measured with Exclude: touching one def re-ran all 29
-		// (107s against 1.5s fully cached) and individually re-ran dialog,
-		// select and tabs at 16-20s each.
-		// Folder granularity is right for declarations but wrong for cache
-		// keys here: with the whole of tools/ in the shared base, editing one
-		// def invalidated the layer every contract builds on and all 29
-		// re-ran. Measured — 2min+ instead of the ~10s one contract costs.
-		WithDirectory("/w/tools", source.Directory("tools").Filter(
-			dagger.DirectoryFilterOpts{Exclude: []string{"contracts/components/**"}})).
-		WithDirectory("/w/gates", source.Directory("gates")).
-		WithDirectory("/w/src", source.Directory("src")).
+	return c.
 		WithDirectory("/w/dist", source.Directory("dist")).
 		// The contract defs point at the shipped fixture pages under probes/
 		// (shadlessPage: "probes/t7/<name>.html"). The `contracts` node in
 		// pipeline/nodes.go declares no probes/ input at all — the sandbox
 		// found that on its first run, as an ENOENT at the point of use rather
 		// than a silently stale-fresh node.
-		WithDirectory("/w/probes", source.Directory("probes")).
-		WithDirectory("/w/.upstream/shadcn-ui/apps/v4",
-			source.Directory(".upstream/shadcn-ui/apps/v4")).
-		WithDirectory("/w/build/resolved-ui", resolved).
-		WithMountedCache(oracleCache, dag.CacheVolume("shadless-oracle-bundles")), nil
+		WithDirectory("/w/probes", source.Directory("probes")), nil
 }
 
 // Contract replays one component's contract against the React oracle: the
