@@ -106,9 +106,30 @@ func runOracleCSS() int {
 	}
 
 	out := oracleOutDir + "/oracle.css"
-	// through the same wrapper the product uses, compiled with build/gates as
-	// the content-scan cwd exactly as the JS gate did
-	if err := twCompile(root, entry, out, oracleOutDir, false, false); err != nil {
+	// Through the same wrapper the product uses, and with NO compile cwd: an
+	// empty scratch dir, so the only content scanned is the @source list above
+	// — all of it absolute, all of it upstream.
+	//
+	// It used to pass oracleOutDir "exactly as the JS gate did", which made
+	// tailwind scan build/gates. That directory is the pipeline's junk drawer:
+	// gate logs, an upstream report, a stale ir-before/ copy of the orphan IR
+	// 54cf18c deleted — and oracle.css itself. Three consequences, all of them
+	// found by diffing this step's output against a container's:
+	//
+	//   - rules leaked in from files no source produces. `.static` came from
+	//     chain-*.log; the field component's data-[error=true] rule came from
+	//     build/gates/ir-before/form.json, a copy of a file that no longer
+	//     exists in the tree.
+	//   - the gate's whole reason for existing was weakened. Its `Why` says it
+	//     "reads nothing under src/, so style-parity is no longer circular",
+	//     and the logs in that directory are full of src/-originated class
+	//     names (full-B.log alone carries 20 data-slot occurrences).
+	//   - it ratcheted. Scanning its own previous output meant a class, once
+	//     admitted, could never leave.
+	//
+	// And none of it was reproducible: a fresh clone has an empty build/gates
+	// and would have produced a different stylesheet.
+	if err := twCompile(root, entry, out, "", false, false); err != nil {
 		fmt.Fprintln(os.Stderr, "oracle-css:", err)
 		return 1
 	}
