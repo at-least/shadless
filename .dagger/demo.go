@@ -183,3 +183,139 @@ func (m *Shadless) DemoRtlCheck(ctx context.Context, source *dagger.Directory) (
 	}
 	return c.Stdout(ctx)
 }
+
+// contractFixture harvests the kernel contract fixtures (src/kernel/*.html)
+// from the contract defs' own React render.
+//
+// This is the one step that legitimately depends on EVERY contract def, so it
+// mounts the directory renderBase filters out. The filter exists so that
+// editing one def does not invalidate the layer all 29 contract replays build
+// on; this step is not one of those, and it genuinely reads them all.
+//
+// src/kernel starts empty for the reason the oracle's docs/demos does: the
+// tool writes one file per def and removes nothing, so a retired def's fixture
+// would live forever in a mounted tree.
+func (m *Shadless) contractFixture(ctx context.Context, source *dagger.Directory) (*dagger.Container, error) {
+	c, err := m.renderBase(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	js, err := m.BuildJs(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	return c.
+		WithDirectory("/w/tools/contracts/components",
+			source.Directory("tools/contracts/components")).
+		WithDirectory("/w/src/kernel", dag.Directory()).
+		WithDirectory("/w/dist/js", js.Directory("js")).
+		WithFile("/w/dist/shadless.js", js.File("shadless.js")).
+		// the fixture pages link ../../dist/out.css, which is demo-css's
+		// output and therefore not available until later in the graph — the
+		// same previous-build dependency example-fixture has on docs/site
+		WithFile("/w/dist/out.css", source.File("dist/out.css")).
+		WithExec([]string{"node", "tools/example-fixture.mjs", "--contracts"}), nil
+}
+
+// ContractFixture returns the harvested kernel fixtures.
+func (m *Shadless) ContractFixture(ctx context.Context, source *dagger.Directory) (*dagger.Directory, error) {
+	c, err := m.contractFixture(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	return c.Directory("/w/src/kernel"), nil
+}
+
+// ContractFixtureCheck reports the step's own verdict without exporting.
+func (m *Shadless) ContractFixtureCheck(ctx context.Context, source *dagger.Directory) (string, error) {
+	c, err := m.contractFixture(ctx, source)
+	if err != nil {
+		return "", err
+	}
+	return c.Stdout(ctx)
+}
+
+// demoTree assembles the browsable dist: the unified globals.css with every
+// slot rule folded in, the demo index, the per-component @apply sources the npm
+// surface exports, and a page for each non-static component.
+//
+// No browser: this step composes fixtures other steps rendered.
+//
+// It does need the Go binary, because tools/demo.mjs spawns `./build/pipeline
+// build-js` itself (the builder stopped living in JS). That is a genuine
+// redundancy in the host graph — demo both `needs` build-js and re-runs it —
+// and mounting the binary reproduces the tool as written rather than quietly
+// improving it.
+//
+// src/registry/ir and src/kernel come from the steps that produce them, not
+// from the host tree: the IR from the conversion, the kernel fixtures from the
+// contract harvest. dist/components comes from emit, which is a real
+// dependency and not just ordering — demo throws if a static page is missing.
+func (m *Shadless) demoTree(ctx context.Context, source *dagger.Directory) (*dagger.Container, error) {
+	c, err := m.deps(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	ir, err := m.Convert(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	kernel, err := m.ContractFixture(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	emitted, err := m.Emit(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	bin, err := m.pipelineBin(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	return c.
+		WithDirectory("/w/src", source.Directory("src").Filter(
+			dagger.DirectoryFilterOpts{Exclude: []string{"registry/ir/**", "kernel/**"}})).
+		WithDirectory("/w/src/registry/ir", ir).
+		WithDirectory("/w/src/kernel", kernel).
+		WithFile("/w/tools/demo.mjs", source.File("tools/demo.mjs")).
+		WithFile("/w/tools/demo-lib.mjs", source.File("tools/demo-lib.mjs")).
+		WithDirectory("/w/probes", source.Directory("probes")).
+		WithDirectory("/w/vendor", source.Directory("vendor")).
+		// src/emitter/css.mjs reads upstream's style-nova.css, and demo
+		// imports componentCss from it. The host node does not declare that
+		// file and does not have to: `convert` does, and convert is in demo's
+		// closure, so it already reaches demo's key. The access check is
+		// therefore right to stay quiet. A container asks a different
+		// question — is the file THERE — and the two are not the same
+		// property. This mount answers the second one.
+		WithDirectory("/w/.upstream/shadcn-ui/apps/v4/registry",
+			source.Directory(".upstream/shadcn-ui/apps/v4/registry")).
+		WithDirectory("/w/dist/components", emitted.Directory("components")).
+		WithFile("/w/build/pipeline", bin, dagger.ContainerWithFileOpts{Permissions: 0o755}).
+		WithExec([]string{"node", "tools/demo.mjs"}), nil
+}
+
+// Demo returns the whole dist tree at this point in the graph, which is what
+// the directory means: emit's static pages, this step's own, and the JS surface
+// the tool rebuilt on its way through. The per-node ownership split lives in
+// pipeline/nodes.go, where the freshness check needs it; here the useful unit
+// is the shipped surface.
+//
+// The RTL variants are NOT in it — DemoRtl writes those, from the oracle side
+// of the graph.
+func (m *Shadless) Demo(ctx context.Context, source *dagger.Directory) (*dagger.Directory, error) {
+	c, err := m.demoTree(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	return c.Directory("/w/dist"), nil
+}
+
+// DemoCheck reports the step's own verdict without exporting.
+func (m *Shadless) DemoCheck(ctx context.Context, source *dagger.Directory) (string, error) {
+	c, err := m.demoTree(ctx, source)
+	if err != nil {
+		return "", err
+	}
+	return c.Stdout(ctx)
+}
