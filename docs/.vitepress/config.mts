@@ -23,28 +23,13 @@ export default defineConfig({
   markdown: {
     config: (md) => {
       // `::::demo <name>` — one card holding the preview iframe and the demo's
-      // source, the shape upstream's ComponentPreview uses: the code sits
-      // below the preview, capped behind a gradient, revealed by a button.
-      //
-      // The toggle is a checkbox and a label, not script: the card works
-      // before (and without) hydration, and there is no per-page wiring to
-      // re-run on client-side navigation.
+      // source. Nothing is hidden: the source sits under the preview inside
+      // the same border, scrolling if it is long.
       md.use(container, 'demo', {
         render(tokens: any[], idx: number) {
-          if (tokens[idx].nesting !== 1) {
-            return '</div>\n<label class="demo-view-code" for="' +
-              tokens[idx].__demoId + '"></label>\n</div>\n'
-          }
+          if (tokens[idx].nesting !== 1) return '</div>\n'
           const name = tokens[idx].info.trim().slice('demo'.length).trim()
-          const id = `vc-${name}`
-          // the closing token needs the same id; markdown-it hands them to us
-          // separately, so stash it on the matching close token
-          for (let i = idx + 1; i < tokens.length; i++) {
-            if (tokens[i].type === 'container_demo_close') { tokens[i].__demoId = id; break }
-          }
-          return `<div class="demo-card" data-demo="${name}">\n` +
-            `<input class="demo-toggle" type="checkbox" id="${id}" tabindex="-1" aria-hidden="true">\n` +
-            '<div class="demo-body">\n'
+          return `<div class="demo-card" data-demo="${name}">\n`
         },
       })
     },
