@@ -165,3 +165,61 @@ func (m *Shadless) Doctor(ctx context.Context, source *dagger.Directory) (string
 				`echo "chromium:  $(node -e "console.log(require('playwright').chromium.executablePath())")"`}).
 		Stdout(ctx)
 }
+
+// pipelineBin builds the Go runner. `emit` shells out to `pipeline tw`, the
+// hermetic @tailwindcss/cli wrapper whose whole job is controlling the compile
+// CWD, so the step needs the real binary rather than a reimplementation.
+func (m *Shadless) pipelineBin(source *dagger.Directory) *dagger.File {
+	return dag.Container().
+		From("golang:1.24-bookworm").
+		WithDirectory("/s", source.Directory("pipeline")).
+		WithWorkdir("/s").
+		WithExec([]string{"go", "build", "-o", "/pipeline", "."}).
+		File("/pipeline")
+}
+
+// emitted is the container after the static tier has been emitted: IR becomes
+// component HTML plus the per-slot stylesheet.
+//
+// src/registry/ir is mounted from the CONVERSION step, not from the host, so
+// this emits what the pipeline just produced rather than whatever the working
+// tree happens to hold. In the current graph that correspondence holds only by
+// ordering luck — emit declares no IR input at all and relies on `needs`.
+//
+// dist/ IS mounted from the host, and that is a deliberate compromise worth
+// naming: the second command is `tw … --cwd dist`, which makes Tailwind scan
+// dist for utility classes, so the emitted out.css depends on what else is in
+// there. Starting from an empty dist would change the result. That makes dist
+// both an input and an output of this step — exactly the mixing this port is
+// meant to remove — so it is the next thing to untangle, not the last word.
+func (m *Shadless) emitted(source *dagger.Directory) *dagger.Container {
+	return m.deps(source, nodeImage).
+		WithDirectory("/w/src", source.Directory("src"),
+			dagger.ContainerWithDirectoryOpts{Exclude: []string{"registry/ir/**"}}).
+		WithDirectory("/w/src/registry/ir", m.Convert(source)).
+		WithDirectory("/w/probes", source.Directory("probes")).
+		// the emitter reads style-nova.css directly; it was itself an
+		// undeclared input until today, and the sandbox caught it missing here
+		WithDirectory("/w/.upstream/shadcn-ui/apps/v4/registry",
+			source.Directory(".upstream/shadcn-ui/apps/v4/registry")).
+		WithDirectory("/w/dist", source.Directory("dist")).
+		WithFile("/w/build/pipeline", m.pipelineBin(source),
+			dagger.ContainerWithFileOpts{Permissions: 0o755}).
+		// the binary ships without its own source, so it cannot find the repo
+		// root by walking up to pipeline/nodes.go
+		WithEnvVariable("SHADLESS_ROOT", "/w").
+		WithExec([]string{"node", "src/emitter/index.mjs"}).
+		WithExec([]string{"./build/pipeline", "tw",
+			"build/emit/globals.css", "build/emit/out.css", "--cwd", "dist"})
+}
+
+// Emit returns the static tier's shipped output: the component pages and the
+// per-slot stylesheet.
+func (m *Shadless) Emit(source *dagger.Directory) *dagger.Directory {
+	return m.emitted(source).Directory("/w/dist")
+}
+
+// EmitCheck reports the emitter's own verdict without exporting anything.
+func (m *Shadless) EmitCheck(ctx context.Context, source *dagger.Directory) (string, error) {
+	return m.emitted(source).Stdout(ctx)
+}

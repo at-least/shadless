@@ -28,18 +28,29 @@ import (
 	"path/filepath"
 )
 
-// findRepoRoot walks up from dir to the tree holding pipeline/nodes.go. The
-// pipeline's own commands all run with the root as their cwd, but tw is also
-// spawned by JS gates from wherever they happen to be, and its whole job is
-// to control the cwd of something else.
+// findRepoRoot resolves the tree tw resolves its paths against.
+//
+// SHADLESS_ROOT wins when set. The marker walk below looks for
+// pipeline/nodes.go, which is fine on a developer checkout and wrong the
+// moment the binary is deployed without its own source — a container that
+// carries build/pipeline but no pipeline/ directory finds nothing and the
+// tool dies with a confusing message. Root discovery should not be coupled to
+// a source file that need not ship.
+//
+// The walk stays for the case it was written for: tw is also spawned by JS
+// gates from wherever they happen to be, and its whole job is to control the
+// cwd of something else.
 func findRepoRoot(dir string) (string, error) {
+	if r := os.Getenv("SHADLESS_ROOT"); r != "" {
+		return r, nil
+	}
 	for {
 		if _, err := os.Stat(filepath.Join(dir, "pipeline", "nodes.go")); err == nil {
 			return dir, nil
 		}
 		parent := filepath.Dir(dir)
 		if parent == dir {
-			return "", fmt.Errorf("repo root (the tree holding pipeline/nodes.go) not found above the working directory")
+			return "", fmt.Errorf("repo root (the tree holding pipeline/nodes.go) not found above the working directory; set SHADLESS_ROOT to say where it is")
 		}
 		dir = parent
 	}
