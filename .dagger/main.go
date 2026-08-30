@@ -177,9 +177,9 @@ func (m *Shadless) ConvertCheck(ctx context.Context, source *dagger.Directory) (
 	return c.Stdout(ctx)
 }
 
-// pipelineBin builds the Go runner. `emit` shells out to `pipeline tw`, the
-// hermetic @tailwindcss/cli wrapper whose whole job is controlling the compile
-// CWD, so the step needs the real binary rather than a reimplementation.
+// pipelineBin builds the Go runner. `emit` no longer needs it — the tailwind
+// wrapper it used is one WithWorkdir in a container — but `product-css` and
+// `oracle-css` are Go subcommands with real logic, so the next slice does.
 func (m *Shadless) pipelineBin(ctx context.Context, source *dagger.Directory) (*dagger.File, error) {
 	img, err := goImage(ctx, source)
 	if err != nil {
@@ -216,10 +216,6 @@ func (m *Shadless) emitted(ctx context.Context, source *dagger.Directory) (*dagg
 	if err != nil {
 		return nil, err
 	}
-	bin, err := m.pipelineBin(ctx, source)
-	if err != nil {
-		return nil, err
-	}
 	return c.
 		WithDirectory("/w/src", source.Directory("src"),
 			dagger.ContainerWithDirectoryOpts{Exclude: []string{"registry/ir/**"}}).
@@ -230,14 +226,24 @@ func (m *Shadless) emitted(ctx context.Context, source *dagger.Directory) (*dagg
 		WithDirectory("/w/.upstream/shadcn-ui/apps/v4/registry",
 			source.Directory(".upstream/shadcn-ui/apps/v4/registry")).
 		WithDirectory("/w/dist", source.Directory("dist")).
-		WithFile("/w/build/pipeline", bin,
-			dagger.ContainerWithFileOpts{Permissions: 0o755}).
-		// the binary ships without its own source, so it cannot find the repo
-		// root by walking up to pipeline/nodes.go
-		WithEnvVariable("SHADLESS_ROOT", "/w").
 		WithExec([]string{"node", "src/emitter/index.mjs"}).
-		WithExec([]string{"./build/pipeline", "tw",
-			"build/emit/globals.css", "build/emit/out.css", "--cwd", "dist"}), nil
+		// `pipeline tw` on the host, invoked directly here. The wrapper exists
+		// to do three things, and a container gives two of them for free:
+		//
+		//   resolve in/out against the repo root, not the compile cwd → they
+		//     are absolute below
+		//   take the CLI from THIS repo's node_modules rather than whatever
+		//     package sits above the scratch dir → there is only one
+		//   control the compile cwd, which is what Tailwind auto-scans for
+		//     utility classes → WithWorkdir
+		//
+		// Only the third is real here, and it is the one thing the wrapper was
+		// actually written for. Calling the CLI directly drops the Go binary
+		// out of this step entirely.
+		WithWorkdir("/w/dist").
+		WithExec([]string{"/w/node_modules/.bin/tailwindcss",
+			"-i", "/w/build/emit/globals.css", "-o", "/w/build/emit/out.css"}).
+		WithWorkdir("/w"), nil
 }
 
 // Emit returns the static tier's shipped output: the component pages and the
