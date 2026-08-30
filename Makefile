@@ -110,7 +110,7 @@ upstream-snapshot:
 	$(NODE) tools/upstream-snapshot.mjs
 
 # Committed generated trees must equal a clean rebuild. CI's only authority
-# on hand-edits to dist/ and docs/site/ — the pre-commit hook no longer guesses.
+# on hand-edits to dist/ — the pre-commit hook no longer guesses.
 reproducible:
 	go test -C pipeline -count=1 -v -run '^TestReproducible$$' .
 
@@ -130,10 +130,7 @@ serve:
 clean:
 	rm -rf dist build node_modules/.cache/shadless
 	rm -rf docs/catalog.json
-	rm -f  docs/site/site.css docs/site/site.js docs/site/highlight.js docs/site/out.css docs/site/fonts.css
-	rm -rf docs/site/assets docs/site/components docs/site/js
-	rm -f  docs/site/shadless.js
-	rm -f  docs/site/*.html
+	rm -rf docs/site
 	@echo "cleaned: dist/ + build/ + docs/site/ generated artifacts"
 
 help:

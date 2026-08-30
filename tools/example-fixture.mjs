@@ -30,7 +30,7 @@ import { readFileSync, writeFileSync, rmSync, readdirSync } from "node:fs"
 import { resolve } from "node:path"
 import { buildOracle, awaitOracle } from "./oracle-lib.mjs"
 import { buildContractOracle } from "./contracts/oracle-build.mjs"
-import { injectSiteSkin, THEME_PREPAINT_SCRIPT } from "../src/docs/theme-prepaint.mjs"
+import { THEME_PREPAINT_SCRIPT } from "../src/docs/theme-prepaint.mjs"
 // trivial components present on the page (by content, from example-oracle)
 // load their own behavior files next to the kernel families'
 const trivialScripts = (target, jsdir) => (target.trivial ?? []).map((c) => `<script src="${jsdir}${c}.js"></script>`).join("\n")
@@ -83,13 +83,25 @@ const targets = CONTRACTS ? await contractTargets() : JSON.parse(readFileSync("d
     families: t.families.filter((f) => FAMILY[f]).sort((a, b) => (FAMILY[a].kind === "dialog") - (FAMILY[b].kind === "dialog")),
     unsupported: t.families.filter((f) => !FAMILY[f]) }))
 
-// the self-test loads the SITE tree, whose js/ mirror is refreshed by
-// docs-build — which runs AFTER this tool. Mirror the glue now so a glue
-// rewrite is tested against itself, not against the previous copy.
-import { mkdirSync, copyFileSync } from "node:fs"
-mkdirSync("docs/site/js", { recursive: true })
-for (const f of readdirSync("dist/js")) copyFileSync(`dist/js/${f}`, `docs/site/js/${f}`)
-copyFileSync("dist/shadless.js", "docs/site/shadless.js")
+// The self-test needs the page's relative assets (../out.css, ../shadless.js,
+// ../js/*) to resolve, and docs/demos carries none — so it renders from a
+// scratch tree under build/ assembled from what this build just produced.
+//
+// It used to render from docs/site instead, which made a COMMITTED build
+// artifact a prerequisite of the build: docs-build writes that tree and runs
+// AFTER this step, so the stylesheet the self-test loaded was whatever the
+// last build had left in git. out.css still comes from the previous build
+// (demo-css runs later too) but now from dist/, the tree that is committed on
+// purpose.
+import { mkdirSync, copyFileSync, existsSync } from "node:fs"
+const SELFTEST = "build/fixture"
+mkdirSync(`${SELFTEST}/pages`, { recursive: true })
+mkdirSync(`${SELFTEST}/js`, { recursive: true })
+for (const f of readdirSync("dist/js")) copyFileSync(`dist/js/${f}`, `${SELFTEST}/js/${f}`)
+copyFileSync("dist/shadless.js", `${SELFTEST}/shadless.js`)
+// absent only in a tree that has never been built — the page then renders
+// unstyled, exactly as it did when docs/site/out.css was missing
+if (existsSync("dist/out.css")) copyFileSync("dist/out.css", `${SELFTEST}/out.css`)
 
 const browser = await chromium.launch()
 const page = await browser.newPage()
@@ -490,16 +502,16 @@ ${trivialScripts(target, assetBase.js)}
 
     // write to the final path, then prove the page interactive; delete on
     // any failure so a dead page can never land. The fixture's relative
-    // asset paths (../out.css, ../shadless.js, ../js/*) resolve
-    // in the SITE tree — docs/demos has no vendored assets — so the
-    // self-test loads the site mirror
+    // asset paths (../out.css, ../shadless.js, ../js/*) resolve in the
+    // build/fixture scratch tree — docs/demos has no vendored assets — so
+    // the self-test loads a copy from there
     writeFileSync(outPath, html)
     const errors = []
     const onErr = (e) => errors.push((process.env.EF_KEEP ? String(e.stack || e) : String(e)).slice(0, 400))
     page.on("pageerror", onErr)
-    const sitePath = CONTRACTS ? outPath : "docs/site/components/" + name + ".html"
-    if (!CONTRACTS) writeFileSync(sitePath, injectSiteSkin(html))
-    await page.goto(`file://${resolve(sitePath)}`)
+    const testPath = CONTRACTS ? outPath : `${SELFTEST}/pages/${name}.html`
+    if (!CONTRACTS) writeFileSync(testPath, html)
+    await page.goto(`file://${resolve(testPath)}`)
     await page.waitForTimeout(400)
     try { for (const st of selfTests) await st() } catch (e) { throw new Error(`self-test: ${e.message} (${errors.join(" | ") || "no page errors"})`) }
     // the programmatic handles: every openable instance must open and close
@@ -535,7 +547,7 @@ ${trivialScripts(target, assetBase.js)}
   } catch (e) {
     if (!process.env.EF_KEEP && !CONTRACTS) {
       rmSync(outPath, { force: true })
-      rmSync("docs/site/components/" + name + ".html", { force: true })
+      rmSync(`${SELFTEST}/pages/${name}.html`, { force: true })
     }
     failures.push(`${name}: ${e.message.split("\n")[0]}`)
   }

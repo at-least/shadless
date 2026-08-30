@@ -51,14 +51,11 @@ func (m *Shadless) BuildJs(ctx context.Context, source *dagger.Directory) (*dagg
 // buttons; this tool rebuilds them with the glue protocol and then PROVES each
 // one interactive in a real browser before letting it land.
 //
-// docs/site is the awkward part, and it is awkward on the host too. The
-// self-test navigates to docs/site/components/<name>.html, whose relative
-// assets (../out.css, ../shadless.js, ../js/*) resolve in the SITE tree — so
-// the tool mirrors the JS it just built into docs/site itself. out.css it does
-// not mirror: that file is docs-build's output, and docs-build runs AFTER this
-// step. On the host the self-test therefore renders against the PREVIOUS
-// build's stylesheet, and mounting the committed copy here reproduces that
-// exactly rather than papering over it.
+// The self-test renders from build/fixture, a scratch tree the tool assembles
+// from the JS it just built plus dist/out.css. out.css is the awkward part, on
+// the host too: demo-css writes it LATER in the graph, so the self-test always
+// renders against the PREVIOUS build's stylesheet. Mounting the committed copy
+// here reproduces that exactly rather than papering over it.
 func (m *Shadless) exampleFixture(ctx context.Context, source *dagger.Directory) (*dagger.Container, error) {
 	c, err := m.renderBase(ctx, source)
 	if err != nil {
@@ -79,18 +76,14 @@ func (m *Shadless) exampleFixture(ctx context.Context, source *dagger.Directory)
 		// the JS surface from the build step, not from the host tree
 		WithDirectory("/w/dist/js", js.Directory("js")).
 		WithFile("/w/dist/shadless.js", js.File("shadless.js")).
-		WithDirectory("/w/docs/site/components", dag.Directory()).
-		WithFile("/w/docs/site/out.css", source.File("docs/site/out.css")).
+		WithFile("/w/dist/out.css", source.File("dist/out.css")).
 		WithExec([]string{"node", "tools/example-fixture.mjs"}), nil
 }
 
-// ExampleFixture returns the interactive pages and the site mirror the
-// self-test built to prove them.
+// ExampleFixture returns the interactive pages the self-test proved.
 //
-// docs/site/{js,shadless.js,components} are in this list because the tool
-// WRITES them — the host graph declares only docs/demos/*.html for this node,
-// so those are undeclared writes of exactly the alert-demo kind: stable bytes,
-// so the write check skips them, and fs-record.mjs never sees a write at all.
+// Nothing else the step writes is exported: build/fixture is scratch the
+// self-test renders from and dies with the container.
 func (m *Shadless) ExampleFixture(ctx context.Context, source *dagger.Directory) (*dagger.Directory, error) {
 	c, err := m.exampleFixture(ctx, source)
 	if err != nil {
@@ -98,9 +91,6 @@ func (m *Shadless) ExampleFixture(ctx context.Context, source *dagger.Directory)
 	}
 	return c.Directory("/w").Filter(dagger.DirectoryFilterOpts{Include: []string{
 		"docs/demos/*.html",
-		"docs/site/components/*.html",
-		"docs/site/js/**",
-		"docs/site/shadless.js",
 	}}), nil
 }
 

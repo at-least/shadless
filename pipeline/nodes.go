@@ -431,10 +431,10 @@ var Nodes = []Node{
 		ID: NDocsConsistency, Kind: "gate", Tier: "fast",
 		Needs:     []NodeID{NDocsBuild},
 		Run:       [][]string{{"node", "tools/docs-consistency.mjs"}},
-		Inputs:    []string{"tools/docs-consistency.mjs", "src/docs/theme-prepaint.mjs", "docs/site/**", "dist/**", "docs/demos/**", "docs/catalog.json", "package.json"},
+		Inputs:    []string{"tools/docs-consistency.mjs", "src/emitter/skin.mjs", "docs/site/**", "dist/components/**", "dist/css/**", "docs/demos/**", "package.json"},
 		Produces:  nil,
-		Why:       "the site tree must be the byte-exact skinned image of dist + authored demos, every taught @import must resolve, and no page may teach React imports",
-		Mutations: []string{"docs-consistency-site-drift", "docs-consistency-react-import"},
+		Why:       "no shipped page carries skin residue, every taught @import resolves to a file, and no page teaches React imports",
+		Mutations: []string{"docs-consistency-react-import"},
 	},
 	{
 		ID: NDocsFidelity, Kind: "gate", Tier: "fast",

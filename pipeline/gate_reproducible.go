@@ -9,8 +9,11 @@ package main
 // bypassed for legitimate commits. Guessing is gone: run the pipeline, then the
 // tree must be clean under the generated paths.
 //
-// Keeping dist/ and docs/site/ in git is deliberate: a re-pin PR's most useful
-// review surface is the diff of what consumers actually receive.
+// Keeping dist/ in git is deliberate: a re-pin PR's most useful review surface
+// is the diff of what consumers actually receive. docs/site/ is NOT in that
+// list any more (2026-08-31) — it is a 12 MB rendering of trees already
+// reviewed here, and the docs site is moving to VitePress, whose output is a
+// build artifact like any other.
 
 import (
 	"fmt"
@@ -23,7 +26,7 @@ import (
 // tools/contracts/out is deliberately absent: it is oracle scratch, no longer
 // committed, so there is no committed tree to compare it against.
 var generatedRoots = []string{
-	"dist", "docs/site", "docs/catalog.json", "docs/demos", "docs/example-oracle.json",
+	"dist", "docs/catalog.json", "docs/demos", "docs/example-oracle.json",
 	"src/registry/ir", "src/kernel/*.html",
 }
 

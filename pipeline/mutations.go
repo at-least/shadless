@@ -279,16 +279,6 @@ var Mutations = []Mutation{
 		},
 	},
 	{
-		ID: "docs-consistency-site-drift", Gate: "docs-consistency",
-		Why:   "a site demo copy drifts from the dist page it mirrors",
-		Files: []string{"docs/site/components/accordion-basic.html"},
-		// Wave I: the site's iframe copies drifted from dist because the
-		// mirror step wrote un-skinned bytes.
-		Apply: func(root string, f []string) error {
-			return mutReplaceOnce(root, f[0], "</body>", "<!-- mutation --></body>")
-		},
-	},
-	{
 		ID: "docs-dangling-link", Gate: "docs-links",
 		Why:   "a built page links to a route that does not exist",
 		Files: []string{"docs/site/accordion.html"},

@@ -7,7 +7,7 @@ measured, not assumed.
 
 **A tool moves to Go when Go can produce the same bytes.**
 
-Everything this pipeline builds is committed — `dist/`, `docs/site/`,
+Everything this pipeline builds is committed — `dist/`, `docs/demos/`,
 `src/registry/ir/` — and the `reproducible` gate rebuilds those trees and
 compares them byte for byte. A port that produced *valid but different* output
 would fail that gate forever, or, worse, would be "fixed" by re-recording the

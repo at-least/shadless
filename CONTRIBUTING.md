@@ -26,7 +26,7 @@ node tools/pin.mjs                            # clones the pinned upstream into 
 | `make list` | the graph | |
 
 `reproducible` byte-compares the committed generated trees (`dist/`,
-`docs/site/`, `docs/catalog.json`, …) with what the pipeline just produced,
+`docs/catalog.json`, `docs/demos/`, …) with what the pipeline just produced,
 so **commit regenerated outputs with the source change that caused them**.
 After touching `src/runtime/**`: `node tools/build-js.mjs` → `npm run
 demo` → `npm run docs`, in that order (the emitter wipes the interactive
