@@ -103,8 +103,8 @@ export const NODES = [
     // the PREVIOUS run left behind — a full run could regenerate the
     // manifest after coverage had already passed over the old one.
     id: "coverage", kind: "gate", tier: "fast", needs: ["convert", "example-oracle"],
-    run: [["node", "gates/coverage.mjs", "--check"]],
-    inputs: ["gates/coverage.mjs", "gates/ledger.json", "src/registry/tiers.json",
+    run: [["./build/pipeline", "gate", "coverage", "--check"]],
+    inputs: ["pipeline/gate_coverage.go", "pipeline/gate_coverage_budget.go", "gates/ledger.json", "src/registry/tiers.json",
              "src/registry/ir/**", "docs/example-oracle.json", "docs/demos/**",
              "tools/contracts/components/**", "tools/interactivity-sweep.mjs"],
     why: "the product surface (component x path x theme x dir x state) as a matrix with the " +

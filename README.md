@@ -89,7 +89,7 @@ localStorage-backed theme semantics.
 carry no classes upstream, so they have JS (collapsible) or nothing to
 ship (aspect-ratio) but no stylesheet. `field` is the one shipped
 component outside the oracle-backed matrix (logic tier — its demo is
-hand-authored; see `gates/coverage.mjs`).
+hand-authored; see `pipeline/gate_coverage.go`).
 
 ## Not included (recorded, not silently dropped)
 

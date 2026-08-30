@@ -421,7 +421,7 @@
       "max": 46,
       "target": 0,
       "class": "debt",
-      "reason": "cells of the product matrix (component x path x theme x dir x state) no gate makes a computed-style or behavioral assertion about; see gates/coverage.mjs"
+      "reason": "cells of the product matrix (component x path x theme x dir x state) no gate makes a computed-style or behavioral assertion about; see pipeline/gate_coverage.go"
     },
     "path-parity.dirty-cells": {
       "max": 0,

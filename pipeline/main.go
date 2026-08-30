@@ -124,8 +124,8 @@ func main() {
 	if cmd == "gate" {
 		root, err := os.Getwd()
 		die(err)
-		if len(args) != 1 {
-			fmt.Fprintln(os.Stderr, "usage: pipeline gate <name>")
+		if len(args) < 1 {
+			fmt.Fprintln(os.Stderr, "usage: pipeline gate <name> [flags]")
 			os.Exit(2)
 		}
 		runGate(root, args[0])

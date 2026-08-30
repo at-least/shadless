@@ -75,7 +75,7 @@ async function collectBudgetValues() {
   const bl = "gates/style-parity-baseline.json"
   v["style-parity.dirty-cells"] = existsSync(bl)
     ? JSON.parse(readFileSync(bl, "utf8")).cells.length : -1
-  // coverage.* budgets are enforced by gates/coverage.mjs --check (the count
+  // coverage.* budgets are enforced by `pipeline gate coverage --check` (the count
   // needs the IR, and a stale build/gates/coverage.json from a mutation run
   // must never feed the ledger); the ledger only validates the entry's shape
   return v
@@ -112,7 +112,7 @@ async function verify() {
   const values = await collectBudgetValues()
   for (const [name, b] of Object.entries(ledger.budgets)) {
     const actual = values[name]
-    if (actual === undefined && name.startsWith("coverage.")) continue // checked by gates/coverage.mjs
+    if (actual === undefined && name.startsWith("coverage.")) continue // checked by `pipeline gate coverage --check`
     if (actual === undefined) { problems.push(`budget ${name}: no live value known`); continue }
     if (actual < 0) { problems.push(`budget ${name}: could not read the live value`); continue }
     if (actual > b.max)

@@ -84,7 +84,7 @@ async function freeze(page) {
 // the state is reached and frozen, toggle .dark on <html> and dir on
 // <html>, re-collect. Four variants per element, one page load. Dark and
 // RTL were the two largest uncovered slices of the product matrix
-// (gates/coverage.mjs) and cost nothing extra here.
+// (pipeline/gate_coverage.go) and cost nothing extra here.
 const MATRIX = [
   { id: "light@ltr", dark: false, dir: "ltr" },
   { id: "dark@ltr", dark: true, dir: "ltr" },

@@ -101,8 +101,8 @@ var Nodes = []Node{
 	{
 		ID: NCoverage, Kind: "gate", Tier: "fast",
 		Needs:    []NodeID{NConvert, NExampleOracle},
-		Run:      [][]string{{"node", "gates/coverage.mjs", "--check"}},
-		Inputs:   []string{"gates/coverage.mjs", "gates/ledger.json", "src/registry/tiers.json", "src/registry/ir/**", "docs/example-oracle.json", "docs/demos/**", "tools/contracts/components/**", "tools/interactivity-sweep.mjs"},
+		Run:      [][]string{{"./build/pipeline", "gate", "coverage", "--check"}},
+		Inputs:   []string{"pipeline/gate_coverage.go", "pipeline/gate_coverage_budget.go", "gates/ledger.json", "src/registry/tiers.json", "src/registry/ir/**", "docs/example-oracle.json", "docs/demos/**", "tools/contracts/components/**", "tools/interactivity-sweep.mjs"},
 		Produces: nil,
 	},
 	{
