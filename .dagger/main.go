@@ -26,7 +26,9 @@ import (
 	"context"
 	"fmt"
 	"regexp"
+	"sort"
 	"strings"
+	"sync"
 
 	"dagger/shadless/internal/dagger"
 )
@@ -140,9 +142,22 @@ func (m *Shadless) converted(ctx context.Context, source *dagger.Directory) (*da
 		return nil, err
 	}
 	return c.
-		WithDirectory("/w/src", source.Directory("src"),
-			dagger.ContainerWithDirectoryOpts{Exclude: []string{"registry/ir/**"}}).
-		WithDirectory("/w/tools", source.Directory("tools")).
+		WithDirectory("/w/src", source.Directory("src").Filter(
+			dagger.DirectoryFilterOpts{Exclude: []string{"registry/ir/**"}})).
+		// Only the one script this step runs, NOT the whole of tools/.
+		//
+		// Mounting the directory made every contract depend on every file
+		// under it: oracleBase builds on ResolvedUI, which builds on this
+		// container, so editing one contract def invalidated the conversion
+		// and all 29 contracts re-ran. Measured — 4m07s to change one def,
+		// against 1.7s fully cached. Per-def mounts in oracleBase did not
+		// help, because the coupling was two levels upstream of where it
+		// showed up.
+		//
+		// resolve-skins imports only src/emitter/skin.mjs, which src/ already
+		// carries. If it grows another tools/ import, the sandbox says so with
+		// an ENOENT rather than silently widening this step's key.
+		WithFile("/w/tools/resolve-skins.mjs", source.File("tools/resolve-skins.mjs")).
 		WithDirectory("/w/.upstream/shadcn-ui/apps/v4/registry",
 			source.Directory(".upstream/shadcn-ui/apps/v4/registry")).
 		WithExec([]string{"node", "tools/resolve-skins.mjs"}).
@@ -217,8 +232,8 @@ func (m *Shadless) emitted(ctx context.Context, source *dagger.Directory) (*dagg
 		return nil, err
 	}
 	return c.
-		WithDirectory("/w/src", source.Directory("src"),
-			dagger.ContainerWithDirectoryOpts{Exclude: []string{"registry/ir/**"}}).
+		WithDirectory("/w/src", source.Directory("src").Filter(
+			dagger.DirectoryFilterOpts{Exclude: []string{"registry/ir/**"}})).
 		WithDirectory("/w/src/registry/ir", ir).
 		WithDirectory("/w/probes", source.Directory("probes")).
 		// the emitter reads style-nova.css directly; it was itself an
@@ -287,7 +302,21 @@ func (m *Shadless) oracleBase(ctx context.Context, source *dagger.Directory) (*d
 		return nil, err
 	}
 	return withBrowser(c).
-		WithDirectory("/w/tools", source.Directory("tools")).
+		// The contract DEFS are filtered out and mounted per contract instead.
+		//
+		// Filter, not WithDirectory's Exclude: Exclude narrows what gets
+		// WRITTEN but the cache key still comes from the source directory's
+		// full digest, so editing an excluded file invalidated the layer
+		// anyway. Filter produces a new snapshot whose digest reflects only
+		// what it kept. Measured with Exclude: touching one def re-ran all 29
+		// (107s against 1.5s fully cached) and individually re-ran dialog,
+		// select and tabs at 16-20s each.
+		// Folder granularity is right for declarations but wrong for cache
+		// keys here: with the whole of tools/ in the shared base, editing one
+		// def invalidated the layer every contract builds on and all 29
+		// re-ran. Measured — 2min+ instead of the ~10s one contract costs.
+		WithDirectory("/w/tools", source.Directory("tools").Filter(
+			dagger.DirectoryFilterOpts{Exclude: []string{"contracts/components/**"}})).
 		WithDirectory("/w/gates", source.Directory("gates")).
 		WithDirectory("/w/src", source.Directory("src")).
 		WithDirectory("/w/dist", source.Directory("dist")).
@@ -314,7 +343,16 @@ func (m *Shadless) Contract(ctx context.Context, source *dagger.Directory, name 
 	if err != nil {
 		return "", err
 	}
-	return c.WithExec([]string{"node", "tools/contracts/run.mjs", name}).Stdout(ctx)
+	return withContractDef(c, source, name).
+		WithExec([]string{"node", "tools/contracts/run.mjs", name}).
+		Stdout(ctx)
+}
+
+// withContractDef adds exactly the one def this contract replays, so a change
+// to any other def leaves this container's key untouched.
+func withContractDef(c *dagger.Container, source *dagger.Directory, name string) *dagger.Container {
+	rel := "tools/contracts/components/" + name + ".mjs"
+	return c.WithFile("/w/"+rel, source.File(rel))
 }
 
 // Doctor reports the toolchain each half of the pipeline actually resolved to,
@@ -335,4 +373,86 @@ func (m *Shadless) Doctor(ctx context.Context, source *dagger.Directory) (string
 				`echo "esbuild:    $(node -p "require('esbuild/package.json').version")"; ` +
 				`echo "chromium:   $(node -e "console.log(require('playwright').chromium.executablePath())")"`}).
 		Stdout(ctx)
+}
+
+// contractNames lists the component contract defs, which are the fan-out.
+// Reading the directory rather than carrying a list means adding a def adds a
+// job, with nothing to keep in step — the same reason pipeline/fanout.go
+// discovers them at graph-load time instead of baking them into nodes.go.
+func contractNames(ctx context.Context, source *dagger.Directory) ([]string, error) {
+	entries, err := source.Directory("tools/contracts/components").Entries(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("listing contract defs: %w", err)
+	}
+	var out []string
+	for _, e := range entries {
+		if strings.HasSuffix(e, ".mjs") {
+			out = append(out, strings.TrimSuffix(e, ".mjs"))
+		}
+	}
+	sort.Strings(out)
+	return out, nil
+}
+
+// contractParallel caps how many contracts run at once. Each owns a chromium,
+// which is why the host runner defaults PIPELINE_PARALLEL to 4 rather than to
+// NumCPU; the same reasoning applies here.
+const contractParallel = 4
+
+// Contracts replays every component contract against the React oracle.
+//
+// The 29 defs are genuinely independent — separate outputs, no shared mutable
+// state, each failing on its own — which is what makes the fan-out legal. They
+// share one oracleBase, so npm ci, the browser install and the conversion are
+// paid once and every contract starts from that same cached container.
+//
+// A failure does not stop the others: the point of running all 29 is the whole
+// picture, so every result is collected and the failures are reported together.
+func (m *Shadless) Contracts(ctx context.Context, source *dagger.Directory) (string, error) {
+	names, err := contractNames(ctx, source)
+	if err != nil {
+		return "", err
+	}
+	base, err := m.oracleBase(ctx, source)
+	if err != nil {
+		return "", err
+	}
+
+	type result struct {
+		name string
+		err  error
+	}
+	results := make([]result, len(names))
+	sem := make(chan struct{}, contractParallel)
+	var wg sync.WaitGroup
+	for i, name := range names {
+		wg.Add(1)
+		go func(i int, name string) {
+			defer wg.Done()
+			sem <- struct{}{}
+			defer func() { <-sem }()
+			_, err := withContractDef(base, source, name).
+				WithExec([]string{"node", "tools/contracts/run.mjs", name}).
+				Stdout(ctx)
+			results[i] = result{name: name, err: err}
+		}(i, name)
+	}
+	wg.Wait()
+
+	var b strings.Builder
+	var failed []string
+	for _, r := range results {
+		if r.err != nil {
+			failed = append(failed, r.name)
+			fmt.Fprintf(&b, "  FAIL  %s\n", r.name)
+			continue
+		}
+		fmt.Fprintf(&b, "  PASS  %s\n", r.name)
+	}
+	if len(failed) > 0 {
+		return b.String(), fmt.Errorf("FAIL  contracts (%d/%d): %s",
+			len(failed), len(names), strings.Join(failed, ", "))
+	}
+	fmt.Fprintf(&b, "\nPASS  contracts (%d/%d)\n", len(names), len(names))
+	return b.String(), nil
 }
