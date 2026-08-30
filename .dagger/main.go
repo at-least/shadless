@@ -25,6 +25,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"dagger/shadless/internal/dagger"
@@ -55,6 +56,31 @@ const (
 )
 
 type Shadless struct{}
+
+// goImage resolves the Go toolchain from pipeline/go.mod.
+//
+// go.mod is where Go itself says this belongs: `toolchain` names a toolchain,
+// `go` names the language version. Preferring the first and falling back to
+// the second means the repo keeps the decision either way, and this file
+// keeps none of it.
+func goImage(ctx context.Context, source *dagger.Directory) (string, error) {
+	mod, err := source.File("pipeline/go.mod").Contents(ctx)
+	if err != nil {
+		return "", fmt.Errorf("reading pipeline/go.mod: %w", err)
+	}
+	if m := reToolchain.FindStringSubmatch(mod); m != nil {
+		return "golang:" + m[1] + "-bookworm", nil
+	}
+	if m := reGoLang.FindStringSubmatch(mod); m != nil {
+		return "golang:" + m[1] + "-bookworm", nil
+	}
+	return "", fmt.Errorf("pipeline/go.mod declares neither a toolchain nor a go version")
+}
+
+var (
+	reToolchain = regexp.MustCompile(`(?m)^toolchain\s+go(\S+)\s*$`)
+	reGoLang    = regexp.MustCompile(`(?m)^go\s+(\S+)\s*$`)
+)
 
 // nodeImage resolves the runtime from the repo's own declaration.
 func nodeImage(ctx context.Context, source *dagger.Directory) (string, error) {
@@ -154,17 +180,17 @@ func (m *Shadless) ConvertCheck(ctx context.Context, source *dagger.Directory) (
 // pipelineBin builds the Go runner. `emit` shells out to `pipeline tw`, the
 // hermetic @tailwindcss/cli wrapper whose whole job is controlling the compile
 // CWD, so the step needs the real binary rather than a reimplementation.
-//
-// The Go toolchain is named here rather than read from the repo because the
-// repo does not declare one — go.mod's `go 1.24` is a language version, not a
-// toolchain pin. Worth fixing at the same place .nvmrc lives.
-func (m *Shadless) pipelineBin(source *dagger.Directory) *dagger.File {
+func (m *Shadless) pipelineBin(ctx context.Context, source *dagger.Directory) (*dagger.File, error) {
+	img, err := goImage(ctx, source)
+	if err != nil {
+		return nil, err
+	}
 	return dag.Container().
-		From("golang:1.24-bookworm").
+		From(img).
 		WithDirectory("/s", source.Directory("pipeline")).
 		WithWorkdir("/s").
 		WithExec([]string{"go", "build", "-o", "/pipeline", "."}).
-		File("/pipeline")
+		File("/pipeline"), nil
 }
 
 // emitted is the container after the static tier has been emitted: IR becomes
@@ -190,6 +216,10 @@ func (m *Shadless) emitted(ctx context.Context, source *dagger.Directory) (*dagg
 	if err != nil {
 		return nil, err
 	}
+	bin, err := m.pipelineBin(ctx, source)
+	if err != nil {
+		return nil, err
+	}
 	return c.
 		WithDirectory("/w/src", source.Directory("src"),
 			dagger.ContainerWithDirectoryOpts{Exclude: []string{"registry/ir/**"}}).
@@ -200,7 +230,7 @@ func (m *Shadless) emitted(ctx context.Context, source *dagger.Directory) (*dagg
 		WithDirectory("/w/.upstream/shadcn-ui/apps/v4/registry",
 			source.Directory(".upstream/shadcn-ui/apps/v4/registry")).
 		WithDirectory("/w/dist", source.Directory("dist")).
-		WithFile("/w/build/pipeline", m.pipelineBin(source),
+		WithFile("/w/build/pipeline", bin,
 			dagger.ContainerWithFileOpts{Permissions: 0o755}).
 		// the binary ships without its own source, so it cannot find the repo
 		// root by walking up to pipeline/nodes.go
