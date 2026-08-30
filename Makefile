@@ -101,9 +101,9 @@ overlay-tasks:
 # ----- upstream ------------------------------------------------------------
 # One command from "a new shadcn release exists" to "green, or a classified
 # report with task packets". See UPGRADING.md.
-upstream:
+upstream: $(PIPELINE)
 	@test -n "$(TO)" || { echo "usage: make upstream TO=shadcn@X.Y.Z"; exit 2; }
-	$(NODE) gates/upstream.mjs --to=$(TO)
+	./$(PIPELINE) upstream --to=$(TO)
 
 # Refresh the committed ui.shadcn.com snapshot (network crawl; golden hop 1).
 upstream-snapshot:

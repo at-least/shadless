@@ -275,7 +275,7 @@ function sourceUnits() {
 function sourceState(u) {
   const check = (args) => { try { execFileSync("git", ["-C", UP, "apply", "--check", ...args, `${process.cwd()}/${u.file}`], { stdio: "pipe" }); return true } catch { return false } }
   if (check(["-R"])) return { state: "applied" }
-  if (check([])) return { state: "not-applied", reason: "applies cleanly but is not applied — run gates/upstream.mjs --apply-patches" }
+  if (check([])) return { state: "not-applied", reason: "applies cleanly but is not applied — run pipeline upstream --apply-patches" }
   return { state: "conflict", reason: "neither applied nor applicable to the pinned upstream — rebase the patch" }
 }
 

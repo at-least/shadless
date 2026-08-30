@@ -175,7 +175,7 @@ var handAuthoredPatterns = []boundaryPattern{
 	{match: oneOf("tools/git-hooks/pre-commit"), owner: "human (git hook shell script)"},
 	// Pin tracking
 	{match: oneOf("src/registry/pin.json"),
-		owner: "gates/upstream.mjs (re-pin) / human (vendor re-hash via ./build/pipeline pin --force)"},
+		owner: "pipeline upstream (re-pin) / human (vendor re-hash via ./build/pipeline pin --force)"},
 	// Docs / orchestration (mix of programmatic generation and human prose)
 	{match: func(p string) bool {
 		switch p {

@@ -42,7 +42,7 @@ func TestUnitAuditClassifyOrder(t *testing.T) {
 		{"src/tags.mjs", "tool-source", ""},
 		// pin.json is hand-authored even though it sits under src/registry
 		{"src/registry/pin.json", "hand-authored",
-			"gates/upstream.mjs (re-pin) / human (vendor re-hash via ./build/pipeline pin --force)"},
+			"pipeline upstream (re-pin) / human (vendor re-hash via ./build/pipeline pin --force)"},
 		// nothing claims a Go source file
 		{"pipeline/main.go", "unknown", ""},
 	} {

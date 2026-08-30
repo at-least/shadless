@@ -14,9 +14,11 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 	"sync"
 	"time"
@@ -40,6 +42,63 @@ type Runner struct {
 
 	mu     sync.Mutex
 	stamps stamps
+
+	// report is what --keep-going writes to build/gates/run-report.json.
+	// The re-pin drill consumes it to classify each red gate as EXPECTED
+	// (its components moved upstream) or UNEXPECTED (we regressed), so the
+	// failure TAIL is part of the interface, not a log.
+	report runReport
+}
+
+// runReport mirrors the shape gates/run.mjs wrote, because gates/upstream.mjs
+// reads it as data.
+type runReport struct {
+	Failed  map[NodeID]failedNode `json:"failed"`
+	Blocked []NodeID              `json:"blocked"`
+	Passed  []NodeID              `json:"passed"`
+}
+
+type failedNode struct {
+	Cmd  string `json:"cmd"`
+	Tail string `json:"tail"`
+}
+
+// tailOf is the last 25 non-empty lines — enough for the drill to attribute a
+// failure to a component, short enough to paste into a report.
+func tailOf(out []byte) string {
+	var lines []string
+	for _, l := range strings.Split(string(out), "\n") {
+		if strings.TrimSpace(l) != "" {
+			lines = append(lines, l)
+		}
+	}
+	if len(lines) > 25 {
+		lines = lines[len(lines)-25:]
+	}
+	return strings.Join(lines, "\n")
+}
+
+// writeReport persists the run report. Only --keep-going asks for it: a run
+// that stops at the first red has nothing to classify.
+func (r *Runner) writeReport() error {
+	if r.report.Failed == nil {
+		r.report.Failed = map[NodeID]failedNode{}
+	}
+	if r.report.Blocked == nil {
+		r.report.Blocked = []NodeID{}
+	}
+	if r.report.Passed == nil {
+		r.report.Passed = []NodeID{}
+	}
+	dir := filepath.Join(r.root, "build", "gates")
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		return err
+	}
+	b, err := json.MarshalIndent(r.report, "", "  ")
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(filepath.Join(dir, "run-report.json"), append(b, '\n'), 0o644)
 }
 
 func (r *Runner) record(id NodeID, key string) {
@@ -203,6 +262,14 @@ func (r *Runner) Run(plan []Node) (ran, skipped, failed, violations int) {
 		violations += len(res.violations)
 		if res.err != nil {
 			failed++
+			if r.report.Failed == nil {
+				r.report.Failed = map[NodeID]failedNode{}
+			}
+			cmd := ""
+			if len(res.node.Run) > 0 {
+				cmd = strings.Join(res.node.Run[len(res.node.Run)-1], " ")
+			}
+			r.report.Failed[id] = failedNode{Cmd: cmd, Tail: tailOf(res.output)}
 			// The `why` is the point of the report: a red gate is only
 			// actionable if you know what it was protecting. Printed here
 			// rather than left to the reader to look up in nodes.go.
@@ -221,6 +288,7 @@ func (r *Runner) Run(plan []Node) (ran, skipped, failed, violations int) {
 		}
 		ran++
 		done[id] = true
+		r.report.Passed = append(r.report.Passed, id)
 		for _, d := range dependents[id] {
 			pending[d]--
 			if pending[d] == 0 && !stop {
@@ -228,7 +296,15 @@ func (r *Runner) Run(plan []Node) (ran, skipped, failed, violations int) {
 			}
 		}
 	}
-	if blocked := len(plan) - ran - skipped - failed; blocked > 0 {
+	// whatever never ran and never skipped was blocked by a failed dependency
+	for _, n := range plan {
+		if !done[n.ID] {
+			if _, isFailed := r.report.Failed[n.ID]; !isFailed {
+				r.report.Blocked = append(r.report.Blocked, n.ID)
+			}
+		}
+	}
+	if blocked := len(r.report.Blocked); blocked > 0 {
 		fmt.Fprintf(os.Stderr, "%d node(s) not reached (a dependency failed)\n", blocked)
 	}
 	return

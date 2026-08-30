@@ -5,7 +5,7 @@ reports work, you know where the report came from.
 
 ```sh
 make upstream TO=shadcn@4.20.0          # the drill (add --fetch via node if tags are missing)
-node gates/upstream.mjs --to=shadcn@4.20.0 --fetch
+./build/pipeline upstream --to=shadcn@4.20.0 --fetch
 ```
 
 Exit 0 means: every artifact rebuilt, every gate green, every manual

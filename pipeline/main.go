@@ -148,7 +148,7 @@ func main() {
 	// product-css, hooks) take no argument. plan/status/run/adopt validate
 	// their own target list below.
 	if len(os.Args) < 2 {
-		fmt.Fprintln(os.Stderr, "usage: pipeline <plan|list|status|run|adopt> <fast|medium|full|builds|all|node…>\n       pipeline pin [--check-only]\n       pipeline tw <in> <out> [--minify] [--cwd DIR]\n       pipeline oracle-css\n       pipeline product-css\n       pipeline docs-catalog\n       pipeline ir-diff <git-ref>|<dirA> <dirB> [--json]\n       pipeline hooks [--uninstall] [--force]\n       pipeline css-direction --update\n       pipeline ledger --record|--render|--dissolve\n       pipeline audit-boundary [--strict|discover]\n\nThe gates are Go tests: go test -C pipeline -count=1 -v [-run '^TestPack$']")
+		fmt.Fprintln(os.Stderr, "usage: pipeline <plan|list|status|run|adopt> <fast|medium|full|builds|all|node…>\n       pipeline pin [--check-only]\n       pipeline tw <in> <out> [--minify] [--cwd DIR]\n       pipeline oracle-css\n       pipeline product-css\n       pipeline docs-catalog\n       pipeline ir-diff <git-ref>|<dirA> <dirB> [--json]\n       pipeline hooks [--uninstall] [--force]\n       pipeline css-direction --update\n       pipeline ledger --record|--render|--dissolve\n       pipeline audit-boundary [--strict|discover]\n       pipeline upstream --to=shadcn@X.Y.Z [--fetch] [--no-build]\n\nThe gates are Go tests: go test -C pipeline -count=1 -v [-run '^TestPack$']")
 		os.Exit(2)
 	}
 	cmd, args := os.Args[1], os.Args[2:]
@@ -184,6 +184,9 @@ func main() {
 	}
 	if cmd == "audit-boundary" {
 		os.Exit(runAuditBoundary(args))
+	}
+	if cmd == "upstream" {
+		os.Exit(runUpstream(args))
 	}
 	if cmd == "tw" {
 		os.Exit(runTw(args))
@@ -312,6 +315,12 @@ func main() {
 		}
 		start := time.Now()
 		ran, skipped, failed, violations := r.Run(plan)
+		if keepGoing {
+			// the re-pin drill reads this to classify each red gate
+			if err := r.writeReport(); err != nil {
+				fmt.Fprintln(os.Stderr, "pipeline: writing run report:", err)
+			}
+		}
 		fmt.Printf("ran %d, skipped %d in %.1fs (-j%d)\n", ran, skipped, time.Since(start).Seconds(), jobs)
 		if jobs > 1 && ran > 0 {
 			fmt.Println("note: the undeclared-write check only runs at -j1 (PIPELINE_PARALLEL=1)")
