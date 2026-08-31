@@ -158,7 +158,7 @@ function previewMarkdown(attrs, page) {
     return `<div class="demo-missing" data-demo="${name}" data-status="${status}">${note} — <code>${name}</code></div>`
   }
   const file = basename(status === 'authored' ? `docs/demos/${name}.html` : p.demoPath)
-  // RTL previews are one file per language (tools/build-rtl.mjs). Arabic is the
+  // RTL previews are one file per language (pipeline/build_rtl.go). Arabic is the
   // BASE file and the others carry a language suffix — the same rule the old
   // site's language buttons used (assets.mjs: `lang === 'ar' ? baseSrc : …`).
   // A picker would need script; markdown links reach the same files.

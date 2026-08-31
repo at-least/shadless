@@ -42,7 +42,7 @@ import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync, rmSync
 import { createHash } from "node:crypto"
 import { execFileSync } from "node:child_process"
 import { parseTs } from "../src/converter/index.mjs"
-import { extractTranslations } from "../tools/rtl-lib.mjs"
+import { extractTranslations } from "../tools/rtl-lib.mjs" // stays until gates/overlay ports (Wave 4)
 
 const UP = ".upstream/shadcn-ui"
 const REG = "apps/v4/registry/bases/radix/ui"

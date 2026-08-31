@@ -22,9 +22,9 @@ import (
 func TestUnitAuditClassifyOrder(t *testing.T) {
 	for _, tc := range []struct{ path, kind, owner string }{
 		// RTL variants must reach build-rtl, NOT the broader dist/components rule
-		{"dist/components/alert-rtl-he.html", "programmatic", "tools/build-rtl.mjs"},
-		{"dist/components/alert-rtl-en.html", "programmatic", "tools/build-rtl.mjs"},
-		{"dist/components/alert-rtl-fa.html", "programmatic", "tools/build-rtl.mjs"},
+		{"dist/components/alert-rtl-he.html", "programmatic", "pipeline/build_rtl.go"},
+		{"dist/components/alert-rtl-en.html", "programmatic", "pipeline/build_rtl.go"},
+		{"dist/components/alert-rtl-fa.html", "programmatic", "pipeline/build_rtl.go"},
 		// alert-demo is the oracle's, carved out of the same rule
 		{"dist/components/alert-demo.html", "programmatic", "tools/example-oracle.mjs"},
 		// a plain component page belongs to the emitter/demo rule
@@ -32,7 +32,7 @@ func TestUnitAuditClassifyOrder(t *testing.T) {
 			"src/emitter/index.mjs OR tools/demo.mjs (per-tier fixture)"},
 		// docs/demos RTL variants are build-rtl output, not hand-authored —
 		// programmatic patterns are consulted before hand-authored ones
-		{"docs/demos/alert-rtl-he.html", "programmatic", "tools/build-rtl.mjs"},
+		{"docs/demos/alert-rtl-he.html", "programmatic", "pipeline/build_rtl.go"},
 		// a bare -rtl.html read as hand-authored too, and is not: the oracle
 		// manifest claims it, and examples/radix/alert-rtl.tsx is its source
 		{"docs/demos/alert-rtl.html", "programmatic", "tools/example-oracle.mjs"},
@@ -108,7 +108,7 @@ func TestUnitAuditPatternsAreWellFormed(t *testing.T) {
 // The specific heuristics must win over the dist/ catch-all.
 func TestUnitAuditHeuristicOrder(t *testing.T) {
 	for path, wantTool := range map[string]string{
-		"dist/components/alert-rtl-he.html": "tools/build-rtl.mjs",
+		"dist/components/alert-rtl-he.html": "pipeline/build_rtl.go",
 		"docs/demos/thing-demo.html":        "tools/example-oracle.mjs",
 		"dist/glue/dialog-glue.js":          "tools/demo.mjs",
 		// only the catch-all matches this one

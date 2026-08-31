@@ -27,7 +27,6 @@ import * as runtime from "./unit/runtime.mjs"
 import * as docsTools from "./unit/docs-tools.mjs"
 import * as docsFidelity from "./unit/docs-fidelity.mjs"
 import * as transforms from "./unit/transforms.mjs"
-import * as rtl from "./unit/rtl.mjs"
 import * as types from "./unit/types.mjs"
 
 const suites = [
@@ -41,7 +40,7 @@ const suites = [
   ["docs-tools", docsTools],
   ["docs-fidelity", docsFidelity],
   ["transforms", transforms],
-  ["rtl", rtl],
+  
   ["types", types],
 ]
 

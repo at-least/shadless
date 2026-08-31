@@ -191,6 +191,9 @@ func main() {
 	if cmd == "rtl-dict" {
 		os.Exit(runRtlDict())
 	}
+	if cmd == "build-rtl" {
+		os.Exit(runBuildRtl())
+	}
 	if cmd == "inputs" {
 		os.Exit(runInputs(args))
 	}

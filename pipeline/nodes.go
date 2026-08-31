@@ -272,9 +272,9 @@ var Nodes = []Node{
 		// check treats a dependency's `produces` as covered — so reading a
 		// fixture-owned page looked declared. Same over-declared glob, same
 		// blindness, as emit's dist/components/*.html.
-		Needs:     []NodeID{NExampleOracle, NExampleFixture, NRtlDict},
-		Run:       [][]string{{"node", "tools/build-rtl.mjs"}},
-		Inputs:    []string{"tools/build-rtl.mjs", "tools/rtl-lib.mjs", "src/docs/theme-prepaint.mjs", "src/registry/pin.json", "src/registry/tiers.json"},
+		Needs:     []NodeID{NExampleOracle, NExampleFixture, NRtlDict, NBuildJs},
+		Run:       [][]string{{"./build/pipeline", "build-rtl"}},
+		Inputs:    []string{"pipeline/build_rtl.go", "pipeline/rtl_dict.go", "src/registry/tiers.json"},
 		Produces:  []string{"dist/components/*-rtl-*.html", "docs/demos/*-rtl-*.html", "build/rtl-langs.json"},
 		Why:       "AR/HE/EN/FA variants derived from the Arabic oracle page + upstream dictionaries",
 		Mutations: nil,
