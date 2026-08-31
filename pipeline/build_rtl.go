@@ -92,32 +92,6 @@ func substituteAndPatch(arabicHTML string, translations map[string]struct {
 	return out
 }
 
-// themePrePaint is the script src/docs/theme-prepaint.mjs injects before
-// first paint. The JS constant is the single source of truth — the exact
-// same string, kept in sync by TestUnitPrepaintParity (the JS file
-// re-uses it; a drift between the two is the failure the test exists for).
-const themePrePaintScript = `<script>(function(){try{var k="shadless-docs-theme";var apply=function(d){document.documentElement.classList.toggle("dark",!!d)};var s=localStorage.getItem(k);var d=s?s==="dark":matchMedia("(prefers-color-scheme: dark)").matches;apply(d);addEventListener("storage",function(e){if(e.key===k)apply(e.newValue==="dark")});}catch(e){}})();</script>`
-
-const themePrePaintPrefix = `<script>(function(){try{var k="shadless-docs-theme"`
-
-// injectPrePaint mirrors src/docs/theme-prepaint.mjs exactly: prepend to
-// </head> when present, otherwise into the opening <head …>, otherwise at
-// the very front. Idempotent on the SIG prefix.
-func injectPrePaint(html string) string {
-	if strings.Contains(html, themePrePaintPrefix) {
-		return html
-	}
-	if strings.Contains(html, "</head>") {
-		return strings.Replace(html, "</head>", themePrePaintScript+"</head>", 1)
-	}
-	headRe := regexp.MustCompile(`(?i)<head[^>]*>`)
-	if headRe.MatchString(html) {
-		return headRe.ReplaceAllStringFunc(html, func(m string) string {
-			return m + themePrePaintScript
-		})
-	}
-	return themePrePaintScript + html
-}
 
 func runBuildRtl() int {
 	dictB, err := os.ReadFile("src/registry/rtl-translations.json")
