@@ -11,7 +11,7 @@ import { join } from "node:path"
 import { pathToFileURL } from "node:url"
 import { NAT, externalMemberTag, normalizeTag } from "../tags.mjs"
 
-// Resolved tree (tools/resolve-skins.mjs): bases/radix/ui with cn-*
+// Resolved tree (pipeline/resolve_skins.go): bases/radix/ui with cn-*
 // expanded to nova-skin utilities — upstream generation parity. All
 // downstream consumers (IR, contracts oracle, example oracle) read the
 // RESOLVED tree so shipped markup never carries cn-* names.

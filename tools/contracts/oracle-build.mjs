@@ -29,7 +29,7 @@ render();
     entryPoints: [entryFile], bundle: true, format: "iife",
     outfile: bundle, logLevel: "error",
     alias: {
-      // resolved tree (tools/resolve-skins.mjs): cn-* already expanded —
+      // resolved tree (./build/pipeline resolve-skins): cn-* already expanded —
       // the oracle and shadless compare against identical class semantics
       "@": resolve(".upstream/shadcn-ui/apps/v4"),
       "@/registry/bases/radix/ui": resolve("build/resolved-ui/ui"),

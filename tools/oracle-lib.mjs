@@ -25,7 +25,7 @@ import { createHash } from "node:crypto"
 // every call — the gate's whole point is re-rendering the oracle — but the
 // ~1-2s per-demo esbuild pass is skippable when nothing it reads has moved.
 // Keyed on: pin commit (upstream tree identity), the example file, the
-// stubs dir, resolve-skins + the skin tables it imports (they regenerate the
+// stubs dir, resolve-skins + the skin tables (they regenerate the
 // resolved tree the aliases point at) and this module itself (entry template
 // + alias matrix live here), plus package-lock.json
 // (react/radix/esbuild versions) now that the cache is shared and restored
@@ -48,13 +48,13 @@ function bundleCacheKey(name) {
   h.update(readFileSync(join(".upstream/shadcn-ui/apps/v4/examples/radix", `${name}.tsx`)))
   for (const f of readdirSync("tools/contracts/stubs").sort())
     h.update(f).update(readFileSync(join("tools/contracts/stubs", f)))
-  // resolve-skins is what BUILDS build/resolved-ui, which every alias below
+  // resolve-skins (pipeline/resolve_skins.go) BUILDS build/resolved-ui, which every alias below
   // points at — so both the script and the tables it imports are part of the
   // bundle's identity. skin.mjs was missing: editing SKIN_ALLOWLIST changed
   // the resolved tree, the runner correctly re-ran the oracle consumers, and this
   // key did not move — so a bundle compiled against the OLD resolved tree was
   // reused and the gates compared against a stale oracle, green.
-  h.update(readFileSync("tools/resolve-skins.mjs"))
+  h.update(readFileSync("pipeline/resolve_skins.go"))
   h.update(readFileSync("src/emitter/skin.mjs"))
   h.update(readFileSync(new URL("./oracle-lib.mjs", import.meta.url)))
   return h.digest("hex")
@@ -62,7 +62,7 @@ function bundleCacheKey(name) {
 
 // esbuild alias matrix: examples import GENERATED style dirs
 // @/styles/<flavor>-<skin>/ui[-rtl]/* (gitignored). The resolved tree
-// (tools/resolve-skins.mjs) is their tracked equivalent — cn-* already
+// (pipeline/resolve_skins.go) is their tracked equivalent — cn-* already
 // expanded to nova utilities, upstream generation parity. Resolved files
 // keep their @/registry/bases/radix/{ui,lib,hooks} specifiers, so those
 // alias into the resolved tree too.

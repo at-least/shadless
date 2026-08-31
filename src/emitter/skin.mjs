@@ -3,7 +3,7 @@
 // Upstream split the registry into structure (bases/radix/ui/*.tsx, named
 // cn-* classes) + skins (registry/styles/style-<name>.css defining each
 // cn-* via @apply under a `.style-<name>` scope). shadless ships the nova
-// skin, and resolves cn-* at the SOURCE (tools/resolve-skins.mjs —
+// skin, and resolves cn-* at the SOURCE (pipeline/resolve_skins.go —
 // upstream generation parity): IR, fixture markup and demo DOM all carry
 // plain utility classes. This module is the map that resolver consumes;
 // it emits no CSS itself (the old @utility injection + anti-tree-shake

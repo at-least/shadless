@@ -35,7 +35,7 @@ if (!PAGE_DIRS.every(existsSync)) {
 const sitePages = PAGE_DIRS.flatMap((d) => readdirSync(d).filter((f) => f.endsWith(".md")).map((f) => join(d, f)))
 
 // ---- 1. skin residue: shipped HTML must carry zero non-allowlist cn-* ---------
-// Source-resolve (tools/resolve-skins.mjs) expands cn-* at the source;
+// Source-resolve (pipeline/resolve_skins.go) expands cn-* at the source;
 // the only survivors upstream keeps are the transform ALLOWLIST (marker
 // classes resolved at CLI-install time; the live site CSS defines only
 // .cn-font-heading among them). Any other cn-* in shipped HTML is a
