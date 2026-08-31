@@ -243,15 +243,15 @@ var Nodes = []Node{
 	},
 	{
 		ID: NRtlDict, Kind: "build", Tier: "fast",
-		Needs: []NodeID{NPin},
-		Run:   [][]string{{"node", "tools/rtl-dict.mjs"}},
+		Needs: []NodeID{NPin, NBuildJs},
+		Run:   [][]string{{"./build/pipeline", "rtl-dict"}},
 		// The ONLY node that reads examples/aria. This repo targets the radix
 		// registry (src/registry/pin.json); aria is a tree we deliberately do
 		// not build from, and one page emitter reaching into it for string
 		// data was the only thing keeping that dependency alive. The data is
 		// not aria-specific — it is {en,ar,he} -> {dir,values}, the same
 		// strings whichever primitive library renders them.
-		Inputs:    []string{"tools/rtl-dict.mjs", "tools/rtl-lib.mjs", "src/registry/tiers.json", ".upstream/shadcn-ui/apps/v4/examples/aria/**"},
+		Inputs:    []string{"pipeline/rtl_dict.go", "src/registry/tiers.json", ".upstream/shadcn-ui/apps/v4/examples/aria/**"},
 		Produces:  []string{"src/registry/rtl-translations.json"},
 		Why:       "the RTL translation dictionaries, lifted out of upstream's aria registry into a file this repo owns — so exactly one declared edge reaches a registry we do not build from, and `reproducible` catches it drifting",
 		Mutations: []string{"rtl-dict-missing-dictionary"},

@@ -188,6 +188,9 @@ func main() {
 	if cmd == "resolve-skins" {
 		os.Exit(runResolveSkins(args))
 	}
+	if cmd == "rtl-dict" {
+		os.Exit(runRtlDict())
+	}
 	if cmd == "inputs" {
 		os.Exit(runInputs(args))
 	}
