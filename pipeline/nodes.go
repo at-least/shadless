@@ -176,9 +176,9 @@ var Nodes = []Node{
 	},
 	{
 		ID: NConvert, Kind: "build", Tier: "full",
-		Needs:     []NodeID{NPin},
-		Run:       [][]string{{"node", "tools/resolve-skins.mjs"}, {"node", "src/converter/index.mjs"}},
-		Inputs:    []string{"tools/resolve-skins.mjs", "src/converter/**", "src/tags.mjs", "src/emitter/skin.mjs", "src/registry/tiers.json", "src/registry/pin.json", "src/kernel/**", ".upstream/shadcn-ui/apps/v4/registry/bases/radix/**", ".upstream/shadcn-ui/apps/v4/registry/styles/style-nova.css"},
+		Needs:     []NodeID{NPin, NBuildJs},
+		Run:       [][]string{{"./build/pipeline", "resolve-skins"}, {"node", "src/converter/index.mjs"}},
+		Inputs:    []string{"pipeline/resolve_skins.go", "pipeline/internal/twmerge/**", "pipeline/internal/tsx/**", "src/converter/**", "src/tags.mjs", "src/emitter/skin.mjs", "src/registry/tiers.json", "src/registry/pin.json", "src/kernel/**", ".upstream/shadcn-ui/apps/v4/registry/bases/radix/**", ".upstream/shadcn-ui/apps/v4/registry/styles/style-nova.css"},
 		Produces:  []string{"src/registry/ir", "build/resolved-ui"},
 		Why:       "registry .tsx -> IR JSON, with its own drift gate against the pinned source",
 		Mutations: nil,
