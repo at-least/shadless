@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -73,11 +74,18 @@ func TestUnitSubstituteAndPatch(t *testing.T) {
 	}
 }
 
-// build-rtl against the committed tree: rerun must leave checked-in
-// outputs unchanged. This proves the Go build-rtl is byte-equivalent to the
-// JS one on the real corpus.
+// build-rtl against the working tree: rerun must leave the *-rtl pages and
+// build/rtl-langs.json unchanged. Skipped when the fixture pages are not
+// built yet (a fresh clone lacks docs/demos/*-rtl.html — example-fixture
+// writes them); the pin exists wherever the demo chain has run.
 func TestUnitBuildRtlParity(t *testing.T) {
 	root := "/home/newlix/github/at-least/shadless"
+	if out, _ := exec.Command("git", "-C", root, "status", "--porcelain", "--", "docs/demos", "dist/components", "build/rtl-langs.json").Output(); len(out) != 0 {
+		t.Skipf("tree dirty, skip parity: %s", strings.SplitN(string(out), "\n", 2)[0])
+	}
+	if _, err := os.Stat(root + "/docs/demos/button-group-rtl.html"); err != nil {
+		t.Skip("fixture pages not built yet — run the demo chain first")
+	}
 	pipelineBin := filepath.Join(t.TempDir(), "pipeline")
 	if out, err := exec.Command("go", "build", "-o", pipelineBin, ".").CombinedOutput(); err != nil {
 		t.Fatalf("build: %v\n%s", err, out)
@@ -87,8 +95,7 @@ func TestUnitBuildRtlParity(t *testing.T) {
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("build-rtl: %v\n%s", err, out)
 	}
-	diff := exec.Command("git", "-C", root, "status", "--porcelain", "--", "docs/demos", "dist/components", "build/rtl-langs.json")
-	if out, _ := diff.Output(); len(out) > 0 {
-		t.Fatalf("rebuild changed committed outputs:\n%s", out)
+	if out, _ := exec.Command("git", "-C", root, "status", "--porcelain", "--", "docs/demos", "dist/components", "build/rtl-langs.json").Output(); len(out) != 0 {
+		t.Fatalf("rebuild changed outputs:\n%s", out)
 	}
 }

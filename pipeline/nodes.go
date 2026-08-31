@@ -431,9 +431,9 @@ var Nodes = []Node{
 	},
 	{
 		ID: NDocsConsistency, Kind: "gate", Tier: "fast",
-		Needs:     []NodeID{NDocsBuild},
-		Run:       [][]string{{"node", "tools/docs-consistency.mjs"}},
-		Inputs:    []string{"tools/docs-consistency.mjs", "src/emitter/skin.mjs", "docs/components/**", "docs/guides/**", "dist/components/**", "dist/css/**", "docs/demos/**", "package.json"},
+		Needs:     []NodeID{NDocsBuild, NBuildJs},
+		Run:       [][]string{{"./build/pipeline", "docs-consistency"}},
+		Inputs:    []string{"pipeline/docs_consistency.go", "pipeline/resolve_skins.go", "docs/components/**", "docs/guides/**", "dist/components/**", "dist/css/**", "docs/demos/**", "package.json"},
 		Produces:  nil,
 		Why:       "no shipped page carries skin residue, every taught @import resolves to a file, and no page teaches React imports",
 		Mutations: []string{"docs-consistency-react-import"},

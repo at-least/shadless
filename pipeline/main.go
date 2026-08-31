@@ -194,6 +194,9 @@ func main() {
 	if cmd == "build-rtl" {
 		os.Exit(runBuildRtl())
 	}
+	if cmd == "docs-consistency" {
+		os.Exit(runDocsConsistency())
+	}
 	if cmd == "inputs" {
 		os.Exit(runInputs(args))
 	}
