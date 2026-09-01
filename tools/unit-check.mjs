@@ -17,29 +17,20 @@
 // assertions go with the implementation (`go test -run ^TestUnit`), so there
 // is never a JS test standing over a Go function. The `unit` node runs both.
 import { makeT } from "./unit/harness.mjs"
-import * as frontmatter from "./unit/frontmatter.mjs"
 import * as css from "./unit/css.mjs"
 import * as prepaint from "./unit/prepaint.mjs"
-import * as routes from "./unit/routes.mjs"
 import * as converter from "./unit/converter.mjs"
 import * as emitter from "./unit/emitter.mjs"
 import * as runtime from "./unit/runtime.mjs"
-import * as docsFidelity from "./unit/docs-fidelity.mjs"
-import * as transforms from "./unit/transforms.mjs"
 import * as types from "./unit/types.mjs"
 
 const suites = [
-  ["frontmatter", frontmatter],
-  ["css", css],
+    ["css", css],
   ["prepaint", prepaint],
-  ["routes", routes],
   ["converter", converter],
   ["emitter", emitter],
   ["runtime", runtime],
-  
-  ["docs-fidelity", docsFidelity],
-  ["transforms", transforms],
-  
+    
   ["types", types],
 ]
 

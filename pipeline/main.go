@@ -203,6 +203,15 @@ func main() {
 	if cmd == "emit" {
 		os.Exit(runEmit())
 	}
+	if cmd == "docs-build" {
+		os.Exit(runDocsBuild())
+	}
+	if cmd == "docs-guides" {
+		os.Exit(runDocsGuides())
+	}
+	if cmd == "docs-fidelity" {
+		os.Exit(runDocsFidelity())
+	}
 	if cmd == "inputs" {
 		os.Exit(runInputs(args))
 	}

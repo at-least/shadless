@@ -21,7 +21,6 @@ import { spawn } from 'node:child_process'
 import { readdirSync } from 'node:fs'
 import { basename } from 'node:path'
 import { chromium } from 'playwright'
-import { GUIDES } from './docs-guides.mjs'
 
 const ALL = process.argv.includes('--all')
 // VitePress's output. cleanUrls is on, so a page's file keeps the .html
@@ -134,7 +133,7 @@ check('dialog page wiring: every preview is an iframe or an unavailable note',
 
 // ---- 4. --all: every-page sweep (render + mdx leak + 0 console errors) -------
 if (ALL) {
-  const guideSlugs = new Set(GUIDES.map((g) => `guides/${g.slug}.html`))
+  const guideSlugs = null // classification is path-based now (docs-guides.mjs is Go)
   const pageFiles = [
     'index.html',
     ...readdirSync(`${SITE_DIR}/components`).filter((f) => f.endsWith('.html')).map((f) => `components/${f}`),
@@ -169,7 +168,7 @@ if (ALL) {
       return { rendered: !!article && text.length > 0, leaks: visible.match(/Component(Preview|Source)\b/g) ?? [] }
     })
     if (f === 'index.html') nIndex++
-    else if (guideSlugs.has(f)) nGuides++
+    else if (f.startsWith('guides/')) nGuides++
     else nComponents++
     if (!res.rendered) { renderFail++; console.error(`FAIL  render: ${f} — article missing/empty`) }
     if (res.leaks.length) { leakFail++; console.error(`FAIL  mdx leak: ${f} — ${[...new Set(res.leaks)].join(', ')}`) }
