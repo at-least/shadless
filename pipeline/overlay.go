@@ -145,35 +145,24 @@ func ovRegistryNames() []string {
 	return out
 }
 
-// ovTierSets — the converter's tables, read from the JS file that still
-// owns them (until the converter itself ports); jsSetLiteral preserves the
-// literal's order, which runtime:core's hash depends on.
+// ovTierSets — the converter's tables, now Go vars in convert.go (the tier
+// lists keep their literal ORDER: runtime:core's hash depends on it).
 type ovTierSet struct {
 	tier  string
 	names []string
 }
 
 func ovLoadTierSets() ([]ovTierSet, []string, error) {
-	src, err := os.ReadFile("src/converter/index.mjs")
-	if err != nil {
-		return nil, nil, err
-	}
 	var sets []ovTierSet
-	for _, s := range []struct{ tier, name string }{
-		{"kernel", "KERNEL"}, {"trivial", "TRIVIAL"}, {"medium", "MEDIUM"},
-		{"logic", "LOGIC"}, {"external", "EXPLICIT_EXTERNAL"},
-	} {
-		names, err := jsSetLiteral(string(src), s.name)
-		if err != nil {
-			return nil, nil, fmt.Errorf("converter tier set %s: %w", s.name, err)
+	for _, s := range cvTierSets {
+		// the audit's unit ids say "trivial" where tierOf returns "trivial-js"
+		tier := s.tier
+		if tier == "trivial-js" {
+			tier = "trivial"
 		}
-		sets = append(sets, ovTierSet{s.tier, names})
+		sets = append(sets, ovTierSet{tier, s.names})
 	}
-	icons, err := jsSetLiteral(string(src), "KNOWN_ICONS")
-	if err != nil {
-		return nil, nil, fmt.Errorf("converter KNOWN_ICONS: %w", err)
-	}
-	return sets, icons, nil
+	return sets, cvKnownIcons, nil
 }
 
 func ovSkinAllowlist() ([]string, error) {
@@ -336,7 +325,7 @@ func ovRuleUnits(pin ovPinFile, tierSets []ovTierSet, icons []string) ([]ovUnit,
 		icon := icon
 		push(ovUnit{
 			id: "known-icon:" + icon, kind: "rule",
-			home:     "src/converter/index.mjs KNOWN_ICONS",
+			home:     "pipeline/convert.go KNOWN_ICONS",
 			requires: func() string { return "" },
 			dissolved: func() string {
 				re := regexp.MustCompile(`\b` + regexp.QuoteMeta(icon) + `\b`)
@@ -359,7 +348,7 @@ func ovRuleUnits(pin ovPinFile, tierSets []ovTierSet, icons []string) ([]ovUnit,
 			name := name
 			push(ovUnit{
 				id: fmt.Sprintf("tier:%s:%s", s.tier, name), kind: "rule",
-				home: "src/converter/index.mjs tier sets",
+				home: "pipeline/convert.go tier sets",
 				requires: func() string {
 					if ovUpExists(ovREG + "/" + name + ".tsx") {
 						return ""
@@ -372,7 +361,7 @@ func ovRuleUnits(pin ovPinFile, tierSets []ovTierSet, icons []string) ([]ovUnit,
 	}
 	push(ovUnit{
 		id: "tier:coverage", kind: "rule",
-		home: "src/converter/index.mjs tier sets",
+		home: "pipeline/convert.go tier sets",
 		requires: func() string {
 			// static tier is the default (no set); the converter decides
 			// static vs needs-runtime from the source. What must not

@@ -40,7 +40,7 @@ func TestUnitAuditClassifyOrder(t *testing.T) {
 		// records — this used to read as hand-authored
 		{"docs/demos/badge-demo.html", "programmatic", "pipeline/example_oracle.go"},
 		// IR json
-		{"src/registry/ir/badge.json", "programmatic", "src/converter/index.mjs"},
+		{"src/registry/ir/badge.json", "programmatic", "pipeline/convert.go"},
 		// tool source
 		{"pipeline/demo.go", "tool-source", ""},
 		{"src/tags.mjs", "tool-source", ""},

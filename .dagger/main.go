@@ -13,12 +13,13 @@
 // but it moves from a glob list to a mount, at FOLDER granularity, and it
 // stops being able to be quietly wrong.
 //
-// What does not change: the tools themselves. The converter needs
-// @babel/parser, the emitter needs jsdom and tailwind-merge, docs-build needs
-// mdx and shiki, and the oracle renders real React. None of those has a Go
-// equivalent that produces identical bytes, and `reproducible` compares the
-// committed trees byte for byte. They run here as they always did — in a
-// container instead of on the host.
+// What does not change: the tools themselves. The emitter needs jsdom and
+// tailwind-merge, docs-build needs mdx and shiki, and the oracle renders real
+// React. None of those has a Go equivalent that produces identical bytes, and
+// `reproducible` compares the committed trees byte for byte. They run here as
+// they always did — in a container instead of on the host. The converter was
+// the last @babel/parser consumer; it ported to `pipeline convert` and now
+// runs in the Go container.
 
 package main
 
@@ -122,11 +123,10 @@ func withBrowser(c *dagger.Container) *dagger.Container {
 // both of that step's outputs — src/registry/ir (the IR) and build/resolved-ui
 // (the skin-flattened registry the oracle bundles from).
 //
-// The inputs are three directory mounts:
+// The inputs are two directory mounts:
 //
-//	src/         the converter, the tag table, the skin allowlist, the tiers
-//	             and pin registries, the kernel fixtures
-//	tools/       resolve-skins, which flattens the upstream skin first
+//	src/         the pin and tiers registries and the kernel fixtures the
+//	             Go convert step reads
 //	.upstream/…/registry/   the .tsx being converted, and style-nova.css
 //
 // src/registry/ir is deliberately NOT mounted. It is this step's OUTPUT, and
@@ -136,32 +136,28 @@ func withBrowser(c *dagger.Container) *dagger.Container {
 // ships, because the converter writes in place and nothing removed it. Every
 // gate missed it — including `reproducible`, which rebuilds in place too, so
 // the orphan sat in both trees and never differed.
+//
+// Both steps run the Go pipeline binary (resolve-skins, then convert); the
+// node toolchain is gone from this step entirely.
 func (m *Shadless) converted(ctx context.Context, source *dagger.Directory) (*dagger.Container, error) {
-	c, err := m.deps(ctx, source)
+	bin, err := m.pipelineBin(ctx, source)
 	if err != nil {
 		return nil, err
 	}
-	return c.
+	img, err := goImage(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	return dag.Container().
+		From(img).
+		WithWorkdir("/w").
+		WithFile("/w/build/pipeline", bin).
 		WithDirectory("/w/src", source.Directory("src").Filter(
 			dagger.DirectoryFilterOpts{Exclude: []string{"registry/ir/**"}})).
-		// Only the one script this step runs, NOT the whole of tools/.
-		//
-		// Mounting the directory made every contract depend on every file
-		// under it: oracleBase builds on ResolvedUI, which builds on this
-		// container, so editing one contract def invalidated the conversion
-		// and all 29 contracts re-ran. Measured — 4m07s to change one def,
-		// against 1.7s fully cached. Per-def mounts in oracleBase did not
-		// help, because the coupling was two levels upstream of where it
-		// showed up.
-		//
-		// resolve-skins imports only src/emitter/skin.mjs, which src/ already
-		// carries. If it grows another tools/ import, the sandbox says so with
-		// an ENOENT rather than silently widening this step's key.
-		WithFile("/w/tools/resolve-skins.mjs", source.File("tools/resolve-skins.mjs")).
 		WithDirectory("/w/.upstream/shadcn-ui/apps/v4/registry",
 			source.Directory(".upstream/shadcn-ui/apps/v4/registry")).
-		WithExec([]string{"node", "tools/resolve-skins.mjs"}).
-		WithExec([]string{"node", "src/converter/index.mjs"}), nil
+		WithExec([]string{"./build/pipeline", "resolve-skins"}).
+		WithExec([]string{"./build/pipeline", "convert"}), nil
 }
 
 // Convert turns the pinned registry .tsx into the versioned IR.

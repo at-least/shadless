@@ -52,6 +52,7 @@ npm run docs              # 重建文件站
 | **Wave 3（775f10d…24fa3d2）**：demo-smoke、docs-smoke、interactivity-sweep、example-golden、example-oracle、style-parity、demo-parity、path-parity | 全部 `pipeline <verb>`，走 `tools/browser-shell.mjs` 薄殼（launch/newPage+事件擷取/goto/evaluateFn+arg/locator/mouse/keyboard/addStyleTag/setContent/driver/loadContractDef/routeAbortExternal） | 每個的 PASS 行與 JS 版 byte-for-byte 相同後才刪 JS；parity-baseline 共享邏輯在 `pipeline/parity_baseline.go`；oracle bundle 走 esbuild Go API（`oracle_lib.go`），canonOf 留 JS 本質、embed 成 `oracle_canon.js` |
 | `tools/example-fixture.mjs`（42dfadc，--contracts 同支） | `pipeline example-fixture [--contracts]` | 105+14 頁 byte-identical（跑完 git 乾淨）、PASS 行同 JS；id 映射/收割/tabs 重組/API 走查是 embed 的 page-JS（ef_*.js）；家族表加 js 欄；families golden 改讀 testdata 快照 |
 | `gates/overlay.mjs`（fc579c1） | `pipeline overlay --audit|--record|--tasks|--report` | audit 輸出 byte-identical（199 applied + 1 dissolved）；--record 排序正規化（hash 不變）；規則表讀 Go var 本體 + jsSetLiteral 抽 JS 表；defs 走 shell 不啟動 chromium |
+| **`src/converter/index.mjs`（796 行，最後的 babel 依賴）** | `pipeline convert`（`pipeline/convert.go`，~1900 行） | 61 檔 IR **byte-identical**（`TestUnitConverterIrParity`：跑 convert + `git status src/registry/ir` 必須乾淨）；drift gates PASS 行逐字同 JS；`tools/unit/converter.mjs` 斷言搬進 `convert_test.go`（TestUnitConverter*） |
 
 `tools/fixture-families.mjs` **還活著**（example-fixture 讀 FAMILY 表）— `TestUnitFixtureFamiliesGolden` 釘住 Go 表與 JS 表不漂移。`src/docs/transforms.mjs` **還活著**（overlay 讀 TEXT_ADJUSTMENTS）。
 
@@ -62,14 +63,13 @@ npm run docs              # 重建文件站
 - 檔名序 vs 元件名序不同：`alert-dialog.json` < `alert.json`（`-` < `.`）。cssParts 用檔名序、頁面用元件名序——JS 兩種都用，Go 必須跟。
 - **`git add -A` 之前先 `git status -- dist docs`**（這次真的吞了 92 個 fixture 頁，靠 example-fixture 重生成 + 與 `f0df8e6~1` 比對救回）。
 - `fs-record` 的 wrap 必須帶原函式的屬性（`.native`）——vite 讀 `fs.realpathSync.native`。
+- **converter port（2026-09-02）**：路線是 esbuild Transform 降級 TSX → 掃 `React.createElement(` 輸出。關鍵坑：(1) children 的 "text"/"expr"/"OPT?" 要靠**掃原始碼的 JSX children 分類器**按元素出現序與降級側配對（`{" "}` 和 JSXText 降級後都是字串參數、`{/* comment */}` 容器整個消失）；(2) fragment `<>` 兩側都不算元素；(3) `cvFirstTop` 的 hit 一定要卡 `depth==0`（否則 props 物件裡的 `?` 被當根運算子，整個 props 解析成 cond）；(4) 關鍵字後讀下一個詞要跳空白（`cvNextWord`）；(5) upstream 原始碼**沒有分號**——cvSkipStmt 要在 depth-0 換行停，否則一條 import 吞整檔；(6) gate 1 的字串數要排除 Template span（`String.raw` 標籤模板 babel 不算）；(7) `export default function D` 被 esbuild 改寫成 `export { D as default }`，as-default 註冊的是宣告名。
 
-### 剩餘的 `node` 命令（2 支）
+### 剩餘的 `node` 命令（1 支）
 
-- **`src/converter/index.mjs`（796 行，最後的 babel 依賴）**：方向已拍板、調查已完成——**見 §4.5，可直接開工**。port 完即可刪 `src/emitter/{index,css,skin}.mjs`、`src/tags.mjs`、`src/docs/transforms.mjs`、`tools/rtl-lib.mjs`
-- `tools/unit-check.mjs`（殘餘 suites css/prepaint/converter/emitter/runtime/types——對應 JS 工具刪除時跟著搬進 Go 測試）
-- **`tools/contracts/run.mjs`（`npm run contracts`）**：import `contracts/oracle-build.mjs` + `oracle-lib.mjs`，這兩支因此還活著；run.mjs port 完即可刪（Go 側 `buildContractOracleGo` 已在 `example_fixture.go`）
+- **`tools/contracts/run.mjs`（`npm run contracts`）**：import `contracts/oracle-build.mjs` + `oracle-lib.mjs`，這兩支因此還活著；run.mjs port 完即可刪（Go 側 `buildContractOracleGo` 已在 `example_fixture.go`）。unit-check 的 suites 剩 css/prepaint/emitter/runtime/types（converter suite 已隨 port 刪除、斷言在 `pipeline/convert_test.go`）。
 
-`src/tags.mjs`、`src/emitter/{index,css,skin}.mjs`、`src/docs/transforms.mjs`、`tools/rtl-lib.mjs`（converter port 完才刪；overlay 現在只從 converter/index.mjs + skin.mjs 用 jsSetLiteral 抽表）、`tools/oracle-lib.mjs` + `tools/contracts/oracle-build.mjs`（contracts runner 讀）**還活著**——別刪。
+`src/tags.mjs`、`src/emitter/{index,css,skin}.mjs`、`src/docs/transforms.mjs`、`tools/rtl-lib.mjs`（**還活著**——Go golden 測試直接 import JS 版比對：`emitter_css_test.go`、`tools/unit/{css,emitter}.mjs`；skin.mjs 另有 ledger/overlay 的 jsSetLiteral 讀者、oracle-lib 的 bundle hash）、`tools/oracle-lib.mjs` + `tools/contracts/oracle-build.mjs`（contracts runner 讀）**別刪**。tier 表/KNOWN_ICONS 已是 Go var（`convert.go cvTierSets/cvKnownIcons`），overlay 的 audit 單位 id 用 "trivial"（tierOf 回傳 "trivial-js"，`ovLoadTierSets` 負責映射）。`.dagger/main.go` 的 `converted` 已改跑 Go binary（resolve-skins + convert）。
 
 ---
 
@@ -103,47 +103,23 @@ npm run docs              # 重建文件站
 ### 4.4 runtime bug 群（這些會出貨到 npm；原樣保留）
 dropdown/context-menu 共用 guard、popover 搶焦點、carousel window.__api、navigation-menu JS 內 Tailwind class、ESM kernel 跑兩次。
 
-### 4.5 Wave 4：converter port —— 調查已完成、方向已拍板，可直接開工（2026-09-02）
+### 4.5 Wave 4：converter port ✅（2026-09-02 完成，見 §2 表）
 
-**使用者已選定路線「1」：esbuild Transform 先降級 TSX → JS，再對降級輸出做有限掃描。不用新 parser 依賴。**
+路線「1」（esbuild Transform 先降級 TSX → JS，再對降級輸出做有限掃描，不用新 parser 依賴）已實作在 `pipeline/convert.go`。61 檔 byte-identical、drift gates 逐字、`make` 全綠後刪了 `src/converter/index.mjs` + `tools/unit/converter.mjs`。
 
-**生態調查結論（已實測 import，別重查）**：沒有可直接 import 的純 Go TSX AST——
-- esbuild Go API 只有 Transform/Build；AST 在 `internal/js_parser`/`js_ast`，被 Go internal 可見性規則擋住
-- `microsoft/typescript-go`（v0.0.0-20260820 實測）：105 套件 104 個 internal/，只公開 `cmd/tsgo`；`internal/ast` import 被拒
-- `dop251/goja`：純 Go ES6+ parser，**不吃 TS/JSX**
-- tree-sitter bindings：要 cgo + grammar 動態庫
+**設計核心（已落地）**：esbuild `Transform`（loader tsx、`jsx: transform`＝classic、jsxFactory `React.createElement`、format esm、charset utf8、不 minify）把 JSX 降級成 `/* @__PURE__ */ React.createElement(tag, props, children…)`。對降級輸出掃所有 call（字串/註解/regex-aware），balanced-paren 取 args；`React.Fragment` call 不算元素但其 children 照走。**children 的 "text"/"expr"/"{ident}"/"OPT?" 來自掃原始碼的 JSX children 分類器**（`scanJsxKinds`），兩側按元素 document order 配對（數量不等就 loud fail）——這是降級路線唯一拿不到的資訊（`{" "}` vs JSXText 降級後同形、`{/* comment */}` 容器整個消失）。
 
-**設計核心**：esbuild `Transform`（loader tsx、`jsx: transform`＝classic、jsxFactory `React.createElement`、format esm、charset utf8、不 minify）把 JSX 降級成 `/* @__PURE__ */ React.createElement(tag, props, children…)`——**children 是位置參數**（比 automatic runtime 的 children-key 好掃）。對降級輸出掃所有 `React.createElement(` 出現處（字串/註解/regex-aware，PURE 註解會出現在 call 前），balanced-paren 取 args：`args[0]`=tag、`args[1]`=props（可能是 `null`）、`args[2:]`=children。`React.createElement(React.Fragment…)` 不是 element（babel JSXFragment 不進 walk），但其 children args 內的巢狀 call 要照走。
-
-**語義對齊點（babel 原始 AST vs 降級輸出）**：
+**語義對齊點（babel 原始 AST vs 降級輸出，皆已落地）**：
 - JSXText 純空白被 esbuild 丟棄 ≡ `sketchChildren` 的 `value.trim()` 空判斷；entity 解碼差異無關（sketch 只記 `"text"`）
-- `{expr}` 容器透明；`<C disabled>` → `disabled: true`；shorthand prop（`<Button variant>` → `variant`）→ Identifier，正是 `resolveCvaArgs` 的 paramDefaults 路徑；spread 是 props object 頂層 `...props`
-- paramDefaults：掃 fn 簽名 `ident = "lit"`、括號深度 ≤1（深度 ≥2 的巢狀解構要拒絕 ≡ babel 只認 left-Identifier）
+- `<C disabled>` → `disabled: true`，與 babel 的 null-value 走同一條 fall-through；spread 是 props object 頂層 `...props`
+- paramDefaults：掃 fn 簽名 `ident = "lit"`、深度 ≤1（巢狀解構不取 ≡ babel 只認 left-Identifier）
 - tagVars：`const Comp = asChild ? Slot.Root : "span"` 降級後原樣保留；衝突要 throw
-- `resolveCvaArgs` 保真細節：`table.defaults ??= {}` 會**突變跨檔共享的表**（REG.cvaByExport）→ Go 用指標 + cross flag；`def === undefined` 的判斷；defaults 值 `str(dv.value) ?? dv.value?.value`——非字串字面值取原值（數字/bool），undefined → **整個 key 省略**
-- gate 1（字串數對帳）用 `internal/tsx.StringLiterals(原src)`（已驗證 562 檔對齊 babel）對 raw 雙引號 regex 數；gate 2/2b/3 是對原 src 的 regex，原樣 port
+- `resolveCvaArgs` 保真細節：defaults 突變用指標 + cross flag（只有 `!cross` 才寫回）；`def === undefined` 的判斷；defaults 值 `str(dv.value) ?? dv.value?.value`——非字串字面值取原值（數字/bool 以 `jsonRaw`/bool 存），undefined → **整個 key 省略**
+- gate 1 = `internal/tsx.StringLiterals(原src)`（**排除 Template span**——`String.raw` 標籤模板 babel 不算）+ DirectiveSpans（「use client」41 檔；babel 的 gate 有數 DirectiveLiteral）對 raw 雙引號 regex 數；gate 2/2b/3 是對原 src 的 regex，原樣 port
 
-**IR JSON 形狀普查（已完成，61 檔）**：
-- top keys 順序固定 `schema,source,name,tier,imports,icons,cva,components,conditionals,cvaRefs,tagHints`；`__meta` 序列化前剝除
-- component 固定 `{fn,export,elements}`；element `{tag,slot,classes,spread,children}` ×502 + 帶 `attrs` ×23（attrs 在 children 後）；slot null ×163、spread true ×344
-- conditionals：`child-cond {kind,fn,parent}` ×25；`class-cond {kind,fn,slot,then,else[,test]}` ×8（test=`{name,op,value,default?}`，鍵序如此）
-- cvaRef：全 corpus 只有 pagination 一個 `{slot,ref,table,dyn,dynAxes,defaults}`——**table 是同物件內聯重複序列化**
-- 無 `<ternary:` tag（dead path，防禦性保留即可）；IR 檔**無尾換行**
+**序列化**：`marshalJSStep(out, "", " ")`（= `JSON.stringify(out, null, 1)`，無尾換行）；鍵序全用插入序（jsonObj）。IR 檔案級的保證由 `TestUnitConverterIrParity` 釘住。
 
-**序列化（byte-identical 的關鍵）**：JS 是 `JSON.stringify(out, null, 1)`——indent 一格、無尾換行、不做 HTML escaping。Go 用 `json.Encoder`：`SetEscapeHTML(false)` + `SetIndent("", " ")` + 砍掉 encoder 自加的換行。**所有物件鍵序 = JS 插入序**（cva 表/variants/variant 值/defaults 按宣告序、tagHints 按元素走訪序、attrs 按 props 序）——Go map 會排序，必須自製 ordered KV 型別（`jsonorder.go` 的 `jsonString` 既有）。
-
-**驗收序列**：
-1. 先做 carousel 單檔 byte-identical（最難樣本：ternary、跨檔 Button wrap、IconPlaceholder、param defaults）
-2. 全 61 檔 `git status src/registry/ir` 乾淨
-3. drift gates + PASS 行逐字：`convert: 61 IR files -> src/registry/ir` / `tier dist: {...}` / `conditionals total: N` / `PASS  convert (0 drift, tiers match, tagHints resolved)`（FAIL 行也要同形）
-4. `make` 全綠（NConvert 無 mutations）→ 刪 `src/converter/index.mjs` → 檢查消費者後刪 `src/emitter/{index,css,skin}.mjs`、`src/tags.mjs`、`src/docs/transforms.mjs`、`tools/rtl-lib.mjs`
-
-**周邊改動清單**：
-- `pipeline/convert.go`（+掃描器，可借 `internal/tsx` 手法但其 type 不導出，需在 pipeline 內新寫純 JS 版 scanner）；main.go 加 `convert` verb
-- tier 表（KERNEL/TRIVIAL/MEDIUM/LOGIC/EXPLICIT_EXTERNAL/KNOWN_ICONS）成 **Go var**；`ovLoadTierSets` 從 jsSetLiteral(converter/index.mjs) 改讀 Go 表
-- nodes.go：NConvert `Run` 改 `{"./build/pipeline", "convert"}`（resolve-skins 已是分離步驟），Inputs 改 pipeline 檔
-- `tools/unit/converter.mjs`（194 行）斷言搬進 Go test（tierOf/collectExportedNames/cvaTablesOf/resolveCvaArgs/classStrings/tagVarsOf/convertFile+buildTagHints 端到端/兩個 loud failure），unit-check suite 清單跟著改
-- tagHints/normalizeTag/externalMemberTag/NAT 已在 `pipeline/tags.go`，直接用
+**周邊改動（全數完成）**：`pipeline/convert.go` + `main.go convert` verb；tier 表成 Go var（`cvTierSets`/`cvKnownIcons`）；`ovLoadTierSets` 改讀 Go 表（audit id 用 "trivial"）；nodes.go NConvert Run/Inputs 改 pipeline 檔、NOverlay inputs 移除 converter/index.mjs；unit 斷言搬 `convert_test.go`、unit-check suites 移除 converter；package.json `convert` script 改 Go；`.dagger/main.go` 的 `converted` 改 Go binary；overlay/audit_boundary 的 home/tool 標籤改 `pipeline/convert.go`。
 
 ### 4.6 re-pin drill（原樣保留）
 reproducible 在真 re-pin 必紅、分類器子字串比對、55 個 @radix-ui overrides 無人比對、EXEMPTIONS.md 不 --render。
@@ -157,4 +133,4 @@ converter 靜默空頁（forwardRef/cva alias/skin 巢狀）、§4.8 escaped-cla
 
 wireit、`gates/registry.mjs`、`gates/meta.mjs`、medium tier、`emit-smoke`、workflows、
 `docs/site`、`docs-consistency` §1–3、`docs-links`、`docs-upstream`、**以及 2026-08-31 版的 §4.2（死 docs 模組——已刪）、§4.3（example-gate 結構性必綠——本輪全鏈跑時 gate 正常，未動）**。
-`tools/build-demo.mjs`、`tools/resolve-skins.mjs`、`tools/rtl-dict.mjs`、`tools/build-rtl.mjs`、`tools/rtl-lib.mjs`（部分）、`tools/demo.mjs`、`tools/demo-lib.mjs`、`tools/docs-consistency.mjs` 都刪了——它們是 Go 了。
+`tools/build-demo.mjs`、`tools/resolve-skins.mjs`、`tools/rtl-dict.mjs`、`tools/build-rtl.mjs`、`tools/rtl-lib.mjs`（部分）、`tools/demo.mjs`、`tools/demo-lib.mjs`、`tools/docs-consistency.mjs`、`src/converter/index.mjs`、`tools/unit/converter.mjs` 都刪了——它們是 Go 了。

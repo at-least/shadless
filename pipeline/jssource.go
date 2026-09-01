@@ -3,10 +3,11 @@ package main
 // Reading data out of the JS modules that are still JS.
 //
 // Some tooling cannot move to Go: src/emitter/css.mjs needs tailwind-merge,
-// src/converter/index.mjs needs @babel/parser, tools/docs-build.mjs needs
-// mdx/remark/shiki. None has a Go equivalent that produces identical output,
-// and `reproducible` compares the committed trees byte for byte — so a
-// rewrite would not be a port.
+// tools/docs-build.mjs needs mdx/remark/shiki. None has a Go equivalent that
+// produces identical output, and `reproducible` compares the committed trees
+// byte for byte — so a rewrite would not be a port. (The converter, the last
+// @babel/parser consumer, moved to pipeline/convert.go; its tier tables are
+// Go vars now.)
 //
 // The Go tools that must agree with those modules therefore read their
 // declarations as DATA rather than keeping a second copy. That is the

@@ -19,7 +19,6 @@
 import { makeT } from "./unit/harness.mjs"
 import * as css from "./unit/css.mjs"
 import * as prepaint from "./unit/prepaint.mjs"
-import * as converter from "./unit/converter.mjs"
 import * as emitter from "./unit/emitter.mjs"
 import * as runtime from "./unit/runtime.mjs"
 import * as types from "./unit/types.mjs"
@@ -27,7 +26,6 @@ import * as types from "./unit/types.mjs"
 const suites = [
     ["css", css],
   ["prepaint", prepaint],
-  ["converter", converter],
   ["emitter", emitter],
   ["runtime", runtime],
     

@@ -55,7 +55,7 @@
     "pin": "npm run pipeline && ./build/pipeline pin",
     "unit": "node tools/unit-check.mjs",
     "contracts": "node tools/contracts/run.mjs",
-    "convert": "npm run pipeline && ./build/pipeline resolve-skins && node src/converter/index.mjs",
+    "convert": "npm run pipeline && ./build/pipeline resolve-skins && ./build/pipeline convert",
     "emit": "node src/emitter/index.mjs",
     "demo": "npm run emit && node tools/example-oracle.mjs && node tools/example-fixture.mjs && ./build/pipeline build-rtl && ./build/pipeline demo && ./build/pipeline product-css && ./build/pipeline tw dist/globals.css dist/out.css --cwd . && ./build/pipeline tw dist/shadless.product.css dist/shadless.full.css && ./build/pipeline tw dist/shadless.product.css dist/shadless.full.min.css --minify",
     "demo:smoke": "npm run pipeline && ./build/pipeline demo-smoke",

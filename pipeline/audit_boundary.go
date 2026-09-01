@@ -103,7 +103,7 @@ var programmaticPatterns = []boundaryPattern{
 	{match: func(p string) bool {
 		return strings.HasPrefix(p, "src/registry/ir/") && strings.HasSuffix(p, ".json")
 	},
-		tool: "src/converter/index.mjs", source: "apps/v4/registry/bases/radix/ui/*.tsx"},
+		tool: "pipeline/convert.go", source: "apps/v4/registry/bases/radix/ui/*.tsx"},
 	// dist/components — emitter + build-rtl + demo (multi-source)
 	{match: func(p string) bool {
 		return strings.HasPrefix(p, "dist/components/") && strings.HasSuffix(p, ".html") &&
@@ -396,7 +396,7 @@ var heuristicHints = []heuristicHint{
 	{re: re(`^docs/site/[^/]+\.html$`),
 		kind: "programmatic", tool: "tools/docs-build.mjs", source: "apps/v4/content/docs/components/*/*.mdx"},
 	{re: re(`^src/registry/ir/[^/]+\.json$`),
-		kind: "programmatic", tool: "src/converter/index.mjs", source: "apps/v4/registry/bases/radix/ui/*.tsx"},
+		kind: "programmatic", tool: "pipeline/convert.go", source: "apps/v4/registry/bases/radix/ui/*.tsx"},
 	{re: re(`^tools/[^/]+\.mjs$`),
 		kind: "tool-source", note: "pipeline orchestrator + builder tool"},
 	{re: re(`^scripts/[^/]+\.(sh|js|mjs)$`),

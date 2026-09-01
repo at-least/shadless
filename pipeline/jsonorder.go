@@ -39,6 +39,10 @@ func (o jsonObj) add(k string, v any) jsonObj { return append(o, jsonPair{k, v})
 // distinct from a key that is not there at all.
 type jsonNull struct{}
 
+// jsonRaw carries pre-rendered JSON text (a number literal lifted verbatim
+// from JS source, so 1.5 and 2e3 serialize exactly as the JS wrote them).
+type jsonRaw string
+
 // jsonString escapes exactly as JSON.stringify does: quote, backslash and the
 // C0 controls, with \b \f \n \r \t spelled out and everything else — including
 // <, > and & — passed through as UTF-8.
@@ -112,6 +116,8 @@ func marshalJSStep(v any, indent, step string) string {
 		return marshalJSStep(as, indent, step)
 	case string:
 		return jsonString(x)
+	case jsonRaw:
+		return string(x)
 	case int:
 		return strconv.Itoa(x)
 	case bool:

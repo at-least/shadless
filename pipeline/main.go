@@ -185,6 +185,9 @@ func main() {
 	if cmd == "build-js" {
 		os.Exit(runBuildJs())
 	}
+	if cmd == "convert" {
+		os.Exit(runConvert())
+	}
 	if cmd == "resolve-skins" {
 		os.Exit(runResolveSkins(args))
 	}

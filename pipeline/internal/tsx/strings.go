@@ -40,15 +40,26 @@ func StringLiterals(src string) []Span {
 	return sc.scan()
 }
 
+// DirectiveSpans returns the directive-position literals ("use client")
+// that StringLiterals drops. Babel's converter gate counted BOTH
+// StringLiteral and DirectiveLiteral nodes, so reconciling against a raw
+// quote count needs the directives back.
+func DirectiveSpans(src string) []Span {
+	sc := &scanner{s: src}
+	sc.scan()
+	return sc.directives
+}
+
 // inJSXDepth tracks how deep into JSX ELEMENT content the scan has
 // descended. jsxTag increments it when the element is not self-closing and
 // the scan resumes into its children; jsxClosingTag decrements. Only a
 // depth>0 makes '`' backticks JSX text (inline code in prose), because at
 // depth 0 they are real template literals.
 type scanner struct {
-	s        string
-	jsxDepth int
-	out      []Span
+	s          string
+	jsxDepth   int
+	out        []Span
+	directives []Span
 }
 
 func (sc *scanner) scan() []Span {
@@ -68,6 +79,7 @@ func (sc *scanner) scan() []Span {
 			start := i
 			i = sc.stringLit(i)
 			if isDirectivePosition(sc.s, start, i) {
+				sc.directives = append(sc.directives, sc.out[len(sc.out)-1])
 				sc.out = sc.out[:len(sc.out)-1]
 			}
 		case c == '`':
