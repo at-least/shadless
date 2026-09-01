@@ -1,10 +1,10 @@
-# HANDOFF — shadless, 2026-09-01
+# HANDOFF — shadless, 2026-09-01 (b)
 
 給下一個 context 的交接。讀完這份 + `git log --oneline -15` 就能接著做。
 repo: https://github.com/at-least/shadless
 
-**先看這個**：`origin/main` 還停在 `6c5c630`，本地 `main` 領先 **70+ 個 commit，全部沒 push**。
-working tree 乾淨（`8077169`）。**`make` 全綠**（66 nodes，含 reproducible）。
+**先看這個**：`origin/main` 還停在 `6c5c630`，本地 `main` 領先 **79 個 commit，全部沒 push**。
+working tree 乾淨。**`make` 全綠**（66 nodes，含 reproducible、docs-smoke、path-parity）。
 
 ---
 
@@ -30,7 +30,7 @@ npm run docs              # 重建文件站
 目標：把所有 .mjs 建置工具盡可能轉成 Go。策略（使用者拍板）：
 **chromium 閘門最後做（Go 主控、node 只做瀏覽器薄殼）、converter/babel 最後做、清理先行**。
 
-### 已完成（14 commits，`e7921e2`…`8077169`）
+### 已完成（19 commits，`e7921e2`…`abaab47`）
 
 | 工具 | 去向 | 驗證 |
 |---|---|---|
@@ -39,16 +39,18 @@ npm run docs              # 重建文件站
 | @babel/parser 的 StringLiteral offsets | `pipeline/internal/tsx`（手寫掃描器） | 562 檔 10,722 spans 對齊 babel（1 個已記載容忍差異） |
 | `tools/resolve-skins.mjs` | `pipeline resolve-skins`（convert 節點直接跑） | `TestUnitResolveSkinsParity` byte-identical |
 | `tools/rtl-dict.mjs` | `pipeline rtl-dict` | `TestUnitRtlDictParity` byte-identical |
-| `tools/rtl-lib` 的 substituteAndPatch + `tools/build-rtl.mjs` | `pipeline build-rtl` | `TestUnitBuildRtlParity`；drawer-rtl 刻意 skip（locale 提示無槽位） |
-| `src/tags.mjs` | `pipeline/tags.go`（JS 檔留著給殘餘 JS 消費者） | tags 斷言隨 unit/emitter |
+| `tools/rtl-lib` 的 substituteAndPatch + `tools/build-rtl.mjs` | `pipeline build-rtl` | `TestUnitBuildRtlParity` |
+| `src/tags.mjs` | `pipeline/tags.go`（JS 檔留給殘餘 JS 消費者） | tags 斷言隨 unit/emitter |
 | theme-prepaint 常數 | `pipeline/prepaint.go`（單一 Go 事實來源） | — |
 | `src/emitter/css.mjs` 的 componentCss/wrapComponentCss | `pipeline/emitter_css.go` | **61 個 IR golden 全等**（`TestUnitEmitterCssGolden` 對 JS 直跑比對） |
 | DEFAULT_CONTENT | `pipeline/default_content.go`（`tools/default-content-dump.mjs` 生成） | key 驗證 + overlay mutation 打 Go 檔 |
 | `src/emitter/index.mjs`（emit 節點本體） | `pipeline emit` | `TestUnitEmitParity` byte-identical；jsdom slot-tree gate → `x/net/html` |
 | `tools/demo.mjs` + `demo-lib.mjs` | `pipeline demo` | `TestUnitDemoParity` byte-identical |
-| `tools/docs-consistency.mjs` | `pipeline docs-consistency` | 與 JS 版同輸出（problems: 0） |
+| `tools/docs-consistency.mjs` | `pipeline docs-consistency` | 與 JS 版同輸出 |
+| **docs 群（db74f9c）**：`docs-build.mjs`(657行)、`docs-guides.mjs`、`docs-fidelity{,-lib}.mjs`、`src/docs/{transforms,frontmatter,demo-scripts}.mjs` | `pipeline docs-build / docs-guides / docs-fidelity` + `docs_{transforms,frontmatter,scripts,guides,build,families,fidelity*}.go` | `TestUnitDocsBuildParity` byte-identical（components/guides/index/content-map/sidebar 全部）；docs-fidelity Go/JS 同輸出後刪 JS；prettier 走 `tools/prettier-batch.mjs` 子進程（stdin JSON in、JSON out） |
+| `tools/upstream-snapshot.mjs`（abaab47） | `pipeline upstream-snapshot`（net/http） | byte-stable JSON；`.dagger/` 在 golang 容器內建 binary（goImage） |
 
-新增 Go 依賴：`golang.org/x/net/html`（jsdom 替身）。`esbuild` 原本就在。
+`tools/fixture-families.mjs` **還活著**（example-fixture 讀 FAMILY 表）— `TestUnitFixtureFamiliesGolden` 釘住 Go 表與 JS 表不漂移。`src/docs/transforms.mjs` **還活著**（overlay 讀 TEXT_ADJUSTMENTS）。
 
 ### 移植時學到的（下一波會再踩）
 
@@ -58,15 +60,12 @@ npm run docs              # 重建文件站
 - **`git add -A` 之前先 `git status -- dist docs`**（這次真的吞了 92 個 fixture 頁，靠 example-fixture 重生成 + 與 `f0df8e6~1` 比對救回）。
 - `fs-record` 的 wrap 必須帶原函式的屬性（`.native`）——vite 讀 `fs.realpathSync.native`。
 
-### 剩餘的 `node` 命令（16 → 13 支）
+### 剩餘的 `node` 命令（12 支）
 
-- **Wave 3（chromium 群，Go 主控 + node 薄殼）**：`demo-smoke`、`docs-smoke`、`example-golden`、`example-oracle`、`example-fixture`(561行/97 page calls)、`style-parity`、`interactivity-sweep`、`gates/demo-parity`、`gates/path-parity`(→順便拔掉對 css.mjs 的 import)、`contracts/run` + 34 支元件定義檔
-- **Wave 4（AST 群）**：`src/converter/index.mjs`（babel TSX→IR；tsx scanner 已備好大半）、`gates/overlay.mjs`（parseTs；順便做舊 §4.4 dissolved 算失敗）
-- **docs 群（純文字，無瀏覽器）**：`tools/docs-build.mjs`(657行，唯一硬依賴 prettier 的 html printer——markup fence 格式化可留 node 薄殼或 `npx prettier` 子進程)、`docs-fidelity`(+lib)、`docs-guides`（併入 `docs_catalog.go`）、`src/docs/{transforms,frontmatter,demo-scripts}.mjs`、`tools/fixture-families.mjs`
-- `tools/upstream-snapshot.mjs`（網路爬蟲，Go net/http 直接勝任）
-- `tools/unit-check.mjs` + 殘餘 suites（converter/emitter/runtime/types/…）——對應工具 port 時跟著搬
+- **Wave 3（chromium 群，Go 主控 + node 薄殼）**：`demo-smoke`(99行，試水首選)、`docs-smoke`、`example-golden`、`example-oracle`、`example-fixture`(561行/97 page calls)、`style-parity`、`interactivity-sweep`、`gates/demo-parity`、`gates/path-parity`(→順便拔掉對 css.mjs 的 import)、`contracts/run` + 34 支元件定義檔、`tools/unit-check.mjs`（殘餘 suites css/prepaint/converter/emitter/runtime/types——對應 JS 工具 port 時跟著搬）
+- **Wave 4（AST 群）**：`src/converter/index.mjs`（babel TSX→IR；tsx scanner 已備好大半）、`gates/overlay.mjs`（parseTs + transforms.mjs；順便做舊 §4.4 dissolved 算失敗）
 
-`src/emitter/{index,css}.mjs` 與 `src/tags.mjs` **還活著**：path-parity/overlay/unit 還 import 它們，是下一步 port 對象，別刪。
+`src/emitter/css.mjs`（path-parity 讀 cvaSlot/splitMarkers）、`src/tags.mjs`、`src/docs/transforms.mjs`（overlay 讀）、`tools/fixture-families.mjs`（example-fixture 讀）**還活著**——是對應 gate port 時的下一批，別刪。
 
 ---
 
@@ -94,10 +93,7 @@ npm run docs              # 重建文件站
 ### 4.1 oracle 字型問題（原樣保留，擋 Dagger 全綠）
 `tools/oracle-lib.mjs` harness 無 CSS → chromium 量測值是預設字型的函數；Docker 下 635 檔有 27 個不同（tooltip/popover/hover-card 的 popper transform-origin 從渲染文字寬度算出）。兩條路：(a) oracle 不烤量測值進頁面 (b) 宣告字型集 + 重錄 22 頁 + baseline。不要用 .dagger/ apt 裝字型蓋過去。
 
-### 4.2 docs 群 port（見 §2 清單）
-docs-build 的 prettier 是唯一外部依賴——Go 主控 + `npx prettier` 子進程格式化 markup fence，其餘全文字轉換。transforms/frontmatter/demo-scripts 是 docs-build 和 docs-fidelity 共用的，先搬。docs-guides 直接併入 `pipeline/docs_catalog.go`（舊 §4.10 的重複清單一併解決）。
-
-### 4.3 Wave 3 chromium 群
+### 4.2 Wave 3 chromium 群
 模式：一個共享 `tools/browser-shell.mjs` 薄殼（goto/waitForFunction/evaluate/locator/keyboard，stdin/stdout JSON），Go 持有所有狀態/比對/報告。拿最小的 `demo-smoke`(99行) 試水溫，最大支 `example-fixture`(561行) 最後。path-parity port 時順便拔 css.mjs import。
 
 ### 4.4 runtime bug 群（這些會出貨到 npm；原樣保留）
