@@ -230,6 +230,9 @@ func main() {
 	if cmd == "interactivity-sweep" {
 		os.Exit(runInteractivitySweep())
 	}
+	if cmd == "demo-parity" {
+		os.Exit(runDemoParity(has(args, "--record"), has(args, "--details")))
+	}
 	if cmd == "inputs" {
 		os.Exit(runInputs(args))
 	}

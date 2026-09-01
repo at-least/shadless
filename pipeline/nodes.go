@@ -348,9 +348,9 @@ var Nodes = []Node{
 	},
 	{
 		ID: NDemoParity, Kind: "gate", Tier: "full",
-		Needs:     []NodeID{NDemoCss, NOracleCss, NExampleOracle},
-		Run:       [][]string{{"node", "gates/demo-parity.mjs"}},
-		Inputs:    []string{"gates/demo-parity.mjs", "gates/parity-baseline.mjs", "gates/demo-parity-baseline.json", "gates/ledger.json", "build/gates/oracle.css", "dist/out.css", "docs/demos/**", "docs/example-oracle.json"},
+		Needs:     []NodeID{NDemoCss, NOracleCss, NExampleOracle, NBuildJs},
+		Run:       [][]string{{"./build/pipeline", "demo-parity"}},
+		Inputs:    []string{"pipeline/demo_parity.go", "pipeline/demo_parity_collect.js", "pipeline/parity_baseline.go", "pipeline/browser_shell.go", "tools/browser-shell.mjs", "gates/demo-parity-baseline.json", "gates/ledger.json", "build/gates/oracle.css", "dist/out.css", "docs/demos/**", "docs/example-oracle.json"},
 		Produces:  nil,
 		Why:       "every shipped demo page's DOM under our css must compute what the SAME DOM computes under upstream's stylesheet, light/dark x ltr/rtl — same DOM on both sides, so every cell is emitted css (skin markers, slot rules leaking under inline utilities, tokens)",
 		Mutations: []string{"demo-parity-token-drift"},
