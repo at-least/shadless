@@ -197,6 +197,9 @@ func main() {
 	if cmd == "docs-consistency" {
 		os.Exit(runDocsConsistency())
 	}
+	if cmd == "demo" {
+		os.Exit(runDemo())
+	}
 	if cmd == "inputs" {
 		os.Exit(runInputs(args))
 	}

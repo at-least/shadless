@@ -30,7 +30,7 @@ package main
 // 23 names in nodes.go would be a fourth, and the one that goes stale
 // silently.
 //
-// `shipped` below restates the predicate tools/demo.mjs applies to pick the
+// `shipped` below restates the predicate pipeline/demo.go applies to pick the
 // pages it writes. That is a second reader of the same data, not a second
 // copy of it, and the drift is self-policing: if the two ever disagree, demo
 // writes a page its `produces` does not name and the access check reports it.
@@ -118,7 +118,7 @@ func staticPages(root string) ([]string, error) {
 	return pages(root, func(t componentTier) bool { return t.Tier == "static" })
 }
 
-// nonStaticPages are the pages tools/demo.mjs writes: every shipped component
+// nonStaticPages are the pages pipeline/demo.go writes: every shipped component
 // EXCEPT the static ones, which it finds already emitted and leaves alone.
 func nonStaticPages(root string) ([]string, error) {
 	return pages(root, func(t componentTier) bool { return shipped(t) && t.Tier != "static" })

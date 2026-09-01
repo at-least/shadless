@@ -7,7 +7,7 @@ package main
 //	                              @utility helpers + keyframes (NO docs-site
 //	                              chrome, NO demo @source, NO demo body pad)
 //	dist/css/<name>.css           per-component @layer block (@apply source,
-//	                              written by tools/demo.mjs — READ here)
+//	                              written by pipeline/demo.go — READ here)
 //	dist/shadless.product.css     tokens + fixes + all parts (tailwind input)
 //	dist/shadless.full[.min].css  compiled by the demo chain (zero-build use)
 //
@@ -274,7 +274,7 @@ func runProductCSS() int {
 		return fail(err)
 	}
 	// the demo entry turns tailwind's automatic content detection off
-	// (source(none) + explicit @source, see tools/demo.mjs); the CONSUMER's
+	// (source(none) + explicit @source, see pipeline/demo.go); the CONSUMER's
 	// build must keep detection on — their pasted markup is what it scans
 	globals = strings.Replace(globals, `@import "tailwindcss" source(none);`, `@import "tailwindcss";`, 1)
 

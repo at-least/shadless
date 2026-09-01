@@ -82,8 +82,10 @@ func oneOf(paths ...string) func(string) bool {
 var reRtlVariant = re(`-rtl-(en|he|fa)\.html$`)
 
 var toolSourcePatterns = []boundaryPattern{
+	{re: re(`^pipeline/.*\.go$`),
+		note: "pipeline/*.go — the Go runner + the ported builder tools (resolve-skins, rtl-dict, build-rtl, demo, docs-consistency, docs-catalog, product-css, build-js)"},
 	{re: re(`^tools/.*\.mjs$`),
-		note: "tools/*.mjs — builder tools + gates (build-rtl, demo, docs-*, etc.); gates/*.mjs — the pipeline graph, meta, ledger, overlay, upstream drill"},
+		note: "tools/*.mjs — remaining JS builder tools + gates (docs-build, example-*, oracle, style-parity, …)"},
 	{re: re(`^src/converter/.*\.mjs$`),
 		note: "src/converter/*.mjs — registry .tsx → IR JSON (src/registry/ir/*.json)"},
 	{re: re(`^src/emitter/.*\.mjs$`),
@@ -107,7 +109,7 @@ var programmaticPatterns = []boundaryPattern{
 		return strings.HasPrefix(p, "dist/components/") && strings.HasSuffix(p, ".html") &&
 			!reRtlVariant.MatchString(p) && !strings.HasSuffix(p, "-demo.html")
 	},
-		tool:   "src/emitter/index.mjs OR tools/demo.mjs (per-tier fixture)",
+		tool:   "src/emitter/index.mjs OR pipeline/demo.go (per-tier fixture)",
 		source: "src/registry/ir/*.json + probes/t{6,7,8,9}/* (per tier)"},
 	{match: func(p string) bool {
 		return strings.HasPrefix(p, "dist/components/") && reRtlVariant.MatchString(p)
@@ -138,7 +140,7 @@ var programmaticPatterns = []boundaryPattern{
 		source: "dist/components/*.html + shadless CSS fixes"},
 	// J2 product surface — per-component @apply sources + tokens + compiled
 	{match: prefixSuffix("dist/css/", ".css"),
-		tool:   "tools/demo.mjs (parts) + pipeline/product_css.go (tokens)",
+		tool:   "pipeline/demo.go (parts) + pipeline/product_css.go (tokens)",
 		source: "src/registry/ir/*.json + probes/h4/globals.css"},
 	{match: oneOf("dist/shadless.product.css", "dist/shadless.full.css", "dist/shadless.full.min.css"),
 		tool:   "pipeline/product_css.go + pipeline/tw.go",
@@ -153,7 +155,7 @@ var programmaticPatterns = []boundaryPattern{
 		tool:   "tools/build-js.mjs",
 		source: "src/runtime/core.js + src/runtime/components/*.js + src/runtime/shadless.d.ts + vendor/*.iife.js"},
 	{match: oneOf("dist/demo-index.html"),
-		tool: "tools/demo.mjs", source: "per-tier IR list (built into demo.mjs)"},
+		tool: "pipeline/demo.go", source: "per-tier IR list (built into demo.mjs)"},
 	// docs/site — docs-build output
 	{match: prefixSuffix("docs/site/", ".html", ".css", ".js"),
 		tool:   "tools/docs-build.mjs",
@@ -195,7 +197,7 @@ var handAuthoredPatterns = []boundaryPattern{
 		owner: "human (orchestration + narrative)"},
 	// Probe fixtures — used by emit/demo as references, but hand-written
 	{match: prefixSuffix("probes/"),
-		owner: "human (test fixtures; some consumed by tools/demo.mjs)"},
+		owner: "human (test fixtures; some consumed by pipeline/demo.go)"},
 }
 
 // llmPatchPoint is a curated region inside tool source where a human is
@@ -205,8 +207,8 @@ type llmPatchPoint struct{ File, Lines, What string }
 var llmPatchPoints = []llmPatchPoint{
 	{"pipeline/build_rtl.go", "32-37",
 		"PERSIAN translations dict — 4 keys × 2 alerts for alert-rtl only. Upstream ships en/ar/he; Persian isn't in upstream so hand-coded. When upstream adds a new language, add it here (or generalize to read from upstream)."},
-	{"tools/demo.mjs", "~127-230",
-		"Per-tier HTML fixtures (dialogDemoHtml, fieldDemoHtml, etc.) — kernel/trivial-js components get static HTML hand-written here; consumed by tools/demo.mjs."},
+	{"pipeline/demo.go", "~127-230",
+		"Per-tier HTML fixtures (dialogDemoHtml, fieldDemoHtml, etc.) — kernel/trivial-js components get static HTML hand-written here; consumed by pipeline/demo.go."},
 	{"docs/demos/", "(directory)",
 		"Almost all of this is generated: example-oracle writes 226 pages from the React render, example-fixture 105 more with kernel-family JS wired in, build-rtl the *-rtl-{he,en,fa} variants. What is left hand-authored is the message-scroller family, whose examples the oracle cannot bundle (external deps) and which is recorded in the golden exemptions and in interactivity-sweep's KNOWN_DEAD."},
 }
@@ -384,12 +386,12 @@ var heuristicHints = []heuristicHint{
 	{re: re(`^(docs/demos|dist/components)/[^/]+-demo\.html$`),
 		kind: "programmatic", tool: "tools/example-oracle.mjs", source: "examples/radix/<name>-demo.tsx, rendered with real React"},
 	{re: re(`^dist/glue/`),
-		kind: "programmatic", tool: "tools/demo.mjs", source: "src/kernel/*-glue.js"},
+		kind: "programmatic", tool: "pipeline/demo.go", source: "src/kernel/*-glue.js"},
 	// Catch-all: any HTML under dist/ is a build artifact. The specific rules
 	// above catch the known subdirs; this handles a new one (dist/widgets/)
 	// that nobody has added a rule for yet.
 	{re: re(`^dist/.+\.html$`),
-		kind: "programmatic", tool: "src/emitter/index.mjs OR tools/demo.mjs (per-tier fixture)",
+		kind: "programmatic", tool: "src/emitter/index.mjs OR pipeline/demo.go (per-tier fixture)",
 		source: "src/registry/ir/*.json + probes/t{6,7,8,9}/*"},
 	{re: re(`^docs/site/[^/]+\.html$`),
 		kind: "programmatic", tool: "tools/docs-build.mjs", source: "apps/v4/content/docs/components/*/*.mdx"},

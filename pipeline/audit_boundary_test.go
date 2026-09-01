@@ -29,7 +29,7 @@ func TestUnitAuditClassifyOrder(t *testing.T) {
 		{"dist/components/alert-demo.html", "programmatic", "tools/example-oracle.mjs"},
 		// a plain component page belongs to the emitter/demo rule
 		{"dist/components/accordion.html", "programmatic",
-			"src/emitter/index.mjs OR tools/demo.mjs (per-tier fixture)"},
+			"src/emitter/index.mjs OR pipeline/demo.go (per-tier fixture)"},
 		// docs/demos RTL variants are build-rtl output, not hand-authored —
 		// programmatic patterns are consulted before hand-authored ones
 		{"docs/demos/alert-rtl-he.html", "programmatic", "pipeline/build_rtl.go"},
@@ -42,13 +42,13 @@ func TestUnitAuditClassifyOrder(t *testing.T) {
 		// IR json
 		{"src/registry/ir/badge.json", "programmatic", "src/converter/index.mjs"},
 		// tool source
-		{"tools/demo.mjs", "tool-source", ""},
+		{"pipeline/demo.go", "tool-source", ""},
 		{"src/tags.mjs", "tool-source", ""},
 		// pin.json is hand-authored even though it sits under src/registry
 		{"src/registry/pin.json", "hand-authored",
 			"pipeline upstream (re-pin) / human (vendor re-hash via ./build/pipeline pin --force)"},
-		// nothing claims a Go source file
-		{"pipeline/main.go", "unknown", ""},
+		// pipeline Go sources are tool-source now (the runner itself)
+		{"pipeline/main.go", "tool-source", ""},
 	} {
 		got := classifyPath(tc.path)
 		if got.Kind != tc.kind {
@@ -110,9 +110,9 @@ func TestUnitAuditHeuristicOrder(t *testing.T) {
 	for path, wantTool := range map[string]string{
 		"dist/components/alert-rtl-he.html": "pipeline/build_rtl.go",
 		"docs/demos/thing-demo.html":        "tools/example-oracle.mjs",
-		"dist/glue/dialog-glue.js":          "tools/demo.mjs",
+		"dist/glue/dialog-glue.js":          "pipeline/demo.go",
 		// only the catch-all matches this one
-		"dist/widgets/new.html": "src/emitter/index.mjs OR tools/demo.mjs (per-tier fixture)",
+		"dist/widgets/new.html": "src/emitter/index.mjs OR pipeline/demo.go (per-tier fixture)",
 	} {
 		s := suggestFromHeuristics(path)
 		if s == nil {
@@ -135,7 +135,7 @@ func TestUnitAuditWalkSkips(t *testing.T) {
 		}
 	}
 	for _, rel := range []string{
-		"dist/components/accordion.html", "tools/demo.mjs",
+		"dist/components/accordion.html", "pipeline/demo.go",
 		// the skip is a path prefix, not a substring: a sibling directory
 		// whose name merely starts the same way must survive
 		"tools/contracts/run.mjs", "tools/contracts/outer/x.mjs",

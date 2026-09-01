@@ -9,7 +9,7 @@ package main
 //  1. out.css (the demo+site stylesheet) NEEDS the repo-wide scan — authored
 //     docs/demos/*.html pages load it in iframes and their utilities are only
 //     picked up that way (load-bearing, previously accidental). It compiles
-//     with `--cwd .` plus `@source not` exclusions (see tools/demo.mjs) so
+//     with `--cwd .` plus `@source not` exclusions (see pipeline/demo.go) so
 //     tool/source fixtures don't leak dead classes.
 //  2. the PRODUCT build must emit ONLY @apply-driven rules: compile with no
 //     --cwd → fresh empty scratch dir → zero content scanning.

@@ -282,11 +282,11 @@ var Nodes = []Node{
 	{
 		ID: NDemo, Kind: "build", Tier: "full",
 		Needs:  []NodeID{NDemoRtl, NExampleFixture, NContractFixture, NBuildJs},
-		Run:    [][]string{{"node", "tools/demo.mjs"}},
-		Inputs: []string{"tools/demo.mjs", "tools/demo-lib.mjs", "tools/build-js.mjs", "src/emitter/css.mjs", "src/docs/theme-prepaint.mjs", "src/registry/tiers.json", "src/registry/ir/**", "src/kernel/**", "probes/h4/globals.css", "probes/t7/**", "probes/t8/**"},
+		Run:    [][]string{{"./build/pipeline", "demo"}},
+		Inputs: []string{"pipeline/demo.go", "pipeline/emitter_css.go", "pipeline/default_content.go", "pipeline/prepaint.go", "pipeline/tags.go", "pipeline/resolve_skins.go", "src/registry/tiers.json", "src/registry/ir/**", "src/kernel/**", "probes/h4/globals.css", "probes/t7/**", "probes/t8/**"},
 		// as with emit, the component-page glob is substituted in produces.go
 		// — here for the 28 shipped pages that are NOT static-tier, which is
-		// exactly the set tools/demo.mjs writes (it leaves the static ones,
+		// exactly the set pipeline/demo.go writes (it leaves the static ones,
 		// already emitted, alone)
 		Produces:  []string{"dist/globals.css", "dist/demo-index.html", "dist/css", "dist/components/*.html", "!dist/components/*-rtl-*.html"},
 		Why:       "unified globals.css (slot rules folded in) + the demo index + the per-component @apply sources the npm surface exports",

@@ -24,7 +24,6 @@ import * as routes from "./unit/routes.mjs"
 import * as converter from "./unit/converter.mjs"
 import * as emitter from "./unit/emitter.mjs"
 import * as runtime from "./unit/runtime.mjs"
-import * as docsTools from "./unit/docs-tools.mjs"
 import * as docsFidelity from "./unit/docs-fidelity.mjs"
 import * as transforms from "./unit/transforms.mjs"
 import * as types from "./unit/types.mjs"
@@ -37,7 +36,7 @@ const suites = [
   ["converter", converter],
   ["emitter", emitter],
   ["runtime", runtime],
-  ["docs-tools", docsTools],
+  
   ["docs-fidelity", docsFidelity],
   ["transforms", transforms],
   
