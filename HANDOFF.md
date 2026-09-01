@@ -3,7 +3,7 @@
 給下一個 context 的交接。讀完這份 + `git log --oneline -15` 就能接著做。
 repo: https://github.com/at-least/shadless
 
-**先看這個**：`origin/main` 還停在 `6c5c630`，本地 `main` 領先 **91 個 commit，全部沒 push**。
+**先看這個**：`origin/main` 還停在 `6c5c630`，本地 `main` 領先 **92 個 commit，全部沒 push**。
 working tree 乾淨。**`make` 全綠**。
 
 ---
@@ -51,6 +51,7 @@ npm run docs              # 重建文件站
 | `tools/upstream-snapshot.mjs`（abaab47） | `pipeline upstream-snapshot`（net/http） | byte-stable JSON；`.dagger/` 在 golang 容器內建 binary（goImage） |
 | **Wave 3（775f10d…24fa3d2）**：demo-smoke、docs-smoke、interactivity-sweep、example-golden、example-oracle、style-parity、demo-parity、path-parity | 全部 `pipeline <verb>`，走 `tools/browser-shell.mjs` 薄殼（launch/newPage+事件擷取/goto/evaluateFn+arg/locator/mouse/keyboard/addStyleTag/setContent/driver/loadContractDef/routeAbortExternal） | 每個的 PASS 行與 JS 版 byte-for-byte 相同後才刪 JS；parity-baseline 共享邏輯在 `pipeline/parity_baseline.go`；oracle bundle 走 esbuild Go API（`oracle_lib.go`），canonOf 留 JS 本質、embed 成 `oracle_canon.js` |
 | `tools/example-fixture.mjs`（42dfadc，--contracts 同支） | `pipeline example-fixture [--contracts]` | 105+14 頁 byte-identical（跑完 git 乾淨）、PASS 行同 JS；id 映射/收割/tabs 重組/API 走查是 embed 的 page-JS（ef_*.js）；家族表加 js 欄；families golden 改讀 testdata 快照 |
+| `gates/overlay.mjs`（fc579c1） | `pipeline overlay --audit|--record|--tasks|--report` | audit 輸出 byte-identical（199 applied + 1 dissolved）；--record 排序正規化（hash 不變）；規則表讀 Go var 本體 + jsSetLiteral 抽 JS 表；defs 走 shell 不啟動 chromium |
 
 `tools/fixture-families.mjs` **還活著**（example-fixture 讀 FAMILY 表）— `TestUnitFixtureFamiliesGolden` 釘住 Go 表與 JS 表不漂移。`src/docs/transforms.mjs` **還活著**（overlay 讀 TEXT_ADJUSTMENTS）。
 
@@ -62,13 +63,13 @@ npm run docs              # 重建文件站
 - **`git add -A` 之前先 `git status -- dist docs`**（這次真的吞了 92 個 fixture 頁，靠 example-fixture 重生成 + 與 `f0df8e6~1` 比對救回）。
 - `fs-record` 的 wrap 必須帶原函式的屬性（`.native`）——vite 讀 `fs.realpathSync.native`。
 
-### 剩餘的 `node` 命令（3 支）
+### 剩餘的 `node` 命令（2 支）
 
-- **Wave 4（AST 群）**：`src/converter/index.mjs`（babel TSX→IR；tsx scanner 已備好大半）、`gates/overlay.mjs`（parseTs + transforms.mjs + emitter index/css/skin + tags + rtl-lib——port 完這些 JS 檔全滅；順便做舊 §4.4 dissolved 算失敗）。⚠️ overlay 讀的是 JS 版 DEFAULT_CONTENT——與 Go 版 `default_content.go` 有漂移風險，port overlay 前別改任一邊
-- `tools/unit-check.mjs`（殘餘 suites css/prepaint/converter/emitter/runtime/types——對應 JS 工具 port 時跟著搬）
+- **Wave 4 收尾**：`src/converter/index.mjs`（babel TSX→IR，最後的 babel 依賴；tsx scanner 已備好大半）。port 完即可刪 `src/emitter/index.mjs`、`src/emitter/css.mjs`、`src/emitter/skin.mjs`、`src/tags.mjs`、`src/docs/transforms.mjs`、`tools/rtl-lib.mjs`（overlay 已改讀 Go 表格 + jsSetLiteral 抽 JS 表）
+- `tools/unit-check.mjs`（殘餘 suites css/prepaint/converter/emitter/runtime/types——對應 JS 工具刪除時跟著搬進 Go 測試）
 - **`tools/contracts/run.mjs`（`npm run contracts`）**：import `contracts/oracle-build.mjs` + `oracle-lib.mjs`，這兩支因此還活著；run.mjs port 完即可刪（Go 側 `buildContractOracleGo` 已在 `example_fixture.go`）
 
-`src/tags.mjs`、`src/docs/transforms.mjs`（overlay 讀）、`tools/oracle-lib.mjs` + `tools/contracts/oracle-build.mjs`（contracts runner 讀）**還活著**——是對應工具 port 時的下一批，別刪。
+`src/tags.mjs`、`src/emitter/{index,css,skin}.mjs`、`src/docs/transforms.mjs`、`tools/rtl-lib.mjs`（converter port 完才刪；overlay 現在只從 converter/index.mjs + skin.mjs 用 jsSetLiteral 抽表）、`tools/oracle-lib.mjs` + `tools/contracts/oracle-build.mjs`（contracts runner 讀）**還活著**——別刪。
 
 ---
 
