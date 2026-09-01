@@ -225,9 +225,9 @@ var Nodes = []Node{
 		// alert-demo target kept the dist path when it replaced that hand
 		// emitter). The dependency on emit is real and stays: emit creates
 		// dist/components, which this node writes into.
-		Needs:     []NodeID{NEmit},
-		Run:       [][]string{{"node", "tools/example-oracle.mjs"}},
-		Inputs:    []string{"tools/example-oracle.mjs", "src/docs/theme-prepaint.mjs", "src/registry/tiers.json", "src/runtime/components/**", "docs/catalog.json", "tools/oracle-lib.mjs", "tools/contracts/stubs/**", "tools/resolve-skins.mjs", "src/registry/pin.json", "src/registry/upstream-snapshot/exemptions.json", "package-lock.json", upstreamExamplesGlob},
+		Needs:     []NodeID{NEmit, NBuildJs},
+		Run:       [][]string{{"./build/pipeline", "example-oracle"}},
+		Inputs:    []string{"pipeline/example_oracle.go", "pipeline/oracle_lib.go", "pipeline/oracle_canon.js", "pipeline/browser_shell.go", "tools/browser-shell.mjs", "pipeline/prepaint.go", "src/registry/tiers.json", "src/runtime/components/**", "docs/catalog.json", "tools/contracts/stubs/**", "src/emitter/skin.mjs", "src/registry/pin.json", "src/registry/upstream-snapshot/exemptions.json", "package-lock.json", upstreamExamplesGlob},
 		Produces:  []string{"docs/demos/*.html", "!docs/demos/*-rtl-*.html", "docs/example-oracle.json", "docs/example-fixture-targets.json", "dist/components/alert-demo.html"},
 		Why:       "upstream examples rendered by real React+chromium BECOME the demo pages — 1:1 with upstream by construction, not by hand-mirroring",
 		Mutations: []string{"example-oracle-render-failure"},
@@ -485,9 +485,9 @@ var Nodes = []Node{
 	},
 	{
 		ID: NExampleGate, Kind: "gate", Tier: "full",
-		Needs:     []NodeID{NDocsBuild},
-		Run:       [][]string{{"node", "tools/example-oracle.mjs", "--check"}},
-		Inputs:    []string{"tools/example-oracle.mjs", "docs/demos/**", "docs/example-oracle.json", "src/registry/tiers.json", "tools/oracle-lib.mjs", "tools/contracts/stubs/**", "tools/resolve-skins.mjs", "src/registry/pin.json", "package-lock.json", upstreamExamplesGlob},
+		Needs:     []NodeID{NDocsBuild, NBuildJs},
+		Run:       [][]string{{"./build/pipeline", "example-oracle", "--check"}},
+		Inputs:    []string{"pipeline/example_oracle.go", "pipeline/oracle_lib.go", "pipeline/oracle_canon.js", "pipeline/browser_shell.go", "tools/browser-shell.mjs", "docs/demos/**", "docs/example-oracle.json", "src/registry/tiers.json", "tools/contracts/stubs/**", "src/emitter/skin.mjs", "src/registry/pin.json", "package-lock.json", upstreamExamplesGlob},
 		Produces:  nil,
 		Why:       "hop 2 — each shipped demo page must equal a fresh oracle render. hop1 + hop2 together prove shipped == React == live",
 		Mutations: []string{"example-perturb-shipped"},

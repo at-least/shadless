@@ -132,7 +132,7 @@ var programmaticPatterns = []boundaryPattern{
 		tool:   "tools/example-fixture.mjs",
 		source: "the React oracle render, with kernel-family JS wired in"},
 	{match: inManifest("docs/example-oracle.json", "out"),
-		tool:   "tools/example-oracle.mjs",
+		tool:   "pipeline/example_oracle.go",
 		source: "examples/radix/<name>.tsx, rendered with real React"},
 	// dist CSS / JS — tailwind + copy
 	{match: oneOf("dist/out.css", "dist/globals.css", "dist/shadless.css", "dist/shadless-core.css"),
@@ -384,7 +384,7 @@ var heuristicHints = []heuristicHint{
 	{re: re(`^docs/demos/[^/]+-rtl-(en|he|fa)\.html$`),
 		kind: "programmatic", tool: "pipeline/build_rtl.go", source: "src/registry/rtl-translations.json (lifted from examples/aria by pipeline/rtl_dict.go)"},
 	{re: re(`^(docs/demos|dist/components)/[^/]+-demo\.html$`),
-		kind: "programmatic", tool: "tools/example-oracle.mjs", source: "examples/radix/<name>-demo.tsx, rendered with real React"},
+		kind: "programmatic", tool: "pipeline/example_oracle.go", source: "examples/radix/<name>-demo.tsx, rendered with real React"},
 	{re: re(`^dist/glue/`),
 		kind: "programmatic", tool: "pipeline/demo.go", source: "src/kernel/*-glue.js"},
 	// Catch-all: any HTML under dist/ is a build artifact. The specific rules

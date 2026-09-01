@@ -224,6 +224,9 @@ func main() {
 	if cmd == "example-golden" {
 		os.Exit(runExampleGolden(args))
 	}
+	if cmd == "example-oracle" {
+		os.Exit(runExampleOracle(has(args, "--check")))
+	}
 	if cmd == "inputs" {
 		os.Exit(runInputs(args))
 	}

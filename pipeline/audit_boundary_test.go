@@ -26,7 +26,7 @@ func TestUnitAuditClassifyOrder(t *testing.T) {
 		{"dist/components/alert-rtl-en.html", "programmatic", "pipeline/build_rtl.go"},
 		{"dist/components/alert-rtl-fa.html", "programmatic", "pipeline/build_rtl.go"},
 		// alert-demo is the oracle's, carved out of the same rule
-		{"dist/components/alert-demo.html", "programmatic", "tools/example-oracle.mjs"},
+		{"dist/components/alert-demo.html", "programmatic", "pipeline/example_oracle.go"},
 		// a plain component page belongs to the emitter/demo rule
 		{"dist/components/accordion.html", "programmatic",
 			"src/emitter/index.mjs OR pipeline/demo.go (per-tier fixture)"},
@@ -35,10 +35,10 @@ func TestUnitAuditClassifyOrder(t *testing.T) {
 		{"docs/demos/alert-rtl-he.html", "programmatic", "pipeline/build_rtl.go"},
 		// a bare -rtl.html read as hand-authored too, and is not: the oracle
 		// manifest claims it, and examples/radix/alert-rtl.tsx is its source
-		{"docs/demos/alert-rtl.html", "programmatic", "tools/example-oracle.mjs"},
+		{"docs/demos/alert-rtl.html", "programmatic", "pipeline/example_oracle.go"},
 		// written by example-oracle from the React render, which its manifest
 		// records — this used to read as hand-authored
-		{"docs/demos/badge-demo.html", "programmatic", "tools/example-oracle.mjs"},
+		{"docs/demos/badge-demo.html", "programmatic", "pipeline/example_oracle.go"},
 		// IR json
 		{"src/registry/ir/badge.json", "programmatic", "src/converter/index.mjs"},
 		// tool source
@@ -109,7 +109,7 @@ func TestUnitAuditPatternsAreWellFormed(t *testing.T) {
 func TestUnitAuditHeuristicOrder(t *testing.T) {
 	for path, wantTool := range map[string]string{
 		"dist/components/alert-rtl-he.html": "pipeline/build_rtl.go",
-		"docs/demos/thing-demo.html":        "tools/example-oracle.mjs",
+		"docs/demos/thing-demo.html":        "pipeline/example_oracle.go",
 		"dist/glue/dialog-glue.js":          "pipeline/demo.go",
 		// only the catch-all matches this one
 		"dist/widgets/new.html": "src/emitter/index.mjs OR pipeline/demo.go (per-tier fixture)",

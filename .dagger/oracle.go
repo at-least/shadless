@@ -130,11 +130,16 @@ func (m *Shadless) rendered(ctx context.Context, source *dagger.Directory) (*dag
 	if err != nil {
 		return nil, err
 	}
+	bin, err := goBinary(ctx, source)
+	if err != nil {
+		return nil, err
+	}
 	return c.
+		WithFile("/usr/local/bin/pipeline", bin).
 		WithFile("/w/docs/catalog.json", source.File("docs/catalog.json")).
 		WithDirectory("/w/docs/demos", dag.Directory()).
 		WithDirectory("/w/dist/components", dag.Directory()).
-		WithExec([]string{"node", "tools/example-oracle.mjs"}), nil
+		WithExec([]string{"pipeline", "example-oracle"}), nil
 }
 
 // ExampleOracle returns everything the step writes, laid out as the repo lays
@@ -222,7 +227,12 @@ func (m *Shadless) ExampleGate(ctx context.Context, source *dagger.Directory) (s
 	if err != nil {
 		return "", err
 	}
+	bin, err := goBinary(ctx, source)
+	if err != nil {
+		return "", err
+	}
 	return c.
+		WithFile("/usr/local/bin/pipeline", bin).
 		WithFile("/w/docs/catalog.json", source.File("docs/catalog.json")).
 		WithFile("/w/docs/example-oracle.json", source.File("docs/example-oracle.json")).
 		WithDirectory("/w/docs/demos", source.Directory("docs/demos")).
@@ -231,6 +241,6 @@ func (m *Shadless) ExampleGate(ctx context.Context, source *dagger.Directory) (s
 		// a page that quietly goes unchecked.
 		WithFile("/w/dist/components/alert-demo.html",
 			source.File("dist/components/alert-demo.html")).
-		WithExec([]string{"node", "tools/example-oracle.mjs", "--check"}).
+		WithExec([]string{"pipeline", "example-oracle", "--check"}).
 		Stdout(ctx)
 }
