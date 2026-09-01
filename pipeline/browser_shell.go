@@ -136,6 +136,11 @@ func (p *bpage) evaluateFnArg(expr string, arg any) (any, error) {
 	return res["value"], nil
 }
 
+func (p *bpage) setContent(html string) error {
+	_, err := p.s.call(map[string]any{"op": "setContent", "pageId": p.id, "html": html})
+	return err
+}
+
 func (p *bpage) addStyleTagPath(path string) error {
 	abs, _ := filepath.Abs(path)
 	_, err := p.s.call(map[string]any{"op": "addStyleTag", "pageId": p.id, "path": abs})

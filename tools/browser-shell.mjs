@@ -95,6 +95,11 @@ async function handle(req) {
       const value = await page.evaluate(fn, req.arg ?? null)
       return { value }
     }
+    case "setContent": {
+      const { page } = pages.get(req.pageId)
+      await page.setContent(req.html)
+      return { ok: true }
+    }
     case "addStyleTag": {
       const { page } = pages.get(req.pageId)
       if (req.path) await page.addStyleTag({ path: req.path })

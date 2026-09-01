@@ -339,9 +339,9 @@ var Nodes = []Node{
 	},
 	{
 		ID: NPathParity, Kind: "gate", Tier: "full",
-		Needs:     []NodeID{NProductBuild, NOracleCss},
-		Run:       [][]string{{"node", "gates/path-parity.mjs"}},
-		Inputs:    []string{"gates/path-parity.mjs", "gates/parity-baseline.mjs", "gates/path-parity-baseline.json", "gates/ledger.json", "src/emitter/css.mjs", "src/tags.mjs", "src/registry/ir/**", "dist/css/**", "dist/shadless.full.css", "build/gates/oracle.css", "src/registry/pin.json", "pipeline/tw.go", "pipeline/main.go"},
+		Needs:     []NodeID{NProductBuild, NOracleCss, NBuildJs},
+		Run:       [][]string{{"./build/pipeline", "path-parity"}},
+		Inputs:    []string{"pipeline/path_parity.go", "pipeline/pp_readall.js", "pipeline/parity_baseline.go", "pipeline/emitter_css.go", "pipeline/tags.go", "pipeline/browser_shell.go", "tools/browser-shell.mjs", "gates/path-parity-baseline.json", "gates/ledger.json", "src/emitter/skin.mjs", "src/registry/ir/**", "dist/css/**", "dist/shadless.full.css", "build/gates/oracle.css", "src/registry/pin.json"},
 		Produces:  nil,
 		Why:       "for EVERY slot, slot-only markup via css-import and via full.css must compute what React's inline classes compute under upstream's own stylesheet, in both themes and directions, at rest, per cva variant value and per attribute-driven state, with referenced child slots rendered on both sides — subsumes the retired variant-parity; found cva defaults living in fn params (attachment, marker), toggle's pressed state losing to the (0,2,0) variant qualifier, and twMerge residue (text-sm line-height)",
 		Mutations: []string{"path-parity-drop-utility", "variant-merge-defaults"},

@@ -236,6 +236,9 @@ func main() {
 	if cmd == "style-parity" {
 		os.Exit(runStyleParity(has(args, "--strict"), has(args, "--record")))
 	}
+	if cmd == "path-parity" {
+		os.Exit(runPathParity(has(args, "--record"), has(args, "--details")))
+	}
 	if cmd == "inputs" {
 		os.Exit(runInputs(args))
 	}
