@@ -189,7 +189,9 @@ func goMapKeyCount(src, name string) int {
 	if err != nil {
 		return -1
 	}
-	return strings.Count(body, ": true,") + strings.Count(body, ": true\n")
+	// count `": true"` value shapes (trailing comma, comment, or newline may
+	// follow); `"message-scroller": true,` and `: true\n}` both count
+	return strings.Count(body, ": true")
 }
 
 func goBalanced(src string, open, close byte) (string, error) {

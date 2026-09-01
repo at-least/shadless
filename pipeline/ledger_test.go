@@ -305,7 +305,7 @@ func ledgerFixture(t *testing.T, max int) string {
 	write(goldenExPath, `{"examples":{}}`)
 	write(emitterCSS, `export const DEAD_UTILITIES = new Set([])`)
 	write(emitterSkin, `export const SKIN_ALLOWLIST = new Set([])`)
-	write(sweepPath, `const KNOWN_DEAD = new Set([])`)
+	write(sweepPath, `var sweepKnownDead = map[string]bool{}`)
 	if err := os.MkdirAll(filepath.Join(root, contractsDir), 0o755); err != nil {
 		t.Fatal(err)
 	}
