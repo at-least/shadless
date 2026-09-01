@@ -198,10 +198,11 @@ func writeLangsJSON(b *strings.Builder, l rtlLangs, depth int) {
 
 // ---------------------------------------------------------------------------
 // extractTranslations: esbuild to strip TS syntax, then a scanner walk of
-// the `translations` object literal. Values may be StringLiteral or a
+// the `translations` identifier (exact name — \b, or a rename like
+// `translationsRenamed` would still match). Values may be StringLiteral or a
 // single-quasi TemplateLiteral; both surface as strings.
 
-var translationsAnchor = regexp.MustCompile(`const translations`)
+var translationsAnchor = regexp.MustCompile(`const translations\b`)
 
 func extractTranslations(src string) (*rtlLangs, error) {
 	out := api.Transform(src, api.TransformOptions{

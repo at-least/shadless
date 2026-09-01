@@ -182,15 +182,6 @@
       "hash": "c3fe128342af68914e56603ef7ae4f460e48974e9ed8ae42ca76ad5a551caab8",
       "pin": "shadcn@4.19.0"
     },
-    "behavior:toggle-group": {
-      "file": "src/runtime/components/toggle-group.js",
-      "inputs": [
-        "apps/v4/registry/bases/radix/ui/toggle-group.tsx"
-      ],
-      "extra": [],
-      "hash": "1c19043699f0bf452594a1e48c385767b0bd067f6a5014d424c1f92e4d364f77",
-      "pin": "shadcn@4.19.0"
-    },
     "behavior:toggle": {
       "file": "src/runtime/components/toggle.js",
       "inputs": [
@@ -200,6 +191,15 @@
       "hash": "fc84b7b232c8e6da2e887a40f9d96107cd007c964f0e056cf3b49a9da0b13863",
       "pin": "shadcn@4.19.0"
     },
+    "behavior:toggle-group": {
+      "file": "src/runtime/components/toggle-group.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/toggle-group.tsx"
+      ],
+      "extra": [],
+      "hash": "1c19043699f0bf452594a1e48c385767b0bd067f6a5014d424c1f92e4d364f77",
+      "pin": "shadcn@4.19.0"
+    },
     "behavior:tooltip": {
       "file": "src/runtime/components/tooltip.js",
       "inputs": [
@@ -207,26 +207,6 @@
       ],
       "extra": [],
       "hash": "2f150fada6d331ced4b22726a6ad3548a9b78fe3f5021e136d6a67113733399f",
-      "pin": "shadcn@4.19.0"
-    },
-    "runtime:core": {
-      "file": "src/runtime/core.js",
-      "inputs": [
-        "apps/v4/registry/bases/radix/ui/accordion.tsx",
-        "apps/v4/registry/bases/radix/ui/aspect-ratio.tsx",
-        "apps/v4/registry/bases/radix/ui/avatar.tsx",
-        "apps/v4/registry/bases/radix/ui/checkbox.tsx",
-        "apps/v4/registry/bases/radix/ui/collapsible.tsx",
-        "apps/v4/registry/bases/radix/ui/label.tsx",
-        "apps/v4/registry/bases/radix/ui/progress.tsx",
-        "apps/v4/registry/bases/radix/ui/radio-group.tsx",
-        "apps/v4/registry/bases/radix/ui/separator.tsx",
-        "apps/v4/registry/bases/radix/ui/switch.tsx",
-        "apps/v4/registry/bases/radix/ui/toggle.tsx",
-        "apps/v4/registry/bases/radix/ui/toggle-group.tsx"
-      ],
-      "extra": [],
-      "hash": "1bd3458ed9df40ee15ee044415c62b43f026e3148eb90a87b571c6bfd806a14a",
       "pin": "shadcn@4.19.0"
     },
     "demo:message-scroller-anchoring": {
@@ -326,6 +306,26 @@
         "no-upstream-input"
       ],
       "hash": "14ec51e6304f51544cef9a8926623ef039f03f2c420fa48c3470db332ea51619",
+      "pin": "shadcn@4.19.0"
+    },
+    "runtime:core": {
+      "file": "src/runtime/core.js",
+      "inputs": [
+        "apps/v4/registry/bases/radix/ui/accordion.tsx",
+        "apps/v4/registry/bases/radix/ui/aspect-ratio.tsx",
+        "apps/v4/registry/bases/radix/ui/avatar.tsx",
+        "apps/v4/registry/bases/radix/ui/checkbox.tsx",
+        "apps/v4/registry/bases/radix/ui/collapsible.tsx",
+        "apps/v4/registry/bases/radix/ui/label.tsx",
+        "apps/v4/registry/bases/radix/ui/progress.tsx",
+        "apps/v4/registry/bases/radix/ui/radio-group.tsx",
+        "apps/v4/registry/bases/radix/ui/separator.tsx",
+        "apps/v4/registry/bases/radix/ui/switch.tsx",
+        "apps/v4/registry/bases/radix/ui/toggle.tsx",
+        "apps/v4/registry/bases/radix/ui/toggle-group.tsx"
+      ],
+      "extra": [],
+      "hash": "1bd3458ed9df40ee15ee044415c62b43f026e3148eb90a87b571c6bfd806a14a",
       "pin": "shadcn@4.19.0"
     }
   }

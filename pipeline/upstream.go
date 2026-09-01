@@ -174,7 +174,7 @@ func runUpstream(args []string) int {
 
 	// ----------------------------------------------------------- 6. overlay
 	upstreamStep("overlay audit + task packets")
-	inherit(root, "node", "gates/overlay.mjs", "--tasks")
+	inherit(root, "./build/pipeline", "overlay", "--tasks")
 	tasks := listDir(filepath.Join(root, gatesOut, "tasks"))
 	conflicts := readConflicts(root)
 	rep.H("Manual work")
@@ -199,7 +199,7 @@ func runUpstream(args []string) int {
 	rep.P(strings.Join([]string{
 		"- 1. read UNEXPECTED failures first — those are ours",
 		"- 2. work the task packets (each names the gates that must be green)",
-		"- 3. `./build/pipeline ledger --record` for exemptions that legitimately survive; `node gates/overlay.mjs --record` after re-authoring",
+		"- 3. `./build/pipeline ledger --record` for exemptions that legitimately survive; `./build/pipeline overlay --record` after re-authoring",
 		"- 4. `make upstream-snapshot` (network) to refresh the ui.shadcn.com golden snapshot for the new release",
 		"- 5. `make` must be green; then commit source + regenerated output together (the dist/ diff IS the review)",
 	}, "\n"))

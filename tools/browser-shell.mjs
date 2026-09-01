@@ -128,7 +128,7 @@ async function handle(req) {
         shadlessPage: d.shadlessPage ?? null, scenarios: d.scenarios ?? [],
         triggerSlot: d.triggerSlot ?? null, stateProbe: d.stateProbe ?? null,
         styleIgnore: d.styleIgnore ?? [], facts: d.facts ?? null, note: d.note ?? null,
-        oracleCss: d.oracleCss ?? null,
+        ignoreAttrs: d.ignoreAttrs ?? null, oracleCss: d.oracleCss ?? null,
       } }
     }
     case "routeAbortExternal": {

@@ -168,8 +168,8 @@ var Nodes = []Node{
 	{
 		ID: NOverlay, Kind: "gate", Tier: "fast",
 		Needs:     []NodeID{NConvert, NExampleOracle},
-		Run:       [][]string{{"node", "gates/overlay.mjs", "--audit"}},
-		Inputs:    []string{"gates/overlay.mjs", "overlays/**", "src/**", "tools/**/*.mjs", "pipeline/build_rtl.go", "pipeline/rtl_dict.go", "docs/example-oracle.json", "docs/example-fixture-targets.json", "docs/demos/**", "src/registry/pin.json", upstreamExamplesGlob, upstreamDocsGlob},
+		Run:       [][]string{{"./build/pipeline", "overlay", "--audit"}},
+		Inputs:    []string{"pipeline/overlay.go", "pipeline/default_content.go", "pipeline/docs_transforms.go", "pipeline/emitter_css.go", "pipeline/resolve_skins.go", "pipeline/jssource.go", "pipeline/browser_shell.go", "pipeline/build_rtl.go", "pipeline/main.go", "tools/browser-shell.mjs", "tools/contracts/components/**", "src/converter/index.mjs", "src/emitter/skin.mjs", "src/registry/rtl-translations.json", "src/registry/ir/**", "src/registry/pin.json", "src/runtime/components/**", "src/runtime/core.js", "overlays/**", "docs/example-oracle.json", "docs/example-fixture-targets.json", "docs/demos/**", upstreamExamplesGlob, upstreamDocsGlob},
 		Produces:  nil,
 		Why:       "every manual intervention on top of the mechanical conversion (rule tables, hand-written fixtures/glue/runtime, upstream patches) must still apply to the pinned upstream — orphaned rules and stale authored files fail here, with task packets, instead of silently no-op'ing like the old find/replace overlay",
 		Mutations: []string{"overlay-stale-authored", "overlay-orphaned-rule"},

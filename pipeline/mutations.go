@@ -291,7 +291,7 @@ var Mutations = []Mutation{
 	},
 	{
 		ID: "docs-smoke-broken-iframe", Gate: "docs-smoke",
-		Why:   "a preview iframe points at a page that does not exist",
+		Why: "a preview iframe points at a page that does not exist",
 		// the BUILT page: docs-smoke drives the rendered site, and rebuilding
 		// it is not part of running the gate
 		Files: []string{"docs/.vitepress/dist/components/accordion.html"},
@@ -427,15 +427,18 @@ var Mutations = []Mutation{
 	},
 	{
 		ID: "overlay-orphaned-rule", Gate: "overlay",
-		Why:   "DEFAULT_CONTENT carries an entry for a fn the component no longer exports",
-		Files: []string{"pipeline/default_content.go"},
-		// A conversion rule whose anchor no longer exists: DEFAULT_CONTENT
-		// keyed on a component fn upstream stopped exporting. The old table
-		// validated keys only when the emitter ran.
+		Why:   "a conversion rule's anchor no longer exists (contract ignoreAttrs exempts a slot nothing emits)",
+		Files: []string{"tools/contracts/components/accordion.mjs"},
+		// A rule whose anchor is gone: the ignore-attrs rule audits that
+		// every exempted slot is still emitted by the IR. The mutation
+		// targets a def because the gate reads defs at RUNTIME — mutating
+		// the pipeline's own Go tables cannot move a gate that runs the
+		// prebuilt binary, and a compile step inside the gate would leave
+		// the mutated binary behind after the harness restores the source.
 		Apply: func(root string, f []string) error {
 			return mutReplaceOnce(root, f[0],
-				`  badge: { Badge: "Badge" },`,
-				`  badge: { Badge: "Badge", BadgeGoneUpstream: "x" },`)
+				"  ignoreAttrs: {\n    \"accordion\": [\"text\"],",
+				"  ignoreAttrs: {\n    \"accordion\": [\"text\"],\n    \"accordion-phantom\": [\"text\"],")
 		},
 	},
 	{
@@ -555,9 +558,12 @@ var Mutations = []Mutation{
 	{
 		ID: "unit-break-pure-fn", Gate: "unit",
 		Why:   "a pure helper (splitMarkers) stops separating marker classes from utilities",
-		Files: []string{"pipeline/emitter_css.go"},
+		Files: []string{"src/emitter/css.mjs"},
 		// The regression that created the unit gate: a "dead code" delete in a
 		// pure helper passed `node --check` and only surfaced minutes later.
+		// The unit gate tests the JS surface (tools/unit-check.mjs imports
+		// src/emitter/css.mjs), so the mutation lands there — breaking the
+		// Go twin cannot move a gate that never reads it.
 		Apply: func(root string, f []string) error {
 			return mutReplaceOnce(root, f[0],
 				"apply: toks.filter((t) => !MARKER.test(t) &&",

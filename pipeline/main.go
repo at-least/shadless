@@ -230,6 +230,9 @@ func main() {
 	if cmd == "example-fixture" {
 		os.Exit(runExampleFixture(args))
 	}
+	if cmd == "overlay" {
+		os.Exit(runOverlay(args))
+	}
 	if cmd == "interactivity-sweep" {
 		os.Exit(runInteractivitySweep())
 	}
