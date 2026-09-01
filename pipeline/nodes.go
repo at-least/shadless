@@ -449,9 +449,9 @@ var Nodes = []Node{
 	},
 	{
 		ID: NDocsSmoke, Kind: "gate", Tier: "full",
-		Needs:     []NodeID{NDocsSite},
-		Run:       [][]string{{"node", "tools/docs-smoke.mjs", "--all"}},
-		Inputs:    []string{"tools/docs-smoke.mjs", "tools/docs-guides.mjs", "docs/.vitepress/dist/**"},
+		Needs:     []NodeID{NDocsSite, NBuildJs},
+		Run:       [][]string{{"./build/pipeline", "docs-smoke", "--all"}},
+		Inputs:    []string{"pipeline/docs_smoke.go", "pipeline/browser_shell.go", "tools/browser-shell.mjs", "docs/.vitepress/dist/**"},
 		Produces:  nil,
 		Why:       "every page and every iframe loads with zero console/page errors",
 		Mutations: []string{"docs-smoke-broken-iframe"},

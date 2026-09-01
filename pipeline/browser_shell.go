@@ -81,7 +81,11 @@ func (s *browserShell) launch() error {
 }
 
 func (s *browserShell) newPage(capture bool) (*bpage, error) {
-	res, err := s.call(map[string]any{"op": "newPage", "capture": capture})
+	return s.newPageOrigin(capture, "")
+}
+
+func (s *browserShell) newPageOrigin(capture bool, origin string) (*bpage, error) {
+	res, err := s.call(map[string]any{"op": "newPage", "capture": capture, "origin": origin})
 	if err != nil {
 		return nil, err
 	}
@@ -112,6 +116,15 @@ func (p *bpage) evaluateArg(expr string, arg any) (any, error) {
 	return res["value"], nil
 }
 
+// evaluateFn runs a function-shaped expression ("() => {…}") in the page.
+func (p *bpage) evaluateFn(expr string) (any, error) {
+	res, err := p.s.call(map[string]any{"op": "evaluateFn", "pageId": p.id, "expr": expr})
+	if err != nil {
+		return nil, err
+	}
+	return res["value"], nil
+}
+
 func (p *bpage) waitForFunction(expr string, timeoutMS int) error {
 	_, err := p.s.call(map[string]any{"op": "waitForFunction", "pageId": p.id, "expr": expr, "timeout": timeoutMS})
 	return err
@@ -135,4 +148,78 @@ func (p *bpage) events() ([]string, error) {
 
 func (p *bpage) close() {
 	p.s.call(map[string]any{"op": "close", "pageId": p.id})
+}
+
+// ---- locator primitives (frame = an iframe selector; "" = the page itself) ----
+
+func (p *bpage) locCount(frame, selector string) (int, error) {
+	res, err := p.s.call(map[string]any{"op": "locCount", "pageId": p.id, "frame": frame, "selector": selector})
+	if err != nil {
+		return 0, err
+	}
+	return int(res["value"].(float64)), nil
+}
+
+func (p *bpage) locWait(frame, selector, state string, timeoutMS int) error {
+	_, err := p.s.call(map[string]any{"op": "locWait", "pageId": p.id, "frame": frame, "selector": selector, "state": state, "timeout": timeoutMS})
+	return err
+}
+
+func (p *bpage) locScroll(frame, selector string, index int) error {
+	_, err := p.s.call(map[string]any{"op": "locScroll", "pageId": p.id, "frame": frame, "selector": selector, "index": index})
+	return err
+}
+
+func (p *bpage) locAttr(frame, selector, attr string) (string, bool, error) {
+	res, err := p.s.call(map[string]any{"op": "locAttr", "pageId": p.id, "frame": frame, "selector": selector, "attr": attr})
+	if err != nil {
+		return "", false, err
+	}
+	v, ok := res["value"].(string)
+	return v, ok, nil
+}
+
+type bbox struct {
+	X, Y, Width, Height float64
+}
+
+func (p *bpage) locBox(frame, selector string, index int) (*bbox, error) {
+	res, err := p.s.call(map[string]any{"op": "locBox", "pageId": p.id, "frame": frame, "selector": selector, "index": index})
+	if err != nil {
+		return nil, err
+	}
+	m, ok := res["value"].(map[string]any)
+	if !ok {
+		return nil, nil
+	}
+	return &bbox{m["x"].(float64), m["y"].(float64), m["width"].(float64), m["height"].(float64)}, nil
+}
+
+// locEvalAll evaluates expr over every match (playwright evaluateAll).
+func (p *bpage) locEvalAll(frame, selector, expr string) (any, error) {
+	res, err := p.s.call(map[string]any{"op": "locEvalAll", "pageId": p.id, "frame": frame, "selector": selector, "expr": expr})
+	if err != nil {
+		return nil, err
+	}
+	return res["value"], nil
+}
+
+func (p *bpage) waitForLoadState(state string, timeoutMS int) error {
+	_, err := p.s.call(map[string]any{"op": "waitForLoadState", "pageId": p.id, "state": state, "timeout": timeoutMS})
+	return err
+}
+
+func (p *bpage) waitForTimeout(ms int) error {
+	_, err := p.s.call(map[string]any{"op": "waitForTimeout", "pageId": p.id, "ms": ms})
+	return err
+}
+
+func (p *bpage) mouseClick(x, y float64) error {
+	_, err := p.s.call(map[string]any{"op": "mouseClick", "pageId": p.id, "x": x, "y": y})
+	return err
+}
+
+func (p *bpage) keyPress(key string) error {
+	_, err := p.s.call(map[string]any{"op": "keyPress", "pageId": p.id, "key": key})
+	return err
 }
