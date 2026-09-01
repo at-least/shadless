@@ -106,8 +106,8 @@ upstream: $(PIPELINE)
 	./$(PIPELINE) upstream --to=$(TO)
 
 # Refresh the committed ui.shadcn.com snapshot (network crawl; golden hop 1).
-upstream-snapshot:
-	$(NODE) tools/upstream-snapshot.mjs
+upstream-snapshot: $(PIPELINE)
+	./$(PIPELINE) upstream-snapshot
 
 # Committed generated trees must equal a clean rebuild. CI's only authority
 # on hand-edits to dist/ — the pre-commit hook no longer guesses.

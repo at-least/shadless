@@ -42,7 +42,7 @@ var releaseTagRe = regexp.MustCompile(`^shadcn@\d`)
 // pin.json's `registry` path.
 //
 // That fact was written in three places with nothing comparing them:
-// pin.json, and two constants in tools/upstream-snapshot.mjs (a docs directory
+// pin.json, and two constants in the upstream-snapshot step (a docs directory
 // and the crawl URL) with "radix" baked into both. The crawler now derives
 // them; what remains to check is that the GRAPH agrees, because the convert
 // node names its base in a glob. If those two ever disagree, the golden hop

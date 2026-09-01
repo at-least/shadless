@@ -127,18 +127,21 @@ func (m *Shadless) UpstreamSnapshot(ctx context.Context, source *dagger.Director
 	if err != nil {
 		return nil, err
 	}
-	c, err := m.deps(ctx, source)
+	img, err := goImage(ctx, source)
 	if err != nil {
 		return nil, err
 	}
-	return c.
+	c := dag.Container().
+		From(img).
+		WithWorkdir("/w").
+		WithDirectory("/w/pipeline", source.Directory("pipeline")).
+		WithExec([]string{"go", "build", "-o", "/usr/local/bin/pipeline", "./pipeline"}).
 		WithServiceBinding("site", site).
 		WithEnvVariable("SHADLESS_SNAPSHOT_ORIGIN", fmt.Sprintf("http://site:%d", upstreamPort)).
-		WithFile("/w/tools/upstream-snapshot.mjs", source.File("tools/upstream-snapshot.mjs")).
-		WithDirectory("/w/src/docs", source.Directory("src/docs")).
 		WithFile("/w/src/registry/pin.json", source.File("src/registry/pin.json")).
 		WithDirectory("/w/.upstream/shadcn-ui/apps/v4/content/docs",
 			source.Directory(".upstream/shadcn-ui/apps/v4/content/docs")).
-		WithExec([]string{"node", "tools/upstream-snapshot.mjs"}).
-		Directory("/w/src/registry/upstream-snapshot"), nil
+		WithWorkdir("/w").
+		WithExec([]string{"pipeline", "upstream-snapshot"})
+	return c.Directory("/w/src/registry/upstream-snapshot"), nil
 }

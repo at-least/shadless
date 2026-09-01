@@ -212,6 +212,9 @@ func main() {
 	if cmd == "docs-fidelity" {
 		os.Exit(runDocsFidelity())
 	}
+	if cmd == "upstream-snapshot" {
+		os.Exit(runUpstreamSnapshot(args))
+	}
 	if cmd == "inputs" {
 		os.Exit(runInputs(args))
 	}
