@@ -227,6 +227,9 @@ func main() {
 	if cmd == "example-oracle" {
 		os.Exit(runExampleOracle(has(args, "--check")))
 	}
+	if cmd == "interactivity-sweep" {
+		os.Exit(runInteractivitySweep())
+	}
 	if cmd == "inputs" {
 		os.Exit(runInputs(args))
 	}

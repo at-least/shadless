@@ -177,8 +177,20 @@ async function handle(req) {
       const fn = new Function("return (" + req.expr + ")")()
       const handles = await loc.elementHandles()
       const values = []
-      for (const h of handles) values.push(await h.evaluate(fn))
+      for (const h of handles) values.push(await h.evaluate(fn, req.arg ?? undefined))
       return { value: values }
+    }
+    case "locClick": {
+      const { page } = pages.get(req.pageId)
+      const loc = await locatorIn(page, req)
+      const nth = loc.nth(req.index ?? 0)
+      await nth.click({ timeout: req.timeout ?? 5000, button: req.button ?? "left" })
+      return { ok: true }
+    }
+    case "mouseMove": {
+      const { page } = pages.get(req.pageId)
+      await page.mouse.move(req.x, req.y, { steps: req.steps ?? 1 })
+      return { ok: true }
     }
     case "close": {
       if (req.pageId !== undefined) {

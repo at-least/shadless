@@ -208,11 +208,26 @@ func (p *bpage) locBox(frame, selector string, index int) (*bbox, error) {
 
 // locEvalAll evaluates expr over every match (playwright evaluateAll).
 func (p *bpage) locEvalAll(frame, selector, expr string) (any, error) {
-	res, err := p.s.call(map[string]any{"op": "locEvalAll", "pageId": p.id, "frame": frame, "selector": selector, "expr": expr})
+	return p.locEvalAllArg(frame, selector, expr, nil)
+}
+
+func (p *bpage) locEvalAllArg(frame, selector, expr string, arg any) (any, error) {
+	res, err := p.s.call(map[string]any{"op": "locEvalAll", "pageId": p.id, "frame": frame, "selector": selector, "expr": expr, "arg": arg})
 	if err != nil {
 		return nil, err
 	}
 	return res["value"], nil
+}
+
+// locClick clicks the nth match; button "right" for context-menu triggers.
+func (p *bpage) locClick(frame, selector string, index int, button string) error {
+	_, err := p.s.call(map[string]any{"op": "locClick", "pageId": p.id, "frame": frame, "selector": selector, "index": index, "button": button})
+	return err
+}
+
+func (p *bpage) mouseMove(x, y float64, steps int) error {
+	_, err := p.s.call(map[string]any{"op": "mouseMove", "pageId": p.id, "x": x, "y": y, "steps": steps})
+	return err
 }
 
 func (p *bpage) waitForLoadState(state string, timeoutMS int) error {
