@@ -178,6 +178,48 @@ func jsAttrMap(body string) []jsAttrEntry {
 	return out
 }
 
+// goMapKeyCount counts the quoted keys of a Go map[string]bool literal.
+func goMapKeyCount(src, name string) int {
+	re := regexp.MustCompile(`var\s+` + regexp.QuoteMeta(name) + `\s*=\s*map\[string\]bool\{`)
+	loc := re.FindStringIndex(src)
+	if loc == nil {
+		return -1
+	}
+	body, err := goBalanced(src[loc[1]-1:], '{', '}')
+	if err != nil {
+		return -1
+	}
+	return strings.Count(body, ": true,") + strings.Count(body, ": true\n")
+}
+
+func goBalanced(src string, open, close byte) (string, error) {
+	depth := 0
+	inStr := false
+	for i := 0; i < len(src); i++ {
+		c := src[i]
+		if inStr {
+			if c == '\\' {
+				i++
+			} else if c == '"' {
+				inStr = false
+			}
+			continue
+		}
+		switch c {
+		case '"':
+			inStr = true
+		case open:
+			depth++
+		case close:
+			depth--
+			if depth == 0 {
+				return src[1:i], nil
+			}
+		}
+	}
+	return "", fmt.Errorf("unbalanced region")
+}
+
 // jsCountSetEntries counts the string entries of a `new Set([...])` without
 // caring what they are — the interactivity budget is a count, not a list.
 func jsCountSetEntries(src, name string) (int, error) {

@@ -51,7 +51,7 @@ const (
 	contractsDir  = "tools/contracts/components"
 	emitterCSS    = "src/emitter/css.mjs"
 	emitterSkin   = "src/emitter/skin.mjs"
-	sweepPath     = "tools/interactivity-sweep.mjs"
+	sweepPath     = "pipeline/interactivity_sweep.go"
 	pinRegistry   = "src/registry/pin.json"
 	todoReasonPfx = "TODO"
 )
@@ -352,12 +352,8 @@ func collectBudgetValues(root string) (map[string]int, error) {
 	if err != nil {
 		return nil, err
 	}
-	n, err := jsCountSetEntries(string(sweep), "KNOWN_DEAD")
-	if err != nil {
-		// -1 rather than a hard error: the JS reported it as a budget
-		// problem, and one unreadable metric should not hide the others
-		n = -1
-	}
+	// sweepKnownDead is a Go map literal now; count its keys
+	n := goMapKeyCount(string(sweep), "sweepKnownDead")
 	v["interactivity.dead-families"] = n
 
 	for name, path := range map[string]string{
