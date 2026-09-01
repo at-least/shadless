@@ -47,15 +47,23 @@ if (log) {
   // The read surface the tools actually use. existsSync/statSync count: a tool
   // that branches on a file's presence is judging that file, and its
   // appearance must invalidate the node just as its content would.
+  //
+  // Property-copying replace: vite's resolver reads fs.realpathSync.NATIVE —
+  // a plain reassignment drops it and vitepress dies with
+  // "safeRealpathSync is not a function" under the runner's NODE_OPTIONS.
   for (const name of ["readFileSync", "readdirSync", "existsSync", "statSync",
                       "lstatSync", "openSync", "realpathSync", "readlinkSync",
                       "createReadStream", "opendirSync"]) {
     const orig = fs[name]
     if (typeof orig !== "function") continue
-    fs[name] = function (p, ...rest) {
+    const wrapped = function (p, ...rest) {
       note(p)
       return orig.call(this, p, ...rest)
     }
+    // carry over attach points (.native, custom promisify, flags)
+    Object.assign(wrapped, orig)
+    Object.setPrototypeOf(wrapped, Object.getPrototypeOf(orig))
+    fs[name] = wrapped
   }
 
   // node:fs/promises is a separate object with its own function identities.
