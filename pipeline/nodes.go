@@ -393,9 +393,9 @@ var Nodes = []Node{
 	},
 	{
 		ID: NDemoSmoke, Kind: "gate", Tier: "full",
-		Needs:     []NodeID{NDemoCss},
-		Run:       [][]string{{"node", "tools/demo-smoke.mjs"}},
-		Inputs:    []string{"tools/demo-smoke.mjs", "dist/**", "src/registry/ir/**", "src/registry/tiers.json"},
+		Needs:     []NodeID{NDemoCss, NBuildJs},
+		Run:       [][]string{{"./build/pipeline", "demo-smoke"}},
+		Inputs:    []string{"pipeline/demo_smoke.go", "pipeline/browser_shell.go", "tools/browser-shell.mjs", "dist/**", "src/registry/ir/**", "src/registry/tiers.json"},
 		Produces:  nil,
 		Why:       "every dist demo page loads with zero console errors",
 		Mutations: []string{"demo-smoke-console-error"},

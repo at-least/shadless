@@ -215,6 +215,9 @@ func main() {
 	if cmd == "upstream-snapshot" {
 		os.Exit(runUpstreamSnapshot(args))
 	}
+	if cmd == "demo-smoke" {
+		os.Exit(runDemoSmoke())
+	}
 	if cmd == "inputs" {
 		os.Exit(runInputs(args))
 	}
