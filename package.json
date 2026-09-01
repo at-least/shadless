@@ -1,7 +1,7 @@
 {
   "name": "shadless",
   "version": "1.0.0",
-  "description": "React-free shadcn/ui components — HTML + Tailwind CSS + vanilla JS, mechanically converted from the pinned shadcn registry",
+  "description": "React-free shadcn/ui components \u2014 HTML + Tailwind CSS + vanilla JS, mechanically converted from the pinned shadcn registry",
   "license": "MIT",
   "author": "newlix",
   "engines": {
@@ -57,7 +57,7 @@
     "contracts": "node tools/contracts/run.mjs",
     "convert": "npm run pipeline && ./build/pipeline resolve-skins && node src/converter/index.mjs",
     "emit": "node src/emitter/index.mjs",
-    "demo": "npm run emit && node tools/example-oracle.mjs && node tools/example-fixture.mjs && ./build/pipeline build-rtl && node tools/demo.mjs && ./build/pipeline product-css && ./build/pipeline tw dist/globals.css dist/out.css --cwd . && ./build/pipeline tw dist/shadless.product.css dist/shadless.full.css && ./build/pipeline tw dist/shadless.product.css dist/shadless.full.min.css --minify",
+    "demo": "npm run emit && node tools/example-oracle.mjs && node tools/example-fixture.mjs && ./build/pipeline build-rtl && ./build/pipeline demo && ./build/pipeline product-css && ./build/pipeline tw dist/globals.css dist/out.css --cwd . && ./build/pipeline tw dist/shadless.product.css dist/shadless.full.css && ./build/pipeline tw dist/shadless.product.css dist/shadless.full.min.css --minify",
     "demo:smoke": "node tools/demo-smoke.mjs",
     "verify": "npm run pipeline && ./build/pipeline run all",
     "gate:direction": "node tools/css-direction-gate.mjs",
