@@ -223,32 +223,13 @@ func TestUnitStripImports(t *testing.T) {
 // example-fixture ports and the .mjs goes away) ----
 
 func TestUnitFixtureFamiliesGolden(t *testing.T) {
-	goldenDir := t.TempDir()
-	dump := filepath.Join(goldenDir, "dump.mjs")
-	script := `import { readFileSync, writeFileSync } from "node:fs"
-process.chdir("/home/newlix/github/at-least/shadless")
-const { protocolMdx, trivialMdx, apiReferenceMdx, FAMILY, TRIVIAL } =
-  await import("/home/newlix/github/at-least/shadless/tools/fixture-families.mjs")
-const out = {}
-const names = [...new Set([...Object.keys(FAMILY), ...Object.keys(TRIVIAL)])].sort()
-for (const n of names) {
-  out[n] = {
-    protocol: protocolMdx(n),
-    trivial: trivialMdx(n),
-    api0: apiReferenceMdx(n, []),
-    api2: apiReferenceMdx(n, ["s1", "s2"]),
-  }
-}
-writeFileSync(process.argv[2], JSON.stringify(out))
-`
-	if err := os.WriteFile(dump, []byte(script), 0o644); err != nil {
+	// the JS original (tools/fixture-families.mjs) is gone; the golden is
+	// the snapshot its last run produced — the table it pinned is the one
+	// docs_families.go must keep serving byte-identical
+	gb, err := os.ReadFile(filepath.Join("testdata", "fixture-families-golden.json"))
+	if err != nil {
 		t.Fatal(err)
 	}
-	jsOut := filepath.Join(goldenDir, "golden.json")
-	if out, err := exec.Command("node", dump, jsOut).CombinedOutput(); err != nil {
-		t.Fatalf("fixture-families dump: %v\n%s", err, out)
-	}
-	gb, _ := os.ReadFile(jsOut)
 	var golden map[string]struct {
 		Protocol string `json:"protocol"`
 		Trivial  string `json:"trivial"`

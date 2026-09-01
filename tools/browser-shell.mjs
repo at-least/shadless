@@ -59,20 +59,24 @@ async function handle(req) {
       const errors = []
       if (req.capture) {
         page.on("pageerror", (e) => errors.push(String(e)))
-        // resource-load console messages are redundant with requestfailed
-        // (which carries the URL); requestfailed decides.
-        page.on("console", (m) => {
-          if (m.type() === "error" && !/^Failed to load resource/.test(m.text()))
-            errors.push(m.text())
-        })
-        page.on("requestfailed", (r) => {
-          const url = r.url()
-          // same-origin failures count; the nonexistent-URL filter is the
-          // legacy tolerance from tools/demo-smoke.mjs
-          const scoped = req.origin ? url.startsWith(req.origin) : true
-          if (scoped && !/nonexistent/.test(url))
-            errors.push(`requestfailed: ${url} ${r.failure()?.errorText || ""}`)
-        })
+        // captureOnly "pageerror": tools that pin themselves to pageerror
+        // alone (example-fixture) opt out of the console/requestfailed net
+        if (req.captureOnly !== "pageerror") {
+          // resource-load console messages are redundant with requestfailed
+          // (which carries the URL); requestfailed decides.
+          page.on("console", (m) => {
+            if (m.type() === "error" && !/^Failed to load resource/.test(m.text()))
+              errors.push(m.text())
+          })
+          page.on("requestfailed", (r) => {
+            const url = r.url()
+            // same-origin failures count; the nonexistent-URL filter is the
+            // legacy tolerance from tools/demo-smoke.mjs
+            const scoped = req.origin ? url.startsWith(req.origin) : true
+            if (scoped && !/nonexistent/.test(url))
+              errors.push(`requestfailed: ${url} ${r.failure()?.errorText || ""}`)
+          })
+        }
       }
       pages.set(id, { page, errors })
       return { pageId: id }
@@ -124,6 +128,7 @@ async function handle(req) {
         shadlessPage: d.shadlessPage ?? null, scenarios: d.scenarios ?? [],
         triggerSlot: d.triggerSlot ?? null, stateProbe: d.stateProbe ?? null,
         styleIgnore: d.styleIgnore ?? [], facts: d.facts ?? null, note: d.note ?? null,
+        oracleCss: d.oracleCss ?? null,
       } }
     }
     case "routeAbortExternal": {
@@ -155,7 +160,7 @@ async function handle(req) {
     }
     case "mouseClick": {
       const { page } = pages.get(req.pageId)
-      await page.mouse.click(req.x, req.y)
+      await page.mouse.click(req.x, req.y, { button: req.button ?? "left" })
       return { ok: true }
     }
     case "keyPress": {

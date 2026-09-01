@@ -69,7 +69,12 @@ func (m *Shadless) exampleFixture(ctx context.Context, source *dagger.Directory)
 	if err != nil {
 		return nil, err
 	}
+	bin, err := goBinary(ctx, source)
+	if err != nil {
+		return nil, err
+	}
 	return c.
+		WithFile("/usr/local/bin/pipeline", bin).
 		WithFile("/w/docs/example-fixture-targets.json",
 			oracle.File("docs/example-fixture-targets.json")).
 		WithDirectory("/w/docs/demos", oracle.Directory("docs/demos")).
@@ -77,7 +82,7 @@ func (m *Shadless) exampleFixture(ctx context.Context, source *dagger.Directory)
 		WithDirectory("/w/dist/js", js.Directory("js")).
 		WithFile("/w/dist/shadless.js", js.File("shadless.js")).
 		WithFile("/w/dist/out.css", source.File("dist/out.css")).
-		WithExec([]string{"node", "tools/example-fixture.mjs"}), nil
+		WithExec([]string{"pipeline", "example-fixture"}), nil
 }
 
 // ExampleFixture returns the interactive pages the self-test proved.
@@ -222,7 +227,12 @@ func (m *Shadless) contractFixture(ctx context.Context, source *dagger.Directory
 	if err != nil {
 		return nil, err
 	}
+	bin, err := goBinary(ctx, source)
+	if err != nil {
+		return nil, err
+	}
 	return c.
+		WithFile("/usr/local/bin/pipeline", bin).
 		WithDirectory("/w/tools/contracts/components",
 			source.Directory("tools/contracts/components")).
 		WithDirectory("/w/src/kernel", dag.Directory()).
@@ -232,7 +242,7 @@ func (m *Shadless) contractFixture(ctx context.Context, source *dagger.Directory
 		// output and therefore not available until later in the graph — the
 		// same previous-build dependency example-fixture has on docs/site
 		WithFile("/w/dist/out.css", source.File("dist/out.css")).
-		WithExec([]string{"node", "tools/example-fixture.mjs", "--contracts"}), nil
+		WithExec([]string{"pipeline", "example-fixture", "--contracts"}), nil
 }
 
 // ContractFixture returns the harvested kernel fixtures.

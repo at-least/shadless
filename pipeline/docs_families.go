@@ -17,24 +17,25 @@ type familyEnt struct {
 	kind string
 	open string
 	attr string
+	js   string
 }
 
 var family = map[string]familyEnt{
-	"alert-dialog":    {kind: "dialog"},
-	"dialog":          {kind: "dialog"},
-	"sheet":           {kind: "dialog"},
-	"popover":         {kind: "portal", open: "click"},
-	"tooltip":         {kind: "portal", open: "hover"},
-	"hover-card":      {kind: "portal", open: "hover"},
-	"tabs":            {kind: "inline"},
-	"slider":          {kind: "none"},
-	"scroll-area":     {kind: "none"},
-	"dropdown-menu":   {kind: "menu", open: "click", attr: "data-radixuigo-menu-trigger"},
-	"context-menu":    {kind: "menu", open: "contextmenu", attr: "data-radixuigo-context-trigger"},
-	"menubar":         {kind: "menu", open: "click", attr: "data-radixuigo-menu-trigger"},
-	"select":          {kind: "select"},
-	"carousel":        {kind: "none"},
-	"navigation-menu": {kind: "nav"},
+	"alert-dialog":    {kind: "dialog", js: "alert-dialog"},
+	"dialog":          {kind: "dialog", js: "dialog"},
+	"sheet":           {kind: "dialog", js: "sheet"},
+	"popover":         {kind: "portal", open: "click", js: "popover"},
+	"tooltip":         {kind: "portal", open: "hover", js: "tooltip"},
+	"hover-card":      {kind: "portal", open: "hover", js: "hover-card"},
+	"tabs":            {kind: "inline", js: "tabs"},
+	"slider":          {kind: "none", js: "slider"},
+	"scroll-area":     {kind: "none", js: "scroll-area"},
+	"dropdown-menu":   {kind: "menu", open: "click", attr: "data-radixuigo-menu-trigger", js: "dropdown-menu"},
+	"context-menu":    {kind: "menu", open: "contextmenu", attr: "data-radixuigo-context-trigger", js: "context-menu"},
+	"menubar":         {kind: "menu", open: "click", attr: "data-radixuigo-menu-trigger", js: "menubar"},
+	"select":          {kind: "select", js: "select"},
+	"carousel":        {kind: "none", js: "carousel"},
+	"navigation-menu": {kind: "nav", js: "navigation-menu"},
 }
 
 func gestureOf(open string) string {

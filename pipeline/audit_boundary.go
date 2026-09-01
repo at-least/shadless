@@ -129,7 +129,7 @@ var programmaticPatterns = []boundaryPattern{
 	// this wrong, and it made the boundary audit claim no tool owned files a
 	// tool had just written.
 	{match: inManifest("docs/example-fixture-targets.json", "name"),
-		tool:   "tools/example-fixture.mjs",
+		tool:   "pipeline/example_fixture.go",
 		source: "the React oracle render, with kernel-family JS wired in"},
 	{match: inManifest("docs/example-oracle.json", "out"),
 		tool:   "pipeline/example_oracle.go",

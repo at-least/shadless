@@ -211,8 +211,8 @@ var Nodes = []Node{
 	{
 		ID: NContractFixture, Kind: "build", Tier: "full",
 		Needs:     []NodeID{NConvert, NBuildJs},
-		Run:       [][]string{{"node", "tools/example-fixture.mjs", "--contracts"}},
-		Inputs:    []string{"tools/example-fixture.mjs", "tools/contracts/oracle-build.mjs", "tools/contracts/components/**", "tools/fixture-families.mjs", "src/docs/theme-prepaint.mjs", "docs/example-fixture-targets.json", "tools/oracle-lib.mjs", "tools/contracts/stubs/**", "src/registry/pin.json", "package-lock.json", "dist/out.css"},
+		Run:       [][]string{{"./build/pipeline", "example-fixture", "--contracts"}},
+		Inputs:    []string{"pipeline/example_fixture.go", "pipeline/ef_harvest_layer.js", "pipeline/ef_menu_ids.js", "pipeline/ef_nav_ids.js", "pipeline/ef_tabs.js", "pipeline/ef_api.js", "pipeline/oracle_lib.go", "pipeline/browser_shell.go", "tools/browser-shell.mjs", "pipeline/prepaint.go", "pipeline/docs_families.go", "pipeline/resolve_skins.go", "src/emitter/skin.mjs", "tools/contracts/components/**", "tools/contracts/stubs/**", "src/registry/pin.json", "package-lock.json", "dist/out.css"},
 		Produces:  []string{"src/kernel/*.html"},
 		Why:       "the kernel contract fixtures (src/kernel/*.html) are harvested from the contract defs' own React render — hand-mirrored fixtures drifted in content and classes (the bulk of style-parity's recorded cells)",
 		Mutations: nil,
@@ -235,8 +235,8 @@ var Nodes = []Node{
 	{
 		ID: NExampleFixture, Kind: "build", Tier: "full",
 		Needs:     []NodeID{NExampleOracle},
-		Run:       [][]string{{"node", "tools/example-fixture.mjs"}},
-		Inputs:    []string{"tools/example-fixture.mjs", "tools/contracts/oracle-build.mjs", "tools/contracts/components/**", "tools/fixture-families.mjs", "src/docs/theme-prepaint.mjs", "docs/example-fixture-targets.json", "dist/js/**", "tools/oracle-lib.mjs", "tools/contracts/stubs/**", "src/registry/pin.json", "package-lock.json", "dist/out.css", upstreamExamplesGlob},
+		Run:       [][]string{{"./build/pipeline", "example-fixture"}},
+		Inputs:    []string{"pipeline/example_fixture.go", "pipeline/ef_harvest_layer.js", "pipeline/ef_menu_ids.js", "pipeline/ef_nav_ids.js", "pipeline/ef_tabs.js", "pipeline/ef_api.js", "pipeline/oracle_lib.go", "pipeline/browser_shell.go", "tools/browser-shell.mjs", "pipeline/prepaint.go", "pipeline/docs_families.go", "pipeline/resolve_skins.go", "src/emitter/skin.mjs", "docs/example-fixture-targets.json", "dist/js/**", "tools/contracts/stubs/**", "src/registry/pin.json", "package-lock.json", "dist/out.css", upstreamExamplesGlob},
 		Produces:  []string{"docs/demos/*.html", "!docs/demos/*-rtl-*.html"},
 		Why:       "kernel-tier examples as INTERACTIVE fixtures harvested from the oracle; the oracle alone emits static snapshots with dead buttons",
 		Mutations: nil,

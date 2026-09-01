@@ -8,12 +8,12 @@ package main
 
 import (
 	"bufio"
-	"path/filepath"
 	"encoding/json"
 	"fmt"
 	"io"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 )
 
@@ -77,7 +77,7 @@ func (s *browserShell) close() {
 
 // page is a typed handle over one shell page.
 type bpage struct {
-	s *browserShell
+	s  *browserShell
 	id int
 }
 
@@ -92,6 +92,17 @@ func (s *browserShell) newPage(capture bool) (*bpage, error) {
 
 func (s *browserShell) newPageOrigin(capture bool, origin string) (*bpage, error) {
 	res, err := s.call(map[string]any{"op": "newPage", "capture": capture, "origin": origin})
+	if err != nil {
+		return nil, err
+	}
+	id, _ := res["pageId"].(float64)
+	return &bpage{s, int(id)}, nil
+}
+
+// newPageErrorsOnly: capture pageerror events only (example-fixture pins
+// itself to uncaught errors, not the console/requestfailed net).
+func (s *browserShell) newPageErrorsOnly() (*bpage, error) {
+	res, err := s.call(map[string]any{"op": "newPage", "capture": true, "captureOnly": "pageerror"})
 	if err != nil {
 		return nil, err
 	}
@@ -264,6 +275,19 @@ func (p *bpage) waitForTimeout(ms int) error {
 
 func (p *bpage) mouseClick(x, y float64) error {
 	_, err := p.s.call(map[string]any{"op": "mouseClick", "pageId": p.id, "x": x, "y": y})
+	return err
+}
+
+// mouseClickButton: button "right" drives context-menu triggers.
+func (p *bpage) mouseClickButton(x, y float64, button string) error {
+	_, err := p.s.call(map[string]any{"op": "mouseClick", "pageId": p.id, "x": x, "y": y, "button": button})
+	return err
+}
+
+// driver runs contract-def open/openShadless playwright code against the
+// live page.
+func (p *bpage) driver(code string) error {
+	_, err := p.s.call(map[string]any{"op": "driver", "pageId": p.id, "code": code})
 	return err
 }
 

@@ -365,7 +365,7 @@ func runExampleOracle(check bool) int {
 	ftB.WriteString("\n]\n")
 	os.WriteFile(oraFixTargets, []byte(ftB.String()), 0o644)
 
-	fmt.Printf("example-oracle: %d pages carry kernel families — handed to tools/example-fixture.mjs (%s)\n",
+	fmt.Printf("example-oracle: %d pages carry kernel families — handed to example-fixture (%s)\n",
 		len(fixtureTargets), oraFixTargets)
 	fmt.Printf("example-oracle: %d pages emitted from React oracle (%d targets, %d to example-fixture, %d exempt, 0 failures)\n",
 		len(rendered), len(targets), len(fixtureTargets), len(exempt))

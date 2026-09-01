@@ -227,6 +227,9 @@ func main() {
 	if cmd == "example-oracle" {
 		os.Exit(runExampleOracle(has(args, "--check")))
 	}
+	if cmd == "example-fixture" {
+		os.Exit(runExampleFixture(args))
+	}
 	if cmd == "interactivity-sweep" {
 		os.Exit(runInteractivitySweep())
 	}
