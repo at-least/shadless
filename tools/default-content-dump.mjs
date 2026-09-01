@@ -28,8 +28,8 @@ for (const [comp, fns] of Object.entries(DEFAULT_CONTENT)) {
     if (typeof entry === "string") { out += `\t\t${q(fn)}: {Set: true, Inner: escHtml(${q(entry)})},\n`; continue }
     out += `\t\t${q(fn)}: {Set: true`
     if (entry.html) out += `, Inner: ${q(entry.html)}`
-    if (entry.attrs) { out += `, Attrs: map[string]string{`
-      out += Object.entries(entry.attrs).map(([k,v])=>`${q(k)}: ${q(v)}`).join(", ") + `}`
+    if (entry.attrs) { out += `, Attrs: []attrPair{`
+      out += Object.entries(entry.attrs).map(([k,v])=>`{${q(k)}, ${q(v)}}`).join(", ") + `}`
     }
     if (entry.children) { out += `, Children: map[string]string{`
       out += Object.entries(entry.children).map(([k,v])=>`${q(k)}: ${q(v)}`).join(", ") + `}`

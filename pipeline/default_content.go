@@ -6,10 +6,12 @@ package main
 // present-and-null (the Go equivalent of JS undefined-vs-null).
 type defaultContentEntry struct {
 	Inner    string
-	Attrs    map[string]string
+	Attrs    []attrPair // ordered: JS object key order decides attribute order in output
 	Children map[string]string
 	Set      bool
 }
+
+type attrPair struct{ K, V string }
 
 var DEFAULT_CONTENT = map[string]map[string]defaultContentEntry{
 	"badge": {
@@ -19,19 +21,19 @@ var DEFAULT_CONTENT = map[string]map[string]defaultContentEntry{
 		"Button": {Set: true, Inner: escHtml("Button")},
 	},
 	"input": {
-		"Input": {Set: true, Attrs: map[string]string{"placeholder": "Type here…"}},
+		"Input": {Set: true, Attrs: []attrPair{{"placeholder", "Type here…"}}},
 	},
 	"textarea": {
-		"Textarea": {Set: true, Attrs: map[string]string{"placeholder": "Type here…"}},
+		"Textarea": {Set: true, Attrs: []attrPair{{"placeholder", "Type here…"}}},
 	},
 	"skeleton": {
-		"Skeleton": {Set: true, Attrs: map[string]string{"style": "width:250px;height:1rem;display:block"}},
+		"Skeleton": {Set: true, Attrs: []attrPair{{"style", "width:250px;height:1rem;display:block"}}},
 	},
 	"spinner": {
 		"Spinner": {Set: true, Inner: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" style=\"width:1rem;height:1rem\" aria-hidden=\"true\"><path d=\"M21 12a9 9 0 1 1-6.219-8.56\"/></svg>"},
 	},
 	"alert": {
-		"Alert": {Set: true, Inner: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><line x1=\"12\" y1=\"8\" x2=\"12\" y2=\"12\"></line><line x1=\"12\" y1=\"16\" x2=\"12.01\" y2=\"16\"></line></svg><div data-slot=\"alert-title\">Heads up!</div><div data-slot=\"alert-description\">You can add components to your app using the cli.</div>", Attrs: map[string]string{"role": "alert"}},
+		"Alert": {Set: true, Inner: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><line x1=\"12\" y1=\"8\" x2=\"12\" y2=\"12\"></line><line x1=\"12\" y1=\"16\" x2=\"12.01\" y2=\"16\"></line></svg><div data-slot=\"alert-title\">Heads up!</div><div data-slot=\"alert-description\">You can add components to your app using the cli.</div>", Attrs: []attrPair{{"role", "alert"}}},
 		"AlertTitle": {Set: true, Inner: escHtml("Heads up!")},
 		"AlertDescription": {Set: true, Inner: escHtml("You can add components to your app using the cli.")},
 	},
@@ -85,8 +87,8 @@ var DEFAULT_CONTENT = map[string]map[string]defaultContentEntry{
 		"InputGroupAddon": {Set: true, Inner: escHtml("@")},
 		"InputGroupButton": {Set: true, Inner: escHtml("Button")},
 		"InputGroupText": {Set: true, Inner: escHtml("Text")},
-		"InputGroupInput": {Set: true, Attrs: map[string]string{"placeholder": "Type here…"}},
-		"InputGroupTextarea": {Set: true, Attrs: map[string]string{"placeholder": "Type here…"}},
+		"InputGroupInput": {Set: true, Attrs: []attrPair{{"placeholder", "Type here…"}}},
+		"InputGroupTextarea": {Set: true, Attrs: []attrPair{{"placeholder", "Type here…"}}},
 	},
 	"item": {
 		"ItemGroup": {Set: true},
@@ -119,8 +121,8 @@ var DEFAULT_CONTENT = map[string]map[string]defaultContentEntry{
 		"PaginationContent": {Set: true, Inner: "<li data-slot=\"pagination-item\"><a data-slot=\"pagination-link\" href=\"#\" aria-current=\"page\" data-active=\"true\">1</a></li><li data-slot=\"pagination-item\"><a data-slot=\"pagination-link\" href=\"#\">2</a></li><li data-slot=\"pagination-item\"><a data-slot=\"pagination-link\" href=\"#\">3</a></li>"},
 		"PaginationItem": {Set: true, Inner: "<a data-slot=\"pagination-link\" href=\"#\">1</a>"},
 		"PaginationLink": {Set: true, Inner: escHtml("1")},
-		"PaginationPrevious": {Set: true, Inner: "‹", Attrs: map[string]string{"href": "#", "aria-label": "Go to the previous page"}},
-		"PaginationNext": {Set: true, Inner: "›", Attrs: map[string]string{"href": "#", "aria-label": "Go to the next page"}},
+		"PaginationPrevious": {Set: true, Inner: "‹", Attrs: []attrPair{{"href", "#"}, {"aria-label", "Go to the previous page"}}},
+		"PaginationNext": {Set: true, Inner: "›", Attrs: []attrPair{{"href", "#"}, {"aria-label", "Go to the next page"}}},
 		"PaginationEllipsis": {Set: true, Inner: escHtml("…")},
 	},
 	"table": {

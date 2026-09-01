@@ -184,10 +184,10 @@ async function ruleUnits() {
 
   // Persian dictionary — keys must exist in upstream's Arabic dictionary
   {
-    const src = readFileSync("tools/build-rtl.mjs", "utf8")
-    const keys = [...src.matchAll(/^\s+(\w+):\s*"[^"]*",?$/gm)].map((m) => m[1]).filter((k) => k !== "dir")
+    const src = readFileSync("pipeline/build_rtl.go", "utf8")
+    const keys = [...src.matchAll(/^\s*"(\w+)":\s+"[^"]*",?$/gm)].map((m) => m[1]).filter((k) => k !== "dir")
     units.push({
-      id: "rtl:persian-dictionary", kind: "rule", home: "tools/build-rtl.mjs PERSIAN",
+      id: "rtl:persian-dictionary", kind: "rule", home: "pipeline/build_rtl.go persian",
       requires: () => {
         // the vendored dictionary, not examples/aria: tools/rtl-dict.mjs is
         // the one reader of that tree now, and what it writes is itself

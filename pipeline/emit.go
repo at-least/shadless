@@ -191,7 +191,7 @@ func renderFn(tree *treeNode, markers map[string][]string, defaultInner string, 
 }
 
 // resolveDefault: string → escaped text; {Inner,Attrs,Children} composed.
-func resolveDefault(ir cssIrComponent, fn irFn) (inner string, attrs map[string]string, children map[string]string, ok bool) {
+func resolveDefault(ir cssIrComponent, fn irFn) (inner string, attrs []attrPair, children map[string]string, ok bool) {
 	entry, present := DEFAULT_CONTENT[ir.Name][fn.Fn]
 	if !present || !entry.Set && entry.Inner == "" && entry.Attrs == nil && entry.Children == nil {
 		// present-and-null → explicitly no default (ok=false)
@@ -203,10 +203,10 @@ func resolveDefault(ir cssIrComponent, fn irFn) (inner string, attrs map[string]
 // mergeRootAttrs applies extra attrs to the root open tag — quote-aware scan
 // for the end of the first open tag (a plain [^>]* breaks on ">" inside
 // attribute values).
-func mergeRootAttrs(h string, attrs map[string]string) string {
+func mergeRootAttrs(h string, attrs []attrPair) string {
 	var parts []string
-	for k, v := range attrs {
-		parts = append(parts, fmt.Sprintf(`%s="%s"`, k, escHtml(v)))
+	for _, a := range attrs {
+		parts = append(parts, fmt.Sprintf(`%s="%s"`, a.K, escHtml(a.V)))
 	}
 	if len(parts) == 0 {
 		return h
