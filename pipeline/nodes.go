@@ -185,9 +185,9 @@ var Nodes = []Node{
 	},
 	{
 		ID: NEmit, Kind: "build", Tier: "full",
-		Needs:    []NodeID{NConvert},
-		Run:      [][]string{{"node", "src/emitter/index.mjs"}},
-		Inputs:   []string{"src/emitter/**", "src/tags.mjs", "src/docs/theme-prepaint.mjs", "src/registry/tiers.json", "src/registry/pin.json", "probes/h4/globals.css", "package.json", "pipeline/tw.go", "pipeline/main.go"},
+		Needs:    []NodeID{NConvert, NBuildJs},
+		Run:      [][]string{{"./build/pipeline", "emit"}},
+		Inputs:   []string{"pipeline/emit.go", "pipeline/emitter_css.go", "pipeline/emitter_html.go", "pipeline/default_content.go", "pipeline/prepaint.go", "pipeline/tags.go", "pipeline/resolve_skins.go", "src/registry/tiers.json", "src/registry/ir/**", "probes/h4/globals.css"},
 		Produces: []string{"dist/components/*.html", "!dist/components/*-rtl-*.html", "dist/shadless.css", "build/emit"},
 		// The component-page glob is NOT what it says: produces.go substitutes
 		// the 23 static-tier pages this node actually writes, read from

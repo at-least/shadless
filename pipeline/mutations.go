@@ -428,7 +428,7 @@ var Mutations = []Mutation{
 	{
 		ID: "overlay-orphaned-rule", Gate: "overlay",
 		Why:   "DEFAULT_CONTENT carries an entry for a fn the component no longer exports",
-		Files: []string{"src/emitter/index.mjs"},
+		Files: []string{"pipeline/default_content.go"},
 		// A conversion rule whose anchor no longer exists: DEFAULT_CONTENT
 		// keyed on a component fn upstream stopped exporting. The old table
 		// validated keys only when the emitter ran.
@@ -555,7 +555,7 @@ var Mutations = []Mutation{
 	{
 		ID: "unit-break-pure-fn", Gate: "unit",
 		Why:   "a pure helper (splitMarkers) stops separating marker classes from utilities",
-		Files: []string{"src/emitter/css.mjs"},
+		Files: []string{"pipeline/emitter_css.go"},
 		// The regression that created the unit gate: a "dead code" delete in a
 		// pure helper passed `node --check` and only surfaced minutes later.
 		Apply: func(root string, f []string) error {

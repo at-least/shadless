@@ -200,6 +200,9 @@ func main() {
 	if cmd == "demo" {
 		os.Exit(runDemo())
 	}
+	if cmd == "emit" {
+		os.Exit(runEmit())
+	}
 	if cmd == "inputs" {
 		os.Exit(runInputs(args))
 	}
