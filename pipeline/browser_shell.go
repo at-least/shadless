@@ -116,13 +116,24 @@ func (p *bpage) evaluateArg(expr string, arg any) (any, error) {
 	return res["value"], nil
 }
 
-// evaluateFn runs a function-shaped expression ("() => {…}") in the page.
+// evaluateFn runs a function-shaped expression ("() => {…}") in the page;
+// arg becomes the function's single parameter.
 func (p *bpage) evaluateFn(expr string) (any, error) {
-	res, err := p.s.call(map[string]any{"op": "evaluateFn", "pageId": p.id, "expr": expr})
+	return p.evaluateFnArg(expr, nil)
+}
+
+func (p *bpage) evaluateFnArg(expr string, arg any) (any, error) {
+	res, err := p.s.call(map[string]any{"op": "evaluateFn", "pageId": p.id, "expr": expr, "arg": arg})
 	if err != nil {
 		return nil, err
 	}
 	return res["value"], nil
+}
+
+// routeAbortExternal blocks http(s) subresource loads (initial-render pin).
+func (p *bpage) routeAbortExternal() error {
+	_, err := p.s.call(map[string]any{"op": "routeAbortExternal", "pageId": p.id})
+	return err
 }
 
 func (p *bpage) waitForFunction(expr string, timeoutMS int) error {

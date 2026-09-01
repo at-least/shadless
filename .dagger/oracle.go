@@ -180,7 +180,27 @@ func (m *Shadless) GoldenGate(ctx context.Context, source *dagger.Directory) (st
 	if err != nil {
 		return "", err
 	}
-	return c.WithExec([]string{"node", "tools/example-golden.mjs"}).Stdout(ctx)
+	bin, err := goBinary(ctx, source)
+	if err != nil {
+		return "", err
+	}
+	return c.WithFile("/usr/local/bin/pipeline", bin).
+		WithExec([]string{"pipeline", "example-golden"}).Stdout(ctx)
+}
+
+// goBinary builds the pipeline binary in the Go toolchain the repo declares.
+// The node-image containers (renderBase etc.) run it — Go toolchain absent
+// there by design; the binary is the interface.
+func goBinary(ctx context.Context, source *dagger.Directory) (*dagger.File, error) {
+	img, err := goImage(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	return dag.Container().
+		From(img).
+		WithDirectory("/src/pipeline", source.Directory("pipeline")).
+		WithExec([]string{"go", "build", "-o", "/out/pipeline", "./pipeline"}).
+		File("/out/pipeline"), nil
 }
 
 // ExampleGate is hop 2: each shipped demo page must equal a fresh oracle

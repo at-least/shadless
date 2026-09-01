@@ -221,6 +221,9 @@ func main() {
 	if cmd == "docs-smoke" {
 		os.Exit(runDocsSmoke(has(args, "--all")))
 	}
+	if cmd == "example-golden" {
+		os.Exit(runExampleGolden(args))
+	}
 	if cmd == "inputs" {
 		os.Exit(runInputs(args))
 	}

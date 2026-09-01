@@ -476,9 +476,9 @@ var Nodes = []Node{
 	},
 	{
 		ID: NGoldenGate, Kind: "gate", Tier: "full",
-		Needs:     []NodeID{NExampleOracle},
-		Run:       [][]string{{"node", "tools/example-golden.mjs"}},
-		Inputs:    []string{"tools/example-golden.mjs", "src/registry/upstream-snapshot/**", "gates/ledger.json", "tools/oracle-lib.mjs", "tools/contracts/stubs/**", "tools/resolve-skins.mjs", "src/registry/pin.json", "package-lock.json", upstreamExamplesGlob},
+		Needs:     []NodeID{NExampleOracle, NBuildJs},
+		Run:       [][]string{{"./build/pipeline", "example-golden"}},
+		Inputs:    []string{"pipeline/example_golden.go", "pipeline/oracle_lib.go", "pipeline/oracle_canon.js", "pipeline/browser_shell.go", "tools/browser-shell.mjs", "src/registry/upstream-snapshot/**", "gates/ledger.json", "tools/contracts/stubs/**", "src/emitter/skin.mjs", "src/registry/pin.json", "package-lock.json", upstreamExamplesGlob},
 		Produces:  nil,
 		Why:       "hop 1 — the local React oracle render must equal the committed ui.shadcn.com snapshot",
 		Mutations: []string{"golden-perturb-oracle"},

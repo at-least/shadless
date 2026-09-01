@@ -95,6 +95,14 @@ async function handle(req) {
       const value = await page.evaluate(fn, req.arg ?? null)
       return { value }
     }
+    case "routeAbortExternal": {
+      // example-golden keeps avatar-style demos in their INITIAL render
+      // state: a loaded remote image flips radix Avatar to the img branch
+      // and the trees diverge on structure, not styling
+      const { page } = pages.get(req.pageId)
+      await page.route(/^(https?:)?\/\//, (route) => route.abort())
+      return { ok: true }
+    }
     case "waitForFunction": {
       const { page } = pages.get(req.pageId)
       await page.waitForFunction(req.expr, null, { timeout: req.timeout ?? 5000 })
