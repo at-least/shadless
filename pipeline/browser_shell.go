@@ -8,6 +8,7 @@ package main
 
 import (
 	"bufio"
+	"path/filepath"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -61,6 +62,11 @@ func (s *browserShell) call(req map[string]any) (map[string]any, error) {
 		return nil, fmt.Errorf("browser-shell: %s", e)
 	}
 	return res, nil
+}
+
+func (s *browserShell) callErr(req map[string]any) error {
+	_, err := s.call(req)
+	return err
 }
 
 func (s *browserShell) close() {
@@ -128,6 +134,17 @@ func (p *bpage) evaluateFnArg(expr string, arg any) (any, error) {
 		return nil, err
 	}
 	return res["value"], nil
+}
+
+func (p *bpage) addStyleTagPath(path string) error {
+	abs, _ := filepath.Abs(path)
+	_, err := p.s.call(map[string]any{"op": "addStyleTag", "pageId": p.id, "path": abs})
+	return err
+}
+
+func (p *bpage) addStyleTag(content string) error {
+	_, err := p.s.call(map[string]any{"op": "addStyleTag", "pageId": p.id, "content": content})
+	return err
 }
 
 // routeAbortExternal blocks http(s) subresource loads (initial-render pin).

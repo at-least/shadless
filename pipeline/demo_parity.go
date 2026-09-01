@@ -40,7 +40,7 @@ var reParityOklab = regexp.MustCompile(`oklab\((-?[\d.]+) 0 0\)`)
 func demoParityNorm(v string) string {
 	v = reParityNum.ReplaceAllStringFunc(v, func(n string) string {
 		r := parseFloat2dp(n)
-		return fmt.Sprintf("%g", r)
+		return jsNumberString(r)
 	})
 	return reParityOklab.ReplaceAllString(v, "oklch($1 0 0)")
 }

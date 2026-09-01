@@ -384,9 +384,9 @@ var Nodes = []Node{
 	},
 	{
 		ID: NStyleParity, Kind: "gate", Tier: "full",
-		Needs:     []NodeID{NContracts, NOracleCss},
-		Run:       [][]string{{"node", "tools/style-parity.mjs"}},
-		Inputs:    []string{"tools/style-parity.mjs", "gates/parity-baseline.mjs", "gates/style-parity-baseline.json", "gates/ledger.json", "tools/contracts/out/**", "tools/contracts/components/**", "build/gates/oracle.css", "src/registry/pin.json"},
+		Needs:     []NodeID{NContracts, NOracleCss, NBuildJs},
+		Run:       [][]string{{"./build/pipeline", "style-parity"}},
+		Inputs:    []string{"pipeline/style_parity.go", "pipeline/parity_baseline.go", "pipeline/browser_shell.go", "tools/browser-shell.mjs", "gates/style-parity-baseline.json", "gates/ledger.json", "tools/contracts/out/**", "tools/contracts/components/**", "build/gates/oracle.css", "src/registry/pin.json"},
 		Produces:  nil,
 		Why:       "computed STYLE parity vs the React oracle — 'same DOM + same css => same styles' was an inference no gate ever tested",
 		Mutations: []string{"style-parity-perturb-padding", "style-parity-recorded-value-drift"},

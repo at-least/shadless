@@ -95,6 +95,32 @@ async function handle(req) {
       const value = await page.evaluate(fn, req.arg ?? null)
       return { value }
     }
+    case "addStyleTag": {
+      const { page } = pages.get(req.pageId)
+      if (req.path) await page.addStyleTag({ path: req.path })
+      else await page.addStyleTag({ content: req.content })
+      return { ok: true }
+    }
+    case "driver": {
+      // contract-def open/openShadless strings: JS against the LIVE page
+      const { page } = pages.get(req.pageId)
+      const fn = new Function("page", "return (async () => { " + req.code + " })()")
+      await fn(page)
+      return { ok: true }
+    }
+    case "loadContractDef": {
+      const mod = await import(req.file)
+      const d = mod.default
+      // JSON-safe projection of the fields the Go gates consume
+      return { def: {
+        name: d.name ?? null, usage: d.usage ?? null, imports: d.imports ?? null,
+        slots: d.slots ?? [], open: d.open ?? null, openShadless: d.openShadless ?? null,
+        mountedClasses: d.mountedClasses ?? null, mountedCheck: d.mountedCheck ?? null,
+        shadlessPage: d.shadlessPage ?? null, scenarios: d.scenarios ?? [],
+        triggerSlot: d.triggerSlot ?? null, stateProbe: d.stateProbe ?? null,
+        styleIgnore: d.styleIgnore ?? [], facts: d.facts ?? null, note: d.note ?? null,
+      } }
+    }
     case "routeAbortExternal": {
       // example-golden keeps avatar-style demos in their INITIAL render
       // state: a loaded remote image flips radix Avatar to the img branch

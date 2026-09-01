@@ -9,6 +9,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
 	"os"
 	"sort"
 	"strings"
@@ -190,4 +191,12 @@ func showChange(c struct {
 	now parityCell
 }) string {
 	return c.id + "\n      recorded: " + showCell(c.was) + "\n      now:      " + showCell(c.now)
+}
+
+// jsNumberString mirrors JS String(number): decimal notation with the
+// shortest round-trip, exponent only at >=1e21 (never for our values —
+// %g would print 3.35544e+07 where the baseline records 33554400).
+func jsNumberString(f float64) string {
+	s := strconv.FormatFloat(f, 'f', -1, 64)
+	return s
 }

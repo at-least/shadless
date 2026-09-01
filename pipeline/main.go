@@ -233,6 +233,9 @@ func main() {
 	if cmd == "demo-parity" {
 		os.Exit(runDemoParity(has(args, "--record"), has(args, "--details")))
 	}
+	if cmd == "style-parity" {
+		os.Exit(runStyleParity(has(args, "--strict"), has(args, "--record")))
+	}
 	if cmd == "inputs" {
 		os.Exit(runInputs(args))
 	}
