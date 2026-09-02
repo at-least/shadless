@@ -89,12 +89,20 @@ Displays a menu to the user — such as a set of actions or functions — trigge
 // Document-level: wireMenu owns every trigger on the page through its
 // data-radixuigo-* protocol, so the behavior installs ONCE per page and
 // ignores the root it is initialised with (a later shadless.init(subtree)
-// finds the listeners already there).
+// finds the listeners already there). dropdown-menu.js and context-menu.js
+// share that single installation (shadless.__menuWired.installed_menu) —
+// whichever file's init runs first does the real RadixKernel.wireMenu()
+// setup, the other reuses it via shadless.__menuWired.fileTriggers. Each
+// file still registers its OWN component name unconditionally, and
+// fileTriggers labels every element by its actual
+// data-radixuigo-{menu,context}-trigger attribute rather than by which file
+// happened to install — otherwise, on a page carrying both component types,
+// whichever file loaded second would never call shadless.register at all
+// (its component type invisible to the engine) and every trigger, of both
+// kinds, would be mislabelled with the first file's component name.
 (function () {
-  if (shadless.__menuWired && shadless.__menuWired["menu"]) return
-  shadless.__menuWired = shadless.__menuWired || {}
-  shadless.__menuWired["menu"] = true
   shadless.register("dropdown-menu", { init: function (root) {
+    shadless.__menuWired = shadless.__menuWired || {}
     if (shadless.__menuWired.installed_menu) { if (shadless.__menuWired.fileTriggers) shadless.__menuWired.fileTriggers(root); return }
     shadless.__menuWired.installed_menu = true
     // shadless:open / shadless:close: the kernel has no open hook, so every
@@ -153,16 +161,17 @@ Displays a menu to the user — such as a set of actions or functions — trigge
     var fileTriggers = function (root) {
       Array.prototype.forEach.call((root || document).querySelectorAll("[data-radixuigo-menu-trigger], [data-radixuigo-context-trigger]"), function (t) {
         if (shadless.instances.has(t)) return
+        var isContext = t.hasAttribute("data-radixuigo-context-trigger")
         var isOpen = function () { var l = handles.rootLayer(); return !!l && l.trigger === t }
         var openIt = function () {
           if (isOpen()) return
-          if (t.hasAttribute("data-radixuigo-context-trigger")) {
+          if (isContext) {
             var r = t.getBoundingClientRect()
             handles.onContextmenu(t, r.left + r.width / 2, r.top + r.height / 2, noop)
           } else handles.onDocumentClick(t, noop)
           sync()
         }
-        shadless.instances.set(t, { component: "dropdown-menu",
+        shadless.instances.set(t, { component: isContext ? "context-menu" : "dropdown-menu",
           open: openIt,
           close: function () { if (isOpen()) { handles.closeAll(); sync() } },
           toggle: function () { if (isOpen()) { handles.closeAll(); sync() } else openIt() },
@@ -427,12 +436,20 @@ A basic dropdown menu with labels and separators.
 // Document-level: wireMenu owns every trigger on the page through its
 // data-radixuigo-* protocol, so the behavior installs ONCE per page and
 // ignores the root it is initialised with (a later shadless.init(subtree)
-// finds the listeners already there).
+// finds the listeners already there). dropdown-menu.js and context-menu.js
+// share that single installation (shadless.__menuWired.installed_menu) —
+// whichever file's init runs first does the real RadixKernel.wireMenu()
+// setup, the other reuses it via shadless.__menuWired.fileTriggers. Each
+// file still registers its OWN component name unconditionally, and
+// fileTriggers labels every element by its actual
+// data-radixuigo-{menu,context}-trigger attribute rather than by which file
+// happened to install — otherwise, on a page carrying both component types,
+// whichever file loaded second would never call shadless.register at all
+// (its component type invisible to the engine) and every trigger, of both
+// kinds, would be mislabelled with the first file's component name.
 (function () {
-  if (shadless.__menuWired && shadless.__menuWired["menu"]) return
-  shadless.__menuWired = shadless.__menuWired || {}
-  shadless.__menuWired["menu"] = true
   shadless.register("dropdown-menu", { init: function (root) {
+    shadless.__menuWired = shadless.__menuWired || {}
     if (shadless.__menuWired.installed_menu) { if (shadless.__menuWired.fileTriggers) shadless.__menuWired.fileTriggers(root); return }
     shadless.__menuWired.installed_menu = true
     // shadless:open / shadless:close: the kernel has no open hook, so every
@@ -491,16 +508,17 @@ A basic dropdown menu with labels and separators.
     var fileTriggers = function (root) {
       Array.prototype.forEach.call((root || document).querySelectorAll("[data-radixuigo-menu-trigger], [data-radixuigo-context-trigger]"), function (t) {
         if (shadless.instances.has(t)) return
+        var isContext = t.hasAttribute("data-radixuigo-context-trigger")
         var isOpen = function () { var l = handles.rootLayer(); return !!l && l.trigger === t }
         var openIt = function () {
           if (isOpen()) return
-          if (t.hasAttribute("data-radixuigo-context-trigger")) {
+          if (isContext) {
             var r = t.getBoundingClientRect()
             handles.onContextmenu(t, r.left + r.width / 2, r.top + r.height / 2, noop)
           } else handles.onDocumentClick(t, noop)
           sync()
         }
-        shadless.instances.set(t, { component: "dropdown-menu",
+        shadless.instances.set(t, { component: isContext ? "context-menu" : "dropdown-menu",
           open: openIt,
           close: function () { if (isOpen()) { handles.closeAll(); sync() } },
           toggle: function () { if (isOpen()) { handles.closeAll(); sync() } else openIt() },
@@ -815,12 +833,20 @@ Use `DropdownMenuSub` to nest secondary actions.
 // Document-level: wireMenu owns every trigger on the page through its
 // data-radixuigo-* protocol, so the behavior installs ONCE per page and
 // ignores the root it is initialised with (a later shadless.init(subtree)
-// finds the listeners already there).
+// finds the listeners already there). dropdown-menu.js and context-menu.js
+// share that single installation (shadless.__menuWired.installed_menu) —
+// whichever file's init runs first does the real RadixKernel.wireMenu()
+// setup, the other reuses it via shadless.__menuWired.fileTriggers. Each
+// file still registers its OWN component name unconditionally, and
+// fileTriggers labels every element by its actual
+// data-radixuigo-{menu,context}-trigger attribute rather than by which file
+// happened to install — otherwise, on a page carrying both component types,
+// whichever file loaded second would never call shadless.register at all
+// (its component type invisible to the engine) and every trigger, of both
+// kinds, would be mislabelled with the first file's component name.
 (function () {
-  if (shadless.__menuWired && shadless.__menuWired["menu"]) return
-  shadless.__menuWired = shadless.__menuWired || {}
-  shadless.__menuWired["menu"] = true
   shadless.register("dropdown-menu", { init: function (root) {
+    shadless.__menuWired = shadless.__menuWired || {}
     if (shadless.__menuWired.installed_menu) { if (shadless.__menuWired.fileTriggers) shadless.__menuWired.fileTriggers(root); return }
     shadless.__menuWired.installed_menu = true
     // shadless:open / shadless:close: the kernel has no open hook, so every
@@ -879,16 +905,17 @@ Use `DropdownMenuSub` to nest secondary actions.
     var fileTriggers = function (root) {
       Array.prototype.forEach.call((root || document).querySelectorAll("[data-radixuigo-menu-trigger], [data-radixuigo-context-trigger]"), function (t) {
         if (shadless.instances.has(t)) return
+        var isContext = t.hasAttribute("data-radixuigo-context-trigger")
         var isOpen = function () { var l = handles.rootLayer(); return !!l && l.trigger === t }
         var openIt = function () {
           if (isOpen()) return
-          if (t.hasAttribute("data-radixuigo-context-trigger")) {
+          if (isContext) {
             var r = t.getBoundingClientRect()
             handles.onContextmenu(t, r.left + r.width / 2, r.top + r.height / 2, noop)
           } else handles.onDocumentClick(t, noop)
           sync()
         }
-        shadless.instances.set(t, { component: "dropdown-menu",
+        shadless.instances.set(t, { component: isContext ? "context-menu" : "dropdown-menu",
           open: openIt,
           close: function () { if (isOpen()) { handles.closeAll(); sync() } },
           toggle: function () { if (isOpen()) { handles.closeAll(); sync() } else openIt() },
@@ -1059,12 +1086,20 @@ Add `DropdownMenuShortcut` to show keyboard hints.
 // Document-level: wireMenu owns every trigger on the page through its
 // data-radixuigo-* protocol, so the behavior installs ONCE per page and
 // ignores the root it is initialised with (a later shadless.init(subtree)
-// finds the listeners already there).
+// finds the listeners already there). dropdown-menu.js and context-menu.js
+// share that single installation (shadless.__menuWired.installed_menu) —
+// whichever file's init runs first does the real RadixKernel.wireMenu()
+// setup, the other reuses it via shadless.__menuWired.fileTriggers. Each
+// file still registers its OWN component name unconditionally, and
+// fileTriggers labels every element by its actual
+// data-radixuigo-{menu,context}-trigger attribute rather than by which file
+// happened to install — otherwise, on a page carrying both component types,
+// whichever file loaded second would never call shadless.register at all
+// (its component type invisible to the engine) and every trigger, of both
+// kinds, would be mislabelled with the first file's component name.
 (function () {
-  if (shadless.__menuWired && shadless.__menuWired["menu"]) return
-  shadless.__menuWired = shadless.__menuWired || {}
-  shadless.__menuWired["menu"] = true
   shadless.register("dropdown-menu", { init: function (root) {
+    shadless.__menuWired = shadless.__menuWired || {}
     if (shadless.__menuWired.installed_menu) { if (shadless.__menuWired.fileTriggers) shadless.__menuWired.fileTriggers(root); return }
     shadless.__menuWired.installed_menu = true
     // shadless:open / shadless:close: the kernel has no open hook, so every
@@ -1123,16 +1158,17 @@ Add `DropdownMenuShortcut` to show keyboard hints.
     var fileTriggers = function (root) {
       Array.prototype.forEach.call((root || document).querySelectorAll("[data-radixuigo-menu-trigger], [data-radixuigo-context-trigger]"), function (t) {
         if (shadless.instances.has(t)) return
+        var isContext = t.hasAttribute("data-radixuigo-context-trigger")
         var isOpen = function () { var l = handles.rootLayer(); return !!l && l.trigger === t }
         var openIt = function () {
           if (isOpen()) return
-          if (t.hasAttribute("data-radixuigo-context-trigger")) {
+          if (isContext) {
             var r = t.getBoundingClientRect()
             handles.onContextmenu(t, r.left + r.width / 2, r.top + r.height / 2, noop)
           } else handles.onDocumentClick(t, noop)
           sync()
         }
-        shadless.instances.set(t, { component: "dropdown-menu",
+        shadless.instances.set(t, { component: isContext ? "context-menu" : "dropdown-menu",
           open: openIt,
           close: function () { if (isOpen()) { handles.closeAll(); sync() } },
           toggle: function () { if (isOpen()) { handles.closeAll(); sync() } else openIt() },
@@ -1338,12 +1374,20 @@ Combine icons with labels for quick scanning.
 // Document-level: wireMenu owns every trigger on the page through its
 // data-radixuigo-* protocol, so the behavior installs ONCE per page and
 // ignores the root it is initialised with (a later shadless.init(subtree)
-// finds the listeners already there).
+// finds the listeners already there). dropdown-menu.js and context-menu.js
+// share that single installation (shadless.__menuWired.installed_menu) —
+// whichever file's init runs first does the real RadixKernel.wireMenu()
+// setup, the other reuses it via shadless.__menuWired.fileTriggers. Each
+// file still registers its OWN component name unconditionally, and
+// fileTriggers labels every element by its actual
+// data-radixuigo-{menu,context}-trigger attribute rather than by which file
+// happened to install — otherwise, on a page carrying both component types,
+// whichever file loaded second would never call shadless.register at all
+// (its component type invisible to the engine) and every trigger, of both
+// kinds, would be mislabelled with the first file's component name.
 (function () {
-  if (shadless.__menuWired && shadless.__menuWired["menu"]) return
-  shadless.__menuWired = shadless.__menuWired || {}
-  shadless.__menuWired["menu"] = true
   shadless.register("dropdown-menu", { init: function (root) {
+    shadless.__menuWired = shadless.__menuWired || {}
     if (shadless.__menuWired.installed_menu) { if (shadless.__menuWired.fileTriggers) shadless.__menuWired.fileTriggers(root); return }
     shadless.__menuWired.installed_menu = true
     // shadless:open / shadless:close: the kernel has no open hook, so every
@@ -1402,16 +1446,17 @@ Combine icons with labels for quick scanning.
     var fileTriggers = function (root) {
       Array.prototype.forEach.call((root || document).querySelectorAll("[data-radixuigo-menu-trigger], [data-radixuigo-context-trigger]"), function (t) {
         if (shadless.instances.has(t)) return
+        var isContext = t.hasAttribute("data-radixuigo-context-trigger")
         var isOpen = function () { var l = handles.rootLayer(); return !!l && l.trigger === t }
         var openIt = function () {
           if (isOpen()) return
-          if (t.hasAttribute("data-radixuigo-context-trigger")) {
+          if (isContext) {
             var r = t.getBoundingClientRect()
             handles.onContextmenu(t, r.left + r.width / 2, r.top + r.height / 2, noop)
           } else handles.onDocumentClick(t, noop)
           sync()
         }
-        shadless.instances.set(t, { component: "dropdown-menu",
+        shadless.instances.set(t, { component: isContext ? "context-menu" : "dropdown-menu",
           open: openIt,
           close: function () { if (isOpen()) { handles.closeAll(); sync() } },
           toggle: function () { if (isOpen()) { handles.closeAll(); sync() } else openIt() },
@@ -1579,12 +1624,20 @@ Use `DropdownMenuCheckboxItem` for toggles.
 // Document-level: wireMenu owns every trigger on the page through its
 // data-radixuigo-* protocol, so the behavior installs ONCE per page and
 // ignores the root it is initialised with (a later shadless.init(subtree)
-// finds the listeners already there).
+// finds the listeners already there). dropdown-menu.js and context-menu.js
+// share that single installation (shadless.__menuWired.installed_menu) —
+// whichever file's init runs first does the real RadixKernel.wireMenu()
+// setup, the other reuses it via shadless.__menuWired.fileTriggers. Each
+// file still registers its OWN component name unconditionally, and
+// fileTriggers labels every element by its actual
+// data-radixuigo-{menu,context}-trigger attribute rather than by which file
+// happened to install — otherwise, on a page carrying both component types,
+// whichever file loaded second would never call shadless.register at all
+// (its component type invisible to the engine) and every trigger, of both
+// kinds, would be mislabelled with the first file's component name.
 (function () {
-  if (shadless.__menuWired && shadless.__menuWired["menu"]) return
-  shadless.__menuWired = shadless.__menuWired || {}
-  shadless.__menuWired["menu"] = true
   shadless.register("dropdown-menu", { init: function (root) {
+    shadless.__menuWired = shadless.__menuWired || {}
     if (shadless.__menuWired.installed_menu) { if (shadless.__menuWired.fileTriggers) shadless.__menuWired.fileTriggers(root); return }
     shadless.__menuWired.installed_menu = true
     // shadless:open / shadless:close: the kernel has no open hook, so every
@@ -1643,16 +1696,17 @@ Use `DropdownMenuCheckboxItem` for toggles.
     var fileTriggers = function (root) {
       Array.prototype.forEach.call((root || document).querySelectorAll("[data-radixuigo-menu-trigger], [data-radixuigo-context-trigger]"), function (t) {
         if (shadless.instances.has(t)) return
+        var isContext = t.hasAttribute("data-radixuigo-context-trigger")
         var isOpen = function () { var l = handles.rootLayer(); return !!l && l.trigger === t }
         var openIt = function () {
           if (isOpen()) return
-          if (t.hasAttribute("data-radixuigo-context-trigger")) {
+          if (isContext) {
             var r = t.getBoundingClientRect()
             handles.onContextmenu(t, r.left + r.width / 2, r.top + r.height / 2, noop)
           } else handles.onDocumentClick(t, noop)
           sync()
         }
-        shadless.instances.set(t, { component: "dropdown-menu",
+        shadless.instances.set(t, { component: isContext ? "context-menu" : "dropdown-menu",
           open: openIt,
           close: function () { if (isOpen()) { handles.closeAll(); sync() } },
           toggle: function () { if (isOpen()) { handles.closeAll(); sync() } else openIt() },
@@ -1874,12 +1928,20 @@ Add icons to checkbox items.
 // Document-level: wireMenu owns every trigger on the page through its
 // data-radixuigo-* protocol, so the behavior installs ONCE per page and
 // ignores the root it is initialised with (a later shadless.init(subtree)
-// finds the listeners already there).
+// finds the listeners already there). dropdown-menu.js and context-menu.js
+// share that single installation (shadless.__menuWired.installed_menu) —
+// whichever file's init runs first does the real RadixKernel.wireMenu()
+// setup, the other reuses it via shadless.__menuWired.fileTriggers. Each
+// file still registers its OWN component name unconditionally, and
+// fileTriggers labels every element by its actual
+// data-radixuigo-{menu,context}-trigger attribute rather than by which file
+// happened to install — otherwise, on a page carrying both component types,
+// whichever file loaded second would never call shadless.register at all
+// (its component type invisible to the engine) and every trigger, of both
+// kinds, would be mislabelled with the first file's component name.
 (function () {
-  if (shadless.__menuWired && shadless.__menuWired["menu"]) return
-  shadless.__menuWired = shadless.__menuWired || {}
-  shadless.__menuWired["menu"] = true
   shadless.register("dropdown-menu", { init: function (root) {
+    shadless.__menuWired = shadless.__menuWired || {}
     if (shadless.__menuWired.installed_menu) { if (shadless.__menuWired.fileTriggers) shadless.__menuWired.fileTriggers(root); return }
     shadless.__menuWired.installed_menu = true
     // shadless:open / shadless:close: the kernel has no open hook, so every
@@ -1938,16 +2000,17 @@ Add icons to checkbox items.
     var fileTriggers = function (root) {
       Array.prototype.forEach.call((root || document).querySelectorAll("[data-radixuigo-menu-trigger], [data-radixuigo-context-trigger]"), function (t) {
         if (shadless.instances.has(t)) return
+        var isContext = t.hasAttribute("data-radixuigo-context-trigger")
         var isOpen = function () { var l = handles.rootLayer(); return !!l && l.trigger === t }
         var openIt = function () {
           if (isOpen()) return
-          if (t.hasAttribute("data-radixuigo-context-trigger")) {
+          if (isContext) {
             var r = t.getBoundingClientRect()
             handles.onContextmenu(t, r.left + r.width / 2, r.top + r.height / 2, noop)
           } else handles.onDocumentClick(t, noop)
           sync()
         }
-        shadless.instances.set(t, { component: "dropdown-menu",
+        shadless.instances.set(t, { component: isContext ? "context-menu" : "dropdown-menu",
           open: openIt,
           close: function () { if (isOpen()) { handles.closeAll(); sync() } },
           toggle: function () { if (isOpen()) { handles.closeAll(); sync() } else openIt() },
@@ -2115,12 +2178,20 @@ Use `DropdownMenuRadioGroup` for exclusive choices.
 // Document-level: wireMenu owns every trigger on the page through its
 // data-radixuigo-* protocol, so the behavior installs ONCE per page and
 // ignores the root it is initialised with (a later shadless.init(subtree)
-// finds the listeners already there).
+// finds the listeners already there). dropdown-menu.js and context-menu.js
+// share that single installation (shadless.__menuWired.installed_menu) —
+// whichever file's init runs first does the real RadixKernel.wireMenu()
+// setup, the other reuses it via shadless.__menuWired.fileTriggers. Each
+// file still registers its OWN component name unconditionally, and
+// fileTriggers labels every element by its actual
+// data-radixuigo-{menu,context}-trigger attribute rather than by which file
+// happened to install — otherwise, on a page carrying both component types,
+// whichever file loaded second would never call shadless.register at all
+// (its component type invisible to the engine) and every trigger, of both
+// kinds, would be mislabelled with the first file's component name.
 (function () {
-  if (shadless.__menuWired && shadless.__menuWired["menu"]) return
-  shadless.__menuWired = shadless.__menuWired || {}
-  shadless.__menuWired["menu"] = true
   shadless.register("dropdown-menu", { init: function (root) {
+    shadless.__menuWired = shadless.__menuWired || {}
     if (shadless.__menuWired.installed_menu) { if (shadless.__menuWired.fileTriggers) shadless.__menuWired.fileTriggers(root); return }
     shadless.__menuWired.installed_menu = true
     // shadless:open / shadless:close: the kernel has no open hook, so every
@@ -2179,16 +2250,17 @@ Use `DropdownMenuRadioGroup` for exclusive choices.
     var fileTriggers = function (root) {
       Array.prototype.forEach.call((root || document).querySelectorAll("[data-radixuigo-menu-trigger], [data-radixuigo-context-trigger]"), function (t) {
         if (shadless.instances.has(t)) return
+        var isContext = t.hasAttribute("data-radixuigo-context-trigger")
         var isOpen = function () { var l = handles.rootLayer(); return !!l && l.trigger === t }
         var openIt = function () {
           if (isOpen()) return
-          if (t.hasAttribute("data-radixuigo-context-trigger")) {
+          if (isContext) {
             var r = t.getBoundingClientRect()
             handles.onContextmenu(t, r.left + r.width / 2, r.top + r.height / 2, noop)
           } else handles.onDocumentClick(t, noop)
           sync()
         }
-        shadless.instances.set(t, { component: "dropdown-menu",
+        shadless.instances.set(t, { component: isContext ? "context-menu" : "dropdown-menu",
           open: openIt,
           close: function () { if (isOpen()) { handles.closeAll(); sync() } },
           toggle: function () { if (isOpen()) { handles.closeAll(); sync() } else openIt() },
@@ -2405,12 +2477,20 @@ Show radio options with icons.
 // Document-level: wireMenu owns every trigger on the page through its
 // data-radixuigo-* protocol, so the behavior installs ONCE per page and
 // ignores the root it is initialised with (a later shadless.init(subtree)
-// finds the listeners already there).
+// finds the listeners already there). dropdown-menu.js and context-menu.js
+// share that single installation (shadless.__menuWired.installed_menu) —
+// whichever file's init runs first does the real RadixKernel.wireMenu()
+// setup, the other reuses it via shadless.__menuWired.fileTriggers. Each
+// file still registers its OWN component name unconditionally, and
+// fileTriggers labels every element by its actual
+// data-radixuigo-{menu,context}-trigger attribute rather than by which file
+// happened to install — otherwise, on a page carrying both component types,
+// whichever file loaded second would never call shadless.register at all
+// (its component type invisible to the engine) and every trigger, of both
+// kinds, would be mislabelled with the first file's component name.
 (function () {
-  if (shadless.__menuWired && shadless.__menuWired["menu"]) return
-  shadless.__menuWired = shadless.__menuWired || {}
-  shadless.__menuWired["menu"] = true
   shadless.register("dropdown-menu", { init: function (root) {
+    shadless.__menuWired = shadless.__menuWired || {}
     if (shadless.__menuWired.installed_menu) { if (shadless.__menuWired.fileTriggers) shadless.__menuWired.fileTriggers(root); return }
     shadless.__menuWired.installed_menu = true
     // shadless:open / shadless:close: the kernel has no open hook, so every
@@ -2469,16 +2549,17 @@ Show radio options with icons.
     var fileTriggers = function (root) {
       Array.prototype.forEach.call((root || document).querySelectorAll("[data-radixuigo-menu-trigger], [data-radixuigo-context-trigger]"), function (t) {
         if (shadless.instances.has(t)) return
+        var isContext = t.hasAttribute("data-radixuigo-context-trigger")
         var isOpen = function () { var l = handles.rootLayer(); return !!l && l.trigger === t }
         var openIt = function () {
           if (isOpen()) return
-          if (t.hasAttribute("data-radixuigo-context-trigger")) {
+          if (isContext) {
             var r = t.getBoundingClientRect()
             handles.onContextmenu(t, r.left + r.width / 2, r.top + r.height / 2, noop)
           } else handles.onDocumentClick(t, noop)
           sync()
         }
-        shadless.instances.set(t, { component: "dropdown-menu",
+        shadless.instances.set(t, { component: isContext ? "context-menu" : "dropdown-menu",
           open: openIt,
           close: function () { if (isOpen()) { handles.closeAll(); sync() } },
           toggle: function () { if (isOpen()) { handles.closeAll(); sync() } else openIt() },
@@ -2664,12 +2745,20 @@ Use `variant="destructive"` for irreversible actions.
 // Document-level: wireMenu owns every trigger on the page through its
 // data-radixuigo-* protocol, so the behavior installs ONCE per page and
 // ignores the root it is initialised with (a later shadless.init(subtree)
-// finds the listeners already there).
+// finds the listeners already there). dropdown-menu.js and context-menu.js
+// share that single installation (shadless.__menuWired.installed_menu) —
+// whichever file's init runs first does the real RadixKernel.wireMenu()
+// setup, the other reuses it via shadless.__menuWired.fileTriggers. Each
+// file still registers its OWN component name unconditionally, and
+// fileTriggers labels every element by its actual
+// data-radixuigo-{menu,context}-trigger attribute rather than by which file
+// happened to install — otherwise, on a page carrying both component types,
+// whichever file loaded second would never call shadless.register at all
+// (its component type invisible to the engine) and every trigger, of both
+// kinds, would be mislabelled with the first file's component name.
 (function () {
-  if (shadless.__menuWired && shadless.__menuWired["menu"]) return
-  shadless.__menuWired = shadless.__menuWired || {}
-  shadless.__menuWired["menu"] = true
   shadless.register("dropdown-menu", { init: function (root) {
+    shadless.__menuWired = shadless.__menuWired || {}
     if (shadless.__menuWired.installed_menu) { if (shadless.__menuWired.fileTriggers) shadless.__menuWired.fileTriggers(root); return }
     shadless.__menuWired.installed_menu = true
     // shadless:open / shadless:close: the kernel has no open hook, so every
@@ -2728,16 +2817,17 @@ Use `variant="destructive"` for irreversible actions.
     var fileTriggers = function (root) {
       Array.prototype.forEach.call((root || document).querySelectorAll("[data-radixuigo-menu-trigger], [data-radixuigo-context-trigger]"), function (t) {
         if (shadless.instances.has(t)) return
+        var isContext = t.hasAttribute("data-radixuigo-context-trigger")
         var isOpen = function () { var l = handles.rootLayer(); return !!l && l.trigger === t }
         var openIt = function () {
           if (isOpen()) return
-          if (t.hasAttribute("data-radixuigo-context-trigger")) {
+          if (isContext) {
             var r = t.getBoundingClientRect()
             handles.onContextmenu(t, r.left + r.width / 2, r.top + r.height / 2, noop)
           } else handles.onDocumentClick(t, noop)
           sync()
         }
-        shadless.instances.set(t, { component: "dropdown-menu",
+        shadless.instances.set(t, { component: isContext ? "context-menu" : "dropdown-menu",
           open: openIt,
           close: function () { if (isOpen()) { handles.closeAll(); sync() } },
           toggle: function () { if (isOpen()) { handles.closeAll(); sync() } else openIt() },
@@ -2956,12 +3046,20 @@ An account switcher dropdown triggered by an avatar.
 // Document-level: wireMenu owns every trigger on the page through its
 // data-radixuigo-* protocol, so the behavior installs ONCE per page and
 // ignores the root it is initialised with (a later shadless.init(subtree)
-// finds the listeners already there).
+// finds the listeners already there). dropdown-menu.js and context-menu.js
+// share that single installation (shadless.__menuWired.installed_menu) —
+// whichever file's init runs first does the real RadixKernel.wireMenu()
+// setup, the other reuses it via shadless.__menuWired.fileTriggers. Each
+// file still registers its OWN component name unconditionally, and
+// fileTriggers labels every element by its actual
+// data-radixuigo-{menu,context}-trigger attribute rather than by which file
+// happened to install — otherwise, on a page carrying both component types,
+// whichever file loaded second would never call shadless.register at all
+// (its component type invisible to the engine) and every trigger, of both
+// kinds, would be mislabelled with the first file's component name.
 (function () {
-  if (shadless.__menuWired && shadless.__menuWired["menu"]) return
-  shadless.__menuWired = shadless.__menuWired || {}
-  shadless.__menuWired["menu"] = true
   shadless.register("dropdown-menu", { init: function (root) {
+    shadless.__menuWired = shadless.__menuWired || {}
     if (shadless.__menuWired.installed_menu) { if (shadless.__menuWired.fileTriggers) shadless.__menuWired.fileTriggers(root); return }
     shadless.__menuWired.installed_menu = true
     // shadless:open / shadless:close: the kernel has no open hook, so every
@@ -3020,16 +3118,17 @@ An account switcher dropdown triggered by an avatar.
     var fileTriggers = function (root) {
       Array.prototype.forEach.call((root || document).querySelectorAll("[data-radixuigo-menu-trigger], [data-radixuigo-context-trigger]"), function (t) {
         if (shadless.instances.has(t)) return
+        var isContext = t.hasAttribute("data-radixuigo-context-trigger")
         var isOpen = function () { var l = handles.rootLayer(); return !!l && l.trigger === t }
         var openIt = function () {
           if (isOpen()) return
-          if (t.hasAttribute("data-radixuigo-context-trigger")) {
+          if (isContext) {
             var r = t.getBoundingClientRect()
             handles.onContextmenu(t, r.left + r.width / 2, r.top + r.height / 2, noop)
           } else handles.onDocumentClick(t, noop)
           sync()
         }
-        shadless.instances.set(t, { component: "dropdown-menu",
+        shadless.instances.set(t, { component: isContext ? "context-menu" : "dropdown-menu",
           open: openIt,
           close: function () { if (isOpen()) { handles.closeAll(); sync() } },
           toggle: function () { if (isOpen()) { handles.closeAll(); sync() } else openIt() },
@@ -4376,12 +4475,20 @@ A richer example combining groups, icons, and submenus.
 // Document-level: wireMenu owns every trigger on the page through its
 // data-radixuigo-* protocol, so the behavior installs ONCE per page and
 // ignores the root it is initialised with (a later shadless.init(subtree)
-// finds the listeners already there).
+// finds the listeners already there). dropdown-menu.js and context-menu.js
+// share that single installation (shadless.__menuWired.installed_menu) —
+// whichever file's init runs first does the real RadixKernel.wireMenu()
+// setup, the other reuses it via shadless.__menuWired.fileTriggers. Each
+// file still registers its OWN component name unconditionally, and
+// fileTriggers labels every element by its actual
+// data-radixuigo-{menu,context}-trigger attribute rather than by which file
+// happened to install — otherwise, on a page carrying both component types,
+// whichever file loaded second would never call shadless.register at all
+// (its component type invisible to the engine) and every trigger, of both
+// kinds, would be mislabelled with the first file's component name.
 (function () {
-  if (shadless.__menuWired && shadless.__menuWired["menu"]) return
-  shadless.__menuWired = shadless.__menuWired || {}
-  shadless.__menuWired["menu"] = true
   shadless.register("dropdown-menu", { init: function (root) {
+    shadless.__menuWired = shadless.__menuWired || {}
     if (shadless.__menuWired.installed_menu) { if (shadless.__menuWired.fileTriggers) shadless.__menuWired.fileTriggers(root); return }
     shadless.__menuWired.installed_menu = true
     // shadless:open / shadless:close: the kernel has no open hook, so every
@@ -4440,16 +4547,17 @@ A richer example combining groups, icons, and submenus.
     var fileTriggers = function (root) {
       Array.prototype.forEach.call((root || document).querySelectorAll("[data-radixuigo-menu-trigger], [data-radixuigo-context-trigger]"), function (t) {
         if (shadless.instances.has(t)) return
+        var isContext = t.hasAttribute("data-radixuigo-context-trigger")
         var isOpen = function () { var l = handles.rootLayer(); return !!l && l.trigger === t }
         var openIt = function () {
           if (isOpen()) return
-          if (t.hasAttribute("data-radixuigo-context-trigger")) {
+          if (isContext) {
             var r = t.getBoundingClientRect()
             handles.onContextmenu(t, r.left + r.width / 2, r.top + r.height / 2, noop)
           } else handles.onDocumentClick(t, noop)
           sync()
         }
-        shadless.instances.set(t, { component: "dropdown-menu",
+        shadless.instances.set(t, { component: isContext ? "context-menu" : "dropdown-menu",
           open: openIt,
           close: function () { if (isOpen()) { handles.closeAll(); sync() } },
           toggle: function () { if (isOpen()) { handles.closeAll(); sync() } else openIt() },
@@ -5104,12 +5212,20 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 // Document-level: wireMenu owns every trigger on the page through its
 // data-radixuigo-* protocol, so the behavior installs ONCE per page and
 // ignores the root it is initialised with (a later shadless.init(subtree)
-// finds the listeners already there).
+// finds the listeners already there). dropdown-menu.js and context-menu.js
+// share that single installation (shadless.__menuWired.installed_menu) —
+// whichever file's init runs first does the real RadixKernel.wireMenu()
+// setup, the other reuses it via shadless.__menuWired.fileTriggers. Each
+// file still registers its OWN component name unconditionally, and
+// fileTriggers labels every element by its actual
+// data-radixuigo-{menu,context}-trigger attribute rather than by which file
+// happened to install — otherwise, on a page carrying both component types,
+// whichever file loaded second would never call shadless.register at all
+// (its component type invisible to the engine) and every trigger, of both
+// kinds, would be mislabelled with the first file's component name.
 (function () {
-  if (shadless.__menuWired && shadless.__menuWired["menu"]) return
-  shadless.__menuWired = shadless.__menuWired || {}
-  shadless.__menuWired["menu"] = true
   shadless.register("dropdown-menu", { init: function (root) {
+    shadless.__menuWired = shadless.__menuWired || {}
     if (shadless.__menuWired.installed_menu) { if (shadless.__menuWired.fileTriggers) shadless.__menuWired.fileTriggers(root); return }
     shadless.__menuWired.installed_menu = true
     // shadless:open / shadless:close: the kernel has no open hook, so every
@@ -5168,16 +5284,17 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
     var fileTriggers = function (root) {
       Array.prototype.forEach.call((root || document).querySelectorAll("[data-radixuigo-menu-trigger], [data-radixuigo-context-trigger]"), function (t) {
         if (shadless.instances.has(t)) return
+        var isContext = t.hasAttribute("data-radixuigo-context-trigger")
         var isOpen = function () { var l = handles.rootLayer(); return !!l && l.trigger === t }
         var openIt = function () {
           if (isOpen()) return
-          if (t.hasAttribute("data-radixuigo-context-trigger")) {
+          if (isContext) {
             var r = t.getBoundingClientRect()
             handles.onContextmenu(t, r.left + r.width / 2, r.top + r.height / 2, noop)
           } else handles.onDocumentClick(t, noop)
           sync()
         }
-        shadless.instances.set(t, { component: "dropdown-menu",
+        shadless.instances.set(t, { component: isContext ? "context-menu" : "dropdown-menu",
           open: openIt,
           close: function () { if (isOpen()) { handles.closeAll(); sync() } },
           toggle: function () { if (isOpen()) { handles.closeAll(); sync() } else openIt() },

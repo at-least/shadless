@@ -284,7 +284,6 @@ A collection of links for navigating websites.
     if (shadless.__menuWired.installed_navigation_menu) return
     shadless.__menuWired.installed_navigation_menu = true
     var EXIT = 120;
-    var VIEWPORT_CLASS = "bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:zoom-out-90 data-open:zoom-in-90 ring-foreground/10 rounded-lg shadow ring-1 duration-100 origin-top-center relative mt-1.5 h-(--radix-navigation-menu-viewport-height) w-full overflow-hidden md:w-(--radix-navigation-menu-viewport-width)";
     var root = document.querySelector("[data-slot=navigation-menu]");
     var triggers = function () {
       return Array.prototype.slice.call(root.querySelectorAll("[data-radixuigo-nav-trigger]"));
@@ -298,11 +297,17 @@ A collection of links for navigating websites.
       var vp = viewport()
       if (vp) return vp
       vp = document.createElement("div")
+      // data-slot alone is enough: dist/css/navigation-menu.css already
+      // ships [data-slot="navigation-menu-viewport"] { @apply … } — the
+      // rule is compiled from upstream regardless of whether any static
+      // page happens to render this element, same as every other
+      // dynamically-mounted node in this codebase (no className to keep in
+      // sync by hand, and hand-syncing it had already drifted: it carried
+      // origin-top-center, which the shipped rule does not).
       vp.setAttribute("data-slot", "navigation-menu-viewport")
       vp.id = (openId || idOf(triggers()[0]) || "nav") + "-viewport"
       vp.setAttribute("data-orientation", "horizontal")
       vp.setAttribute("data-state", "closed")
-      vp.className = VIEWPORT_CLASS
       root.appendChild(vp)
       return vp
     }

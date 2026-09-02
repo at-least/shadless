@@ -1849,7 +1849,6 @@ A carousel with motion and swipe built using Embla.
       root.__embla = api;
       api.component = "carousel";
       shadless.instances.set(root, api); // the embla api itself: scrollNext(), scrollTo(i), on("select", …), …
-    if (typeof window !== "undefined" && !window.__api) window.__api = api; // first instance, for the contract probe
     });
   } })
 })()
@@ -3772,7 +3771,6 @@ To set the size of the items, you can use the `basis` utility class on the `<Car
       root.__embla = api;
       api.component = "carousel";
       shadless.instances.set(root, api); // the embla api itself: scrollNext(), scrollTo(i), on("select", …), …
-    if (typeof window !== "undefined" && !window.__api) window.__api = api; // first instance, for the contract probe
     });
   } })
 })()
@@ -5648,7 +5646,6 @@ To set the spacing between the items, we use a `pl-[VALUE]` utility on the `<Car
       root.__embla = api;
       api.component = "carousel";
       shadless.instances.set(root, api); // the embla api itself: scrollNext(), scrollTo(i), on("select", …), …
-    if (typeof window !== "undefined" && !window.__api) window.__api = api; // first instance, for the contract probe
     });
   } })
 })()
@@ -7507,7 +7504,6 @@ Use the `orientation` prop to set the orientation of the carousel.
       root.__embla = api;
       api.component = "carousel";
       shadless.instances.set(root, api); // the embla api itself: scrollNext(), scrollTo(i), on("select", …), …
-    if (typeof window !== "undefined" && !window.__api) window.__api = api; // first instance, for the contract probe
     });
   } })
 })()
@@ -9383,7 +9379,6 @@ Use a state and the `setApi` props to get an instance of the carousel API.
       root.__embla = api;
       api.component = "carousel";
       shadless.instances.set(root, api); // the embla api itself: scrollNext(), scrollTo(i), on("select", …), …
-    if (typeof window !== "undefined" && !window.__api) window.__api = api; // first instance, for the contract probe
     });
   } })
 })()
@@ -11265,7 +11260,6 @@ export function Example() {
       root.__embla = api;
       api.component = "carousel";
       shadless.instances.set(root, api); // the embla api itself: scrollNext(), scrollTo(i), on("select", …), …
-    if (typeof window !== "undefined" && !window.__api) window.__api = api; // first instance, for the contract probe
     });
   } })
 })()
@@ -13125,7 +13119,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       root.__embla = api;
       api.component = "carousel";
       shadless.instances.set(root, api); // the embla api itself: scrollNext(), scrollTo(i), on("select", …), …
-    if (typeof window !== "undefined" && !window.__api) window.__api = api; // first instance, for the contract probe
     });
   } })
 })()

@@ -1668,7 +1668,6 @@ import "./shadless.mjs"
       root.__embla = api;
       api.component = "carousel";
       shadless.instances.set(root, api); // the embla api itself: scrollNext(), scrollTo(i), on("select", …), …
-    if (typeof window !== "undefined" && !window.__api) window.__api = api; // first instance, for the contract probe
     });
   } })
 })()
