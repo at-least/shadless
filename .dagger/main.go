@@ -66,16 +66,25 @@ type Shadless struct{}
 // `go` names the language version. Preferring the first and falling back to
 // the second means the repo keeps the decision either way, and this file
 // keeps none of it.
+// dockerHubMirror pulls Docker Official Images through Google's read-through
+// cache instead of registry-1.docker.io directly. Every docker.io/library
+// pull from this module goes through it — measured (2026-09-03) from inside
+// this Dagger engine's own container, registry-1.docker.io is selectively
+// unreachable (some of its IPs time out, none of its IPv6 ones route) while
+// mirror.gcr.io, ghcr.io, gcr.io, quay.io and registry.dagger.io all connect
+// in under 300ms, so this is not a general egress block — just docker.io.
+const dockerHubMirror = "mirror.gcr.io/library/"
+
 func goImage(ctx context.Context, source *dagger.Directory) (string, error) {
 	mod, err := source.File("pipeline/go.mod").Contents(ctx)
 	if err != nil {
 		return "", fmt.Errorf("reading pipeline/go.mod: %w", err)
 	}
 	if m := reToolchain.FindStringSubmatch(mod); m != nil {
-		return "golang:" + m[1] + "-bookworm", nil
+		return dockerHubMirror + "golang:" + m[1] + "-bookworm", nil
 	}
 	if m := reGoLang.FindStringSubmatch(mod); m != nil {
-		return "golang:" + m[1] + "-bookworm", nil
+		return dockerHubMirror + "golang:" + m[1] + "-bookworm", nil
 	}
 	return "", fmt.Errorf("pipeline/go.mod declares neither a toolchain nor a go version")
 }
@@ -92,7 +101,7 @@ func nodeImage(ctx context.Context, source *dagger.Directory) (string, error) {
 		return "", fmt.Errorf("reading .nvmrc: %w (the node version is the repo's "+
 			"to declare, not this file's)", err)
 	}
-	return "node:" + strings.TrimSpace(v) + "-bookworm-slim", nil
+	return dockerHubMirror + "node:" + strings.TrimSpace(v) + "-bookworm-slim", nil
 }
 
 // deps is the npm dependency set, installed once and cached on the lockfile.
