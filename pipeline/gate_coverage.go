@@ -226,6 +226,23 @@ func gateCoverage(root string, argv []string) error {
 		}
 	}
 
+	// noStateAxis: components tiers.json calls non-static (so hasBehavior
+	// gives them a state=open cell at all), but whose upstream source has
+	// NO CSS keyed on any state attribute — verified by hand against
+	// upstream, not merely undetected by hasStateToken, so unlike a
+	// detection gap this is not something a future path-parity fix could
+	// ever close:
+	//   avatar   — upstream/.../ui/avatar.tsx has no data-state anywhere;
+	//              its real state (image loaded vs AvatarFallback shown) is
+	//              DOM presence, already tested by the avatar contract's
+	//              presence probe — invisible to a CSS-only diff by
+	//              construction, not by gap.
+	//   progress — upstream/.../ui/progress.tsx sets data-state via Radix
+	//              but styles ONLY through an inline value-driven
+	//              `style={{transform}}`; zero Tailwind class in the
+	//              component reads data-state.
+	noStateAxis := map[string]bool{"avatar": true, "progress": true}
+
 	knownDead := map[string]bool{}
 	if sweep, err := read("tools/interactivity-sweep.mjs"); err == nil {
 		if m := reKnownDead.FindSubmatch(sweep); m != nil {
@@ -292,7 +309,7 @@ func gateCoverage(root string, argv []string) error {
 							shallow = append(shallow, "demo-smoke")
 						}
 						if path == "css-import" || path == "full-css" {
-							if state == "closed" || stateTokens[c] || noCSS[c] {
+							if state == "closed" || stateTokens[c] || noCSS[c] || noStateAxis[c] {
 								by = append(by, "path-parity")
 							}
 						}
