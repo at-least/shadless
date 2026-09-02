@@ -310,12 +310,23 @@ func ovRuleUnits(pin ovPinFile, tierSets []ovTierSet, icons []string) ([]ovUnit,
 				}
 				return fmt.Sprintf("%s appears nowhere upstream", tok)
 			},
+			// A rule appearing upstream for an allowlisted token isn't a
+			// dissolve on its own: emitter_css.go:745 already auto-emits a
+			// class-anchored rule whenever skinData.Map has a body for the
+			// token (built from the same style-nova.css parse as
+			// upstreamStyles()). Only flag it if that mechanism itself
+			// wouldn't catch it — i.e. upstream defines the class some
+			// other way skinData.Map's flat-@apply parse can't see.
 			dissolved: func() string {
 				re := regexp.MustCompile(`@utility\s+` + regexp.QuoteMeta(tok) + `\b|\.` + regexp.QuoteMeta(tok) + `\s*\{`)
-				if re.MatchString(upstreamStyles()) {
-					return fmt.Sprintf("upstream now emits rules for %s — the allowlist entry would hide them", tok)
+				if !re.MatchString(upstreamStyles()) {
+					return ""
 				}
-				return ""
+				loadSkin()
+				if _, has := skinData.Map[tok]; has {
+					return ""
+				}
+				return fmt.Sprintf("upstream now defines %s in a form the SKIN_MAP parser can't capture — emitter_css.go's auto-emit won't cover it", tok)
 			},
 		})
 	}
