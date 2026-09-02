@@ -302,7 +302,7 @@ func (m *Shadless) demoTree(ctx context.Context, source *dagger.Directory) (*dag
 	}
 	return c.
 		WithDirectory("/w/src", source.Directory("src").Filter(
-			dagger.DirectoryFilterOpts{Exclude: []string{"registry/ir/**", "kernel/**"}})).
+			dagger.DirectoryFilterOpts{Exclude: []string{"kernel/**"}})).
 		WithDirectory("/w/generated/ir", ir).
 		WithDirectory("/w/src/kernel", kernel).
 		WithFile("/w/tools/demo.mjs", source.File("tools/demo.mjs")).

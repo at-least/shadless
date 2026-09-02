@@ -152,8 +152,7 @@ func (m *Shadless) converted(ctx context.Context, source *dagger.Directory) (*da
 		From(img).
 		WithWorkdir("/w").
 		WithFile("/w/build/pipeline", bin).
-		WithDirectory("/w/src", source.Directory("src").Filter(
-			dagger.DirectoryFilterOpts{Exclude: []string{"registry/ir/**"}})).
+		WithDirectory("/w/src", source.Directory("src")).
 		WithDirectory("/w/.upstream/shadcn-ui/apps/v4/registry",
 			source.Directory(".upstream/shadcn-ui/apps/v4/registry")).
 		WithExec([]string{"./build/pipeline", "resolve-skins"}).
@@ -229,8 +228,7 @@ func (m *Shadless) emitted(ctx context.Context, source *dagger.Directory) (*dagg
 		return nil, err
 	}
 	return c.
-		WithDirectory("/w/src", source.Directory("src").Filter(
-			dagger.DirectoryFilterOpts{Exclude: []string{"registry/ir/**"}})).
+		WithDirectory("/w/src", source.Directory("src")).
 		WithDirectory("/w/generated/ir", ir).
 		WithDirectory("/w/probes", source.Directory("probes")).
 		// the emitter reads style-nova.css directly; it was itself an
