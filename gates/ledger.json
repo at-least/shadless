@@ -2,7 +2,7 @@
   "budgets": {
     "coverage.uncovered-cells": {
       "class": "debt",
-      "max": 19,
+      "max": 16,
       "reason": "cells of the product matrix (component x path x theme x dir x state) no gate makes a computed-style or behavioral assertion about; see pipeline/gate_coverage.go",
       "target": 0
     },

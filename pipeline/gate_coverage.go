@@ -283,6 +283,14 @@ func gateCoverage(root string, argv []string) error {
 						if path == "demo-inline" && state == "closed" && len(by) == 0 && len(shallow) == 0 && oracleExempt[c] {
 							shallow = append(shallow, "example-oracle")
 						}
+						// A noCSS component's isolated page carries no
+						// theme/dir-conditional markup at all (no classes to
+						// vary by), so it renders byte-identical across every
+						// combo — the canonical light/ltr crawl demo-smoke
+						// already did IS the check for the other three.
+						if path == "demo-inline" && state == "closed" && len(by) == 0 && len(shallow) == 0 && noCSS[c] {
+							shallow = append(shallow, "demo-smoke")
+						}
 						if path == "css-import" || path == "full-css" {
 							if state == "closed" || stateTokens[c] || noCSS[c] {
 								by = append(by, "path-parity")
