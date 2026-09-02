@@ -1,7 +1,13 @@
 // Per-component contract: carousel (Wave E, external — embla vanilla port)
 // oracle = shadcn carousel.tsx running React embla-carousel-react
 // shadless = vanilla embla-carousel IIFE + glue JS
-// Both sides expose window.__api (embla api) for behavioral state probing.
+// The oracle side exposes window.__api via the setApi test prop below (no
+// other hook exists on that side). The shadless side does NOT — carousel.js
+// used to also set window.__api globally "for the contract probe", which
+// leaked into every consumer's page and only ever exposed the FIRST
+// instance on a multi-carousel page; removed. stateProbe instead falls back
+// to shadless.get(), the real per-instance handle API, when window.__api is
+// unset.
 export default {
   name: "carousel",
   usage: `
@@ -28,7 +34,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext
     "focus:[data-slot=carousel-previous]+key:ArrowLeft",
   ],
   stateProbe: `
-var api = window.__api;
+var api = window.__api || (window.shadless && shadless.get(document.querySelector("[data-slot=carousel]")));
 "snap=" + api.selectedScrollSnap() + " prev=" + api.canScrollPrev() + " next=" + api.canScrollNext();
 `,
   oracleCss: `

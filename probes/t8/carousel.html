@@ -22,14 +22,4 @@
   </div>
   <script src="../../dist/shadless.js"></script>
   <script src="../../dist/js/carousel.js"></script>
-  <!-- test-only: the oracle side exposes window.__api via setApi in the
-       contract's usage code (see tools/contracts/components/carousel.mjs);
-       the shipped runtime does not do this (it was a global leak, removed),
-       so this fixture mirrors it here instead, after auto-init has wired
-       the carousel via shadless.get(). -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      window.__api = shadless.get(document.querySelector('[data-slot="carousel"]'));
-    });
-  </script>
 </body></html>
