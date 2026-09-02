@@ -1,5 +1,42 @@
 {
-  "pin": "shadcn@4.19.0",
+  "budgets": {
+    "coverage.uncovered-cells": {
+      "class": "debt",
+      "max": 19,
+      "reason": "cells of the product matrix (component x path x theme x dir x state) no gate makes a computed-style or behavioral assertion about; see pipeline/gate_coverage.go",
+      "target": 0
+    },
+    "demo-parity.dirty-cells": {
+      "max": 76,
+      "target": 0,
+      "class": "debt",
+      "reason": "(page/slot#n/property @ theme @ dir) cells where a shipped demo page under our css computes differently from the same DOM under upstream css; see gates/demo-parity.mjs"
+    },
+    "golden.exempt-demos": {
+      "max": 147,
+      "target": 0,
+      "class": "debt",
+      "reason": "demos exempt from the golden dual-hop: external-dep tombstones (permanent until a vanilla port exists) + deploy-lag families (dissolve on re-pin)"
+    },
+    "interactivity.dead-families": {
+      "max": 1,
+      "target": 0,
+      "class": "debt",
+      "reason": "example families still shipping as static oracle snapshots (dead buttons); each needs its glue protocol mapped into tools/example-fixture.mjs"
+    },
+    "path-parity.dirty-cells": {
+      "max": 0,
+      "target": 0,
+      "class": "debt",
+      "reason": "(component/slot/property @ path @ theme @ dir) cells where slot-only markup via css-import or full.css computes differently from React under upstream css; zero at shadcn@4.19.0"
+    },
+    "style-parity.dirty-cells": {
+      "max": 210,
+      "target": 0,
+      "class": "debt",
+      "reason": "(component, slot#n, property) cells where the shipped fixture's computed style differs from the React oracle; fix fixtures toward oracle values, --record, shrink"
+    }
+  },
   "entries": {
     "ignore-attrs:accordion-multiple:accordion:data-type": {
       "class": "permanent",
@@ -398,44 +435,6 @@
       "recorded_at_pin": "shadcn@4.19.0"
     }
   },
-  "budgets": {
-    "golden.exempt-demos": {
-      "max": 147,
-      "target": 0,
-      "class": "debt",
-      "reason": "demos exempt from the golden dual-hop: external-dep tombstones (permanent until a vanilla port exists) + deploy-lag families (dissolve on re-pin)"
-    },
-    "interactivity.dead-families": {
-      "max": 1,
-      "target": 0,
-      "class": "debt",
-      "reason": "example families still shipping as static oracle snapshots (dead buttons); each needs its glue protocol mapped into tools/example-fixture.mjs"
-    },
-    "style-parity.dirty-cells": {
-      "max": 210,
-      "target": 0,
-      "class": "debt",
-      "reason": "(component, slot#n, property) cells where the shipped fixture's computed style differs from the React oracle; fix fixtures toward oracle values, --record, shrink"
-    },
-    "coverage.uncovered-cells": {
-      "max": 46,
-      "target": 0,
-      "class": "debt",
-      "reason": "cells of the product matrix (component x path x theme x dir x state) no gate makes a computed-style or behavioral assertion about; see pipeline/gate_coverage.go"
-    },
-    "path-parity.dirty-cells": {
-      "max": 0,
-      "target": 0,
-      "class": "debt",
-      "reason": "(component/slot/property @ path @ theme @ dir) cells where slot-only markup via css-import or full.css computes differently from React under upstream css; zero at shadcn@4.19.0"
-    },
-    "demo-parity.dirty-cells": {
-      "max": 76,
-      "target": 0,
-      "class": "debt",
-      "reason": "(page/slot#n/property @ theme @ dir) cells where a shipped demo page under our css computes differently from the same DOM under upstream css; see gates/demo-parity.mjs"
-    }
-  },
   "notes": [
     "style-parity baseline (~23 components carry fixture/computed drift vs the oracle \u2014 accordion trigger stretch, trigger icons on some fixtures, alert-dialog trigger unstyled in fixture, carousel item width): shrink the baseline by fixing fixture styles to oracle computed values, then re-record; `--strict` is the end state.",
     "Fixture-content parity: kernel-tier -demo pages ARE the contract fixtures \u2014 their copy/items are simplified vs the real upstream examples (alert-dialog was stale-wrong and got fixed; these are simplified): context-menu, dropdown-menu, hover-card, menubar, navigation-menu, scroll-area, select, sheet, tabs, tooltip. Automation idea: render each example's closed state through the oracle and diff its text/content against the fixture (the audit script exists in git history \u2014 resurrect as a periodic gate once the fixtures are aligned).",
@@ -447,5 +446,6 @@
     "Not gated at all (outside the CSS-parity surface): accessibility beyond attribute equality (no axe, no Tab / focus-trap / roving-focus scenario in contracts \u2014 16 of 30 defs press a key, mostly Escape), animations (every parity gate freezes them), browsers other than chromium, TypeScript (dist/esm/*.d.ts are concatenated, never type-checked), a bundle-size budget, a no-JS render. The npm surface is gated since gates/pack.mjs.",
     "Big-ticket gaps, recorded so they are not rediscovered: (1) 15 grey components have no vanilla port (calendar/date-picker \u2192 react-day-picker, chart \u2192 recharts, command/combobox \u2192 cmdk/@base-ui, drawer \u2192 vaul, resizable \u2192 react-resizable-panels, input-otp, sonner/toast, form \u2192 react-hook-form, sidebar, questionnaire, data-table \u2192 tanstack, typography) \u2014 each is a dependency rewrite, not a conversion. (2) The JS base is not tree-shakeable: tools/build-js.mjs concatenates the whole 143 KB radix kernel into dist/shadless.js unconditionally and the ESM entry re-exports a runtime global; a checkbox-only page pays for the kernel. Splitting the kernel per feature needs the kernel's source, which this repo does not hold (vendor/radix-kernel.iife.js is a pinned blob, no source map). (3) No a11y gate (axe, Tab / focus-trap scenarios), chromium only, animations frozen in every parity gate, no no-JS render \u2014 see the previous note. (4) The dialog family's mounted-DOM check is off (controlled-open oracles) and navigation-menu carries a real structural difference \u2014 see the notes above.",
     "Plain (non-cva) path @apply order: src/emitter/css.mjs joins a slot's class strings into ONE @apply, where Tailwind's internal utility order \u2014 not composition order \u2014 resolves same-group conflicts. Concrete case: attachment-action ships `rounded-lg \u2026 rounded-[min(var(--radius-md),10px)]` in one @apply and compiles to `var(--radius)` while React/twMerge keeps the later `rounded-[min(...)]`. The cva path was fixed with twin blocks (2026-08-28; regression-gated by path-parity); extending path-parity to plain-path slots with intra-list same-group conflicts would close the family."
-  ]
+  ],
+  "pin": "shadcn@4.19.0"
 }

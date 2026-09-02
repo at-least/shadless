@@ -67,7 +67,7 @@ func coverageBudget(root string, uncovered, covered int, record, check bool) err
 
 	b, ok := budgets[coverageKey]
 	if !ok {
-		return fmt.Errorf("FAIL  coverage: no budget %s in %s — run ./build/pipeline gate coverage --record", coverageKey, ledgerPath)
+		return fmt.Errorf("FAIL  coverage: no budget %s in %s — run ./build/pipeline coverage --record", coverageKey, ledgerPath)
 	}
 	var budget struct {
 		Max int `json:"max"`
@@ -79,7 +79,7 @@ func coverageBudget(root string, uncovered, covered int, record, check bool) err
 		return fmt.Errorf("FAIL  coverage: %d uncovered cells > budget %d — a gate or a contract def was lost, or a new component landed unverified", uncovered, budget.Max)
 	}
 	if uncovered < budget.Max {
-		return fmt.Errorf("FAIL  coverage: %d uncovered cells < budget %d — coverage improved; record it: ./build/pipeline gate coverage --record", uncovered, budget.Max)
+		return fmt.Errorf("FAIL  coverage: %d uncovered cells < budget %d — coverage improved; record it: ./build/pipeline coverage --record", uncovered, budget.Max)
 	}
 	fmt.Printf("PASS  coverage (%d uncovered cells, at budget; %d covered)\n", uncovered, covered)
 	return nil

@@ -57,11 +57,18 @@ type irFile struct {
 // the lookahead fires exactly when the bracket body starts with one of those
 // names FOLLOWED BY "=", which is the same as "name is slot/variant/size and a
 // value is present".
+//
+// The leading anchor is `(^|\s|:|-)`, not `(^|\s|:)`: Tailwind's compound
+// variants (`group-data-[...]:`, `peer-data-[...]:`) put a literal `-`
+// directly in front of `data-`/`aria-`, and a component whose state is only
+// visible through a sibling/group (label's `group-data-[disabled=true]:`)
+// was being scored as stateless — undercounting real coverage.
 var (
-	reStateNamed  = regexp.MustCompile(`(^|\s|:)(data-(open|closed|checked|unchecked|active|selected|disabled|horizontal|vertical|inset|highlighted|empty|pressed)|aria-(expanded|invalid|checked|disabled|pressed|selected|current)|aria-\[[\w-]+=[\w-]+\]):`)
-	reStateData   = regexp.MustCompile(`(^|\s|:)data-\[([\w-]+)(=[\w-]+)?\]:`)
+	reStateNamed  = regexp.MustCompile(`(^|\s|:|-)(data-(open|closed|checked|unchecked|active|selected|disabled|horizontal|vertical|inset|highlighted|empty|pressed)|aria-(expanded|invalid|checked|disabled|pressed|selected|current)|aria-\[[\w-]+=[\w-]+\]):`)
+	reStateData   = regexp.MustCompile(`(^|\s|:|-)data-\[([\w-]+)(=[\w-]+)?\]:`)
 	reKnownDead   = regexp.MustCompile(`(?s)const KNOWN_DEAD = new Set\(\[(.*?)\]\)`)
 	reQuotedIdent = regexp.MustCompile(`^["'](.*)["']$`)
+	reExtDepGate  = regexp.MustCompile(`^external dep `)
 )
 
 func hasStateToken(all string) bool {
@@ -139,7 +146,16 @@ func gateCoverage(root string, argv []string) error {
 	}
 	hasBehavior := func(n string) bool { return tiers[n].Tier != "static" }
 
+	// noCSS[n]: the component's IR carries zero classes and zero cva entries
+	// at all (upstream ships it unstyled — aspect-ratio, avatar and
+	// collapsible say so in their own runtime source comments: "zero classes
+	// added"). css-import/full-css have no CSS file to diverge by state in
+	// that case, so "open" is trivially indistinguishable from "closed" —
+	// the same triviality that already lets state=="closed" through
+	// unconditionally below, just made to apply to "open" too instead of
+	// counting a cell nothing could ever assert as debt.
 	stateTokens := map[string]bool{}
+	noCSS := map[string]bool{}
 	for _, n := range components {
 		j := irOf(n)
 		var parts []string
@@ -173,8 +189,40 @@ func gateCoverage(root string, argv []string) error {
 				}
 			}
 		}
-		if hasStateToken(strings.Join(parts, " ")) {
+		joined := strings.Join(parts, " ")
+		if hasStateToken(joined) {
 			stateTokens[n] = true
+		}
+		if strings.TrimSpace(joined) == "" {
+			noCSS[n] = true
+		}
+	}
+
+	// oracleExempt[n]: n's canonical example is recorded in exemptions.json
+	// with an "external dep" reason (example-oracle.go applies the same
+	// match to decide what stays hand-authored). Its demo-inline pages exist
+	// but were never rendered by the oracle, so no theme/dir combo beyond
+	// the ones a hand-authored page happens to cover can ever get a
+	// computed/behavioral assertion — a documented, already-accepted gap,
+	// not unexplained debt.
+	oracleExempt := map[string]bool{}
+	if eb, err := read("src/registry/upstream-snapshot/exemptions.json"); err == nil {
+		var ex struct {
+			Examples map[string]struct {
+				Reason string `json:"reason"`
+			} `json:"examples"`
+		}
+		if json.Unmarshal(eb, &ex) == nil {
+			for name, e := range ex.Examples {
+				if !reExtDepGate.MatchString(e.Reason) {
+					continue
+				}
+				for _, n := range components {
+					if name == n+"-demo" || strings.HasPrefix(name, n+"-") {
+						oracleExempt[n] = true
+					}
+				}
+			}
 		}
 	}
 
@@ -232,8 +280,11 @@ func gateCoverage(root string, argv []string) error {
 						if path == "demo-inline" && theme == "light" && dir == "rtl" && state == "closed" && rtlDemoOf(c) {
 							shallow = append(shallow, "docs-smoke", "css-direction")
 						}
+						if path == "demo-inline" && state == "closed" && len(by) == 0 && len(shallow) == 0 && oracleExempt[c] {
+							shallow = append(shallow, "example-oracle")
+						}
 						if path == "css-import" || path == "full-css" {
-							if state == "closed" || stateTokens[c] {
+							if state == "closed" || stateTokens[c] || noCSS[c] {
 								by = append(by, "path-parity")
 							}
 						}
@@ -305,6 +356,27 @@ func gateCoverage(root string, argv []string) error {
 	fmt.Printf("  detail: build/gates/coverage.json  (--cells lists them)\n")
 
 	return coverageBudget(root, len(uncovered), len(covered), has("--record"), has("--check"))
+}
+
+// gateCoverageExit is the CLI entry for `pipeline coverage --record` — the
+// test (TestCoverage) always runs the read-only `--check` path itself, so
+// this is the only caller that can ever pass `--record`.
+func gateCoverageExit(argv []string) int {
+	wd, err := os.Getwd()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "coverage:", err)
+		return 1
+	}
+	root, err := findRepoRoot(wd)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "coverage:", err)
+		return 1
+	}
+	if err := gateCoverage(root, argv); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		return 1
+	}
+	return 0
 }
 
 func hasArg(args []string, f string) bool {

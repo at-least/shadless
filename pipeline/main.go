@@ -170,6 +170,14 @@ func main() {
 		}
 		os.Exit(runCSSDirectionUpdate())
 	}
+	if cmd == "coverage" {
+		if !has(args, "--record") {
+			fmt.Fprintln(os.Stderr, "the coverage GATE is a Go test: go test -C pipeline -run '^TestCoverage$'\n"+
+				"this subcommand only re-records the ledger budget: pipeline coverage --record")
+			os.Exit(2)
+		}
+		os.Exit(gateCoverageExit([]string{"--record"}))
+	}
 	if cmd == "oracle-css" {
 		os.Exit(runOracleCSS())
 	}
