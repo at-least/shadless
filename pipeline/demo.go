@@ -61,7 +61,7 @@ var trivialT7 = []string{"accordion", "aspect-ratio", "avatar", "checkbox", "col
 // `demo-css` inputs in pipeline/nodes.go — keep them in step. ./js because
 // the runtime injects utility classes at wire time; ../generated/ir
 // because shipped pages carry HTML-escaped '>' variants the scanner cannot
-// read from markup (see HANDOFF §4.8).
+// read from markup — still unfixed on the consumer side.
 var demoSources = []string{"./components", "./js", "../docs/demos", "../docs/content", "../src/kernel",
 	"../tools/contracts/out", "../generated/ir", "../probes/t7", "../probes/t8"}
 

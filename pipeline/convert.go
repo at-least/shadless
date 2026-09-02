@@ -23,7 +23,7 @@ package main
 // position. Every structure/attribute/class decision comes from the
 // downgraded text; only the child kind strings come from the original.
 //
-// Order is the interface (see HANDOFF): every object serialized into the IR
+// Order is the interface: every object serialized into the IR
 // — cva axes and values, defaults, attrs, tagHints — is an insertion-ordered
 // jsonObj, and the element/component/cvaRef arrays follow document order.
 
