@@ -134,7 +134,7 @@ var Nodes = []Node{
 		ID: NLedger, Kind: "gate", Tier: "fast",
 		Needs:     nil,
 		Run:       [][]string{{"go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestLedger$", "."}},
-		Inputs:    []string{"pipeline/ledger.go", "pipeline/jssource.go", "pipeline/interactivity_sweep.go", "pipeline/gates_test.go", "gates/ledger.json", "gates/*-baseline.json", "src/registry/pin.json", "src/registry/upstream-snapshot/exemptions.json", "tools/contracts/components/**", "src/**", "generated/ir/**"},
+		Inputs:    []string{"pipeline/ledger.go", "pipeline/jssource.go", "pipeline/interactivity_sweep.go", "pipeline/gates_test.go", "gates/ledger.json", "gates/*-baseline.json", "src/registry/pin.json", "src/registry/upstream-snapshot/exemptions.json", "tools/contracts/components/**", "src/**"},
 		Produces:  nil,
 		Why:       "every recorded exemption must be schema-valid, still present in its source, and inside its budget — scattered flags rot silently",
 		Mutations: []string{"ledger-undocumented-exemption", "ledger-budget-exceeded"},

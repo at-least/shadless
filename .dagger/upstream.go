@@ -63,7 +63,7 @@ func (m *Shadless) upstreamBuilt(ctx context.Context, source *dagger.Directory) 
 		return nil, err
 	}
 	return dag.Container().
-		From(dockerHubMirror + "node:22-bookworm").
+		From(mirrored("node:22-bookworm")).
 		WithExec([]string{"npm", "install", "-g", "corepack@latest"}).
 		WithExec([]string{"corepack", "enable"}).
 		// registry:build ends in `bun run ./scripts/build-registry.mts`, and

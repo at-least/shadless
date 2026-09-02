@@ -29,6 +29,7 @@ import (
 
 const (
 	shadcnDir   = ".upstream/shadcn-ui"
+	shadcnRepo  = "https://github.com/shadcn-ui/ui"
 	kernelIife  = "vendor/radix-kernel.iife.js"
 	pinFilePath = "src/registry/pin.json"
 )
@@ -142,11 +143,8 @@ func cloneUpstream(root string) error {
 		return fmt.Errorf("%s has no shadcn_ui.tag recorded", pinFilePath)
 	}
 	fmt.Fprintf(os.Stderr, "PIN: %s not found — cloning shadcn-ui at %s\n", shadcnDir, p.ShadcnUI.Tag)
-	if _, err := git(root, "clone", "--quiet", "https://github.com/shadcn-ui/ui", shadcnDir); err != nil {
-		return fmt.Errorf("git clone: %w", err)
-	}
-	if _, err := git(root, "-C", shadcnDir, "checkout", "--quiet", p.ShadcnUI.Tag); err != nil {
-		return fmt.Errorf("git checkout %s: %w", p.ShadcnUI.Tag, err)
+	if _, err := git(root, "clone", "--quiet", "--branch", p.ShadcnUI.Tag, shadcnRepo, shadcnDir); err != nil {
+		return fmt.Errorf("git clone --branch %s: %w", p.ShadcnUI.Tag, err)
 	}
 	return nil
 }
@@ -229,7 +227,7 @@ func runPin(root string, checkOnly, force bool) int {
 	}
 
 	var next pinFile
-	next.ShadcnUI.Repo = "https://github.com/shadcn-ui/ui"
+	next.ShadcnUI.Repo = shadcnRepo
 	next.ShadcnUI.Tag = releaseTag
 	next.ShadcnUI.Commit = head
 	next.ShadcnUI.Registry = "apps/v4/registry/bases/radix/ui"
