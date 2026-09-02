@@ -41,38 +41,11 @@ func startBrowserShell() (*browserShell, error) {
 	return &browserShell{cmd: cmd, stdin: stdin, stdout: bufio.NewReader(stdout)}, nil
 }
 
-func (s *browserShell) call(req map[string]any) (map[string]any, error) {
-	s.reqs++
-	b, err := json.Marshal(req)
-	if err != nil {
-		return nil, err
-	}
-	if _, err := s.stdin.Write(append(b, '\n')); err != nil {
-		return nil, fmt.Errorf("browser-shell: write: %w", err)
-	}
-	line, err := s.stdout.ReadString('\n')
-	if err != nil {
-		return nil, fmt.Errorf("browser-shell: read (after %d reqs): %w", s.reqs, err)
-	}
-	var res map[string]any
-	if err := json.Unmarshal([]byte(strings.TrimSpace(line)), &res); err != nil {
-		return nil, fmt.Errorf("browser-shell: bad response %q: %w", line, err)
-	}
-	if e, ok := res["error"].(string); ok {
-		return nil, fmt.Errorf("browser-shell: %s", e)
-	}
-	return res, nil
-}
-
-func (s *browserShell) callErr(req map[string]any) error {
-	_, err := s.call(req)
-	return err
-}
-
-// callRawValue is call, but returns the "value" field's raw bytes instead of
-// decoding through map[string]any — which would lose the browser's own key
-// order (e.g. DOM attribute order from a getAttributeNames() walk).
-func (s *browserShell) callRawValue(req map[string]any) (json.RawMessage, error) {
+// roundTrip sends req and returns the raw top-level response fields,
+// erroring out on a shell-reported "error" field. call and callRawValue
+// each decode those fields their own way (map[string]any vs. raw bytes
+// that preserve key order).
+func (s *browserShell) roundTrip(req map[string]any) (map[string]json.RawMessage, error) {
 	s.reqs++
 	b, err := json.Marshal(req)
 	if err != nil {
@@ -93,6 +66,38 @@ func (s *browserShell) callRawValue(req map[string]any) (json.RawMessage, error)
 		var e string
 		json.Unmarshal(raw, &e)
 		return nil, fmt.Errorf("browser-shell: %s", e)
+	}
+	return top, nil
+}
+
+func (s *browserShell) call(req map[string]any) (map[string]any, error) {
+	top, err := s.roundTrip(req)
+	if err != nil {
+		return nil, err
+	}
+	res := make(map[string]any, len(top))
+	for k, raw := range top {
+		var v any
+		if err := json.Unmarshal(raw, &v); err != nil {
+			return nil, fmt.Errorf("browser-shell: bad field %q: %w", k, err)
+		}
+		res[k] = v
+	}
+	return res, nil
+}
+
+func (s *browserShell) callErr(req map[string]any) error {
+	_, err := s.call(req)
+	return err
+}
+
+// callRawValue is call, but returns the "value" field's raw bytes instead of
+// decoding through map[string]any — which would lose the browser's own key
+// order (e.g. DOM attribute order from a getAttributeNames() walk).
+func (s *browserShell) callRawValue(req map[string]any) (json.RawMessage, error) {
+	top, err := s.roundTrip(req)
+	if err != nil {
+		return nil, err
 	}
 	return top["value"], nil
 }

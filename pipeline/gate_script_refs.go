@@ -88,19 +88,7 @@ func gateScriptRefs(root string) error {
 		}
 		for _, m := range reGoTestRun.FindAllStringSubmatch(source, -1) {
 			name := m[1]
-			if testNames[name] {
-				continue
-			}
-			// a prefix pattern (`-run '^TestUnit'`, no trailing `$`) is
-			// satisfied by any test name that starts with it
-			found := false
-			for tn := range testNames {
-				if strings.HasPrefix(tn, name) {
-					found = true
-					break
-				}
-			}
-			if !found {
+			if !testNames[name] {
 				fail = append(fail, fmt.Sprintf("%s: `-run '^%s'` — no func Test%s* under pipeline/*_test.go", label, name, strings.TrimPrefix(name, "Test")))
 			}
 		}

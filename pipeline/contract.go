@@ -352,25 +352,11 @@ func cOverlayPoint(page *bpage, overlaySlot, contentSlot string) (float64, float
 	return x, y, nil
 }
 
-func cOverlaySlotOf(def cdef) string {
-	if def.OverlaySlot != "" {
-		return def.OverlaySlot
+func orDefault(s, def string) string {
+	if s != "" {
+		return s
 	}
-	return "dialog-overlay"
-}
-
-func cContentSlotOf(def cdef) string {
-	if def.ContentSlot != "" {
-		return def.ContentSlot
-	}
-	return "dialog-content"
-}
-
-func cCloseSelectorOf(def cdef) string {
-	if def.CloseSelector != "" {
-		return def.CloseSelector
-	}
-	return "[data-slot=dialog-close]"
+	return def
 }
 
 // stepIt: ops chain ("focus:#t1+key:ArrowRight"); legacy single-op names
@@ -379,7 +365,7 @@ func cStepIt(page *bpage, def cdef, step string) (string, error) {
 	for _, op := range strings.Split(step, "+") {
 		switch {
 		case op == "overlay-mouse-click":
-			x, y, err := cOverlayPoint(page, cOverlaySlotOf(def), cContentSlotOf(def))
+			x, y, err := cOverlayPoint(page, orDefault(def.OverlaySlot, "dialog-overlay"), orDefault(def.ContentSlot, "dialog-content"))
 			if err != nil {
 				return "", err
 			}
@@ -391,7 +377,7 @@ func cStepIt(page *bpage, def cdef, step string) (string, error) {
 				return "", err
 			}
 		case op == "close-button":
-			if err := page.locClickTimeout("", cCloseSelectorOf(def), 0, "left", 30000); err != nil {
+			if err := page.locClickTimeout("", orDefault(def.CloseSelector, "[data-slot=dialog-close]"), 0, "left", 30000); err != nil {
 				return "", err
 			}
 		case op == "outside-click":
@@ -505,7 +491,7 @@ func cStepIt(page *bpage, def cdef, step string) (string, error) {
 	}
 	// presence probe: both sides remove the content (incl. portal wrapper)
 	// on close — verified per-kernel
-	v, err := page.evaluate(fmt.Sprintf(`!document.querySelector("[data-slot=%s]") ? "closes" : "open"`, cContentSlotOf(def)))
+	v, err := page.evaluate(fmt.Sprintf(`!document.querySelector("[data-slot=%s]") ? "closes" : "open"`, orDefault(def.ContentSlot, "dialog-content")))
 	if err != nil {
 		return "", err
 	}
@@ -543,9 +529,11 @@ func cToStringSlice(v any) []string {
 	return out
 }
 
-func cBagDiff(before, after []string) []string {
+// cBagDiffBoth compares two multisets and returns the items only in each:
+// onlyBefore is what's left of before once every match in after is removed,
+// onlyAfter is what in after never matched anything in before.
+func cBagDiffBoth(before, after []string) (onlyBefore, onlyAfter []string) {
 	remaining := append([]string{}, before...)
-	var added []string
 	for _, item := range after {
 		idx := -1
 		for i, r := range remaining {
@@ -557,9 +545,14 @@ func cBagDiff(before, after []string) []string {
 		if idx >= 0 {
 			remaining = append(remaining[:idx], remaining[idx+1:]...)
 		} else {
-			added = append(added, item)
+			onlyAfter = append(onlyAfter, item)
 		}
 	}
+	return remaining, onlyAfter
+}
+
+func cBagDiff(before, after []string) []string {
+	_, added := cBagDiffBoth(before, after)
 	return added
 }
 
@@ -591,12 +584,8 @@ type cRunResult struct {
 	mountedOK bool
 }
 
-func cMountedClassesOf(def cdef) bool {
-	return def.MountedClasses == nil || *def.MountedClasses
-}
-
-func cMountedCheckOf(def cdef) bool {
-	return def.MountedCheck == nil || *def.MountedCheck
+func boolOrTrue(p *bool) bool {
+	return p == nil || *p
 }
 
 func cOracleRun(shell *browserShell, def cdef, out, step string) (cRunResult, error) {
@@ -615,7 +604,7 @@ func cOracleRun(shell *browserShell, def cdef, out, step string) (cRunResult, er
 	mountedOK := false
 	if def.Open != "" {
 		if step == "" {
-			m, err := cMountedDiff(page, cMountedClassesOf(def), def.Open)
+			m, err := cMountedDiff(page, boolOrTrue(def.MountedClasses), def.Open)
 			if err != nil {
 				return cRunResult{}, err
 			}
@@ -663,7 +652,7 @@ func cShadlessRun(shell *browserShell, def cdef, out, step, recorder string) (cR
 	mountedOK := false
 	if def.OpenShadless != "" {
 		if step == "" {
-			m, err := cMountedDiff(page, cMountedClassesOf(def), def.OpenShadless)
+			m, err := cMountedDiff(page, boolOrTrue(def.MountedClasses), def.OpenShadless)
 			if err != nil {
 				return cRunResult{}, nil, err
 			}
@@ -696,39 +685,38 @@ func cShadlessRun(shell *browserShell, def cdef, out, step, recorder string) (cR
 func runContract(name string) int {
 	OUT := filepath.Join("tools/contracts/out", name)
 
-	shell, err := startBrowserShell()
-	if err != nil {
+	die := func(err error) int {
 		fmt.Fprintln(os.Stderr, "contracts:", err)
 		return 1
+	}
+
+	shell, err := startBrowserShell()
+	if err != nil {
+		return die(err)
 	}
 	defer shell.close()
 
 	def, err := cLoadDef(shell, name)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "contracts:", err)
-		return 1
+		return die(err)
 	}
 	recorder := cRecorderSrc(def.Slots)
 
 	if err := buildContractOracleGo(efDef{Imports: def.Imports, Usage: def.Usage, OracleCss: def.OracleCss}, OUT, recorder); err != nil {
-		fmt.Fprintln(os.Stderr, "contracts:", err)
-		return 1
+		return die(err)
 	}
 
 	shadlessHTML, err := os.ReadFile(def.ShadlessPage)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "contracts:", err)
-		return 1
+		return die(err)
 	}
 	dir := absOrDie(filepath.Dir(def.ShadlessPage))
 	if err := os.WriteFile(filepath.Join(OUT, "shadless.html"), []byte(cRewriteRelativePaths(string(shadlessHTML), dir)), 0o644); err != nil {
-		fmt.Fprintln(os.Stderr, "contracts:", err)
-		return 1
+		return die(err)
 	}
 
 	if err := shell.launch(); err != nil {
-		fmt.Fprintln(os.Stderr, "contracts:", err)
-		return 1
+		return die(err)
 	}
 
 	var oracleOpenRaw, shadlessOpenRaw json.RawMessage
@@ -744,13 +732,11 @@ func runContract(name string) int {
 	for _, step := range steps {
 		o, err := cOracleRun(shell, def, OUT, step)
 		if err != nil {
-			fmt.Fprintln(os.Stderr, "contracts:", err)
-			return 1
+			return die(err)
 		}
 		c, errs, err := cShadlessRun(shell, def, OUT, step, recorder)
 		if err != nil {
-			fmt.Fprintln(os.Stderr, "contracts:", err)
-			return 1
+			return die(err)
 		}
 		for _, e := range errs {
 			fmt.Println("  [shadless pageerror]", e)
@@ -768,13 +754,11 @@ func runContract(name string) int {
 			// say so.
 			o2, err := cOracleRun(shell, def, OUT, step)
 			if err != nil {
-				fmt.Fprintln(os.Stderr, "contracts:", err)
-				return 1
+				return die(err)
 			}
 			c2, errs2, err := cShadlessRun(shell, def, OUT, step, recorder)
 			if err != nil {
-				fmt.Fprintln(os.Stderr, "contracts:", err)
-				return 1
+				return die(err)
 			}
 			for _, e := range errs2 {
 				fmt.Println("  [shadless pageerror]", e)
@@ -795,13 +779,11 @@ func runContract(name string) int {
 
 	oracleOpen, err = cBuildFact(oracleOpenRaw, def.Slots)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "contracts:", err)
-		return 1
+		return die(err)
 	}
 	shadlessOpen, err = cBuildFact(shadlessOpenRaw, def.Slots)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "contracts:", err)
-		return 1
+		return die(err)
 	}
 
 	// ---------- diff ----------------------------------------------------------
@@ -899,24 +881,9 @@ func runContract(name string) int {
 
 	// mounted-diff structural check: the JS-created DOM must match too —
 	// class drift inside portaled/mounted content had NO guard before
-	if (oracleMountedOK || shadlessMountedOK) && cMountedCheckOf(def) {
+	if (oracleMountedOK || shadlessMountedOK) && boolOrTrue(def.MountedCheck) {
 		fmt.Printf("contracts[%s]: mounted DOM\n", name)
-		om := append([]string{}, oracleMounted...)
-		var onlyShadless []string
-		for _, x := range shadlessMounted {
-			idx := -1
-			for i, r := range om {
-				if r == x {
-					idx = i
-					break
-				}
-			}
-			if idx >= 0 {
-				om = append(om[:idx], om[idx+1:]...)
-			} else {
-				onlyShadless = append(onlyShadless, x)
-			}
-		}
+		om, onlyShadless := cBagDiffBoth(oracleMounted, shadlessMounted)
 		if len(om) == 0 && len(onlyShadless) == 0 {
 			fmt.Printf("  %d mounted elements match\n", len(oracleMounted))
 		} else {
@@ -925,26 +892,24 @@ func runContract(name string) int {
 				if i >= 4 {
 					break
 				}
-				fmt.Printf("  only-oracle:   %s\n", cTruncate(x, 160))
+				fmt.Printf("  only-oracle:   %s\n", truncate(x, 160))
 			}
 			for i, x := range onlyShadless {
 				if i >= 4 {
 					break
 				}
-				fmt.Printf("  only-shadless: %s\n", cTruncate(x, 160))
+				fmt.Printf("  only-shadless: %s\n", truncate(x, 160))
 			}
 		}
 	}
 
 	oracleOpenJSON, err := cRawToJsonable(oracleOpenRaw)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "contracts:", err)
-		return 1
+		return die(err)
 	}
 	shadlessOpenJSON, err := cRawToJsonable(shadlessOpenRaw)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "contracts:", err)
-		return 1
+		return die(err)
 	}
 	oracleObj, shadlessObj := jsonObj{}, jsonObj{}
 	for _, s := range def.Scenarios {
@@ -961,8 +926,7 @@ func runContract(name string) int {
 		add("shadless", shadlessObj).
 		add("pass", pass)
 	if err := os.WriteFile(filepath.Join(OUT, "result.json"), []byte(marshalJS(result, "")), 0o644); err != nil {
-		fmt.Fprintln(os.Stderr, "contracts:", err)
-		return 1
+		return die(err)
 	}
 
 	if pass {
@@ -971,13 +935,6 @@ func runContract(name string) int {
 	}
 	fmt.Printf("\nFAIL  contracts %s\n", name)
 	return 1
-}
-
-func cTruncate(s string, n int) string {
-	if len(s) <= n {
-		return s
-	}
-	return s[:n]
 }
 
 // runContractsAll: no arg — run every component def in a child process each;
