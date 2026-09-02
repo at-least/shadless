@@ -115,7 +115,7 @@ Displays rich content in a portal, triggered by a button.
         open = true;
         shadless.h.emit(trigger, "open", "popover");
       }
-      function unmount() { if (handles) handles.close(); }
+      function unmount(restoreFocus) { if (handles) handles.close(restoreFocus !== false); }
       trigger.addEventListener("click", function () { open ? unmount() : mount(); }, { signal: w.signal });
       shadless.instances.set(trigger, { component: "popover",
         open: function () { if (!open) mount() },
@@ -308,7 +308,7 @@ A simple popover with a header, title, and description.
         open = true;
         shadless.h.emit(trigger, "open", "popover");
       }
-      function unmount() { if (handles) handles.close(); }
+      function unmount(restoreFocus) { if (handles) handles.close(restoreFocus !== false); }
       trigger.addEventListener("click", function () { open ? unmount() : mount(); }, { signal: w.signal });
       shadless.instances.set(trigger, { component: "popover",
         open: function () { if (!open) mount() },
@@ -539,7 +539,7 @@ Use the `align` prop on `PopoverContent` to control the horizontal alignment.
         open = true;
         shadless.h.emit(trigger, "open", "popover");
       }
-      function unmount() { if (handles) handles.close(); }
+      function unmount(restoreFocus) { if (handles) handles.close(restoreFocus !== false); }
       trigger.addEventListener("click", function () { open ? unmount() : mount(); }, { signal: w.signal });
       shadless.instances.set(trigger, { component: "popover",
         open: function () { if (!open) mount() },
@@ -710,7 +710,7 @@ A popover with form fields inside.
         open = true;
         shadless.h.emit(trigger, "open", "popover");
       }
-      function unmount() { if (handles) handles.close(); }
+      function unmount(restoreFocus) { if (handles) handles.close(restoreFocus !== false); }
       trigger.addEventListener("click", function () { open ? unmount() : mount(); }, { signal: w.signal });
       shadless.instances.set(trigger, { component: "popover",
         open: function () { if (!open) mount() },
@@ -1013,7 +1013,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
         open = true;
         shadless.h.emit(trigger, "open", "popover");
       }
-      function unmount() { if (handles) handles.close(); }
+      function unmount(restoreFocus) { if (handles) handles.close(restoreFocus !== false); }
       trigger.addEventListener("click", function () { open ? unmount() : mount(); }, { signal: w.signal });
       shadless.instances.set(trigger, { component: "popover",
         open: function () { if (!open) mount() },
