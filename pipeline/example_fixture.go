@@ -69,11 +69,11 @@ type efTarget struct {
 
 // buildContractOracleGo — tools/contracts/oracle-build.mjs in Go: bundle a
 // contract def's React usage tree into OUT/oracle.{js,html}.
-func buildContractOracleGo(def efDef, out string) error {
+func buildContractOracleGo(def efDef, out, recorder string) error {
 	entry := "\nimport React from \"react\";\n" +
 		"import { createRoot } from \"react-dom/client\";\n" +
 		def.Imports + "\n" +
-		"\n" +
+		recorder + "\n" +
 		"window.__open = true;\n" +
 		"const root = createRoot(document.getElementById(\"root\"));\n" +
 		"const render = () => root.render((" + def.Usage + "));\n" +
@@ -411,7 +411,7 @@ func runExampleFixture(args []string) int {
 			}()
 			if contracts {
 				out := filepath.Join(efTmp, "contracts", name)
-				if err := buildContractOracleGo(*target.def, out); err != nil {
+				if err := buildContractOracleGo(*target.def, out, ""); err != nil {
 					return err
 				}
 				if err := page.gotoURL("file://" + absOrDie(filepath.Join(out, "oracle.html"))); err != nil {

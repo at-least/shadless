@@ -69,6 +69,34 @@ func (s *browserShell) callErr(req map[string]any) error {
 	return err
 }
 
+// callRawValue is call, but returns the "value" field's raw bytes instead of
+// decoding through map[string]any — which would lose the browser's own key
+// order (e.g. DOM attribute order from a getAttributeNames() walk).
+func (s *browserShell) callRawValue(req map[string]any) (json.RawMessage, error) {
+	s.reqs++
+	b, err := json.Marshal(req)
+	if err != nil {
+		return nil, err
+	}
+	if _, err := s.stdin.Write(append(b, '\n')); err != nil {
+		return nil, fmt.Errorf("browser-shell: write: %w", err)
+	}
+	line, err := s.stdout.ReadString('\n')
+	if err != nil {
+		return nil, fmt.Errorf("browser-shell: read (after %d reqs): %w", s.reqs, err)
+	}
+	var top map[string]json.RawMessage
+	if err := json.Unmarshal([]byte(strings.TrimSpace(line)), &top); err != nil {
+		return nil, fmt.Errorf("browser-shell: bad response %q: %w", line, err)
+	}
+	if raw, ok := top["error"]; ok {
+		var e string
+		json.Unmarshal(raw, &e)
+		return nil, fmt.Errorf("browser-shell: %s", e)
+	}
+	return top["value"], nil
+}
+
 func (s *browserShell) close() {
 	s.call(map[string]any{"op": "close"})
 	s.stdin.Close()
@@ -125,6 +153,12 @@ func (p *bpage) evaluate(expr string) (any, error) {
 	return res["value"], nil
 }
 
+// evaluateOrdered is evaluate but preserves the result's own JSON key order
+// (an object built in the page by literal property assignment, not a Go map).
+func (p *bpage) evaluateOrdered(expr string) (json.RawMessage, error) {
+	return p.s.callRawValue(map[string]any{"op": "evaluate", "pageId": p.id, "expr": expr})
+}
+
 func (p *bpage) evaluateArg(expr string, arg any) (any, error) {
 	res, err := p.s.call(map[string]any{"op": "evaluate", "pageId": p.id, "expr": expr, "arg": arg})
 	if err != nil {
@@ -160,6 +194,21 @@ func (p *bpage) addStyleTagPath(path string) error {
 
 func (p *bpage) addStyleTag(content string) error {
 	_, err := p.s.call(map[string]any{"op": "addStyleTag", "pageId": p.id, "content": content})
+	return err
+}
+
+func (p *bpage) addScriptTag(content string) error {
+	_, err := p.s.call(map[string]any{"op": "addScriptTag", "pageId": p.id, "content": content})
+	return err
+}
+
+func (p *bpage) focus(selector string, timeoutMS int) error {
+	_, err := p.s.call(map[string]any{"op": "focus", "pageId": p.id, "selector": selector, "timeout": timeoutMS})
+	return err
+}
+
+func (p *bpage) wheel(dx, dy float64) error {
+	_, err := p.s.call(map[string]any{"op": "wheel", "pageId": p.id, "dx": dx, "dy": dy})
 	return err
 }
 
@@ -254,8 +303,24 @@ func (p *bpage) locEvalAllArg(frame, selector, expr string, arg any) (any, error
 
 // locClick clicks the nth match; button "right" for context-menu triggers.
 func (p *bpage) locClick(frame, selector string, index int, button string) error {
-	_, err := p.s.call(map[string]any{"op": "locClick", "pageId": p.id, "frame": frame, "selector": selector, "index": index, "button": button})
+	return p.locClickTimeout(frame, selector, index, button, 5000)
+}
+
+// locClickTimeout is locClick with an explicit actionability timeout —
+// page.click's playwright default is 30000ms, not locator.click's 5000ms.
+func (p *bpage) locClickTimeout(frame, selector string, index int, button string, timeoutMS int) error {
+	_, err := p.s.call(map[string]any{"op": "locClick", "pageId": p.id, "frame": frame, "selector": selector, "index": index, "button": button, "timeout": timeoutMS})
 	return err
+}
+
+// locEval evaluates expr on the nth match only (playwright $eval semantics —
+// locEvalAll would touch every match).
+func (p *bpage) locEval(frame, selector, expr string, index int) (any, error) {
+	res, err := p.s.call(map[string]any{"op": "locEval", "pageId": p.id, "frame": frame, "selector": selector, "expr": expr, "index": index})
+	if err != nil {
+		return nil, err
+	}
+	return res["value"], nil
 }
 
 func (p *bpage) mouseMove(x, y float64, steps int) error {

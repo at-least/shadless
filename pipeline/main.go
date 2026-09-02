@@ -248,6 +248,15 @@ func main() {
 	if cmd == "path-parity" {
 		os.Exit(runPathParity(has(args, "--record"), has(args, "--details")))
 	}
+	if cmd == "contract" {
+		if len(args) < 1 {
+			die(fmt.Errorf("contract: need a component name"))
+		}
+		os.Exit(runContract(args[0]))
+	}
+	if cmd == "contracts" {
+		os.Exit(runContractsAll())
+	}
 	if cmd == "inputs" {
 		os.Exit(runInputs(args))
 	}

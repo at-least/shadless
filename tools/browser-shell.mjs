@@ -18,13 +18,16 @@
 //   events                            — drain captured errors
 //   waitForLoadState {state, timeout} — "load"|"networkidle"|…
 //   waitForTimeout {ms}
-//   mouseClick {x, y} / keyPress {key}
+//   mouseClick {x, y} / keyPress {key} / wheel {dx, dy}
+//   focus      {selector, timeout?}      — page.focus
+//   addScriptTag {content}
 //   frameExists {frame}               — iframe selector present (bool)
 //   locCount   {frame?, selector}
 //   locWait    {frame?, selector, state?, timeout?}
 //   locScroll  {frame?, selector, index?} — scrollIntoViewIfNeeded
 //   locAttr    {frame?, selector, attr, index?}
 //   locBox     {frame?, selector, index?} → {x,y,width,height}
+//   locEval    {frame?, selector, expr, index?} — expr(el) on the nth match
 //   locEvalAll {frame?, selector, expr}   — expr(el) per match → [values]
 import readline from "node:readline"
 import { chromium } from "playwright"
@@ -110,6 +113,21 @@ async function handle(req) {
       else await page.addStyleTag({ content: req.content })
       return { ok: true }
     }
+    case "addScriptTag": {
+      const { page } = pages.get(req.pageId)
+      await page.addScriptTag({ content: req.content })
+      return { ok: true }
+    }
+    case "focus": {
+      const { page } = pages.get(req.pageId)
+      await page.focus(req.selector, { timeout: req.timeout ?? 30_000 })
+      return { ok: true }
+    }
+    case "wheel": {
+      const { page } = pages.get(req.pageId)
+      await page.mouse.wheel(req.dx ?? 0, req.dy ?? 0)
+      return { ok: true }
+    }
     case "driver": {
       // contract-def open/openShadless strings: JS against the LIVE page
       const { page } = pages.get(req.pageId)
@@ -129,6 +147,8 @@ async function handle(req) {
         triggerSlot: d.triggerSlot ?? null, stateProbe: d.stateProbe ?? null,
         styleIgnore: d.styleIgnore ?? [], facts: d.facts ?? null, note: d.note ?? null,
         ignoreAttrs: d.ignoreAttrs ?? null, oracleCss: d.oracleCss ?? null,
+        closeSelector: d.closeSelector ?? null, overlaySlot: d.overlaySlot ?? null,
+        contentSlot: d.contentSlot ?? null,
       } }
     }
     case "routeAbortExternal": {
@@ -203,6 +223,15 @@ async function handle(req) {
       const nth = loc.nth(req.index ?? 0)
       const box = await nth.boundingBox()
       return { value: box }
+    }
+    case "locEval": {
+      // playwright's elementHandle.evaluate treats a string as an EXPRESSION
+      // — "el => …" evaluates to a function value and returns undefined.
+      const { page } = pages.get(req.pageId)
+      const loc = await locatorIn(page, req)
+      const nth = loc.nth(req.index ?? 0)
+      const fn = new Function("return (" + req.expr + ")")()
+      return { value: await nth.evaluate(fn, req.arg ?? undefined) }
     }
     case "locEvalAll": {
       const { page } = pages.get(req.pageId)
