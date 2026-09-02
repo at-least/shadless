@@ -48,6 +48,7 @@ const (
 	NPin                NodeID = "pin"
 	NUnit               NodeID = "unit"
 	NLedger             NodeID = "ledger"
+	NScriptRefs         NodeID = "script-refs"
 	NDistComplete       NodeID = "dist-complete"
 	NPack               NodeID = "pack"
 	NCoverage           NodeID = "coverage"
@@ -137,6 +138,15 @@ var Nodes = []Node{
 		Produces:  nil,
 		Why:       "every recorded exemption must be schema-valid, still present in its source, and inside its budget — scattered flags rot silently",
 		Mutations: []string{"ledger-undocumented-exemption", "ledger-budget-exceeded"},
+	},
+	{
+		ID: NScriptRefs, Kind: "gate", Tier: "fast",
+		Needs:     nil,
+		Run:       [][]string{{"go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestScriptRefs$", "."}},
+		Inputs:    []string{"pipeline/gate_script_refs.go", "pipeline/gates_test.go", "pipeline/main.go", "pipeline/*_test.go", "package.json", "Makefile"},
+		Produces:  nil,
+		Why:       "a node/pipeline call in Makefile or package.json scripts must resolve to a real file, a real pipeline subcommand, or a real go test — the Go port deleted gates/overlay.mjs, gates/path-parity.mjs, tools/example-oracle.mjs, tools/example-fixture.mjs and tools/css-direction-gate.mjs while three Makefile targets and four npm scripts kept calling them, silent until run",
+		Mutations: []string{"script-refs-dead-node-call"},
 	},
 	{
 		ID: NDistComplete, Kind: "gate", Tier: "fast",

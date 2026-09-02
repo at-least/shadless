@@ -463,6 +463,15 @@ var Mutations = []Mutation{
 		},
 	},
 	{
+		ID: "script-refs-dead-node-call", Gate: "script-refs",
+		Why:   "a package.json script calls `node` on a file that does not exist — the exact shape of the bug this gate exists to catch (a JS tool deleted during the Go port, an npm script left pointing at it)",
+		Files: []string{"package.json"},
+		Apply: func(root string, f []string) error {
+			return mutReplaceOnce(root, f[0],
+				`"unit": "node tools/unit-check.mjs"`, `"unit": "node tools/unit-check-MUTATED.mjs"`)
+		},
+	},
+	{
 		ID: "pack-broken-export", Gate: "pack",
 		Why:   "package.json exports point at a file the tarball does not carry (a README-documented specifier that cannot resolve)",
 		Files: []string{"package.json"},

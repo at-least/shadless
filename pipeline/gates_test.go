@@ -87,3 +87,5 @@ func TestProductVerify(t *testing.T) { gate(t, gateProductVerify) }
 func TestConsumerSim(t *testing.T) { gate(t, gateConsumerSim) }
 
 func TestLedger(t *testing.T) { gate(t, gateLedger) }
+
+func TestScriptRefs(t *testing.T) { gate(t, gateScriptRefs) }
