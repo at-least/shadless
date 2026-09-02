@@ -3,7 +3,8 @@
 給下一個 context 的交接。讀完這份 + `git log --oneline -15` 就能接著做。
 repo: https://github.com/at-least/shadless
 
-**先看這個**：`origin/main` 還停在 `6c5c630`，本地 `main` 領先 **92 個 commit，全部沒 push**。
+**先看這個**：先前那 92+ commits 已經 push 過了——這份 HANDOFF 寫完後才推的，交接時 `origin/main` 已經追上。
+本輪（contracts port）又疊了 **3 個新 commit 沒 push**（`20f1fb4`…`b4a79ba`）。
 working tree 乾淨。**`make` 全綠**。
 
 ---
@@ -53,6 +54,7 @@ npm run docs              # 重建文件站
 | `tools/example-fixture.mjs`（42dfadc，--contracts 同支） | `pipeline example-fixture [--contracts]` | 105+14 頁 byte-identical（跑完 git 乾淨）、PASS 行同 JS；id 映射/收割/tabs 重組/API 走查是 embed 的 page-JS（ef_*.js）；家族表加 js 欄；families golden 改讀 testdata 快照 |
 | `gates/overlay.mjs`（fc579c1） | `pipeline overlay --audit|--record|--tasks|--report` | audit 輸出 byte-identical（199 applied + 1 dissolved）；--record 排序正規化（hash 不變）；規則表讀 Go var 本體 + jsSetLiteral 抽 JS 表；defs 走 shell 不啟動 chromium |
 | **`src/converter/index.mjs`（796 行，最後的 babel 依賴）** | `pipeline convert`（`pipeline/convert.go`，~1900 行） | 61 檔 IR **byte-identical**（`TestUnitConverterIrParity`：跑 convert + `git status src/registry/ir` 必須乾淨）；drift gates PASS 行逐字同 JS；`tools/unit/converter.mjs` 斷言搬進 `convert_test.go`（TestUnitConverter*） |
+| **`tools/contracts/run.mjs`（341 行，最後的 node 命令）+ `tools/contracts/oracle-build.mjs`** | `pipeline contract <name>` / `pipeline contracts`（`pipeline/contract.go`） | 29 個 contract defs 全部 **byte-identical**（stdout、`result.json`、`shadless.html`）；`browser-shell.mjs` 新增 `addScriptTag`/`focus`/`wheel`/單元素 `locEval` op，`loadContractDef` 補 `closeSelector`/`overlaySlot`/`contentSlot` 投影；`contracts-strip-glue` mutation 仍紅、`make only ID=contracts:*` 全綠；`tools/oracle-lib.mjs` 因此無人 import，一併刪除 |
 
 `tools/fixture-families.mjs` **還活著**（example-fixture 讀 FAMILY 表）— `TestUnitFixtureFamiliesGolden` 釘住 Go 表與 JS 表不漂移。`src/docs/transforms.mjs` **還活著**（overlay 讀 TEXT_ADJUSTMENTS）。
 
@@ -64,12 +66,13 @@ npm run docs              # 重建文件站
 - **`git add -A` 之前先 `git status -- dist docs`**（這次真的吞了 92 個 fixture 頁，靠 example-fixture 重生成 + 與 `f0df8e6~1` 比對救回）。
 - `fs-record` 的 wrap 必須帶原函式的屬性（`.native`）——vite 讀 `fs.realpathSync.native`。
 - **converter port（2026-09-02）**：路線是 esbuild Transform 降級 TSX → 掃 `React.createElement(` 輸出。關鍵坑：(1) children 的 "text"/"expr"/"OPT?" 要靠**掃原始碼的 JSX children 分類器**按元素出現序與降級側配對（`{" "}` 和 JSXText 降級後都是字串參數、`{/* comment */}` 容器整個消失）；(2) fragment `<>` 兩側都不算元素；(3) `cvFirstTop` 的 hit 一定要卡 `depth==0`（否則 props 物件裡的 `?` 被當根運算子，整個 props 解析成 cond）；(4) 關鍵字後讀下一個詞要跳空白（`cvNextWord`）；(5) upstream 原始碼**沒有分號**——cvSkipStmt 要在 depth-0 換行停，否則一條 import 吞整檔；(6) gate 1 的字串數要排除 Template span（`String.raw` 標籤模板 babel 不算）；(7) `export default function D` 被 esbuild 改寫成 `export { D as default }`，as-default 註冊的是宣告名。
+- **contracts port（2026-09-02）**：(1) `toggle-group.mjs` 的 scenarios 陣列裡有一個裸逗號（真正的陣列 hole），JS 的 spread/`for-of` 會把它讀成字面 `undefined`（falsy，run loop 跟 null-step 走同一條路，never 寫進 `oracleS`/`shadlessS`），但這個 hole 過 browser-shell 的 JSON 線只會變成 `null`→Go 的 `""`，跟一個「真的空字串 scenario」完全無法區分——得另外用一個 `scenarioRan` 存在性表，才能重現輸出裡那行 `undefined: oracle=undefined shadless=undefined` 和 `result.json` 裡缺的那個 key。(2) scenario 診斷行的樣板 `` `oracle=${o} shadless=${s} ${same?"":"DIFF"}` `` 在「相同」的情況下**還是有一個字面空白**在行尾（`${same?"":"DIFF"}` 前面那個空格是固定的，不是條件式的一部分）——移植成 `Printf` 時很容易把這個 trailing space 弄丟，A/B diff 才抓到。
 
-### 剩餘的 `node` 命令（1 支）
+### 剩餘的 `node` 命令：**0 支** ✅（2026-09-02 完成，contracts port，見上表）
 
-- **`tools/contracts/run.mjs`（`npm run contracts`）**：import `contracts/oracle-build.mjs` + `oracle-lib.mjs`，這兩支因此還活著；run.mjs port 完即可刪（Go 側 `buildContractOracleGo` 已在 `example_fixture.go`）。unit-check 的 suites 剩 css/prepaint/emitter/runtime/types（converter suite 已隨 port 刪除、斷言在 `pipeline/convert_test.go`）。
+unit-check 的 suites 剩 css/prepaint/emitter/runtime/types（converter suite 已隨 port 刪除、斷言在 `pipeline/convert_test.go`）。
 
-`src/tags.mjs`、`src/emitter/{index,css,skin}.mjs`、`src/docs/transforms.mjs`、`tools/rtl-lib.mjs`（**還活著**——Go golden 測試直接 import JS 版比對：`emitter_css_test.go`、`tools/unit/{css,emitter}.mjs`；skin.mjs 另有 ledger/overlay 的 jsSetLiteral 讀者、oracle-lib 的 bundle hash）、`tools/oracle-lib.mjs` + `tools/contracts/oracle-build.mjs`（contracts runner 讀）**別刪**。tier 表/KNOWN_ICONS 已是 Go var（`convert.go cvTierSets/cvKnownIcons`），overlay 的 audit 單位 id 用 "trivial"（tierOf 回傳 "trivial-js"，`ovLoadTierSets` 負責映射）。`.dagger/main.go` 的 `converted` 已改跑 Go binary（resolve-skins + convert）。
+`src/tags.mjs`、`src/emitter/{index,css,skin}.mjs`、`src/docs/transforms.mjs`、`tools/rtl-lib.mjs`（**還活著**——Go golden 測試直接 import JS 版比對：`emitter_css_test.go`、`tools/unit/{css,emitter}.mjs`；skin.mjs 另有 ledger/overlay 的 jsSetLiteral 讀者）**別刪**。`tools/oracle-lib.mjs` 和 `tools/contracts/oracle-build.mjs` 隨 contracts port 一起刪了——`buildContractOracleGo`（`example_fixture.go`）已經是兩邊唯一的 oracle bundle 建造者。tier 表/KNOWN_ICONS 已是 Go var（`convert.go cvTierSets/cvKnownIcons`），overlay 的 audit 單位 id 用 "trivial"（tierOf 回傳 "trivial-js"，`ovLoadTierSets` 負責映射）。`.dagger/main.go` 的 `converted`/`Contract`/`Contracts` 都已改跑 Go binary（resolve-skins + convert；contract 讀 `goBinary()`）。
 
 ---
 
@@ -92,10 +95,10 @@ npm run docs              # 重建文件站
 ## 4. 接下來要做的工作（按投報率）
 
 ### 4.0 push
-92+ commits 沒推。`make` 已全綠，直接推。
+本輪（contracts port）3 個新 commit 沒推。`make` 已全綠，直接推。
 
 ### 4.1 oracle 字型問題（原樣保留，擋 Dagger 全綠）
-`tools/oracle-lib.mjs` harness 無 CSS → chromium 量測值是預設字型的函數；Docker 下 635 檔有 27 個不同（tooltip/popover/hover-card 的 popper transform-origin 從渲染文字寬度算出）。兩條路：(a) oracle 不烤量測值進頁面 (b) 宣告字型集 + 重錄 22 頁 + baseline。不要用 .dagger/ apt 裝字型蓋過去。
+`pipeline/oracle_lib.go`（原 `tools/oracle-lib.mjs`，已刪）的 harness 無 CSS → chromium 量測值是預設字型的函數；Docker 下 635 檔有 27 個不同（tooltip/popover/hover-card 的 popper transform-origin 從渲染文字寬度算出）。兩條路：(a) oracle 不烤量測值進頁面 (b) 宣告字型集 + 重錄 22 頁 + baseline。不要用 .dagger/ apt 裝字型蓋過去。
 
 ### 4.2 Wave 3 chromium 群 ✅（2026-09-02 完成，見 §2 表）
 共享薄殼 `tools/browser-shell.mjs` + Go 主控的模式已驗證；八個閘門 + example-fixture + overlay 全部 port 完。
@@ -133,4 +136,4 @@ converter 靜默空頁（forwardRef/cva alias/skin 巢狀）、§4.8 escaped-cla
 
 wireit、`gates/registry.mjs`、`gates/meta.mjs`、medium tier、`emit-smoke`、workflows、
 `docs/site`、`docs-consistency` §1–3、`docs-links`、`docs-upstream`、**以及 2026-08-31 版的 §4.2（死 docs 模組——已刪）、§4.3（example-gate 結構性必綠——本輪全鏈跑時 gate 正常，未動）**。
-`tools/build-demo.mjs`、`tools/resolve-skins.mjs`、`tools/rtl-dict.mjs`、`tools/build-rtl.mjs`、`tools/rtl-lib.mjs`（部分）、`tools/demo.mjs`、`tools/demo-lib.mjs`、`tools/docs-consistency.mjs`、`src/converter/index.mjs`、`tools/unit/converter.mjs` 都刪了——它們是 Go 了。
+`tools/build-demo.mjs`、`tools/resolve-skins.mjs`、`tools/rtl-dict.mjs`、`tools/build-rtl.mjs`、`tools/rtl-lib.mjs`（部分）、`tools/demo.mjs`、`tools/demo-lib.mjs`、`tools/docs-consistency.mjs`、`src/converter/index.mjs`、`tools/unit/converter.mjs`、`tools/contracts/run.mjs`、`tools/contracts/oracle-build.mjs`、`tools/oracle-lib.mjs` 都刪了——它們是 Go 了。
