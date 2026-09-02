@@ -1097,7 +1097,7 @@ Use `align="block-end"` to position the addon below the input.
         open = true;
         shadless.h.emit(trigger, "open", "popover");
       }
-      function unmount() { if (handles) handles.close(); }
+      function unmount(restoreFocus) { if (handles) handles.close(restoreFocus !== false); }
       trigger.addEventListener("click", function () { open ? unmount() : mount(); }, { signal: w.signal });
       shadless.instances.set(trigger, { component: "popover",
         open: function () { if (!open) mount() },
