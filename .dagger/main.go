@@ -290,8 +290,13 @@ func (m *Shadless) Contract(ctx context.Context, source *dagger.Directory, name 
 	if err != nil {
 		return "", err
 	}
+	bin, err := goBinary(ctx, source)
+	if err != nil {
+		return "", err
+	}
 	return withContractDef(c, source, name).
-		WithExec([]string{"node", "tools/contracts/run.mjs", name}).
+		WithFile("/usr/local/bin/pipeline", bin).
+		WithExec([]string{"pipeline", "contract", name}).
 		Stdout(ctx)
 }
 
@@ -364,6 +369,11 @@ func (m *Shadless) Contracts(ctx context.Context, source *dagger.Directory) (str
 	if err != nil {
 		return "", err
 	}
+	bin, err := goBinary(ctx, source)
+	if err != nil {
+		return "", err
+	}
+	base = base.WithFile("/usr/local/bin/pipeline", bin)
 
 	type result struct {
 		name string
@@ -379,7 +389,7 @@ func (m *Shadless) Contracts(ctx context.Context, source *dagger.Directory) (str
 			sem <- struct{}{}
 			defer func() { <-sem }()
 			_, err := withContractDef(base, source, name).
-				WithExec([]string{"node", "tools/contracts/run.mjs", name}).
+				WithExec([]string{"pipeline", "contract", name}).
 				Stdout(ctx)
 			results[i] = result{name: name, err: err}
 		}(i, name)

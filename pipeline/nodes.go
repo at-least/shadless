@@ -367,8 +367,8 @@ var Nodes = []Node{
 	{
 		ID: NContracts, Kind: "gate", Tier: "full",
 		Needs:     []NodeID{NDemoCss},
-		Run:       [][]string{{"npm", "run", "contracts"}},
-		Inputs:    []string{"tools/contracts/**/*.mjs", "tools/contracts/stubs/**", "tools/contracts/components/**", "tools/oracle-lib.mjs", "dist/**", "src/kernel/**", "src/registry/pin.json", "package-lock.json", "gates/ledger.json"},
+		Run:       [][]string{{"./build/pipeline", "contracts"}},
+		Inputs:    []string{"pipeline/contract.go", "pipeline/oracle_lib.go", "pipeline/browser_shell.go", "tools/browser-shell.mjs", "tools/contracts/stubs/**", "tools/contracts/components/**", "dist/**", "src/kernel/**", "src/registry/pin.json", "package-lock.json", "gates/ledger.json"},
 		Produces:  []string{"tools/contracts/out"},
 		Why:       "THE oracle: the pinned registry bundled with real React+radix, replayed against the shipped pages with real mouse/keyboard, incl. mounted-DOM structure",
 		Mutations: []string{"contracts-strip-glue"},

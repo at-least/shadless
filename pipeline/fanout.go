@@ -54,10 +54,8 @@ func fanContracts(root string, n Node) ([]Node, error) {
 	for _, name := range names {
 		c := n
 		c.ID = NodeID("contracts:" + name)
-		c.Run = [][]string{{"node", "tools/contracts/run.mjs", name}}
+		c.Run = [][]string{{"./build/pipeline", "contract", name}}
 		c.Inputs = append([]string{
-			"tools/contracts/run.mjs",
-			"tools/contracts/oracle-build.mjs",
 			"tools/contracts/components/" + name + ".mjs",
 		}, shared...)
 		c.Produces = []string{"tools/contracts/out/" + name}
