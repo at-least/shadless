@@ -28,7 +28,6 @@
 #   make serve / clean
 
 .DEFAULT_GOAL := build
-NODE   := node
 NPM    := npm
 PYTHON := python3
 PORT   ?= 8765
@@ -89,14 +88,14 @@ ledger:
 ledger-render: $(PIPELINE)
 	./$(PIPELINE) ledger --render
 
-overlay:
-	$(NODE) gates/overlay.mjs --audit
+overlay: $(PIPELINE)
+	./$(PIPELINE) overlay
 
-overlay-record:
-	$(NODE) gates/overlay.mjs --record
+overlay-record: $(PIPELINE)
+	./$(PIPELINE) overlay --record
 
-overlay-tasks:
-	$(NODE) gates/overlay.mjs --tasks
+overlay-tasks: $(PIPELINE)
+	./$(PIPELINE) overlay --tasks
 
 # ----- upstream ------------------------------------------------------------
 # One command from "a new shadcn release exists" to "green, or a classified

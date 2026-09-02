@@ -56,7 +56,7 @@ npm run docs              # 重建文件站
 | **`src/converter/index.mjs`（796 行，最後的 babel 依賴）** | `pipeline convert`（`pipeline/convert.go`，~1900 行） | 61 檔 IR **byte-identical**（`TestUnitConverterIrParity`：跑 convert + `git status src/registry/ir` 必須乾淨）；drift gates PASS 行逐字同 JS；`tools/unit/converter.mjs` 斷言搬進 `convert_test.go`（TestUnitConverter*） |
 | **`tools/contracts/run.mjs`（341 行，最後的 node 命令）+ `tools/contracts/oracle-build.mjs`** | `pipeline contract <name>` / `pipeline contracts`（`pipeline/contract.go`） | 29 個 contract defs 全部 **byte-identical**（stdout、`result.json`、`shadless.html`）；`browser-shell.mjs` 新增 `addScriptTag`/`focus`/`wheel`/單元素 `locEval` op，`loadContractDef` 補 `closeSelector`/`overlaySlot`/`contentSlot` 投影；`contracts-strip-glue` mutation 仍紅、`make only ID=contracts:*` 全綠；`tools/oracle-lib.mjs` 因此無人 import，一併刪除 |
 
-`tools/fixture-families.mjs` **還活著**（example-fixture 讀 FAMILY 表）— `TestUnitFixtureFamiliesGolden` 釘住 Go 表與 JS 表不漂移。`src/docs/transforms.mjs` **還活著**（overlay 讀 TEXT_ADJUSTMENTS）。
+`tools/fixture-families.mjs` **已刪**（FAMILY 表現在是 `pipeline/docs_families.go`）— `TestUnitFixtureFamiliesGolden` 釘住 Go 表對 `testdata/fixture-families-golden.json`（JS 原版快照）不漂移。`src/docs/transforms.mjs` **還活著**（overlay 讀 TEXT_ADJUSTMENTS）。
 
 ### 移植時學到的（下一波會再踩）
 
