@@ -130,12 +130,33 @@ func readPin(root string) (*pinFile, error) {
 	return &p, nil
 }
 
+// cloneUpstream bootstraps a missing .upstream/shadcn-ui checkout by cloning
+// at the tag src/registry/pin.json already records — a fresh checkout always
+// has a committed pin to clone to, so this never has to guess a version.
+func cloneUpstream(root string) error {
+	p, err := readPin(root)
+	if err != nil {
+		return fmt.Errorf("cannot read %s to learn which tag to clone: %w", pinFilePath, err)
+	}
+	if p.ShadcnUI.Tag == "" {
+		return fmt.Errorf("%s has no shadcn_ui.tag recorded", pinFilePath)
+	}
+	fmt.Fprintf(os.Stderr, "PIN: %s not found — cloning shadcn-ui at %s\n", shadcnDir, p.ShadcnUI.Tag)
+	if _, err := git(root, "clone", "--quiet", "https://github.com/shadcn-ui/ui", shadcnDir); err != nil {
+		return fmt.Errorf("git clone: %w", err)
+	}
+	if _, err := git(root, "-C", shadcnDir, "checkout", "--quiet", p.ShadcnUI.Tag); err != nil {
+		return fmt.Errorf("git checkout %s: %w", p.ShadcnUI.Tag, err)
+	}
+	return nil
+}
+
 func runPin(root string, checkOnly, force bool) int {
 	if _, err := os.Stat(filepath.Join(root, shadcnDir)); err != nil {
-		fmt.Fprintf(os.Stderr, "PIN FAIL: %s not found — clone the upstream first:\n", shadcnDir)
-		fmt.Fprintf(os.Stderr, "  git clone https://github.com/shadcn-ui/ui %s\n", shadcnDir)
-		fmt.Fprintf(os.Stderr, "  git -C %s checkout shadcn@4.19.0\n", shadcnDir)
-		return 1
+		if err := cloneUpstream(root); err != nil {
+			fmt.Fprintf(os.Stderr, "PIN FAIL: %s not found and auto-clone failed: %v\n", shadcnDir, err)
+			return 1
+		}
 	}
 	head, err := git(root, "-C", shadcnDir, "rev-parse", "HEAD")
 	if err != nil {
