@@ -30,7 +30,7 @@ import (
 // content-addressed and lives in the engine, not in git.
 //
 // It was tracked, deliberately: the outputs are committed (dist/, docs/,
-// src/registry/ir), so a fresh clone already held them and what it lacked was
+// generated/ir), so a fresh clone already held them and what it lacked was
 // the record of which inputs produced them. Committing that record made a
 // clone warm. That trade is off now, and the cost is real — a fresh clone and
 // a new CI runner both start cold under this runner.

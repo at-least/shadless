@@ -130,8 +130,8 @@ func runUpstream(args []string) int {
 	// --json shape is the interface, so there is one implementation of the
 	// diff and no chance of the routing signal disagreeing with the report.
 	irBefore := filepath.Join(gatesOut, "ir-before")
-	irText, _ := captureOutput(root, "./build/pipeline", "ir-diff", irBefore, "src/registry/ir")
-	irJSON, _ := captureOutput(root, "./build/pipeline", "ir-diff", irBefore, "src/registry/ir", "--json")
+	irText, _ := captureOutput(root, "./build/pipeline", "ir-diff", irBefore, "generated/ir")
+	irJSON, _ := captureOutput(root, "./build/pipeline", "ir-diff", irBefore, "generated/ir", "--json")
 	var diff struct {
 		Components map[string]json.RawMessage `json:"components"`
 	}
@@ -250,7 +250,7 @@ func drillRepin(root, to string, args []string, from *pinFile, rep *drillReport)
 		fmt.Fprintf(os.Stderr, "cannot checkout %s: %v  (try --fetch)\n", to, err)
 		return 1
 	}
-	if err := copyTree(filepath.Join(root, "src/registry/ir"),
+	if err := copyTree(filepath.Join(root, "generated/ir"),
 		filepath.Join(root, gatesOut, "ir-before")); err != nil {
 		fmt.Fprintln(os.Stderr, "pipeline:", err)
 		return 1

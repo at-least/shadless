@@ -16,7 +16,7 @@ import { NAT, VOID, normalizeTag } from "../tags.mjs"
 import { THEME_PREPAINT_SCRIPT, SHADLESS_CSS_FIXES } from "../docs/theme-prepaint.mjs"
 
 
-const IRDIR = "src/registry/ir"
+const IRDIR = "generated/ir"
 
 // resolve a fn's element tree from the flat walk-order elements + sketches.
 // Every tag (root AND children) goes through normalizeTag — the old code

@@ -120,7 +120,7 @@ func withBrowser(c *dagger.Container) *dagger.Container {
 }
 
 // converted is the container after the registry has been converted: it holds
-// both of that step's outputs — src/registry/ir (the IR) and build/resolved-ui
+// both of that step's outputs — generated/ir (the IR) and build/resolved-ui
 // (the skin-flattened registry the oracle bundles from).
 //
 // The inputs are two directory mounts:
@@ -129,9 +129,9 @@ func withBrowser(c *dagger.Container) *dagger.Container {
 //	             Go convert step reads
 //	.upstream/…/registry/   the .tsx being converted, and style-nova.css
 //
-// src/registry/ir is deliberately NOT mounted. It is this step's OUTPUT, and
+// generated/ir is deliberately NOT mounted. It is this step's OUTPUT, and
 // starting from an empty directory is what makes a retired component's IR
-// disappear instead of lingering: src/registry/ir/form.json survived in the
+// disappear instead of lingering: generated/ir/form.json survived in the
 // committed tree since the initial commit, for a component upstream no longer
 // ships, because the converter writes in place and nothing removed it. Every
 // gate missed it — including `reproducible`, which rebuilds in place too, so
@@ -166,7 +166,7 @@ func (m *Shadless) Convert(ctx context.Context, source *dagger.Directory) (*dagg
 	if err != nil {
 		return nil, err
 	}
-	return c.Directory("/w/src/registry/ir"), nil
+	return c.Directory("/w/generated/ir"), nil
 }
 
 // ResolvedUI is the skin-flattened registry: upstream's cn-* utilities already
@@ -207,7 +207,7 @@ func (m *Shadless) pipelineBin(ctx context.Context, source *dagger.Directory) (*
 // emitted is the container after the static tier has been emitted: IR becomes
 // component HTML plus the per-slot stylesheet.
 //
-// src/registry/ir is mounted from the CONVERSION step, not from the host, so
+// generated/ir is mounted from the CONVERSION step, not from the host, so
 // this emits what the pipeline just produced rather than whatever the working
 // tree happens to hold. In the current graph that correspondence holds only by
 // ordering luck — emit declares no IR input at all and relies on `needs`.
@@ -231,7 +231,7 @@ func (m *Shadless) emitted(ctx context.Context, source *dagger.Directory) (*dagg
 	return c.
 		WithDirectory("/w/src", source.Directory("src").Filter(
 			dagger.DirectoryFilterOpts{Exclude: []string{"registry/ir/**"}})).
-		WithDirectory("/w/src/registry/ir", ir).
+		WithDirectory("/w/generated/ir", ir).
 		WithDirectory("/w/probes", source.Directory("probes")).
 		// the emitter reads style-nova.css directly; it was itself an
 		// undeclared input until today, and the sandbox caught it missing here

@@ -70,12 +70,12 @@ func runDemoSmoke() int {
 	// global slot vocabulary across all emitted components (fixtures
 	// legitimately compose multiple components)
 	allSlots := map[string]bool{}
-	irEnts, _ := os.ReadDir("src/registry/ir")
+	irEnts, _ := os.ReadDir("generated/ir")
 	for _, e := range irEnts {
 		if !strings.HasSuffix(e.Name(), ".json") {
 			continue
 		}
-		b, _ := os.ReadFile(filepath.Join("src/registry/ir", e.Name()))
+		b, _ := os.ReadFile(filepath.Join("generated/ir", e.Name()))
 		var ir cssIrComponent
 		if json.Unmarshal(b, &ir) != nil {
 			continue
@@ -92,7 +92,7 @@ func runDemoSmoke() int {
 		}
 	}
 	irSlots := func(name string) int {
-		b, err := os.ReadFile("src/registry/ir/" + name + ".json")
+		b, err := os.ReadFile("generated/ir/" + name + ".json")
 		if err != nil {
 			return 0
 		}

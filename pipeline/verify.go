@@ -220,7 +220,7 @@ func testlogOpens(root, logPath string) ([]string, error) {
 //     and pipeline/README.md states half of it: "outputs of `needs` are
 //     implied". The inputs half follows from the same identity.
 //
-//     Without this, `emit` reading src/registry/ir (which `convert` produces
+//     Without this, `emit` reading generated/ir (which `convert` produces
 //     and `emit` needs) would be reported, and declaring it would be
 //     redundant noise that teaches people to ignore the report. It is the
 //     difference between 64 findings on `emit` and 1 real one.

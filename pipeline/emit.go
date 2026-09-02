@@ -287,7 +287,7 @@ func runEmit() int {
 		return 1
 	}
 
-	ents, err := os.ReadDir("src/registry/ir")
+	ents, err := os.ReadDir("generated/ir")
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "emit:", err)
 		return 1
@@ -297,7 +297,7 @@ func runEmit() int {
 		if !strings.HasSuffix(e.Name(), ".json") {
 			continue
 		}
-		b, _ := os.ReadFile(filepath.Join("src/registry/ir", e.Name()))
+		b, _ := os.ReadFile(filepath.Join("generated/ir", e.Name()))
 		var ir cssIrComponent
 		if err := json.Unmarshal(b, &ir); err != nil {
 			fmt.Fprintln(os.Stderr, "emit: ir:", e.Name(), err)

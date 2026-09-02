@@ -35,7 +35,7 @@ demo pages; only the full demo build restores them).
 ## Where changes go
 
 - **Conversion rules** — `pipeline/convert.go`, `src/emitter`: mechanical, driven
-  by the IR in `src/registry/ir/`. A manual intervention on top of the
+  by the IR in `generated/ir/`. A manual intervention on top of the
   conversion is an *overlay* (`overlays/`, audited by `make overlay`), never
   a hand edit of `dist/`.
 - **Runtime** — `src/runtime/core.js` (engine, registry, helpers, forms,

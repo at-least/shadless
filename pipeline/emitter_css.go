@@ -4,7 +4,7 @@ package main
 // every comment about a shipped bug stays, since each one cost a debugging
 // session to learn.
 //
-// The IR is read from src/registry/ir/<name>.json with json.Decoder and
+// The IR is read from generated/ir/<name>.json with json.Decoder and
 // case-tolerant struct tags — JSON keys are exactly Go field names here.
 
 import (

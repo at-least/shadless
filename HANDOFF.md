@@ -53,7 +53,7 @@ npm run docs              # 重建文件站
 | **Wave 3（775f10d…24fa3d2）**：demo-smoke、docs-smoke、interactivity-sweep、example-golden、example-oracle、style-parity、demo-parity、path-parity | 全部 `pipeline <verb>`，走 `tools/browser-shell.mjs` 薄殼（launch/newPage+事件擷取/goto/evaluateFn+arg/locator/mouse/keyboard/addStyleTag/setContent/driver/loadContractDef/routeAbortExternal） | 每個的 PASS 行與 JS 版 byte-for-byte 相同後才刪 JS；parity-baseline 共享邏輯在 `pipeline/parity_baseline.go`；oracle bundle 走 esbuild Go API（`oracle_lib.go`），canonOf 留 JS 本質、embed 成 `oracle_canon.js` |
 | `tools/example-fixture.mjs`（42dfadc，--contracts 同支） | `pipeline example-fixture [--contracts]` | 105+14 頁 byte-identical（跑完 git 乾淨）、PASS 行同 JS；id 映射/收割/tabs 重組/API 走查是 embed 的 page-JS（ef_*.js）；家族表加 js 欄；families golden 改讀 testdata 快照 |
 | `gates/overlay.mjs`（fc579c1） | `pipeline overlay --audit|--record|--tasks|--report` | audit 輸出 byte-identical（199 applied + 1 dissolved）；--record 排序正規化（hash 不變）；規則表讀 Go var 本體 + jsSetLiteral 抽 JS 表；defs 走 shell 不啟動 chromium |
-| **`src/converter/index.mjs`（796 行，最後的 babel 依賴）** | `pipeline convert`（`pipeline/convert.go`，~1900 行） | 61 檔 IR **byte-identical**（`TestUnitConverterIrParity`：跑 convert + `git status src/registry/ir` 必須乾淨）；drift gates PASS 行逐字同 JS；`tools/unit/converter.mjs` 斷言搬進 `convert_test.go`（TestUnitConverter*） |
+| **`src/converter/index.mjs`（796 行，最後的 babel 依賴）** | `pipeline convert`（`pipeline/convert.go`，~1900 行） | 61 檔 IR **byte-identical**（`TestUnitConverterIrParity`：跑 convert + `git status generated/ir` 必須乾淨）；drift gates PASS 行逐字同 JS；`tools/unit/converter.mjs` 斷言搬進 `convert_test.go`（TestUnitConverter*） |
 | **`tools/contracts/run.mjs`（341 行，最後的 node 命令）+ `tools/contracts/oracle-build.mjs`** | `pipeline contract <name>` / `pipeline contracts`（`pipeline/contract.go`） | 29 個 contract defs 全部 **byte-identical**（stdout、`result.json`、`shadless.html`）；`browser-shell.mjs` 新增 `addScriptTag`/`focus`/`wheel`/單元素 `locEval` op，`loadContractDef` 補 `closeSelector`/`overlaySlot`/`contentSlot` 投影；`contracts-strip-glue` mutation 仍紅、`make only ID=contracts:*` 全綠；`tools/oracle-lib.mjs` 因此無人 import，一併刪除 |
 
 `tools/fixture-families.mjs` **已刪**（FAMILY 表現在是 `pipeline/docs_families.go`）— `TestUnitFixtureFamiliesGolden` 釘住 Go 表對 `testdata/fixture-families-golden.json`（JS 原版快照）不漂移。`src/docs/transforms.mjs` **還活著**（overlay 讀 TEXT_ADJUSTMENTS）。
@@ -81,7 +81,7 @@ unit-check 的 suites 剩 css/prepaint/emitter/runtime/types（converter suite �
 - **runner 的紅色標記是 `✗` 不是 `❌`**；grep 錯的那個會把紅的一輪讀成綠的。
 - **不要 `... | tail`**。管線會吃掉 exit code。
 - **不要在有東西 serve 或驅動站台的時候重跑 `vitepress build`**（hashed asset 換掉 → ENOENT → 假 render error）。
-- **改 `src/registry/ir/*.json` 當測試沒有用**：convert 會重新生成蓋掉。驗 IR→輸出用 `./build/pipeline` 子命令。
+- **改 `generated/ir/*.json` 當測試沒有用**：convert 會重新生成蓋掉。驗 IR→輸出用 `./build/pipeline` 子命令。
 - `PIPELINE_PARALLEL=1` 才啟用 undeclared-WRITE 檢查；READ 檢查任何 -j 都跑。
 - emit/demo 的 `produces` 從 `src/registry/tiers.json` 推導（`pipeline/produces.go`），不是 glob。
 - markdown 的 html block 內部不解析 markdown——連結要寫 `<a>`。

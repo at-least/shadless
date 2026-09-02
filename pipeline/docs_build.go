@@ -346,7 +346,7 @@ func (ctx *docsBuildCtx) installStepsMdx(name string) string {
 func (ctx *docsBuildCtx) usageMdx(name string) string {
 	var axes []string
 	seen := map[string]bool{}
-	if irb, err := os.ReadFile(filepath.Join("src/registry/ir", name+".json")); err == nil {
+	if irb, err := os.ReadFile(filepath.Join("generated/ir", name+".json")); err == nil {
 		var ir cssIrComponent
 		if json.Unmarshal(irb, &ir) == nil {
 			for _, key := range ir.Cva.keys {
@@ -385,7 +385,7 @@ func (ctx *docsBuildCtx) compositionTransform(name, raw string, seen *[]string) 
 	mapped := ""
 	if tree != "" {
 		nameToSlot := map[string]string{}
-		if irb, err := os.ReadFile(filepath.Join("src/registry/ir", name+".json")); err == nil {
+		if irb, err := os.ReadFile(filepath.Join("generated/ir", name+".json")); err == nil {
 			var ir cssIrComponent
 			if json.Unmarshal(irb, &ir) == nil {
 				for _, c := range ir.Components {
@@ -420,7 +420,7 @@ func (ctx *docsBuildCtx) apiReferenceTransform(name, raw string, seen *[]string)
 	*seen = append(*seen, "api-reference")
 	var slots []string
 	slotSeen := map[string]bool{}
-	if irb, err := os.ReadFile(filepath.Join("src/registry/ir", name+".json")); err == nil {
+	if irb, err := os.ReadFile(filepath.Join("generated/ir", name+".json")); err == nil {
 		var ir cssIrComponent
 		if json.Unmarshal(irb, &ir) == nil {
 			for _, c := range ir.Components {

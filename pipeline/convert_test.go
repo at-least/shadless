@@ -362,7 +362,7 @@ func TestUnitConverterIrParity(t *testing.T) {
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("convert: %v\n%s", err, out)
 	}
-	out, err := exec.Command("git", "-C", root, "status", "--porcelain", "src/registry/ir").Output()
+	out, err := exec.Command("git", "-C", root, "status", "--porcelain", "generated/ir").Output()
 	if err != nil {
 		t.Fatal(err)
 	}

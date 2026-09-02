@@ -108,7 +108,7 @@ func (m *Shadless) scanTree(ctx context.Context, source *dagger.Directory, c *da
 		WithDirectory("/w/docs/demos", rtl.Directory("docs/demos")).
 		WithDirectory("/w/docs/content", source.Directory("docs/content")).
 		WithDirectory("/w/src/kernel", kernel).
-		WithDirectory("/w/src/registry/ir", ir).
+		WithDirectory("/w/generated/ir", ir).
 		WithDirectory("/w/probes/t7", source.Directory("probes/t7")).
 		WithDirectory("/w/probes/t8", source.Directory("probes/t8")), nil
 }

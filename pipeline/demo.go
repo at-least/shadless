@@ -59,11 +59,11 @@ var trivialT7 = []string{"accordion", "aspect-ratio", "avatar", "checkbox", "col
 
 // out.css's content scan is EXPLICIT (source(none)); this list == the
 // `demo-css` inputs in pipeline/nodes.go — keep them in step. ./js because
-// the runtime injects utility classes at wire time; ../src/registry/ir
+// the runtime injects utility classes at wire time; ../generated/ir
 // because shipped pages carry HTML-escaped '>' variants the scanner cannot
 // read from markup (see HANDOFF §4.8).
 var demoSources = []string{"./components", "./js", "../docs/demos", "../docs/content", "../src/kernel",
-	"../tools/contracts/out", "../src/registry/ir", "../probes/t7", "../probes/t8"}
+	"../tools/contracts/out", "../generated/ir", "../probes/t7", "../probes/t8"}
 
 func fieldDemoHtml() string {
 	return `<!doctype html>
@@ -125,7 +125,7 @@ func runDemo() int {
 		return tier == "static" || tier == "kernel" || tier == "trivial-js"
 	}
 
-	ents, err := os.ReadDir("src/registry/ir")
+	ents, err := os.ReadDir("generated/ir")
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "demo:", err)
 		return 1
@@ -141,7 +141,7 @@ func runDemo() int {
 		if !strings.HasSuffix(e.Name(), ".json") {
 			continue
 		}
-		b, _ := os.ReadFile(filepath.Join("src/registry/ir", e.Name()))
+		b, _ := os.ReadFile(filepath.Join("generated/ir", e.Name()))
 		var ir cssIrComponent
 		if err := json.Unmarshal(b, &ir); err != nil {
 			fmt.Fprintln(os.Stderr, "demo: ir:", e.Name(), err)

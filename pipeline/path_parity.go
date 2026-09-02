@@ -240,7 +240,7 @@ func runPathParity(record, details bool) int {
 		return out
 	}
 
-	ents, _ := os.ReadDir("src/registry/ir")
+	ents, _ := os.ReadDir("generated/ir")
 	var files []string
 	for _, e := range ents {
 		if strings.HasSuffix(e.Name(), ".json") {
@@ -254,7 +254,7 @@ func runPathParity(record, details bool) int {
 		if !fileExists("dist/css/" + name + ".css") {
 			continue
 		}
-		irb, _ := os.ReadFile("src/registry/ir/" + f)
+		irb, _ := os.ReadFile("generated/ir/" + f)
 		var ir cssIrComponent
 		if json.Unmarshal(irb, &ir) != nil {
 			continue

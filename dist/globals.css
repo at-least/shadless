@@ -1068,7 +1068,7 @@
 @source "../docs/content";
 @source "../src/kernel";
 @source "../tools/contracts/out";
-@source "../src/registry/ir";
+@source "../generated/ir";
 @source "../probes/t7";
 @source "../probes/t8";
 

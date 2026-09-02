@@ -82,7 +82,7 @@ func (m *Shadless) renderBase(ctx context.Context, source *dagger.Directory) (*d
 // docs/demos starts EMPTY rather than mounted from the host. The tool writes
 // one file per target and removes nothing, so a page whose upstream example
 // has been retired would survive in a mounted tree forever — the same way
-// src/registry/ir/form.json did, for the same reason, until the conversion
+// generated/ir/form.json did, for the same reason, until the conversion
 // step here started from an empty directory. Starting empty makes the output
 // exactly the set that rendered.
 //

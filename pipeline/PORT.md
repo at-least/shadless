@@ -8,7 +8,7 @@ measured, not assumed.
 **A tool moves to Go when Go can produce the same bytes.**
 
 Everything this pipeline builds is committed — `dist/`, `docs/demos/`,
-`src/registry/ir/` — and the `reproducible` gate rebuilds those trees and
+`generated/ir/` — and the `reproducible` gate rebuilds those trees and
 compares them byte for byte. A port that produced *valid but different* output
 would fail that gate forever, or, worse, would be "fixed" by re-recording the
 committed tree and silently changing the product. So byte-identity against the
@@ -238,7 +238,7 @@ own inputs, so anything a node in the dependency CLOSURE declares — input or
 output — reaches this node transitively. `pipeline/README.md` states half of
 it ("outputs of `needs` are implied"); the inputs half follows from the same
 identity. Without that exemption `emit` reports 64 findings for reading
-`src/registry/ir`, which `convert` produces and `emit` needs; with it, one
+`generated/ir`, which `convert` produces and `emit` needs; with it, one
 real finding remains. A check that cries wolf 64 times teaches people to stop
 reading it.
 

@@ -11,11 +11,11 @@ import (
 )
 
 // Golden: pipeline/emitter_css.go's componentCss against src/emitter/css.mjs's,
-// on every IR in src/registry/ir. Any byte difference in any component's CSS
+// on every IR in generated/ir. Any byte difference in any component's CSS
 // is a porting bug.
 func TestUnitEmitterCssGolden(t *testing.T) {
 	root := "/home/newlix/github/at-least/shadless"
-	ents, err := os.ReadDir(filepath.Join(root, "src/registry/ir"))
+	ents, err := os.ReadDir(filepath.Join(root, "generated/ir"))
 	if err != nil {
 		t.Skip(err)
 	}
@@ -35,7 +35,7 @@ const outIdx = process.argv.indexOf("--out")
 const out = {}
 	// slice AFTER --out: argv is [node, script, --out, path, name…]; names start at outIdx+2
 	for (const name of process.argv.slice(outIdx + 2)) {
-  const ir = JSON.parse(readFileSync("src/registry/ir/" + name + ".json", "utf8"))
+  const ir = JSON.parse(readFileSync("generated/ir/" + name + ".json", "utf8"))
   const css = componentCss(ir)
   out[name] = { rules: css.rules, unlayered: css.unlayered, markers: css.markers,
     anchors: Object.fromEntries(css.anchors), anchorMarkers: Object.fromEntries(css.anchorMarkers),
@@ -76,7 +76,7 @@ writeFileSync(process.argv[outIdx + 1], JSON.stringify(out))
 	loadSkin()
 	failed := 0
 	for _, name := range names {
-		irb, _ := os.ReadFile(filepath.Join(root, "src/registry/ir", name+".json"))
+		irb, _ := os.ReadFile(filepath.Join(root, "generated/ir", name+".json"))
 		var ir cssIrComponent
 		if err := json.Unmarshal(irb, &ir); err != nil {
 			t.Errorf("%s: ir parse: %v", name, err)

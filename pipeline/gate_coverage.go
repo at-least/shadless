@@ -105,7 +105,7 @@ func gateCoverage(root string, argv []string) error {
 		if t.Tier == "external" || t.Tier == "logic" {
 			continue
 		}
-		if _, err := os.Stat(filepath.Join(root, "src/registry/ir", n+".json")); err == nil {
+		if _, err := os.Stat(filepath.Join(root, "generated/ir", n+".json")); err == nil {
 			components = append(components, n)
 		}
 	}
@@ -113,7 +113,7 @@ func gateCoverage(root string, argv []string) error {
 
 	irOf := func(n string) irFile {
 		var j irFile
-		b, _ := read("src/registry/ir/" + n + ".json")
+		b, _ := read("generated/ir/" + n + ".json")
 		_ = json.Unmarshal(b, &j)
 		return j
 	}

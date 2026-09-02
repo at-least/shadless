@@ -182,7 +182,7 @@ supposed to do.
 wireit carries a content-addressed output cache (local + GitHub Actions) so a
 fresh checkout does not rebuild everything. This runner needs a much smaller
 mechanism, because almost every output here is already committed — dist/,
-docs/, src/registry/ir are in git. What a clone lacks is not the outputs but
+docs/, generated/ir are in git. What a clone lacks is not the outputs but
 the record of which inputs produced them, so `pipeline/stamps.json` is TRACKED.
 
 A stamp is safe to commit because it is verified rather than trusted: the key

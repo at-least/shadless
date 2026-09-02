@@ -75,7 +75,7 @@ func loadIrFromDir(dir string) irSet {
 
 func loadIrFromGit(root, ref string) irSet {
 	out := irSet{}
-	cmd := exec.Command("git", "ls-tree", "--name-only", ref, "src/registry/ir/")
+	cmd := exec.Command("git", "ls-tree", "--name-only", ref, "generated/ir/")
 	cmd.Dir = root
 	b, err := cmd.Output()
 	if err != nil {
@@ -399,7 +399,7 @@ func runIrDiff(args []string) int {
 	} else {
 		before = loadIrFromGit(root, pos[0])
 	}
-	after := loadIrFromDir(resolve("src/registry/ir"))
+	after := loadIrFromDir(resolve("generated/ir"))
 	if len(pos) > 1 {
 		after = loadIrFromDir(resolve(pos[1]))
 	}

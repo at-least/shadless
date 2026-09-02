@@ -119,7 +119,7 @@ func ovUpRead(rel string) string {
 }
 
 func ovIr(name string) *ovIR {
-	b, err := os.ReadFile(filepath.Join("src/registry/ir", name+".json"))
+	b, err := os.ReadFile(filepath.Join("generated/ir", name+".json"))
 	if err != nil {
 		return nil
 	}

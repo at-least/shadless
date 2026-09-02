@@ -99,7 +99,7 @@ var toolSourcePatterns = []boundaryPattern{
 var programmaticPatterns = []boundaryPattern{
 	// IR (converter)
 	{match: func(p string) bool {
-		return strings.HasPrefix(p, "src/registry/ir/") && strings.HasSuffix(p, ".json")
+		return strings.HasPrefix(p, "generated/ir/") && strings.HasSuffix(p, ".json")
 	},
 		tool: "pipeline/convert.go", source: "apps/v4/registry/bases/radix/ui/*.tsx"},
 	// dist/components — emitter + build-rtl + demo (multi-source)
@@ -108,7 +108,7 @@ var programmaticPatterns = []boundaryPattern{
 			!reRtlVariant.MatchString(p) && !strings.HasSuffix(p, "-demo.html")
 	},
 		tool:   "src/emitter/index.mjs OR pipeline/demo.go (per-tier fixture)",
-		source: "src/registry/ir/*.json + probes/t{6,7,8,9}/* (per tier)"},
+		source: "generated/ir/*.json + probes/t{6,7,8,9}/* (per tier)"},
 	{match: func(p string) bool {
 		return strings.HasPrefix(p, "dist/components/") && reRtlVariant.MatchString(p)
 	},
@@ -139,7 +139,7 @@ var programmaticPatterns = []boundaryPattern{
 	// J2 product surface — per-component @apply sources + tokens + compiled
 	{match: prefixSuffix("dist/css/", ".css"),
 		tool:   "pipeline/demo.go (parts) + pipeline/product_css.go (tokens)",
-		source: "src/registry/ir/*.json + probes/h4/globals.css"},
+		source: "generated/ir/*.json + probes/h4/globals.css"},
 	{match: oneOf("dist/shadless.product.css", "dist/shadless.full.css", "dist/shadless.full.min.css"),
 		tool:   "pipeline/product_css.go + pipeline/tw.go",
 		source: "dist/css/* (tokens + component parts + fixes)"},
@@ -390,10 +390,10 @@ var heuristicHints = []heuristicHint{
 	// that nobody has added a rule for yet.
 	{re: re(`^dist/.+\.html$`),
 		kind: "programmatic", tool: "src/emitter/index.mjs OR pipeline/demo.go (per-tier fixture)",
-		source: "src/registry/ir/*.json + probes/t{6,7,8,9}/*"},
+		source: "generated/ir/*.json + probes/t{6,7,8,9}/*"},
 	{re: re(`^docs/site/[^/]+\.html$`),
 		kind: "programmatic", tool: "tools/docs-build.mjs", source: "apps/v4/content/docs/components/*/*.mdx"},
-	{re: re(`^src/registry/ir/[^/]+\.json$`),
+	{re: re(`^generated/ir/[^/]+\.json$`),
 		kind: "programmatic", tool: "pipeline/convert.go", source: "apps/v4/registry/bases/radix/ui/*.tsx"},
 	{re: re(`^tools/[^/]+\.mjs$`),
 		kind: "tool-source", note: "pipeline orchestrator + builder tool"},

@@ -1,7 +1,7 @@
 package main
 
 // convert.go — Go port of src/converter/index.mjs, the last @babel/parser
-// consumer. Registry .tsx -> versioned IR (src/registry/ir/*.json), with the
+// consumer. Registry .tsx -> versioned IR (generated/ir/*.json), with the
 // drift gates that kept the JS honest (string-count reconciliation, class
 // verbatim checks, cn-completeness, tier agreement).
 //
@@ -43,7 +43,7 @@ import (
 
 const (
 	cvUI      = "build/resolved-ui/ui"
-	cvOut     = "src/registry/ir"
+	cvOut     = "generated/ir"
 	cvPinFile = "src/registry/pin.json"
 	cvTiers   = "src/registry/tiers.json"
 )

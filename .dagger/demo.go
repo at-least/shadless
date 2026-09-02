@@ -275,7 +275,7 @@ func (m *Shadless) ContractFixtureCheck(ctx context.Context, source *dagger.Dire
 // and mounting the binary reproduces the tool as written rather than quietly
 // improving it.
 //
-// src/registry/ir and src/kernel come from the steps that produce them, not
+// generated/ir and src/kernel come from the steps that produce them, not
 // from the host tree: the IR from the conversion, the kernel fixtures from the
 // contract harvest. dist/components comes from emit, which is a real
 // dependency and not just ordering — demo throws if a static page is missing.
@@ -303,7 +303,7 @@ func (m *Shadless) demoTree(ctx context.Context, source *dagger.Directory) (*dag
 	return c.
 		WithDirectory("/w/src", source.Directory("src").Filter(
 			dagger.DirectoryFilterOpts{Exclude: []string{"registry/ir/**", "kernel/**"}})).
-		WithDirectory("/w/src/registry/ir", ir).
+		WithDirectory("/w/generated/ir", ir).
 		WithDirectory("/w/src/kernel", kernel).
 		WithFile("/w/tools/demo.mjs", source.File("tools/demo.mjs")).
 		WithFile("/w/tools/demo-lib.mjs", source.File("tools/demo-lib.mjs")).
