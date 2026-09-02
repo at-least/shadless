@@ -195,6 +195,15 @@ node's declared outputs have to still exist. On a clean checkout every stamp
 matches while the gitignored half of the outputs is absent, and checking the
 key alone would skip the work and hand the next node an empty directory.
 
+`.upstream/shadcn-ui` is the one input that is neither committed nor an
+output — it's a git clone of the pinned registry, gitignored because it's
+129MB (70MB `.git`). `pipeline pin` treats it the same way it treats a
+missing output: if `.upstream/shadcn-ui` isn't there, it clones
+`https://github.com/shadcn-ui/ui` and checks out the tag already recorded
+in the committed `src/registry/pin.json`, so a cold clone never needs a
+manual bootstrap step before the first `pipeline run` — the tag to clone
+to is never a guess, it's whatever the tree already says it's pinned to.
+
 Measured, `build/` deleted with everything else committed — 16 of 41 nodes run
 instead of 41 (the check that catches this is `OutputsPresent`), and the two most expensive builds are not among them:
 

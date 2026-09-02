@@ -12,7 +12,7 @@ ledger entry with a reason.
 ```sh
 npm ci
 npx playwright install --with-deps chromium   # the full tier renders in chromium
-node tools/pin.mjs                            # clones the pinned upstream into .upstream/
+npm run pin                                   # auto-clones the pinned upstream into .upstream/ on first run
 ```
 
 ## The loop
@@ -26,8 +26,9 @@ node tools/pin.mjs                            # clones the pinned upstream into 
 | `make list` | the graph | |
 
 `reproducible` byte-compares the committed generated trees (`dist/`,
-`docs/catalog.json`, `docs/demos/`, …) with what the pipeline just produced,
-so **commit regenerated outputs with the source change that caused them**.
+`generated/ir/`, `docs/catalog.json`, `docs/demos/`, …) with what the
+pipeline just produced, so **commit regenerated outputs with the source
+change that caused them**.
 After touching `src/runtime/**`: `node tools/build-js.mjs` → `npm run
 demo` → `npm run docs`, in that order (the emitter wipes the interactive
 demo pages; only the full demo build restores them).
