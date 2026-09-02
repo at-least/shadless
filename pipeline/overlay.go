@@ -780,17 +780,18 @@ func ovAudit(shell *browserShell, pin ovPinFile, strict bool) *ovBuckets {
 	counts := fmt.Sprintf("%d applied, %d dissolved, %d orphaned, %d stale, %d conflict, %d unrecorded",
 		len(buckets.applied), len(buckets.dissolved), len(buckets.orphaned),
 		len(buckets.stale), len(buckets.conflict), len(buckets.unrecorded))
-	if len(buckets.dissolved) > 0 {
-		fmt.Printf("overlay: %d rules can be DELETED (upstream no longer needs them):\n", len(buckets.dissolved))
-		for _, u := range buckets.dissolved {
-			fmt.Printf("  %s  —  %s\n    at %s\n", u.id, u.reason, u.home)
-		}
-	}
+	// dissolved is a failure bucket, not a courtesy notice: every concrete
+	// dissolved reason found so far ("upstream now emits rules for X — the
+	// allowlist entry would hide them", "upstream now ships a Persian
+	// dictionary — use it instead") describes the override now being wrong,
+	// not merely redundant. It used to be excluded from `bad` — a rule that
+	// started actively hiding or shadowing upstream's own output could sit
+	// there indefinitely with `overlay` still green.
 	var bad []ovUnit
 	for _, b := range []struct {
 		name  string
 		units []ovUnit
-	}{{"orphaned", buckets.orphaned}, {"stale", buckets.stale}, {"conflict", buckets.conflict}, {"unrecorded", buckets.unrecorded}} {
+	}{{"dissolved", buckets.dissolved}, {"orphaned", buckets.orphaned}, {"stale", buckets.stale}, {"conflict", buckets.conflict}, {"unrecorded", buckets.unrecorded}} {
 		for _, u := range b.units {
 			u.bucket = b.name
 			bad = append(bad, u)
