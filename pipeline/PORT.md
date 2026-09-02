@@ -42,15 +42,16 @@ the whole of the remainder; nothing is left in JS for lack of effort.
 
 ### `@babel/parser` — parsing TSX
 
-`src/converter/index.mjs` (the registry `.tsx` → IR converter, the heart of the
-product), `tools/rtl-lib.mjs`, `tools/five-components.mjs`, and
-`gates/overlay.mjs` (its Persian-dictionary rule walks a Babel AST via
-`extractTranslations(parseTs(...))`).
+`tools/rtl-lib.mjs`, `tools/five-components.mjs`, and the probe scripts.
+The converter — the biggest consumer, the registry `.tsx` → IR heart of the
+product — since ported to Go (`pipeline/convert.go`): esbuild's Transform
+downgrades TSX to classic `React.createElement` calls whose plain-JS text is
+scanned, byte-identical to the babel version over the pinned tree.
 
-Go has no TypeScript/JSX parser that yields the same AST. Reimplementing the
-converter would not be a port — it would be a second implementation of the
-conversion rules, which is the failure mode this repo spends most of its effort
-avoiding.
+Go has no TypeScript/JSX parser that yields the same AST. For the remaining
+consumers a reimplementation would not be a port — it would be a second
+implementation of the same rules, which is the failure mode this repo spends
+most of its effort avoiding.
 
 ### `mdx` + `remark` + `shiki` — compiling the docs
 

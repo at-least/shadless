@@ -1204,8 +1204,7 @@ func (t *cvTopScan) parseVarDecl(i, kwlen int, exported bool) (int, error) {
 		if name == "" {
 			continue
 		}
-		eq := cvPropColon(text) // first top-level ':' never precedes '=' here; find '=' instead
-		eq = -1
+		eq := -1
 		{
 			depth := 0
 			for k := nlen; k < len(text); k++ {

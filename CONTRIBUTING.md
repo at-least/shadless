@@ -34,7 +34,7 @@ demo pages; only the full demo build restores them).
 
 ## Where changes go
 
-- **Conversion rules** — `src/converter`, `src/emitter`: mechanical, driven
+- **Conversion rules** — `pipeline/convert.go`, `src/emitter`: mechanical, driven
   by the IR in `src/registry/ir/`. A manual intervention on top of the
   conversion is an *overlay* (`overlays/`, audited by `make overlay`), never
   a hand edit of `dist/`.
