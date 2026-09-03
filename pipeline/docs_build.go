@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	docsRadixDir = ".upstream/shadcn-ui/apps/v4/content/docs/components/radix"
+	docsRadixDir = docsUpstreamMirror + "/components/radix"
 	docsRoot     = "docs"
 )
 

@@ -42,19 +42,19 @@ var guides = []guide{
 	{slug: "dark-mode", route: "/docs/dark-mode", title: "Dark Mode", source: "docs/content/dark-mode.mdx", disposition: "adapted",
 		notes:          "authored rewrite; upstream dark-mode/index.mdx is framework cards only (next/vite/astro/remix/tanstack-start pruned); .dark theme variables ship precompiled in dist/out.css; mode-toggle preview to-author (FT7)",
 		installSection: false},
-	{slug: "rtl", route: "/docs/rtl", title: "RTL", source: guidesUp + "/rtl/index.mdx", disposition: "mirror",
+	{slug: "rtl", route: "/docs/rtl", title: "RTL", source: docsUpstreamMirror + "/rtl/index.mdx", disposition: "mirror",
 		notes:          "load-bearing (56 radix pages link /docs/rtl); framework sub-pages (rtl/next|vite|start) pruned → their LinkedCard links greyed; card-rtl preview to-author (FT7); shadcn-CLI migrate section rewritten (rtlMigrate)",
 		installSection: false, rtlMigrate: true},
-	{slug: "shimmer", route: "/docs/utils/shimmer", title: "shimmer", source: guidesUp + "/utils/shimmer.mdx", disposition: "adapted",
+	{slug: "shimmer", route: "/docs/utils/shimmer", title: "shimmer", source: docsUpstreamMirror + "/utils/shimmer.mdx", disposition: "adapted",
 		notes:          "mirrored; Installation section replaced (utilities ship precompiled in dist/out.css, no npm install); all 9 previews base-style (base-rhea) → unavailable",
 		installSection: true, util: "shimmer"},
-	{slug: "scroll-fade", route: "/docs/utils/scroll-fade", title: "scroll-fade", source: guidesUp + "/utils/scroll-fade.mdx", disposition: "adapted",
+	{slug: "scroll-fade", route: "/docs/utils/scroll-fade", title: "scroll-fade", source: docsUpstreamMirror + "/utils/scroll-fade.mdx", disposition: "adapted",
 		notes:          "mirrored; Installation section replaced (utilities ship precompiled in dist/out.css); all 7 previews base-style (6 base-rhea + 1 base-nova) → unavailable",
 		installSection: true, util: "scroll-fade"},
-	{slug: "ai-sdk", route: "/docs/helpers/ai-sdk", title: "AI SDK", source: guidesUp + "/helpers/ai-sdk.mdx", disposition: "mirror",
+	{slug: "ai-sdk", route: "/docs/helpers/ai-sdk", title: "AI SDK", source: docsUpstreamMirror + "/helpers/ai-sdk.mdx", disposition: "mirror",
 		notes:          "kept per keep-list; @shadcn/helpers/ai-sdk is a React useChat package — mirrored as reference (fences stay verbatim, same policy as radix pages); ai-sdk-helper-demo base-style → unavailable",
 		installSection: false, reactRef: true},
-	{slug: "tanstack-ai", route: "/docs/helpers/tanstack-ai", title: "TanStack AI", source: guidesUp + "/helpers/tanstack-ai.mdx", disposition: "mirror",
+	{slug: "tanstack-ai", route: "/docs/helpers/tanstack-ai", title: "TanStack AI", source: docsUpstreamMirror + "/helpers/tanstack-ai.mdx", disposition: "mirror",
 		notes:          "kept per keep-list; @shadcn/helpers/tanstack-ai is a React package — mirrored as reference; tanstack-ai-helper-demo base-style → unavailable",
 		installSection: false, reactRef: true},
 	{slug: "typography", route: "/docs/typography", title: "Typography", source: "docs/content/typography.mdx", disposition: "adapted",
@@ -299,7 +299,7 @@ func runDocsGuides() int {
 		if s.Status != "existing-dist" {
 			continue
 		}
-		p := filepath.Join(guidesUp+"/components/radix", s.Name+".mdx")
+		p := filepath.Join(docsRadixDir, s.Name+".mdx")
 		if _, err := os.Stat(p); err != nil {
 			continue
 		}
