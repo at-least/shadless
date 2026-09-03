@@ -35,9 +35,9 @@ ships every component precompiled as the zero-setup alternative.
 
 ```js
 // bundler / <script type="module">
-import shadless, { get } from "shadless/js"
+import shadless from "shadless/js"
 import "shadless/js/dialog"
-get("#d1-trigger").open()
+shadless.get("#d1-trigger").open()
 ```
 
 The trivial tier (checkbox, switch, toggle, radio-group, toggle-group,

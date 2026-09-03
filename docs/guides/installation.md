@@ -50,9 +50,9 @@ component (`js/<name>.js`) — see the **Installation** section on the
 component's page. From a bundler the same surface is ES modules:
 
 ```js
-import shadless, { get } from "shadless/js" // dist/esm/shadless.mjs
-import "shadless/js/dialog"                   // dist/esm/dialog.mjs
-get("#d1-trigger").open()
+import shadless from "shadless/js" // dist/esm/shadless.mjs
+import "shadless/js/dialog"          // dist/esm/dialog.mjs
+shadless.get("#d1-trigger").open()
 ```
 
 Each component module imports the base itself, so import order does not
