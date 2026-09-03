@@ -460,6 +460,10 @@ func comparePage(m pageFacts, h mdFacts, pageName string, isComponentPage bool, 
 	// shared transform is invisible to it — rewriteJsxTagsInLine used to carry
 	// JSX attributes over verbatim, and both sides agreed on the wrong answer.
 	for _, f := range h.fences {
+		// html fences only: those are the hand-written and rewritten ones.
+		// The demo code-groups are `text:line-numbers` and hold markup copied
+		// verbatim out of the shipped demo page, so they cannot carry a prop
+		// the artifacts do not — checking them would only re-assert the demo.
 		if f.lang != "html" {
 			continue
 		}
