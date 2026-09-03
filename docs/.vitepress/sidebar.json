@@ -245,14 +245,6 @@
         "link": "/guides/scroll-fade"
       },
       {
-        "text": "AI SDK",
-        "link": "/guides/ai-sdk"
-      },
-      {
-        "text": "TanStack AI",
-        "link": "/guides/tanstack-ai"
-      },
-      {
         "text": "Typography",
         "link": "/guides/typography"
       }

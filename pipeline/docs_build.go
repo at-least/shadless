@@ -469,31 +469,14 @@ func utilsInstallMdx(util string) string {
 	return "## Installation\n\nIn shadless, the `" + util + "` utilities ship precompiled inside `dist/shadless-core.css`\n(npm: bare `shadless`) — the same file every shadless component already needs, so\nif you're using any component there is nothing extra to install or import.\nStandalone, load `shadless-core.css` and use the classes directly (see the\n[Installation](/docs/installation) guide)."
 }
 
-// insertReactReferenceNote: ai-sdk.mdx / tanstack-ai.mdx (guide.reactRef)
-// are kept verbatim as React reference material — there's no vanilla
-// equivalent to port, unlike every other guide on this site. Nothing in
-// the page itself says so, so a reader landing here mid-site gets no
-// warning before hitting `useChat`/JSX. Prepends one <Callout>, converted
-// to a VitePress tip block downstream by convertCallouts like any other.
-func insertReactReferenceNote(raw string) string {
-	note := "\n<Callout variant=\"info\">\nThis page mirrors the upstream React helper package as reference — shadless has no vanilla-JS port of it, unlike the rest of this site. The API and examples below are exactly as shadcn/ui documents them.\n</Callout>\n"
-	if m := reFmBlock.FindStringIndex(raw); m != nil {
-		return raw[:m[1]] + note + raw[m[1]:]
-	}
-	return note + raw
-}
-
 func rtlMigrateMdx() string {
 	return "shadless components ship the pinned registry's classes as-is — the current registry already uses logical (start/end-aware) utilities, so there is no migration step: every component is RTL-ready the moment the page carries `dir=\"rtl\"`. To flip an individual icon, give it the `rtl:rotate-180` utility class."
 }
 
 func guideTransform(g guide, raw string) (string, error) {
-	if !g.reactRef {
-		var err error
-		raw, err = applyJsxOverrides(g.slug, raw)
-		if err != nil {
-			return "", err
-		}
+	raw, err := applyJsxOverrides(g.slug, raw)
+	if err != nil {
+		return "", err
 	}
 	if g.rtlMigrate {
 		s := locateRtlMigrateSpan(fenceShadow(raw))
@@ -517,10 +500,7 @@ func guideTransform(g guide, raw string) (string, error) {
 	if g.util != "" {
 		return rewriteUtilityJsxFences(g.slug, raw)
 	}
-	if g.reactRef {
-		return insertReactReferenceNote(raw), nil
-	}
-	raw, err := rewriteLeakedJsxFences(g.slug, raw)
+	raw, err = rewriteLeakedJsxFences(g.slug, raw)
 	if err != nil {
 		return "", err
 	}
@@ -921,7 +901,7 @@ func runDocsBuild() int {
 		g := g
 		allPages = append(allPages, pageJob{g.slug, g.source, docsRoot + "/guides", func(src string) (string, error) {
 			return guideTransform(g, src)
-		}, g.reactRef})
+		}, false})
 	}
 	built := 0
 	var errors_ []string

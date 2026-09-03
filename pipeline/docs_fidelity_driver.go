@@ -90,7 +90,7 @@ func runDocsFidelity() int {
 				continue
 			}
 		}
-		fixLeakedJsx := !g.reactRef && g.util == ""
+		fixLeakedJsx := g.util == ""
 		M, err := mdxPageFacts(name, adjusted, isComponent, g.installSection, g.rtlMigrate, isComponent, isComponent, isComponent, isComponent, fixLeakedJsx)
 		if err != nil {
 			issues = append(issues, issue{name, "leaked-jsx", err.Error()})

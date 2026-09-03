@@ -571,16 +571,6 @@
       "disposition": "adapted",
       "notes": "mirrored; Installation section replaced (utilities ship precompiled in dist/out.css); all 7 previews base-style (6 base-rhea + 1 base-nova) → unavailable"
     },
-    "ai-sdk": {
-      "source": "generated/docs-upstream/helpers/ai-sdk.mdx",
-      "disposition": "mirror",
-      "notes": "kept per keep-list; @shadcn/helpers/ai-sdk is a React useChat package — mirrored as reference (fences stay verbatim, same policy as radix pages); ai-sdk-helper-demo base-style → unavailable"
-    },
-    "tanstack-ai": {
-      "source": "generated/docs-upstream/helpers/tanstack-ai.mdx",
-      "disposition": "mirror",
-      "notes": "kept per keep-list; @shadcn/helpers/tanstack-ai is a React package — mirrored as reference; tanstack-ai-helper-demo base-style → unavailable"
-    },
     "typography": {
       "source": "docs/content/typography.mdx",
       "disposition": "adapted",
@@ -612,6 +602,10 @@
     "(root)": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/(root)/",
       "reason": "shadcn-site root pages (theming, cli, components.json…) — React/CLI specific"
+    },
+    "helpers": {
+      "source": ".upstream/shadcn-ui/apps/v4/content/docs/helpers/",
+      "reason": "React helper packages (@shadcn/helpers/ai-sdk, /tanstack-ai) — useChat/JSX end to end, no vanilla port and no shadless artifact to document"
     },
     "framework sub-pages": {
       "source": ".upstream/shadcn-ui/apps/v4/content/docs/{installation,dark-mode,rtl}/* (non-index)",
@@ -760,22 +754,6 @@
         "scroll-fade"
       ],
       "styleName": "base-nova",
-      "disposition": "unavailable",
-      "reason": "already cataloged in the radix set"
-    },
-    "ai-sdk-helper-demo": {
-      "hostPages": [
-        "ai-sdk"
-      ],
-      "styleName": "base-rhea",
-      "disposition": "unavailable",
-      "reason": "already cataloged in the radix set"
-    },
-    "tanstack-ai-helper-demo": {
-      "hostPages": [
-        "tanstack-ai"
-      ],
-      "styleName": "base-rhea",
       "disposition": "unavailable",
       "reason": "already cataloged in the radix set"
     }

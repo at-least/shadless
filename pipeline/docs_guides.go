@@ -29,7 +29,6 @@ type guide struct {
 	util           string
 	rtlMigrate     bool
 	pinned         bool
-	reactRef       bool
 }
 
 var guides = []guide{
@@ -51,12 +50,6 @@ var guides = []guide{
 	{slug: "scroll-fade", route: "/docs/utils/scroll-fade", title: "scroll-fade", source: docsUpstreamMirror + "/utils/scroll-fade.mdx", disposition: "adapted",
 		notes:          "mirrored; Installation section replaced (utilities ship precompiled in dist/out.css); all 7 previews base-style (6 base-rhea + 1 base-nova) → unavailable",
 		installSection: true, util: "scroll-fade"},
-	{slug: "ai-sdk", route: "/docs/helpers/ai-sdk", title: "AI SDK", source: docsUpstreamMirror + "/helpers/ai-sdk.mdx", disposition: "mirror",
-		notes:          "kept per keep-list; @shadcn/helpers/ai-sdk is a React useChat package — mirrored as reference (fences stay verbatim, same policy as radix pages); ai-sdk-helper-demo base-style → unavailable",
-		installSection: false, reactRef: true},
-	{slug: "tanstack-ai", route: "/docs/helpers/tanstack-ai", title: "TanStack AI", source: docsUpstreamMirror + "/helpers/tanstack-ai.mdx", disposition: "mirror",
-		notes:          "kept per keep-list; @shadcn/helpers/tanstack-ai is a React package — mirrored as reference; tanstack-ai-helper-demo base-style → unavailable",
-		installSection: false, reactRef: true},
 	{slug: "typography", route: "/docs/typography", title: "Typography", source: "docs/content/typography.mdx", disposition: "adapted",
 		notes:          "FT8: vanilla rewrite — upstream typography.mdx demos a <Typography> component shadless does not (and should not) ship; this guide maps the same typographic roles to plain Tailwind utilities already in dist/out.css",
 		installSection: false},
@@ -68,6 +61,7 @@ var prunedGuides = map[string]struct{ Source, Reason string }{
 	"registry":             {guidesUp + "/registry/", "shadcn CLI registry system (json schema, MCP, namespaces) — no vanilla equivalent"},
 	"changelog":            {guidesUp + "/changelog/", "shadcn release notes — not shadless content"},
 	"(root)":               {guidesUp + "/(root)/", "shadcn-site root pages (theming, cli, components.json…) — React/CLI specific"},
+	"helpers":             {guidesUp + "/helpers/", "React helper packages (@shadcn/helpers/ai-sdk, /tanstack-ai) — useChat/JSX end to end, no vanilla port and no shadless artifact to document"},
 	"framework sub-pages":  {guidesUp + "/{installation,dark-mode,rtl}/* (non-index)", "per-React-framework setup guides (next/vite/astro/remix/tanstack/laravel/gatsby…) — installation/dark-mode/rtl index pages kept instead"},
 }
 
@@ -234,7 +228,7 @@ func writeContentMap(componentPages []struct{ name, source string }, sections ma
 	}})
 
 	// pruned in the recorded order
-	pkeys := []string{"forms", "react", "registry", "changelog", "(root)", "framework sub-pages"}
+	pkeys := []string{"forms", "react", "registry", "changelog", "(root)", "helpers", "framework sub-pages"}
 	var prunedKV []jsonKV
 	for _, k := range pkeys {
 		p := prunedGuides[k]

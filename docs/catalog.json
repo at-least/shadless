@@ -17,10 +17,10 @@
     },
     "guides": {
       "dir": "docs/content/ + UP/...",
-      "mdxFiles": 7,
-      "previewTags": 20,
-      "multilinePreviewTags": 10,
-      "uniquePreviewNames": 20,
+      "mdxFiles": 5,
+      "previewTags": 18,
+      "multilinePreviewTags": 8,
+      "uniquePreviewNames": 18,
       "sourceTags": 0,
       "namedSourceTags": 0
     }
@@ -4749,24 +4749,6 @@
       "styleName": "base-nova",
       "hostPages": [
         "scroll-fade"
-      ],
-      "status": "unavailable",
-      "demoPath": null
-    },
-    {
-      "name": "ai-sdk-helper-demo",
-      "styleName": "base-rhea",
-      "hostPages": [
-        "ai-sdk"
-      ],
-      "status": "unavailable",
-      "demoPath": null
-    },
-    {
-      "name": "tanstack-ai-helper-demo",
-      "styleName": "base-rhea",
-      "hostPages": [
-        "tanstack-ai"
       ],
       "status": "unavailable",
       "demoPath": null

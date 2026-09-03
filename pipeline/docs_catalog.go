@@ -187,8 +187,6 @@ var guideSources = []struct{ Slug, Path string }{
 	{"rtl", ".upstream/shadcn-ui/apps/v4/content/docs/rtl/index.mdx"},
 	{"shimmer", ".upstream/shadcn-ui/apps/v4/content/docs/utils/shimmer.mdx"},
 	{"scroll-fade", ".upstream/shadcn-ui/apps/v4/content/docs/utils/scroll-fade.mdx"},
-	{"ai-sdk", ".upstream/shadcn-ui/apps/v4/content/docs/helpers/ai-sdk.mdx"},
-	{"tanstack-ai", ".upstream/shadcn-ui/apps/v4/content/docs/helpers/tanstack-ai.mdx"},
 }
 
 func scanGuides(root string) (scanResult, error) {

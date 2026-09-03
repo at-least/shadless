@@ -314,7 +314,7 @@ func TestUnitResolveDocsRoute(t *testing.T) {
 			t.Errorf("%s: got %+v want {file:%q frag:%q grey:%v}", tc.href, got, tc.file, tc.frag, tc.grey)
 		}
 	}
-	if len(guides) < 9 {
+	if len(guides) < 7 {
 		t.Errorf("GUIDES list sane: %d", len(guides))
 	}
 	for _, g := range guides {

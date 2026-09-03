@@ -25,8 +25,6 @@ var docsUpstreamFiles = []string{
 	"rtl/index.mdx",
 	"utils/shimmer.mdx",
 	"utils/scroll-fade.mdx",
-	"helpers/ai-sdk.mdx",
-	"helpers/tanstack-ai.mdx",
 }
 
 func runDocsUpstreamMirror() int {

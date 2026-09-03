@@ -4,7 +4,7 @@ title: "Components"
 
 # Components
 
-51 components ported · 15 not ported (they need React, or upstream removed them) · 9 guides.
+51 components ported · 15 not ported (they need React, or upstream removed them) · 7 guides.
 
 New here? Read the [Introduction](/guides/introduction) to learn what shadless is and why it exists.
 
@@ -83,6 +83,4 @@ New here? Read the [Introduction](/guides/introduction) to learn what shadless i
 - [RTL](/guides/rtl)
 - [shimmer](/guides/shimmer)
 - [scroll-fade](/guides/scroll-fade)
-- [AI SDK](/guides/ai-sdk)
-- [TanStack AI](/guides/tanstack-ai)
 - [Typography](/guides/typography)
