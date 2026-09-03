@@ -670,15 +670,14 @@ func (ctx *docsBuildCtx) buildPage(name, source string, transform func(string) (
 	if title == "" {
 		title = name
 	}
-	links := fmLinksOrdered(raw)
-	linksS := ""
-	if len(links) > 0 {
-		var as []string
-		for _, l := range links {
-			as = append(as, "<a href=\""+l.V+"\" rel=\"noopener\">"+l.K+"</a>")
-		}
-		linksS = "<p class=\"page-links\">" + strings.Join(as, " · ") + "</p>\n"
-	}
+	// Upstream's frontmatter `links:` (the "doc · api" chips) are NOT emitted.
+	// Both point at the component's Radix page — `api` deep-links its React
+	// prop table, which is the one thing a shadless page must not present as
+	// "the api". They were also duplicates: 26 of the 28 pages that carry
+	// them already link the same URL from the API Reference section, in a
+	// sentence that says what it is. Two (carousel's, to embla) were dead
+	// 404s. The links themselves are kept, with their context, in the body.
+	// docs-fidelity asserts the built page carries no page-links chips.
 	front := "---\ntitle: " + yamlScalar(title) + "\n"
 	if d := fmString(fm, "description"); d != "" {
 		front += "description: " + yamlScalar(d) + "\n"
@@ -689,11 +688,7 @@ func (ctx *docsBuildCtx) buildPage(name, source string, transform func(string) (
 	if desc != "" {
 		lead = desc + "\n\n"
 	}
-	linksGap := ""
-	if linksS != "" {
-		linksGap = "\n"
-	}
-	return []byte(front + "\n\n# " + title + "\n\n" + lead + linksS + linksGap + strings.TrimSpace(body) + "\n"), nil
+	return []byte(front + "\n\n# " + title + "\n\n" + lead + strings.TrimSpace(body) + "\n"), nil
 }
 
 var mirrorSetCache []string

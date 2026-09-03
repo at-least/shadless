@@ -7,8 +7,6 @@ description: "A provider component that sets the text direction for your applica
 
 A provider component that sets the text direction for your application.
 
-<p class="page-links"><a href="https://www.radix-ui.com/primitives/docs/utilities/direction-provider" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/primitives/docs/utilities/direction-provider#api-reference" rel="noopener">api</a></p>
-
 The `DirectionProvider` component is used to set the text direction (`ltr` or `rtl`) for your application. This is essential for supporting right-to-left languages like Arabic, Hebrew, and Persian.
 
 Here's a preview of the component in RTL mode. Use the language selector to switch the language. To see more examples, look for the RTL section on components pages.

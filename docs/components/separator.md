@@ -7,8 +7,6 @@ description: "Visually or semantically separates content."
 
 Visually or semantically separates content.
 
-<p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/separator" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/separator#api-reference" rel="noopener">api</a></p>
-
 ::::demo separator-demo
 <iframe class="demo" src="/demos/separator-demo.html" title="separator-demo" data-status="authored" loading="lazy"></iframe>
 

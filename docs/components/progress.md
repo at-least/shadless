@@ -7,8 +7,6 @@ description: "Displays an indicator showing the completion progress of a task, t
 
 Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.
 
-<p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/progress" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/progress#api-reference" rel="noopener">api</a></p>
-
 ::::demo progress-demo
 <iframe class="demo" src="/demos/progress-demo.html" title="progress-demo" data-status="authored" loading="lazy"></iframe>
 

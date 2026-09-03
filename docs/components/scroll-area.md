@@ -7,8 +7,6 @@ description: "Augments native scroll functionality for custom, cross-browser sty
 
 Augments native scroll functionality for custom, cross-browser styling.
 
-<p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/scroll-area" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/scroll-area#api-reference" rel="noopener">api</a></p>
-
 ::::demo scroll-area-demo
 <iframe class="demo" src="/demos/scroll-area.html" title="scroll-area-demo" data-status="existing-dist" loading="lazy"></iframe>
 

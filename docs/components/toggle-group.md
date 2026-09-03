@@ -7,8 +7,6 @@ description: "A set of two-state buttons that can be toggled on or off."
 
 A set of two-state buttons that can be toggled on or off.
 
-<p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/toggle-group" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/toggle-group#api-reference" rel="noopener">api</a></p>
-
 ::::demo toggle-group-demo
 <iframe class="demo" src="/demos/toggle-group-demo.html" title="toggle-group-demo" data-status="authored" loading="lazy"></iframe>
 

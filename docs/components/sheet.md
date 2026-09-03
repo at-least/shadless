@@ -7,8 +7,6 @@ description: "Extends the Dialog component to display content that complements t
 
 Extends the Dialog component to display content that complements the main content of the screen.
 
-<p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/dialog" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/dialog#api-reference" rel="noopener">api</a></p>
-
 ::::demo sheet-demo
 <iframe class="demo" src="/demos/sheet.html" title="sheet-demo" data-status="existing-dist" loading="lazy"></iframe>
 

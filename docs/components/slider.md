@@ -7,8 +7,6 @@ description: "An input where the user selects a value from within a given range.
 
 An input where the user selects a value from within a given range.
 
-<p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/slider" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/slider#api-reference" rel="noopener">api</a></p>
-
 ::::demo slider-demo
 <iframe class="demo" src="/demos/slider.html" title="slider-demo" data-status="existing-dist" loading="lazy"></iframe>
 

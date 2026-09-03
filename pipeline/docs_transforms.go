@@ -730,8 +730,24 @@ type textAdjustment struct {
 }
 
 // TEXT_ADJUSTMENTS: prose rewrites where upstream mdx claims React-library
-// specifics that are false for the no-React product.
+// specifics that are false for the no-React product — plus (carousel-embla)
+// upstream links that no longer resolve at all.
 var textAdjustments = []textAdjustment{
+	{
+		id:    "carousel-embla-doc-urls",
+		files: []string{"carousel.mdx"},
+		note:  "embla moved its docs under /docs/ — every deep link upstream still uses 404s (verified: GET with a browser UA returns embla's own PageNotFound component, so it is real rot, not bot-blocking)",
+		ops: []textOp{
+			{
+				find:    "See the [Embla Carousel docs](https://www.embla-carousel.com/api/events/) for more information on using events.",
+				replace: "See the [Embla Carousel docs](https://www.embla-carousel.com/docs/api/events) for more information on using events.",
+			},
+			{
+				find:    "See the [Embla Carousel docs](https://www.embla-carousel.com/api/) for more information on props and plugins.",
+				replace: "See the [Embla Carousel docs](https://www.embla-carousel.com/docs/api) for more information on props and plugins.",
+			},
+		},
+	},
 	{
 		id:    "button-pointer-cli-prose",
 		files: []string{"button.mdx"},

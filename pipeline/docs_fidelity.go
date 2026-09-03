@@ -434,18 +434,19 @@ func comparePage(m pageFacts, h mdFacts, pageName string, isComponentPage bool, 
 			issue("fence", fmt.Sprintf("[%s] %.80q has no matching fence in the built page", f.lang, want))
 		}
 	}
-	pair := func(c attrPair) string { return c.K + "→" + c.V }
-	var wantChips, gotChips []string
-	for _, c := range fmLinksOrdered(fidelityRawMDX) {
-		wantChips = append(wantChips, pair(c))
-	}
-	for _, c := range h.chips {
-		gotChips = append(gotChips, pair(c))
-	}
-	sort.Strings(wantChips)
-	sort.Strings(gotChips)
-	if fmt.Sprint(wantChips) != fmt.Sprint(gotChips) {
-		issue("chips", fmt.Sprintf("mdx %s != html %s", strings.Join(wantChips, " | "), strings.Join(gotChips, " | ")))
+	// The mdx frontmatter `links:` chips are a DECLARED drop, not a mirror:
+	// buildPage stops emitting them (see the comment there — React prop-table
+	// deep links, duplicated in-body with context, two of them dead). This
+	// used to compare mdx links against the built chips; it now asserts the
+	// built page has none, so re-introducing them fails here rather than
+	// silently putting "doc · api" back on 28 pages.
+	if len(h.chips) > 0 {
+		var got []string
+		for _, c := range h.chips {
+			got = append(got, c.K+"→"+c.V)
+		}
+		sort.Strings(got)
+		issue("chips", "built page still carries page-links chips: "+strings.Join(got, " | "))
 	}
 	if expectedManualRef != "" && !strings.Contains(h.text, expectedManualRef) {
 		issue("manual-tab", "rewritten manual tab never mentions "+expectedManualRef)

@@ -7,8 +7,6 @@ description: "An image element with a fallback for representing the user."
 
 An image element with a fallback for representing the user.
 
-<p class="page-links"><a href="https://www.radix-ui.com/primitives/docs/components/avatar" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/primitives/docs/components/avatar#api-reference" rel="noopener">api</a></p>
-
 ::::demo avatar-demo
 <iframe class="demo" src="/demos/avatar-demo.html" title="avatar-demo" data-status="authored" loading="lazy"></iframe>
 

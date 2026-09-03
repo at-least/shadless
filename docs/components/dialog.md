@@ -7,8 +7,6 @@ description: "A window overlaid on either the primary window or another dialog w
 
 A window overlaid on either the primary window or another dialog window, rendering the content underneath inert.
 
-<p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/dialog" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/dialog#api-reference" rel="noopener">api</a></p>
-
 ::::demo dialog-demo
 <iframe class="demo" src="/demos/dialog.html" title="dialog-demo" data-status="existing-dist" loading="lazy"></iframe>
 

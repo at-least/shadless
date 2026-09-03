@@ -7,8 +7,6 @@ description: "A set of checkable buttons—known as radio buttons—where no mor
 
 A set of checkable buttons—known as radio buttons—where no more than one of the buttons can be checked at a time.
 
-<p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/radio-group" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/radio-group#api-reference" rel="noopener">api</a></p>
-
 ::::demo radio-group-demo
 <iframe class="demo" src="/demos/radio-group-demo.html" title="radio-group-demo" data-status="authored" loading="lazy"></iframe>
 

@@ -7,8 +7,6 @@ description: "A vertically stacked set of interactive headings that each reveal 
 
 A vertically stacked set of interactive headings that each reveal a section of content.
 
-<p class="page-links"><a href="https://www.radix-ui.com/primitives/docs/components/accordion" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/primitives/docs/components/accordion#api-reference" rel="noopener">api</a></p>
-
 ::::demo accordion-demo
 <iframe class="demo" src="/demos/accordion-demo.html" title="accordion-demo" data-status="authored" loading="lazy"></iframe>
 

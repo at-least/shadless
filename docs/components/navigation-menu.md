@@ -7,8 +7,6 @@ description: "A collection of links for navigating websites."
 
 A collection of links for navigating websites.
 
-<p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/navigation-menu" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/navigation-menu#api-reference" rel="noopener">api</a></p>
-
 ::::demo navigation-menu-demo
 <iframe class="demo" src="/demos/navigation-menu-demo.html" title="navigation-menu-demo" data-status="authored" loading="lazy"></iframe>
 

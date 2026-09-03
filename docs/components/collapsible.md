@@ -7,8 +7,6 @@ description: "An interactive component which expands/collapses a panel."
 
 An interactive component which expands/collapses a panel.
 
-<p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/collapsible" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/collapsible#api-reference" rel="noopener">api</a></p>
-
 ::::demo collapsible-demo
 <iframe class="demo" src="/demos/collapsible-demo.html" title="collapsible-demo" data-status="authored" loading="lazy"></iframe>
 

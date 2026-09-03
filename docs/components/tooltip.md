@@ -7,8 +7,6 @@ description: "A popup that displays information related to an element when the e
 
 A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.
 
-<p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/tooltip" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/tooltip#api-reference" rel="noopener">api</a></p>
-
 ::::demo tooltip-demo
 <iframe class="demo" src="/demos/tooltip.html" title="tooltip-demo" data-status="existing-dist" loading="lazy"></iframe>
 

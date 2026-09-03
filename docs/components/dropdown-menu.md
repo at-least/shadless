@@ -7,8 +7,6 @@ description: "Displays a menu to the user — such as a set of actions or functi
 
 Displays a menu to the user — such as a set of actions or functions — triggered by a button.
 
-<p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/dropdown-menu" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/dropdown-menu#api-reference" rel="noopener">api</a></p>
-
 ::::demo dropdown-menu-demo
 <iframe class="demo" src="/demos/dropdown-menu.html" title="dropdown-menu-demo" data-status="existing-dist" loading="lazy"></iframe>
 

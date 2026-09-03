@@ -7,8 +7,6 @@ description: "Displays rich content in a portal, triggered by a button."
 
 Displays rich content in a portal, triggered by a button.
 
-<p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/popover" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/popover#api-reference" rel="noopener">api</a></p>
-
 ::::demo popover-demo
 <iframe class="demo" src="/demos/popover.html" title="popover-demo" data-status="existing-dist" loading="lazy"></iframe>
 

@@ -7,8 +7,6 @@ description: "For sighted users to preview content available behind a link."
 
 For sighted users to preview content available behind a link.
 
-<p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/hover-card" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/hover-card#api-reference" rel="noopener">api</a></p>
-
 ::::demo hover-card-demo
 <iframe class="demo" src="/demos/hover-card.html" title="hover-card-demo" data-status="existing-dist" loading="lazy"></iframe>
 

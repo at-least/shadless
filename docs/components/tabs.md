@@ -7,8 +7,6 @@ description: "A set of layered sections of content—known as tab panels—that 
 
 A set of layered sections of content—known as tab panels—that are displayed one at a time.
 
-<p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/tabs" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/tabs#api-reference" rel="noopener">api</a></p>
-
 ::::demo tabs-demo
 <iframe class="demo" src="/demos/tabs.html" title="tabs-demo" data-status="existing-dist" loading="lazy"></iframe>
 

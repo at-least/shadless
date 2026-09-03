@@ -7,8 +7,6 @@ description: "Renders an accessible label associated with controls."
 
 Renders an accessible label associated with controls.
 
-<p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/label" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/label#api-reference" rel="noopener">api</a></p>
-
 ::::demo label-demo
 <iframe class="demo" src="/demos/label-demo.html" title="label-demo" data-status="authored" loading="lazy"></iframe>
 

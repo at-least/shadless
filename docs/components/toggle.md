@@ -7,8 +7,6 @@ description: "A two-state button that can be either on or off."
 
 A two-state button that can be either on or off.
 
-<p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/toggle" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/toggle#api-reference" rel="noopener">api</a></p>
-
 ::::demo toggle-demo
 <iframe class="demo" src="/demos/toggle-demo.html" title="toggle-demo" data-status="authored" loading="lazy"></iframe>
 

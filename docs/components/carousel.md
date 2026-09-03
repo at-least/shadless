@@ -7,8 +7,6 @@ description: "A carousel with motion and swipe built using Embla."
 
 A carousel with motion and swipe built using Embla.
 
-<p class="page-links"><a href="https://www.embla-carousel.com/get-started/react" rel="noopener">doc</a> · <a href="https://www.embla-carousel.com/api" rel="noopener">api</a></p>
-
 ::::demo carousel-demo
 <iframe class="demo" src="/demos/carousel-demo.html" title="carousel-demo" data-status="authored" loading="lazy"></iframe>
 
@@ -7525,7 +7523,7 @@ Use the `orientation` prop to set the orientation of the carousel.
 
 ## Options
 
-shadless's carousel glue (`dist/js/carousel.js`) calls Embla with a fixed options object (`axis`/`direction`, derived from the markup) and nothing else — `align`/`loop`/every other [Embla option](https://www.embla-carousel.com/api/options/) is not exposed through markup. To change them, edit the `EmblaCarousel(viewport, { … })` call in that file directly; there is no declarative `opts` surface.
+shadless's carousel glue (`dist/js/carousel.js`) calls Embla with a fixed options object (`axis`/`direction`, derived from the markup) and nothing else — `align`/`loop`/every other [Embla option](https://www.embla-carousel.com/docs/api/options) is not exposed through markup. To change them, edit the `EmblaCarousel(viewport, { … })` call in that file directly; there is no declarative `opts` surface.
 ## API
 
 Use a state and the `setApi` props to get an instance of the carousel API.
@@ -9384,7 +9382,7 @@ api.on("select", () => {
 
 ## Events
 
-You can listen to events on the instance `shadless.get(rootEl)` returns — it's the real Embla api, so its own `.on()` works exactly as [Embla's docs](https://www.embla-carousel.com/api/events/) describe.
+You can listen to events on the instance `shadless.get(rootEl)` returns — it's the real Embla api, so its own `.on()` works exactly as [Embla's docs](https://www.embla-carousel.com/docs/api/events) describe.
 
 ```js showLineNumbers
 const api = shadless.get(document.querySelector('[data-slot="carousel"]'))
@@ -9395,7 +9393,7 @@ api.on("select", () => {
 ```
 
 
-See the [Embla Carousel docs](https://www.embla-carousel.com/api/events/) for more information on using events.
+See the [Embla Carousel docs](https://www.embla-carousel.com/docs/api/events) for more information on using events.
 
 ## Plugins
 
@@ -13137,4 +13135,4 @@ When localizing the carousel for RTL languages, set `dir="rtl"` on the carousel 
 
 **Runtime:** `shadless.get(el)` (element or selector, any element inside the instance) → the embla api (`scrollNext()`, `scrollTo(i)`, `on("select", …)`). Markup protocol: see Installation → Behavior protocol.
 
-See the [Embla Carousel docs](https://www.embla-carousel.com/api/) for more information on props and plugins.
+See the [Embla Carousel docs](https://www.embla-carousel.com/docs/api) for more information on props and plugins.

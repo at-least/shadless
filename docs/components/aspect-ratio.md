@@ -7,8 +7,6 @@ description: "Displays content within a desired ratio."
 
 Displays content within a desired ratio.
 
-<p class="page-links"><a href="https://www.radix-ui.com/primitives/docs/components/aspect-ratio" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/primitives/docs/components/aspect-ratio#api-reference" rel="noopener">api</a></p>
-
 ::::demo aspect-ratio-demo
 <iframe class="demo" src="/demos/aspect-ratio-demo.html" title="aspect-ratio-demo" data-status="authored" loading="lazy"></iframe>
 

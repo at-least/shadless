@@ -7,8 +7,6 @@ description: "Displays a menu of actions triggered by a right click."
 
 Displays a menu of actions triggered by a right click.
 
-<p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/context-menu" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/context-menu#api-reference" rel="noopener">api</a></p>
-
 ::::demo context-menu-demo
 <iframe class="demo" src="/demos/context-menu.html" title="context-menu-demo" data-status="existing-dist" loading="lazy"></iframe>
 

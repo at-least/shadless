@@ -7,8 +7,6 @@ description: "A control that allows the user to toggle between checked and not c
 
 A control that allows the user to toggle between checked and not checked.
 
-<p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/switch" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/switch#api-reference" rel="noopener">api</a></p>
-
 ::::demo switch-demo
 <iframe class="demo" src="/demos/switch-demo.html" title="switch-demo" data-status="authored" loading="lazy"></iframe>
 

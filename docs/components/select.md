@@ -7,8 +7,6 @@ description: "Displays a list of options for the user to pick from—triggered b
 
 Displays a list of options for the user to pick from—triggered by a button.
 
-<p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/select" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/select#api-reference" rel="noopener">api</a></p>
-
 ::::demo select-demo
 <iframe class="demo" src="/demos/select.html" title="select-demo" data-status="existing-dist" loading="lazy"></iframe>
 

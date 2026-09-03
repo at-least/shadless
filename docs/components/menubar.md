@@ -7,8 +7,6 @@ description: "A visually persistent menu common in desktop applications that pro
 
 A visually persistent menu common in desktop applications that provides quick access to a consistent set of commands.
 
-<p class="page-links"><a href="https://www.radix-ui.com/docs/primitives/components/menubar" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/docs/primitives/components/menubar#api-reference" rel="noopener">api</a></p>
-
 ::::demo menubar-demo
 <iframe class="demo" src="/demos/menubar-demo.html" title="menubar-demo" data-status="authored" loading="lazy"></iframe>
 

@@ -7,8 +7,6 @@ description: "A modal dialog that interrupts the user with important content and
 
 A modal dialog that interrupts the user with important content and expects a response.
 
-<p class="page-links"><a href="https://www.radix-ui.com/primitives/docs/components/alert-dialog" rel="noopener">doc</a> · <a href="https://www.radix-ui.com/primitives/docs/components/alert-dialog#api-reference" rel="noopener">api</a></p>
-
 ::::demo alert-dialog-demo
 <iframe class="demo" src="/demos/alert-dialog.html" title="alert-dialog-demo" data-status="existing-dist" loading="lazy"></iframe>
 
