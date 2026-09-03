@@ -13,7 +13,7 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 
 const CONSUMER = `
-import shadless, { get, init, h, theme, type Handle, type SelectHandle } from "shadless/runtime"
+import shadless, { get, init, h, theme, type Handle, type SelectHandle } from "shadless/js"
 import "shadless/js/dialog"
 
 const handle: Handle | null = get("#d1-trigger")
@@ -57,7 +57,7 @@ void idx
 export function run(t) {
   // a scratch package with the REAL exports map (types conditions included)
   // and the SOURCE declarations in the positions build-js copies them to —
-  // the consumer resolves "shadless/runtime" and "shadless/js/dialog" the
+  // the consumer resolves "shadless/js" and "shadless/js/dialog" the
   // way a TS project does, so the types condition is exercised, not a path
   // OUTSIDE the repo: inside it, TypeScript's package self-reference (this
   // package.json is named "shadless") would resolve to the committed dist

@@ -10,7 +10,7 @@ upstream is `src/registry/pin.json`; re-pins land through the upstream drill
 - `package.json`: React and the conversion toolchain moved from
   `dependencies` to `devDependencies` — installing shadless no longer
   installs React 19. `tailwindcss` is an optional peer.
-- `shadless/runtime.min` has a real ES-module `import` condition
+- `shadless/js.min` has a real ES-module `import` condition
   (`dist/esm/shadless.min.mjs`); the bare string served the IIFE (no
   exports) to `import`.
 - The tarball carries the product surface only (`dist/css`, `dist/js`,

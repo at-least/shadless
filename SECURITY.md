@@ -11,7 +11,7 @@ untrusted input.
 Please do not open a public issue for a security problem. Report it
 privately through the repository's GitHub security advisory ("Report a
 vulnerability") so a fix can ship before disclosure. Include the affected
-export (`shadless/runtime`, `shadless/js/<name>`, a stylesheet), the pinned
+export (`shadless/js`, `shadless/js/<name>`, a stylesheet), the pinned
 upstream tag from `src/registry/pin.json`, and a minimal page that
 reproduces it.
 

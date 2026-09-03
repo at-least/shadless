@@ -19,21 +19,19 @@
     ".": "./dist/shadless-core.css",
     "./full.css": "./dist/shadless.full.css",
     "./full.min.css": "./dist/shadless.full.min.css",
-    "./css/*": "./dist/css/*.css",
     "./*": "./dist/css/*",
-    "./runtime": {
+    "./js": {
       "types": "./dist/esm/shadless.d.ts",
       "import": "./dist/esm/shadless.mjs",
       "default": "./dist/shadless.js"
     },
-    "./runtime.min": {
+    "./js.min": {
       "types": "./dist/esm/shadless.d.ts",
       "import": "./dist/esm/shadless.min.mjs",
       "default": "./dist/shadless.min.js"
     },
     "./esm/*": "./dist/esm/*.mjs",
     "./package.json": "./package.json",
-    "./css": "./dist/shadless-core.css",
     "./js/*": {
       "types": "./dist/esm/*.d.ts",
       "import": "./dist/esm/*.mjs",

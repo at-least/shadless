@@ -29,13 +29,13 @@ ships every component precompiled as the zero-setup alternative.
 | `shadless` | theme + animate layer (self-contained — needs only your tailwindcss) |
 | `shadless/<name>.css` | per-component `@apply` source, one import per component you use |
 | `shadless/full.css` / `shadless/full.min.css` | every component precompiled (no-build path) |
-| `shadless/runtime` / `runtime.min` | the JS base: engine + registry + theme (+ the vendored radix kernel), auto-initialises. `<script>` gets the IIFE (`window.shadless`); `import` gets the ES module (`dist/esm/shadless.mjs` — `export default shadless` + named `init`, `get`, `theme`, …) |
+| `shadless/js` / `js.min` | the JS base: engine + registry + theme (+ the vendored radix kernel), auto-initialises. `<script>` gets the IIFE (`window.shadless`); `import` gets the ES module (`dist/esm/shadless.mjs` — `export default shadless` + named `init`, `get`, `theme`, …) |
 | `shadless/js/<name>` | one behavior file per interactive component, registers with the base; `shadless.get(el)` returns its handle (`open()`, `close()`, `toggle()`, `isOpen()`; tabs `activate(i)`; slider `values()` / `setValue()`; carousel the embla api). Under `import` each file is a module that imports the base itself, so import order does not matter |
 | `shadless/esm/<name>` | the ES-module files by explicit path (`shadless.mjs` is the base) |
 
 ```js
 // bundler / <script type="module">
-import shadless, { get } from "shadless/runtime"
+import shadless, { get } from "shadless/js"
 import "shadless/js/dialog"
 get("#d1-trigger").open()
 ```
