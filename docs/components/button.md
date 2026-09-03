@@ -79,16 +79,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 
 
 
-## Usage
-
-Copy the markup from `dist/components/button.html` and adapt it — every slot
-is a `data-slot` attribute, and open/close state is a `data-state` the
-runtime drives. The component's API axes are data attributes:
-
-| JSX prop | Markup |
-| --- | --- |
-| `variant="outline"` (JSX prop) | `data-variant="outline"` (markup) |
-| `size="outline"` (JSX prop) | `data-size="outline"` (markup) |
 ## Cursor
 
 Tailwind v4 [switched](https://tailwindcss.com/docs/upgrade-guide#buttons-use-the-default-cursor) from `cursor: pointer` to `cursor: default` for the button component.

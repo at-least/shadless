@@ -84,16 +84,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 
 
 
-## Usage
-
-Copy the markup from `dist/components/toggle.html` and adapt it — every slot
-is a `data-slot` attribute, and open/close state is a `data-state` the
-runtime drives. The component's API axes are data attributes:
-
-| JSX prop | Markup |
-| --- | --- |
-| `variant="outline"` (JSX prop) | `data-variant="outline"` (markup) |
-| `size="outline"` (JSX prop) | `data-size="outline"` (markup) |
 ## Outline
 
 Use `variant="outline"` for an outline style.
@@ -338,5 +328,12 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | `data-slot="toggle"` |
 
 **Runtime:** `aria-pressed` + `data-state="on|off"` on the root. Keys: Space / click toggles. The root dispatches `shadless:change` (`detail: { pressed }`). No handle — `shadless.get(el)` returns `null`; `el.click()` is the driver.
+
+Each row below is a `cva`-declared variant baked into the shipped CSS as a `data-*` attribute; set it next to the slot's `data-slot` to pick that value (the Default needs no attribute). This table only covers `cva` variants — check `dist/css/toggle.css` for any other `data-*` selector on these slots.
+
+| Slot | Attribute | Values | Default |
+| --- | --- | --- | --- |
+| `toggle` | `data-variant` | `default`, `outline` | `default` |
+| `toggle` | `data-size` | `default`, `sm`, `lg` | `default` |
 
 See the [Radix Toggle](https://www.radix-ui.com/docs/primitives/components/toggle#api-reference) documentation.

@@ -70,15 +70,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 
 
 
-## Usage
-
-Copy the markup from `dist/components/badge.html` and adapt it — every slot
-is a `data-slot` attribute, and open/close state is a `data-state` the
-runtime drives. The component's API axes are data attributes:
-
-| JSX prop | Markup |
-| --- | --- |
-| `variant="outline"` (JSX prop) | `data-variant="outline"` (markup) |
 ## Variants
 
 Use the `variant` prop to change the variant of the badge.

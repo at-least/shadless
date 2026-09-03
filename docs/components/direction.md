@@ -146,11 +146,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 
 
 
-## Usage
-
-Copy the markup from `dist/components/direction.html` and adapt it — every slot
-is a `data-slot` attribute, and open/close state is a `data-state` the
-runtime drives.
 ## useDirection
 
 The `useDirection` hook is used to get the current direction of the application.

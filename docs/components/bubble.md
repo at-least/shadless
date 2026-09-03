@@ -140,17 +140,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 
 
 
-## Usage
-
-Copy the markup from `dist/components/bubble.html` and adapt it — every slot
-is a `data-slot` attribute, and open/close state is a `data-state` the
-runtime drives. The component's API axes are data attributes:
-
-| JSX prop | Markup |
-| --- | --- |
-| `variant="outline"` (JSX prop) | `data-variant="outline"` (markup) |
-| `side="outline"` (JSX prop) | `data-side="outline"` (markup) |
-| `align="outline"` (JSX prop) | `data-align="outline"` (markup) |
 ## Composition
 
 The slot tree — every node is a `data-slot` attribute in the shipped markup:
@@ -1133,7 +1122,7 @@ When reactions are interactive, render buttons instead and give icon-only button
 
 ```html
 <div data-slot="bubble-reactions">
-  <button data-slot="button" aria-label="Thumbs up" variant="secondary" size="icon-xs">
+  <button data-slot="button" aria-label="Thumbs up" data-variant="secondary" data-size="icon-xs">
     <!-- lucide "thumbs-up" icon -->
   </button>
 </div>

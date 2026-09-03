@@ -217,11 +217,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 
 
 
-## Usage
-
-Copy the markup from `dist/components/dialog.html` and adapt it — every slot
-is a `data-slot` attribute, and open/close state is a `data-state` the
-runtime drives.
 ## Composition
 
 The slot tree — every node is a `data-slot` attribute in the shipped markup:

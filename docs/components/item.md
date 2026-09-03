@@ -141,16 +141,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 
 
 
-## Usage
-
-Copy the markup from `dist/components/item.html` and adapt it — every slot
-is a `data-slot` attribute, and open/close state is a `data-state` the
-runtime drives. The component's API axes are data attributes:
-
-| JSX prop | Markup |
-| --- | --- |
-| `variant="outline"` (JSX prop) | `data-variant="outline"` (markup) |
-| `size="outline"` (JSX prop) | `data-size="outline"` (markup) |
 ## Composition
 
 The slot tree — every node is a `data-slot` attribute in the shipped markup:
@@ -1257,7 +1247,7 @@ Use `ItemHeader` to add a header above the item content.
 
 ## Link
 
-Use the `asChild` prop to render the item as a link. The hover and focus states will be applied to the anchor element.
+shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The hover and focus states apply to the anchor.
 
 ::::demo item-link
 <iframe class="demo" src="/demos/item-link.html" title="item-link" data-status="authored" loading="lazy"></iframe>
@@ -1355,18 +1345,16 @@ Use the `asChild` prop to render the item as a link. The hover and focus states 
 ::::
 
 
-```html
-<div data-slot="item" asChild>
-  <a href="/dashboard">
-    <div data-slot="item-media" variant="icon">
-      <!-- lucide "home" icon -->
-    </div>
-    <div data-slot="item-content">
-      <div data-slot="item-title">Dashboard</div>
-      <p data-slot="item-description">Overview of your account and activity.</p>
-    </div>
-  </a>
-</div>
+```html showLineNumbers
+<a data-slot="item" href="/dashboard">
+  <div data-slot="item-media" data-variant="icon">
+    <!-- lucide "home" icon -->
+  </div>
+  <div data-slot="item-content">
+    <div data-slot="item-title">Dashboard</div>
+    <p data-slot="item-description">Overview of your account and activity.</p>
+  </div>
+</a>
 ```
 
 ## Dropdown

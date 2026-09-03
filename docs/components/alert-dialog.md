@@ -225,11 +225,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 
 
 
-## Usage
-
-Copy the markup from `dist/components/alert-dialog.html` and adapt it — every slot
-is a `data-slot` attribute, and open/close state is a `data-state` the
-runtime drives.
 ## Composition
 
 The slot tree — every node is a `data-slot` attribute in the shipped markup:
@@ -1378,7 +1373,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 ## API Reference
 
 
-**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 
 | Slot |
 | --- |
@@ -1396,13 +1391,3 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | `data-slot="alert-dialog-cancel"` |
 
 **Runtime:** `shadless.get(el)` (element or selector, any element inside the instance) → `open()`, `close()`, `toggle()`, `isOpen()`; the trigger dispatches `shadless:open` / `shadless:close`. Markup protocol: see Installation → Behavior protocol.
-
-### size
-
-Use the `size` prop on the `AlertDialogContent` component to control the size of the alert dialog. It accepts the following values:
-
-| Prop   | Type                | Default     |
-| ------ | ------------------- | ----------- |
-| `size` | `"default" \| "sm"` | `"default"` |
-
-For more information about the other components and their props, see the [Radix UI documentation](https://www.radix-ui.com/primitives/docs/components/alert-dialog#api-reference).

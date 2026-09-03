@@ -331,33 +331,17 @@ func (ctx *docsBuildCtx) installStepsMdx(name string) string {
 		"\nNo Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.\n\n</Steps>"
 }
 
-func (ctx *docsBuildCtx) usageMdx(name string) string {
-	var axes []string
-	seen := map[string]bool{}
-	if irb, err := os.ReadFile(filepath.Join("generated/ir", name+".json")); err == nil {
-		var ir cssIrComponent
-		if json.Unmarshal(irb, &ir) == nil {
-			for _, key := range ir.Cva.keys {
-				table := ir.Cva.tables[key]
-				for _, ax := range table.axisOrder {
-					if !seen[ax] {
-						seen[ax] = true
-						axes = append(axes, ax)
-					}
-				}
-			}
-		}
-	}
-	var rows []string
-	for _, a := range axes {
-		rows = append(rows, "| `"+a+"=\"outline\"` (JSX prop) | `data-"+a+"=\"outline\"` (markup) |")
-	}
-	axesTable := ""
-	if len(rows) > 0 {
-		axesTable = " The component's API axes are data attributes:\n\n| JSX prop | Markup |\n| --- | --- |\n" + strings.Join(rows, "\n")
-	}
-	return "## Usage\n\nCopy the markup from `dist/components/" + name + ".html` and adapt it — every slot\nis a `data-slot` attribute, and open/close state is a `data-state` the\nruntime drives." + axesTable + "\n"
-}
+// usageMdx: nothing. Upstream's `## Usage` is an import + a JSX composition;
+// the shadless replacement for it was one sentence ("Copy the markup from
+// dist/components/<name>.html and adapt it") that Installation's own last
+// step already says ten lines earlier, plus an axis table that spelled every
+// value `outline` and claimed a runtime-driven `data-state` on the 24
+// components whose own Installation table says "no JavaScript". The axes are
+// documented once, from the IR, in API Reference (cvaAxisTableMdx); the copy
+// instruction stays in Installation. So the section is dropped outright —
+// the gate drops the same span (withoutUsageSection), so headings still line
+// up on both sides.
+func (ctx *docsBuildCtx) usageMdx(name string) string { return "" }
 
 func (ctx *docsBuildCtx) compositionTransform(name, raw string, seen *[]string) string {
 	s := locateCompositionSpan(fenceShadow(raw))

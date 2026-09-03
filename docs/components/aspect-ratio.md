@@ -76,11 +76,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 
 
 
-## Usage
-
-Copy the markup from `dist/components/aspect-ratio.html` and adapt it — every slot
-is a `data-slot` attribute, and open/close state is a `data-state` the
-runtime drives.
 ## Square
 
 A square aspect ratio component using the `ratio={1 / 1}` prop. This is useful for displaying images in a square format.

@@ -252,15 +252,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 
 
 
-## Usage
-
-Copy the markup from `dist/components/tabs.html` and adapt it — every slot
-is a `data-slot` attribute, and open/close state is a `data-state` the
-runtime drives. The component's API axes are data attributes:
-
-| JSX prop | Markup |
-| --- | --- |
-| `variant="outline"` (JSX prop) | `data-variant="outline"` (markup) |
 ## Composition
 
 The slot tree — every node is a `data-slot` attribute in the shipped markup:
@@ -1384,5 +1375,11 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | `data-slot="tabs-content"` |
 
 **Runtime:** `shadless.get(el)` (element or selector, any element inside the instance) → `activate(i)`, `active()`; the root dispatches `shadless:change` (`detail: { index, trigger }`). Markup protocol: see Installation → Behavior protocol.
+
+Each row below is a `cva`-declared variant baked into the shipped CSS as a `data-*` attribute; set it next to the slot's `data-slot` to pick that value (the Default needs no attribute). This table only covers `cva` variants — check `dist/css/tabs.css` for any other `data-*` selector on these slots.
+
+| Slot | Attribute | Values | Default |
+| --- | --- | --- | --- |
+| `tabs-list` | `data-variant` | `default`, `line` | `default` |
 
 See the [Radix Tabs](https://www.radix-ui.com/docs/primitives/components/tabs#api-reference) documentation.

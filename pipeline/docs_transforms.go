@@ -203,19 +203,18 @@ func messageScrollerJsNote() string {
 var reApiRefLeak = regexp.MustCompile(`(?m)^\s*\|.*\||^### `)
 
 // locateApiReferenceSpan: `## API Reference` … next `## ` heading or EOF —
-// ONLY for components with no family/trivial behavior-protocol entry
-// (docs_families.go) AND whose section actually contains leaked React
-// content (reApiRefLeak). Components with a family/trivial entry, and
-// uncovered components whose upstream section is just a link to the Radix
-// docs, are left in place (nil here, same as always) — those aren't the
-// wrapper components' own React prop tables/JSX this transform targets.
+// ONLY where the section actually contains leaked React content
+// (reApiRefLeak). A section that is just a link to the Radix docs has nothing
+// React-specific to replace and is left in place (nil here).
+//
+// The family/trivial components used to be excluded outright, on the
+// assumption that their upstream section is only that Radix link. avatar and
+// alert-dialog disproved it: both carried shadcn's own `| Prop | Type |`
+// tables (avatar six of them, listing React `className` on every slot) right
+// under the shadless surface table. The reApiRefLeak test is the real
+// discriminator, so it is now the only one — verified against the whole
+// registry: lifting the exclusion changed exactly those two pages.
 func locateApiReferenceSpan(comp string, shadow string) *span {
-	if _, ok := trivial[comp]; ok {
-		return nil
-	}
-	if _, ok := family[comp]; ok {
-		return nil
-	}
 	open := reApiRefHeading.FindStringIndex(shadow)
 	if open == nil {
 		return nil
@@ -493,7 +492,34 @@ var (
 	reInlineJsxMention = regexp.MustCompile("`</?([A-Z][A-Za-z0-9]*)[^`]*`")
 )
 
-type jsxTagInfo struct{ tag, slot string }
+type jsxTagInfo struct {
+	tag, slot string
+	// axes: the cva axis names declared by the IR file this fn comes from,
+	// each mapped to its declared values. A JSX prop naming one of these is
+	// a data attribute in the shipped markup (`variant="ghost"` →
+	// `data-variant="ghost"`), and the value set is what makes a bogus one
+	// (`orientation="vertical | horizontal"`) fail instead of shipping.
+	axes map[string][]string
+}
+
+// htmlAttrs: plain HTML attributes a JSX tag may legitimately carry through
+// to the rewritten markup unchanged. Anything outside this set that is not a
+// cva axis (asChild, onClick, a made-up prop) has no vanilla meaning and
+// fails loud — the cue for a docs_overrides.go entry.
+var htmlAttrs = map[string]bool{
+	"class": true, "id": true, "href": true, "src": true, "srcset": true,
+	"alt": true, "title": true, "role": true, "type": true, "name": true,
+	"value": true, "placeholder": true, "disabled": true, "checked": true,
+	"hidden": true, "target": true, "rel": true, "style": true, "lang": true,
+	"dir": true, "width": true, "height": true, "for": true, "tabindex": true,
+	"colspan": true, "rowspan": true, "action": true, "method": true,
+	"autocomplete": true, "required": true, "readonly": true, "multiple": true,
+	"selected": true, "min": true, "max": true, "step": true, "rows": true,
+	"cols": true, "loading": true, "open": true, "controls": true,
+	"poster": true, "download": true, "autofocus": true, "maxlength": true,
+}
+
+var reJsxTagAttr = regexp.MustCompile(`([A-Za-z][\w:.-]*)(?:="([^"]*)")?`)
 
 var jsxTagIndexCache map[string]jsxTagInfo
 
@@ -507,6 +533,7 @@ func loadJsxTagIndex() (map[string]jsxTagInfo, error) {
 		return jsxTagIndexCache, nil
 	}
 	fnSlot := map[string]string{}
+	fnAxes := map[string]map[string][]string{}
 	ents, err := os.ReadDir("generated/ir")
 	if err != nil {
 		return nil, err
@@ -523,6 +550,17 @@ func loadJsxTagIndex() (map[string]jsxTagInfo, error) {
 		if json.Unmarshal(b, &ir) != nil {
 			continue
 		}
+		// The axis union of this IR file. cva tables are per-file (a page's
+		// itemVariants + itemMediaVariants), and upstream mdx spells the prop
+		// the same on every fn the file exports, so the union is the right
+		// granularity here.
+		axes := map[string][]string{}
+		for _, key := range ir.Cva.keys {
+			table := ir.Cva.tables[key]
+			for _, ax := range table.axisOrder {
+				axes[ax] = append(axes[ax], table.valueOrder[ax]...)
+			}
+		}
 		for _, c := range ir.Components {
 			if c.Fn == "" {
 				continue
@@ -533,6 +571,9 @@ func loadJsxTagIndex() (map[string]jsxTagInfo, error) {
 			for _, el := range c.Elements {
 				if el.Slot != "" {
 					fnSlot[c.Fn] = el.Slot
+					if len(axes) > 0 {
+						fnAxes[c.Fn] = axes
+					}
 					break
 				}
 			}
@@ -576,7 +617,7 @@ func loadJsxTagIndex() (map[string]jsxTagInfo, error) {
 				bestTag, bestN = t, counts[t]
 			}
 		}
-		idx[fn] = jsxTagInfo{tag: bestTag, slot: slot}
+		idx[fn] = jsxTagInfo{tag: bestTag, slot: slot, axes: fnAxes[fn]}
 	}
 	jsxTagIndexCache = idx
 	return idx, nil
@@ -591,6 +632,56 @@ func kebabIconName(fn string) string {
 		words[i] = strings.ToLower(w)
 	}
 	return strings.Join(words, "-")
+}
+
+// rewriteJsxAttrs ports one JSX tag's attribute text to markup. A cva axis
+// becomes its data attribute (`variant="ghost"` → `data-variant="ghost"`,
+// which is what dist/css/<name>.css actually selects on); a plain HTML
+// attribute passes through; anything else — asChild, an event handler, a
+// prop that never reaches the DOM — has no markup form and fails loud, as
+// does an axis value the component does not declare.
+//
+// Before this existed the whole attribute text was carried over verbatim, so
+// pages shipped `<button data-slot="button" variant="ghost">`: valid-looking
+// HTML that no stylesheet matches, i.e. silently unstyled when copied.
+func rewriteJsxAttrs(fn, attrs string, info jsxTagInfo) (string, error) {
+	rest := strings.TrimSpace(attrs)
+	if rest == "" {
+		return "", nil
+	}
+	var out []string
+	for _, m := range reJsxTagAttr.FindAllStringSubmatch(rest, -1) {
+		name, val := m[1], m[2]
+		hasVal := strings.Contains(m[0], "=")
+		lower := strings.ToLower(name)
+		// React's two renames of real HTML attributes. className is already
+		// handled a step earlier (reClassNameAttr); htmlFor has no other form.
+		if name == "htmlFor" {
+			name, lower = "for", "for"
+			m[0] = `for="` + val + `"`
+		}
+		switch {
+		case strings.HasPrefix(lower, "data-"), strings.HasPrefix(lower, "aria-"):
+			out = append(out, m[0])
+		case htmlAttrs[lower]:
+			out = append(out, m[0])
+		case info.axes[name] != nil:
+			if !hasVal {
+				return "", fmt.Errorf("JSX prop %s on <%s> has no value", name, fn)
+			}
+			if !containsTok(info.axes[name], val) {
+				return "", fmt.Errorf("JSX prop %s=%q on <%s> is not a declared value (%s)",
+					name, val, fn, strings.Join(info.axes[name], ", "))
+			}
+			out = append(out, `data-`+name+`="`+val+`"`)
+		default:
+			return "", fmt.Errorf("JSX prop %s on <%s> has no markup form", name, fn)
+		}
+	}
+	if len(out) == 0 {
+		return "", nil
+	}
+	return " " + strings.Join(out, " "), nil
 }
 
 // rewriteJsxTagsInLine mechanically rewrites JSX tags on one fence line.
@@ -623,6 +714,11 @@ func rewriteJsxTagsInLine(line string, idx map[string]jsxTagInfo) (string, error
 			attrs = strings.TrimSuffix(attrs, ">")
 		}
 		attrs = strings.TrimRight(attrs, " ")
+		attrs, err := rewriteJsxAttrs(fn, attrs, info)
+		if err != nil {
+			outErr = err
+			return m
+		}
 		open := "<" + info.tag + ` data-slot="` + info.slot + `"` + attrs
 		if selfClose {
 			return open + " />"
@@ -756,21 +852,6 @@ var textAdjustments = []textAdjustment{
 			{
 				find:    "You can also enable this during project setup with `npx shadcn@latest init --pointer`.",
 				replace: "In shadless just keep the CSS rule above — there is no CLI flag to set.",
-			},
-		},
-	},
-	{
-		id:    "avatar-props-prose",
-		files: []string{"avatar.mdx"},
-		note:  "shadless Avatar slots are plain HTML elements driven by the runtime — 'accepts all Radix UI props' is false here",
-		ops: []textOp{
-			{
-				find:    "It accepts all Radix UI Avatar Image props.",
-				replace: "It is a plain `<img data-slot=\"avatar-image\">` — the shadless runtime switches to the fallback from its load state.",
-			},
-			{
-				find:    "It accepts all Radix UI Avatar Fallback props.",
-				replace: "It is a plain `<span data-slot=\"avatar-fallback\">` shown by the shadless runtime while the image is loading or failed.",
 			},
 		},
 	},

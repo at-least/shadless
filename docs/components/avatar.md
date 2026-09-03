@@ -123,11 +123,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 
 
 
-## Usage
-
-Copy the markup from `dist/components/avatar.html` and adapt it — every slot
-is a `data-slot` attribute, and open/close state is a `data-state` the
-runtime drives.
 ## Composition
 
 The slot tree — every node is a `data-slot` attribute in the shipped markup:
@@ -822,7 +817,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 ## API Reference
 
 
-**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 
 | Slot |
 | --- |
@@ -834,56 +829,3 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | `data-slot="avatar-group-count"` |
 
 **Runtime:** `avatar-image` is shown once loaded; on error or while loading the `avatar-fallback` stays (radix Presence) — settled at init and by `shadless.refresh(el)` for injected markup. No handle — `shadless.get(el)` returns `null`; `el.click()` is the driver.
-
-### Avatar
-
-The `Avatar` component is the root component that wraps the avatar image and fallback.
-
-| Prop        | Type                        | Default     |
-| ----------- | --------------------------- | ----------- |
-| `size`      | `"default" \| "sm" \| "lg"` | `"default"` |
-| `className` | `string`                    | -           |
-
-### AvatarImage
-
-The `AvatarImage` component displays the avatar image. It is a plain `<img data-slot="avatar-image">` — the shadless runtime switches to the fallback from its load state.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `src`       | `string` | -       |
-| `alt`       | `string` | -       |
-| `className` | `string` | -       |
-
-### AvatarFallback
-
-The `AvatarFallback` component displays a fallback when the image fails to load. It is a plain `<span data-slot="avatar-fallback">` shown by the shadless runtime while the image is loading or failed.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` | -       |
-
-### AvatarBadge
-
-The `AvatarBadge` component displays a badge indicator on the avatar, typically positioned at the bottom right.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` | -       |
-
-### AvatarGroup
-
-The `AvatarGroup` component displays a group of avatars with overlapping styling.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` | -       |
-
-### AvatarGroupCount
-
-The `AvatarGroupCount` component displays a count indicator in an avatar group, typically showing the number of additional avatars.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` | -       |
-
-For more information about Radix UI Avatar props, see the [Radix UI documentation](https://www.radix-ui.com/primitives/docs/components/avatar#api-reference).

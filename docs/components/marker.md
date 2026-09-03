@@ -154,15 +154,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 
 
 
-## Usage
-
-Copy the markup from `dist/components/marker.html` and adapt it — every slot
-is a `data-slot` attribute, and open/close state is a `data-state` the
-runtime drives. The component's API axes are data attributes:
-
-| JSX prop | Markup |
-| --- | --- |
-| `variant="outline"` (JSX prop) | `data-variant="outline"` (markup) |
 ## Composition
 
 The slot tree — every node is a `data-slot` attribute in the shipped markup:
@@ -641,7 +632,7 @@ Use `MarkerIcon` to render an icon alongside the content. Use `flex-col` to stac
 
 ## Links and Buttons
 
-Turn a marker into a link or button with the `asChild` prop on `Marker`.
+Turn a marker into a link or button by putting `data-slot="marker"` on the `<a>` or `<button>` itself — shadless has no `asChild`.
 
 ::::demo marker-link-button
 <iframe class="demo" src="/demos/marker-link-button.html" title="marker-link-button" data-status="authored" loading="lazy"></iframe>
@@ -718,7 +709,11 @@ Turn a marker into a link or button with the `asChild` prop on `Marker`.
 ::::
 
 
-
+```html showLineNumbers
+<a data-slot="marker" href="#">
+  <span data-slot="marker-content">View the pull request</span>
+</a>
+```
 
 ## Accessibility
 
@@ -742,7 +737,7 @@ For streaming or progress markers such as "Thinking..." or a running tool, set `
 A separator that carries text, such as a date or a section label, needs no role. The divider lines are decorative CSS pseudo-elements, and the text is announced as ordinary content.
 
 ```html
-<div data-slot="marker" variant="separator">
+<div data-slot="marker" data-variant="separator">
   <span data-slot="marker-content">Today</span>
 </div>
 ```
@@ -759,7 +754,7 @@ announced. Reserve `role="separator"` for a divider with no meaningful text.
 A bordered marker keeps the same semantics as the default marker. The bottom border is decorative, so choose `role="status"`, `asChild`, or no role based on the marker's purpose.
 
 ```html
-<div data-slot="marker" variant="border">
+<div data-slot="marker" data-variant="border">
   <!-- lucide "marker" icon -->
     <!-- lucide "file-text" icon -->
   <!-- lucide "marker" icon -->
@@ -781,17 +776,13 @@ A bordered marker keeps the same semantics as the default marker. The bottom bor
 
 ### Interactive Markers
 
-When a marker links or triggers an action, render it as a real `<button>` or `<a>` with the `asChild` prop so it is focusable and exposes the correct role. The accessible name comes from the marker text.
+When a marker links or triggers an action, put `data-slot="marker"` on a real `<button>` or `<a>` so it is focusable and exposes the correct role. The accessible name comes from the marker text.
 
-```html
-<div data-slot="marker" asChild>
-  <a href="/files">
-    <!-- lucide "marker" icon -->
-      <!-- lucide "file-text" icon -->
-    <!-- lucide "marker" icon -->
-    <span data-slot="marker-content">Explored 4 files</span>
-  </a>
-</div>
+```html showLineNumbers
+<a data-slot="marker" href="/files">
+  <span data-slot="marker-icon"><!-- lucide "file-text" icon --></span>
+  <span data-slot="marker-content">Explored 4 files</span>
+</a>
 ```
 
 ## API Reference

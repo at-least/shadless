@@ -76,11 +76,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 
 
 
-## Usage
-
-Copy the markup from `dist/components/label.html` and adapt it — every slot
-is a `data-slot` attribute, and open/close state is a `data-state` the
-runtime drives.
 ## Label in Field
 
 For form fields, use the [Field](/components/field) component which
@@ -88,7 +83,7 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
 
 ```html
 <div data-slot="field">
-  <label data-slot="field-label" htmlFor="email">Your email address</label>
+  <label data-slot="field-label" for="email">Your email address</label>
   <input data-slot="input" id="email" />
 </div>
 ```

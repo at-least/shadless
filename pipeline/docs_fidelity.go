@@ -106,12 +106,16 @@ func withoutRtlMigrate(raw string) string {
 	return replaceSpan(raw, *s, "\n")
 }
 
+// withoutUsageSection drops the heading too, mirroring usageMdx returning ""
+// — the section has no shadless replacement any more (see usageMdx). Both
+// sides must agree on the span AND on what is left behind, so this is the
+// second half of that change, not an independent decision.
 func withoutUsageSection(raw string) string {
 	s := locateUsageSpan(fenceShadow(raw))
 	if s == nil {
 		return raw
 	}
-	return replaceSpan(raw, *s, "## Usage\n")
+	return replaceSpan(raw, *s, "")
 }
 
 func withoutCompositionSection(raw string) string {
@@ -451,7 +455,63 @@ func comparePage(m pageFacts, h mdFacts, pageName string, isComponentPage bool, 
 	if expectedManualRef != "" && !strings.Contains(h.text, expectedManualRef) {
 		issue("manual-tab", "rewritten manual tab never mentions "+expectedManualRef)
 	}
+	// Two assertions that read ONLY the built page. Everything above compares
+	// the build against a re-run of the same transforms, so a bug inside a
+	// shared transform is invisible to it — rewriteJsxTagsInLine used to carry
+	// JSX attributes over verbatim, and both sides agreed on the wrong answer.
+	for _, f := range h.fences {
+		if f.lang != "html" {
+			continue
+		}
+		for _, prop := range reactPropsInMarkup(f.content) {
+			issue("react-prop", "html fence carries the JSX prop "+prop+
+				" on a data-slot element — no stylesheet selects it; it must be a data attribute or be dropped")
+		}
+	}
+	if m := reReactPropTable.FindString(h.text); m != "" {
+		issue("react-prop-table", "built page keeps an upstream React props table: "+strings.TrimSpace(m))
+	}
 	return issues
+}
+
+var (
+	// A `| Prop | Type | …` header row — the exact shape shadcn's per-component
+	// React prop docs take, and meaningless for markup you copy.
+	reReactPropTable = regexp.MustCompile("(?m)^\\|\\s*`?Prop`?\\s*\\|.*$")
+	// Opening tags that carry a data-slot: shadless markup, so every attribute
+	// on them should be HTML or data-*/aria-*.
+	reSlotOpenTag = regexp.MustCompile(`<[a-z][\w-]*\b[^<>]*\bdata-slot="[^"]*"[^<>]*>`)
+	// name="value" / name='value' / bare name — matching the value too is what
+	// keeps words inside a quoted value from being read as attribute names.
+	reTagAttrName = regexp.MustCompile(`\s([A-Za-z][\w:.-]*)(?:=(?:"[^"]*"|'[^']*'|[^\s>]*))?`)
+)
+
+// reactPropsInMarkup names every attribute on a data-slot element that is
+// neither a plain HTML attribute nor data-*/aria-* — asChild, htmlFor, an
+// event handler, or a cva axis left in its JSX spelling.
+func reactPropsInMarkup(fence string) []string {
+	var out []string
+	seen := map[string]bool{}
+	for _, tag := range reSlotOpenTag.FindAllString(fence, -1) {
+		body := tag
+		if i := strings.IndexAny(body, " \t"); i >= 0 {
+			body = body[i:]
+		}
+		body = strings.TrimSuffix(strings.TrimSuffix(strings.TrimSpace(body), ">"), "/")
+		for _, m := range reTagAttrName.FindAllStringSubmatch(" "+body, -1) {
+			name := m[1]
+			lower := strings.ToLower(name)
+			if strings.HasPrefix(lower, "data-") || strings.HasPrefix(lower, "aria-") || htmlAttrs[lower] {
+				continue
+			}
+			if !seen[name] {
+				seen[name] = true
+				out = append(out, name)
+			}
+		}
+	}
+	sort.Strings(out)
+	return out
 }
 
 // fidelityRawMDX is set by the fidelity driver per page (chips compare needs

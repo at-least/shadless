@@ -52,11 +52,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 
 
 
-## Usage
-
-Copy the markup from `dist/components/textarea.html` and adapt it — every slot
-is a `data-slot` attribute, and open/close state is a `data-state` the
-runtime drives.
 ## Field
 
 Use `Field`, `FieldLabel`, and `FieldDescription` to create a textarea with a label and description.

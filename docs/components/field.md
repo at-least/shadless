@@ -911,15 +911,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 
 
 
-## Usage
-
-Copy the markup from `dist/components/field.html` and adapt it — every slot
-is a `data-slot` attribute, and open/close state is a `data-state` the
-runtime drives. The component's API axes are data attributes:
-
-| JSX prop | Markup |
-| --- | --- |
-| `orientation="outline"` (JSX prop) | `data-orientation="outline"` (markup) |
 ## Composition
 
 The slot tree — every node is a `data-slot` attribute in the shipped markup:
@@ -938,7 +929,7 @@ The `Field` family is designed for composing accessible forms. A typical field i
 
 ```html
 <div data-slot="field">
-  <label data-slot="field-label" htmlFor="input-id">Label</label>
+  <label data-slot="field-label" for="input-id">Label</label>
   <!-- Input, Select, Switch, etc. -->
   <p data-slot="field-description">Optional helper text.</p>
   <div data-slot="field-error">Validation message.</div>
@@ -3341,7 +3332,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ```html
 <div data-slot="field" data-invalid>
-  <label data-slot="field-label" htmlFor="email">Email</label>
+  <label data-slot="field-label" for="email">Email</label>
   <input data-slot="input" id="email" type="email" aria-invalid />
   <div data-slot="field-error">Enter a valid email address.</div>
 </div>

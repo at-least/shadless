@@ -234,6 +234,26 @@ func cvaAxisRows(ir cssIrComponent) []cvaAxisRow {
 	return out
 }
 
+// cvaAxisTableMdx: the one rendering of a component's cva axes, sourced from
+// the IR's own value order and defaults. Every component that declares axes
+// gets it — the family/trivial ones (tabs, toggle) too, which used to reach
+// it only through the `leaked` branch and so shipped no axis documentation at
+// all. It replaced a per-page table in the Usage section that spelled every
+// axis's example value as `outline`, a value 16 of its 21 rows did not have.
+func cvaAxisTableMdx(comp string, axes []cvaAxisRow) string {
+	var b strings.Builder
+	b.WriteString("Each row below is a `cva`-declared variant baked into the shipped CSS as a `data-*` attribute; set it next to the slot's `data-slot` to pick that value (the Default needs no attribute). This table only covers `cva` variants — check `dist/css/" + comp + ".css` for any other `data-*` selector on these slots.\n\n")
+	b.WriteString("| Slot | Attribute | Values | Default |\n| --- | --- | --- | --- |\n")
+	for _, a := range axes {
+		var vals []string
+		for _, v := range a.values {
+			vals = append(vals, "`"+v+"`")
+		}
+		b.WriteString("| `" + a.slot + "` | `data-" + a.attr + "` | " + strings.Join(vals, ", ") + " | `" + a.def + "` |\n")
+	}
+	return b.String()
+}
+
 func apiReferenceMdx(comp string, slots []string, axes []cvaAxisRow, tier string, leaked bool) string {
 	t := trivial[comp]
 	f := family[comp]
@@ -288,15 +308,7 @@ func apiReferenceMdx(comp string, slots []string, axes []cvaAxisRow, tier string
 			b.WriteString("no JavaScript — this is markup + CSS. ")
 		}
 		if len(axes) > 0 {
-			b.WriteString("Each row below is a `cva`-declared variant baked into the shipped CSS as a `data-*` attribute; set it next to the slot's `data-slot` to pick that value (the Default needs no attribute). This table only covers `cva` variants — check `dist/css/" + comp + ".css` for any other `data-*` selector on these slots.\n\n")
-			b.WriteString("| Slot | Attribute | Values | Default |\n| --- | --- | --- | --- |\n")
-			for _, a := range axes {
-				var vals []string
-				for _, v := range a.values {
-					vals = append(vals, "`"+v+"`")
-				}
-				b.WriteString("| `" + a.slot + "` | `data-" + a.attr + "` | " + strings.Join(vals, ", ") + " | `" + a.def + "` |\n")
-			}
+			b.WriteString(cvaAxisTableMdx(comp, axes))
 		} else {
 			b.WriteString("No `cva`-declared variants. Check `dist/css/" + comp + ".css` for any `data-*` attribute this slot's styling depends on.\n")
 		}
@@ -304,6 +316,11 @@ func apiReferenceMdx(comp string, slots []string, axes []cvaAxisRow, tier string
 			b.WriteString("See Installation → Files this component needs for the JavaScript this component requires.\n")
 		}
 		runtime = b.String()
+	}
+	// The `leaked` branch already wrote it; the other two never did, so tabs
+	// and toggle documented their variants nowhere.
+	if !leaked && len(axes) > 0 {
+		runtime += "\n" + cvaAxisTableMdx(comp, axes)
 	}
 	if slotTable == "" && runtime == "" {
 		return ""

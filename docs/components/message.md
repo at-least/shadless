@@ -251,11 +251,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 
 
 
-## Usage
-
-Copy the markup from `dist/components/message.html` and adapt it — every slot
-is a `data-slot` attribute, and open/close state is a `data-state` the
-runtime drives.
 ## Composition
 
 The slot tree — every node is a `data-slot` attribute in the shipped markup:
@@ -974,7 +969,7 @@ Action buttons in `MessageFooter` are usually icon-only, so give each one an `ar
 
 ```html
 <div data-slot="message-footer">
-  <button data-slot="button" variant="ghost" size="icon" aria-label="Copy">
+  <button data-slot="button" data-variant="ghost" data-size="icon" aria-label="Copy">
     <!-- lucide "copy" icon -->
   </button>
 </div>

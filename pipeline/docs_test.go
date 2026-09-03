@@ -103,22 +103,22 @@ func TestUnitInstallSection(t *testing.T) {
 }
 
 func TestUnitApplyTextAdjustments(t *testing.T) {
-	raw := "The `AvatarImage` component displays the avatar image. It accepts all Radix UI Avatar Image props.\nThe `AvatarFallback` component displays a fallback when the image fails to load. It accepts all Radix UI Avatar Fallback props.\n"
-	out, err := applyTextAdjustments("avatar.mdx", raw)
+	raw := "Set `cursor: pointer` yourself. You can also enable this during project setup with `npx shadcn@latest init --pointer`.\n"
+	out, err := applyTextAdjustments("button.mdx", raw)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(out, "plain `<img data-slot=\"avatar-image\">`") {
+	if !strings.Contains(out, "there is no CLI flag to set") {
 		t.Error("false claim rewritten")
 	}
-	if strings.Contains(out, "It accepts all Radix UI Avatar Image props.") {
+	if strings.Contains(out, "npx shadcn@latest init --pointer") {
 		t.Error("original claim gone")
 	}
 	if untouched, _ := applyTextAdjustments("badge.mdx", raw); untouched != raw {
 		t.Error("unlisted file untouched")
 	}
-	if _, err := applyTextAdjustments("avatar.mdx", "unrelated prose"); err == nil ||
-		!strings.Contains(err.Error(), "text adjustment avatar-props-prose") {
+	if _, err := applyTextAdjustments("button.mdx", "unrelated prose"); err == nil ||
+		!strings.Contains(err.Error(), "text adjustment button-pointer-cli-prose") {
 		t.Errorf("missing find throws (re-anchor required): %v", err)
 	}
 	for _, adj := range textAdjustments {
@@ -320,6 +320,29 @@ func TestUnitResolveDocsRoute(t *testing.T) {
 	for _, g := range guides {
 		if g.slug == "" || g.route == "" || g.source == "" {
 			t.Errorf("guide entry incomplete: %+v", g)
+		}
+	}
+}
+
+// The react-prop gate must fire on markup that carries a JSX prop, and stay
+// quiet on markup that is already ported. It reads only the built page, so
+// it is the one check a bug inside the shared rewriter cannot hide from.
+func TestUnitReactPropsInMarkup(t *testing.T) {
+	cases := []struct {
+		fence string
+		want  []string
+	}{
+		{`<button data-slot="button" variant="ghost" size="icon">x</button>`, []string{"size", "variant"}},
+		{`<div data-slot="item" asChild>`, []string{"asChild"}},
+		{`<label data-slot="field-label" htmlFor="email">Email</label>`, []string{"htmlFor"}},
+		{`<button data-slot="button" data-variant="ghost" data-size="icon" aria-label="Thumbs up and down">x</button>`, nil},
+		{`<a data-slot="marker" href="/files" class="x" id="m1">Explored 4 files</a>`, nil},
+		{`<div class="not-a-slot" variant="ghost">`, nil},
+	}
+	for _, tc := range cases {
+		got := reactPropsInMarkup(tc.fence)
+		if strings.Join(got, ",") != strings.Join(tc.want, ",") {
+			t.Errorf("reactPropsInMarkup(%q) = %v, want %v", tc.fence, got, tc.want)
 		}
 	}
 }

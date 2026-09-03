@@ -1907,11 +1907,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 
 
 
-## Usage
-
-Copy the markup from `dist/components/carousel.html` and adapt it — every slot
-is a `data-slot` attribute, and open/close state is a `data-state` the
-runtime drives.
 ## Composition
 
 The slot tree — every node is a `data-slot` attribute in the shipped markup:
@@ -7511,8 +7506,8 @@ Use the `orientation` prop to set the orientation of the carousel.
 ::::
 
 
-```html
-<div data-slot="carousel" orientation="vertical | horizontal">
+```html showLineNumbers /vertical/
+<div data-slot="carousel" data-orientation="vertical">
   <div data-slot="carousel-content">
     <div data-slot="carousel-item">...</div>
     <div data-slot="carousel-item">...</div>
@@ -7520,6 +7515,8 @@ Use the `orientation` prop to set the orientation of the carousel.
   </div>
 </div>
 ```
+
+`dist/js/carousel.js` reads `data-orientation="vertical"` on the root; with no such attribute it falls back to whether the content element carries `flex-col`, and otherwise scrolls horizontally.
 
 ## Options
 
