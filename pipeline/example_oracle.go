@@ -45,9 +45,8 @@ var fixtureFamilySel = map[string]string{
 }
 
 type oraTarget struct {
-	name      string
-	out       string
-	bodyStyle string
+	name string
+	out  string
 }
 
 func oraLoadTargets() (targets []oraTarget, skipped []string) {
@@ -68,9 +67,9 @@ func oraLoadTargets() (targets []oraTarget, skipped []string) {
 		m := regexp.MustCompile(`^(.+)-demo$`).FindStringSubmatch(demoName)
 		return m != nil && tiers[m[1]].Tier == "kernel"
 	}
-	// alert-demo replaces the retired build-demo hand emitter (dist target +
-	// padding:1rem body — the docs host page historically framed it that way)
-	targets = append(targets, oraTarget{name: "alert-demo", out: "dist/components/alert-demo.html", bodyStyle: "padding:1rem"})
+	// alert-demo replaces the retired build-demo hand emitter (dist target,
+	// same default centered body as every docs/demos/*.html target below)
+	targets = append(targets, oraTarget{name: "alert-demo", out: "dist/components/alert-demo.html"})
 	seen := map[string]bool{"alert-demo": true}
 	for _, p := range catalog.Previews {
 		if !fileExists(filepath.Join(oraExamplesDir, p.Name+".tsx")) {
@@ -107,14 +106,18 @@ func oraScriptsHead(trivial []string) string {
 	return s
 }
 
-func oraPageHtml(name, body, bodyAttr string, trivial []string) string {
-	attr := bodyAttr
-	if attr == "" {
-		attr = `class="p-8"`
-	}
+// Matches upstream's ComponentPreviewTabs .preview box (component-preview-
+// tabs.tsx: "flex h-72 w-full justify-center p-10 data-[align=center]:items-
+// center") — that wrapper is docs-site chrome around the example, not part
+// of the example itself, so the oracle's #root.innerHTML extraction never
+// carries it; centering has to be re-added at the docs-page-body level
+// instead.
+const oraBodyAttr = `class="flex min-h-72 w-full items-center justify-center p-8"`
+
+func oraPageHtml(name, body string, trivial []string) string {
 	return "<!doctype html>\n<html><head><meta charset=\"utf-8\"><title>shadless " + name +
 		"</title>\n<link rel=\"stylesheet\" href=\"../out.css\">" + injectPrePaint("") + oraScriptsHead(trivial) +
-		"</head>\n<body " + attr + ">\n" + body + "\n</body></html>"
+		"</head>\n<body " + oraBodyAttr + ">\n" + body + "\n</body></html>"
 }
 
 func runExampleOracle(check bool) int {
@@ -319,11 +322,7 @@ func runExampleOracle(check bool) int {
 
 	// Phase 2 — commit pages and manifests together
 	for _, r := range rendered {
-		attr := ""
-		if r.t.bodyStyle != "" {
-			attr = `style="` + r.t.bodyStyle + `"`
-		}
-		if err := os.WriteFile(r.t.out, []byte(oraPageHtml(r.t.name, r.dom, attr, r.trivial)), 0o644); err != nil {
+		if err := os.WriteFile(r.t.out, []byte(oraPageHtml(r.t.name, r.dom, r.trivial)), 0o644); err != nil {
 			fmt.Fprintln(os.Stderr, "example-oracle:", err)
 			return 1
 		}
