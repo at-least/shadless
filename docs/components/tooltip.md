@@ -175,7 +175,7 @@ The files this component needs:
 <script src="js/tooltip.js"></script>
 ```
 
-**Copy the markup from                                into your page and adapt it — the inline utilities are picked up by your build's content scan.**
+**Copy the markup from `dist/components/tooltip.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 **Behavior protocol**
 

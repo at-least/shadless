@@ -85,25 +85,14 @@ func markupShadow(text string) string { return inlineCodeShadow(fenceShadow(text
 // the REAL text at the same offsets, right to left.
 func replaceMarkup(text string, re *regexp.Regexp, fn func(whole string, m []string) string) string {
 	shadow := markupShadow(text)
-	var hits [][]int
 	locs := re.FindAllStringSubmatchIndex(shadow, -1)
-	for _, loc := range locs {
-		groups := make([]string, len(loc)/2)
-		for i := range groups {
-			if loc[2*i] >= 0 {
-				groups[i] = shadow[loc[2*i]:loc[2*i+1]]
-			}
-		}
-		hits = append(hits, loc)
-		_ = groups
-	}
 	out := text
 	for i := len(locs) - 1; i >= 0; i-- {
 		loc := locs[i]
 		groups := make([]string, len(loc)/2)
 		for g := range groups {
 			if loc[2*g] >= 0 {
-				groups[g] = shadow[loc[2*g]:loc[2*g+1]]
+				groups[g] = text[loc[2*g]:loc[2*g+1]]
 			}
 		}
 		whole := text[loc[0]:loc[1]]

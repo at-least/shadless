@@ -245,7 +245,7 @@ The files this component needs:
 | — | no JavaScript: this component is markup + CSS |
 
 
-**Copy the markup from                                into your page and adapt it — the inline utilities are picked up by your build's content scan.**
+**Copy the markup from `dist/components/message.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
 
@@ -982,7 +982,7 @@ Action buttons in `MessageFooter` are usually icon-only, so give each one an `ar
 
 ### Status updates
 
-For in-progress messages, use a [        ](/components/marker) with `role="status"` so assistive tech announces the update as it appears.
+For in-progress messages, use a [`Marker`](/components/marker) with `role="status"` so assistive tech announces the update as it appears.
 
 ```tsx showLineNumbers
 <Message>

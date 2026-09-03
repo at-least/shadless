@@ -37,7 +37,7 @@ Import exactly the components you use — nothing else lands in your build
 (this is machine-checked: the repo's `consumer-sim` gate compiles a scratch
 consumer and asserts zero leakage from non-imported components).
 
-**Copy the component markup you need from                               into your page.**
+**Copy the component markup you need from `dist/components/<name>.html` into your page.**
 
 The markup carries plain utilities inline; your build's content scan picks
 them up like any class you wrote yourself.

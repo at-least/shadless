@@ -125,7 +125,7 @@ Displays an inline status, system note, bordered row, or labeled separator in a 
 ::::
 
 
-The `Marker` component displays inline conversation markers such as status updates, system notes, bordered rows, and labeled separators. Compose it with [         ](/components/message) in a conversation thread.
+The `Marker` component displays inline conversation markers such as status updates, system notes, bordered rows, and labeled separators. Compose it with [`Message`](/components/message) in a conversation thread.
 
 ## Installation
 
@@ -148,7 +148,7 @@ The files this component needs:
 | — | no JavaScript: this component is markup + CSS |
 
 
-**Copy the markup from                               into your page and adapt it — the inline utilities are picked up by your build's content scan.**
+**Copy the markup from `dist/components/marker.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
 
@@ -178,7 +178,7 @@ marker
 - Inline marker, bordered row, and labeled separator variants
 - Decorative icon slot that is hidden from assistive tech
 - Polymorphic root via `asChild` for link and button markers
-- Pairs with the [         ](/guides/shimmer) utility for streaming status text
+- Pairs with the [`shimmer`](/guides/shimmer) utility for streaming status text
 - Customizable styling through the `className` prop on every part
 
 ## Variants
@@ -241,7 +241,7 @@ Use `variant` to switch between an inline marker, bordered row, and labeled sepa
 
 ## Status
 
-Set `role="status"` and include a [         ](/components/spinner) for streaming or in-progress markers so updates are announced.
+Set `role="status"` and include a [`Spinner`](/components/spinner) for streaming or in-progress markers so updates are announced.
 
 ::::demo marker-status
 <iframe class="demo" src="/demos/marker-status.html" title="marker-status" data-status="authored" loading="lazy"></iframe>
@@ -324,7 +324,7 @@ Set `role="status"` and include a [         ](/components/spinner) for streaming
 
 ## Shimmer
 
-Add the [         ](/guides/shimmer) utility class to `MarkerContent` for an animated streaming-text effect. The utility ships with the `shadcn` package — see the shimmer docs for installation.
+Add the [`shimmer`](/guides/shimmer) utility class to `MarkerContent` for an animated streaming-text effect. The utility ships with the `shadcn` package — see the shimmer docs for installation.
 
 ::::demo marker-shimmer
 <iframe class="demo" src="/demos/marker-shimmer.html" title="marker-shimmer" data-status="authored" loading="lazy"></iframe>

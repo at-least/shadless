@@ -75,7 +75,7 @@ The files this component needs:
 <script src="js/switch.js"></script>
 ```
 
-**Copy the markup from                               into your page and adapt it — the inline utilities are picked up by your build's content scan.**
+**Copy the markup from `dist/components/switch.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 **Behavior**
 

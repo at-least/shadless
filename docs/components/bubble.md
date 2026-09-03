@@ -111,7 +111,7 @@ Displays conversational content in a message bubble. Supports variants, alignmen
 
 The `Bubble` component displays framed conversational content. Use it for chat text, short structured output, quoted replies, suggestions, and reactions.
 
-For full-featured chat interfaces, use the [         ](/components/message) component. `Bubble` is intentionally scoped to the bubble surface. Place avatars, names, timestamps, metadata, and message-level actions in [         ](/components/message).
+For full-featured chat interfaces, use the [`Message`](/components/message) component. `Bubble` is intentionally scoped to the bubble surface. Place avatars, names, timestamps, metadata, and message-level actions in [`Message`](/components/message).
 
 ## Installation
 
@@ -134,7 +134,7 @@ The files this component needs:
 | — | no JavaScript: this component is markup + CSS |
 
 
-**Copy the markup from                               into your page and adapt it — the inline utilities are picked up by your build's content scan.**
+**Copy the markup from `dist/components/bubble.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
 
@@ -665,7 +665,7 @@ Use `BubbleReactions` for bubble reactions. You can use it to display reactions 
 
 ## Show More / Collapsible
 
-Long bubble content can be composed with [             ](/components/collapsible) to allow for a show more or show less interaction. Use the `CollapsibleTrigger` component to trigger the collapsible content.
+Long bubble content can be composed with [`Collapsible`](/components/collapsible) to allow for a show more or show less interaction. Use the `CollapsibleTrigger` component to trigger the collapsible content.
 
 ::::demo bubble-collapsible
 <iframe class="demo" src="/demos/bubble-collapsible.html" title="bubble-collapsible" data-status="authored" loading="lazy"></iframe>
@@ -742,7 +742,7 @@ Long bubble content can be composed with [             ](/components/collapsible
 
 ## Tooltip
 
-Wrap a bubble in a [         ](/components/tooltip) to reveal metadata on hover, such as when a message was read.
+Wrap a bubble in a [`Tooltip`](/components/tooltip) to reveal metadata on hover, such as when a message was read.
 
 ::::demo bubble-tooltip
 <iframe class="demo" src="/demos/bubble-tooltip.html" title="bubble-tooltip" data-status="authored" loading="lazy"></iframe>
@@ -932,7 +932,7 @@ Wrap a bubble in a [         ](/components/tooltip) to reveal metadata on hover,
 
 ## Popover
 
-Pair a bubble with a [         ](/components/popover) to surface more information on demand, such as the full error message for a failed action.
+Pair a bubble with a [`Popover`](/components/popover) to surface more information on demand, such as the full error message for a failed action.
 
 ::::demo bubble-popover
 <iframe class="demo" src="/demos/bubble-popover.html" title="bubble-popover" data-status="authored" loading="lazy"></iframe>

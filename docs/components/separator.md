@@ -62,7 +62,7 @@ The files this component needs:
 <script src="shadless.js"></script>
 ```
 
-**Copy the markup from                                  into your page and adapt it — the inline utilities are picked up by your build's content scan.**
+**Copy the markup from `dist/components/separator.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
 
