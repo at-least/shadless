@@ -159,6 +159,9 @@ func main() {
 	if cmd == "docs-catalog" {
 		os.Exit(runDocsCatalog())
 	}
+	if cmd == "docs-upstream-mirror" {
+		os.Exit(runDocsUpstreamMirror())
+	}
 	if cmd == "product-css" {
 		os.Exit(runProductCSS())
 	}

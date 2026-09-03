@@ -75,6 +75,7 @@ const (
 	NStyleParity        NodeID = "style-parity"
 	NDemoSmoke          NodeID = "demo-smoke"
 	NDocsCatalog        NodeID = "docs-catalog"
+	NDocsUpstreamMirror NodeID = "docs-upstream-mirror"
 	NDocsBuild          NodeID = "docs-build"
 	NDocsSite           NodeID = "docs-site"
 	NDocsConsistency    NodeID = "docs-consistency"
@@ -102,6 +103,17 @@ const (
 	upstreamExamplesGlob = ".upstream/shadcn-ui/apps/v4/examples/**"
 	upstreamDocsGlob     = ".upstream/shadcn-ui/apps/v4/content/docs/**"
 )
+
+// docsUpstreamMirror: the tracked copy of the upstream docs .mdx that
+// docs-build/docs-fidelity actually read and docs_overrides.go hand-patches
+// (pipeline/docs_upstream_mirror.go writes it). Unlike upstreamDocsGlob
+// above — which stays a live .upstream/ read for nodes that only need
+// staleness-detection over the whole pinned tree — every hand-authored
+// override anchor needs a git-diffable byte-identical copy: on a re-pin, a
+// broken anchor should show up as `git diff generated/docs-upstream/`
+// inside this repo, not require checking out the old upstream commit to see
+// what changed.
+const docsUpstreamMirror = "generated/docs-upstream"
 
 // Nodes is the pipeline graph, in declaration order.
 var Nodes = []Node{
@@ -420,10 +432,19 @@ var Nodes = []Node{
 		Mutations: nil,
 	},
 	{
+		ID: NDocsUpstreamMirror, Kind: "build", Tier: "fast",
+		Needs:     []NodeID{NPin},
+		Run:       [][]string{{"./build/pipeline", "docs-upstream-mirror"}},
+		Inputs:    []string{"pipeline/docs_upstream_mirror.go", "src/registry/pin.json", upstreamDocsGlob},
+		Produces:  []string{docsUpstreamMirror},
+		Why:       "a tracked, git-diffable copy of the upstream docs .mdx docs-build/docs-fidelity read and docs_overrides.go hand-patches — the analogue of generated/ir for the docs pipeline (pipeline/convert.go's registry .tsx -> versioned IR), so a re-pin's content change shows up as a normal git diff in this repo instead of only a build-time anchor failure",
+		Mutations: nil,
+	},
+	{
 		ID: NDocsBuild, Kind: "build", Tier: "full",
-		Needs:     []NodeID{NDocsCatalog, NDemoCss, NBuildJs},
+		Needs:     []NodeID{NDocsCatalog, NDocsUpstreamMirror, NDemoCss, NBuildJs},
 		Run:       [][]string{{"./build/pipeline", "docs-build"}},
-		Inputs:    []string{"pipeline/docs_build.go", "pipeline/docs_guides.go", "pipeline/docs_transforms.go", "pipeline/docs_frontmatter.go", "pipeline/docs_scripts.go", "pipeline/docs_families.go", "pipeline/docs_fidelity.go", "tools/prettier-batch.mjs", "docs/catalog.json", "docs/content/**", "dist/**", "docs/demos/**", "build/rtl-langs.json", "generated/ir/**", "src/registry/pin.json", "package.json", "package-lock.json", upstreamDocsGlob},
+		Inputs:    []string{"pipeline/docs_build.go", "pipeline/docs_guides.go", "pipeline/docs_transforms.go", "pipeline/docs_overrides.go", "pipeline/docs_frontmatter.go", "pipeline/docs_scripts.go", "pipeline/docs_families.go", "pipeline/docs_fidelity.go", "tools/prettier-batch.mjs", "docs/catalog.json", "docs/content/**", "dist/**", "docs/demos/**", "build/rtl-langs.json", "generated/ir/**", "src/registry/pin.json", "package.json", "package-lock.json", docsUpstreamMirror + "/**"},
 		Produces:  []string{"docs/components", "docs/guides", "docs/index.md", "docs/.vitepress/sidebar.json", "docs/content-map.json", "docs/public"},
 		Why:       "mdx -> the mirrored site, with the dist demos copied in under the site skin",
 		Mutations: nil,
@@ -452,7 +473,7 @@ var Nodes = []Node{
 		ID: NDocsFidelity, Kind: "gate", Tier: "fast",
 		Needs:     []NodeID{NDocsBuild, NBuildJs},
 		Run:       [][]string{{"./build/pipeline", "docs-fidelity"}},
-		Inputs:    []string{"pipeline/docs_fidelity_driver.go", "pipeline/docs_fidelity.go", "pipeline/docs_transforms.go", "pipeline/docs_guides.go", "pipeline/docs_frontmatter.go", "docs/components/**", "docs/guides/**", "docs/public/demos/**", "docs/content-map.json", "docs/content/**", "src/registry/pin.json", upstreamDocsGlob},
+		Inputs:    []string{"pipeline/docs_fidelity_driver.go", "pipeline/docs_fidelity.go", "pipeline/docs_transforms.go", "pipeline/docs_overrides.go", "pipeline/docs_guides.go", "pipeline/docs_frontmatter.go", "docs/components/**", "docs/guides/**", "docs/public/demos/**", "docs/content-map.json", "docs/content/**", "src/registry/pin.json", docsUpstreamMirror + "/**"},
 		Produces:  nil,
 		Why:       "every built page matches its mdx source (headings/TOC/previews/fences) — catches silent content loss that render and console checks cannot see",
 		Mutations: []string{"docs-fidelity-drop-heading"},

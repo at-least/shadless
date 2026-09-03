@@ -29,7 +29,7 @@ var generatedRoots = []string{
 	"dist", "docs/catalog.json", "docs/demos", "docs/example-oracle.json",
 	"docs/components", "docs/guides", "docs/index.md", "docs/content-map.json",
 	"docs/.vitepress/sidebar.json",
-	"generated/ir", "src/kernel/*.html",
+	"generated/ir", "generated/docs-upstream", "src/kernel/*.html",
 }
 
 func gateReproducible(root string) error {

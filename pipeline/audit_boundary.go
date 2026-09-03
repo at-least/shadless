@@ -102,6 +102,10 @@ var programmaticPatterns = []boundaryPattern{
 		return strings.HasPrefix(p, "generated/ir/") && strings.HasSuffix(p, ".json")
 	},
 		tool: "pipeline/convert.go", source: "apps/v4/registry/bases/radix/ui/*.tsx"},
+	{match: func(p string) bool {
+		return strings.HasPrefix(p, "generated/docs-upstream/")
+	},
+		tool: "pipeline/docs_upstream_mirror.go", source: "apps/v4/content/docs/components/radix/* + rtl/index.mdx + utils/{shimmer,scroll-fade}.mdx + helpers/{ai-sdk,tanstack-ai}.mdx"},
 	// dist/components — emitter + build-rtl + demo (multi-source)
 	{match: func(p string) bool {
 		return strings.HasPrefix(p, "dist/components/") && strings.HasSuffix(p, ".html") &&
