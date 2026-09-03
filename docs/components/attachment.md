@@ -1737,7 +1737,7 @@ The `error` state uses a destructive color. Keep the failure reason in `Attachme
 ## API Reference
 
 
-**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 
 | Slot |
 | --- |
@@ -1751,80 +1751,10 @@ The `error` state uses a destructive color. Keep the failure reason in `Attachme
 | `data-slot="attachment-trigger"` |
 | `data-slot="attachment-group"` |
 
-### Attachment
+**Runtime:** no JavaScript — this is markup + CSS. Each row below is a `cva`-declared variant baked into the shipped CSS as a `data-*` attribute; set it next to the slot's `data-slot` to pick that value (the Default needs no attribute). This table only covers `cva` variants — check `dist/css/attachment.css` for any other `data-*` selector on these slots.
 
-The root attachment container.
-
-| Prop          | Type                                                         | Default        | Description                                       |
-| ------------- | ------------------------------------------------------------ | -------------- | ------------------------------------------------- |
-| `state`       | `"idle" \| "uploading" \| "processing" \| "error" \| "done"` | `"done"`       | The upload state. Drives styling and the shimmer. |
-| `size`        | `"default" \| "sm" \| "xs"`                                  | `"default"`    | The attachment size.                              |
-| `orientation` | `"horizontal" \| "vertical"`                                 | `"horizontal"` | Lay the media beside or above the content.        |
-| `className`   | `string`                                                     | -              | Additional classes to apply to the root element.  |
-
-### AttachmentMedia
-
-The media slot for an icon or image preview.
-
-| Prop        | Type                | Default  | Description                                    |
-| ----------- | ------------------- | -------- | ---------------------------------------------- |
-| `variant`   | `"icon" \| "image"` | `"icon"` | Whether the media holds an icon or an `<img>`. |
-| `className` | `string`            | -        | Additional classes to apply to the media slot. |
-
-### AttachmentContent
-
-Wraps the title and description.
-
-| Prop        | Type     | Default | Description                                      |
-| ----------- | -------- | ------- | ------------------------------------------------ |
-| `className` | `string` | -       | Additional classes to apply to the content slot. |
-
-### AttachmentTitle
-
-The attachment name. Shimmers while the attachment is `uploading` or `processing`.
-
-| Prop        | Type     | Default | Description                               |
-| ----------- | -------- | ------- | ----------------------------------------- |
-| `className` | `string` | -       | Additional classes to apply to the title. |
-
-### AttachmentDescription
-
-Secondary metadata such as the file type, size, or upload status.
-
-| Prop        | Type     | Default | Description                                     |
-| ----------- | -------- | ------- | ----------------------------------------------- |
-| `className` | `string` | -       | Additional classes to apply to the description. |
-
-### AttachmentActions
-
-A container for one or more actions, aligned to the end of the attachment.
-
-| Prop        | Type     | Default | Description                                 |
-| ----------- | -------- | ------- | ------------------------------------------- |
-| `className` | `string` | -       | Additional classes to apply to the actions. |
-
-### AttachmentAction
-
-An action button. Renders a [        ](/components/button) and accepts all of its props.
-
-| Prop       | Type                                  | Default     | Description                              |
-| ---------- | ------------------------------------- | ----------- | ---------------------------------------- |
-| `size`     | `Button["size"]`                      | `"icon-xs"` | The button size.                         |
-| `...props` | `React.ComponentProps<typeof Button>` | -           | Props spread to the underlying `Button`. |
-
-### AttachmentTrigger
-
-A full-card overlay that activates the attachment. Renders a `<button>` by default.
-
-| Prop       | Type                             | Default | Description                                  |
-| ---------- | -------------------------------- | ------- | -------------------------------------------- |
-| `asChild`  | `boolean`                        | `false` | Render as the child element, such as a link. |
-| `...props` | `React.ComponentProps<"button">` | -       | Props spread to the trigger element.         |
-
-### AttachmentGroup
-
-Lays out attachments in a horizontally scrollable, snapping row.
-
-| Prop        | Type     | Default | Description                               |
-| ----------- | -------- | ------- | ----------------------------------------- |
-| `className` | `string` | -       | Additional classes to apply to the group. |
+| Slot | Attribute | Values | Default |
+| --- | --- | --- | --- |
+| `attachment` | `data-size` | `default`, `sm`, `xs` | `default` |
+| `attachment` | `data-orientation` | `horizontal`, `vertical` | `horizontal` |
+| `attachment-media` | `data-variant` | `icon`, `image` | `icon` |

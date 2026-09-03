@@ -419,6 +419,8 @@ func (ctx *docsBuildCtx) apiReferenceTransform(name, raw string, seen *[]string)
 	}
 	*seen = append(*seen, "api-reference")
 	var slots []string
+	var axes []cvaAxisRow
+	tier := ""
 	slotSeen := map[string]bool{}
 	if irb, err := os.ReadFile(filepath.Join("generated/ir", name+".json")); err == nil {
 		var ir cssIrComponent
@@ -431,11 +433,17 @@ func (ctx *docsBuildCtx) apiReferenceTransform(name, raw string, seen *[]string)
 					}
 				}
 			}
+			axes = cvaAxisRows(ir)
+			tier = ir.Tier
 		}
 	}
-	extra := apiReferenceMdx(name, slots)
+	s := locateApiReferenceSpan(name, fenceShadow(raw))
+	extra := apiReferenceMdx(name, slots, axes, tier, s != nil)
 	if extra == "" {
 		return raw
+	}
+	if s != nil {
+		return raw[:s.start] + "## API Reference\n\n" + extra + "\n" + raw[s.end:]
 	}
 	at := m[1]
 	return raw[:at] + "\n" + extra + raw[at:]

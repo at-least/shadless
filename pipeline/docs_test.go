@@ -246,10 +246,10 @@ func TestUnitFixtureFamiliesGolden(t *testing.T) {
 		if got := trivialMdx(name); got != g.Trivial {
 			t.Errorf("%s: trivialMdx diverges", name)
 		}
-		if got := apiReferenceMdx(name, nil); got != g.Api0 {
+		if got := apiReferenceMdx(name, nil, nil, "", false); got != g.Api0 {
 			t.Errorf("%s: apiReferenceMdx(0 slots) diverges", name)
 		}
-		if got := apiReferenceMdx(name, []string{"s1", "s2"}); got != g.Api2 {
+		if got := apiReferenceMdx(name, []string{"s1", "s2"}, nil, "", false); got != g.Api2 {
 			t.Errorf("%s: apiReferenceMdx(2 slots) diverges", name)
 		}
 	}

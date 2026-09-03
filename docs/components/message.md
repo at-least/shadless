@@ -998,7 +998,7 @@ For in-progress messages, use a [        ](/components/marker) with `role="statu
 ## API Reference
 
 
-**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 
 | Slot |
 | --- |
@@ -1009,51 +1009,4 @@ For in-progress messages, use a [        ](/components/marker) with `role="statu
 | `data-slot="message-header"` |
 | `data-slot="message-footer"` |
 
-### Message
-
-The message row wrapper.
-
-| Prop        | Type               | Default   | Description                                       |
-| ----------- | ------------------ | --------- | ------------------------------------------------- |
-| `align`     | `"start" \| "end"` | `"start"` | The alignment of the message in the conversation. |
-| `className` | `string`           | -         | Additional classes to apply to the row.           |
-
-### MessageGroup
-
-Groups consecutive messages from the same sender.
-
-| Prop        | Type     | Default | Description                                    |
-| ----------- | -------- | ------- | ---------------------------------------------- |
-| `className` | `string` | -       | Additional classes to apply to the group root. |
-
-### MessageAvatar
-
-The avatar slot, aligned to the bottom of the message. When the message has a `MessageFooter`, the avatar shifts up to stay aligned with the message surface instead of the footer.
-
-| Prop        | Type     | Default | Description                                     |
-| ----------- | -------- | ------- | ----------------------------------------------- |
-| `className` | `string` | -       | Additional classes to apply to the avatar slot. |
-
-### MessageContent
-
-Wraps the header, message surface, and footer.
-
-| Prop        | Type     | Default | Description                                      |
-| ----------- | -------- | ------- | ------------------------------------------------ |
-| `className` | `string` | -       | Additional classes to apply to the content slot. |
-
-### MessageHeader
-
-Displays content above the message, such as a sender name. Stays aligned to the start regardless of `align`.
-
-| Prop        | Type     | Default | Description                                |
-| ----------- | -------- | ------- | ------------------------------------------ |
-| `className` | `string` | -       | Additional classes to apply to the header. |
-
-### MessageFooter
-
-Displays content below the message, such as status or actions. Aligns to the message side.
-
-| Prop        | Type     | Default | Description                                |
-| ----------- | -------- | ------- | ------------------------------------------ |
-| `className` | `string` | -       | Additional classes to apply to the footer. |
+**Runtime:** no JavaScript — this is markup + CSS. No `cva`-declared variants. Check `dist/css/message.css` for any `data-*` attribute this slot's styling depends on.

@@ -797,7 +797,7 @@ When a marker links or triggers an action, render it as a real `<button>` or `<a
 ## API Reference
 
 
-**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 
 | Slot |
 | --- |
@@ -805,28 +805,8 @@ When a marker links or triggers an action, render it as a real `<button>` or `<a
 | `data-slot="marker-icon"` |
 | `data-slot="marker-content"` |
 
-### Marker
+**Runtime:** no JavaScript — this is markup + CSS. Each row below is a `cva`-declared variant baked into the shipped CSS as a `data-*` attribute; set it next to the slot's `data-slot` to pick that value (the Default needs no attribute). This table only covers `cva` variants — check `dist/css/marker.css` for any other `data-*` selector on these slots.
 
-The root marker element. The file also exports `markerVariants` for composing the marker styles into custom components.
-
-| Prop        | Type                                   | Default     | Description                                      |
-| ----------- | -------------------------------------- | ----------- | ------------------------------------------------ |
-| `variant`   | `"default" \| "border" \| "separator"` | `"default"` | The marker layout.                               |
-| `asChild`   | `boolean`                              | `false`     | Render as the child element, such as a link.     |
-| `className` | `string`                               | -           | Additional classes to apply to the root element. |
-
-### MarkerIcon
-
-A decorative icon slot. Hidden from assistive tech with `aria-hidden`.
-
-| Prop        | Type     | Default | Description                                   |
-| ----------- | -------- | ------- | --------------------------------------------- |
-| `className` | `string` | -       | Additional classes to apply to the icon slot. |
-
-### MarkerContent
-
-The marker text content.
-
-| Prop        | Type     | Default | Description                                      |
-| ----------- | -------- | ------- | ------------------------------------------------ |
-| `className` | `string` | -       | Additional classes to apply to the content slot. |
+| Slot | Attribute | Values | Default |
+| --- | --- | --- | --- |
+| `marker` | `data-variant` | `default`, `separator`, `border` | `default` |

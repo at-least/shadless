@@ -652,7 +652,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 ## API Reference
 
 
-**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 
 | Slot |
 | --- |
@@ -663,95 +663,8 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | `data-slot="empty-description"` |
 | `data-slot="empty-content"` |
 
-### Empty
+**Runtime:** no JavaScript — this is markup + CSS. Each row below is a `cva`-declared variant baked into the shipped CSS as a `data-*` attribute; set it next to the slot's `data-slot` to pick that value (the Default needs no attribute). This table only covers `cva` variants — check `dist/css/empty.css` for any other `data-*` selector on these slots.
 
-The main component of the empty state. Wraps the `EmptyHeader` and `EmptyContent` components.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` |         |
-
-```tsx
-<Empty>
-  <EmptyHeader />
-  <EmptyContent />
-</Empty>
-```
-
-### EmptyHeader
-
-The `EmptyHeader` component wraps the empty media, title, and description.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` |         |
-
-```tsx
-<EmptyHeader>
-  <EmptyMedia />
-  <EmptyTitle />
-  <EmptyDescription />
-</EmptyHeader>
-```
-
-### EmptyMedia
-
-Use the `EmptyMedia` component to display the media of the empty state such as an icon or an image. You can also use it to display other components such as an avatar.
-
-| Prop        | Type                  | Default   |
-| ----------- | --------------------- | --------- |
-| `variant`   | `"default" \| "icon"` | `default` |
-| `className` | `string`              |           |
-
-```tsx
-<EmptyMedia variant="icon">
-  <Icon />
-</EmptyMedia>
-```
-
-```tsx
-<EmptyMedia>
-  <Avatar>
-    <AvatarImage src="..." />
-    <AvatarFallback>CN</AvatarFallback>
-  </Avatar>
-</EmptyMedia>
-```
-
-### EmptyTitle
-
-Use the `EmptyTitle` component to display the title of the empty state.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` |         |
-
-```tsx
-<EmptyTitle>No data</EmptyTitle>
-```
-
-### EmptyDescription
-
-Use the `EmptyDescription` component to display the description of the empty state.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` |         |
-
-```tsx
-<EmptyDescription>You do not have any notifications.</EmptyDescription>
-```
-
-### EmptyContent
-
-Use the `EmptyContent` component to display the content of the empty state such as a button, input or a link.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` |         |
-
-```tsx
-<EmptyContent>
-  <Button>Add Project</Button>
-</EmptyContent>
-```
+| Slot | Attribute | Values | Default |
+| --- | --- | --- | --- |
+| `empty-icon` | `data-variant` | `default`, `icon` | `default` |

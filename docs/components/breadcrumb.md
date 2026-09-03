@@ -1327,7 +1327,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 ## API Reference
 
 
-**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 
 | Slot |
 | --- |
@@ -1339,59 +1339,4 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | `data-slot="breadcrumb-separator"` |
 | `data-slot="breadcrumb-ellipsis"` |
 
-### Breadcrumb
-
-The `Breadcrumb` component is the root navigation element that wraps all breadcrumb components.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` | -       |
-
-### BreadcrumbList
-
-The `BreadcrumbList` component displays the ordered list of breadcrumb items.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` | -       |
-
-### BreadcrumbItem
-
-The `BreadcrumbItem` component wraps individual breadcrumb items.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` | -       |
-
-### BreadcrumbLink
-
-The `BreadcrumbLink` component displays a clickable link in the breadcrumb.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` | -       |
-
-### BreadcrumbPage
-
-The `BreadcrumbPage` component displays the current page in the breadcrumb (non-clickable).
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` | -       |
-
-### BreadcrumbSeparator
-
-The `BreadcrumbSeparator` component displays a separator between breadcrumb items. You can pass custom children to override the default separator icon.
-
-| Prop        | Type              | Default |
-| ----------- | ----------------- | ------- |
-| `children`  | `React.ReactNode` | -       |
-| `className` | `string`          | -       |
-
-### BreadcrumbEllipsis
-
-The `BreadcrumbEllipsis` component displays an ellipsis indicator for collapsed breadcrumb items.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` | -       |
+**Runtime:** no JavaScript — this is markup + CSS. No `cva`-declared variants. Check `dist/css/breadcrumb.css` for any `data-*` attribute this slot's styling depends on.

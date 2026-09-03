@@ -1160,7 +1160,7 @@ Bubble variants signal role and tone with color. Pair them with text, alignment,
 ## API Reference
 
 
-**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 
 | Slot |
 | --- |
@@ -1169,39 +1169,10 @@ Bubble variants signal role and tone with color. Pair them with text, alignment,
 | `data-slot="bubble-content"` |
 | `data-slot="bubble-reactions"` |
 
-### Bubble
+**Runtime:** no JavaScript — this is markup + CSS. Each row below is a `cva`-declared variant baked into the shipped CSS as a `data-*` attribute; set it next to the slot's `data-slot` to pick that value (the Default needs no attribute). This table only covers `cva` variants — check `dist/css/bubble.css` for any other `data-*` selector on these slots.
 
-The root bubble wrapper.
-
-| Prop        | Type                                                                                       | Default     | Description                                      |
-| ----------- | ------------------------------------------------------------------------------------------ | ----------- | ------------------------------------------------ |
-| `variant`   | `"default" \| "secondary" \| "muted" \| "tinted" \| "outline" \| "ghost" \| "destructive"` | `"default"` | The bubble visual treatment.                     |
-| `align`     | `"start" \| "end"`                                                                         | `"start"`   | The inline alignment of the bubble.              |
-| `className` | `string`                                                                                   | -           | Additional classes to apply to the root element. |
-
-### BubbleContent
-
-The bubble content wrapper.
-
-| Prop        | Type      | Default | Description                                         |
-| ----------- | --------- | ------- | --------------------------------------------------- |
-| `asChild`   | `boolean` | `false` | Render the content as the child element.            |
-| `className` | `string`  | -       | Additional classes to apply to the content element. |
-
-### BubbleReactions
-
-Displays overlapped reactions for a bubble.
-
-| Prop        | Type                | Default    | Description                                      |
-| ----------- | ------------------- | ---------- | ------------------------------------------------ |
-| `side`      | `"top" \| "bottom"` | `"bottom"` | The side of the bubble to anchor the reactions.  |
-| `align`     | `"start" \| "end"`  | `"end"`    | The inline alignment of the reactions.           |
-| `className` | `string`            | -          | Additional classes to apply to the reaction row. |
-
-### BubbleGroup
-
-Groups consecutive bubbles from the same sender.
-
-| Prop        | Type     | Default | Description                                    |
-| ----------- | -------- | ------- | ---------------------------------------------- |
-| `className` | `string` | -       | Additional classes to apply to the group root. |
+| Slot | Attribute | Values | Default |
+| --- | --- | --- | --- |
+| `bubble` | `data-variant` | `default`, `secondary`, `muted`, `tinted`, `outline`, `ghost`, `destructive` | `default` |
+| `bubble-reactions` | `data-side` | `top`, `bottom` | `bottom` |
+| `bubble-reactions` | `data-align` | `start`, `end` | `end` |

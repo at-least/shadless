@@ -414,17 +414,14 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 ## API Reference
 
 
-**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 
 | Slot |
 | --- |
 | `data-slot="badge"` |
 
-### Badge
+**Runtime:** no JavaScript — this is markup + CSS. Each row below is a `cva`-declared variant baked into the shipped CSS as a `data-*` attribute; set it next to the slot's `data-slot` to pick that value (the Default needs no attribute). This table only covers `cva` variants — check `dist/css/badge.css` for any other `data-*` selector on these slots.
 
-The `Badge` component displays a badge or a component that looks like a badge.
-
-| Prop        | Type                                                                          | Default     |
-| ----------- | ----------------------------------------------------------------------------- | ----------- |
-| `variant`   | `"default" \| "secondary" \| "destructive" \| "outline" \| "ghost" \| "link"` | `"default"` |
-| `className` | `string`                                                                      | -           |
+| Slot | Attribute | Values | Default |
+| --- | --- | --- | --- |
+| `badge` | `data-variant` | `default`, `secondary`, `destructive`, `outline`, `ghost`, `link` | `default` |

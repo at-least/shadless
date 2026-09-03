@@ -442,7 +442,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 ## API Reference
 
 
-**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 
 | Slot |
 | --- |
@@ -452,38 +452,4 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | `data-slot="native-select-option"` |
 | `data-slot="native-select-optgroup"` |
 
-### NativeSelect
-
-The main select component that wraps the native HTML select element.
-
-```tsx
-<NativeSelect>
-  <NativeSelectOption value="option1">Option 1</NativeSelectOption>
-  <NativeSelectOption value="option2">Option 2</NativeSelectOption>
-</NativeSelect>
-```
-
-### NativeSelectOption
-
-Represents an individual option within the select.
-
-| Prop       | Type      | Default |
-| ---------- | --------- | ------- |
-| `value`    | `string`  |         |
-| `disabled` | `boolean` | `false` |
-
-### NativeSelectOptGroup
-
-Groups related options together for better organization.
-
-| Prop       | Type      | Default |
-| ---------- | --------- | ------- |
-| `label`    | `string`  |         |
-| `disabled` | `boolean` | `false` |
-
-```tsx
-<NativeSelectOptGroup label="Fruits">
-  <NativeSelectOption value="apple">Apple</NativeSelectOption>
-  <NativeSelectOption value="banana">Banana</NativeSelectOption>
-</NativeSelectOptGroup>
-```
+**Runtime:** no JavaScript — this is markup + CSS. No `cva`-declared variants. Check `dist/css/native-select.css` for any `data-*` attribute this slot's styling depends on.

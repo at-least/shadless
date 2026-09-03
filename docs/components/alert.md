@@ -423,7 +423,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 ## API Reference
 
 
-**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 
 | Slot |
 | --- |
@@ -432,34 +432,8 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | `data-slot="alert-description"` |
 | `data-slot="alert-action"` |
 
-### Alert
+**Runtime:** no JavaScript — this is markup + CSS. Each row below is a `cva`-declared variant baked into the shipped CSS as a `data-*` attribute; set it next to the slot's `data-slot` to pick that value (the Default needs no attribute). This table only covers `cva` variants — check `dist/css/alert.css` for any other `data-*` selector on these slots.
 
-The `Alert` component displays a callout for user attention.
-
-| Prop      | Type                         | Default     |
-| --------- | ---------------------------- | ----------- |
-| `variant` | `"default" \| "destructive"` | `"default"` |
-
-### AlertTitle
-
-The `AlertTitle` component displays the title of the alert.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` | -       |
-
-### AlertDescription
-
-The `AlertDescription` component displays the description or content of the alert.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` | -       |
-
-### AlertAction
-
-The `AlertAction` component displays an action element (like a button) positioned absolutely in the top-right corner of the alert.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` | -       |
+| Slot | Attribute | Values | Default |
+| --- | --- | --- | --- |
+| `alert` | `data-variant` | `default`, `destructive` | `default` |

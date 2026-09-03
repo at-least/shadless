@@ -202,7 +202,39 @@ func trivialMdx(comp string) string {
 	return b.String()
 }
 
-func apiReferenceMdx(comp string, slots []string) string {
+type cvaAxisRow struct {
+	slot   string
+	attr   string
+	values []string
+	def    string
+}
+
+// cvaAxisRows: cva variant axes flattened to (slot, attribute, values,
+// default) rows, in the IR's declaration order. This is the only vanilla-JS
+// equivalent a plain-HTML wrapper (shadcn's own component, not a Radix
+// primitive) has for a React prop like `variant`/`size`: no events, no
+// state, just a `data-*` attribute the shipped CSS switches on.
+func cvaAxisRows(ir cssIrComponent) []cvaAxisRow {
+	bySlot := cvaSlot(ir)
+	var out []cvaAxisRow
+	for _, varName := range ir.Cva.keys {
+		entry, ok := bySlot[varName]
+		if !ok || entry.slot == "" {
+			continue
+		}
+		for _, axis := range entry.table.axisOrder {
+			out = append(out, cvaAxisRow{
+				slot:   entry.slot,
+				attr:   axis,
+				values: entry.table.valueOrder[axis],
+				def:    entry.table.defaults[axis],
+			})
+		}
+	}
+	return out
+}
+
+func apiReferenceMdx(comp string, slots []string, axes []cvaAxisRow, tier string, leaked bool) string {
 	t := trivial[comp]
 	f := family[comp]
 	var rows []string
@@ -249,11 +281,38 @@ func apiReferenceMdx(comp string, slots []string) string {
 		} else {
 			runtime = "\n**Runtime:** wired from `data-slot` alone — no handle, no events; see Installation → Behavior protocol.\n"
 		}
+	} else if leaked {
+		var b strings.Builder
+		b.WriteString("\n**Runtime:** ")
+		if tier == "static" {
+			b.WriteString("no JavaScript — this is markup + CSS. ")
+		}
+		if len(axes) > 0 {
+			b.WriteString("Each row below is a `cva`-declared variant baked into the shipped CSS as a `data-*` attribute; set it next to the slot's `data-slot` to pick that value (the Default needs no attribute). This table only covers `cva` variants — check `dist/css/" + comp + ".css` for any other `data-*` selector on these slots.\n\n")
+			b.WriteString("| Slot | Attribute | Values | Default |\n| --- | --- | --- | --- |\n")
+			for _, a := range axes {
+				var vals []string
+				for _, v := range a.values {
+					vals = append(vals, "`"+v+"`")
+				}
+				b.WriteString("| `" + a.slot + "` | `data-" + a.attr + "` | " + strings.Join(vals, ", ") + " | `" + a.def + "` |\n")
+			}
+		} else {
+			b.WriteString("No `cva`-declared variants. Check `dist/css/" + comp + ".css` for any `data-*` attribute this slot's styling depends on.\n")
+		}
+		if tier != "static" {
+			b.WriteString("See Installation → Files this component needs for the JavaScript this component requires.\n")
+		}
+		runtime = b.String()
 	}
 	if slotTable == "" && runtime == "" {
 		return ""
 	}
-	return "\n**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.\n" + slotTable + runtime
+	preamble := "\n**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.\n"
+	if leaked {
+		preamble = "\n**shadless surface** — every node is a `data-slot` attribute in the shipped markup.\n"
+	}
+	return preamble + slotTable + runtime
 }
 
 // sortedFamilyKeys / sortedTrivialKeys for deterministic golden dumps.

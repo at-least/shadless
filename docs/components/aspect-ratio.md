@@ -207,19 +207,11 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 ## API Reference
 
 
-**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 
 | Slot |
 | --- |
 | `data-slot="aspect-ratio"` |
 
-### AspectRatio
-
-The `AspectRatio` component displays content within a desired ratio.
-
-| Prop        | Type     | Default | Required |
-| ----------- | -------- | ------- | -------- |
-| `ratio`     | `number` | -       | Yes      |
-| `className` | `string` | -       | No       |
-
-For more information, see the [Radix UI documentation](https://www.radix-ui.com/primitives/docs/components/aspect-ratio#api-reference).
+**Runtime:** No `cva`-declared variants. Check `dist/css/aspect-ratio.css` for any `data-*` attribute this slot's styling depends on.
+See Installation → Files this component needs for the JavaScript this component requires.

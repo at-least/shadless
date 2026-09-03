@@ -2944,80 +2944,15 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 ## API Reference
 
 
-**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 
 | Slot |
 | --- |
 | `data-slot="button-group"` |
 | `data-slot="button-group-separator"` |
 
-### ButtonGroup
+**Runtime:** no JavaScript — this is markup + CSS. Each row below is a `cva`-declared variant baked into the shipped CSS as a `data-*` attribute; set it next to the slot's `data-slot` to pick that value (the Default needs no attribute). This table only covers `cva` variants — check `dist/css/button-group.css` for any other `data-*` selector on these slots.
 
-The `ButtonGroup` component is a container that groups related buttons together with consistent styling.
-
-| Prop          | Type                         | Default        |
-| ------------- | ---------------------------- | -------------- |
-| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` |
-
-```tsx
-<ButtonGroup>
-  <Button>Button 1</Button>
-  <Button>Button 2</Button>
-</ButtonGroup>
-```
-
-Nest multiple button groups to create complex layouts with spacing. See the [nested](#nested) example for more details.
-
-```tsx
-<ButtonGroup>
-  <ButtonGroup />
-  <ButtonGroup />
-</ButtonGroup>
-```
-
-### ButtonGroupSeparator
-
-The `ButtonGroupSeparator` component visually divides buttons within a group.
-
-| Prop          | Type                         | Default      |
-| ------------- | ---------------------------- | ------------ |
-| `orientation` | `"horizontal" \| "vertical"` | `"vertical"` |
-
-```tsx
-<ButtonGroup>
-  <Button>Button 1</Button>
-  <ButtonGroupSeparator />
-  <Button>Button 2</Button>
-</ButtonGroup>
-```
-
-### ButtonGroupText
-
-Use this component to display text within a button group.
-
-| Prop      | Type      | Default |
-| --------- | --------- | ------- |
-| `asChild` | `boolean` | `false` |
-
-```tsx
-<ButtonGroup>
-  <ButtonGroupText>Text</ButtonGroupText>
-  <Button>Button</Button>
-</ButtonGroup>
-```
-
-Use the `asChild` prop to render a custom component as the text, for example a label.
-
-```tsx showLineNumbers
-
-export function ButtonGroupTextDemo() {
-  return (
-    <ButtonGroup>
-      <ButtonGroupText asChild>
-        <Label htmlFor="name">Text</Label>
-      </ButtonGroupText>
-      <Input placeholder="Type something here..." id="name" />
-    </ButtonGroup>
-  )
-}
-```
+| Slot | Attribute | Values | Default |
+| --- | --- | --- | --- |
+| `button-group` | `data-orientation` | `horizontal`, `vertical` | `horizontal` |

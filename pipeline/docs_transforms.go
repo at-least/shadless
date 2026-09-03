@@ -143,6 +143,47 @@ func locateCompositionSpan(shadow string) *span {
 
 var reH2Composition = regexp.MustCompile(`(?m)^## Composition$`)
 
+// reApiRefLeak: a markdown table row or a `### ` subheading inside the
+// section — the shape shadcn's own per-subcomponent React prop docs always
+// take (verified against every upstream radix/*.mdx: no section has a fence
+// without one of these too). A section without either is prose only (e.g.
+// "See the Radix UI docs…") and has nothing React-specific to replace.
+var reApiRefLeak = regexp.MustCompile(`(?m)^\s*\|.*\||^### `)
+
+// locateApiReferenceSpan: `## API Reference` … next `## ` heading or EOF —
+// ONLY for components with no family/trivial behavior-protocol entry
+// (docs_families.go) AND whose section actually contains leaked React
+// content (reApiRefLeak). Components with a family/trivial entry, and
+// uncovered components whose upstream section is just a link to the Radix
+// docs, are left in place (nil here, same as always) — those aren't the
+// wrapper components' own React prop tables/JSX this transform targets.
+func locateApiReferenceSpan(comp string, shadow string) *span {
+	if _, ok := trivial[comp]; ok {
+		return nil
+	}
+	if _, ok := family[comp]; ok {
+		return nil
+	}
+	open := reApiRefHeading.FindStringIndex(shadow)
+	if open == nil {
+		return nil
+	}
+	after := shadow[open[1]:]
+	off := 0
+	end := len(shadow)
+	for _, line := range strings.Split(after, "\n") {
+		if strings.HasPrefix(line, "## ") {
+			end = open[1] + off
+			break
+		}
+		off += len(line) + 1
+	}
+	if !reApiRefLeak.MatchString(shadow[open[1]:end]) {
+		return nil
+	}
+	return &span{open[0], end}
+}
+
 // dropReactImportFences removes pure React-import fences (content is ONLY
 // import statements from @/components/ui/*). The JS pattern tempered the
 // import match with (?:(?!```)[\s\S])*? so an import statement can never

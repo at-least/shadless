@@ -2087,7 +2087,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 ## API Reference
 
 
-**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 
 | Slot |
 | --- |
@@ -2095,107 +2095,11 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | `data-slot="input-group-addon"` |
 | `data-slot="input-group-control"` |
 
-### InputGroup
+**Runtime:** no JavaScript — this is markup + CSS. Each row below is a `cva`-declared variant baked into the shipped CSS as a `data-*` attribute; set it next to the slot's `data-slot` to pick that value (the Default needs no attribute). This table only covers `cva` variants — check `dist/css/input-group.css` for any other `data-*` selector on these slots.
 
-The main component that wraps inputs and addons.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` |         |
-
-```tsx
-<InputGroup>
-  <InputGroupInput />
-  <InputGroupAddon />
-</InputGroup>
-```
-
-### InputGroupAddon
-
-Displays icons, text, buttons, or other content alongside inputs.
-
-::: tip
-} title="Focus Navigation">
-For proper focus navigation, the `InputGroupAddon` component should be placed
-after the input. Set the `align` prop to position the addon.
-:::
-
-| Prop        | Type                                                             | Default          |
-| ----------- | ---------------------------------------------------------------- | ---------------- |
-| `align`     | `"inline-start" \| "inline-end" \| "block-start" \| "block-end"` | `"inline-start"` |
-| `className` | `string`                                                         |                  |
-
-```tsx
-<InputGroupAddon align="inline-end">
-  <SearchIcon />
-</InputGroupAddon>
-```
-
-**For `<InputGroupInput />`, use the `inline-start` or `inline-end` alignment. For `<InputGroupTextarea />`, use the `block-start` or `block-end` alignment.**
-
-The `InputGroupAddon` component can have multiple `InputGroupButton` components and icons.
-
-```tsx
-<InputGroupAddon>
-  <InputGroupButton>Button</InputGroupButton>
-  <InputGroupButton>Button</InputGroupButton>
-</InputGroupAddon>
-```
-
-### InputGroupButton
-
-Displays buttons within input groups.
-
-| Prop        | Type                                                                          | Default   |
-| ----------- | ----------------------------------------------------------------------------- | --------- |
-| `size`      | `"xs" \| "icon-xs" \| "sm" \| "icon-sm"`                                      | `"xs"`    |
-| `variant`   | `"default" \| "destructive" \| "outline" \| "secondary" \| "ghost" \| "link"` | `"ghost"` |
-| `className` | `string`                                                                      |           |
-
-```tsx
-<InputGroupButton>Button</InputGroupButton>
-<InputGroupButton size="icon-xs" aria-label="Copy">
-  <CopyIcon />
-</InputGroupButton>
-```
-
-### InputGroupInput
-
-Replacement for `<Input />` when building input groups. This component has the input group styles pre-applied and uses the unified `data-slot="input-group-control"` for focus state handling.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` |         |
-
-All other props are passed through to the underlying `<Input />` component.
-
-```tsx
-<InputGroup>
-  <InputGroupInput placeholder="Enter text..." />
-  <InputGroupAddon>
-    <SearchIcon />
-  </InputGroupAddon>
-</InputGroup>
-```
-
-### InputGroupTextarea
-
-Replacement for `<Textarea />` when building input groups. This component has the textarea group styles pre-applied and uses the unified `data-slot="input-group-control"` for focus state handling.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` |         |
-
-All other props are passed through to the underlying `<Textarea />` component.
-
-```tsx
-<InputGroup>
-  <InputGroupTextarea placeholder="Enter message..." />
-  <InputGroupAddon align="block-end">
-    <InputGroupButton>Send</InputGroupButton>
-  </InputGroupAddon>
-</InputGroup>
-```
+| Slot | Attribute | Values | Default |
+| --- | --- | --- | --- |
+| `input-group-addon` | `data-align` | `inline-start`, `inline-end`, `block-start`, `block-end` | `inline-start` |
 
 ## Changelog
 

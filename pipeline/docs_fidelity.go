@@ -122,6 +122,14 @@ func withoutCompositionSection(raw string) string {
 	return replaceSpan(raw, *s, "## Composition\n")
 }
 
+func withoutApiReferenceSection(comp, raw string) string {
+	s := locateApiReferenceSpan(comp, fenceShadow(raw))
+	if s == nil {
+		return raw
+	}
+	return replaceSpan(raw, *s, "## API Reference\n\n")
+}
+
 // ---- fact extraction ---------------------------------------------------------
 
 var (
@@ -186,7 +194,7 @@ type pageFacts struct {
 }
 
 // mdxPageFacts with the drop* predicates mirroring what the builder applied.
-func mdxPageFacts(raw string, dropCodeTabs, dropInstallSection, dropRtlMigrate, dropUsageSection, dropCompositionSection bool) pageFacts {
+func mdxPageFacts(name, raw string, dropCodeTabs, dropInstallSection, dropRtlMigrate, dropUsageSection, dropCompositionSection, dropApiReferenceSection bool) pageFacts {
 	src := raw
 	if dropCodeTabs {
 		src = withoutCodeTabs(src)
@@ -205,6 +213,9 @@ func mdxPageFacts(raw string, dropCodeTabs, dropInstallSection, dropRtlMigrate, 
 	}
 	if dropCompositionSection {
 		src = withoutCompositionSection(src)
+	}
+	if dropApiReferenceSection {
+		src = withoutApiReferenceSection(name, src)
 	}
 	body := fenceShadow(src)
 	noInlineCode := reInlineCode.ReplaceAllStringFunc(body, func(m string) string {

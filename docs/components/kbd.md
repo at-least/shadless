@@ -546,36 +546,11 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 ## API Reference
 
 
-**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 
 | Slot |
 | --- |
 | `data-slot="kbd"` |
 | `data-slot="kbd-group"` |
 
-### Kbd
-
-Use the `Kbd` component to display a keyboard key.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` | ``      |
-
-```tsx
-<Kbd>Ctrl</Kbd>
-```
-
-### KbdGroup
-
-Use the `KbdGroup` component to group `Kbd` components together.
-
-| Prop        | Type     | Default |
-| ----------- | -------- | ------- |
-| `className` | `string` | ``      |
-
-```tsx
-<KbdGroup>
-  <Kbd>Ctrl</Kbd>
-  <Kbd>B</Kbd>
-</KbdGroup>
-```
+**Runtime:** no JavaScript — this is markup + CSS. No `cva`-declared variants. Check `dist/css/kbd.css` for any `data-*` attribute this slot's styling depends on.

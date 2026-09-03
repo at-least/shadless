@@ -1826,7 +1826,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 ## API Reference
 
 
-**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 
 | Slot |
 | --- |
@@ -1841,114 +1841,10 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | `data-slot="item-header"` |
 | `data-slot="item-footer"` |
 
-### Item
+**Runtime:** no JavaScript — this is markup + CSS. Each row below is a `cva`-declared variant baked into the shipped CSS as a `data-*` attribute; set it next to the slot's `data-slot` to pick that value (the Default needs no attribute). This table only covers `cva` variants — check `dist/css/item.css` for any other `data-*` selector on these slots.
 
-The main component for displaying content with media, title, description, and actions.
-
-| Prop      | Type                                | Default     |
-| --------- | ----------------------------------- | ----------- |
-| `variant` | `"default" \| "outline" \| "muted"` | `"default"` |
-| `size`    | `"default" \| "sm" \| "xs"`         | `"default"` |
-| `asChild` | `boolean`                           | `false`     |
-
-### ItemGroup
-
-A container that groups related items together with consistent styling.
-
-```tsx
-<ItemGroup>
-  <Item />
-  <Item />
-</ItemGroup>
-```
-
-### ItemSeparator
-
-A separator between items in a group.
-
-```tsx
-<ItemGroup>
-  <Item />
-  <ItemSeparator />
-  <Item />
-</ItemGroup>
-```
-
-### ItemMedia
-
-Use `ItemMedia` to display media content such as icons, images, or avatars.
-
-| Prop      | Type                             | Default     |
-| --------- | -------------------------------- | ----------- |
-| `variant` | `"default" \| "icon" \| "image"` | `"default"` |
-
-```tsx
-<ItemMedia variant="icon">
-  <Icon />
-</ItemMedia>
-```
-
-```tsx
-<ItemMedia variant="image">
-  <img src="..." alt="..." />
-</ItemMedia>
-```
-
-### ItemContent
-
-Wraps the title and description of the item.
-
-```tsx
-<ItemContent>
-  <ItemTitle>Title</ItemTitle>
-  <ItemDescription>Description</ItemDescription>
-</ItemContent>
-```
-
-### ItemTitle
-
-Displays the title of the item.
-
-```tsx
-<ItemTitle>Item Title</ItemTitle>
-```
-
-### ItemDescription
-
-Displays the description of the item.
-
-```tsx
-<ItemDescription>Item description</ItemDescription>
-```
-
-### ItemActions
-
-Container for action buttons or other interactive elements.
-
-```tsx
-<ItemActions>
-  <Button>Action</Button>
-</ItemActions>
-```
-
-### ItemHeader
-
-Displays a header above the item content.
-
-```tsx
-<Item>
-  <ItemHeader>Header</ItemHeader>
-  <ItemContent>...</ItemContent>
-</Item>
-```
-
-### ItemFooter
-
-Displays a footer below the item content.
-
-```tsx
-<Item>
-  <ItemContent>...</ItemContent>
-  <ItemFooter>Footer</ItemFooter>
-</Item>
-```
+| Slot | Attribute | Values | Default |
+| --- | --- | --- | --- |
+| `item` | `data-variant` | `default`, `outline`, `muted` | `default` |
+| `item` | `data-size` | `default`, `sm`, `xs` | `default` |
+| `item-media` | `data-variant` | `default`, `icon`, `image` | `default` |

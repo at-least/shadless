@@ -83,7 +83,7 @@ func runDocsFidelity() int {
 			issues = append(issues, issue{name, "text-adjustment", err.Error()})
 			continue
 		}
-		M := mdxPageFacts(adjusted, isComponent, g.installSection, g.rtlMigrate, isComponent, isComponent)
+		M := mdxPageFacts(name, adjusted, isComponent, g.installSection, g.rtlMigrate, isComponent, isComponent, isComponent)
 		mdB, _ := os.ReadFile(mdPath)
 		H := mdPageFacts(string(mdB))
 		fidelityRawMDX = adjusted
