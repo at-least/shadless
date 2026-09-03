@@ -64,10 +64,10 @@ Not running a Tailwind build? Use the precompiled stylesheet instead of
 the imports above:
 
 ```html
-<link rel="stylesheet" href="out.css">
+<link rel="stylesheet" href="shadless.full.min.css">
 ```
 
-`dist/out.css` (or the npm export `shadless/full.min.css`) contains every
+`dist/shadless.full.min.css` (npm: `shadless/full.min.css`) contains every
 component — the trade-off is size: it is all-or-nothing, while the import
 path emits only what you use.
 
@@ -84,7 +84,7 @@ npm run demo
 | `dist/shadless-core.css` | theme vars, `@theme`, animate layer — the tailwind entry source |
 | `dist/css/<name>.css` | per-component slot styles (`@apply` source) |
 | `dist/components/<name>.html` | one demo page per component — the markup to copy |
-| `dist/out.css` | precompiled styles for every component (no-build path) |
+| `dist/shadless.full.css` / `.full.min.css` | every component precompiled into one stylesheet (no-build path; `.min` for production) |
 | `dist/shadless.js` / `.min.js` | the JS base: delegation engine, registry, theme, the vendored radix kernel |
 | `dist/js/<name>.js` | one behavior file per interactive component (carousel bundles the embla engine) |
 | `dist/esm/shadless.mjs`, `dist/esm/<name>.mjs` | the same two as ES modules, for bundlers and `<script type="module">` |

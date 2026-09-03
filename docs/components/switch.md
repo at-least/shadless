@@ -85,7 +85,7 @@ The root dispatches `shadless:change` (`detail: { checked }`), bubbling, after t
 
 Forms: a `name` attribute submits its `value` (default `on`) while checked; `form.reset()` restores the initial state.
 
-No Tailwind build? Use the precompiled `dist/out.css` (every component) as a single stylesheet instead of the imports above.
+No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
 
 
 

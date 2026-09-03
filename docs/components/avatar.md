@@ -121,7 +121,7 @@ The files this component needs:
 Delegated from the base — no handle (`shadless.get(el)` is `null`): the state is the attribute radix renders and `el.click()` drives it. `avatar-image` is shown once loaded; on error or while loading the `avatar-fallback` stays (radix Presence) — settled at init and by `shadless.refresh(el)` for injected markup.
 
 
-No Tailwind build? Use the precompiled `dist/out.css` (every component) as a single stylesheet instead of the imports above.
+No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
 
 
 

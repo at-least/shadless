@@ -1,15 +1,18 @@
 ---
 title: "Typography"
-description: "How to style text with the Tailwind utilities shadless ships — no Typography component needed."
+description: "How to style text with plain Tailwind utilities — no Typography component needed."
 ---
 
 # Typography
 
-How to style text with the Tailwind utilities shadless ships — no Typography component needed.
+How to style text with plain Tailwind utilities — no Typography component needed.
 
 shadless does not ship a `<Typography>` component. The same typographic roles
-that shadcn-ui's `Typography` wrapper produces are plain Tailwind utilities in
-`dist/out.css` — apply them directly to your HTML.
+that shadcn-ui's `Typography` wrapper produces are plain Tailwind utilities —
+apply them directly to your HTML and your own Tailwind build compiles them,
+the same as any class you write. `text-muted-foreground` needs the shadless
+theme (`dist/shadless-core.css` / npm bare `shadless`), which you already
+have if you're using any component.
 
 ## Why no component?
 

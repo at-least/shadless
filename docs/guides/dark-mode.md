@@ -7,9 +7,10 @@ description: "Dark mode with the .dark class and CSS variables — no framework.
 
 Dark mode with the .dark class and CSS variables — no framework.
 
-shadless ships dark mode as CSS: `dist/out.css` defines every theme token as
-a CSS variable on `:root`, with a `.dark` override block. Dark mode is a
-class toggle — no provider, no framework.
+shadless ships dark mode as CSS: `dist/shadless-core.css` (npm: bare
+`shadless`) defines every theme token as a CSS variable on `:root`, with a
+`.dark` override block. Dark mode is a class toggle — no provider, no
+framework.
 
 ::::demo mode-toggle
 <iframe class="demo" src="/demos/mode-toggle.html" title="mode-toggle" data-status="authored" loading="lazy"></iframe>
@@ -81,7 +82,7 @@ class toggle — no provider, no framework.
 ## How it works
 
 ```css
-/* inside dist/out.css */
+/* inside dist/shadless-core.css */
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);

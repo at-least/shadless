@@ -144,7 +144,7 @@ Content that React would render inside the component's portal lives in the `<tem
 
 **From code:** `shadless.get(rootEl)` → `values()`, `setValue(value, index)`; the root dispatches `shadless:change` (`detail: { values }`, live) and `shadless:commit` (once per gesture). `shadless.get` accepts an element or a selector and walks up from any element inside the instance.
 
-No Tailwind build? Use the precompiled `dist/out.css` (every component) as a single stylesheet instead of the imports above.
+No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
 
 
 

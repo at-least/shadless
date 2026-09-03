@@ -82,7 +82,7 @@ Delegated from the base — no handle (`shadless.get(el)` is `null`): the state 
 
 The root dispatches `shadless:change` (`detail: { pressed }`), bubbling, after the state change, whichever path caused it.
 
-No Tailwind build? Use the precompiled `dist/out.css` (every component) as a single stylesheet instead of the imports above.
+No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
 
 
 

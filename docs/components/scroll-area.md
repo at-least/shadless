@@ -171,7 +171,7 @@ The glue is data-driven: it scans the page for the markup shape below and wires 
 
 Content that React would render inside the component's portal lives in the `<template>`; the glue clones it into `<body>` while open and removes it on close, exactly as radix mounts and unmounts.
 
-No Tailwind build? Use the precompiled `dist/out.css` (every component) as a single stylesheet instead of the imports above.
+No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
 
 
 

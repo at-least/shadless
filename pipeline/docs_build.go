@@ -340,7 +340,7 @@ func (ctx *docsBuildCtx) installStepsMdx(name string) string {
 		"\nThe files this component needs:\n\n| File | Purpose |\n| --- | --- |\n" + strings.Join(rows, "\n") + "\n" + jsStep +
 		"\n\n<Step>" + stepTail + " from `dist/components/" + name + ".html` into your page and adapt it" + inlineTail + " — the inline utilities are picked up by your build's content scan.</Step>\n" +
 		protocolMdx(name) + trivialMdx(name) +
-		"\nNo Tailwind build? Use the precompiled `dist/out.css` (every component) as a single stylesheet instead of the imports above.\n\n</Steps>"
+		"\nNo Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.\n\n</Steps>"
 }
 
 func (ctx *docsBuildCtx) usageMdx(name string) string {
@@ -470,7 +470,7 @@ func (ctx *docsBuildCtx) componentTransform(name, raw string) (string, error) {
 }
 
 func utilsInstallMdx(util string) string {
-	return "## Installation\n\nIn shadless, the `" + util + "` utilities ship precompiled inside `dist/out.css` —\nno npm install, Tailwind setup, or CSS import is required. Load `out.css` and\nuse the classes directly (see the [Installation](/docs/installation) guide)."
+	return "## Installation\n\nIn shadless, the `" + util + "` utilities ship precompiled inside `dist/shadless-core.css`\n(npm: bare `shadless`) — the same file every shadless component already needs, so\nif you're using any component there is nothing extra to install or import.\nStandalone, load `shadless-core.css` and use the classes directly (see the\n[Installation](/docs/installation) guide)."
 }
 
 // insertReactReferenceNote: ai-sdk.mdx / tanstack-ai.mdx (guide.reactRef)
