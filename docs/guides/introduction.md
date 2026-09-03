@@ -31,7 +31,7 @@ shadless is a code distribution system. It takes the pinned shadcn-ui registry, 
 
 - `dist/components/<name>.html` — one demo page per component, the markup to copy
 - `dist/shadless-core.css` + `dist/css/<name>.css` (npm: `shadless` + `shadless/<name>.css`) — the primary consume path: import them into your Tailwind v4 build and only the components you use are emitted
-- `dist/shadless.full.css` / `.full.min.css` (npm: `shadless/full.css`) — every component precompiled (no-build path)
+- `dist/shadless.full.css` / `.full.min.css` (npm: `shadless/full.css` / `full.min.css`) — every component precompiled (no-build path)
 - `dist/shadless.js` (npm: `shadless/js`) — the JS base: delegation engine + registry + theme, with the vendored radix kernel inside
 - `dist/js/<name>.js` (npm: `shadless/js/<name>`) — one behavior file per interactive component; carousel bundles the vendored embla engine
 
