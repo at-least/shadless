@@ -204,6 +204,13 @@ type pageFacts struct {
 // mdxPageFacts with the drop* predicates mirroring what the builder applied.
 func mdxPageFacts(name, raw string, dropCodeTabs, dropInstallSection, dropRtlMigrate, dropUsageSection, dropCompositionSection, dropApiReferenceSection, dropChangelogSection, fixLeakedJsx bool) (pageFacts, error) {
 	src := raw
+	if fixLeakedJsx {
+		var err error
+		src, err = applyJsxOverrides(name, src)
+		if err != nil {
+			return pageFacts{}, err
+		}
+	}
 	if dropCodeTabs {
 		src = withoutCodeTabs(src)
 	}
@@ -233,10 +240,6 @@ func mdxPageFacts(name, raw string, dropCodeTabs, dropInstallSection, dropRtlMig
 	}
 	if fixLeakedJsx {
 		var err error
-		src, err = applyJsxOverrides(name, src)
-		if err != nil {
-			return pageFacts{}, err
-		}
 		src, err = rewriteLeakedJsxFences(name, src)
 		if err != nil {
 			return pageFacts{}, err

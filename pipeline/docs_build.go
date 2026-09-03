@@ -439,6 +439,10 @@ func (ctx *docsBuildCtx) apiReferenceTransform(name, raw string, seen *[]string)
 
 func (ctx *docsBuildCtx) componentTransform(name, raw string) (string, error) {
 	var seen []string
+	raw, err := applyJsxOverrides(name, raw)
+	if err != nil {
+		return "", err
+	}
 	raw = stripImportsFromMixedFences(dropReactImportFences(raw))
 	spans := locateCodeTabsSpans(fenceShadow(raw))
 	if len(spans) != 1 {
@@ -457,10 +461,6 @@ func (ctx *docsBuildCtx) componentTransform(name, raw string) (string, error) {
 	}
 	if s := locateMessageScrollerJsSpan(fenceShadow(out)); s != nil {
 		out = replaceSpan(out, *s, messageScrollerJsNote())
-	}
-	out, err := applyJsxOverrides(name, out)
-	if err != nil {
-		return "", err
 	}
 	out, err = rewriteLeakedJsxFences(name, out)
 	if err != nil {
@@ -498,6 +498,13 @@ func rtlMigrateMdx() string {
 }
 
 func guideTransform(g guide, raw string) (string, error) {
+	if !g.reactRef {
+		var err error
+		raw, err = applyJsxOverrides(g.slug, raw)
+		if err != nil {
+			return "", err
+		}
+	}
 	if g.rtlMigrate {
 		s := locateRtlMigrateSpan(fenceShadow(raw))
 		if s == nil {
@@ -523,11 +530,7 @@ func guideTransform(g guide, raw string) (string, error) {
 	if g.reactRef {
 		return insertReactReferenceNote(raw), nil
 	}
-	raw, err := applyJsxOverrides(g.slug, raw)
-	if err != nil {
-		return "", err
-	}
-	raw, err = rewriteLeakedJsxFences(g.slug, raw)
+	raw, err := rewriteLeakedJsxFences(g.slug, raw)
 	if err != nil {
 		return "", err
 	}

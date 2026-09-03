@@ -9394,6 +9394,9 @@ api.on("select", () => {
 })
 ```
 
+
+See the [Embla Carousel docs](https://www.embla-carousel.com/api/events/) for more information on using events.
+
 ## Plugins
 
 Plugins are an Embla concept (`EmblaCarousel(viewport, options, plugins)`) — shadless's glue (`dist/js/carousel.js`) doesn't pass a plugins array, so `embla-carousel-autoplay` and friends aren't available without editing that file yourself to add one.

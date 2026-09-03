@@ -152,6 +152,7 @@ You can replace the default spinner icon with any other icon — swap the inner 
 
 The `size-4 animate-spin` styling ships as a `[data-slot="spinner"]` CSS rule (`dist/css/spinner.css`), not an inline class — override it the same way, by targeting that selector.
 
+
 ## Size
 
 Use the `size-*` utility class to change the size of the spinner.
