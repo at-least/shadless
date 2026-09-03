@@ -7,6 +7,10 @@ description: "Create AI SDK messages and stream predefined conversations through
 
 Create AI SDK messages and stream predefined conversations through useChat without a model, API route, network request, or API key.
 
+::: tip
+This page mirrors the upstream React helper package as reference — shadless has no vanilla-JS port of it, unlike the rest of this site. The API and examples below are exactly as shadcn/ui documents them.
+:::
+
 `@shadcn/helpers/ai-sdk` lets you write an AI conversation in code and stream it
 through `useChat`, with no model, API route, network request, or API key.
 

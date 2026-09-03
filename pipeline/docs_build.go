@@ -473,6 +473,20 @@ func utilsInstallMdx(util string) string {
 	return "## Installation\n\nIn shadless, the `" + util + "` utilities ship precompiled inside `dist/out.css` —\nno npm install, Tailwind setup, or CSS import is required. Load `out.css` and\nuse the classes directly (see the [Installation](/docs/installation) guide)."
 }
 
+// insertReactReferenceNote: ai-sdk.mdx / tanstack-ai.mdx (guide.reactRef)
+// are kept verbatim as React reference material — there's no vanilla
+// equivalent to port, unlike every other guide on this site. Nothing in
+// the page itself says so, so a reader landing here mid-site gets no
+// warning before hitting `useChat`/JSX. Prepends one <Callout>, converted
+// to a VitePress tip block downstream by convertCallouts like any other.
+func insertReactReferenceNote(raw string) string {
+	note := "\n<Callout variant=\"info\">\nThis page mirrors the upstream React helper package as reference — shadless has no vanilla-JS port of it, unlike the rest of this site. The API and examples below are exactly as shadcn/ui documents them.\n</Callout>\n"
+	if m := reFmBlock.FindStringIndex(raw); m != nil {
+		return raw[:m[1]] + note + raw[m[1]:]
+	}
+	return note + raw
+}
+
 func rtlMigrateMdx() string {
 	return "shadless components ship the pinned registry's classes as-is — the current registry already uses logical (start/end-aware) utilities, so there is no migration step: every component is RTL-ready the moment the page carries `dir=\"rtl\"`. To flip an individual icon, give it the `rtl:rotate-180` utility class."
 }
@@ -490,14 +504,20 @@ func guideTransform(g guide, raw string) (string, error) {
 		}
 		raw = strings.Replace(raw, LINK, "For other styles, the shipped utilities are already logical (start/end-aware) — `dir=\"rtl\"` is all it takes.", 1)
 	}
-	if !g.installSection {
-		return raw, nil
+	if g.installSection {
+		s := locateInstallSection(fenceShadow(raw))
+		if s == nil {
+			return "", fmt.Errorf("utils Installation section: not found (or no following ## Usage)")
+		}
+		raw = replaceSpan(raw, *s, utilsInstallMdx(g.util)+"\n\n")
 	}
-	s := locateInstallSection(fenceShadow(raw))
-	if s == nil {
-		return "", fmt.Errorf("utils Installation section: not found (or no following ## Usage)")
+	if g.util != "" {
+		return rewriteUtilityJsxFences(g.slug, raw)
 	}
-	return replaceSpan(raw, *s, utilsInstallMdx(g.util)+"\n\n"), nil
+	if g.reactRef {
+		raw = insertReactReferenceNote(raw)
+	}
+	return raw, nil
 }
 
 // ---- page assembly ---------------------------------------------------------------

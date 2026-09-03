@@ -83,6 +83,13 @@ func runDocsFidelity() int {
 			issues = append(issues, issue{name, "text-adjustment", err.Error()})
 			continue
 		}
+		if g.util != "" {
+			adjusted, err = rewriteUtilityJsxFences(g.slug, adjusted)
+			if err != nil {
+				issues = append(issues, issue{name, "utility-jsx-fences", err.Error()})
+				continue
+			}
+		}
 		M := mdxPageFacts(name, adjusted, isComponent, g.installSection, g.rtlMigrate, isComponent, isComponent, isComponent)
 		mdB, _ := os.ReadFile(mdPath)
 		H := mdPageFacts(string(mdB))

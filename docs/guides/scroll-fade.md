@@ -36,8 +36,8 @@ use the classes directly (see the [Installation](/guides/installation) guide).
 
 Add `scroll-fade` or `scroll-fade-y` to the scroll container, i.e. the element that has `overflow-y-auto`.
 
-```tsx
-<div className="scroll-fade overflow-y-auto">{/* ... */}</div>
+```html
+<div class="scroll-fade overflow-y-auto"><!-- ... --></div>
 ```
 
 The fade is scroll-aware and tracks the scroll position:
@@ -62,8 +62,8 @@ Use `scroll-fade-x` on containers that scroll horizontally, i.e. the element tha
 
 <div class="demo-missing" data-demo="scroll-fade-horizontal" data-status="unavailable">demo not available in shadless (base-style demo) — <code>scroll-fade-horizontal</code></div>
 
-```tsx
-<div className="flex scroll-fade-x overflow-x-auto">{/* ... */}</div>
+```html
+<div class="flex scroll-fade-x overflow-x-auto"><!-- ... --></div>
 ```
 
 The horizontal fade is direction-aware. In RTL layouts, the crisp edge and the fade follow the reading direction with no extra classes needed. `scroll-fade-<number>` and `scroll-fade-none` work the same for both axes.
@@ -74,8 +74,8 @@ Use edge utilities when only one edge should track the scroll position.
 
 <div class="demo-missing" data-demo="scroll-fade-edge" data-status="unavailable">demo not available in shadless (base-style demo) — <code>scroll-fade-edge</code></div>
 
-```tsx
-<div className="scroll-fade-b overflow-y-auto">{/* ... */}</div>
+```html
+<div class="scroll-fade-b overflow-y-auto"><!-- ... --></div>
 ```
 
 The edge utilities are scroll-aware. Start edges fade in after you scroll away from the start, and end edges fade out when you reach the end. Use `scroll-fade-t`, `scroll-fade-b`, `scroll-fade-l`, and `scroll-fade-r` for physical edges. Use `scroll-fade-s` and `scroll-fade-e` for logical inline edges that mirror in RTL.
@@ -86,21 +86,21 @@ The fade depth defaults to `12%` of the container, capped at `40px` so tall scro
 
 <div class="demo-missing" data-demo="scroll-fade-size" data-status="unavailable">demo not available in shadless (base-style demo) — <code>scroll-fade-size</code></div>
 
-```tsx
-<div className="scroll-fade overflow-y-auto scroll-fade-24">{/* ... */}</div>
+```html
+<div class="scroll-fade overflow-y-auto scroll-fade-24"><!-- ... --></div>
 ```
 
 For one-off values, use an arbitrary length or percentage:
 
-```tsx
-<div className="scroll-fade overflow-y-auto scroll-fade-[15%]">{/* ... */}</div>
+```html
+<div class="scroll-fade overflow-y-auto scroll-fade-[15%]"><!-- ... --></div>
 ```
 
 To fade opposite edges by different amounts, use the per-edge modifiers `scroll-fade-t-<number>`, `scroll-fade-b-<number>`, `scroll-fade-s-<number>`, and `scroll-fade-e-<number>`. They override `scroll-fade-<number>` on the edge they target and accept arbitrary values too.
 
-```tsx
-<div className="scroll-fade overflow-y-auto scroll-fade-b-8 scroll-fade-t-2">
-  {/* ... */}
+```html
+<div class="scroll-fade overflow-y-auto scroll-fade-b-8 scroll-fade-t-2">
+  <!-- ... -->
 </div>
 ```
 
@@ -108,9 +108,9 @@ Use the logical `s`/`e` modifiers for horizontal scrollers so the sizes mirror i
 
 The fade eases in and out over a fixed scroll distance rather than appearing instantly. That distance is the `--scroll-fade-reveal` variable, `96px` by default and independent of the fade depth. Lower it for a snappier reveal or raise it for a more gradual one:
 
-```tsx
-<div className="scroll-fade overflow-y-auto [--scroll-fade-reveal:64px]">
-  {/* ... */}
+```html
+<div class="scroll-fade overflow-y-auto [--scroll-fade-reveal:64px]">
+  <!-- ... -->
 </div>
 ```
 
@@ -118,9 +118,9 @@ The fade eases in and out over a fixed scroll distance rather than appearing ins
 
 Use `scroll-fade-none` to remove the fade. It works in any class order, so the typical use is responsive or stateful:
 
-```tsx
-<div className="scroll-fade overflow-y-auto md:scroll-fade-none">
-  {/* ... */}
+```html
+<div class="scroll-fade overflow-y-auto md:scroll-fade-none">
+  <!-- ... -->
 </div>
 ```
 

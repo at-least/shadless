@@ -29,6 +29,7 @@ type guide struct {
 	util           string
 	rtlMigrate     bool
 	pinned         bool
+	reactRef       bool
 }
 
 var guides = []guide{
@@ -52,10 +53,10 @@ var guides = []guide{
 		installSection: true, util: "scroll-fade"},
 	{slug: "ai-sdk", route: "/docs/helpers/ai-sdk", title: "AI SDK", source: guidesUp + "/helpers/ai-sdk.mdx", disposition: "mirror",
 		notes:          "kept per keep-list; @shadcn/helpers/ai-sdk is a React useChat package — mirrored as reference (fences stay verbatim, same policy as radix pages); ai-sdk-helper-demo base-style → unavailable",
-		installSection: false},
+		installSection: false, reactRef: true},
 	{slug: "tanstack-ai", route: "/docs/helpers/tanstack-ai", title: "TanStack AI", source: guidesUp + "/helpers/tanstack-ai.mdx", disposition: "mirror",
 		notes:          "kept per keep-list; @shadcn/helpers/tanstack-ai is a React package — mirrored as reference; tanstack-ai-helper-demo base-style → unavailable",
-		installSection: false},
+		installSection: false, reactRef: true},
 	{slug: "typography", route: "/docs/typography", title: "Typography", source: "docs/content/typography.mdx", disposition: "adapted",
 		notes:          "FT8: vanilla rewrite — upstream typography.mdx demos a <Typography> component shadless does not (and should not) ship; this guide maps the same typographic roles to plain Tailwind utilities already in dist/out.css",
 		installSection: false},

@@ -354,6 +354,67 @@ func atoiSafe(s string) *int {
 	return &n
 }
 
+// ---- utility-guide JSX fences -------------------------------------------------
+//
+// shimmer.mdx and scroll-fade.mdx (docs/content, guides with a `util` field)
+// document pure Tailwind utility classes — no component, no props, no logic
+// — but upstream still shows every usage snippet as ```tsx with className,
+// by convention rather than necessity. rewriteUtilityJsxFences converts
+// those specific fences to plain HTML: fence lang tsx -> html, className=
+// -> class=, and the JSX comment placeholder {/* ... */} -> an HTML
+// comment. Shared by docs-build (rewrites the built page) and docs-fidelity
+// (rewrites the mdx side before fact-extraction, so both sides compare
+// equal fences) — same single-source-of-truth contract as the section
+// locators above.
+
+var (
+	reTsxFenceOpen  = regexp.MustCompile("(?m)^```tsx\\b.*$")
+	reClassNameAttr = regexp.MustCompile(`\bclassName=`)
+	reJsxComment    = regexp.MustCompile(`\{/\*\s*(.*?)\s*\*/\}`)
+)
+
+// shimmerMarkerJsx / shimmerMarkerHtml: the one fence in shimmer.mdx that
+// composes real components (Marker + Spinner), not a bare className on a
+// <p>/<div> — className=/{/* */} alone can't fix fake JSX tags like
+// <Marker>. Rewritten by hand against the real shipped markup
+// (dist/components/marker.html: data-slot="marker"/"marker-icon"/
+// "marker-content"; dist/components/spinner.html: a single
+// data-slot="spinner" svg) rather than guessed.
+const (
+	shimmerMarkerJsx = "```tsx\n<Marker role=\"status\">\n  <MarkerIcon>\n    <Spinner />\n  </MarkerIcon>\n  <MarkerContent className=\"shimmer\">Thinking&hellip;</MarkerContent>\n</Marker>\n```"
+	shimmerMarkerHtml = "```html\n<div data-slot=\"marker\" role=\"status\">\n  <span data-slot=\"marker-icon\"><!-- Spinner markup — see /components/spinner --></span>\n  <span data-slot=\"marker-content\" class=\"shimmer\">Thinking&hellip;</span>\n</div>\n```"
+)
+
+func rewriteUtilityJsxFences(slug, raw string) (string, error) {
+	if slug == "shimmer" {
+		if !strings.Contains(raw, shimmerMarkerJsx) {
+			return "", fmt.Errorf("shimmer guide: the Marker+Spinner fence text moved — re-anchor rewriteUtilityJsxFences")
+		}
+		raw = strings.Replace(raw, shimmerMarkerJsx, shimmerMarkerHtml, 1)
+	}
+	lines := strings.Split(raw, "\n")
+	inFence := false
+	for i, line := range lines {
+		if !inFence {
+			if reTsxFenceOpen.MatchString(line) {
+				lines[i] = "```html"
+				inFence = true
+			}
+			continue
+		}
+		if strings.HasPrefix(line, "```") {
+			inFence = false
+			continue
+		}
+		line = reClassNameAttr.ReplaceAllString(line, "class=")
+		line = reJsxComment.ReplaceAllStringFunc(line, func(m string) string {
+			return "<!-- " + reJsxComment.FindStringSubmatch(m)[1] + " -->"
+		})
+		lines[i] = line
+	}
+	return strings.Join(lines, "\n"), nil
+}
+
 // ---- declared prose adjustments ---------------------------------------------
 
 type textOp struct{ find, replace string }

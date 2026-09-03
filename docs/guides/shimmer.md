@@ -33,8 +33,8 @@ use the classes directly (see the [Installation](/guides/installation) guide).
 
 Add `shimmer` to a text element.
 
-```tsx
-<p className="shimmer text-muted-foreground">Generating response&hellip;</p>
+```html
+<p class="shimmer text-muted-foreground">Generating response&hellip;</p>
 ```
 
 The shimmer is built on `currentColor`, so it adapts to the element:
@@ -51,13 +51,11 @@ The shimmer composes with any component that renders text. A common pattern is a
 
 <div class="demo-missing" data-demo="shimmer-marker" data-status="unavailable">demo not available in shadless (base-style demo) — <code>shimmer-marker</code></div>
 
-```tsx
-<Marker role="status">
-  <MarkerIcon>
-    <Spinner />
-  </MarkerIcon>
-  <MarkerContent className="shimmer">Thinking&hellip;</MarkerContent>
-</Marker>
+```html
+<div data-slot="marker" role="status">
+  <span data-slot="marker-icon"><!-- Spinner markup — see /components/spinner --></span>
+  <span data-slot="marker-content" class="shimmer">Thinking&hellip;</span>
+</div>
 ```
 
 ## Color
@@ -66,9 +64,9 @@ Use `shimmer-color-<color>` to set the highlight color explicitly. It accepts th
 
 <div class="demo-missing" data-demo="shimmer-color" data-status="unavailable">demo not available in shadless (base-style demo) — <code>shimmer-color</code></div>
 
-```tsx
-<p className="shimmer shimmer-color-blue-500/60">Generating response&hellip;</p>
-<p className="shimmer shimmer-color-[#378ADD]">Generating response&hellip;</p>
+```html
+<p class="shimmer shimmer-color-blue-500/60">Generating response&hellip;</p>
+<p class="shimmer shimmer-color-[#378ADD]">Generating response&hellip;</p>
 ```
 
 ## Duration
@@ -77,8 +75,8 @@ Use `shimmer-duration-<number>` to set the duration of one sweep in milliseconds
 
 <div class="demo-missing" data-demo="shimmer-duration" data-status="unavailable">demo not available in shadless (base-style demo) — <code>shimmer-duration</code></div>
 
-```tsx
-<p className="shimmer shimmer-duration-1000">Generating response&hellip;</p>
+```html
+<p class="shimmer shimmer-duration-1000">Generating response&hellip;</p>
 ```
 
 ## Spread
@@ -87,14 +85,14 @@ Use `shimmer-spread-<number>` to set the width of the highlight band using the s
 
 <div class="demo-missing" data-demo="shimmer-spread" data-status="unavailable">demo not available in shadless (base-style demo) — <code>shimmer-spread</code></div>
 
-```tsx
-<p className="shimmer shimmer-spread-24">Generating response&hellip;</p>
+```html
+<p class="shimmer shimmer-spread-24">Generating response&hellip;</p>
 ```
 
 For one-off values, use an arbitrary length or percentage:
 
-```tsx
-<p className="shimmer shimmer-spread-[5rem]">Generating response&hellip;</p>
+```html
+<p class="shimmer shimmer-spread-[5rem]">Generating response&hellip;</p>
 ```
 
 ## Angle
@@ -103,16 +101,16 @@ Use `shimmer-angle-<number>` to set the tilt of the highlight band in degrees. T
 
 <div class="demo-missing" data-demo="shimmer-angle" data-status="unavailable">demo not available in shadless (base-style demo) — <code>shimmer-angle</code></div>
 
-```tsx
-<p className="shimmer shimmer-angle-45">Generating response&hellip;</p>
+```html
+<p class="shimmer shimmer-angle-45">Generating response&hellip;</p>
 ```
 
 ## Reverse
 
 Use `shimmer-reverse` to sweep the highlight in the opposite direction. In RTL layouts the sweep already follows the reading direction. See [RTL](#rtl).
 
-```tsx
-<p className="shimmer shimmer-reverse">Generating response&hellip;</p>
+```html
+<p class="shimmer shimmer-reverse">Generating response&hellip;</p>
 ```
 
 ## Play Once
@@ -121,8 +119,8 @@ Use `shimmer-once` to play a single sweep instead of looping, useful as a reveal
 
 <div class="demo-missing" data-demo="shimmer-once" data-status="unavailable">demo not available in shadless (base-style demo) — <code>shimmer-once</code></div>
 
-```tsx
-<p className="shimmer shimmer-duration-1100 shimmer-once">
+```html
+<p class="shimmer shimmer-duration-1100 shimmer-once">
   Response generated.
 </p>
 ```
@@ -133,16 +131,16 @@ Use `shimmer-none` to turn the effect off and render the text normally. It works
 
 <div class="demo-missing" data-demo="shimmer-none" data-status="unavailable">demo not available in shadless (base-style demo) — <code>shimmer-none</code></div>
 
-```tsx
-<p className="shimmer md:shimmer-none">Generating response&hellip;</p>
+```html
+<p class="shimmer md:shimmer-none">Generating response&hellip;</p>
 ```
 
 ## Fallback
 
 The shimmer is built on modern color features, [relative color syntax](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_colors/Relative_colors) and `color-mix()`, which are available in all current browsers. In older browsers without support, the highlight gradient is dropped and the text can render transparent. If you target older browsers, apply `shimmer` conditionally with a `supports-*` variant:
 
-```tsx
-<p className="supports-[color:oklch(from_white_l_c_h)]:shimmer">
+```html
+<p class="supports-[color:oklch(from_white_l_c_h)]:shimmer">
   Generating response&hellip;
 </p>
 ```
