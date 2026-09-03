@@ -924,9 +924,3 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 **Runtime:** `role="group"` root; single mode items are `role="radio"` with `aria-checked`, multiple mode items carry `aria-pressed`; `data-state="on|off"` in both. Keys: arrows / Home / End move focus over enabled items (rtl-aware); Space / Enter / click selects. The root dispatches `shadless:change` (`detail: { value, item }` — `value` is the on item's value, or an array in multiple mode). No handle — `shadless.get(el)` returns `null`; `el.click()` is the driver.
 
 See the [Radix Toggle Group](https://www.radix-ui.com/docs/primitives/components/toggle-group#api-reference) documentation.
-
-## Changelog
-
-### 2026-05-17 Default Spacing
-
-Changed the default `spacing` from `0` to `2` so toggle groups render with space between items by default. Use `spacing={0}` for connected items.

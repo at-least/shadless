@@ -130,6 +130,14 @@ func withoutApiReferenceSection(comp, raw string) string {
 	return replaceSpan(raw, *s, "## API Reference\n\n")
 }
 
+func withoutChangelogSection(raw string) string {
+	s := locateChangelogSpan(fenceShadow(raw))
+	if s == nil {
+		return raw
+	}
+	return replaceSpan(raw, *s, "")
+}
+
 // ---- fact extraction ---------------------------------------------------------
 
 var (
@@ -194,7 +202,7 @@ type pageFacts struct {
 }
 
 // mdxPageFacts with the drop* predicates mirroring what the builder applied.
-func mdxPageFacts(name, raw string, dropCodeTabs, dropInstallSection, dropRtlMigrate, dropUsageSection, dropCompositionSection, dropApiReferenceSection bool) pageFacts {
+func mdxPageFacts(name, raw string, dropCodeTabs, dropInstallSection, dropRtlMigrate, dropUsageSection, dropCompositionSection, dropApiReferenceSection, dropChangelogSection, fixLeakedJsx bool) (pageFacts, error) {
 	src := raw
 	if dropCodeTabs {
 		src = withoutCodeTabs(src)
@@ -216,6 +224,27 @@ func mdxPageFacts(name, raw string, dropCodeTabs, dropInstallSection, dropRtlMig
 	}
 	if dropApiReferenceSection {
 		src = withoutApiReferenceSection(name, src)
+	}
+	if dropChangelogSection {
+		src = withoutChangelogSection(src)
+	}
+	if s := locateMessageScrollerJsSpan(fenceShadow(src)); s != nil {
+		src = replaceSpan(src, *s, messageScrollerJsNote())
+	}
+	if fixLeakedJsx {
+		var err error
+		src, err = applyJsxOverrides(name, src)
+		if err != nil {
+			return pageFacts{}, err
+		}
+		src, err = rewriteLeakedJsxFences(name, src)
+		if err != nil {
+			return pageFacts{}, err
+		}
+		src, err = rewriteInlineJsxMentions(name, src)
+		if err != nil {
+			return pageFacts{}, err
+		}
 	}
 	body := fenceShadow(src)
 	noInlineCode := reInlineCode.ReplaceAllStringFunc(body, func(m string) string {
@@ -246,7 +275,7 @@ func mdxPageFacts(name, raw string, dropCodeTabs, dropInstallSection, dropRtlMig
 		f.sources = append(f.sources, sourceEnt{attrOfJS(m[1], "name"), attrOfJS(m[1], "src")})
 	}
 	f.fences = scanFences(src)
-	return f
+	return f, nil
 }
 
 // mdPageFacts reads the facts the CONTENT transform is responsible for out of

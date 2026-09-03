@@ -633,11 +633,11 @@ button-group
 - Use <kbd>Tab</kbd> to navigate between the buttons in the group.
 - Use `aria-label` or `aria-labelledby` to label the button group.
 
-```tsx showLineNumbers
-<ButtonGroup aria-label="Button group">
-  <Button>Button 1</Button>
-  <Button>Button 2</Button>
-</ButtonGroup>
+```html
+<div data-slot="button-group" aria-label="Button group">
+  <button data-slot="button">Button 1</button>
+  <button data-slot="button">Button 2</button>
+</div>
 ```
 
 ## ButtonGroup vs ToggleGroup
@@ -880,7 +880,7 @@ Control the size of buttons using the `size` prop on individual buttons.
 
 ## Nested
 
-Nest `<ButtonGroup>` components to create button groups with spacing.
+Nest `data-slot="button-group"` components to create button groups with spacing.
 
 ::::demo button-group-nested
 <iframe class="demo" src="/demos/button-group-nested.html" title="button-group-nested" data-status="authored" loading="lazy"></iframe>

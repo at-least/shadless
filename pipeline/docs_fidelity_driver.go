@@ -90,7 +90,12 @@ func runDocsFidelity() int {
 				continue
 			}
 		}
-		M := mdxPageFacts(name, adjusted, isComponent, g.installSection, g.rtlMigrate, isComponent, isComponent, isComponent)
+		fixLeakedJsx := !g.reactRef && g.util == ""
+		M, err := mdxPageFacts(name, adjusted, isComponent, g.installSection, g.rtlMigrate, isComponent, isComponent, isComponent, isComponent, fixLeakedJsx)
+		if err != nil {
+			issues = append(issues, issue{name, "leaked-jsx", err.Error()})
+			continue
+		}
 		mdB, _ := os.ReadFile(mdPath)
 		H := mdPageFacts(string(mdB))
 		fidelityRawMDX = adjusted

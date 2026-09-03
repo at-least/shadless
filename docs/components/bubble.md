@@ -1121,38 +1121,37 @@ Pair a bubble with a [`Popover`](/components/popover) to surface more informatio
 
 Reactions render as a row of emoji. A screen reader reads each glyph with no context, and counters like `+8` are announced as "plus eight". Group the row as a single image with a descriptive `aria-label` so it announces once. `role="img"` also hides the individual emoji from assistive tech, so no `aria-hidden` is needed.
 
-```tsx showLineNumbers
-<BubbleReactions role="img" aria-label="Reactions: thumbs up, fire, and 8 more">
+```html
+<div data-slot="bubble-reactions" role="img" aria-label="Reactions: thumbs up, fire, and 8 more">
   <span>👍</span>
   <span>🔥</span>
   <span>+8</span>
-</BubbleReactions>
+</div>
 ```
 
 When reactions are interactive, render buttons instead and give icon-only buttons an `aria-label`.
 
-```tsx showLineNumbers
-<BubbleReactions>
-  <Button aria-label="Thumbs up" variant="secondary" size="icon-xs">
-    <ThumbsUpIcon />
-  </Button>
-</BubbleReactions>
+```html
+<div data-slot="bubble-reactions">
+  <button data-slot="button" aria-label="Thumbs up" variant="secondary" size="icon-xs">
+    <!-- lucide "thumbs-up" icon -->
+  </button>
+</div>
 ```
 
 ### Interactive Bubbles
 
 When a bubble is clickable, render it as a real `<button>` or `<a>` with the `asChild` prop so it is focusable and exposes the correct role. `BubbleContent` ships a visible focus ring for interactive elements, and the accessible name comes from the bubble text. No extra label is needed.
 
-```tsx showLineNumbers
-<Bubble variant="muted" align="end">
-  <BubbleContent asChild>
-    <button type="button" onClick={onReply}>
-      I forgot my password
-    </button>
-  </BubbleContent>
-</Bubble>
+```html showLineNumbers
+<div data-slot="bubble">
+  <button type="button" data-slot="bubble-content">
+    I forgot my password
+  </button>
+</div>
 ```
 
+`variant`/`align` compile into static Tailwind classes at build time (no runtime data attribute) — copy the class list for the variant you want from `dist/components/bubble.html`.
 ### Meaning Beyond Color
 
 Bubble variants signal role and tone with color. Pair them with text, alignment, or icons so meaning is not conveyed by color alone. For a `destructive` bubble, keep the error context in the message text rather than relying on the color treatment.

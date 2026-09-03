@@ -347,7 +347,7 @@ table-container
 
 ## Footer
 
-Use the `<TableFooter />` component to add a footer to the table.
+Use the `data-slot="table-footer"` component to add a footer to the table.
 
 ::::demo table-footer
 <iframe class="demo" src="/demos/table-footer.html" title="table-footer" data-status="authored" loading="lazy"></iframe>
@@ -514,7 +514,7 @@ Use the `<TableFooter />` component to add a footer to the table.
 
 ## Actions
 
-A table showing actions for each row using a `<DropdownMenu />` component.
+A table showing actions for each row using a dropdown-menu trigger (see the [Dropdown Menu](/components/dropdown-menu) page).
 
 ::::demo table-actions
 <iframe class="demo" src="/demos/table-actions.html" title="table-actions" data-status="authored" loading="lazy"></iframe>
@@ -1034,7 +1034,7 @@ A table showing actions for each row using a `<DropdownMenu />` component.
 
 ## Data Table
 
-You can use the `<Table />` component to build more complex data tables. Combine it with [@tanstack/react-table](https://tanstack.com/table/latest) to create tables with sorting, filtering and pagination.
+You can use the `data-slot="table-container"` component to build more complex data tables. Combine it with [@tanstack/react-table](https://tanstack.com/table/latest) to create tables with sorting, filtering and pagination.
 
 See the Data Table documentation for more information.
 

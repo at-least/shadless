@@ -469,19 +469,12 @@ navigation-menu
 
 ## Link Component
 
-Use the `asChild` prop to compose a custom link component such as Next.js `Link`.
+There's no `asChild`/framework-Link composition in shadless — `navigation-menu-link` is a plain `<a>`, so just point `href` at whatever route your app uses:
 
-```tsx showLineNumbers
-
-export function NavigationMenuDemo() {
-  return (
-    <NavigationMenuItem>
-      <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-        <Link href="/docs">Documentation</Link>
-      </NavigationMenuLink>
-    </NavigationMenuItem>
-  )
-}
+```html showLineNumbers
+<li data-slot="navigation-menu-item">
+  <a data-slot="navigation-menu-link" href="/docs">Documentation</a>
+</li>
 ```
 
 ## RTL

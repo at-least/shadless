@@ -1790,13 +1790,13 @@ A select with many items that scrolls.
 
 Add the `data-invalid` attribute to the `Field` component and the `aria-invalid` attribute to the `SelectTrigger` component to show an error state.
 
-```tsx showLineNumbers /data-invalid/ /aria-invalid/
-<Field data-invalid>
-  <FieldLabel>Fruit</FieldLabel>
-  <SelectTrigger aria-invalid>
-    <SelectValue />
-  </SelectTrigger>
-</Field>
+```html
+<div data-slot="field" data-invalid>
+  <label data-slot="field-label">Fruit</label>
+  <button data-slot="select-trigger" aria-invalid>
+    <span data-slot="select-value" />
+  </button>
+</div>
 ```
 
 ::::demo select-invalid

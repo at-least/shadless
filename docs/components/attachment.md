@@ -1683,18 +1683,15 @@ Add an `AttachmentTrigger` to make the whole card open a link or dialog. It fill
 ::::
 
 
-```tsx showLineNumbers
-<Dialog>
-  <Attachment>
-    {/* media, content, actions */}
-    <DialogTrigger asChild>
-      <AttachmentTrigger aria-label="Preview research-summary.pdf" />
-    </DialogTrigger>
-  </Attachment>
-  <DialogContent>{/* ... */}</DialogContent>
-</Dialog>
+```html showLineNumbers
+<div data-slot="attachment">
+  <!-- media, content, actions -->
+  <button data-slot="dialog-trigger" id="<k>-trigger" aria-label="Preview research-summary.pdf"></button>
+</div>
+<template id="<k>-portal">
+  <div data-slot="dialog-content"><!-- ... --></div>
+</template>
 ```
-
 ## Accessibility
 
 `AttachmentAction` renders a `Button`, and `AttachmentTrigger` renders a real `<button>` (or your element via `asChild`). Follow the guidance below so both are operable and announced.
@@ -1703,27 +1700,19 @@ Add an `AttachmentTrigger` to make the whole card open a link or dialog. It fill
 
 `AttachmentAction` is usually icon-only, so give each one an `aria-label` describing the action and its target.
 
-```tsx showLineNumbers
-<AttachmentAction aria-label="Remove sales-dashboard.pdf">
-  <XIcon />
-</AttachmentAction>
+```html
+<button data-slot="attachment-action" aria-label="Remove sales-dashboard.pdf">
+  <!-- lucide "x" icon -->
+</button>
 ```
 
 ### Label the trigger
 
 `AttachmentTrigger` covers the card with no text of its own, so give it an `aria-label` for what activating it does.
 
-```tsx showLineNumbers
-<AttachmentTrigger asChild>
-  <a
-    href={url}
-    target="_blank"
-    rel="noreferrer"
-    aria-label="Open workspace.png"
-  />
-</AttachmentTrigger>
+```html showLineNumbers
+<a data-slot="attachment-trigger" href="/workspace.png" target="_blank" rel="noreferrer" aria-label="Open workspace.png"></a>
 ```
-
 The trigger sits behind the actions in the stacking order, so an `AttachmentAction` and the `AttachmentTrigger` never trap each other — both remain separately focusable and clickable.
 
 ### Keyboard scrolling

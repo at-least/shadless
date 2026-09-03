@@ -7,7 +7,7 @@ description: "How to style text with plain Tailwind utilities — no Typography 
 
 How to style text with plain Tailwind utilities — no Typography component needed.
 
-shadless does not ship a `<Typography>` component. The same typographic roles
+shadless does not ship a `Typography` component. The same typographic roles
 that shadcn-ui's `Typography` wrapper produces are plain Tailwind utilities —
 apply them directly to your HTML and your own Tailwind build compiles them,
 the same as any class you write. `text-muted-foreground` needs the shadless
@@ -16,7 +16,7 @@ have if you're using any component.
 
 ## Why no component?
 
-`<Typography>` in shadcn-ui is a thin wrapper that maps a single `variant` prop
+`Typography` in shadcn-ui is a thin wrapper that maps a single `variant` prop
 to a className. In shadless's vanilla stack, the wrapper is just noise — write
 the classes directly. The mapping below mirrors shadcn's default scale.
 

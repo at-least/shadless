@@ -179,29 +179,10 @@ hover-card
 
 ## Trigger Delays
 
-Use `openDelay` and `closeDelay` on the `HoverCard` to control when the card opens and
-closes.
-
-```tsx showLineNumbers
-<HoverCard openDelay={100} closeDelay={200}>
-  <HoverCardTrigger>Hover</HoverCardTrigger>
-  <HoverCardContent>Content</HoverCardContent>
-</HoverCard>
-```
-
+shadless's hover-card glue hardcodes `openDelay: 700, closeDelay: 300` (Radix's own defaults) in `dist/js/hover-card.js` — there is no markup prop to change them; edit that file directly if you need different timing.
 ## Positioning
 
-Use the `side` and `align` props on `HoverCardContent` to control placement.
-
-```tsx showLineNumbers
-<HoverCard>
-  <HoverCardTrigger>Hover</HoverCardTrigger>
-  <HoverCardContent side="top" align="start">
-    Content
-  </HoverCardContent>
-</HoverCard>
-```
-
+shadless's hover-card glue doesn't expose `side`/`align` through markup either — `popperOptions` in `dist/js/hover-card.js` only sets `sideOffset: 4`, so placement is whatever the kernel's popper default is (auto-flipping on collision); edit that file to pass a preferred placement.
 ## Basic
 
 ::::demo hover-card-demo

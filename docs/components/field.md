@@ -936,13 +936,13 @@ field
 
 The `Field` family is designed for composing accessible forms. A typical field is structured as follows:
 
-```tsx showLineNumbers
-<Field>
-  <FieldLabel htmlFor="input-id">Label</FieldLabel>
-  {/* Input, Select, Switch, etc. */}
-  <FieldDescription>Optional helper text.</FieldDescription>
-  <FieldError>Validation message.</FieldError>
-</Field>
+```html
+<div data-slot="field">
+  <label data-slot="field-label" htmlFor="input-id">Label</label>
+  <!-- Input, Select, Switch, etc. -->
+  <p data-slot="field-description">Optional helper text.</p>
+  <div data-slot="field-error">Validation message.</div>
+</div>
 ```
 
 - `Field` is the core wrapper for a single field.
@@ -3339,12 +3339,12 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 - Add `aria-invalid` on the input itself for assistive technologies.
 - Render `FieldError` immediately after the control or inside `FieldContent` to keep error messages aligned with the field.
 
-```tsx showLineNumbers /data-invalid/ /aria-invalid/
-<Field data-invalid>
-  <FieldLabel htmlFor="email">Email</FieldLabel>
-  <Input id="email" type="email" aria-invalid />
-  <FieldError>Enter a valid email address.</FieldError>
-</Field>
+```html
+<div data-slot="field" data-invalid>
+  <label data-slot="field-label" htmlFor="email">Email</label>
+  <input data-slot="input" id="email" type="email" aria-invalid />
+  <div data-slot="field-error">Enter a valid email address.</div>
+</div>
 ```
 
 ## Accessibility

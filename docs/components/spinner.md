@@ -103,7 +103,7 @@ is a `data-slot` attribute, and open/close state is a `data-state` the
 runtime drives.
 ## Customization
 
-You can replace the default spinner icon with any other icon by editing the `Spinner` component.
+You can replace the default spinner icon with any other icon — swap the inner `<svg>` in `dist/components/spinner.html` for a different one.
 
 ::::demo spinner-custom
 <iframe class="demo" src="/demos/spinner-custom.html" title="spinner-custom" data-status="authored" loading="lazy"></iframe>
@@ -143,21 +143,14 @@ You can replace the default spinner icon with any other icon by editing the `Spi
 ::::
 
 
-```tsx showLineNumbers title="components/ui/spinner.tsx"
-
-function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
-  return (
-    <LoaderIcon
-      role="status"
-      aria-label="Loading"
-      className={cn("size-4 animate-spin", className)}
-      {...props}
-    />
-  )
-}
-
-export { Spinner }
+```html showLineNumbers title="dist/components/spinner.html"
+<svg data-slot="spinner">
+  <!-- swap this inner <svg> for a different icon's markup -->
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="..."/></svg>
+</svg>
 ```
+
+The `size-4 animate-spin` styling ships as a `[data-slot="spinner"]` CSS rule (`dist/css/spinner.css`), not an inline class — override it the same way, by targeting that selector.
 
 ## Size
 
@@ -245,7 +238,7 @@ Use the `size-*` utility class to change the size of the spinner.
 
 ## Button
 
-Add a spinner to a button to indicate a loading state. Place the `<Spinner />` before the label with `data-icon="inline-start"` for a start position, or after the label with `data-icon="inline-end"` for an end position.
+Add a spinner to a button to indicate a loading state. Place the `data-slot="spinner"` before the label with `data-icon="inline-start"` for a start position, or after the label with `data-icon="inline-end"` for an end position.
 
 ::::demo spinner-button
 <iframe class="demo" src="/demos/spinner-button.html" title="spinner-button" data-status="authored" loading="lazy"></iframe>
@@ -340,7 +333,7 @@ Add a spinner to a button to indicate a loading state. Place the `<Spinner />` b
 
 ## Badge
 
-Add a spinner to a badge to indicate a loading state. Place the `<Spinner />` before the label with `data-icon="inline-start"` for a start position, or after the label with `data-icon="inline-end"` for an end position.
+Add a spinner to a badge to indicate a loading state. Place the `data-slot="spinner"` before the label with `data-icon="inline-start"` for a start position, or after the label with `data-icon="inline-end"` for an end position.
 
 ::::demo spinner-badge
 <iframe class="demo" src="/demos/spinner-badge.html" title="spinner-badge" data-status="authored" loading="lazy"></iframe>

@@ -600,33 +600,7 @@ Use just the previous and next buttons without page numbers. This is useful for 
 ::::
 
 
-## Next.js
-
-By default the `<PaginationLink />` component will render an `<a />` tag.
-
-To use the Next.js `<Link />` component, make the following updates to `pagination.tsx`.
-
-```diff showLineNumbers /typeof Link/ {1}
-+ import Link from "next/link"
-
-- type PaginationLinkProps = ... & React.ComponentProps<"a">
-+ type PaginationLinkProps = ... & React.ComponentProps<typeof Link>
-
-const PaginationLink = ({...props }: ) => (
-  <PaginationItem>
--   <a>
-+   <Link>
-      // ...
--   </a>
-+   </Link>
-  </PaginationItem>
-)
-
-```
-
-::: tip
-**Note:** We are making updates to the cli to automatically do this for you.
-:::
+shadless has no CLI or framework Link component — `PaginationLink` always renders a real `<a>`; point `href` at whatever your router expects.
 
 ## RTL
 
@@ -758,62 +732,3 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 :::
 
 ::::
-
-
-## Changelog
-
-### RTL Support
-
-If you're upgrading from a previous version of the `Pagination` component, you'll need to apply the following updates to add the `text` prop:
-
-
-
-**Update `PaginationPrevious`.**
-
-```diff
-  function PaginationPrevious({
-    className,
-+   text = "Previous",
-    ...props
-- }: React.ComponentProps<typeof PaginationLink>) {
-+ }: React.ComponentProps<typeof PaginationLink> & { text?: string }) {
-    return (
-      <PaginationLink
-        aria-label="Go to previous page"
-        size="default"
-        className={cn("cn-pagination-previous", className)}
-        {...props}
-      >
-        <ChevronLeftIcon />
-        <span className="cn-pagination-previous-text hidden sm:block">
--         Previous
-+         {text}
-        </span>
-      </PaginationLink>
-    )
-  }
-```
-
-**Update `PaginationNext`.**
-
-```diff
-  function PaginationNext({
-    className,
-+   text = "Next",
-    ...props
-- }: React.ComponentProps<typeof PaginationLink>) {
-+ }: React.ComponentProps<typeof PaginationLink> & { text?: string }) {
-    return (
-      <PaginationLink
-        aria-label="Go to next page"
-        size="default"
-        className={cn("cn-pagination-next", className)}
-        {...props}
-      >
--       <span className="cn-pagination-next-text hidden sm:block">Next</span>
-+       <span className="cn-pagination-next-text hidden sm:block">{text}</span>
-        <ChevronRightIcon />
-      </PaginationLink>
-    )
-  }
-```

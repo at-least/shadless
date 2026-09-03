@@ -394,7 +394,7 @@ Use `FieldContent` and `FieldDescription` for helper text.
 
 ## Disabled
 
-Use the `disabled` prop to prevent interaction and add the `data-disabled` attribute to the `<Field>` component for disabled styles.
+Use the `disabled` prop to prevent interaction and add the `data-disabled` attribute to the `data-slot="field"` component for disabled styles.
 
 ::::demo checkbox-disabled
 <iframe class="demo" src="/demos/checkbox-disabled.html" title="checkbox-disabled" data-status="authored" loading="lazy"></iframe>

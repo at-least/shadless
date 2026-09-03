@@ -972,27 +972,27 @@ Place message-level actions in `MessageFooter`, such as copy, retry, or feedback
 
 Action buttons in `MessageFooter` are usually icon-only, so give each one an `aria-label`.
 
-```tsx showLineNumbers
-<MessageFooter>
-  <Button variant="ghost" size="icon" aria-label="Copy">
-    <CopyIcon />
-  </Button>
-</MessageFooter>
+```html
+<div data-slot="message-footer">
+  <button data-slot="button" variant="ghost" size="icon" aria-label="Copy">
+    <!-- lucide "copy" icon -->
+  </button>
+</div>
 ```
 
 ### Status updates
 
 For in-progress messages, use a [`Marker`](/components/marker) with `role="status"` so assistive tech announces the update as it appears.
 
-```tsx showLineNumbers
-<Message>
-  <Marker role="status">
-    <MarkerIcon>
-      <Spinner />
-    </MarkerIcon>
-    <MarkerContent>Checking the logs...</MarkerContent>
-  </Marker>
-</Message>
+```html
+<div data-slot="message">
+  <div data-slot="marker" role="status">
+    <!-- lucide "marker" icon -->
+      <svg data-slot="spinner" />
+    <!-- lucide "marker" icon -->
+    <span data-slot="marker-content">Checking the logs...</span>
+  </div>
+</div>
 ```
 
 ## API Reference

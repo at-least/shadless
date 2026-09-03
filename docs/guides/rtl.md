@@ -200,22 +200,20 @@ This ensures animations like dropdowns, popovers, and tooltips animate in the co
 
 There is a [known issue](https://github.com/Wombosvideo/tw-animate-css/issues/67) with the `tw-animate-css` library where the logical slide utilities are not working as expected. For now, make sure you pass in the `dir` prop to portal elements.
 
-```tsx showLineNumbers /dir="rtl"/
-<Popover>
-  <PopoverTrigger>Open</PopoverTrigger>
-  <PopoverContent dir="rtl">
+```html showLineNumbers /dir="rtl"/
+<button data-slot="popover-trigger" id="<k>-trigger">Open</button>
+<template id="<k>-portal">
+  <div data-slot="popover-content" dir="rtl">
     <div>Content</div>
-  </PopoverContent>
-</Popover>
+  </div>
+</template>
 ```
-
-```tsx showLineNumbers /dir="rtl"/
-<Tooltip>
-  <TooltipTrigger>Open</TooltipTrigger>
-  <TooltipContent dir="rtl">
+```html showLineNumbers /dir="rtl"/
+<button data-slot="tooltip-trigger" id="<k>-trigger">Open</button>
+<template id="<k>-portal">
+  <div data-slot="tooltip-content" dir="rtl">
     <div>Content</div>
-  </TooltipContent>
-</Tooltip>
+  </div>
+</template>
 ```
-
 shadless components ship the pinned registry's classes as-is — the current registry already uses logical (start/end-aware) utilities, so there is no migration step: every component is RTL-ready the moment the page carries `dir="rtl"`. To flip an individual icon, give it the `rtl:rotate-180` utility class.

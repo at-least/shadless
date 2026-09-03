@@ -233,10 +233,9 @@ func rewriteLinks(text string, siteMembers map[string]bool) string {
 
 // assertNoJsx: any JSX reaching here is a shape this mapping has never seen.
 func assertNoJsx(page, text string) error {
-	shadow := markupShadow(text)
 	seen := map[string]bool{}
 	var left []string
-	for _, m := range reJsxComponent.FindAllStringSubmatch(shadow, -1) {
+	for _, m := range reJsxComponent.FindAllStringSubmatch(text, -1) {
 		if !seen[m[1]] {
 			seen[m[1]] = true
 			left = append(left, m[1])
@@ -453,6 +452,24 @@ func (ctx *docsBuildCtx) componentTransform(name, raw string) (string, error) {
 	}
 	out = ctx.compositionTransform(name, out, &seen)
 	out = ctx.apiReferenceTransform(name, out, &seen)
+	if s := locateChangelogSpan(fenceShadow(out)); s != nil {
+		out = replaceSpan(out, *s, "")
+	}
+	if s := locateMessageScrollerJsSpan(fenceShadow(out)); s != nil {
+		out = replaceSpan(out, *s, messageScrollerJsNote())
+	}
+	out, err := applyJsxOverrides(name, out)
+	if err != nil {
+		return "", err
+	}
+	out, err = rewriteLeakedJsxFences(name, out)
+	if err != nil {
+		return "", err
+	}
+	out, err = rewriteInlineJsxMentions(name, out)
+	if err != nil {
+		return "", err
+	}
 	sort.Strings(seen)
 	ctx.sections[name] = seen
 	return applyTextAdjustments(name+".mdx", out)
@@ -504,7 +521,19 @@ func guideTransform(g guide, raw string) (string, error) {
 		return rewriteUtilityJsxFences(g.slug, raw)
 	}
 	if g.reactRef {
-		raw = insertReactReferenceNote(raw)
+		return insertReactReferenceNote(raw), nil
+	}
+	raw, err := applyJsxOverrides(g.slug, raw)
+	if err != nil {
+		return "", err
+	}
+	raw, err = rewriteLeakedJsxFences(g.slug, raw)
+	if err != nil {
+		return "", err
+	}
+	raw, err = rewriteInlineJsxMentions(g.slug, raw)
+	if err != nil {
+		return "", err
 	}
 	return raw, nil
 }
@@ -594,7 +623,7 @@ func (ctx *docsBuildCtx) demoSource(name, file string) string {
 	return "\n::: code-group\n```text:line-numbers [" + file + "]\n" + markup + "\n```\n\n```js:line-numbers [behavior]\n" + jsText + "\n```\n:::\n"
 }
 
-func (ctx *docsBuildCtx) buildPage(name, source string, transform func(string) (string, error)) ([]byte, error) {
+func (ctx *docsBuildCtx) buildPage(name, source string, transform func(string) (string, error), skipJsxCheck bool) ([]byte, error) {
 	rawB, err := os.ReadFile(source)
 	if err != nil {
 		return nil, err
@@ -629,8 +658,10 @@ func (ctx *docsBuildCtx) buildPage(name, source string, transform func(string) (
 		j := strings.Index(body[i:], "%%")
 		return nil, fmt.Errorf("%s", body[i+len("%%ERROR:"):i+j])
 	}
-	if err := assertNoJsx(name, body); err != nil {
-		return nil, err
+	if !skipJsxCheck {
+		if err := assertNoJsx(name, body); err != nil {
+			return nil, err
+		}
 	}
 	title := fmString(fm, "title")
 	if title == "" {
@@ -850,24 +881,25 @@ func runDocsBuild() int {
 	type pageJob struct {
 		name, source, dir string
 		transform         func(string) (string, error)
+		skipJsxCheck      bool
 	}
 	var allPages []pageJob
 	for _, c := range componentPages {
 		c := c
 		allPages = append(allPages, pageJob{c.name, c.source, docsRoot + "/components", func(src string) (string, error) {
 			return ctx.componentTransform(c.name, src)
-		}})
+		}, false})
 	}
 	for _, g := range guides {
 		g := g
 		allPages = append(allPages, pageJob{g.slug, g.source, docsRoot + "/guides", func(src string) (string, error) {
 			return guideTransform(g, src)
-		}})
+		}, g.reactRef})
 	}
 	built := 0
 	var errors_ []string
 	for _, page := range allPages {
-		out, err := ctx.buildPage(page.name, page.source, page.transform)
+		out, err := ctx.buildPage(page.name, page.source, page.transform, page.skipJsxCheck)
 		if err != nil {
 			errors_ = append(errors_, page.name+": "+err.Error())
 			continue

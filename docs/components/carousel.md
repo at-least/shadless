@@ -1929,7 +1929,7 @@ carousel
 
 ## Sizes
 
-To set the size of the items, you can use the `basis` utility class on the `<CarouselItem />`.
+To set the size of the items, you can use the `basis` utility class on the `data-slot="carousel-item"`.
 
 ::::demo carousel-size
 <iframe class="demo" src="/demos/carousel-size.html" title="carousel-size" data-status="authored" loading="lazy"></iframe>
@@ -3780,31 +3780,31 @@ To set the size of the items, you can use the `basis` utility class on the `<Car
 ::::
 
 
-```tsx showLineNumbers {4-6}
+```html
 // 33% of the carousel width.
-<Carousel>
-  <CarouselContent>
-    <CarouselItem className="basis-1/3">...</CarouselItem>
-    <CarouselItem className="basis-1/3">...</CarouselItem>
-    <CarouselItem className="basis-1/3">...</CarouselItem>
-  </CarouselContent>
-</Carousel>
+<div data-slot="carousel">
+  <div data-slot="carousel-content">
+    <div data-slot="carousel-item" class="basis-1/3">...</div>
+    <div data-slot="carousel-item" class="basis-1/3">...</div>
+    <div data-slot="carousel-item" class="basis-1/3">...</div>
+  </div>
+</div>
 ```
 
-```tsx showLineNumbers {4-6}
+```html
 // 50% on small screens and 33% on larger screens.
-<Carousel>
-  <CarouselContent>
-    <CarouselItem className="md:basis-1/2 lg:basis-1/3">...</CarouselItem>
-    <CarouselItem className="md:basis-1/2 lg:basis-1/3">...</CarouselItem>
-    <CarouselItem className="md:basis-1/2 lg:basis-1/3">...</CarouselItem>
-  </CarouselContent>
-</Carousel>
+<div data-slot="carousel">
+  <div data-slot="carousel-content">
+    <div data-slot="carousel-item" class="md:basis-1/2 lg:basis-1/3">...</div>
+    <div data-slot="carousel-item" class="md:basis-1/2 lg:basis-1/3">...</div>
+    <div data-slot="carousel-item" class="md:basis-1/2 lg:basis-1/3">...</div>
+  </div>
+</div>
 ```
 
 ## Spacing
 
-To set the spacing between the items, we use a `pl-[VALUE]` utility on the `<CarouselItem />` and a negative `-ml-[VALUE]` on the `<CarouselContent />`.
+To set the spacing between the items, we use a `pl-[VALUE]` utility on the `data-slot="carousel-item"` and a negative `-ml-[VALUE]` on the `data-slot="carousel-content"`.
 
 ::::demo carousel-spacing
 <iframe class="demo" src="/demos/carousel-spacing.html" title="carousel-spacing" data-status="authored" loading="lazy"></iframe>
@@ -5655,24 +5655,24 @@ To set the spacing between the items, we use a `pl-[VALUE]` utility on the `<Car
 ::::
 
 
-```tsx showLineNumbers /-ml-4/ /pl-4/
-<Carousel>
-  <CarouselContent className="-ml-4">
-    <CarouselItem className="pl-4">...</CarouselItem>
-    <CarouselItem className="pl-4">...</CarouselItem>
-    <CarouselItem className="pl-4">...</CarouselItem>
-  </CarouselContent>
-</Carousel>
+```html
+<div data-slot="carousel">
+  <div data-slot="carousel-content" class="-ml-4">
+    <div data-slot="carousel-item" class="pl-4">...</div>
+    <div data-slot="carousel-item" class="pl-4">...</div>
+    <div data-slot="carousel-item" class="pl-4">...</div>
+  </div>
+</div>
 ```
 
-```tsx showLineNumbers /-ml-2/ /pl-2/ /md:-ml-4/ /md:pl-4/
-<Carousel>
-  <CarouselContent className="-ml-2 md:-ml-4">
-    <CarouselItem className="pl-2 md:pl-4">...</CarouselItem>
-    <CarouselItem className="pl-2 md:pl-4">...</CarouselItem>
-    <CarouselItem className="pl-2 md:pl-4">...</CarouselItem>
-  </CarouselContent>
-</Carousel>
+```html
+<div data-slot="carousel">
+  <div data-slot="carousel-content" class="-ml-2 md:-ml-4">
+    <div data-slot="carousel-item" class="pl-2 md:pl-4">...</div>
+    <div data-slot="carousel-item" class="pl-2 md:pl-4">...</div>
+    <div data-slot="carousel-item" class="pl-2 md:pl-4">...</div>
+  </div>
+</div>
 ```
 
 ## Orientation
@@ -7513,35 +7513,19 @@ Use the `orientation` prop to set the orientation of the carousel.
 ::::
 
 
-```tsx showLineNumbers /vertical | horizontal/
-<Carousel orientation="vertical | horizontal">
-  <CarouselContent>
-    <CarouselItem>...</CarouselItem>
-    <CarouselItem>...</CarouselItem>
-    <CarouselItem>...</CarouselItem>
-  </CarouselContent>
-</Carousel>
+```html
+<div data-slot="carousel" orientation="vertical | horizontal">
+  <div data-slot="carousel-content">
+    <div data-slot="carousel-item">...</div>
+    <div data-slot="carousel-item">...</div>
+    <div data-slot="carousel-item">...</div>
+  </div>
+</div>
 ```
 
 ## Options
 
-You can pass options to the carousel using the `opts` prop. See the [Embla Carousel docs](https://www.embla-carousel.com/api/options/) for more information.
-
-```tsx showLineNumbers {2-5}
-<Carousel
-  opts={{
-    align: "start",
-    loop: true,
-  }}
->
-  <CarouselContent>
-    <CarouselItem>...</CarouselItem>
-    <CarouselItem>...</CarouselItem>
-    <CarouselItem>...</CarouselItem>
-  </CarouselContent>
-</Carousel>
-```
-
+shadless's carousel glue (`dist/js/carousel.js`) calls Embla with a fixed options object (`axis`/`direction`, derived from the markup) and nothing else — `align`/`loop`/every other [Embla option](https://www.embla-carousel.com/api/options/) is not exposed through markup. To change them, edit the `EmblaCarousel(viewport, { … })` call in that file directly; there is no declarative `opts` surface.
 ## API
 
 Use a state and the `setApi` props to get an instance of the carousel API.
@@ -9388,38 +9372,31 @@ Use a state and the `setApi` props to get an instance of the carousel API.
 ::::
 
 
+```js showLineNumbers
+const api = shadless.get(document.querySelector('[data-slot="carousel"]'))
+let current = api.selectedScrollSnap() + 1
+const count = api.scrollSnapList().length
 
+api.on("select", () => {
+  current = api.selectedScrollSnap() + 1
+})
+```
 
 ## Events
 
-You can listen to events using the api instance from `setApi`.
+You can listen to events on the instance `shadless.get(rootEl)` returns — it's the real Embla api, so its own `.on()` works exactly as [Embla's docs](https://www.embla-carousel.com/api/events/) describe.
 
+```js showLineNumbers
+const api = shadless.get(document.querySelector('[data-slot="carousel"]'))
 
-
-See the [Embla Carousel docs](https://www.embla-carousel.com/api/events/) for more information on using events.
+api.on("select", () => {
+  // Do something on select.
+})
+```
 
 ## Plugins
 
-You can use the `plugins` prop to add plugins to the carousel.
-
-```ts showLineNumbers {1,6-10}
-import Autoplay from "embla-carousel-autoplay"
-
-export function Example() {
-  return (
-    <Carousel
-      plugins={[
-        Autoplay({
-          delay: 2000,
-        }),
-      ]}
-    >
-      // ...
-    </Carousel>
-  )
-}
-```
-
+Plugins are an Embla concept (`EmblaCarousel(viewport, options, plugins)`) — shadless's glue (`dist/js/carousel.js`) doesn't pass a plugins array, so `embla-carousel-autoplay` and friends aren't available without editing that file yourself to add one.
 ::::demo carousel-plugin
 <iframe class="demo" src="/demos/carousel-plugin.html" title="carousel-plugin" data-status="authored" loading="lazy"></iframe>
 
@@ -13128,26 +13105,19 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 ::::
 
 
-When localizing the carousel for RTL languages, you need to set the `direction` option in the `opts` prop to match the text direction. This ensures the carousel scrolls in the correct direction.
+When localizing the carousel for RTL languages, set `dir="rtl"` on the carousel root — the runtime reads that attribute directly (falling back to `<html dir>`). There's no `opts` to configure; `opts` isn't read at all (see [Options](#options)).
 
-```tsx showLineNumbers {2-5}
-<Carousel
-  dir={dir}
-  opts={{
-    direction: dir,
-  }}
->
-  <CarouselContent>
-    <CarouselItem>...</CarouselItem>
-    <CarouselItem>...</CarouselItem>
-    <CarouselItem>...</CarouselItem>
-  </CarouselContent>
-  <CarouselPrevious className="rtl:rotate-180" />
-  <CarouselNext className="rtl:rotate-180" />
-</Carousel>
+```html showLineNumbers
+<div data-slot="carousel" dir="rtl">
+  <div data-slot="carousel-content">
+    <div data-slot="carousel-item">...</div>
+    <div data-slot="carousel-item">...</div>
+    <div data-slot="carousel-item">...</div>
+  </div>
+  <button data-slot="carousel-previous" class="rtl:rotate-180"></button>
+  <button data-slot="carousel-next" class="rtl:rotate-180"></button>
+</div>
 ```
-
-The `direction` option accepts `"ltr"` or `"rtl"` and should match the `dir` prop value. You may also want to rotate the navigation buttons using the `rtl:rotate-180` class to ensure they point in the correct direction.
 
 ## API Reference
 

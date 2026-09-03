@@ -520,7 +520,7 @@ Use the `rounded-full` class to make the button rounded.
 
 ## Spinner
 
-Render a `<Spinner />` component inside the button to show a loading state. Remember to add the `data-icon="inline-start"` or `data-icon="inline-end"` attribute to the spinner for the correct spacing.
+Render a `data-slot="spinner"` component inside the button to show a loading state. Remember to add the `data-icon="inline-start"` or `data-icon="inline-end"` attribute to the spinner for the correct spacing.
 
 ::::demo button-spinner
 <iframe class="demo" src="/demos/button-spinner.html" title="button-spinner" data-status="authored" loading="lazy"></iframe>
@@ -1167,7 +1167,7 @@ To create a button group, use the `ButtonGroup` component. See the [Button Group
 
 ## As Child
 
-You can use the `asChild` prop on `<Button />` to make another component look like a button. Here's an example of a link that looks like a button.
+You can use the `asChild` prop on `data-slot="button"` to make another component look like a button. Here's an example of a link that looks like a button.
 
 ::::demo button-aschild
 <iframe class="demo" src="/demos/button-aschild.html" title="button-aschild" data-status="authored" loading="lazy"></iframe>

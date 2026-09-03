@@ -88,11 +88,11 @@ runtime drives.
 For form fields, use the [Field](/components/field) component which
 includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
 
-```tsx
-<Field>
-  <FieldLabel htmlFor="email">Your email address</FieldLabel>
-  <Input id="email" />
-</Field>
+```html
+<div data-slot="field">
+  <label data-slot="field-label" htmlFor="email">Your email address</label>
+  <input data-slot="input" id="email" />
+</div>
 ```
 
 ::::demo field-demo

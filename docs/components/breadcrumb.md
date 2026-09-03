@@ -451,7 +451,7 @@ A basic breadcrumb with a home link and a components link.
 
 ## Custom separator
 
-Use a custom component as `children` for `<BreadcrumbSeparator />` to create a custom separator.
+Use a custom component as `children` for `data-slot="breadcrumb-separator"` to create a custom separator.
 
 ::::demo breadcrumb-separator
 <iframe class="demo" src="/demos/breadcrumb-separator.html" title="breadcrumb-separator" data-status="authored" loading="lazy"></iframe>
@@ -540,7 +540,7 @@ Use a custom component as `children` for `<BreadcrumbSeparator />` to create a c
 
 ## Dropdown
 
-You can compose `<BreadcrumbItem />` with a `<DropdownMenu />` to create a dropdown in the breadcrumb.
+You can compose a `data-slot="breadcrumb-item"` with a dropdown-menu trigger (see the [Dropdown Menu](/components/dropdown-menu) page) to create a dropdown in the breadcrumb.
 
 ::::demo breadcrumb-dropdown
 <iframe class="demo" src="/demos/breadcrumb-dropdown.html" title="breadcrumb-dropdown" data-status="authored" loading="lazy"></iframe>
@@ -821,7 +821,7 @@ You can compose `<BreadcrumbItem />` with a `<DropdownMenu />` to create a dropd
 
 ## Collapsed
 
-We provide a `<BreadcrumbEllipsis />` component to show a collapsed state when the breadcrumb is too long.
+We provide a `data-slot="breadcrumb-ellipsis"` component to show a collapsed state when the breadcrumb is too long.
 
 ::::demo breadcrumb-ellipsis
 <iframe class="demo" src="/demos/breadcrumb-ellipsis.html" title="breadcrumb-ellipsis" data-status="authored" loading="lazy"></iframe>
@@ -955,7 +955,7 @@ We provide a `<BreadcrumbEllipsis />` component to show a collapsed state when t
 
 ## Link component
 
-To use a custom link component from your routing library, you can use the `asChild` prop on `<BreadcrumbLink />`.
+To use a custom link component from your routing library, you can use the `asChild` prop on `data-slot="breadcrumb-link"`.
 
 ::::demo breadcrumb-link
 <iframe class="demo" src="/demos/breadcrumb-link.html" title="breadcrumb-link" data-status="authored" loading="lazy"></iframe>

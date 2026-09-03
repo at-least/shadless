@@ -2100,9 +2100,3 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | Slot | Attribute | Values | Default |
 | --- | --- | --- | --- |
 | `input-group-addon` | `data-align` | `inline-start`, `inline-end`, `block-start`, `block-end` | `inline-start` |
-
-## Changelog
-
-### 2025-10-06 `InputGroup`
-
-Add the `min-w-0` class to the `InputGroup` component. See [diff](https://github.com/shadcn-ui/ui/pull/8341/files#diff-0e2ee95d0050ca4c5d82339df86c54e14a6739dc4638fdda0eec8f73aebc2da9).

@@ -200,17 +200,17 @@ Use the `AvatarBadge` component to add a badge to the avatar. The badge is posit
 
 Use the `className` prop to add custom styles to the badge such as custom colors, sizes, etc.
 
-```tsx showLineNumbers
-<Avatar>
-  <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-  <AvatarFallback>CN</AvatarFallback>
-  <AvatarBadge className="bg-green-600 dark:bg-green-800" />
-</Avatar>
+```html
+<span data-slot="avatar">
+  <img data-slot="avatar-image" src="https://github.com/shadcn.png" alt="@shadcn" />
+  <span data-slot="avatar-fallback">CN</span>
+  <span data-slot="avatar-badge" class="bg-green-600 dark:bg-green-800" />
+</span>
 ```
 
 ## Badge with Icon
 
-You can also use an icon inside `<AvatarBadge>`.
+You can also use an icon inside `data-slot="avatar-badge"`.
 
 ::::demo avatar-badge-icon
 <iframe class="demo" src="/demos/avatar-badge-icon.html" title="avatar-badge-icon" data-status="authored" loading="lazy"></iframe>
@@ -303,7 +303,7 @@ Use the `AvatarGroup` component to add a group of avatars.
 
 ## Avatar Group Count
 
-Use `<AvatarGroupCount>` to add a count to the group.
+Use `data-slot="avatar-group-count"` to add a count to the group.
 
 ::::demo avatar-group-count
 <iframe class="demo" src="/demos/avatar-group-count.html" title="avatar-group-count" data-status="authored" loading="lazy"></iframe>
@@ -359,7 +359,7 @@ Use `<AvatarGroupCount>` to add a count to the group.
 
 ## Avatar Group with Icon
 
-You can also use an icon inside `<AvatarGroupCount>`.
+You can also use an icon inside `data-slot="avatar-group-count"`.
 
 ::::demo avatar-group-count-icon
 <iframe class="demo" src="/demos/avatar-group-count-icon.html" title="avatar-group-count-icon" data-status="authored" loading="lazy"></iframe>

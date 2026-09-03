@@ -728,23 +728,23 @@ Turn a marker into a link or button with the `asChild` prop on `Marker`.
 
 For streaming or progress markers such as "Thinking..." or a running tool, set `role="status"` so assistive tech announces the update as it appears. `Marker` forwards `role` to the underlying element.
 
-```tsx showLineNumbers
-<Marker role="status">
-  <MarkerIcon>
-    <Spinner />
-  </MarkerIcon>
-  <MarkerContent>Compacting conversation</MarkerContent>
-</Marker>
+```html
+<div data-slot="marker" role="status">
+  <!-- lucide "marker" icon -->
+    <svg data-slot="spinner" />
+  <!-- lucide "marker" icon -->
+  <span data-slot="marker-content">Compacting conversation</span>
+</div>
 ```
 
 ### Labeled Separators
 
 A separator that carries text, such as a date or a section label, needs no role. The divider lines are decorative CSS pseudo-elements, and the text is announced as ordinary content.
 
-```tsx showLineNumbers
-<Marker variant="separator">
-  <MarkerContent>Today</MarkerContent>
-</Marker>
+```html
+<div data-slot="marker" variant="separator">
+  <span data-slot="marker-content">Today</span>
+</div>
 ```
 
 ::: tip
@@ -758,40 +758,40 @@ announced. Reserve `role="separator"` for a divider with no meaningful text.
 
 A bordered marker keeps the same semantics as the default marker. The bottom border is decorative, so choose `role="status"`, `asChild`, or no role based on the marker's purpose.
 
-```tsx showLineNumbers
-<Marker variant="border">
-  <MarkerIcon>
-    <FileTextIcon />
-  </MarkerIcon>
-  <MarkerContent>Opened implementation notes</MarkerContent>
-</Marker>
+```html
+<div data-slot="marker" variant="border">
+  <!-- lucide "marker" icon -->
+    <!-- lucide "file-text" icon -->
+  <!-- lucide "marker" icon -->
+  <span data-slot="marker-content">Opened implementation notes</span>
+</div>
 ```
 
 ### Decorative Icons
 
 `MarkerIcon` is decorative and hidden from assistive tech with `aria-hidden`, so the adjacent `MarkerContent` carries the meaning. For an icon-only marker, provide an `aria-label` or visible text so it is not announced as empty.
 
-```tsx showLineNumbers
-<Marker aria-label="Synced">
-  <MarkerIcon>
-    <CheckIcon />
-  </MarkerIcon>
-</Marker>
+```html
+<div data-slot="marker" aria-label="Synced">
+  <!-- lucide "marker" icon -->
+    <!-- lucide "check" icon -->
+  <!-- lucide "marker" icon -->
+</div>
 ```
 
 ### Interactive Markers
 
 When a marker links or triggers an action, render it as a real `<button>` or `<a>` with the `asChild` prop so it is focusable and exposes the correct role. The accessible name comes from the marker text.
 
-```tsx showLineNumbers
-<Marker asChild>
+```html
+<div data-slot="marker" asChild>
   <a href="/files">
-    <MarkerIcon>
-      <FileTextIcon />
-    </MarkerIcon>
-    <MarkerContent>Explored 4 files</MarkerContent>
+    <!-- lucide "marker" icon -->
+      <!-- lucide "file-text" icon -->
+    <!-- lucide "marker" icon -->
+    <span data-slot="marker-content">Explored 4 files</span>
   </a>
-</Marker>
+</div>
 ```
 
 ## API Reference

@@ -1355,18 +1355,18 @@ Use the `asChild` prop to render the item as a link. The hover and focus states 
 ::::
 
 
-```tsx showLineNumbers
-<Item asChild>
+```html
+<div data-slot="item" asChild>
   <a href="/dashboard">
-    <ItemMedia variant="icon">
-      <HomeIcon />
-    </ItemMedia>
-    <ItemContent>
-      <ItemTitle>Dashboard</ItemTitle>
-      <ItemDescription>Overview of your account and activity.</ItemDescription>
-    </ItemContent>
+    <div data-slot="item-media" variant="icon">
+      <!-- lucide "home" icon -->
+    </div>
+    <div data-slot="item-content">
+      <div data-slot="item-title">Dashboard</div>
+      <p data-slot="item-description">Overview of your account and activity.</p>
+    </div>
   </a>
-</Item>
+</div>
 ```
 
 ## Dropdown
