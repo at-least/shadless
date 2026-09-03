@@ -24,8 +24,6 @@ file list.
 The intended path is the one you already know from shadcn itself: the
 classes live in your markup, **your** Tailwind build compiles them.
 
-
-
 **Add shadless to your Tailwind entry, then one import per component you use.**
 
 ```css
@@ -57,8 +55,6 @@ shadless.get("#d1-trigger").open()
 
 Each component module imports the base itself, so import order does not
 matter; `shadless/esm/<name>` names the module files explicitly.
-
-
 
 ## Alternative: no build
 

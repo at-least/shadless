@@ -116,7 +116,6 @@ shadcn/ui components have first-class support for right-to-left (RTL) layouts. T
 
 ::::
 
-
 When you install components, the CLI automatically transforms physical positioning classes to logical equivalents, so your components work seamlessly in both LTR and RTL contexts.
 
 ## Get Started

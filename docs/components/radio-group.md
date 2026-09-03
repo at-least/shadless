@@ -97,10 +97,7 @@ A set of checkable buttons—known as radio buttons—where no more than one of 
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -118,7 +115,6 @@ The files this component needs:
 | `dist/components/radio-group.html` | component markup — copy your page's structure from here |
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 | `dist/js/radio-group.js` | this component's behavior — registers with the base |
-
 
 **Load the behavior files in your page:**
 
@@ -138,8 +134,6 @@ The root dispatches `shadless:change` (`detail: { value, item }`), bubbling, aft
 Forms: a `name` attribute on the root submits the checked item's value; `form.reset()` restores the initial state.
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -294,7 +288,6 @@ Radio group items with a description using the `Field` component.
 
 ::::
 
-
 ## Choice Card
 
 Use `FieldLabel` to wrap the entire `Field` for a clickable card-style selection.
@@ -448,7 +441,6 @@ Use `FieldLabel` to wrap the entire `Field` for a clickable card-style selection
 
 ::::
 
-
 ## Fieldset
 
 Use `FieldSet` and `FieldLegend` to group radio items with a label and description.
@@ -576,7 +568,6 @@ Use `FieldSet` and `FieldLegend` to group radio items with a label and descripti
 
 ::::
 
-
 ## Disabled
 
 Use the `disabled` prop on `RadioGroupItem` to disable individual items.
@@ -688,7 +679,6 @@ Use the `disabled` prop on `RadioGroupItem` to disable individual items.
 :::
 
 ::::
-
 
 ## Invalid
 
@@ -822,7 +812,6 @@ Use `aria-invalid` on `RadioGroupItem` and `data-invalid` on `Field` to show val
 :::
 
 ::::
-
 
 ## RTL
 
@@ -976,9 +965,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 
@@ -990,4 +977,4 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 **Runtime:** `role="radiogroup"` root; items are `role="radio"` with `aria-checked` + `data-state`, the checked one carries the `radio-group-indicator` mounted from `<template data-for="radio-group-indicator">`; an item's value is its `value` / `data-value` attribute or id. Keys: arrows / Home / End move focus over enabled items (rtl-aware); with nothing checked an arrow also checks its target (radix). The root dispatches `shadless:change` (`detail: { value, item }`). Forms: a `name` attribute on the root submits the checked item's value. No handle — `shadless.get(el)` returns `null`; `el.click()` is the driver.
 
-See the [Radix UI Radio Group](https://www.radix-ui.com/docs/primitives/components/radio-group#api-reference) documentation.
+See the [Radix UI Radio Group](https://www.radix-ui.com/primitives/docs/components/radio-group#api-reference) documentation.

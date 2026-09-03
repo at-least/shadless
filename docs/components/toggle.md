@@ -42,10 +42,7 @@ A two-state button that can be either on or off.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -64,7 +61,6 @@ The files this component needs:
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 | `dist/js/toggle.js` | this component's behavior — registers with the base |
 
-
 **Load the behavior files in your page:**
 
 ```html
@@ -81,8 +77,6 @@ Delegated from the base — no handle (`shadless.get(el)` is `null`): the state 
 The root dispatches `shadless:change` (`detail: { pressed }`), bubbling, after the state change, whichever path caused it.
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Outline
 
@@ -149,7 +143,6 @@ Use `variant="outline"` for an outline style.
 
 ::::
 
-
 ## With Text
 
 ::::demo toggle-text
@@ -188,7 +181,6 @@ Use `variant="outline"` for an outline style.
 :::
 
 ::::
-
 
 ## Size
 
@@ -236,7 +228,6 @@ Use the `size` prop to change the size of the toggle.
 
 ::::
 
-
 ## Disabled
 
 ::::demo toggle-disabled
@@ -275,7 +266,6 @@ Use the `size` prop to change the size of the toggle.
 :::
 
 ::::
-
 
 ## RTL
 
@@ -317,9 +307,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 
@@ -336,4 +324,4 @@ Each row below is a `cva`-declared variant baked into the shipped CSS as a `data
 | `toggle` | `data-variant` | `default`, `outline` | `default` |
 | `toggle` | `data-size` | `default`, `sm`, `lg` | `default` |
 
-See the [Radix Toggle](https://www.radix-ui.com/docs/primitives/components/toggle#api-reference) documentation.
+See the [Radix Toggle](https://www.radix-ui.com/primitives/docs/components/toggle#api-reference) documentation.

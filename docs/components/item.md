@@ -111,12 +111,9 @@ A versatile component for displaying content with media, title, description, and
 
 ::::
 
-
 The `Item` component is a straightforward flex container that can house nearly any type of content. Use it to display a title, description, and actions. Group it with the `ItemGroup` component to create a list of items.
 
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -134,12 +131,9 @@ The files this component needs:
 | `dist/components/item.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/item.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -322,7 +316,6 @@ Use the `variant` prop to change the visual style of the item.
 
 ::::
 
-
 ## Size
 
 Use the `size` prop to change the size of the item. Available sizes are `default`, `sm`, and `xs`.
@@ -482,7 +475,6 @@ Use the `size` prop to change the size of the item. Available sizes are `default
 
 ::::
 
-
 ## Icon
 
 Use `ItemMedia` with `variant="icon"` to display an icon.
@@ -558,7 +550,6 @@ Use `ItemMedia` with `variant="icon"` to display an icon.
 :::
 
 ::::
-
 
 ## Avatar
 
@@ -713,7 +704,6 @@ You can use `ItemMedia` with `variant="avatar"` to display an avatar.
 :::
 
 ::::
-
 
 ## Image
 
@@ -895,7 +885,6 @@ Use `ItemMedia` with `variant="image"` to display an image.
 :::
 
 ::::
-
 
 ## Group
 
@@ -1108,7 +1097,6 @@ Use `ItemGroup` to group related items together.
 
 ::::
 
-
 ## Header
 
 Use `ItemHeader` to add a header above the item content.
@@ -1244,7 +1232,6 @@ Use `ItemHeader` to add a header above the item content.
 
 ::::
 
-
 ## Link
 
 shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The hover and focus states apply to the anchor.
@@ -1343,7 +1330,6 @@ shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The h
 :::
 
 ::::
-
 
 ```html showLineNumbers
 <a data-slot="item" href="/dashboard">
@@ -1699,7 +1685,6 @@ shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The h
 
 ::::
 
-
 ## RTL
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
@@ -1810,9 +1795,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 

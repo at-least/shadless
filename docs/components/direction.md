@@ -118,10 +118,7 @@ Here's a preview of the component in RTL mode. Use the language selector to swit
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless to your Tailwind v4 entry:**
 
@@ -139,13 +136,17 @@ The files this component needs:
 | `dist/components/direction.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/direction.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
 
+## Reading the direction
 
+There is no `useDirection` hook and no `dist/js/direction.js` — direction is the DOM's own `dir` attribute. Read it the way the runtime itself does (`isRtl` in `dist/shadless.js`): the nearest `[dir]` ancestor, falling back to `<html dir>`.
 
-## useDirection
-
-The `useDirection` hook is used to get the current direction of the application.
+```js showLineNumbers
+function directionOf(el) {
+  var d = el.closest("[dir]")
+  return (d ? d.getAttribute("dir") : document.documentElement.getAttribute("dir")) || "ltr"
+}
+```

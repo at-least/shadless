@@ -210,7 +210,13 @@ func convertClassName(text string) string {
 	return replaceMarkup(text, reClassName, func(w string, m []string) string { return "class=" })
 }
 
+// reRadixLegacyPath: radix swapped the two path segments; 24 upstream pages
+// still link the old form, which answers 308 to the new one. Rewritten to
+// what it redirects to (each target verified 200) rather than left as a hop.
+var reRadixLegacyPath = regexp.MustCompile(`https://www\.radix-ui\.com/docs/primitives/`)
+
 func rewriteLinks(text string, siteMembers map[string]bool) string {
+	text = reRadixLegacyPath.ReplaceAllString(text, "https://www.radix-ui.com/primitives/docs/")
 	return replaceMarkup(text, reMdLink, func(whole string, m []string) string {
 		route := resolveDocsRoute(m[2], siteMembers)
 		if route == nil {
@@ -672,7 +678,46 @@ func (ctx *docsBuildCtx) buildPage(name, source string, transform func(string) (
 	if desc != "" {
 		lead = desc + "\n\n"
 	}
-	return []byte(front + "\n\n# " + title + "\n\n" + lead + strings.TrimSpace(body) + "\n"), nil
+	return []byte(front + "\n\n# " + title + "\n\n" + lead + normalizeBlankLines(strings.TrimSpace(body)) + "\n"), nil
+}
+
+// normalizeBlankLines tidies the seams the section transforms leave behind:
+// a replacement that ends without a trailing newline butts its successor's
+// `## ` heading straight onto the last line of prose, and one that ends with
+// several leaves a four-line gap. 55 headings across the built pages had no
+// blank line in front of them.
+//
+// Whitespace only, and only outside fences — fence content is compared
+// verbatim by docs-fidelity and is code a reader copies.
+func normalizeBlankLines(body string) string {
+	lines := strings.Split(body, "\n")
+	var out []string
+	inFence := false
+	for _, line := range lines {
+		if strings.HasPrefix(strings.TrimSpace(line), "```") {
+			inFence = !inFence
+			out = append(out, line)
+			continue
+		}
+		if inFence {
+			out = append(out, line)
+			continue
+		}
+		if strings.TrimSpace(line) == "" {
+			// at most one blank line in a row
+			if len(out) > 0 && strings.TrimSpace(out[len(out)-1]) == "" {
+				continue
+			}
+			out = append(out, "")
+			continue
+		}
+		// a heading always gets a blank line above it
+		if strings.HasPrefix(line, "#") && len(out) > 0 && strings.TrimSpace(out[len(out)-1]) != "" {
+			out = append(out, "")
+		}
+		out = append(out, line)
+	}
+	return strings.Join(out, "\n")
 }
 
 var mirrorSetCache []string
@@ -904,13 +949,23 @@ func runDocsBuild() int {
 	}
 
 	// index + sidebar
+	guideBySlug := map[string]guide{}
+	for _, g := range guides {
+		guideBySlug[g.slug] = g
+	}
 	idx := "---\ntitle: \"Components\"\n---\n\n# Components\n\n" +
-		fmt.Sprintf("%d radix components available · %d not available (upstream tombstones or out of pipeline scope) · %d guides.\n\n",
+		fmt.Sprintf("%d components ported · %d not ported (they need React, or upstream removed them) · %d guides.\n\n",
 			len(mirrorSetCache), len(greyComponents), len(guides)) +
 		"New here? Read the [Introduction](/guides/introduction) to learn what shadless is and why it exists.\n\n"
 	for _, n := range meta.Pages {
 		if greySet[n] {
-			idx += "- " + n + " <span class=\"unavailable\">not available</span>\n"
+			line := "- " + n + " <span class=\"unavailable\">not available</span>"
+			// A name can be greyed as a component and still have a guide —
+			// typography is CSS, not a component, so it ships as one.
+			if g, ok := guideBySlug[n]; ok {
+				line += " — see the [" + g.title + "](/guides/" + g.slug + ") guide"
+			}
+			idx += line + "\n"
 		} else {
 			idx += "- [" + n + "](/components/" + n + ")\n"
 		}

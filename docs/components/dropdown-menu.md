@@ -203,10 +203,7 @@ Displays a menu to the user — such as a set of actions or functions — trigge
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -224,7 +221,6 @@ The files this component needs:
 | `dist/components/dropdown-menu.html` | component markup — copy your page's structure from here |
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 | `dist/js/dropdown-menu.js` | this component's behavior — registers with the base |
-
 
 **Load the behavior files in your page:**
 
@@ -250,8 +246,6 @@ Content that React would render inside the component's portal lives in the `<tem
 **From code:** `shadless.get("#<k>-trigger")` → `open()`, `close()`, `toggle()`, `isOpen()`. `shadless.get` accepts an element or a selector and walks up from any element inside the instance. The trigger dispatches `shadless:open` / `shadless:close` (bubbling, `detail: { component, api }`) on every open and close, however it was caused.
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -544,7 +538,6 @@ A basic dropdown menu with labels and separators.
 :::
 
 ::::
-
 
 ## Submenu
 
@@ -942,7 +935,6 @@ Use `DropdownMenuSub` to nest secondary actions.
 
 ::::
 
-
 ## Shortcuts
 
 Add `DropdownMenuShortcut` to show keyboard hints.
@@ -1194,7 +1186,6 @@ Add `DropdownMenuShortcut` to show keyboard hints.
 :::
 
 ::::
-
 
 ## Icons
 
@@ -1483,7 +1474,6 @@ Combine icons with labels for quick scanning.
 
 ::::
 
-
 ## Checkboxes
 
 Use `DropdownMenuCheckboxItem` for toggles.
@@ -1732,7 +1722,6 @@ Use `DropdownMenuCheckboxItem` for toggles.
 :::
 
 ::::
-
 
 ## Checkboxes Icons
 
@@ -2037,7 +2026,6 @@ Add icons to checkbox items.
 
 ::::
 
-
 ## Radio Group
 
 Use `DropdownMenuRadioGroup` for exclusive choices.
@@ -2286,7 +2274,6 @@ Use `DropdownMenuRadioGroup` for exclusive choices.
 :::
 
 ::::
-
 
 ## Radio Icons
 
@@ -2586,7 +2573,6 @@ Show radio options with icons.
 
 ::::
 
-
 ## Destructive
 
 Use `variant="destructive"` for irreversible actions.
@@ -2853,7 +2839,6 @@ Use `variant="destructive"` for irreversible actions.
 :::
 
 ::::
-
 
 ## Avatar
 
@@ -3179,7 +3164,6 @@ An account switcher dropdown triggered by an avatar.
 :::
 
 ::::
-
 
 ## Complex
 
@@ -4584,7 +4568,6 @@ A richer example combining groups, icons, and submenus.
 
 ::::
 
-
 ## RTL
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
@@ -5321,9 +5304,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 
@@ -5349,4 +5330,4 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 **Runtime:** `shadless.get(el)` (element or selector, any element inside the instance) → `open()`, `close()`, `toggle()`, `isOpen()`; the trigger dispatches `shadless:open` / `shadless:close`. Markup protocol: see Installation → Behavior protocol.
 
-See the [Radix UI documentation](https://www.radix-ui.com/docs/primitives/components/dropdown-menu) for the full API reference.
+See the [Radix UI documentation](https://www.radix-ui.com/primitives/docs/components/dropdown-menu) for the full API reference.

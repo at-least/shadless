@@ -75,10 +75,7 @@ component.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -96,12 +93,9 @@ The files this component needs:
 | `dist/components/native-select.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/native-select.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -238,7 +232,6 @@ Use `NativeSelectOptGroup` to organize options into categories.
 
 ::::
 
-
 ## Disabled
 
 Add the `disabled` prop to the `NativeSelect` component to disable the select.
@@ -299,7 +292,6 @@ Add the `disabled` prop to the `NativeSelect` component to disable the select.
 
 ::::
 
-
 ## Invalid
 
 Use `aria-invalid` to show validation errors and the `data-invalid` attribute to the `Field` component for styling.
@@ -359,7 +351,6 @@ Use `aria-invalid` to show validation errors and the `data-invalid` attribute to
 :::
 
 ::::
-
 
 ## Native Select vs Select
 
@@ -433,9 +424,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 

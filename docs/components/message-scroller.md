@@ -60,7 +60,6 @@ A chat scroll container that anchors turns, opens saved transcripts, follows str
 
 ::::
 
-
 ## What Makes a Great Streaming Chat Experience
 
 Building a chat interface used to be simple. You create an inverted list with
@@ -113,8 +112,6 @@ markdown.
 
 ## Installation
 
-
-
 **Add shadless and this component to your Tailwind v4 entry:**
 
 ```css
@@ -131,12 +128,9 @@ The files this component needs:
 | `dist/components/message-scroller.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/message-scroller.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -180,7 +174,6 @@ it directly with your own markup and styles, see
 Message Scroller under @shadcn/react.
 
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 

@@ -113,10 +113,7 @@ Displays a card with header, content, and footer.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -134,12 +131,9 @@ The files this component needs:
 | `dist/components/card.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/card.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -208,7 +202,6 @@ Use the `size="sm"` prop to set the size of the card to small. The small size va
 :::
 
 ::::
-
 
 ## Spacing
 
@@ -392,7 +385,6 @@ In addition to the `size` prop, you can use the `--card-spacing` CSS variable to
 
 ::::
 
-
 Use negative margins with `-mx-(--card-spacing)` to make content go edge to edge while keeping it aligned with the card inset. When the edge-to-edge content sits above a footer, use `-mb-(--card-spacing)` on `CardContent` to remove the section gap.
 
 ::::demo card-edge-to-edge
@@ -469,7 +461,6 @@ Use negative margins with `-mx-(--card-spacing)` to make content go edge to edge
 
 ::::
 
-
 ## Image
 
 Add an image before the card header to create a card with an image.
@@ -535,7 +526,6 @@ Add an image before the card header to create a card with an image.
 :::
 
 ::::
-
 
 ## RTL
 
@@ -648,9 +638,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 

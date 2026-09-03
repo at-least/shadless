@@ -238,10 +238,7 @@ Displays a list of options for the user to pick from—triggered by a button.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -259,7 +256,6 @@ The files this component needs:
 | `dist/components/select.html` | component markup — copy your page's structure from here |
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 | `dist/js/select.js` | this component's behavior — registers with the base |
-
 
 **Load the behavior files in your page:**
 
@@ -284,8 +280,6 @@ Content that React would render inside the component's portal lives in the `<tem
 **From code:** `shadless.get("#<k>-trigger")` → `open()`, `close()`, `toggle()`, `isOpen()`, `select(optionEl)`, `value()`, `label()`, `selected()`; the trigger also dispatches `shadless:change` (`detail: { value, label, item }`). An option's value is its `value` / `data-value` attribute or id — React's value prop never reaches the DOM, so add `data-value` to options whose value differs from their label. `shadless.get` accepts an element or a selector and walks up from any element inside the instance. The trigger dispatches `shadless:open` / `shadless:close` (bubbling, `detail: { component, api }`) on every open and close, however it was caused.
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -669,7 +663,6 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
 
 ::::
 
-
 ## Groups
 
 Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
@@ -982,7 +975,6 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
 :::
 
 ::::
-
 
 ## Scrollable
 
@@ -1626,7 +1618,6 @@ A select with many items that scrolls.
 
 ::::
 
-
 ## Disabled
 
 ::::demo select-disabled
@@ -1777,7 +1768,6 @@ A select with many items that scrolls.
 :::
 
 ::::
-
 
 ## Invalid
 
@@ -2042,7 +2032,6 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
 :::
 
 ::::
-
 
 ## RTL
 
@@ -2388,9 +2377,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 
@@ -2409,4 +2396,4 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 **Runtime:** `shadless.get(el)` (element or selector, any element inside the instance) → `open()`, `close()`, `toggle()`, `isOpen()`, `select(optionEl)`, `value()`, `label()`, `selected()`; the trigger dispatches `shadless:change` (`detail: { value, label, item }`); a `name` attribute submits the selected value; the trigger dispatches `shadless:open` / `shadless:close`. Markup protocol: see Installation → Behavior protocol.
 
-See the [Radix UI Select](https://www.radix-ui.com/docs/primitives/components/select#api-reference) documentation.
+See the [Radix UI Select](https://www.radix-ui.com/primitives/docs/components/select#api-reference) documentation.

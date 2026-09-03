@@ -82,10 +82,7 @@ An image element with a fallback for representing the user.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -104,7 +101,6 @@ The files this component needs:
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 | `dist/js/avatar.js` | this component's behavior — registers with the base |
 
-
 **Load the behavior files in your page:**
 
 ```html
@@ -118,10 +114,7 @@ The files this component needs:
 
 Delegated from the base — no handle (`shadless.get(el)` is `null`): the state is the attribute radix renders and `el.click()` drives it. `avatar-image` is shown once loaded; on error or while loading the `avatar-fallback` stays (radix Presence) — settled at init and by `shadless.refresh(el)` for injected markup.
 
-
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -160,7 +153,6 @@ A basic avatar component with an image and a fallback.
 
 ::::
 
-
 ## Badge
 
 Use the `AvatarBadge` component to add a badge to the avatar. The badge is positioned at the bottom right of the avatar.
@@ -189,7 +181,6 @@ Use the `AvatarBadge` component to add a badge to the avatar. The badge is posit
 :::
 
 ::::
-
 
 Use the `className` prop to add custom styles to the badge such as custom colors, sizes, etc.
 
@@ -243,7 +234,6 @@ You can also use an icon inside `data-slot="avatar-badge"`.
 
 ::::
 
-
 ## Avatar Group
 
 Use the `AvatarGroup` component to add a group of avatars.
@@ -292,7 +282,6 @@ Use the `AvatarGroup` component to add a group of avatars.
 :::
 
 ::::
-
 
 ## Avatar Group Count
 
@@ -348,7 +337,6 @@ Use `data-slot="avatar-group-count"` to add a count to the group.
 :::
 
 ::::
-
 
 ## Avatar Group with Icon
 
@@ -419,7 +407,6 @@ You can also use an icon inside `data-slot="avatar-group-count"`.
 
 ::::
 
-
 ## Sizes
 
 Use the `size` prop to change the size of the avatar.
@@ -465,7 +452,6 @@ Use the `size` prop to change the size of the avatar.
 :::
 
 ::::
-
 
 ## Dropdown
 
@@ -733,7 +719,6 @@ You can use the `Avatar` component as a trigger for a dropdown menu.
 
 ::::
 
-
 ## RTL
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
@@ -813,9 +798,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 

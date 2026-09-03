@@ -9,7 +9,7 @@ shadless ships shadcn/ui's radix-line components as compiled HTML, CSS, and JS a
 
 ## Open Code
 
-shadless hands you the actual component markup. `dist/components/<name>.html` is the source of truth — the same JSX shadcn generates, just without the JSX wrappers and React hooks. Adapt any part to fit your design and functionality requirements.
+shadless hands you the actual component markup. `dist/components/<name>.html` is the source of truth — the same DOM shadcn's JSX renders, written out as HTML, without the JSX wrappers and React hooks. Adapt any part to fit your design and functionality requirements.
 
 - **Full Transparency:** The HTML, the CSS, and the JS runtime are all on disk. Nothing is hidden behind a build step.
 - **Easy Customization:** Edit the markup directly. Slots are marked with `data-slot="…"`; keep them and the shipped styles apply unchanged.
@@ -19,7 +19,7 @@ shadless hands you the actual component markup. `dist/components/<name>.html` is
 
 Every component in shadless shares a common, composable interface — the same one shadcn defines. **If a component does not exist, we bring it in as a slot-based composition**, and adjust its style to match and work with the rest of the design system.
 
-_The radix-line variants (49 components) compose consistently. Where shadcn defines a base-nova or aria variant on the same slot, shadless implements the radix version and links to the registry page for the other style lines._
+_The radix-line variants compose consistently. Where shadcn defines a base-nova or aria variant on the same slot, shadless implements the radix version and links to the registry page for the other style lines._
 
 ## Distribution
 
@@ -31,7 +31,7 @@ shadless is a code distribution system. It takes the pinned shadcn-ui registry, 
 - `dist/shadless.js` (npm: `shadless/js`) — the JS base: delegation engine + registry + theme, with the vendored radix kernel inside
 - `dist/js/<name>.js` (npm: `shadless/js/<name>`) — one behavior file per interactive component; carousel bundles the vendored embla engine
 
-Every component has been validated against a real-browser recording of the shadcn React original (Wave T6 / T7 acceptance). The oracle is the upstream code, not our re-implementation.
+Every component is validated against a real-browser recording of the shadcn React original: the pipeline drives the upstream React component in a browser, records the DOM and the behavior, and replays that recording against the emitted page. The oracle is upstream's own code, not our re-implementation.
 
 ## Beautiful Defaults
 
@@ -63,9 +63,10 @@ regardless of how the markup got there.
 :::
 
 ::: details Where does the "no React" come from?
-shadcn/ui components are React JSX. shadless converts them via an AST
-pipeline (babel → IR → emit) that drops the JSX wrappers, inlines cva
-branches, and rewrites event handlers to attach through vanilla DOM.
+shadcn/ui components are React JSX. shadless converts them with an AST
+pipeline — a TSX parser produces an IR, and emitters turn that IR into
+HTML and CSS — dropping the JSX wrappers, inlining cva branches, and
+rewriting event handlers to attach through vanilla DOM.
 Contract tests replay real-browser recordings of the original React
 components against the emitted pages, so behavior parity is proven,
 not assumed.

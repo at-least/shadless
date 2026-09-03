@@ -851,7 +851,7 @@ var textAdjustments = []textAdjustment{
 		ops: []textOp{
 			{
 				find:    "You can also enable this during project setup with `npx shadcn@latest init --pointer`.",
-				replace: "In shadless just keep the CSS rule above — there is no CLI flag to set.",
+				replace: "shadless has no CLI, so the rule below is the whole of it — there is no flag that adds it for you.",
 			},
 		},
 	},

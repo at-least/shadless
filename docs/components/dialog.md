@@ -168,10 +168,7 @@ A window overlaid on either the primary window or another dialog window, renderi
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -189,7 +186,6 @@ The files this component needs:
 | `dist/components/dialog.html` | component markup — copy your page's structure from here |
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 | `dist/js/dialog.js` | this component's behavior — registers with the base |
-
 
 **Load the behavior files in your page:**
 
@@ -214,8 +210,6 @@ Content that React would render inside the component's portal lives in the `<tem
 **From code:** `shadless.get("#<k>-trigger")` → `open()`, `close()`, `toggle()`, `isOpen()`. `shadless.get` accepts an element or a selector and walks up from any element inside the instance. The trigger dispatches `shadless:open` / `shadless:close` (bubbling, `detail: { component, api }`) on every open and close, however it was caused.
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -427,7 +421,6 @@ Replace the default close control with your own button.
 
 ::::
 
-
 ## No Close Button
 
 Use `showCloseButton={false}` to hide the close button.
@@ -570,7 +563,6 @@ Use `showCloseButton={false}` to hide the close button.
 :::
 
 ::::
-
 
 ## Sticky Footer
 
@@ -824,7 +816,6 @@ Keep actions visible while the content scrolls.
 
 ::::
 
-
 ## Scrollable Content
 
 Long content can scroll while the header stays in view.
@@ -1063,7 +1054,6 @@ Long content can scroll while the header stays in view.
 
 ::::
 
-
 ## RTL
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
@@ -1299,9 +1289,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 
@@ -1320,4 +1308,4 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 **Runtime:** `shadless.get(el)` (element or selector, any element inside the instance) → `open()`, `close()`, `toggle()`, `isOpen()`; the trigger dispatches `shadless:open` / `shadless:close`. Markup protocol: see Installation → Behavior protocol.
 
-See the [Radix UI](https://www.radix-ui.com/docs/primitives/components/dialog#api-reference) documentation for more information.
+See the [Radix UI](https://www.radix-ui.com/primitives/docs/components/dialog#api-reference) documentation for more information.

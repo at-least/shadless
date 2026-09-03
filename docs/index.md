@@ -4,7 +4,7 @@ title: "Components"
 
 # Components
 
-51 radix components available · 15 not available (upstream tombstones or out of pipeline scope) · 9 guides.
+51 components ported · 15 not ported (they need React, or upstream removed them) · 9 guides.
 
 New here? Read the [Introduction](/guides/introduction) to learn what shadless is and why it exists.
 
@@ -73,7 +73,7 @@ New here? Read the [Introduction](/guides/introduction) to learn what shadless i
 - [toggle](/components/toggle)
 - [toggle-group](/components/toggle-group)
 - [tooltip](/components/tooltip)
-- typography <span class="unavailable">not available</span>
+- typography <span class="unavailable">not available</span> — see the [Typography](/guides/typography) guide
 
 ## Guides
 

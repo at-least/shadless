@@ -127,10 +127,7 @@ Augments native scroll functionality for custom, cross-browser styling.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -149,7 +146,6 @@ The files this component needs:
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 | `dist/js/scroll-area.js` | this component's behavior — registers with the base |
 
-
 **Load the behavior files in your page:**
 
 ```html
@@ -167,11 +163,7 @@ The glue is data-driven: it scans the page for the markup shape below and wires 
 | --- | --- |
 | `<… data-slot="scroll-area">` | no ids, no templates: the glue wires every root it finds |
 
-Content that React would render inside the component's portal lives in the `<template>`; the glue clones it into `<body>` while open and removes it on close, exactly as radix mounts and unmounts.
-
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -313,7 +305,6 @@ Use `ScrollBar` with `orientation="horizontal"` for horizontal scrolling.
 :::
 
 ::::
-
 
 ## RTL
 
@@ -744,9 +735,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 
@@ -759,4 +748,4 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 **Runtime:** wired from `data-slot` alone — no handle, no events; see Installation → Behavior protocol.
 
-See the [Radix UI Scroll Area](https://www.radix-ui.com/docs/primitives/components/scroll-area#api-reference) documentation.
+See the [Radix UI Scroll Area](https://www.radix-ui.com/primitives/docs/components/scroll-area#api-reference) documentation.

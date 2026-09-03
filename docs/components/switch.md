@@ -43,10 +43,7 @@ A control that allows the user to toggle between checked and not checked.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -64,7 +61,6 @@ The files this component needs:
 | `dist/components/switch.html` | component markup — copy your page's structure from here |
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 | `dist/js/switch.js` | this component's behavior — registers with the base |
-
 
 **Load the behavior files in your page:**
 
@@ -84,8 +80,6 @@ The root dispatches `shadless:change` (`detail: { checked }`), bubbling, after t
 Forms: a `name` attribute submits its `value` (default `on`) while checked; `form.reset()` restores the initial state.
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Description
 
@@ -141,7 +135,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 :::
 
 ::::
-
 
 ## Choice Card
 
@@ -253,7 +246,6 @@ Card-style selection where `FieldLabel` wraps the entire `Field` for a clickable
 
 ::::
 
-
 ## Disabled
 
 Add the `disabled` prop to the `Switch` component to disable the switch. Add the `data-disabled` prop to the `Field` component for styling.
@@ -302,7 +294,6 @@ Add the `disabled` prop to the `Switch` component to disable the switch. Add the
 :::
 
 ::::
-
 
 ## Invalid
 
@@ -362,7 +353,6 @@ Add the `aria-invalid` prop to the `Switch` component to indicate an invalid sta
 :::
 
 ::::
-
 
 ## Size
 
@@ -443,7 +433,6 @@ Use the `size` prop to change the size of the switch.
 
 ::::
 
-
 ## RTL
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
@@ -505,9 +494,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 
@@ -518,4 +505,4 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 **Runtime:** `role="switch"` root with `aria-checked` + `data-state`; the `switch-thumb` mirrors `data-state`. Keys: Space / click toggles. The root dispatches `shadless:change` (`detail: { checked }`). Forms: a `name` attribute submits its `value` (default `on`) while checked. No handle — `shadless.get(el)` returns `null`; `el.click()` is the driver.
 
-See the [Radix Switch](https://www.radix-ui.com/docs/primitives/components/switch#api-reference) documentation.
+See the [Radix Switch](https://www.radix-ui.com/primitives/docs/components/switch#api-reference) documentation.

@@ -36,10 +36,7 @@ Displays an indicator showing the completion progress of a task, typically displ
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -57,7 +54,6 @@ The files this component needs:
 | `dist/components/progress.html` | component markup — copy your page's structure from here |
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 
-
 **Load the behavior files in your page:**
 
 ```html
@@ -67,8 +63,6 @@ The files this component needs:
 **Copy the markup from `dist/components/progress.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Label
 
@@ -116,7 +110,6 @@ Use a `Field` component to add a label to the progress bar.
 :::
 
 ::::
-
 
 ## Controlled
 
@@ -229,7 +222,6 @@ A progress bar that can be controlled by a slider.
 
 ::::
 
-
 ## RTL
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
@@ -278,9 +270,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 
@@ -289,4 +279,4 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | `data-slot="progress"` |
 | `data-slot="progress-indicator"` |
 
-See the [Radix UI Progress](https://www.radix-ui.com/docs/primitives/components/progress#api-reference) documentation.
+See the [Radix UI Progress](https://www.radix-ui.com/primitives/docs/components/progress#api-reference) documentation.

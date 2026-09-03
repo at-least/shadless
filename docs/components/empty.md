@@ -99,10 +99,7 @@ Use the Empty component to display an empty state.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -120,12 +117,9 @@ The files this component needs:
 | `dist/components/empty.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/empty.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -206,7 +200,6 @@ Use the `border` utility class to create an outline empty state.
 :::
 
 ::::
-
 
 ## Background
 
@@ -292,7 +285,6 @@ Use the `bg-*` and `bg-gradient-*` utilities to add a background to the empty st
 
 ::::
 
-
 ## Avatar
 
 Use the `EmptyMedia` component to display an avatar in the empty state.
@@ -352,7 +344,6 @@ Use the `EmptyMedia` component to display an avatar in the empty state.
 :::
 
 ::::
-
 
 ## Avatar Group
 
@@ -451,7 +442,6 @@ Use the `EmptyMedia` component to display an avatar group in the empty state.
 
 ::::
 
-
 ## InputGroup
 
 You can add an `InputGroup` component to the `EmptyContent` component.
@@ -539,7 +529,6 @@ You can add an `InputGroup` component to the `EmptyContent` component.
 :::
 
 ::::
-
 
 ## RTL
 
@@ -639,9 +628,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 

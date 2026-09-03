@@ -51,10 +51,7 @@ Displays a button or a component that looks like a button.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -72,12 +69,9 @@ The files this component needs:
 | `dist/components/button.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/button.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Cursor
 
@@ -85,7 +79,7 @@ Tailwind v4 [switched](https://tailwindcss.com/docs/upgrade-guide#buttons-use-th
 
 If you want to keep the `cursor: pointer` behavior, add the following code to your CSS file:
 
-In shadless just keep the CSS rule above — there is no CLI flag to set.
+shadless has no CLI, so the rule below is the whole of it — there is no flag that adds it for you.
 
 ```css showLineNumbers title="globals.css"
 @layer base {
@@ -242,7 +236,6 @@ Use the `size` prop to change the size of the button.
 
 ::::
 
-
 ## Default
 
 ::::demo button-default
@@ -264,7 +257,6 @@ Use the `size` prop to change the size of the button.
 :::
 
 ::::
-
 
 ## Outline
 
@@ -288,7 +280,6 @@ Use the `size` prop to change the size of the button.
 
 ::::
 
-
 ## Secondary
 
 ::::demo button-secondary
@@ -310,7 +301,6 @@ Use the `size` prop to change the size of the button.
 :::
 
 ::::
-
 
 ## Ghost
 
@@ -334,7 +324,6 @@ Use the `size` prop to change the size of the button.
 
 ::::
 
-
 ## Destructive
 
 ::::demo button-destructive
@@ -357,7 +346,6 @@ Use the `size` prop to change the size of the button.
 
 ::::
 
-
 ## Link
 
 ::::demo button-link
@@ -379,7 +367,6 @@ Use the `size` prop to change the size of the button.
 :::
 
 ::::
-
 
 ## Icon
 
@@ -421,7 +408,6 @@ Use the `size` prop to change the size of the button.
 :::
 
 ::::
-
 
 ## With Icon
 
@@ -466,7 +452,6 @@ Remember to add the `data-icon="inline-start"` or `data-icon="inline-end"` attri
 
 ::::
 
-
 ## Rounded
 
 Use the `rounded-full` class to make the button rounded.
@@ -506,7 +491,6 @@ Use the `rounded-full` class to make the button rounded.
 :::
 
 ::::
-
 
 ## Spinner
 
@@ -576,7 +560,6 @@ Render a `data-slot="spinner"` component inside the button to show a loading sta
 :::
 
 ::::
-
 
 ## Button Group
 
@@ -1154,7 +1137,6 @@ To create a button group, use the `ButtonGroup` component. See the [Button Group
 
 ::::
 
-
 ## As Child
 
 You can use the `asChild` prop on `data-slot="button"` to make another component look like a button. Here's an example of a link that looks like a button.
@@ -1178,7 +1160,6 @@ You can use the `asChild` prop on `data-slot="button"` to make another component
 :::
 
 ::::
-
 
 ## RTL
 
@@ -1284,9 +1265,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 

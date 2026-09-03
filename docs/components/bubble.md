@@ -108,14 +108,11 @@ Displays conversational content in a message bubble. Supports variants, alignmen
 
 ::::
 
-
 The `Bubble` component displays framed conversational content. Use it for chat text, short structured output, quoted replies, suggestions, and reactions.
 
 For full-featured chat interfaces, use the [`Message`](/components/message) component. `Bubble` is intentionally scoped to the bubble surface. Place avatars, names, timestamps, metadata, and message-level actions in [`Message`](/components/message).
 
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -133,12 +130,9 @@ The files this component needs:
 | `dist/components/bubble.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/bubble.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -293,7 +287,6 @@ Use `variant` to change the visual treatment of the bubble.
 
 ::::
 
-
 | Variant       | Description                                            |
 | ------------- | ------------------------------------------------------ |
 | `default`     | A strong primary bubble, usually for the current user. |
@@ -349,7 +342,6 @@ Use `align` on `Bubble` to align the bubble to the start or end of the conversat
 :::
 
 ::::
-
 
 | align   | Description                                        |
 | ------- | -------------------------------------------------- |
@@ -460,7 +452,6 @@ BubbleGroup
 
 ::::
 
-
 ## Links and Buttons
 
 You can turn a bubble into a link or button by using the `asChild` prop on `BubbleContent`.
@@ -532,9 +523,6 @@ You can turn a bubble into a link or button by using the `asChild` prop on `Bubb
 :::
 
 ::::
-
-
-
 
 ## Reactions
 
@@ -651,7 +639,6 @@ Use `BubbleReactions` for bubble reactions. You can use it to display reactions 
 
 ::::
 
-
 ## Show More / Collapsible
 
 Long bubble content can be composed with [`Collapsible`](/components/collapsible) to allow for a show more or show less interaction. Use the `CollapsibleTrigger` component to trigger the collapsible content.
@@ -727,7 +714,6 @@ Long bubble content can be composed with [`Collapsible`](/components/collapsible
 :::
 
 ::::
-
 
 ## Tooltip
 
@@ -918,7 +904,6 @@ Wrap a bubble in a [`Tooltip`](/components/tooltip) to reveal metadata on hover,
 
 ::::
 
-
 ## Popover
 
 Pair a bubble with a [`Popover`](/components/popover) to surface more information on demand, such as the full error message for a failed action.
@@ -1101,7 +1086,6 @@ Pair a bubble with a [`Popover`](/components/popover) to surface more informatio
 
 ::::
 
-
 ## Accessibility
 
 `Bubble` renders the presentational message surface. Keep conversation-level semantics on the surrounding container and follow the guidelines below.
@@ -1141,12 +1125,12 @@ When a bubble is clickable, render it as a real `<button>` or `<a>` with the `as
 ```
 
 `variant`/`align` compile into static Tailwind classes at build time (no runtime data attribute) — copy the class list for the variant you want from `dist/components/bubble.html`.
+
 ### Meaning Beyond Color
 
 Bubble variants signal role and tone with color. Pair them with text, alignment, or icons so meaning is not conveyed by color alone. For a `destructive` bubble, keep the error context in the message text rather than relying on the color treatment.
 
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 

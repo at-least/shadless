@@ -51,10 +51,7 @@ Used to display textual user input from keyboard.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -72,12 +69,9 @@ The files this component needs:
 | `dist/components/kbd.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/kbd.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -123,7 +117,6 @@ Use the `KbdGroup` component to group keyboard keys together.
 
 ::::
 
-
 ## Button
 
 Use the `Kbd` component inside a `Button` component to display a keyboard key inside a button.
@@ -153,7 +146,6 @@ Use the `Kbd` component inside a `Button` component to display a keyboard key in
 :::
 
 ::::
-
 
 ## Tooltip
 
@@ -420,7 +412,6 @@ You can use the `Kbd` component inside a `Tooltip` component to display a toolti
 
 ::::
 
-
 ## Input Group
 
 You can use the `Kbd` component inside a `InputGroupAddon` component to display a keyboard key inside an input group.
@@ -488,7 +479,6 @@ You can use the `Kbd` component inside a `InputGroupAddon` component to display 
 
 ::::
 
-
 ## RTL
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
@@ -537,9 +527,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 

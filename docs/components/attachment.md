@@ -268,12 +268,9 @@ Displays a file or image attachment with media, metadata, upload state, and acti
 
 ::::
 
-
 The `Attachment` component displays a file or image attachment, its media, name, and metadata, with optional actions and upload state. Use it for files and images in chat composers, message threads, and upload lists.
 
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -291,12 +288,9 @@ The files this component needs:
 | `dist/components/attachment.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/attachment.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -548,7 +542,6 @@ Set `variant="image"` on `AttachmentMedia` and render an `<img>` inside it. Use 
 :::
 
 ::::
-
 
 ## States
 
@@ -952,7 +945,6 @@ Set `state` to reflect the upload lifecycle. `uploading` and `processing` shimme
 
 ::::
 
-
 ## Sizes
 
 Use `size` to switch between `default`, `sm`, and `xs`.
@@ -1104,7 +1096,6 @@ Use `size` to switch between `default`, `sm`, and `xs`.
 :::
 
 ::::
-
 
 ## Group
 
@@ -1409,7 +1400,6 @@ Wrap attachments in `AttachmentGroup` to lay them out in a horizontally scrollab
 
 ::::
 
-
 ## Trigger
 
 Add an `AttachmentTrigger` to make the whole card open a link or dialog. It fills the card behind the actions, so the actions stay clickable.
@@ -1671,7 +1661,6 @@ Add an `AttachmentTrigger` to make the whole card open a link or dialog. It fill
 
 ::::
 
-
 ```html showLineNumbers
 <div data-slot="attachment">
   <!-- media, content, actions -->
@@ -1681,6 +1670,7 @@ Add an `AttachmentTrigger` to make the whole card open a link or dialog. It fill
   <div data-slot="dialog-content"><!-- ... --></div>
 </template>
 ```
+
 ## Accessibility
 
 `AttachmentAction` renders a `Button`, and `AttachmentTrigger` renders a real `<button>` (or your element via `asChild`). Follow the guidance below so both are operable and announced.
@@ -1713,7 +1703,6 @@ An `AttachmentGroup` scrolls horizontally. When its attachments are interactive:
 The `error` state uses a destructive color. Keep the failure reason in `AttachmentDescription` so the state is not conveyed by color alone.
 
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 

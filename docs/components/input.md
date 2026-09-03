@@ -44,10 +44,7 @@ A text input component for forms and user data entry with built-in styling and a
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -65,12 +62,9 @@ The files this component needs:
 | `dist/components/input.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/input.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Basic
 
@@ -90,7 +84,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 :::
 
 ::::
-
 
 ## Field
 
@@ -133,7 +126,6 @@ label and description.
 :::
 
 ::::
-
 
 ## Field Group
 
@@ -223,7 +215,6 @@ Use `FieldGroup` to show multiple `Field` blocks and to build forms.
 
 ::::
 
-
 ## Disabled
 
 Use the `disabled` prop to disable the input. To style the disabled state, add the `data-disabled` attribute to the `Field` component.
@@ -267,7 +258,6 @@ Use the `disabled` prop to disable the input. To style the disabled state, add t
 
 ::::
 
-
 ## Invalid
 
 Use the `aria-invalid` prop to mark the input as invalid. To style the invalid state, add the `data-invalid` attribute to the `Field` component.
@@ -310,7 +300,6 @@ Use the `aria-invalid` prop to mark the input as invalid. To style the invalid s
 
 ::::
 
-
 ## File
 
 Use the `type="file"` prop to create a file input.
@@ -351,7 +340,6 @@ Use the `type="file"` prop to create a file input.
 
 ::::
 
-
 ## Inline
 
 Use `Field` with `orientation="horizontal"` to create an inline input.
@@ -388,7 +376,6 @@ Pair with `Button` to create a search input with a button.
 :::
 
 ::::
-
 
 ## Grid
 
@@ -447,7 +434,6 @@ Use a grid layout to place multiple inputs side by side.
 
 ::::
 
-
 ## Required
 
 Use the `required` attribute to indicate required inputs.
@@ -489,7 +475,6 @@ Use the `required` attribute to indicate required inputs.
 
 ::::
 
-
 ## Badge
 
 Use `Badge` in the label to highlight a recommended field.
@@ -530,7 +515,6 @@ Use `Badge` in the label to highlight a recommended field.
 :::
 
 ::::
-
 
 ## Input Group
 
@@ -607,7 +591,6 @@ To add icons, text, or buttons inside an input, use the `InputGroup` component. 
 
 ::::
 
-
 ## Button Group
 
 To add buttons to an input, use the `ButtonGroup` component. See the [Button Group](/components/button-group) component for more examples.
@@ -655,7 +638,6 @@ To add buttons to an input, use the `ButtonGroup` component. See the [Button Gro
 :::
 
 ::::
-
 
 ## Form
 
@@ -1050,7 +1032,6 @@ A full form example with multiple inputs, a select, and a button.
 :::
 
 ::::
-
 
 ## RTL
 

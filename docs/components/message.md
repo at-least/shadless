@@ -219,14 +219,11 @@ Displays a message in a conversation, with optional avatar, header, footer, and 
 
 ::::
 
-
 The `Message` component lays out a single message in a conversation. It handles the avatar, alignment, header, and footer around the message surface.
 
 For AI apps, you can render reasoning steps, tool calls and assistant messages using the `Message` component.
 
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -244,12 +241,9 @@ The files this component needs:
 | `dist/components/message.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/message.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -424,7 +418,6 @@ Use `MessageAvatar` to render an avatar next to the message. Set `align="end"` o
 
 ::::
 
-
 | align   | Description                                         |
 | ------- | --------------------------------------------------- |
 | `start` | Align the message to the start of the conversation. |
@@ -517,7 +510,6 @@ Use `MessageGroup` to stack consecutive messages from the same sender. Render an
 
 ::::
 
-
 ## Header and Footer
 
 Use `MessageHeader` for a sender name and `MessageFooter` for metadata such as a delivery or read status.
@@ -595,7 +587,6 @@ Use `MessageHeader` for a sender name and `MessageFooter` for metadata such as a
 :::
 
 ::::
-
 
 ## Actions
 
@@ -773,7 +764,6 @@ Place message-level actions in `MessageFooter`, such as copy, retry, or feedback
 :::
 
 ::::
-
 
 ## Attachment
 
@@ -958,7 +948,6 @@ Place message-level actions in `MessageFooter`, such as copy, retry, or feedback
 
 ::::
 
-
 ## Accessibility
 
 `Message` is a presentational layout wrapper. Accessibility comes from the content you place inside it.
@@ -991,7 +980,6 @@ For in-progress messages, use a [`Marker`](/components/marker) with `role="statu
 ```
 
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 

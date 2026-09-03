@@ -10,7 +10,13 @@ import (
 	"strings"
 )
 
-const prepaintSig = "shadless-docs-theme"
+// prepaintSig anchors on the pre-paint snippet's own first statement, not on
+// the storage key alone. The key by itself also appears in demo JS that
+// legitimately writes it — the dark-mode guide's mode-toggle is exactly that,
+// and its whole behavior tab was being filtered away, leaving a code tab whose
+// only content was a "see Installation" comment. 470 demo pages carry the
+// snippet; all 470 match this, and only mode-toggle stops matching.
+const prepaintSig = `var k="shadless-docs-theme"`
 
 var (
 	reDemoSrcScript = regexp.MustCompile(`<script src="\.\./(js/[\w.-]+\.js|shadless\.js)"></script>`)
@@ -35,7 +41,7 @@ func extractDemoScripts(html string) demoScripts {
 		if strings.Contains(body, prepaintSig) {
 			continue // theme persistence, not demo JS
 		}
-		out.inlineScripts = append(out.inlineScripts, body)
+		out.inlineScripts = append(out.inlineScripts, dedentScript(m[1]))
 	}
 	return out
 }
@@ -47,4 +53,31 @@ func readDemoScripts(path string) demoScripts {
 		return demoScripts{}
 	}
 	return extractDemoScripts(string(b))
+}
+
+// dedentScript removes the indentation the demo page's HTML gives an inline
+// <script>. TrimSpace alone only unindents the first line, which is what the
+// docs showed: line 1 flush left, every following line four spaces in.
+func dedentScript(body string) string {
+	lines := strings.Split(strings.Trim(body, "\n"), "\n")
+	indent := -1
+	for _, l := range lines {
+		if strings.TrimSpace(l) == "" {
+			continue
+		}
+		n := len(l) - len(strings.TrimLeft(l, " \t"))
+		if indent < 0 || n < indent {
+			indent = n
+		}
+	}
+	if indent > 0 {
+		for i, l := range lines {
+			if len(l) >= indent {
+				lines[i] = l[indent:]
+			} else {
+				lines[i] = strings.TrimLeft(l, " \t")
+			}
+		}
+	}
+	return strings.TrimRight(strings.Join(lines, "\n"), " \t\n")
 }

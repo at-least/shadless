@@ -88,10 +88,7 @@ Displays a callout for user attention.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -109,12 +106,9 @@ The files this component needs:
 | `dist/components/alert.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/alert.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -177,7 +171,6 @@ A basic alert with an icon, title and description.
 
 ::::
 
-
 ## Destructive
 
 Use `variant="destructive"` to create a destructive alert.
@@ -228,7 +221,6 @@ Use `variant="destructive"` to create a destructive alert.
 
 ::::
 
-
 ## Action
 
 Use `AlertAction` to add a button or other action element to the alert.
@@ -272,7 +264,6 @@ Use `AlertAction` to add a button or other action element to the alert.
 :::
 
 ::::
-
 
 ## Custom Colors
 
@@ -323,7 +314,6 @@ You can customize the alert colors by adding custom classes such as `bg-amber-50
 :::
 
 ::::
-
 
 ## RTL
 
@@ -410,9 +400,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 

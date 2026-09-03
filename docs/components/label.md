@@ -37,15 +37,12 @@ Renders an accessible label associated with controls.
 
 ::::
 
-
 ::: tip
 For form fields, use the [Field](/components/field) component which
 includes built-in label, description, and error handling.
 :::
 
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -63,7 +60,6 @@ The files this component needs:
 | `dist/components/label.html` | component markup — copy your page's structure from here |
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 
-
 **Load the behavior files in your page:**
 
 ```html
@@ -73,8 +69,6 @@ The files this component needs:
 **Copy the markup from `dist/components/label.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Label in Field
 
@@ -964,7 +958,6 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
 
 ::::
 
-
 ## RTL
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
@@ -1001,9 +994,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 
@@ -1011,4 +1002,4 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | --- |
 | `data-slot="label"` |
 
-See the [Radix UI Label](https://www.radix-ui.com/docs/primitives/components/label#api-reference) documentation for more information.
+See the [Radix UI Label](https://www.radix-ui.com/primitives/docs/components/label#api-reference) documentation for more information.

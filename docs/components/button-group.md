@@ -579,10 +579,7 @@ A container that groups related buttons together with consistent styling.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -600,12 +597,9 @@ The files this component needs:
 | `dist/components/button-group.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/button-group.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -701,7 +695,6 @@ Set the `orientation` prop to change the button group layout.
 :::
 
 ::::
-
 
 ## Size
 
@@ -867,7 +860,6 @@ Control the size of buttons using the `size` prop on individual buttons.
 :::
 
 ::::
-
 
 ## Nested
 
@@ -1079,7 +1071,6 @@ Nest `data-slot="button-group"` components to create button groups with spacing.
 
 ::::
 
-
 ## Separator
 
 The `ButtonGroupSeparator` component visually divides buttons within a group.
@@ -1125,7 +1116,6 @@ Buttons with variant `outline` do not need a separator since they have a border.
 :::
 
 ::::
-
 
 ## Split
 
@@ -1185,7 +1175,6 @@ Create a split button group by adding two buttons separated by a `ButtonGroupSep
 
 ::::
 
-
 ## Input
 
 Wrap an `Input` component with buttons.
@@ -1234,7 +1223,6 @@ Wrap an `Input` component with buttons.
 :::
 
 ::::
-
 
 ## Input Group
 
@@ -1455,7 +1443,6 @@ Wrap an `InputGroup` component to create complex input layouts.
 :::
 
 ::::
-
 
 ## Dropdown Menu
 
@@ -1855,7 +1842,6 @@ Create a split button group with a `DropdownMenu` component.
 
 ::::
 
-
 ## Select
 
 Pair with a `Select` component.
@@ -2150,7 +2136,6 @@ Pair with a `Select` component.
 
 ::::
 
-
 ## Popover
 
 Use with a `Popover` component.
@@ -2349,7 +2334,6 @@ Use with a `Popover` component.
 :::
 
 ::::
-
 
 ## RTL
 
@@ -2931,9 +2915,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 

@@ -176,10 +176,7 @@ A modal dialog that interrupts the user with important content and expects a res
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -197,7 +194,6 @@ The files this component needs:
 | `dist/components/alert-dialog.html` | component markup — copy your page's structure from here |
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 | `dist/js/alert-dialog.js` | this component's behavior — registers with the base |
-
 
 **Load the behavior files in your page:**
 
@@ -222,8 +218,6 @@ Content that React would render inside the component's portal lives in the `<tem
 **From code:** `shadless.get("#<k>-trigger")` → `open()`, `close()`, `toggle()`, `isOpen()`. `shadless.get` accepts an element or a selector and walks up from any element inside the instance. The trigger dispatches `shadless:open` / `shadless:close` (bubbling, `detail: { component, api }`) on every open and close, however it was caused.
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -416,7 +410,6 @@ A basic alert dialog with a title, description, and cancel and continue buttons.
 
 ::::
 
-
 ## Small
 
 Use the `size="sm"` prop to make the alert dialog smaller.
@@ -589,7 +582,6 @@ Use the `size="sm"` prop to make the alert dialog smaller.
 :::
 
 ::::
-
 
 ## Media
 
@@ -789,7 +781,6 @@ Use the `AlertDialogMedia` component to add a media element such as an icon or i
 
 ::::
 
-
 ## Small with Media
 
 Use the `size="sm"` prop to make the alert dialog smaller and the `AlertDialogMedia` component to add a media element such as an icon or image to the alert dialog.
@@ -981,7 +972,6 @@ Use the `size="sm"` prop to make the alert dialog smaller and the `AlertDialogMe
 :::
 
 ::::
-
 
 ## Destructive
 
@@ -1180,7 +1170,6 @@ Use the `AlertDialogAction` component to add a destructive action button to the 
 
 ::::
 
-
 ## RTL
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
@@ -1369,9 +1358,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 

@@ -223,10 +223,7 @@ A vertically stacked set of interactive headings that each reveal a section of c
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -245,7 +242,6 @@ The files this component needs:
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 | `dist/js/accordion.js` | this component's behavior — registers with the base |
 
-
 **Load the behavior files in your page:**
 
 ```html
@@ -262,8 +258,6 @@ Delegated from the base — no handle (`shadless.get(el)` is `null`): the state 
 Each trigger dispatches `shadless:open` / `shadless:close` (a sibling closed by single mode gets its own `close`), bubbling, after the state change, whichever path caused it.
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -499,7 +493,6 @@ A basic accordion that shows one item at a time. The first item is open by defau
 
 ::::
 
-
 ## Multiple
 
 Use `type="multiple"` to allow multiple items to be open at the same time.
@@ -720,7 +713,6 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
 
 ::::
 
-
 ## Disabled
 
 Use the `disabled` prop on `AccordionItem` to disable individual items.
@@ -934,7 +926,6 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
 :::
 
 ::::
-
 
 ## Borders
 
@@ -1160,7 +1151,6 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
 :::
 
 ::::
-
 
 ## Card
 
@@ -1405,7 +1395,6 @@ Wrap the `Accordion` in a `Card` component.
 
 ::::
 
-
 ## RTL
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
@@ -1626,9 +1615,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 

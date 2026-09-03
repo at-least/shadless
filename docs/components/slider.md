@@ -98,10 +98,7 @@ An input where the user selects a value from within a given range.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -120,7 +117,6 @@ The files this component needs:
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 | `dist/js/slider.js` | this component's behavior — registers with the base |
 
-
 **Load the behavior files in your page:**
 
 ```html
@@ -138,13 +134,9 @@ The glue is data-driven: it scans the page for the markup shape below and wires 
 | --- | --- |
 | `<… data-slot="slider">` | no ids, no templates: the glue wires every root it finds |
 
-Content that React would render inside the component's portal lives in the `<template>`; the glue clones it into `<body>` while open and removes it on close, exactly as radix mounts and unmounts.
-
 **From code:** `shadless.get(rootEl)` → `values()`, `setValue(value, index)`; the root dispatches `shadless:change` (`detail: { values }`, live) and `shadless:commit` (once per gesture). `shadless.get` accepts an element or a selector and walks up from any element inside the instance.
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Range
 
@@ -258,7 +250,6 @@ Use an array with two values for a range slider.
 :::
 
 ::::
-
 
 ## Multiple Thumbs
 
@@ -393,7 +384,6 @@ Use an array with multiple values for multiple thumbs.
 
 ::::
 
-
 ## Vertical
 
 Use `orientation="vertical"` for a vertical slider.
@@ -522,7 +512,6 @@ Use `orientation="vertical"` for a vertical slider.
 
 ::::
 
-
 ## Controlled
 
 ::::demo slider-controlled
@@ -645,7 +634,6 @@ Use `orientation="vertical"` for a vertical slider.
 
 ::::
 
-
 ## Disabled
 
 Use the `disabled` prop to disable the slider.
@@ -741,7 +729,6 @@ Use the `disabled` prop to disable the slider.
 
 ::::
 
-
 ## RTL
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
@@ -834,9 +821,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 
@@ -849,4 +834,4 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 **Runtime:** `shadless.get(el)` (element or selector, any element inside the instance) → `values()`, `setValue(value, index)`; the root dispatches `shadless:change` (live) and `shadless:commit` (once per gesture) with `detail: { values }`; a `name` attribute submits one input per thumb. Markup protocol: see Installation → Behavior protocol.
 
-See the [Radix UI Slider](https://www.radix-ui.com/docs/primitives/components/slider#api-reference) documentation.
+See the [Radix UI Slider](https://www.radix-ui.com/primitives/docs/components/slider#api-reference) documentation.

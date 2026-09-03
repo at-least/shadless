@@ -111,7 +111,13 @@ func protocolMdx(comp string) string {
 	for _, r := range rows {
 		b.WriteString("| " + r.a + " | " + r.b + " |\n")
 	}
-	b.WriteString("\nContent that React would render inside the component's portal lives in the `<template>`; the glue clones it into `<body>` while open and removes it on close, exactly as radix mounts and unmounts.\n")
+	// Only the kinds whose table above actually has a <template> row. It used
+	// to be written unconditionally, so carousel, scroll-area, slider and tabs
+	// printed a paragraph about cloning a <template> into <body> directly
+	// under their own row saying "no ids, no templates".
+	if f.kind != "inline" && f.kind != "none" {
+		b.WriteString("\nContent that React would render inside the component's portal lives in the `<template>`; the glue clones it into `<body>` while open and removes it on close, exactly as radix mounts and unmounts.\n")
+	}
 	if api != "" {
 		b.WriteString("\n**From code:** " + api + ". `shadless.get` accepts an element or a selector and walks up from any element inside the instance.")
 		if f.kind != "inline" && f.kind != "none" {

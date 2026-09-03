@@ -61,10 +61,7 @@ An interactive component which expands/collapses a panel.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless to your Tailwind v4 entry:**
 
@@ -83,7 +80,6 @@ The files this component needs:
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 | `dist/js/collapsible.js` | this component's behavior — registers with the base |
 
-
 **Load the behavior files in your page:**
 
 ```html
@@ -101,8 +97,6 @@ The trigger dispatches `shadless:open` / `shadless:close`, bubbling, after the s
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
 
-
-
 ## Composition
 
 The slot tree — every node is a `data-slot` attribute in the shipped markup:
@@ -116,8 +110,6 @@ collapsible
 ## Controlled State
 
 Use the `open` and `onOpenChange` props to control the state.
-
-
 
 ## Basic
 
@@ -175,7 +167,6 @@ Use the `open` and `onOpenChange` props to control the state.
 :::
 
 ::::
-
 
 ## Settings Panel
 
@@ -295,7 +286,6 @@ Use a trigger button to reveal additional settings.
 :::
 
 ::::
-
 
 ## File Tree
 
@@ -909,7 +899,6 @@ Use nested collapsibles to build a file tree.
 
 ::::
 
-
 ## RTL
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
@@ -968,9 +957,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 
@@ -982,4 +969,4 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 **Runtime:** `collapsible-trigger` carries `aria-expanded` + `data-state` and `aria-controls` → the `collapsible-content`, `hidden` while closed. Keys: Enter / Space / click toggles. The trigger dispatches `shadless:open` / `shadless:close`. No handle — `shadless.get(el)` returns `null`; `el.click()` is the driver.
 
-See the [Radix UI](https://www.radix-ui.com/docs/primitives/components/collapsible#api-reference) documentation for more information.
+See the [Radix UI](https://www.radix-ui.com/primitives/docs/components/collapsible#api-reference) documentation for more information.

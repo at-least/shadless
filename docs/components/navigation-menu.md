@@ -394,10 +394,7 @@ A collection of links for navigating websites.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -415,7 +412,6 @@ The files this component needs:
 | `dist/components/navigation-menu.html` | component markup — copy your page's structure from here |
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 | `dist/js/navigation-menu.js` | this component's behavior — registers with the base |
-
 
 **Load the behavior files in your page:**
 
@@ -440,8 +436,6 @@ Content that React would render inside the component's portal lives in the `<tem
 **From code:** `shadless.get("#<k>-trigger")` → `open()`, `close()`, `toggle()`, `isOpen()`. `shadless.get` accepts an element or a selector and walks up from any element inside the instance. The trigger dispatches `shadless:open` / `shadless:close` (bubbling, `detail: { component, api }`) on every open and close, however it was caused.
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -470,7 +464,6 @@ There's no `asChild`/framework-Link composition in shadless — `navigation-menu
 </li>
 ```
 
-
 ## RTL
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
@@ -478,7 +471,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 <div class="demo-missing" data-demo="navigation-menu-rtl" data-status="tombstoned">demo not available in shadless (component greyed) — <code>navigation-menu-rtl</code></div>
 
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 
@@ -495,4 +487,4 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 **Runtime:** `shadless.get(el)` (element or selector, any element inside the instance) → `open()`, `close()`, `toggle()`, `isOpen()`; the trigger dispatches `shadless:open` / `shadless:close`. Markup protocol: see Installation → Behavior protocol.
 
-See the [Radix UI Navigation Menu](https://www.radix-ui.com/docs/primitives/components/navigation-menu#api-reference) documentation for more information.
+See the [Radix UI Navigation Menu](https://www.radix-ui.com/primitives/docs/components/navigation-menu#api-reference) documentation for more information.

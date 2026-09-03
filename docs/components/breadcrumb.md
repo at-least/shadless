@@ -313,10 +313,7 @@ Displays the path to the current resource using a hierarchy of links.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -334,12 +331,9 @@ The files this component needs:
 | `dist/components/breadcrumb.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/breadcrumb.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -443,7 +437,6 @@ A basic breadcrumb with a home link and a components link.
 
 ::::
 
-
 ## Custom separator
 
 Use a custom component as `children` for `data-slot="breadcrumb-separator"` to create a custom separator.
@@ -531,7 +524,6 @@ Use a custom component as `children` for `data-slot="breadcrumb-separator"` to c
 :::
 
 ::::
-
 
 ## Dropdown
 
@@ -813,7 +805,6 @@ You can compose a `data-slot="breadcrumb-item"` with a dropdown-menu trigger (se
 
 ::::
 
-
 ## Collapsed
 
 We provide a `data-slot="breadcrumb-ellipsis"` component to show a collapsed state when the breadcrumb is too long.
@@ -947,7 +938,6 @@ We provide a `data-slot="breadcrumb-ellipsis"` component to show a collapsed sta
 
 ::::
 
-
 ## Link component
 
 To use a custom link component from your routing library, you can use the `asChild` prop on `data-slot="breadcrumb-link"`.
@@ -1035,7 +1025,6 @@ To use a custom link component from your routing library, you can use the `asChi
 :::
 
 ::::
-
 
 ## RTL
 
@@ -1318,9 +1307,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 

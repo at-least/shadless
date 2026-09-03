@@ -165,10 +165,7 @@ A control that allows the user to toggle between checked and not checked.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -186,7 +183,6 @@ The files this component needs:
 | `dist/components/checkbox.html` | component markup — copy your page's structure from here |
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 | `dist/js/checkbox.js` | this component's behavior — registers with the base |
-
 
 **Load the behavior files in your page:**
 
@@ -207,14 +203,10 @@ Forms: a `name` attribute submits its `value` (default `on`) while checked; `for
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
 
-
-
 ## Checked State
 
 Use `defaultChecked` for uncontrolled checkboxes, or `checked` and
 `onCheckedChange` to control the state.
-
-
 
 ## Invalid State
 
@@ -263,7 +255,6 @@ show the invalid styles.
 
 ::::
 
-
 ## Basic
 
 Pair the checkbox with `Field` and `FieldLabel` for proper layout and labeling.
@@ -307,7 +298,6 @@ Pair the checkbox with `Field` and `FieldLabel` for proper layout and labeling.
 :::
 
 ::::
-
 
 ## Description
 
@@ -384,7 +374,6 @@ Use `FieldContent` and `FieldDescription` for helper text.
 
 ::::
 
-
 ## Disabled
 
 Use the `disabled` prop to prevent interaction and add the `data-disabled` attribute to the `data-slot="field"` component for disabled styles.
@@ -431,7 +420,6 @@ Use the `disabled` prop to prevent interaction and add the `data-disabled` attri
 :::
 
 ::::
-
 
 ## Group
 
@@ -601,7 +589,6 @@ Use multiple fields to create a checkbox list.
 :::
 
 ::::
-
 
 ## Table
 
@@ -836,7 +823,6 @@ Use multiple fields to create a checkbox list.
 
 ::::
 
-
 ## RTL
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
@@ -1000,9 +986,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 
@@ -1013,4 +997,4 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 **Runtime:** `role="checkbox"` root with `aria-checked` + `data-state="checked|unchecked"`; the `checkbox-indicator` mounts from a `<template data-for="checkbox-indicator">` while checked (radix Presence). Keys: Space / click toggles. The root dispatches `shadless:change` (`detail: { checked }`). Forms: a `name` attribute submits its `value` (default `on`) while checked. No handle — `shadless.get(el)` returns `null`; `el.click()` is the driver.
 
-See the [Radix UI](https://www.radix-ui.com/docs/primitives/components/checkbox#api-reference) documentation for more information.
+See the [Radix UI](https://www.radix-ui.com/primitives/docs/components/checkbox#api-reference) documentation for more information.

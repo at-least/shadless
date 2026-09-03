@@ -24,10 +24,7 @@ Displays a form textarea or a component that looks like a textarea.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -45,12 +42,9 @@ The files this component needs:
 | `dist/components/textarea.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/textarea.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Field
 
@@ -93,7 +87,6 @@ Use `Field`, `FieldLabel`, and `FieldDescription` to create a textarea with a la
 
 ::::
 
-
 ## Disabled
 
 Use the `disabled` prop to disable the textarea. To style the disabled state, add the `data-disabled` attribute to the `Field` component.
@@ -129,7 +122,6 @@ Use the `disabled` prop to disable the textarea. To style the disabled state, ad
 :::
 
 ::::
-
 
 ## Invalid
 
@@ -173,7 +165,6 @@ Use the `aria-invalid` prop to mark the textarea as invalid. To style the invali
 
 ::::
 
-
 ## Button
 
 Pair with `Button` to create a textarea with a submit button.
@@ -204,7 +195,6 @@ Pair with `Button` to create a textarea with a submit button.
 :::
 
 ::::
-
 
 ## RTL
 

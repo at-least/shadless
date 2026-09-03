@@ -60,10 +60,7 @@ Add addons, buttons, and helper content to inputs.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -81,12 +78,9 @@ The files this component needs:
 | `dist/components/input-group.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/input-group.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -179,7 +173,6 @@ Use `align="inline-start"` to position the addon at the start of the input. This
 
 ::::
 
-
 ### inline-end
 
 Use `align="inline-end"` to position the addon at the end of the input.
@@ -255,7 +248,6 @@ Use `align="inline-end"` to position the addon at the end of the input.
 :::
 
 ::::
-
 
 ### block-start
 
@@ -400,7 +392,6 @@ Use `align="block-start"` to position the addon above the input.
 
 ::::
 
-
 ### block-end
 
 Use `align="block-end"` to position the addon below the input.
@@ -513,7 +504,6 @@ Use `align="block-end"` to position the addon below the input.
 :::
 
 ::::
-
 
 ## Icon
 
@@ -701,7 +691,6 @@ Use `align="block-end"` to position the addon below the input.
 
 ::::
 
-
 ## Text
 
 ::::demo input-group-text
@@ -827,7 +816,6 @@ Use `align="block-end"` to position the addon below the input.
 :::
 
 ::::
-
 
 ## Button
 
@@ -1103,7 +1091,6 @@ Use `align="block-end"` to position the addon below the input.
 
 ::::
 
-
 ## Kbd
 
 ::::demo input-group-kbd
@@ -1162,7 +1149,6 @@ Use `align="block-end"` to position the addon below the input.
 :::
 
 ::::
-
 
 ## Dropdown
 
@@ -1519,7 +1505,6 @@ Use `align="block-end"` to position the addon below the input.
 
 ::::
 
-
 ## Spinner
 
 ::::demo input-group-spinner
@@ -1694,7 +1679,6 @@ Use `align="block-end"` to position the addon below the input.
 
 ::::
 
-
 ## Textarea
 
 ::::demo input-group-textarea
@@ -1832,7 +1816,6 @@ Use `align="block-end"` to position the addon below the input.
 
 ::::
 
-
 ## Custom Input
 
 Add the `data-slot="input-group-control"` attribute to your custom input for automatic focus state handling.
@@ -1879,7 +1862,6 @@ Here's an example of a custom resizable textarea from a third-party library.
 :::
 
 ::::
-
 
 ## RTL
 
@@ -2073,9 +2055,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 

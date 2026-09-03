@@ -285,10 +285,7 @@ A responsive table component.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -306,12 +303,9 @@ The files this component needs:
 | `dist/components/table.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/table.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -505,7 +499,6 @@ Use the `data-slot="table-footer"` component to add a footer to the table.
 :::
 
 ::::
-
 
 ## Actions
 
@@ -1025,7 +1018,6 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
 :::
 
 ::::
-
 
 ## Data Table
 

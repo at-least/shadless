@@ -883,10 +883,7 @@ Combine labels, controls, and help text to compose accessible form fields and gr
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -904,12 +901,9 @@ The files this component needs:
 | `dist/components/field.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/field.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -1019,7 +1013,6 @@ See the Form documentation for building forms with the `Field` component and Rea
 
 ::::
 
-
 ## Textarea
 
 ::::demo field-textarea
@@ -1068,7 +1061,6 @@ See the Form documentation for building forms with the `Field` component and Rea
 :::
 
 ::::
-
 
 ## Select
 
@@ -1399,7 +1391,6 @@ See the Form documentation for building forms with the `Field` component and Rea
 
 ::::
 
-
 ## Slider
 
 ::::demo field-slider
@@ -1532,7 +1523,6 @@ See the Form documentation for building forms with the `Field` component and Rea
 
 ::::
 
-
 ## Fieldset
 
 ::::demo field-fieldset
@@ -1628,7 +1618,6 @@ See the Form documentation for building forms with the `Field` component and Rea
 :::
 
 ::::
-
 
 ## Checkbox
 
@@ -1831,7 +1820,6 @@ See the Form documentation for building forms with the `Field` component and Rea
 
 ::::
 
-
 ## Radio
 
 ::::demo field-radio
@@ -1957,7 +1945,6 @@ See the Form documentation for building forms with the `Field` component and Rea
 
 ::::
 
-
 ## Switch
 
 ::::demo field-switch
@@ -2000,7 +1987,6 @@ See the Form documentation for building forms with the `Field` component and Rea
 :::
 
 ::::
-
 
 ## Choice Card
 
@@ -2138,7 +2124,6 @@ Wrap `Field` components inside `FieldLabel` to create selectable field groups. T
 :::
 
 ::::
-
 
 ## Field Group
 
@@ -2306,7 +2291,6 @@ Stack `Field` components with `FieldGroup`. Add `FieldSeparator` to divide them.
 :::
 
 ::::
-
 
 ## RTL
 
@@ -3222,7 +3206,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## Responsive Layout
 
 - **Vertical fields:** Default orientation stacks label, control, and helper text—ideal for mobile-first layouts.
@@ -3323,7 +3306,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## Validation and Errors
 
 - Add `data-invalid` to `Field` to switch the entire block into an error state.
@@ -3345,7 +3327,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 - Apply `FieldSeparator` sparingly to ensure screen readers encounter clear section boundaries.
 
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 

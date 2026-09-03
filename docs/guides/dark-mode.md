@@ -73,11 +73,29 @@ framework.
 
 ```js:line-numbers [behavior]
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+shadless.initAll()
+var root = document.documentElement
+var sun = document.getElementById("mt-sun")
+var moon = document.getElementById("mt-moon")
+function reflect() {
+  var dark = root.classList.contains("dark")
+  sun.setAttribute("data-state", dark ? "off" : "on")
+  moon.setAttribute("data-state", dark ? "on" : "off")
+}
+function toggle(target) {
+  var dark = target === "dark"
+  root.classList.toggle("dark", dark)
+  try { localStorage.setItem("shadless-docs-theme", dark ? "dark" : "light") } catch (e) {}
+  reflect()
+}
+sun.addEventListener("click", () => toggle("light"))
+moon.addEventListener("click", () => toggle("dark"))
+reflect()
 ```
 :::
 
 ::::
-
 
 ## How it works
 

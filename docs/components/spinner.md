@@ -68,10 +68,7 @@ An indicator that can be used to show a loading state.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -89,12 +86,9 @@ The files this component needs:
 | `dist/components/spinner.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/spinner.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Customization
 
@@ -137,7 +131,6 @@ You can replace the default spinner icon with any other icon — swap the inner 
 
 ::::
 
-
 ```html showLineNumbers title="dist/components/spinner.html"
 <svg data-slot="spinner">
   <!-- swap this inner <svg> for a different icon's markup -->
@@ -146,7 +139,6 @@ You can replace the default spinner icon with any other icon — swap the inner 
 ```
 
 The `size-4 animate-spin` styling ships as a `[data-slot="spinner"]` CSS rule (`dist/css/spinner.css`), not an inline class — override it the same way, by targeting that selector.
-
 
 ## Size
 
@@ -230,7 +222,6 @@ Use the `size-*` utility class to change the size of the spinner.
 :::
 
 ::::
-
 
 ## Button
 
@@ -326,7 +317,6 @@ Add a spinner to a button to indicate a loading state. Place the `data-slot="spi
 
 ::::
 
-
 ## Badge
 
 Add a spinner to a badge to indicate a loading state. Place the `data-slot="spinner"` before the label with `data-icon="inline-start"` for a start position, or after the label with `data-icon="inline-end"` for an end position.
@@ -411,7 +401,6 @@ Add a spinner to a badge to indicate a loading state. Place the `data-slot="spin
 :::
 
 ::::
-
 
 ## Input Group
 
@@ -524,7 +513,6 @@ Add a spinner to a badge to indicate a loading state. Place the `data-slot="spin
 
 ::::
 
-
 ## Empty
 
 ::::demo spinner-empty
@@ -590,7 +578,6 @@ Add a spinner to a badge to indicate a loading state. Place the `data-slot="spin
 :::
 
 ::::
-
 
 ## RTL
 

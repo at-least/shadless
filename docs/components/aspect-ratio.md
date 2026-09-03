@@ -42,10 +42,7 @@ Displays content within a desired ratio.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless to your Tailwind v4 entry:**
 
@@ -63,7 +60,6 @@ The files this component needs:
 | `dist/components/aspect-ratio.html` | component markup — copy your page's structure from here |
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 
-
 **Load the behavior files in your page:**
 
 ```html
@@ -73,8 +69,6 @@ The files this component needs:
 **Copy the markup from `dist/components/aspect-ratio.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Square
 
@@ -115,7 +109,6 @@ A square aspect ratio component using the `ratio={1 / 1}` prop. This is useful f
 
 ::::
 
-
 ## Portrait
 
 A portrait aspect ratio component using the `ratio={9 / 16}` prop. This is useful for displaying images in a portrait format.
@@ -154,7 +147,6 @@ A portrait aspect ratio component using the `ratio={9 / 16}` prop. This is usefu
 :::
 
 ::::
-
 
 ## RTL
 
@@ -196,9 +188,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 

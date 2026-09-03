@@ -26,10 +26,7 @@ Use to show a placeholder while content is loading.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -47,12 +44,9 @@ The files this component needs:
 | `dist/components/skeleton.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/skeleton.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Avatar
 
@@ -74,7 +68,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 :::
 
 ::::
-
 
 ## Card
 
@@ -106,7 +99,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 
 ::::
 
-
 ## Text
 
 ::::demo skeleton-text
@@ -125,7 +117,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 :::
 
 ::::
-
 
 ## Form
 
@@ -151,7 +142,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 :::
 
 ::::
-
 
 ## Table
 
@@ -193,7 +183,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 :::
 
 ::::
-
 
 ## RTL
 

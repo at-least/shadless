@@ -204,10 +204,7 @@ A set of layered sections of content—known as tab panels—that are displayed 
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -226,7 +223,6 @@ The files this component needs:
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 | `dist/js/tabs.js` | this component's behavior — registers with the base |
 
-
 **Load the behavior files in your page:**
 
 ```html
@@ -244,13 +240,9 @@ The glue is data-driven: it scans the page for the markup shape below and wires 
 | --- | --- |
 | `<div data-slot="tabs">` with `data-slot="tabs-trigger" aria-controls="<panel-id>"` and `data-slot="tabs-content" id="<panel-id>"` | no template: every panel is in the markup, inactive ones `hidden`; the glue wires every root it finds |
 
-Content that React would render inside the component's portal lives in the `<template>`; the glue clones it into `<body>` while open and removes it on close, exactly as radix mounts and unmounts.
-
 **From code:** `shadless.get(rootEl)` → `activate(i)`, `active()`; the root dispatches `shadless:change` (`detail: { index, trigger }`). `shadless.get` accepts an element or a selector and walks up from any element inside the instance.
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -451,7 +443,6 @@ Use the `variant="line"` prop on `TabsList` for a line style.
 
 ::::
 
-
 ## Vertical
 
 Use `orientation="vertical"` for vertical tabs.
@@ -638,7 +629,6 @@ Use `orientation="vertical"` for vertical tabs.
 
 ::::
 
-
 ## Disabled
 
 ::::demo tabs-disabled
@@ -810,7 +800,6 @@ Use `orientation="vertical"` for vertical tabs.
 :::
 
 ::::
-
 
 ## Icons
 
@@ -1011,7 +1000,6 @@ Use `orientation="vertical"` for vertical tabs.
 :::
 
 ::::
-
 
 ## RTL
 
@@ -1361,9 +1349,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 
@@ -1382,4 +1368,4 @@ Each row below is a `cva`-declared variant baked into the shipped CSS as a `data
 | --- | --- | --- | --- |
 | `tabs-list` | `data-variant` | `default`, `line` | `default` |
 
-See the [Radix Tabs](https://www.radix-ui.com/docs/primitives/components/tabs#api-reference) documentation.
+See the [Radix Tabs](https://www.radix-ui.com/primitives/docs/components/tabs#api-reference) documentation.

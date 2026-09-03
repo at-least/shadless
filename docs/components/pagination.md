@@ -133,10 +133,7 @@ Pagination with page navigation, next and previous links.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -154,12 +151,9 @@ The files this component needs:
 | `dist/components/pagination.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/pagination.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -254,7 +248,6 @@ A simple pagination with only page numbers.
 :::
 
 ::::
-
 
 ## Icons Only
 
@@ -593,7 +586,6 @@ Use just the previous and next buttons without page numbers. This is useful for 
 :::
 
 ::::
-
 
 shadless has no CLI or framework Link component — `PaginationLink` always renders a real `<a>`; point `href` at whatever your router expects.
 

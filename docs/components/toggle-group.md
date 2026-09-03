@@ -116,10 +116,7 @@ A set of two-state buttons that can be toggled on or off.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -138,7 +135,6 @@ The files this component needs:
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 | `dist/js/toggle-group.js` | this component's behavior — registers with the base |
 
-
 **Load the behavior files in your page:**
 
 ```html
@@ -155,8 +151,6 @@ Delegated from the base — no handle (`shadless.get(el)` is `null`): the state 
 The root dispatches `shadless:change` (`detail: { value, item }` — `value` is the on item's value, or an array in multiple mode), bubbling, after the state change, whichever path caused it.
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -226,7 +220,6 @@ Use `variant="outline"` for an outline style.
 :::
 
 ::::
-
 
 ## Size
 
@@ -393,7 +386,6 @@ Use the `size` prop to change the size of the toggle group.
 
 ::::
 
-
 ## Spacing
 
 Use `spacing` to add spacing between toggle group items.
@@ -483,7 +475,6 @@ Use `spacing` to add spacing between toggle group items.
 :::
 
 ::::
-
 
 ## Vertical
 
@@ -596,7 +587,6 @@ Use `orientation="vertical"` for vertical toggle groups.
 :::
 
 ::::
-
 
 ## Disabled
 
@@ -714,7 +704,6 @@ Use `orientation="vertical"` for vertical toggle groups.
 
 ::::
 
-
 ## Custom
 
 A custom toggle group example.
@@ -828,7 +817,6 @@ A custom toggle group example.
 
 ::::
 
-
 ## RTL
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
@@ -903,9 +891,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 
@@ -916,4 +902,4 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 **Runtime:** `role="group"` root; single mode items are `role="radio"` with `aria-checked`, multiple mode items carry `aria-pressed`; `data-state="on|off"` in both. Keys: arrows / Home / End move focus over enabled items (rtl-aware); Space / Enter / click selects. The root dispatches `shadless:change` (`detail: { value, item }` — `value` is the on item's value, or an array in multiple mode). No handle — `shadless.get(el)` returns `null`; `el.click()` is the driver.
 
-See the [Radix Toggle Group](https://www.radix-ui.com/docs/primitives/components/toggle-group#api-reference) documentation.
+See the [Radix Toggle Group](https://www.radix-ui.com/primitives/docs/components/toggle-group#api-reference) documentation.

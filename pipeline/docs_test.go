@@ -108,7 +108,7 @@ func TestUnitApplyTextAdjustments(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(out, "there is no CLI flag to set") {
+	if !strings.Contains(out, "there is no flag that adds it for you") {
 		t.Error("false claim rewritten")
 	}
 	if strings.Contains(out, "npx shadcn@latest init --pointer") {

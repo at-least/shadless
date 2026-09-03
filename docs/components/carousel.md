@@ -1855,14 +1855,11 @@ A carousel with motion and swipe built using Embla.
 
 ::::
 
-
 ## About
 
 The carousel component is built using the [Embla Carousel](https://www.embla-carousel.com/) library.
 
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -1881,7 +1878,6 @@ The files this component needs:
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 | `dist/js/carousel.js` | this component's behavior — registers with the base |
 
-
 **Load the behavior files in your page:**
 
 ```html
@@ -1899,13 +1895,9 @@ The glue is data-driven: it scans the page for the markup shape below and wires 
 | --- | --- |
 | `<… data-slot="carousel">` | no ids, no templates: the glue wires every root it finds |
 
-Content that React would render inside the component's portal lives in the `<template>`; the glue clones it into `<body>` while open and removes it on close, exactly as radix mounts and unmounts.
-
 **From code:** `shadless.get(rootEl)` → the embla api (`scrollNext()`, `scrollTo(i)`, `on("select", …)`). `shadless.get` accepts an element or a selector and walks up from any element inside the instance.
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -3771,7 +3763,6 @@ To set the size of the items, you can use the `basis` utility class on the `data
 :::
 
 ::::
-
 
 ```html
 // 33% of the carousel width.
@@ -5647,7 +5638,6 @@ To set the spacing between the items, we use a `pl-[VALUE]` utility on the `data
 
 ::::
 
-
 ```html
 <div data-slot="carousel">
   <div data-slot="carousel-content" class="-ml-4">
@@ -7505,7 +7495,6 @@ Use the `orientation` prop to set the orientation of the carousel.
 
 ::::
 
-
 ```html showLineNumbers /vertical/
 <div data-slot="carousel" data-orientation="vertical">
   <div data-slot="carousel-content">
@@ -7521,6 +7510,7 @@ Use the `orientation` prop to set the orientation of the carousel.
 ## Options
 
 shadless's carousel glue (`dist/js/carousel.js`) calls Embla with a fixed options object (`axis`/`direction`, derived from the markup) and nothing else — `align`/`loop`/every other [Embla option](https://www.embla-carousel.com/docs/api/options) is not exposed through markup. To change them, edit the `EmblaCarousel(viewport, { … })` call in that file directly; there is no declarative `opts` surface.
+
 ## API
 
 Use a state and the `setApi` props to get an instance of the carousel API.
@@ -9366,7 +9356,6 @@ Use a state and the `setApi` props to get an instance of the carousel API.
 
 ::::
 
-
 ```js showLineNumbers
 const api = shadless.get(document.querySelector('[data-slot="carousel"]'))
 let current = api.selectedScrollSnap() + 1
@@ -9388,7 +9377,6 @@ api.on("select", () => {
   // Do something on select.
 })
 ```
-
 
 See the [Embla Carousel docs](https://www.embla-carousel.com/docs/api/events) for more information on using events.
 
@@ -11242,7 +11230,6 @@ Plugins are an Embla concept (`EmblaCarousel(viewport, options, plugins)`) — s
 :::
 
 ::::
-
 
 ## RTL
 
@@ -13102,7 +13089,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 When localizing the carousel for RTL languages, set `dir="rtl"` on the carousel root — the runtime reads that attribute directly (falling back to `<html dir>`). There's no `opts` to configure; `opts` isn't read at all (see [Options](#options)).
 
 ```html showLineNumbers
@@ -13118,7 +13104,6 @@ When localizing the carousel for RTL languages, set `dir="rtl"` on the carousel 
 ```
 
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 

@@ -124,12 +124,9 @@ Displays an inline status, system note, bordered row, or labeled separator in a 
 
 ::::
 
-
 The `Marker` component displays inline conversation markers such as status updates, system notes, bordered rows, and labeled separators. Compose it with [`Message`](/components/message) in a conversation thread.
 
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -147,12 +144,9 @@ The files this component needs:
 | `dist/components/marker.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/marker.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Composition
 
@@ -222,7 +216,6 @@ Use `variant` to switch between an inline marker, bordered row, and labeled sepa
 :::
 
 ::::
-
 
 | Variant     | Description                                          |
 | ----------- | ---------------------------------------------------- |
@@ -312,7 +305,6 @@ Set `role="status"` and include a [`Spinner`](/components/spinner) for streaming
 
 ::::
 
-
 ## Shimmer
 
 Add the [`shimmer`](/guides/shimmer) utility class to `MarkerContent` for an animated streaming-text effect. The utility ships with the `shadcn` package — see the shimmer docs for installation.
@@ -354,7 +346,6 @@ Add the [`shimmer`](/guides/shimmer) utility class to `MarkerContent` for an ani
 :::
 
 ::::
-
 
 ## Separator
 
@@ -406,7 +397,6 @@ Use the `separator` variant for labeled dividers, such as dates or section break
 :::
 
 ::::
-
 
 ## Border
 
@@ -518,7 +508,6 @@ Use the `border` variant for status rows that should keep the default marker ali
 
 ::::
 
-
 ## With Icon
 
 Use `MarkerIcon` to render an icon alongside the content. Use `flex-col` to stack the icon above the content.
@@ -629,7 +618,6 @@ Use `MarkerIcon` to render an icon alongside the content. Use `flex-col` to stac
 
 ::::
 
-
 ## Links and Buttons
 
 Turn a marker into a link or button by putting `data-slot="marker"` on the `<a>` or `<button>` itself — shadless has no `asChild`.
@@ -708,7 +696,6 @@ Turn a marker into a link or button by putting `data-slot="marker"` on the `<a>`
 
 ::::
 
-
 ```html showLineNumbers
 <a data-slot="marker" href="#">
   <span data-slot="marker-content">View the pull request</span>
@@ -786,7 +773,6 @@ When a marker links or triggers an action, put `data-slot="marker"` on a real `<
 ```
 
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 

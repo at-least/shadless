@@ -111,10 +111,7 @@ For sighted users to preview content available behind a link.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -132,7 +129,6 @@ The files this component needs:
 | `dist/components/hover-card.html` | component markup — copy your page's structure from here |
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 | `dist/js/hover-card.js` | this component's behavior — registers with the base |
-
 
 **Load the behavior files in your page:**
 
@@ -158,8 +154,6 @@ Content that React would render inside the component's portal lives in the `<tem
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
 
-
-
 ## Composition
 
 The slot tree — every node is a `data-slot` attribute in the shipped markup:
@@ -173,9 +167,11 @@ hover-card
 ## Trigger Delays
 
 shadless's hover-card glue hardcodes `openDelay: 700, closeDelay: 300` (Radix's own defaults) in `dist/js/hover-card.js` — there is no markup prop to change them; edit that file directly if you need different timing.
+
 ## Positioning
 
 shadless's hover-card glue doesn't expose `side`/`align` through markup either — `popperOptions` in `dist/js/hover-card.js` only sets `sideOffset: 4`, so placement is whatever the kernel's popper default is (auto-flipping on collision); edit that file to pass a preferred placement.
+
 ## Basic
 
 ::::demo hover-card-demo
@@ -281,7 +277,6 @@ shadless's hover-card glue doesn't expose `side`/`align` through markup either �
 :::
 
 ::::
-
 
 ## Sides
 
@@ -541,7 +536,6 @@ shadless's hover-card glue doesn't expose `side`/`align` through markup either �
 :::
 
 ::::
-
 
 ## RTL
 
@@ -804,9 +798,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 
@@ -819,4 +811,4 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 **Runtime:** `shadless.get(el)` (element or selector, any element inside the instance) → `open()`, `close()`, `toggle()`, `isOpen()`; the trigger dispatches `shadless:open` / `shadless:close`. Markup protocol: see Installation → Behavior protocol.
 
-See the [Radix UI](https://www.radix-ui.com/docs/primitives/components/hover-card#api-reference) documentation for more information.
+See the [Radix UI](https://www.radix-ui.com/primitives/docs/components/hover-card#api-reference) documentation for more information.

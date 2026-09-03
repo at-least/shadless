@@ -42,10 +42,7 @@ Displays a badge or a component that looks like a badge.
 
 ::::
 
-
 ## Installation
-
-
 
 **Add shadless and this component to your Tailwind v4 entry:**
 
@@ -63,12 +60,9 @@ The files this component needs:
 | `dist/components/badge.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-
 **Copy the markup from `dist/components/badge.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
-
-
 
 ## Variants
 
@@ -113,7 +107,6 @@ Use the `variant` prop to change the variant of the badge.
 :::
 
 ::::
-
 
 ## With Icon
 
@@ -173,7 +166,6 @@ You can render an icon inside the badge. Use `data-icon="inline-start"` to rende
 :::
 
 ::::
-
 
 ## With Spinner
 
@@ -237,7 +229,6 @@ You can render a spinner inside the badge. Remember to add the `data-icon="inlin
 
 ::::
 
-
 ## Link
 
 Use the `asChild` prop to render a link as a badge.
@@ -275,7 +266,6 @@ Use the `asChild` prop to render a link as a badge.
 :::
 
 ::::
-
 
 ## Custom Colors
 
@@ -320,7 +310,6 @@ You can customize the colors of a badge by adding custom classes such as `bg-gre
 :::
 
 ::::
-
 
 ## RTL
 
@@ -401,9 +390,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ::::
 
-
 ## API Reference
-
 
 **shadless surface** — every node is a `data-slot` attribute in the shipped markup.
 
