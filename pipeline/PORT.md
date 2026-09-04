@@ -21,7 +21,7 @@ cannot be met the tool stays in JS.
 |---|---|
 | the pipeline graph | `nodes.go` — the graph itself, not a generated copy |
 | the runner | `pipeline plan/list/status/run/adopt` |
-| the meta-gate + 31 mutations | `TestMetaWiring` (always) / `TestMeta` (opt-in) |
+| the meta-gate + 31 mutations | `TestUnitMetaWiring` (always) / `TestMeta` (opt-in) |
 | the ledger | `TestLedger` + `pipeline ledger --record\|--render\|--dissolve` |
 | the re-pin drill | `pipeline upstream` |
 | the boundary audit | `pipeline audit-boundary` |

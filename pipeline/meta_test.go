@@ -3,7 +3,11 @@ package main
 // The meta-gate as tests. See meta.go for why the wiring half always runs and
 // the executing half is opt-in.
 //
-//	go test -run TestMetaWiring        instant, pure — part of the normal suite
+//	go test -run TestUnitMetaWiring    instant, pure — the `unit` node runs it
+//	                                   (its `-run ^TestUnit` is why the name
+//	                                   carries the prefix; as TestMetaWiring
+//	                                   no node, Makefile target or npm script
+//	                                   ever executed it)
 //	SHADLESS_META=1 go test -run TestMeta$ -v -timeout 2h
 //	SHADLESS_META=1 META_TIER=fast go test -run TestMeta$ -v
 //	SHADLESS_META=1 META_ONLY=pin-commit-drift go test -run TestMeta$ -v
@@ -16,11 +20,11 @@ import (
 	"testing"
 )
 
-// TestMetaWiring is the coverage half: every gate is proven by at least one
+// TestUnitMetaWiring is the coverage half: every gate is proven by at least one
 // mutation that exists, every mutation targets a gate that lists it, and both
 // carry a Why. Pure — it reads the graph and the mutation set and executes
 // nothing, so it belongs in the ordinary suite.
-func TestMetaWiring(t *testing.T) {
+func TestUnitMetaWiring(t *testing.T) {
 	g, err := AuthoredGraph()
 	if err != nil {
 		t.Fatal(err)

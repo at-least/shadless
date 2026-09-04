@@ -239,6 +239,6 @@ generated constants, a typo in a dependency is a compile error:
     ./nodes.go:89:22: undefined: NDemoCsss
 
 What used to protect against a node going quietly missing was the generator.
-What protects against it now is `TestMetaWiring`: every gate must carry a `Why`
+What protects against it now is `TestUnitMetaWiring`: every gate must carry a `Why`
 and at least one mutation that is proven to make it fail, so a node that is
 half-declared does not compile or does not pass.

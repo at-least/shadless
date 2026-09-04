@@ -204,7 +204,7 @@ func runDocsSmoke(all bool) int {
 		}
 		sort.Strings(pageFiles)
 		renderFail, leakFail := 0, 0
-		consoleErrCount, pageErrCount, iframesLoaded := 0, 0, 0
+		consoleErrCount, iframesLoaded := 0, 0
 		nComponents, nGuides, nIndex := 0, 0, 0
 		for _, f := range pageFiles {
 			p, _ := shell.newPageOrigin(true, base)
@@ -260,15 +260,19 @@ func runDocsSmoke(all bool) int {
 				fmt.Fprintf(os.Stderr, "FAIL  console: %s — %s\n", f, strings.Join(evts[:n], " | "))
 			}
 			consoleErrCount += len(evts)
-			pageErrCount += 0
 			p.close()
 		}
 		fmt.Printf("pages: %d/%d visited (%d components, %d guides, %d index) · %d preview iframes loaded\n",
 			len(pageFiles), len(pageFiles), nComponents, nGuides, nIndex, iframesLoaded)
 		check(fmt.Sprintf("every-page render: %d pages non-empty (article present)", len(pageFiles)), renderFail == 0, fmt.Sprintf("%d failed", renderFail))
 		check("every-page mdx: 0 raw ComponentPreview/ComponentSource outside code blocks", leakFail == 0, fmt.Sprintf("%d pages leaking", leakFail))
-		check("every-page console: 0 errors, 0 pageerrors (iframes included)", consoleErrCount == 0 && pageErrCount == 0,
-			fmt.Sprintf("%d console, %d pageerror", consoleErrCount, pageErrCount))
+		// One count on purpose: the capture merges console errors and
+		// pageerrors into the same event list. This used to read
+		// "0 errors, 0 pageerrors" against a second counter that only ever
+		// had `+= 0` added to it — a check name promising a signal nothing
+		// produced.
+		check("every-page console: 0 error events, console and pageerror alike (iframes included)", consoleErrCount == 0,
+			fmt.Sprintf("%d error events", consoleErrCount))
 		verifyN = len(pageFiles)
 	}
 

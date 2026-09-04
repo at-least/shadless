@@ -119,10 +119,46 @@ func gateScriptRefs(root string) error {
 	}
 	check(string(makefile), "Makefile")
 
+	// The graph itself. Makefile and package.json were the only sources
+	// scanned, but almost every gate is invoked from nodes.go, where the run is
+	// a []string and `-run` sits in its own element — the shell-quoted form the
+	// regex above looks for never appears. `go test -run '^TestGone$'` exits 0
+	// with "no tests to run", so renaming a test left its node permanently
+	// green and nothing noticed.
+	nodeRuns := 0
+	for _, n := range Nodes {
+		for _, argv := range n.Run {
+			for i := 0; i+1 < len(argv); i++ {
+				if argv[i] != "-run" {
+					continue
+				}
+				nodeRuns++
+				pat := strings.TrimPrefix(argv[i+1], "^")
+				label := fmt.Sprintf("nodes.go %q", n.ID)
+				if strings.HasSuffix(pat, "$") {
+					if name := strings.TrimSuffix(pat, "$"); !testNames[name] {
+						fail = append(fail, fmt.Sprintf("%s: `-run %s` — no func %s under pipeline/*_test.go", label, argv[i+1], name))
+					}
+					continue
+				}
+				matched := false
+				for name := range testNames {
+					if strings.HasPrefix(name, pat) {
+						matched = true
+						break
+					}
+				}
+				if !matched {
+					fail = append(fail, fmt.Sprintf("%s: `-run %s` — no test under pipeline/*_test.go starts with %s", label, argv[i+1], pat))
+				}
+			}
+		}
+	}
+
 	if len(fail) > 0 {
 		sort.Strings(fail)
 		return fmt.Errorf("FAIL  script-refs (%d problems)\n  %s", len(fail), strings.Join(fail, "\n  "))
 	}
-	fmt.Printf("PASS  script-refs (%d package.json scripts + Makefile — every node/pipeline/go-test call resolves)\n", len(names))
+	fmt.Printf("PASS  script-refs (%d package.json scripts + Makefile + %d nodes.go -run patterns — every node/pipeline/go-test call resolves)\n", len(names), nodeRuns)
 	return nil
 }

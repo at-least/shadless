@@ -1,6 +1,6 @@
 package main
 
-// docs-consistency, ported from tools/docs-consistency.mjs. Three checks
+// docs-consistency, ported from tools/docs-consistency.mjs. Four checks
 // that a builder cannot answer for itself:
 //
 //  1. skin residue: shipped HTML carries zero non-allowlist cn-* classes
@@ -9,13 +9,15 @@ package main
 //  2. install-import reality: every @import "shadless…" the pages TEACH
 //     must resolve through package.json's exports to a file on disk
 //  3. no built page may teach @/components/ui (React import retirement)
+//  4. every dist/js/<name>.js that has a component page is shown on it — read
+//     off the artifacts, never re-deriving which scripts a demo carries
 import (
-	"sort"
 	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
 	"regexp"
+	"sort"
 	"strings"
 )
 
@@ -212,7 +214,7 @@ func resolveImport(exports map[string]any, spec string) string {
 			}
 		}
 	}
-// wildcard: "./*" → "./dist/css/*.css"; the wildcard already supplies the
+	// wildcard: "./*" → "./dist/css/*.css"; the wildcard already supplies the
 	// ".css" suffix — do not add one.
 	if w, ok := exports["./*"].(string); ok {
 		return strings.TrimPrefix(strings.Replace(w, "*", strings.TrimPrefix(sub, "./"), 1), "./")

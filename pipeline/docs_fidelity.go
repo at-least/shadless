@@ -39,9 +39,7 @@ func scanFences(src string) []fenceInfo {
 				open = -1
 				continue
 			}
-			if content != "" || line != "" || len(out) > 0 || true {
-				content += line + "\n"
-			}
+			content += line + "\n"
 		}
 	}
 	if open >= 0 {
@@ -149,7 +147,7 @@ var (
 	reAnyTag      = regexp.MustCompile(`<[^>]*>`)
 	reWs          = regexp.MustCompile(`\s+`)
 	reMdHeading   = regexp.MustCompile(`(?m)^(#{2,4})[ \t]+(.+)$`)
-	reHOpen        = regexp.MustCompile(`<h([234])\b[^>]*>`)
+	reHOpen       = regexp.MustCompile(`<h([234])\b[^>]*>`)
 	reInlineCode  = regexp.MustCompile("`[^`\n]+`")
 	reCompPreview = regexp.MustCompile(`<ComponentPreview\b([^>]*)>`)
 	reCompSource  = regexp.MustCompile(`<ComponentSource\b([^>]*)>`)
@@ -187,9 +185,9 @@ type headingEnt struct {
 }
 
 type previewEnt struct {
-	name       string
-	styleName  string
-	direction  string
+	name      string
+	styleName string
+	direction string
 }
 
 type sourceEnt struct {
@@ -299,15 +297,15 @@ type mdFacts struct {
 }
 
 var (
-	reMdH1        = regexp.MustCompile(`(?m)^# (.+)$`)
+	reMdH1             = regexp.MustCompile(`(?m)^# (.+)$`)
 	reFrontmatterBlock = regexp.MustCompile(`(?s)^---\n.*?\n---\n`)
-	reDemoIframe  = regexp.MustCompile(`<iframe class="demo" src="([^"]*)" title="([^"]*)" data-status="([^"]*)"`)
-	reDemoMissing = regexp.MustCompile(`<div class="demo-missing" data-demo="([^"]*)" data-status="([^"]*)"`)
-	reDemoInOrder = regexp.MustCompile(`<iframe class="demo"[^>]*title="([^"]*)"|<div class="demo-missing" data-demo="([^"]*)"`)
-	rePageLinksP  = regexp.MustCompile(`(?s)<p class="page-links">(.*?)</p>`)
-	reAnchor      = regexp.MustCompile(`<a href="([^"]*)"[^>]*>([^<]*)</a>`)
-	reDocsHref    = regexp.MustCompile(`\]\((\/docs\/[^)]*)\)`)
-	reAllHref     = regexp.MustCompile(`\]\(([^)]*)\)`)
+	reDemoIframe       = regexp.MustCompile(`<iframe class="demo" src="([^"]*)" title="([^"]*)" data-status="([^"]*)"`)
+	reDemoMissing      = regexp.MustCompile(`<div class="demo-missing" data-demo="([^"]*)" data-status="([^"]*)"`)
+	reDemoInOrder      = regexp.MustCompile(`<iframe class="demo"[^>]*title="([^"]*)"|<div class="demo-missing" data-demo="([^"]*)"`)
+	rePageLinksP       = regexp.MustCompile(`(?s)<p class="page-links">(.*?)</p>`)
+	reAnchor           = regexp.MustCompile(`<a href="([^"]*)"[^>]*>([^<]*)</a>`)
+	reDocsHref         = regexp.MustCompile(`\]\((\/docs\/[^)]*)\)`)
+	reAllHref          = regexp.MustCompile(`\]\(([^)]*)\)`)
 )
 
 func mdPageFacts(md string) mdFacts {
