@@ -675,8 +675,16 @@ func (ctx *docsBuildCtx) buildPage(name, source string, transform func(string) (
 		return md
 	})
 	if i := strings.Index(body, "%%ERROR:"); i >= 0 {
-		j := strings.Index(body[i:], "%%")
-		return nil, fmt.Errorf("%s", body[i+len("%%ERROR:"):i+j])
+		// search AFTER the marker: body[i:] starts with "%%ERROR:", so
+		// Index(body[i:], "%%") was always 0 and body[i+8:i+0] panicked —
+		// the one path meant to report a malformed <ComponentPreview> could
+		// only ever crash.
+		start := i + len("%%ERROR:")
+		end := len(body)
+		if j := strings.Index(body[start:], "%%"); j >= 0 {
+			end = start + j
+		}
+		return nil, fmt.Errorf("%s", body[start:end])
 	}
 	if !skipJsxCheck {
 		if err := assertNoJsx(name, body); err != nil {

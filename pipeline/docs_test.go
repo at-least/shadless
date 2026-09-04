@@ -379,3 +379,34 @@ func TestUnitFindCalloutOpen(t *testing.T) {
 		}
 	}
 }
+
+// Heading facts must carry a LEVEL and the heading's real text. depth was
+// m[2]-m[1] — the group start minus the whole match's end, i.e. a negative
+// byte length — so "## Foo" scored -6 and "### Foo" -7, differing only
+// because the line got one character longer. stripInlineCode expanded "$1"
+// against a group-less regex, deleting the code span, so "## `size`" and
+// "## `side`" both collapsed to the same text and the gate could not see one
+// change into the other.
+func TestUnitHeadingFacts(t *testing.T) {
+	h := mdPageFacts("# T\n\n## Foo\n\n### Bar\n\n#### Baz\n").headings
+	want := []headingEnt{{2, "Foo"}, {3, "Bar"}, {4, "Baz"}}
+	if len(h) != len(want) {
+		t.Fatalf("got %v want %v", h, want)
+	}
+	for i := range want {
+		if h[i] != want[i] {
+			t.Errorf("heading %d: got %v want %v", i, h[i], want[i])
+		}
+	}
+	a := mdPageFacts("# T\n\n## `size`\n").headings
+	b := mdPageFacts("# T\n\n## `side`\n").headings
+	if len(a) != 1 || len(b) != 1 {
+		t.Fatalf("got %v / %v", a, b)
+	}
+	if a[0] == b[0] {
+		t.Errorf("two different code-only headings compare equal: %v", a[0])
+	}
+	if a[0].text != "size" {
+		t.Errorf("inline code stripped away the heading text: %q", a[0].text)
+	}
+}

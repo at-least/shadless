@@ -155,7 +155,7 @@ var (
 	reWs          = regexp.MustCompile(`\s+`)
 	reMdHeading   = regexp.MustCompile(`(?m)^(#{2,4})[ \t]+(.+)$`)
 	reHOpen       = regexp.MustCompile(`<h([234])\b[^>]*>`)
-	reInlineCode  = regexp.MustCompile("`[^`\n]+`")
+	reInlineCode  = regexp.MustCompile("`([^`\n]+)`")
 	reCompPreview = regexp.MustCompile(`<ComponentPreview\b([^>]*)>`)
 	reCompSource  = regexp.MustCompile(`<ComponentSource\b([^>]*)>`)
 )
@@ -269,7 +269,11 @@ func mdxPageFacts(name, raw string, dropCodeTabs, dropInstallSection, dropRtlMig
 	}
 	var heads []posHead
 	for _, m := range reMdHeading.FindAllStringSubmatchIndex(body, -1) {
-		heads = append(heads, posHead{m[0], m[2] - m[1], stripInlineCode(mdText(body[m[4]:m[5]]))})
+		// m[1] is the END of the whole match, m[2] the START of group 1, so
+		// m[2]-m[1] was a negative byte length, not a level: "## Foo" scored
+		// -6 and "## A much longer heading" -24. Levels differed only because
+		// the line length happened to differ with them.
+		heads = append(heads, posHead{m[0], m[3] - m[2], stripInlineCode(mdText(body[m[4]:m[5]]))})
 	}
 	for _, h := range findAllRawHeadings(noInlineCode) {
 		heads = append(heads, posHead{h.at, h.depth, htmlText(h.text)})
@@ -339,7 +343,7 @@ func mdPageFacts(md string) mdFacts {
 	}
 	var heads []posHead
 	for _, m := range reMdHeading.FindAllStringSubmatchIndex(shadow, -1) {
-		d := m[2] - m[1]
+		d := m[3] - m[2] // the "#" run's length — a level; see mdxPageFacts
 		heads = append(heads, posHead{m[0], d, stripInlineCode(mdText(shadow[m[4]:m[5]]))})
 	}
 	for _, h := range findAllRawHeadings(noInlineCode) {
