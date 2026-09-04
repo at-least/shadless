@@ -179,6 +179,29 @@ func locateHeadingRangeSpan(shadow, fromHeading, toHeading string) *span {
 	return &span{open[0], open[1] + close[0]}
 }
 
+// Upstream's RTL guide sends the reader through the shadcn CLI: "Select your
+// framework", three framework cards whose sub-pages this mirror prunes,
+// `rtl: true` in components.json, `shadcn create`, and an "Open in v0"
+// Next.js link. shadless has no CLI, no components.json and no framework
+// integration, so none of it is actionable here — and the "How it works"
+// list describes a class transformation shadless deliberately does not do
+// (see gate_css_direction.go: the emitted CSS is a mechanical conversion of
+// the pinned registry, and where upstream uses a physical utility, fidelity
+// to the oracle requires emitting it). The span runs to Animations, whose own
+// tw-animate-css note and fences stay.
+func locateRtlFrameworkSpan(shadow string) *span {
+	return locateHeadingRangeSpan(shadow, "Get Started", "Animations")
+}
+
+func rtlFrameworkNote() string {
+	return "## How RTL works here\n\n" +
+		"There is no CLI to opt into and no `components.json`. shadless emits a mechanical conversion of the pinned shadcn registry, so where upstream uses a physical utility (`pl-*`, `right-*`, `rounded-l-*`) the shipped stylesheet carries it too — converting them would be a divergence from the oracle the whole port is checked against. The `css-direction` gate holds that inventory to a committed baseline, so a re-pin that moves the RTL story is a visible decision instead of a silent regression.\n\n" +
+		"What you get instead: upstream authors a separate RTL example for the components that need one, and shadless ships those as their own pages — `<name>-rtl` beside `<name>-demo`, plus the `-he` / `-fa` / `-en` language variants `build-rtl` emits. Compare `button-group-demo` (`rounded-l-none`) with `button-group-rtl` (`rounded-s-none`) to see the difference an RTL page actually makes.\n\n" +
+		"So: set `dir=\"rtl\"` on the page, start from this page's RTL examples rather than the LTR ones, and check the components you use — the ones whose stylesheet is already logical need nothing more. To flip an individual icon, give it the `rtl:rotate-180` utility class.\n\n" +
+		"## Font Recommendations\n\n" +
+		"Use a font with proper support for your target language. [Noto](https://fonts.google.com/noto) is a good family for this and pairs well with Inter and Geist. shadless ships no fonts and no font configuration — load them the way your own build already loads fonts.\n\n"
+}
+
 // message-scroller ships as a pure static component (tier "static" —
 // generated/ir/message-scroller.json — no dist/js file at all). Its
 // upstream "Core Concepts"/"Performance"/"Virtualization" sections document

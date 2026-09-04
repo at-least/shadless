@@ -514,7 +514,7 @@ func utilsInstallMdx(util string) string {
 }
 
 func rtlMigrateMdx() string {
-	return "shadless components ship the pinned registry's classes as-is — the current registry already uses logical (start/end-aware) utilities, so there is no migration step: every component is RTL-ready the moment the page carries `dir=\"rtl\"`. To flip an individual icon, give it the `rtl:rotate-180` utility class."
+	return "shadless components ship the pinned registry's classes as-is, and that cuts both ways: many slots are already logical (start/end-aware) and need nothing but `dir=\"rtl\"` on the page, while others still carry the physical utilities upstream wrote (`pl-*`, `right-*`, `rounded-l-*`) — `css-direction` keeps a committed inventory of exactly which. There is no migration command to run; check the components you actually use, and prefer this page's `-rtl` examples over the LTR ones where upstream authored a pair. To flip an individual icon, give it the `rtl:rotate-180` utility class."
 }
 
 func guideTransform(g guide, raw string) (string, error) {
@@ -528,11 +528,14 @@ func guideTransform(g guide, raw string) (string, error) {
 			return "", fmt.Errorf("rtl migrate section: not found in %s", g.source)
 		}
 		raw = replaceSpan(raw, *s, rtlMigrateMdx())
-		const LINK = "For other styles, see the [Migration Guide](#migrating-existing-components)."
-		if !strings.Contains(raw, LINK) {
-			return "", fmt.Errorf("rtl guide: migrate anchor link not found — re-anchor")
+		// The framework/CLI run (Get Started … Supported Styles) goes with it;
+		// its "For other styles, see the Migration Guide" link used to be
+		// rewritten in place, but the section it lives in is dropped now.
+		f := locateRtlFrameworkSpan(fenceShadow(raw))
+		if f == nil {
+			return "", fmt.Errorf("rtl framework section: not found in %s", g.source)
 		}
-		raw = strings.Replace(raw, LINK, "For other styles, the shipped utilities are already logical (start/end-aware) — `dir=\"rtl\"` is all it takes.", 1)
+		raw = replaceSpan(raw, *f, rtlFrameworkNote())
 	}
 	if g.installSection {
 		s := locateInstallSection(fenceShadow(raw))

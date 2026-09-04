@@ -101,7 +101,14 @@ func withoutRtlMigrate(raw string) string {
 	if s == nil {
 		return raw
 	}
-	return replaceSpan(raw, *s, "\n")
+	out := replaceSpan(raw, *s, "\n")
+	// Both halves of the same builder branch (guideTransform's g.rtlMigrate):
+	// the migrate section AND the framework/CLI run are replaced together, so
+	// the gate has to drop both or the headings compare diverges.
+	if f := locateRtlFrameworkSpan(fenceShadow(out)); f != nil {
+		out = replaceSpan(out, *f, rtlFrameworkNote())
+	}
+	return out
 }
 
 // withoutUsageSection drops the heading too, mirroring usageMdx returning ""
