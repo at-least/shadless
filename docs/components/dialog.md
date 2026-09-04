@@ -1294,7 +1294,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 | Slot |
 | --- |
-| `data-slot="dialog"` |
 | `data-slot="dialog-trigger"` |
 | `data-slot="dialog-portal"` |
 | `data-slot="dialog-close"` |

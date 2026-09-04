@@ -294,11 +294,70 @@ func assertNoJsx(page, text string) error {
 // ---- section transforms ----------------------------------------------------------
 
 type docsBuildCtx struct {
-	catalog    docsCatalog
-	previewSt  map[string]docsCatalog
-	rtlLangs   map[string][]string
-	markup     map[string]string // demo file → prettier-formatted markup
-	sections   map[string][]string
+	catalog   docsCatalog
+	previewSt map[string]docsCatalog
+	rtlLangs  map[string][]string
+	markup    map[string]string // demo file → prettier-formatted markup
+	sections  map[string][]string
+	realSlots map[string]bool // lazily built by shippedSlots()
+}
+
+var reDataSlotAttr = regexp.MustCompile(`data-slot="([a-z0-9-]+)"`)
+var reDataSlotSet = regexp.MustCompile(`setAttribute\(\s*"data-slot"\s*,\s*"([a-z0-9-]+)"`)
+
+// shippedSlots: every data-slot that EXISTS — present in shipped markup, or
+// written by the shipped runtime (dialog-portal, sheet-portal and
+// navigation-menu-viewport are created at open time and have no static page).
+//
+// The API Reference's slot table is built from generated/ir/<name>.json, which
+// carries every node upstream's TSX declares, while the table's own preamble
+// says "every node is a data-slot attribute in the shipped markup". Those are
+// different sets: 21 of the listed slots are React-only wrappers with no DOM
+// presence anywhere — dialog, popover, select, tooltip-provider,
+// context-menu-sub, menubar-label … The vanilla shape of those components is
+// trigger + <template>, with no wrapping element at all.
+func (ctx *docsBuildCtx) shippedSlots() map[string]bool {
+	if ctx.realSlots != nil {
+		return ctx.realSlots
+	}
+	out := map[string]bool{}
+	for _, dir := range []string{"dist/components", "docs/demos"} {
+		ents, err := os.ReadDir(dir)
+		if err != nil {
+			continue
+		}
+		for _, e := range ents {
+			if !strings.HasSuffix(e.Name(), ".html") {
+				continue
+			}
+			b, err := os.ReadFile(filepath.Join(dir, e.Name()))
+			if err != nil {
+				continue
+			}
+			for _, m := range reDataSlotAttr.FindAllStringSubmatch(string(b), -1) {
+				out[m[1]] = true
+			}
+		}
+	}
+	jsFiles := []string{"dist/shadless.js"}
+	if ents, err := os.ReadDir("dist/js"); err == nil {
+		for _, e := range ents {
+			if strings.HasSuffix(e.Name(), ".js") {
+				jsFiles = append(jsFiles, filepath.Join("dist/js", e.Name()))
+			}
+		}
+	}
+	for _, f := range jsFiles {
+		b, err := os.ReadFile(f)
+		if err != nil {
+			continue
+		}
+		for _, m := range reDataSlotSet.FindAllStringSubmatch(string(b), -1) {
+			out[m[1]] = true
+		}
+	}
+	ctx.realSlots = out
+	return out
 }
 
 func (ctx *docsBuildCtx) installStepsMdx(name string) string {
@@ -437,12 +496,13 @@ func (ctx *docsBuildCtx) apiReferenceTransform(name, raw string, seen *[]string)
 	var axes []cvaAxisRow
 	tier := ""
 	slotSeen := map[string]bool{}
+	real := ctx.shippedSlots()
 	if irb, err := os.ReadFile(filepath.Join("generated/ir", name+".json")); err == nil {
 		var ir cssIrComponent
 		if json.Unmarshal(irb, &ir) == nil {
 			for _, c := range ir.Components {
 				for _, e := range c.Elements {
-					if e.Slot != "" && !slotSeen[e.Slot] {
+					if e.Slot != "" && !slotSeen[e.Slot] && real[e.Slot] {
 						slotSeen[e.Slot] = true
 						slots = append(slots, e.Slot)
 					}

@@ -3018,11 +3018,8 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 | Slot |
 | --- |
-| `data-slot="context-menu"` |
 | `data-slot="context-menu-trigger"` |
 | `data-slot="context-menu-group"` |
-| `data-slot="context-menu-portal"` |
-| `data-slot="context-menu-sub"` |
 | `data-slot="context-menu-radio-group"` |
 | `data-slot="context-menu-content"` |
 | `data-slot="context-menu-item"` |

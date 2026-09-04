@@ -803,9 +803,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 | Slot |
 | --- |
-| `data-slot="hover-card"` |
 | `data-slot="hover-card-trigger"` |
-| `data-slot="hover-card-portal"` |
 | `data-slot="hover-card-content"` |
 
 **Runtime:** `shadless.get(el)` (element or selector, any element inside the instance) → `open()`, `close()`, `toggle()`, `isOpen()`; the trigger dispatches `shadless:open` / `shadless:close`. Markup protocol: see Installation → Behavior protocol.

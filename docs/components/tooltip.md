@@ -1292,8 +1292,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 | Slot |
 | --- |
-| `data-slot="tooltip-provider"` |
-| `data-slot="tooltip"` |
 | `data-slot="tooltip-trigger"` |
 | `data-slot="tooltip-content"` |
 

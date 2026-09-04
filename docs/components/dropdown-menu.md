@@ -5309,8 +5309,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 | Slot |
 | --- |
-| `data-slot="dropdown-menu"` |
-| `data-slot="dropdown-menu-portal"` |
 | `data-slot="dropdown-menu-trigger"` |
 | `data-slot="dropdown-menu-content"` |
 | `data-slot="dropdown-menu-group"` |
@@ -5323,7 +5321,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | `data-slot="dropdown-menu-label"` |
 | `data-slot="dropdown-menu-separator"` |
 | `data-slot="dropdown-menu-shortcut"` |
-| `data-slot="dropdown-menu-sub"` |
 | `data-slot="dropdown-menu-sub-trigger"` |
 | `data-slot="dropdown-menu-sub-content"` |
 

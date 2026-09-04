@@ -511,7 +511,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | `data-slot="navigation-menu-content"` |
 | `data-slot="navigation-menu-viewport"` |
 | `data-slot="navigation-menu-link"` |
-| `data-slot="navigation-menu-indicator"` |
 
 **Runtime:** `shadless.get(el)` (element or selector, any element inside the instance) → `open()`, `close()`, `toggle()`, `isOpen()`; the trigger dispatches `shadless:open` / `shadless:close`. Markup protocol: see Installation → Behavior protocol.
 

@@ -2431,7 +2431,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 | Slot |
 | --- |
-| `data-slot="select"` |
 | `data-slot="select-group"` |
 | `data-slot="select-value"` |
 | `data-slot="select-trigger"` |

@@ -1018,10 +1018,8 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 | Slot |
 | --- |
-| `data-slot="popover"` |
 | `data-slot="popover-trigger"` |
 | `data-slot="popover-content"` |
-| `data-slot="popover-anchor"` |
 | `data-slot="popover-header"` |
 | `data-slot="popover-title"` |
 | `data-slot="popover-description"` |

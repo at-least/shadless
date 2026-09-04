@@ -3977,19 +3977,15 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | Slot |
 | --- |
 | `data-slot="menubar"` |
-| `data-slot="menubar-menu"` |
 | `data-slot="menubar-group"` |
-| `data-slot="menubar-portal"` |
 | `data-slot="menubar-radio-group"` |
 | `data-slot="menubar-trigger"` |
 | `data-slot="menubar-content"` |
 | `data-slot="menubar-item"` |
 | `data-slot="menubar-checkbox-item"` |
 | `data-slot="menubar-radio-item"` |
-| `data-slot="menubar-label"` |
 | `data-slot="menubar-separator"` |
 | `data-slot="menubar-shortcut"` |
-| `data-slot="menubar-sub"` |
 | `data-slot="menubar-sub-trigger"` |
 | `data-slot="menubar-sub-content"` |
 

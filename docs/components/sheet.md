@@ -889,7 +889,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 | Slot |
 | --- |
-| `data-slot="sheet"` |
 | `data-slot="sheet-trigger"` |
 | `data-slot="sheet-close"` |
 | `data-slot="sheet-portal"` |

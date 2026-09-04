@@ -1,6 +1,6 @@
 package main
 
-// docs-consistency, ported from tools/docs-consistency.mjs. Six checks
+// docs-consistency, ported from tools/docs-consistency.mjs. Seven checks
 // that a builder cannot answer for itself:
 //
 //  1. skin residue: shipped HTML carries zero non-allowlist cn-* classes
@@ -14,6 +14,8 @@ package main
 //  5. no built page carries JSX expression residue in prose ("}>" left by a
 //     mis-scanned opening tag)
 //  6. every dist/… path a table row hands the reader is on disk
+//  7. every data-slot an API Reference table lists exists in shipped markup
+//     or is set by the shipped runtime
 import (
 	"encoding/json"
 	"fmt"
@@ -27,6 +29,7 @@ import (
 var reCN = regexp.MustCompile(`\bcn-[a-z0-9-]+`)
 var reImportTeach = regexp.MustCompile(`@import\s+(?:"|&quot;)shadless[^"&]*`)
 var reDistPath = regexp.MustCompile("`(dist/[A-Za-z0-9._/-]+)`")
+var reSlotTableRow = regexp.MustCompile(`^\| ` + "`" + `data-slot="([a-z0-9-]+)"` + "`" + ` \|$`)
 
 func runDocsConsistency() int {
 	loadSkin()
@@ -204,6 +207,59 @@ func runDocsConsistency() int {
 		}
 	}
 
+	// 7. every slot a page's table lists actually exists. The table is built
+	// from generated/ir/<name>.json — every node upstream's TSX declares —
+	// while its own preamble says "every node is a data-slot attribute in the
+	// shipped markup". 21 rows were React-only wrappers with no DOM presence
+	// anywhere (dialog, popover, select, tooltip-provider, context-menu-sub,
+	// menubar-label …), because the vanilla shape of those components is
+	// trigger + <template> with no wrapping element. Read off the artifacts,
+	// in the opposite direction from the builder: page table → shipped markup.
+	real := map[string]bool{}
+	for _, dir := range []string{"dist/components", "docs/demos"} {
+		ents, _ := os.ReadDir(dir)
+		for _, e := range ents {
+			if !strings.HasSuffix(e.Name(), ".html") {
+				continue
+			}
+			b, _ := os.ReadFile(filepath.Join(dir, e.Name()))
+			for _, m := range reDataSlotAttr.FindAllStringSubmatch(string(b), -1) {
+				real[m[1]] = true
+			}
+		}
+	}
+	jsFiles := []string{"dist/shadless.js"}
+	if ents, err := os.ReadDir("dist/js"); err == nil {
+		for _, e := range ents {
+			if strings.HasSuffix(e.Name(), ".js") {
+				jsFiles = append(jsFiles, filepath.Join("dist/js", e.Name()))
+			}
+		}
+	}
+	for _, f := range jsFiles {
+		b, _ := os.ReadFile(f)
+		for _, m := range reDataSlotSet.FindAllStringSubmatch(string(b), -1) {
+			real[m[1]] = true
+		}
+	}
+	slotRows := 0
+	for _, f := range pageFiles {
+		b, err := os.ReadFile(f)
+		if err != nil {
+			continue
+		}
+		for i, line := range strings.Split(string(b), "\n") {
+			m := reSlotTableRow.FindStringSubmatch(line)
+			if m == nil {
+				continue
+			}
+			slotRows++
+			if !real[m[1]] {
+				addProblem("phantom-slot", f, fmt.Sprintf("line %d: the table lists data-slot=%q, which is in no shipped page and set by no shipped script", i+1, m[1]))
+			}
+		}
+	}
+
 	// report
 	byKind := map[string][]problemT{}
 	for _, p := range problems {
@@ -228,8 +284,8 @@ func runDocsConsistency() int {
 			fmt.Fprintf(os.Stderr, "  … +%d more\n", len(list)-10)
 		}
 	}
-	fmt.Printf("docs consistency: %d shipped pages scanned for skin residue, %d taught @imports resolved, %d built pages checked for React imports, %d shipped js files checked for a behavior tab, %d table dist refs resolved — problems: %d\n",
-		skinScanned, importsChecked, len(pageFiles), behaviorChecked, distRefs, len(problems))
+	fmt.Printf("docs consistency: %d shipped pages scanned for skin residue, %d taught @imports resolved, %d built pages checked for React imports, %d shipped js files checked for a behavior tab, %d table dist refs resolved, %d slot rows checked — problems: %d\n",
+		skinScanned, importsChecked, len(pageFiles), behaviorChecked, distRefs, slotRows, len(problems))
 	if len(problems) > 0 {
 		return 1
 	}
