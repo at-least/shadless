@@ -15,8 +15,8 @@ package main
 // the 1-2s per-demo esbuild pass.
 
 import (
-	_ "embed"
 	"crypto/sha256"
+	_ "embed"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -99,20 +99,20 @@ func oracleAliases() (map[string]string, error) {
 		return a
 	}
 	a := map[string]string{
-		"@":                   up,
-		"@/registry/bases/radix/ui":   resolved + "/ui",
-		"@/registry/bases/radix/lib":  resolved + "/lib",
-		"@/registry/bases/radix/hooks": resolved + "/hooks",
-		"@/components/language-selector": abs("tools/contracts/stubs/app-components.jsx"),
-		"@/components/markdown":          abs("tools/contracts/stubs/app-components.jsx"),
-		"@/components/message-animated":  abs("tools/contracts/stubs/message-animated.jsx"),
+		"@":                                          up,
+		"@/registry/bases/radix/ui":                  resolved + "/ui",
+		"@/registry/bases/radix/lib":                 resolved + "/lib",
+		"@/registry/bases/radix/hooks":               resolved + "/hooks",
+		"@/components/language-selector":             abs("tools/contracts/stubs/app-components.jsx"),
+		"@/components/markdown":                      abs("tools/contracts/stubs/app-components.jsx"),
+		"@/components/message-animated":              abs("tools/contracts/stubs/message-animated.jsx"),
 		"@/app/(create)/components/icon-placeholder": abs("tools/contracts/stubs/icon-placeholder.jsx"),
-		"next/image":                      abs("tools/contracts/stubs/next-image.jsx"),
-		"next/link":                       abs("tools/contracts/stubs/next-link.jsx"),
-		"date-fns":                        abs("tools/contracts/stubs/date-fns.mjs"),
-		"sonner":                          abs("tools/contracts/stubs/sonner.jsx"),
-		"embla-carousel-autoplay":         abs("tools/contracts/stubs/embla-autoplay.mjs"),
-		"react-textarea-autosize":         abs("tools/contracts/stubs/textarea-autosize.jsx"),
+		"next/image":                                 abs("tools/contracts/stubs/next-image.jsx"),
+		"next/link":                                  abs("tools/contracts/stubs/next-link.jsx"),
+		"date-fns":                                   abs("tools/contracts/stubs/date-fns.mjs"),
+		"sonner":                                     abs("tools/contracts/stubs/sonner.jsx"),
+		"embla-carousel-autoplay":                    abs("tools/contracts/stubs/embla-autoplay.mjs"),
+		"react-textarea-autosize":                    abs("tools/contracts/stubs/textarea-autosize.jsx"),
 	}
 	for _, f := range []string{"radix", "base", "aria"} {
 		for _, s := range skins {
@@ -177,7 +177,7 @@ try {
 			Outfile:     outfile,
 			LogLevel:    api.LogLevelError,
 			Alias:       aliases,
-			Loader: map[string]api.Loader{".tsx": api.LoaderTSX},
+			Loader:      map[string]api.Loader{".tsx": api.LoaderTSX},
 			// automatic runtime: classic JSX emits free React.createElement
 			// for sources without an explicit React import (aspect-ratio, …)
 			JSX: api.JSXAutomatic,
@@ -225,17 +225,31 @@ func awaitOracleGo(p *bpage, htmlFile string) error {
 	return nil
 }
 
-var (
-	reOraCSR1 = regexp.MustCompile(`radix-:r[a-z0-9]*:?`)
-	reOraCSR2 = regexp.MustCompile(`radix-_r_[a-z0-9-]*`)
-	reOraSSR  = regexp.MustCompile(`(?i)radix-_R_[a-z0-9-]*`)
-)
+// reRadixAutoId: every spelling React's useId has had, as radix prefixes it —
+// React 18 `:r1:`, 19.0 `«r1»`, 19.1+ CSR `_r_1_` and SSR `_R_1H2_`. The
+// trailing `_` is part of the id: the old `radix-_r_[a-z0-9-]*` stopped in
+// front of it and left `radix-<auto>_` behind in every page.
+var reRadixAutoId = regexp.MustCompile(`radix-(?::r[a-z0-9]*:?|«r[a-z0-9]*»|_[rR]_[A-Za-z0-9-]*_?)`)
 
-// oracleNorm: radix auto-ids normalize to one bucket (runtime, not contract).
+// oracleNorm makes radix auto-ids STABLE without making them EQUAL. Each
+// distinct id becomes radix-a1, radix-a2, … in order of first appearance, so
+// a page renders to the same bytes on every capture (the runtime counter is
+// gone) while `aria-controls`/`aria-labelledby` still point at the element
+// they pointed at. It used to collapse every id to one literal, radix-<auto>,
+// and that literal was written into the shipped pages: accordion-* carried it
+// six times per page as `id=`, and every aria reference on the page resolved
+// to the first of the six. Comparison never needed the collapse — canon
+// treats an auto-id as opaque — only the shipped markup paid for it.
 func oracleNorm(html string) string {
-	out := reOraCSR1.ReplaceAllString(html, "radix-<auto>")
-	out = reOraCSR2.ReplaceAllString(out, "radix-<auto>")
-	return reOraSSR.ReplaceAllString(out, "radix-<auto>")
+	seen := map[string]string{}
+	return reRadixAutoId.ReplaceAllStringFunc(html, func(id string) string {
+		if t, ok := seen[id]; ok {
+			return t
+		}
+		t := fmt.Sprintf("radix-a%d", len(seen)+1)
+		seen[id] = t
+		return t
+	})
 }
 
 // canonExpr is oracle-lib's canonOf verbatim, as a function of ([h]).
@@ -245,9 +259,9 @@ func oracleNorm(html string) string {
 // canonExpr is oracle-lib's canonOf verbatim (a function of ([h])), kept in
 // oracle_canon.js because the body carries JS template literals that cannot
 // live inside a Go backtick string.
+//
 //go:embed oracle_canon.js
 var canonExpr string
-
 
 // canonOfGo: canon a DOM fragment through the real browser.
 func canonOfGo(p *bpage, html string) (string, error) {

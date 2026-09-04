@@ -24,11 +24,11 @@ A vertically stacked set of interactive headings that each reveal a section of c
     <h3 data-orientation="vertical" data-state="open" class="flex">
       <button
         type="button"
-        aria-controls="radix-<auto>_"
+        aria-controls="radix-a1"
         aria-expanded="true"
         data-state="open"
         data-orientation="vertical"
-        id="radix-<auto>_"
+        id="radix-a2"
         data-slot="accordion-trigger"
         class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
         data-radix-collection-item=""
@@ -66,9 +66,9 @@ A vertically stacked set of interactive headings that each reveal a section of c
     </h3>
     <div
       data-state="open"
-      id="radix-<auto>_"
+      id="radix-a1"
       role="region"
-      aria-labelledby="radix-<auto>_"
+      aria-labelledby="radix-a2"
       data-orientation="vertical"
       data-slot="accordion-content"
       class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
@@ -98,11 +98,11 @@ A vertically stacked set of interactive headings that each reveal a section of c
     <h3 data-orientation="vertical" data-state="closed" class="flex">
       <button
         type="button"
-        aria-controls="radix-<auto>_"
+        aria-controls="radix-a3"
         aria-expanded="false"
         data-state="closed"
         data-orientation="vertical"
-        id="radix-<auto>_"
+        id="radix-a4"
         data-slot="accordion-trigger"
         class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
         data-radix-collection-item=""
@@ -140,10 +140,10 @@ A vertically stacked set of interactive headings that each reveal a section of c
     </h3>
     <div
       data-state="closed"
-      id="radix-<auto>_"
+      id="radix-a3"
       hidden=""
       role="region"
-      aria-labelledby="radix-<auto>_"
+      aria-labelledby="radix-a4"
       data-orientation="vertical"
       data-slot="accordion-content"
       class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
@@ -162,11 +162,11 @@ A vertically stacked set of interactive headings that each reveal a section of c
     <h3 data-orientation="vertical" data-state="closed" class="flex">
       <button
         type="button"
-        aria-controls="radix-<auto>_"
+        aria-controls="radix-a5"
         aria-expanded="false"
         data-state="closed"
         data-orientation="vertical"
-        id="radix-<auto>_"
+        id="radix-a6"
         data-slot="accordion-trigger"
         class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
         data-radix-collection-item=""
@@ -204,10 +204,10 @@ A vertically stacked set of interactive headings that each reveal a section of c
     </h3>
     <div
       data-state="closed"
-      id="radix-<auto>_"
+      id="radix-a5"
       hidden=""
       role="region"
-      aria-labelledby="radix-<auto>_"
+      aria-labelledby="radix-a6"
       data-orientation="vertical"
       data-slot="accordion-content"
       class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
@@ -352,11 +352,11 @@ A basic accordion that shows one item at a time. The first item is open by defau
     <h3 data-orientation="vertical" data-state="open" class="flex">
       <button
         type="button"
-        aria-controls="radix-<auto>_"
+        aria-controls="radix-a1"
         aria-expanded="true"
         data-state="open"
         data-orientation="vertical"
-        id="radix-<auto>_"
+        id="radix-a2"
         data-slot="accordion-trigger"
         class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
         data-radix-collection-item=""
@@ -394,9 +394,9 @@ A basic accordion that shows one item at a time. The first item is open by defau
     </h3>
     <div
       data-state="open"
-      id="radix-<auto>_"
+      id="radix-a1"
       role="region"
-      aria-labelledby="radix-<auto>_"
+      aria-labelledby="radix-a2"
       data-orientation="vertical"
       data-slot="accordion-content"
       class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
@@ -426,11 +426,11 @@ A basic accordion that shows one item at a time. The first item is open by defau
     <h3 data-orientation="vertical" data-state="closed" class="flex">
       <button
         type="button"
-        aria-controls="radix-<auto>_"
+        aria-controls="radix-a3"
         aria-expanded="false"
         data-state="closed"
         data-orientation="vertical"
-        id="radix-<auto>_"
+        id="radix-a4"
         data-slot="accordion-trigger"
         class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
         data-radix-collection-item=""
@@ -468,10 +468,10 @@ A basic accordion that shows one item at a time. The first item is open by defau
     </h3>
     <div
       data-state="closed"
-      id="radix-<auto>_"
+      id="radix-a3"
       hidden=""
       role="region"
-      aria-labelledby="radix-<auto>_"
+      aria-labelledby="radix-a4"
       data-orientation="vertical"
       data-slot="accordion-content"
       class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
@@ -490,11 +490,11 @@ A basic accordion that shows one item at a time. The first item is open by defau
     <h3 data-orientation="vertical" data-state="closed" class="flex">
       <button
         type="button"
-        aria-controls="radix-<auto>_"
+        aria-controls="radix-a5"
         aria-expanded="false"
         data-state="closed"
         data-orientation="vertical"
-        id="radix-<auto>_"
+        id="radix-a6"
         data-slot="accordion-trigger"
         class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
         data-radix-collection-item=""
@@ -532,10 +532,10 @@ A basic accordion that shows one item at a time. The first item is open by defau
     </h3>
     <div
       data-state="closed"
-      id="radix-<auto>_"
+      id="radix-a5"
       hidden=""
       role="region"
-      aria-labelledby="radix-<auto>_"
+      aria-labelledby="radix-a6"
       data-orientation="vertical"
       data-slot="accordion-content"
       class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
@@ -621,7 +621,12 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
 
 ::: code-group
 ```text:line-numbers [accordion-multiple.html]
-<div data-slot="accordion" class="flex w-full flex-col max-w-lg" data-orientation="vertical">
+<div
+  data-slot="accordion"
+  data-type="multiple"
+  class="flex w-full flex-col max-w-lg"
+  data-orientation="vertical"
+>
   <div
     data-state="open"
     data-orientation="vertical"
@@ -631,11 +636,11 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
     <h3 data-orientation="vertical" data-state="open" class="flex">
       <button
         type="button"
-        aria-controls="radix-<auto>_"
+        aria-controls="radix-a1"
         aria-expanded="true"
         data-state="open"
         data-orientation="vertical"
-        id="radix-<auto>_"
+        id="radix-a2"
         data-slot="accordion-trigger"
         class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
         data-radix-collection-item=""
@@ -673,9 +678,9 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
     </h3>
     <div
       data-state="open"
-      id="radix-<auto>_"
+      id="radix-a1"
       role="region"
-      aria-labelledby="radix-<auto>_"
+      aria-labelledby="radix-a2"
       data-orientation="vertical"
       data-slot="accordion-content"
       class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
@@ -705,11 +710,11 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
     <h3 data-orientation="vertical" data-state="closed" class="flex">
       <button
         type="button"
-        aria-controls="radix-<auto>_"
+        aria-controls="radix-a3"
         aria-expanded="false"
         data-state="closed"
         data-orientation="vertical"
-        id="radix-<auto>_"
+        id="radix-a4"
         data-slot="accordion-trigger"
         class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
         data-radix-collection-item=""
@@ -747,10 +752,10 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
     </h3>
     <div
       data-state="closed"
-      id="radix-<auto>_"
+      id="radix-a3"
       hidden=""
       role="region"
-      aria-labelledby="radix-<auto>_"
+      aria-labelledby="radix-a4"
       data-orientation="vertical"
       data-slot="accordion-content"
       class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
@@ -769,11 +774,11 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
     <h3 data-orientation="vertical" data-state="closed" class="flex">
       <button
         type="button"
-        aria-controls="radix-<auto>_"
+        aria-controls="radix-a5"
         aria-expanded="false"
         data-state="closed"
         data-orientation="vertical"
-        id="radix-<auto>_"
+        id="radix-a6"
         data-slot="accordion-trigger"
         class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
         data-radix-collection-item=""
@@ -811,10 +816,10 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
     </h3>
     <div
       data-state="closed"
-      id="radix-<auto>_"
+      id="radix-a5"
       hidden=""
       role="region"
-      aria-labelledby="radix-<auto>_"
+      aria-labelledby="radix-a6"
       data-orientation="vertical"
       data-slot="accordion-content"
       class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
@@ -910,11 +915,11 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
     <h3 data-orientation="vertical" data-state="closed" class="flex">
       <button
         type="button"
-        aria-controls="radix-<auto>_"
+        aria-controls="radix-a1"
         aria-expanded="false"
         data-state="closed"
         data-orientation="vertical"
-        id="radix-<auto>_"
+        id="radix-a2"
         data-slot="accordion-trigger"
         class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
         data-radix-collection-item=""
@@ -952,10 +957,10 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
     </h3>
     <div
       data-state="closed"
-      id="radix-<auto>_"
+      id="radix-a1"
       hidden=""
       role="region"
-      aria-labelledby="radix-<auto>_"
+      aria-labelledby="radix-a2"
       data-orientation="vertical"
       data-slot="accordion-content"
       class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
@@ -975,13 +980,13 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
     <h3 data-orientation="vertical" data-state="closed" data-disabled="" class="flex">
       <button
         type="button"
-        aria-controls="radix-<auto>_"
+        aria-controls="radix-a3"
         aria-expanded="false"
         data-state="closed"
         data-disabled=""
         disabled=""
         data-orientation="vertical"
-        id="radix-<auto>_"
+        id="radix-a4"
         data-slot="accordion-trigger"
         class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
         data-radix-collection-item=""
@@ -1020,10 +1025,10 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
     <div
       data-state="closed"
       data-disabled=""
-      id="radix-<auto>_"
+      id="radix-a3"
       hidden=""
       role="region"
-      aria-labelledby="radix-<auto>_"
+      aria-labelledby="radix-a4"
       data-orientation="vertical"
       data-slot="accordion-content"
       class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
@@ -1042,11 +1047,11 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
     <h3 data-orientation="vertical" data-state="closed" class="flex">
       <button
         type="button"
-        aria-controls="radix-<auto>_"
+        aria-controls="radix-a5"
         aria-expanded="false"
         data-state="closed"
         data-orientation="vertical"
-        id="radix-<auto>_"
+        id="radix-a6"
         data-slot="accordion-trigger"
         class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
         data-radix-collection-item=""
@@ -1084,10 +1089,10 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
     </h3>
     <div
       data-state="closed"
-      id="radix-<auto>_"
+      id="radix-a5"
       hidden=""
       role="region"
-      aria-labelledby="radix-<auto>_"
+      aria-labelledby="radix-a6"
       data-orientation="vertical"
       data-slot="accordion-content"
       class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
@@ -1187,11 +1192,11 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
     <h3 data-orientation="vertical" data-state="open" class="flex">
       <button
         type="button"
-        aria-controls="radix-<auto>_"
+        aria-controls="radix-a1"
         aria-expanded="true"
         data-state="open"
         data-orientation="vertical"
-        id="radix-<auto>_"
+        id="radix-a2"
         data-slot="accordion-trigger"
         class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
         data-radix-collection-item=""
@@ -1229,9 +1234,9 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
     </h3>
     <div
       data-state="open"
-      id="radix-<auto>_"
+      id="radix-a1"
       role="region"
-      aria-labelledby="radix-<auto>_"
+      aria-labelledby="radix-a2"
       data-orientation="vertical"
       data-slot="accordion-content"
       class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
@@ -1262,11 +1267,11 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
     <h3 data-orientation="vertical" data-state="closed" class="flex">
       <button
         type="button"
-        aria-controls="radix-<auto>_"
+        aria-controls="radix-a3"
         aria-expanded="false"
         data-state="closed"
         data-orientation="vertical"
-        id="radix-<auto>_"
+        id="radix-a4"
         data-slot="accordion-trigger"
         class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
         data-radix-collection-item=""
@@ -1304,10 +1309,10 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
     </h3>
     <div
       data-state="closed"
-      id="radix-<auto>_"
+      id="radix-a3"
       hidden=""
       role="region"
-      aria-labelledby="radix-<auto>_"
+      aria-labelledby="radix-a4"
       data-orientation="vertical"
       data-slot="accordion-content"
       class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
@@ -1326,11 +1331,11 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
     <h3 data-orientation="vertical" data-state="closed" class="flex">
       <button
         type="button"
-        aria-controls="radix-<auto>_"
+        aria-controls="radix-a5"
         aria-expanded="false"
         data-state="closed"
         data-orientation="vertical"
-        id="radix-<auto>_"
+        id="radix-a6"
         data-slot="accordion-trigger"
         class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
         data-radix-collection-item=""
@@ -1368,10 +1373,10 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
     </h3>
     <div
       data-state="closed"
-      id="radix-<auto>_"
+      id="radix-a5"
       hidden=""
       role="region"
-      aria-labelledby="radix-<auto>_"
+      aria-labelledby="radix-a6"
       data-orientation="vertical"
       data-slot="accordion-content"
       class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
@@ -1487,11 +1492,11 @@ Wrap the `Accordion` in a `Card` component.
         <h3 data-orientation="vertical" data-state="open" class="flex">
           <button
             type="button"
-            aria-controls="radix-<auto>_"
+            aria-controls="radix-a1"
             aria-expanded="true"
             data-state="open"
             data-orientation="vertical"
-            id="radix-<auto>_"
+            id="radix-a2"
             data-slot="accordion-trigger"
             class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
             data-radix-collection-item=""
@@ -1529,9 +1534,9 @@ Wrap the `Accordion` in a `Card` component.
         </h3>
         <div
           data-state="open"
-          id="radix-<auto>_"
+          id="radix-a1"
           role="region"
-          aria-labelledby="radix-<auto>_"
+          aria-labelledby="radix-a2"
           data-orientation="vertical"
           data-slot="accordion-content"
           class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
@@ -1562,11 +1567,11 @@ Wrap the `Accordion` in a `Card` component.
         <h3 data-orientation="vertical" data-state="closed" class="flex">
           <button
             type="button"
-            aria-controls="radix-<auto>_"
+            aria-controls="radix-a3"
             aria-expanded="false"
             data-state="closed"
             data-orientation="vertical"
-            id="radix-<auto>_"
+            id="radix-a4"
             data-slot="accordion-trigger"
             class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
             data-radix-collection-item=""
@@ -1604,10 +1609,10 @@ Wrap the `Accordion` in a `Card` component.
         </h3>
         <div
           data-state="closed"
-          id="radix-<auto>_"
+          id="radix-a3"
           hidden=""
           role="region"
-          aria-labelledby="radix-<auto>_"
+          aria-labelledby="radix-a4"
           data-orientation="vertical"
           data-slot="accordion-content"
           class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
@@ -1626,11 +1631,11 @@ Wrap the `Accordion` in a `Card` component.
         <h3 data-orientation="vertical" data-state="closed" class="flex">
           <button
             type="button"
-            aria-controls="radix-<auto>_"
+            aria-controls="radix-a5"
             aria-expanded="false"
             data-state="closed"
             data-orientation="vertical"
-            id="radix-<auto>_"
+            id="radix-a6"
             data-slot="accordion-trigger"
             class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
             data-radix-collection-item=""
@@ -1668,10 +1673,10 @@ Wrap the `Accordion` in a `Card` component.
         </h3>
         <div
           data-state="closed"
-          id="radix-<auto>_"
+          id="radix-a5"
           hidden=""
           role="region"
-          aria-labelledby="radix-<auto>_"
+          aria-labelledby="radix-a6"
           data-orientation="vertical"
           data-slot="accordion-content"
           class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
@@ -1769,11 +1774,11 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
     <h3 data-orientation="vertical" data-state="open" class="flex">
       <button
         type="button"
-        aria-controls="radix-<auto>_"
+        aria-controls="radix-a1"
         aria-expanded="true"
         data-state="open"
         data-orientation="vertical"
-        id="radix-<auto>_"
+        id="radix-a2"
         data-slot="accordion-trigger"
         class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-start text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ms-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
         data-radix-collection-item=""
@@ -1811,9 +1816,9 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
     </h3>
     <div
       data-state="open"
-      id="radix-<auto>_"
+      id="radix-a1"
       role="region"
-      aria-labelledby="radix-<auto>_"
+      aria-labelledby="radix-a2"
       data-orientation="vertical"
       data-slot="accordion-content"
       class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
@@ -1843,11 +1848,11 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
     <h3 data-orientation="vertical" data-state="closed" class="flex">
       <button
         type="button"
-        aria-controls="radix-<auto>_"
+        aria-controls="radix-a3"
         aria-expanded="false"
         data-state="closed"
         data-orientation="vertical"
-        id="radix-<auto>_"
+        id="radix-a4"
         data-slot="accordion-trigger"
         class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-start text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ms-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
         data-radix-collection-item=""
@@ -1885,10 +1890,10 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
     </h3>
     <div
       data-state="closed"
-      id="radix-<auto>_"
+      id="radix-a3"
       hidden=""
       role="region"
-      aria-labelledby="radix-<auto>_"
+      aria-labelledby="radix-a4"
       data-orientation="vertical"
       data-slot="accordion-content"
       class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
@@ -1907,11 +1912,11 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
     <h3 data-orientation="vertical" data-state="closed" class="flex">
       <button
         type="button"
-        aria-controls="radix-<auto>_"
+        aria-controls="radix-a5"
         aria-expanded="false"
         data-state="closed"
         data-orientation="vertical"
-        id="radix-<auto>_"
+        id="radix-a6"
         data-slot="accordion-trigger"
         class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-start text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ms-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
         data-radix-collection-item=""
@@ -1949,10 +1954,10 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
     </h3>
     <div
       data-state="closed"
-      id="radix-<auto>_"
+      id="radix-a5"
       hidden=""
       role="region"
-      aria-labelledby="radix-<auto>_"
+      aria-labelledby="radix-a6"
       data-orientation="vertical"
       data-slot="accordion-content"
       class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"

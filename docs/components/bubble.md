@@ -685,7 +685,7 @@ Long bubble content can be composed with [`Collapsible`](/components/collapsible
           data-size="default"
           class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 underline-offset-4 hover:underline h-8 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 gap-1 p-0 text-muted-foreground"
           type="button"
-          aria-controls="radix-<auto>_"
+          aria-controls="radix-a1"
           aria-expanded="false"
           data-state="closed"
         >

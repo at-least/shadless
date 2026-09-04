@@ -15,6 +15,10 @@ import (
 	"strings"
 )
 
+// reGoldenAutoId: both spellings a normalised auto-id can have in a diff
+// context — the snapshot corpus still holds the old collapsed form.
+var reGoldenAutoId = regexp.MustCompile(`radix-(?:<auto>_?|a\\d+)`)
+
 func runExampleGolden(args []string) int {
 	const examplesDir = ".upstream/shadcn-ui/apps/v4/examples/radix"
 	const snapshotDir = "src/registry/upstream-snapshot"
@@ -155,7 +159,7 @@ func runExampleGolden(args []string) int {
 			hb = len(b)
 		}
 		ctx := a[lo:ha] + " ||| " + b[lo:hb]
-		ctx = strings.ReplaceAll(ctx, "radix-<auto>", "#")
+		ctx = reGoldenAutoId.ReplaceAllString(ctx, "#")
 		if len(ctx) > 200 {
 			ctx = ctx[:200]
 		}
@@ -166,11 +170,11 @@ func runExampleGolden(args []string) int {
 	var staleExemptions []string
 	buckets := map[string][]string{}
 	type failureRec struct {
-		Name     string `json:"name"`
-		Page     string `json:"page"`
-		Kind     string `json:"kind"`
+		Name      string `json:"name"`
+		Page      string `json:"page"`
+		Kind      string `json:"kind"`
 		Signature string `json:"signature,omitempty"`
-		Error    string `json:"error,omitempty"`
+		Error     string `json:"error,omitempty"`
 	}
 	var failures []failureRec
 	bucketOf := func(key, name string) {

@@ -19,6 +19,22 @@
       const hasPopup = [...(node.attributes || [])].some((x) => x.name === "aria-haspopup")
       const hasState = [...(node.attributes || [])].some((x) => x.name === "data-state")
       const carousel = inCarousel || [...(node.attributes || [])].some((x) => x.name === "data-slot" && x.value === "carousel-content")
+      // A radix auto-id is a runtime counter, not structure: the live render
+      // says radix-a1, the recorded snapshot says radix-<auto>_, the raw
+      // DOM says radix-_r_3_. aria-controls is already dropped for this
+      // reason; the id-valued attributes below keep their PRESENCE and lose
+      // the spelling, so the two sides canonicalise identically without the
+      // snapshot corpus having to be re-recorded.
+      const ID_ATTRS = new Set(["id", "aria-labelledby", "aria-describedby", "aria-owns", "aria-activedescendant", "for"])
+      // every occurrence inside the token, not the whole token and not only
+      // its head: tabs derives ids from the auto-id (radix-_r_1_-trigger-
+      // account) and navigation-menu embeds a second one (radix-_r_1_-
+      // trigger-radix-_r_2_). Anchored matching left those verbatim on both
+      // sides — live radix-a1-trigger-account vs snapshot
+      // radix-<auto>_-trigger-account — and every tabs and nav page failed.
+      // Only React-rendered ids reach canon, so nothing hand-authored is at
+      // risk of containing "radix-".
+      const RADIX_ID = /radix-(?:<auto>_?|a\d+|:r[a-z0-9]*:?|«r[a-z0-9]*»|_[rR]_[A-Za-z0-9-]*_?)/g
       for (const a of node.attributes || []) {
         if (roving && a.name === "tabindex") continue
         // asChild Slot-merged triggers (deploy lag): our pin renders the
@@ -77,6 +93,7 @@
           // on a closed collapsible); SSR omits the attribute entirely
           if (v === "") continue
         }
+        if (ID_ATTRS.has(a.name)) v = v.split(/\s+/).map((tok) => tok.replace(RADIX_ID, "radix-<id>")).join(" ")
         attrs[a.name] = v
       }
       // radix form-participation hidden controls (Switch/Checkbox/Radio

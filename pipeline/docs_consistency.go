@@ -1,6 +1,6 @@
 package main
 
-// docs-consistency, ported from tools/docs-consistency.mjs. Seven checks
+// docs-consistency, ported from tools/docs-consistency.mjs. Eight checks
 // that a builder cannot answer for itself:
 //
 //  1. skin residue: shipped HTML carries zero non-allowlist cn-* classes
@@ -16,6 +16,7 @@ package main
 //  6. every dist/… path a table row hands the reader is on disk
 //  7. every data-slot an API Reference table lists exists in shipped markup
 //     or is set by the shipped runtime
+//  8. no shipped demo page carries the same id twice
 import (
 	"encoding/json"
 	"fmt"
@@ -29,6 +30,7 @@ import (
 var reCN = regexp.MustCompile(`\bcn-[a-z0-9-]+`)
 var reImportTeach = regexp.MustCompile(`@import\s+(?:"|&quot;)shadless[^"&]*`)
 var reDistPath = regexp.MustCompile("`(dist/[A-Za-z0-9._/-]+)`")
+var reIdAttr = regexp.MustCompile(`\sid="([^"]+)"`)
 var reSlotTableRow = regexp.MustCompile(`^\| ` + "`" + `data-slot="([a-z0-9-]+)"` + "`" + ` \|$`)
 
 func runDocsConsistency() int {
@@ -260,6 +262,77 @@ func runDocsConsistency() int {
 		}
 	}
 
+	// 8. no duplicate `id` inside a shipped demo page. Nine accordion pages
+	// carried the oracle normaliser's placeholder, radix-<auto>_, six times
+	// each — every aria-controls/aria-labelledby on the page resolved to the
+	// first one. Exemptions name a page and the ids, with the reason; the gate
+	// goes red the moment the reason stops being true.
+	dupExempt := map[string]map[string]string{
+		// upstream's own tsx repeats <Input id="radius"> (three of them) —
+		// a faithful capture of an upstream bug, not ours to edit
+		"collapsible-settings": {"radius": "upstream tsx repeats id=radius"},
+	}
+	// fixture pages captured in the OPEN state: the popper wrapper carries
+	// the same id as the popover-content inside it. A separate defect
+	// (recorded 2026-09-05), not the one this check was written for.
+	for _, pg := range []string{"bubble-popover", "button-group-popover", "input-group-button", "popover-basic", "popover-form"} {
+		dupExempt[pg] = map[string]string{"k0": "open-state capture: popper wrapper shares the content id"}
+	}
+	for pg, ks := range map[string][]string{
+		"popover-alignments": {"k0", "k1", "k2"},
+		"popover-rtl":        {"k0", "k1", "k2", "k3"},
+		"popover-rtl-en":     {"k0", "k1", "k2", "k3"},
+		"popover-rtl-he":     {"k0", "k1", "k2", "k3"},
+	} {
+		m := map[string]string{}
+		for _, k := range ks {
+			m[k] = "open-state capture: popper wrapper shares the content id"
+		}
+		dupExempt[pg] = m
+	}
+	demoIdPages := 0
+	if ents, err := os.ReadDir("docs/demos"); err == nil {
+		for _, e := range ents {
+			if !strings.HasSuffix(e.Name(), ".html") {
+				continue
+			}
+			b, err := os.ReadFile(filepath.Join("docs/demos", e.Name()))
+			if err != nil {
+				continue
+			}
+			demoIdPages++
+			page := strings.TrimSuffix(e.Name(), ".html")
+			count := map[string]int{}
+			for _, m := range reIdAttr.FindAllStringSubmatch(string(b), -1) {
+				count[m[1]]++
+			}
+			ids := make([]string, 0, len(count))
+			for id := range count {
+				ids = append(ids, id)
+			}
+			sort.Strings(ids)
+			for _, id := range ids {
+				if count[id] < 2 || dupExempt[page][id] != "" {
+					continue
+				}
+				addProblem("duplicate-id", "docs/demos/"+e.Name(), fmt.Sprintf("id=%q appears %d times", id, count[id]))
+			}
+			// an exemption is a claim about the page; when the duplicate it
+			// names is gone the claim is stale and the gate says so, instead
+			// of carrying a reason that stopped being true
+			exIds := make([]string, 0, len(dupExempt[page]))
+			for id := range dupExempt[page] {
+				exIds = append(exIds, id)
+			}
+			sort.Strings(exIds)
+			for _, id := range exIds {
+				if count[id] < 2 {
+					addProblem("stale-exemption", "docs/demos/"+e.Name(), fmt.Sprintf("exemption names id=%q (%s) but it appears %d time(s) — remove the exemption", id, dupExempt[page][id], count[id]))
+				}
+			}
+		}
+	}
+
 	// report
 	byKind := map[string][]problemT{}
 	for _, p := range problems {
@@ -284,8 +357,8 @@ func runDocsConsistency() int {
 			fmt.Fprintf(os.Stderr, "  … +%d more\n", len(list)-10)
 		}
 	}
-	fmt.Printf("docs consistency: %d shipped pages scanned for skin residue, %d taught @imports resolved, %d built pages checked for React imports, %d shipped js files checked for a behavior tab, %d table dist refs resolved, %d slot rows checked — problems: %d\n",
-		skinScanned, importsChecked, len(pageFiles), behaviorChecked, distRefs, slotRows, len(problems))
+	fmt.Printf("docs consistency: %d shipped pages scanned for skin residue, %d taught @imports resolved, %d built pages checked for React imports, %d shipped js files checked for a behavior tab, %d table dist refs resolved, %d slot rows checked, %d demo pages checked for duplicate ids — problems: %d\n",
+		skinScanned, importsChecked, len(pageFiles), behaviorChecked, distRefs, slotRows, demoIdPages, len(problems))
 	if len(problems) > 0 {
 		return 1
 	}

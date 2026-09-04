@@ -27,21 +27,21 @@ const (
 )
 
 var fixtureFamilySel = map[string]string{
-	"alert-dialog":     `[data-slot="alert-dialog-trigger"]`,
-	"dialog":           `[data-slot="dialog-trigger"]`,
-	"sheet":            `[data-slot="sheet-trigger"]`,
-	"popover":          `[data-slot="popover-trigger"]`,
-	"tooltip":          `[data-slot="tooltip-trigger"]`,
-	"hover-card":       `[data-slot="hover-card-trigger"]`,
-	"dropdown-menu":    `[data-slot="dropdown-menu-trigger"]`,
-	"context-menu":     `[data-slot="context-menu-trigger"]`,
-	"menubar":          `[data-slot="menubar"]`,
-	"select":           `[data-slot="select-trigger"]`,
-	"tabs":             `[data-slot="tabs"]`,
-	"slider":           `[data-slot="slider"]`,
-	"scroll-area":      `[data-slot="scroll-area"]`,
-	"carousel":         `[data-slot="carousel"]`,
-	"navigation-menu":  `[data-slot="navigation-menu"]`,
+	"alert-dialog":    `[data-slot="alert-dialog-trigger"]`,
+	"dialog":          `[data-slot="dialog-trigger"]`,
+	"sheet":           `[data-slot="sheet-trigger"]`,
+	"popover":         `[data-slot="popover-trigger"]`,
+	"tooltip":         `[data-slot="tooltip-trigger"]`,
+	"hover-card":      `[data-slot="hover-card-trigger"]`,
+	"dropdown-menu":   `[data-slot="dropdown-menu-trigger"]`,
+	"context-menu":    `[data-slot="context-menu-trigger"]`,
+	"menubar":         `[data-slot="menubar"]`,
+	"select":          `[data-slot="select-trigger"]`,
+	"tabs":            `[data-slot="tabs"]`,
+	"slider":          `[data-slot="slider"]`,
+	"scroll-area":     `[data-slot="scroll-area"]`,
+	"carousel":        `[data-slot="carousel"]`,
+	"navigation-menu": `[data-slot="navigation-menu"]`,
 }
 
 type oraTarget struct {
@@ -114,6 +114,36 @@ func oraScriptsHead(trivial []string) string {
 // instead.
 const oraBodyAttr = `class="flex min-h-72 w-full items-center justify-center p-8"`
 
+// oraProtocolPatches: shadless protocol attributes that React never renders.
+// An oracle page is a verbatim capture of the React DOM, so anything the
+// shadless glue reads that React does not emit has to be declared here, at
+// the capture point, so the written page and the --check comparison see the
+// same bytes. Exact-anchor, single occurrence, loud on a miss — the same
+// contract as docs_overrides.go.
+//
+//	accordion-multiple: upstream passes type="multiple" as a React prop and
+//	radix renders no attribute for it; the DOM is byte-identical to
+//	accordion-basic. dist/js/accordion.js reads data-type="multiple" on the
+//	root (the contract fixture carries it too), so without this the page
+//	named "Multiple" closed item 1 when item 2 opened.
+var oraProtocolPatches = map[string]struct{ find, repl string }{
+	"accordion-multiple": {
+		find: `<div data-slot="accordion" class="flex w-full flex-col max-w-lg" data-orientation="vertical">`,
+		repl: `<div data-slot="accordion" data-type="multiple" class="flex w-full flex-col max-w-lg" data-orientation="vertical">`,
+	},
+}
+
+func oraProtocolPatch(name, dom string) (string, error) {
+	pt, ok := oraProtocolPatches[name]
+	if !ok {
+		return dom, nil
+	}
+	if n := strings.Count(dom, pt.find); n != 1 {
+		return "", fmt.Errorf("protocol patch %s: anchor found %d times, want 1 — re-anchor after the re-pin", name, n)
+	}
+	return strings.Replace(dom, pt.find, pt.repl, 1), nil
+}
+
 func oraPageHtml(name, body string, trivial []string) string {
 	return "<!doctype html>\n<html><head><meta charset=\"utf-8\"><title>shadless " + name +
 		"</title>\n<link rel=\"stylesheet\" href=\"../out.css\">" + injectPrePaint("") + oraScriptsHead(trivial) +
@@ -184,6 +214,11 @@ func runExampleOracle(check bool) int {
 			}
 			dom, err := oracleRootHtml(page)
 			if err != nil {
+				fmt.Fprintf(os.Stderr, "DRIFT [%s]: %v\n", t.Name, err)
+				drift++
+				continue
+			}
+			if dom, err = oraProtocolPatch(t.Name, dom); err != nil {
 				fmt.Fprintf(os.Stderr, "DRIFT [%s]: %v\n", t.Name, err)
 				drift++
 				continue
@@ -267,6 +302,11 @@ func runExampleOracle(check bool) int {
 		}
 		dom, err := oracleRootHtml(page)
 		if err != nil {
+			os.Remove(htmlFile)
+			failures = append(failures, t.name+": "+firstLine(err.Error()))
+			continue
+		}
+		if dom, err = oraProtocolPatch(t.name, dom); err != nil {
 			os.Remove(htmlFile)
 			failures = append(failures, t.name+": "+firstLine(err.Error()))
 			continue
@@ -370,7 +410,6 @@ func runExampleOracle(check bool) int {
 		len(rendered), len(targets), len(fixtureTargets), len(exempt))
 	return 0
 }
-
 
 func sliceOf(v any) []any {
 	if a, ok := v.([]any); ok {

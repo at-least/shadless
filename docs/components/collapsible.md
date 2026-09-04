@@ -23,7 +23,7 @@ An interactive component which expands/collapses a panel.
       data-size="icon"
       class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8"
       type="button"
-      aria-controls="radix-<auto>_"
+      aria-controls="radix-a1"
       aria-expanded="false"
       data-state="closed"
     >
@@ -49,7 +49,7 @@ An interactive component which expands/collapses a panel.
   </div>
   <div
     data-state="closed"
-    id="radix-<auto>_"
+    id="radix-a1"
     hidden=""
     data-slot="collapsible-content"
     class="flex flex-col gap-2"
@@ -163,7 +163,7 @@ Use the `open` and `onOpenChange` props to control the state.
         data-size="default"
         class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 group w-full"
         type="button"
-        aria-controls="radix-<auto>_"
+        aria-controls="radix-a1"
         aria-expanded="false"
         data-state="closed"
       >
@@ -184,7 +184,7 @@ Use the `open` and `onOpenChange` props to control the state.
       </button>
       <div
         data-state="closed"
-        id="radix-<auto>_"
+        id="radix-a1"
         hidden=""
         data-slot="collapsible-content"
         class="flex flex-col items-start gap-2 p-2.5 pt-0 text-sm"
@@ -305,7 +305,7 @@ Use a trigger button to reveal additional settings.
         </div>
         <div
           data-state="closed"
-          id="radix-<auto>_"
+          id="radix-a1"
           hidden=""
           data-slot="collapsible-content"
           class="col-span-full grid grid-cols-subgrid gap-2"
@@ -318,7 +318,7 @@ Use a trigger button to reveal additional settings.
         data-size="icon"
         class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8"
         type="button"
-        aria-controls="radix-<auto>_"
+        aria-controls="radix-a1"
         aria-expanded="false"
         data-state="closed"
       >
@@ -1011,7 +1011,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       data-size="icon"
       class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8"
       type="button"
-      aria-controls="radix-<auto>_"
+      aria-controls="radix-a1"
       aria-expanded="false"
       data-state="closed"
     >
@@ -1037,7 +1037,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
   </div>
   <div
     data-state="closed"
-    id="radix-<auto>_"
+    id="radix-a1"
     hidden=""
     data-slot="collapsible-content"
     class="flex flex-col gap-2"
