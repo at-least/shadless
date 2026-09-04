@@ -161,6 +161,42 @@ A control that allows the user to toggle between checked and not checked.
   >
 </div>
 ```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/checkbox.js
+// shadless checkbox behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  function set(root, checked, ctx) {
+    h.setChecked(root, checked)
+    var ind = root.querySelector("[data-slot=checkbox-indicator]")
+    if (checked && !ind) {
+      var node = h.cloneTemplate(h.findTemplate(ctx, "checkbox-indicator"))
+      if (node) root.appendChild(node)
+    } else if (!checked && ind) ind.remove()
+    h.syncForm(root)
+  }
+  shadless.register("checkbox", { slots: {
+    checkbox: {
+      init: function (root) {
+        h.formMirror(root, {
+          read: function () { return root.getAttribute("aria-checked") === "true" },
+          write: function (v) { set(root, v, null) },
+        })
+      },
+      onClick: function (root, ctx) {
+        var checked = root.getAttribute("aria-checked") !== "true"
+        set(root, checked, ctx)
+        h.emit(root, "change", "checkbox", { checked: checked })
+      },
+    },
+    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
+  } })
+})()
+```
 :::
 
 ::::
@@ -250,6 +286,42 @@ show the invalid styles.
   </div>
 </div>
 ```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/checkbox.js
+// shadless checkbox behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  function set(root, checked, ctx) {
+    h.setChecked(root, checked)
+    var ind = root.querySelector("[data-slot=checkbox-indicator]")
+    if (checked && !ind) {
+      var node = h.cloneTemplate(h.findTemplate(ctx, "checkbox-indicator"))
+      if (node) root.appendChild(node)
+    } else if (!checked && ind) ind.remove()
+    h.syncForm(root)
+  }
+  shadless.register("checkbox", { slots: {
+    checkbox: {
+      init: function (root) {
+        h.formMirror(root, {
+          read: function () { return root.getAttribute("aria-checked") === "true" },
+          write: function (v) { set(root, v, null) },
+        })
+      },
+      onClick: function (root, ctx) {
+        var checked = root.getAttribute("aria-checked") !== "true"
+        set(root, checked, ctx)
+        h.emit(root, "change", "checkbox", { checked: checked })
+      },
+    },
+    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
+  } })
+})()
+```
 :::
 
 ::::
@@ -293,6 +365,42 @@ Pair the checkbox with `Field` and `FieldLabel` for proper layout and labeling.
     >
   </div>
 </div>
+```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/checkbox.js
+// shadless checkbox behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  function set(root, checked, ctx) {
+    h.setChecked(root, checked)
+    var ind = root.querySelector("[data-slot=checkbox-indicator]")
+    if (checked && !ind) {
+      var node = h.cloneTemplate(h.findTemplate(ctx, "checkbox-indicator"))
+      if (node) root.appendChild(node)
+    } else if (!checked && ind) ind.remove()
+    h.syncForm(root)
+  }
+  shadless.register("checkbox", { slots: {
+    checkbox: {
+      init: function (root) {
+        h.formMirror(root, {
+          read: function () { return root.getAttribute("aria-checked") === "true" },
+          write: function (v) { set(root, v, null) },
+        })
+      },
+      onClick: function (root, ctx) {
+        var checked = root.getAttribute("aria-checked") !== "true"
+        set(root, checked, ctx)
+        h.emit(root, "change", "checkbox", { checked: checked })
+      },
+    },
+    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
+  } })
+})()
 ```
 :::
 
@@ -369,6 +477,42 @@ Use `FieldContent` and `FieldDescription` for helper text.
   </div>
 </div>
 ```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/checkbox.js
+// shadless checkbox behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  function set(root, checked, ctx) {
+    h.setChecked(root, checked)
+    var ind = root.querySelector("[data-slot=checkbox-indicator]")
+    if (checked && !ind) {
+      var node = h.cloneTemplate(h.findTemplate(ctx, "checkbox-indicator"))
+      if (node) root.appendChild(node)
+    } else if (!checked && ind) ind.remove()
+    h.syncForm(root)
+  }
+  shadless.register("checkbox", { slots: {
+    checkbox: {
+      init: function (root) {
+        h.formMirror(root, {
+          read: function () { return root.getAttribute("aria-checked") === "true" },
+          write: function (v) { set(root, v, null) },
+        })
+      },
+      onClick: function (root, ctx) {
+        var checked = root.getAttribute("aria-checked") !== "true"
+        set(root, checked, ctx)
+        h.emit(root, "change", "checkbox", { checked: checked })
+      },
+    },
+    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
+  } })
+})()
+```
 :::
 
 ::::
@@ -415,6 +559,42 @@ Use the `disabled` prop to prevent interaction and add the `data-disabled` attri
     >
   </div>
 </div>
+```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/checkbox.js
+// shadless checkbox behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  function set(root, checked, ctx) {
+    h.setChecked(root, checked)
+    var ind = root.querySelector("[data-slot=checkbox-indicator]")
+    if (checked && !ind) {
+      var node = h.cloneTemplate(h.findTemplate(ctx, "checkbox-indicator"))
+      if (node) root.appendChild(node)
+    } else if (!checked && ind) ind.remove()
+    h.syncForm(root)
+  }
+  shadless.register("checkbox", { slots: {
+    checkbox: {
+      init: function (root) {
+        h.formMirror(root, {
+          read: function () { return root.getAttribute("aria-checked") === "true" },
+          write: function (v) { set(root, v, null) },
+        })
+      },
+      onClick: function (root, ctx) {
+        var checked = root.getAttribute("aria-checked") !== "true"
+        set(root, checked, ctx)
+        h.emit(root, "change", "checkbox", { checked: checked })
+      },
+    },
+    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
+  } })
+})()
 ```
 :::
 
@@ -584,6 +764,42 @@ Use multiple fields to create a checkbox list.
     </div>
   </div>
 </fieldset>
+```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/checkbox.js
+// shadless checkbox behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  function set(root, checked, ctx) {
+    h.setChecked(root, checked)
+    var ind = root.querySelector("[data-slot=checkbox-indicator]")
+    if (checked && !ind) {
+      var node = h.cloneTemplate(h.findTemplate(ctx, "checkbox-indicator"))
+      if (node) root.appendChild(node)
+    } else if (!checked && ind) ind.remove()
+    h.syncForm(root)
+  }
+  shadless.register("checkbox", { slots: {
+    checkbox: {
+      init: function (root) {
+        h.formMirror(root, {
+          read: function () { return root.getAttribute("aria-checked") === "true" },
+          write: function (v) { set(root, v, null) },
+        })
+      },
+      onClick: function (root, ctx) {
+        var checked = root.getAttribute("aria-checked") !== "true"
+        set(root, checked, ctx)
+        h.emit(root, "change", "checkbox", { checked: checked })
+      },
+    },
+    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
+  } })
+})()
 ```
 :::
 
@@ -818,6 +1034,42 @@ Use multiple fields to create a checkbox list.
   </table>
 </div>
 ```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/checkbox.js
+// shadless checkbox behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  function set(root, checked, ctx) {
+    h.setChecked(root, checked)
+    var ind = root.querySelector("[data-slot=checkbox-indicator]")
+    if (checked && !ind) {
+      var node = h.cloneTemplate(h.findTemplate(ctx, "checkbox-indicator"))
+      if (node) root.appendChild(node)
+    } else if (!checked && ind) ind.remove()
+    h.syncForm(root)
+  }
+  shadless.register("checkbox", { slots: {
+    checkbox: {
+      init: function (root) {
+        h.formMirror(root, {
+          read: function () { return root.getAttribute("aria-checked") === "true" },
+          write: function (v) { set(root, v, null) },
+        })
+      },
+      onClick: function (root, ctx) {
+        var checked = root.getAttribute("aria-checked") !== "true"
+        set(root, checked, ctx)
+        h.emit(root, "change", "checkbox", { checked: checked })
+      },
+    },
+    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
+  } })
+})()
+```
 :::
 
 ::::
@@ -980,6 +1232,42 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
     </div></label
   >
 </div>
+```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/checkbox.js
+// shadless checkbox behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  function set(root, checked, ctx) {
+    h.setChecked(root, checked)
+    var ind = root.querySelector("[data-slot=checkbox-indicator]")
+    if (checked && !ind) {
+      var node = h.cloneTemplate(h.findTemplate(ctx, "checkbox-indicator"))
+      if (node) root.appendChild(node)
+    } else if (!checked && ind) ind.remove()
+    h.syncForm(root)
+  }
+  shadless.register("checkbox", { slots: {
+    checkbox: {
+      init: function (root) {
+        h.formMirror(root, {
+          read: function () { return root.getAttribute("aria-checked") === "true" },
+          write: function (v) { set(root, v, null) },
+        })
+      },
+      onClick: function (root, ctx) {
+        var checked = root.getAttribute("aria-checked") !== "true"
+        set(root, checked, ctx)
+        h.emit(root, "change", "checkbox", { checked: checked })
+      },
+    },
+    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
+  } })
+})()
 ```
 :::
 

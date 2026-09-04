@@ -39,6 +39,39 @@ A control that allows the user to toggle between checked and not checked.
   >
 </div>
 ```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/switch.js
+// shadless switch behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  function set(root, checked) {
+    h.setChecked(root, checked)
+    var thumb = root.querySelector("[data-slot=switch-thumb]")
+    if (thumb) thumb.setAttribute("data-state", checked ? "checked" : "unchecked")
+    h.syncForm(root)
+  }
+  shadless.register("switch", { slots: {
+    switch: {
+      init: function (root) {
+        h.formMirror(root, {
+          read: function () { return root.getAttribute("aria-checked") === "true" },
+          write: function (v) { set(root, v) },
+        })
+      },
+      onClick: function (root) {
+        var checked = root.getAttribute("aria-checked") !== "true"
+        set(root, checked)
+        h.emit(root, "change", "switch", { checked: checked })
+      },
+    },
+    // toggle: aria-pressed + data-state on/off (radix Toggle).,
+  } })
+})()
+```
 :::
 
 ::::
@@ -130,6 +163,39 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
     ></span>
   </button>
 </div>
+```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/switch.js
+// shadless switch behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  function set(root, checked) {
+    h.setChecked(root, checked)
+    var thumb = root.querySelector("[data-slot=switch-thumb]")
+    if (thumb) thumb.setAttribute("data-state", checked ? "checked" : "unchecked")
+    h.syncForm(root)
+  }
+  shadless.register("switch", { slots: {
+    switch: {
+      init: function (root) {
+        h.formMirror(root, {
+          read: function () { return root.getAttribute("aria-checked") === "true" },
+          write: function (v) { set(root, v) },
+        })
+      },
+      onClick: function (root) {
+        var checked = root.getAttribute("aria-checked") !== "true"
+        set(root, checked)
+        h.emit(root, "change", "switch", { checked: checked })
+      },
+    },
+    // toggle: aria-pressed + data-state on/off (radix Toggle).,
+  } })
+})()
 ```
 :::
 
@@ -241,6 +307,39 @@ Card-style selection where `FieldLabel` wraps the entire `Field` for a clickable
   ></label>
 </div>
 ```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/switch.js
+// shadless switch behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  function set(root, checked) {
+    h.setChecked(root, checked)
+    var thumb = root.querySelector("[data-slot=switch-thumb]")
+    if (thumb) thumb.setAttribute("data-state", checked ? "checked" : "unchecked")
+    h.syncForm(root)
+  }
+  shadless.register("switch", { slots: {
+    switch: {
+      init: function (root) {
+        h.formMirror(root, {
+          read: function () { return root.getAttribute("aria-checked") === "true" },
+          write: function (v) { set(root, v) },
+        })
+      },
+      onClick: function (root) {
+        var checked = root.getAttribute("aria-checked") !== "true"
+        set(root, checked)
+        h.emit(root, "change", "switch", { checked: checked })
+      },
+    },
+    // toggle: aria-pressed + data-state on/off (radix Toggle).,
+  } })
+})()
+```
 :::
 
 ::::
@@ -289,6 +388,39 @@ Add the `disabled` prop to the `Switch` component to disable the switch. Add the
     >Disabled</label
   >
 </div>
+```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/switch.js
+// shadless switch behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  function set(root, checked) {
+    h.setChecked(root, checked)
+    var thumb = root.querySelector("[data-slot=switch-thumb]")
+    if (thumb) thumb.setAttribute("data-state", checked ? "checked" : "unchecked")
+    h.syncForm(root)
+  }
+  shadless.register("switch", { slots: {
+    switch: {
+      init: function (root) {
+        h.formMirror(root, {
+          read: function () { return root.getAttribute("aria-checked") === "true" },
+          write: function (v) { set(root, v) },
+        })
+      },
+      onClick: function (root) {
+        var checked = root.getAttribute("aria-checked") !== "true"
+        set(root, checked)
+        h.emit(root, "change", "switch", { checked: checked })
+      },
+    },
+    // toggle: aria-pressed + data-state on/off (radix Toggle).,
+  } })
+})()
 ```
 :::
 
@@ -348,6 +480,39 @@ Add the `aria-invalid` prop to the `Switch` component to indicate an invalid sta
     ></span>
   </button>
 </div>
+```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/switch.js
+// shadless switch behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  function set(root, checked) {
+    h.setChecked(root, checked)
+    var thumb = root.querySelector("[data-slot=switch-thumb]")
+    if (thumb) thumb.setAttribute("data-state", checked ? "checked" : "unchecked")
+    h.syncForm(root)
+  }
+  shadless.register("switch", { slots: {
+    switch: {
+      init: function (root) {
+        h.formMirror(root, {
+          read: function () { return root.getAttribute("aria-checked") === "true" },
+          write: function (v) { set(root, v) },
+        })
+      },
+      onClick: function (root) {
+        var checked = root.getAttribute("aria-checked") !== "true"
+        set(root, checked)
+        h.emit(root, "change", "switch", { checked: checked })
+      },
+    },
+    // toggle: aria-pressed + data-state on/off (radix Toggle).,
+  } })
+})()
 ```
 :::
 
@@ -428,6 +593,39 @@ Use the `size` prop to change the size of the switch.
   </div>
 </div>
 ```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/switch.js
+// shadless switch behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  function set(root, checked) {
+    h.setChecked(root, checked)
+    var thumb = root.querySelector("[data-slot=switch-thumb]")
+    if (thumb) thumb.setAttribute("data-state", checked ? "checked" : "unchecked")
+    h.syncForm(root)
+  }
+  shadless.register("switch", { slots: {
+    switch: {
+      init: function (root) {
+        h.formMirror(root, {
+          read: function () { return root.getAttribute("aria-checked") === "true" },
+          write: function (v) { set(root, v) },
+        })
+      },
+      onClick: function (root) {
+        var checked = root.getAttribute("aria-checked") !== "true"
+        set(root, checked)
+        h.emit(root, "change", "switch", { checked: checked })
+      },
+    },
+    // toggle: aria-pressed + data-state on/off (radix Toggle).,
+  } })
+})()
+```
 :::
 
 ::::
@@ -488,6 +686,39 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
     ></span>
   </button>
 </div>
+```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/switch.js
+// shadless switch behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  function set(root, checked) {
+    h.setChecked(root, checked)
+    var thumb = root.querySelector("[data-slot=switch-thumb]")
+    if (thumb) thumb.setAttribute("data-state", checked ? "checked" : "unchecked")
+    h.syncForm(root)
+  }
+  shadless.register("switch", { slots: {
+    switch: {
+      init: function (root) {
+        h.formMirror(root, {
+          read: function () { return root.getAttribute("aria-checked") === "true" },
+          write: function (v) { set(root, v) },
+        })
+      },
+      onClick: function (root) {
+        var checked = root.getAttribute("aria-checked") !== "true"
+        set(root, checked)
+        h.emit(root, "change", "switch", { checked: checked })
+      },
+    },
+    // toggle: aria-pressed + data-state on/off (radix Toggle).,
+  } })
+})()
 ```
 :::
 

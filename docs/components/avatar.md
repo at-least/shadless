@@ -78,6 +78,35 @@ An image element with a fallback for representing the user.
   </div>
 </div>
 ```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/avatar.js
+// shadless avatar behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  shadless.register("avatar", { slots: {
+    avatar: {
+      init: function (av) {
+        var img = av.querySelector("[data-slot=avatar-image]")
+        var fb = av.querySelector("[data-slot=avatar-fallback]")
+        var settle = function () {
+          var ok = img.complete && img.naturalWidth > 0
+          if (ok) { if (fb) fb.remove() }
+          else if (img) img.remove()
+        }
+        if (img) {
+          if (img.complete) settle()
+          else { img.addEventListener("load", settle); img.addEventListener("error", settle) }
+        }
+      },
+    },
+    // collapsible trigger: toggle root/trigger/content states,
+  } })
+})()
+```
 :::
 
 ::::
@@ -148,6 +177,35 @@ A basic avatar component with an image and a fallback.
     src="https://github.com/shadcn.png"
 /></span>
 ```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/avatar.js
+// shadless avatar behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  shadless.register("avatar", { slots: {
+    avatar: {
+      init: function (av) {
+        var img = av.querySelector("[data-slot=avatar-image]")
+        var fb = av.querySelector("[data-slot=avatar-fallback]")
+        var settle = function () {
+          var ok = img.complete && img.naturalWidth > 0
+          if (ok) { if (fb) fb.remove() }
+          else if (img) img.remove()
+        }
+        if (img) {
+          if (img.complete) settle()
+          else { img.addEventListener("load", settle); img.addEventListener("error", settle) }
+        }
+      },
+    },
+    // collapsible trigger: toggle root/trigger/content states,
+  } })
+})()
+```
 :::
 
 ::::
@@ -176,6 +234,35 @@ Use the `AvatarBadge` component to add a badge to the avatar. The badge is posit
     class="text-primary-foreground ring-background absolute right-0 bottom-0 z-10 inline-flex items-center justify-center rounded-full bg-blend-color ring-2 select-none group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&amp;&gt;svg]:hidden group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&amp;&gt;svg]:size-2 group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&amp;&gt;svg]:size-2 bg-green-600 dark:bg-green-800"
   ></span
 ></span>
+```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/avatar.js
+// shadless avatar behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  shadless.register("avatar", { slots: {
+    avatar: {
+      init: function (av) {
+        var img = av.querySelector("[data-slot=avatar-image]")
+        var fb = av.querySelector("[data-slot=avatar-fallback]")
+        var settle = function () {
+          var ok = img.complete && img.naturalWidth > 0
+          if (ok) { if (fb) fb.remove() }
+          else if (img) img.remove()
+        }
+        if (img) {
+          if (img.complete) settle()
+          else { img.addEventListener("load", settle); img.addEventListener("error", settle) }
+        }
+      },
+    },
+    // collapsible trigger: toggle root/trigger/content states,
+  } })
+})()
 ```
 :::
 
@@ -229,6 +316,35 @@ You can also use an icon inside `data-slot="avatar-badge"`.
       <path d="M12 5v14"></path></svg></span
 ></span>
 ```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/avatar.js
+// shadless avatar behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  shadless.register("avatar", { slots: {
+    avatar: {
+      init: function (av) {
+        var img = av.querySelector("[data-slot=avatar-image]")
+        var fb = av.querySelector("[data-slot=avatar-fallback]")
+        var settle = function () {
+          var ok = img.complete && img.naturalWidth > 0
+          if (ok) { if (fb) fb.remove() }
+          else if (img) img.remove()
+        }
+        if (img) {
+          if (img.complete) settle()
+          else { img.addEventListener("load", settle); img.addEventListener("error", settle) }
+        }
+      },
+    },
+    // collapsible trigger: toggle root/trigger/content states,
+  } })
+})()
+```
 :::
 
 ::::
@@ -277,6 +393,35 @@ Use the `AvatarGroup` component to add a group of avatars.
       src="https://github.com/evilrabbit.png"
   /></span>
 </div>
+```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/avatar.js
+// shadless avatar behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  shadless.register("avatar", { slots: {
+    avatar: {
+      init: function (av) {
+        var img = av.querySelector("[data-slot=avatar-image]")
+        var fb = av.querySelector("[data-slot=avatar-fallback]")
+        var settle = function () {
+          var ok = img.complete && img.naturalWidth > 0
+          if (ok) { if (fb) fb.remove() }
+          else if (img) img.remove()
+        }
+        if (img) {
+          if (img.complete) settle()
+          else { img.addEventListener("load", settle); img.addEventListener("error", settle) }
+        }
+      },
+    },
+    // collapsible trigger: toggle root/trigger/content states,
+  } })
+})()
 ```
 :::
 
@@ -332,6 +477,35 @@ Use `data-slot="avatar-group-count"` to add a count to the group.
     +3
   </div>
 </div>
+```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/avatar.js
+// shadless avatar behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  shadless.register("avatar", { slots: {
+    avatar: {
+      init: function (av) {
+        var img = av.querySelector("[data-slot=avatar-image]")
+        var fb = av.querySelector("[data-slot=avatar-fallback]")
+        var settle = function () {
+          var ok = img.complete && img.naturalWidth > 0
+          if (ok) { if (fb) fb.remove() }
+          else if (img) img.remove()
+        }
+        if (img) {
+          if (img.complete) settle()
+          else { img.addEventListener("load", settle); img.addEventListener("error", settle) }
+        }
+      },
+    },
+    // collapsible trigger: toggle root/trigger/content states,
+  } })
+})()
 ```
 :::
 
@@ -402,6 +576,35 @@ You can also use an icon inside `data-slot="avatar-group-count"`.
   </div>
 </div>
 ```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/avatar.js
+// shadless avatar behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  shadless.register("avatar", { slots: {
+    avatar: {
+      init: function (av) {
+        var img = av.querySelector("[data-slot=avatar-image]")
+        var fb = av.querySelector("[data-slot=avatar-fallback]")
+        var settle = function () {
+          var ok = img.complete && img.naturalWidth > 0
+          if (ok) { if (fb) fb.remove() }
+          else if (img) img.remove()
+        }
+        if (img) {
+          if (img.complete) settle()
+          else { img.addEventListener("load", settle); img.addEventListener("error", settle) }
+        }
+      },
+    },
+    // collapsible trigger: toggle root/trigger/content states,
+  } })
+})()
+```
 :::
 
 ::::
@@ -447,6 +650,35 @@ Use the `size` prop to change the size of the avatar.
       src="https://github.com/shadcn.png"
   /></span>
 </div>
+```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/avatar.js
+// shadless avatar behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  shadless.register("avatar", { slots: {
+    avatar: {
+      init: function (av) {
+        var img = av.querySelector("[data-slot=avatar-image]")
+        var fb = av.querySelector("[data-slot=avatar-fallback]")
+        var settle = function () {
+          var ok = img.complete && img.naturalWidth > 0
+          if (ok) { if (fb) fb.remove() }
+          else if (img) img.remove()
+        }
+        if (img) {
+          if (img.complete) settle()
+          else { img.addEventListener("load", settle); img.addEventListener("error", settle) }
+        }
+      },
+    },
+    // collapsible trigger: toggle root/trigger/content states,
+  } })
+})()
 ```
 :::
 
@@ -792,6 +1024,35 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
     </div>
   </div>
 </div>
+```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/avatar.js
+// shadless avatar behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  shadless.register("avatar", { slots: {
+    avatar: {
+      init: function (av) {
+        var img = av.querySelector("[data-slot=avatar-image]")
+        var fb = av.querySelector("[data-slot=avatar-fallback]")
+        var settle = function () {
+          var ok = img.complete && img.naturalWidth > 0
+          if (ok) { if (fb) fb.remove() }
+          else if (img) img.remove()
+        }
+        if (img) {
+          if (img.complete) settle()
+          else { img.addEventListener("load", settle); img.addEventListener("error", settle) }
+        }
+      },
+    },
+    // collapsible trigger: toggle root/trigger/content states,
+  } })
+})()
 ```
 :::
 

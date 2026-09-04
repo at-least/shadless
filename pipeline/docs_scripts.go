@@ -19,7 +19,11 @@ import (
 const prepaintSig = `var k="shadless-docs-theme"`
 
 var (
-	reDemoSrcScript = regexp.MustCompile(`<script src="\.\./(js/[\w.-]+\.js|shadless\.js)"></script>`)
+	// `defer` is optional: 90 of the demo pages carry it and 6 components
+	// (accordion, checkbox, radio-group, switch, toggle-group, toggle) shipped
+	// JS whose behavior tab silently vanished because this pattern demanded a
+	// bare `<script src=`.
+	reDemoSrcScript = regexp.MustCompile(`<script (?:defer )?src="\.\./(js/[\w.-]+\.js|shadless\.js)"></script>`)
 	reInlineScript  = regexp.MustCompile(`(?s)<script>(.*?)</script>`)
 )
 

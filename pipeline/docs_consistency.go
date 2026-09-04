@@ -127,6 +127,34 @@ func runDocsConsistency() int {
 		}
 	}
 
+	// 4. shipped JS is documented. Artifact-only on purpose: it asks
+	// "dist/js/<name>.js exists, so does the page show it?" and never
+	// re-derives which script tags a demo carries. The bug it exists for was
+	// exactly a defect inside that shared derivation — reDemoSrcScript
+	// demanded a bare `<script src=` while 90 demo pages use `<script defer
+	// src=`, so six components shipped JS with no behavior tab and every
+	// checker that reused the same pattern agreed there was nothing to show.
+	behaviorChecked := 0
+	jsEnts, err := os.ReadDir("dist/js")
+	if err == nil {
+		for _, e := range jsEnts {
+			name := strings.TrimSuffix(e.Name(), ".js")
+			if e.IsDir() || !strings.HasSuffix(e.Name(), ".js") {
+				continue
+			}
+			page := filepath.Join("docs/components", name+".md")
+			b, err := os.ReadFile(page)
+			if err != nil {
+				continue // not every dist/js entry has a component page
+			}
+			behaviorChecked++
+			if !strings.Contains(string(b), "js:line-numbers [behavior]") {
+				addProblem("behavior-tab-missing", page,
+					"dist/js/"+e.Name()+" ships but the page shows no [behavior] tab")
+			}
+		}
+	}
+
 	// report
 	byKind := map[string][]problemT{}
 	for _, p := range problems {
@@ -151,8 +179,8 @@ func runDocsConsistency() int {
 			fmt.Fprintf(os.Stderr, "  … +%d more\n", len(list)-10)
 		}
 	}
-	fmt.Printf("docs consistency: %d shipped pages scanned for skin residue, %d taught @imports resolved, %d built pages checked for React imports — problems: %d\n",
-		skinScanned, importsChecked, len(pageFiles), len(problems))
+	fmt.Printf("docs consistency: %d shipped pages scanned for skin residue, %d taught @imports resolved, %d built pages checked for React imports, %d shipped js files checked for a behavior tab — problems: %d\n",
+		skinScanned, importsChecked, len(pageFiles), behaviorChecked, len(problems))
 	if len(problems) > 0 {
 		return 1
 	}

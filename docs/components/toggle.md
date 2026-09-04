@@ -38,6 +38,28 @@ A two-state button that can be either on or off.
   >Bookmark
 </button>
 ```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/toggle.js
+// shadless toggle behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  shadless.register("toggle", { slots: {
+    toggle: {
+      onClick: function (root) {
+        var on = root.getAttribute("aria-pressed") !== "true"
+        root.setAttribute("aria-pressed", String(on))
+        root.setAttribute("data-state", on ? "on" : "off")
+        h.emit(root, "change", "toggle", { pressed: on })
+      },
+    },
+    // radio-group: click checks exclusively; checked item cannot be unchecked,
+  } })
+})()
+```
 :::
 
 ::::
@@ -138,6 +160,28 @@ Use `variant="outline"` for an outline style.
   </button>
 </div>
 ```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/toggle.js
+// shadless toggle behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  shadless.register("toggle", { slots: {
+    toggle: {
+      onClick: function (root) {
+        var on = root.getAttribute("aria-pressed") !== "true"
+        root.setAttribute("aria-pressed", String(on))
+        root.setAttribute("data-state", on ? "on" : "off")
+        h.emit(root, "change", "toggle", { pressed: on })
+      },
+    },
+    // radio-group: click checks exclusively; checked item cannot be unchecked,
+  } })
+})()
+```
 :::
 
 ::::
@@ -176,6 +220,28 @@ Use `variant="outline"` for an outline style.
     <line x1="15" x2="9" y1="4" y2="20"></line></svg
   >Italic
 </button>
+```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/toggle.js
+// shadless toggle behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  shadless.register("toggle", { slots: {
+    toggle: {
+      onClick: function (root) {
+        var on = root.getAttribute("aria-pressed") !== "true"
+        root.setAttribute("aria-pressed", String(on))
+        root.setAttribute("data-state", on ? "on" : "off")
+        h.emit(root, "change", "toggle", { pressed: on })
+      },
+    },
+    // radio-group: click checks exclusively; checked item cannot be unchecked,
+  } })
+})()
 ```
 :::
 
@@ -223,6 +289,28 @@ Use the `size` prop to change the size of the toggle.
   </button>
 </div>
 ```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/toggle.js
+// shadless toggle behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  shadless.register("toggle", { slots: {
+    toggle: {
+      onClick: function (root) {
+        var on = root.getAttribute("aria-pressed") !== "true"
+        root.setAttribute("aria-pressed", String(on))
+        root.setAttribute("data-state", on ? "on" : "off")
+        h.emit(root, "change", "toggle", { pressed: on })
+      },
+    },
+    // radio-group: click checks exclusively; checked item cannot be unchecked,
+  } })
+})()
+```
 :::
 
 ::::
@@ -261,6 +349,28 @@ Use the `size` prop to change the size of the toggle.
     Disabled
   </button>
 </div>
+```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/toggle.js
+// shadless toggle behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  shadless.register("toggle", { slots: {
+    toggle: {
+      onClick: function (root) {
+        var on = root.getAttribute("aria-pressed") !== "true"
+        root.setAttribute("aria-pressed", String(on))
+        root.setAttribute("data-state", on ? "on" : "off")
+        h.emit(root, "change", "toggle", { pressed: on })
+      },
+    },
+    // radio-group: click checks exclusively; checked item cannot be unchecked,
+  } })
+})()
 ```
 :::
 
@@ -301,6 +411,28 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
     <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg
   >إشارة مرجعية
 </button>
+```
+
+```js:line-numbers [behavior]
+// <script src="shadless.js"></script>  — the shared runtime (see Installation)
+
+// js/toggle.js
+// shadless toggle behavior — registers with the base (dist/shadless.js).
+// Radix semantics as measured from the shadcn oracle; zero classes added.
+(function () {
+  var h = shadless.h
+  shadless.register("toggle", { slots: {
+    toggle: {
+      onClick: function (root) {
+        var on = root.getAttribute("aria-pressed") !== "true"
+        root.setAttribute("aria-pressed", String(on))
+        root.setAttribute("data-state", on ? "on" : "off")
+        h.emit(root, "change", "toggle", { pressed: on })
+      },
+    },
+    // radio-group: click checks exclusively; checked item cannot be unchecked,
+  } })
+})()
 ```
 :::
 
