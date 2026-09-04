@@ -64,11 +64,9 @@ type irFile struct {
 // visible through a sibling/group (label's `group-data-[disabled=true]:`)
 // was being scored as stateless — undercounting real coverage.
 var (
-	reStateNamed  = regexp.MustCompile(`(^|\s|:|-)(data-(open|closed|checked|unchecked|active|selected|disabled|horizontal|vertical|inset|highlighted|empty|pressed)|aria-(expanded|invalid|checked|disabled|pressed|selected|current)|aria-\[[\w-]+=[\w-]+\]):`)
-	reStateData   = regexp.MustCompile(`(^|\s|:|-)data-\[([\w-]+)(=[\w-]+)?\]:`)
-	reKnownDead   = regexp.MustCompile(`(?s)const KNOWN_DEAD = new Set\(\[(.*?)\]\)`)
-	reQuotedIdent = regexp.MustCompile(`^["'](.*)["']$`)
-	reExtDepGate  = regexp.MustCompile(`^external dep `)
+	reStateNamed = regexp.MustCompile(`(^|\s|:|-)(data-(open|closed|checked|unchecked|active|selected|disabled|horizontal|vertical|inset|highlighted|empty|pressed)|aria-(expanded|invalid|checked|disabled|pressed|selected|current)|aria-\[[\w-]+=[\w-]+\]):`)
+	reStateData  = regexp.MustCompile(`(^|\s|:|-)data-\[([\w-]+)(=[\w-]+)?\]:`)
+	reExtDepGate = regexp.MustCompile(`^external dep `)
 )
 
 func hasStateToken(all string) bool {
@@ -243,19 +241,12 @@ func gateCoverage(root string, argv []string) error {
 	//              component reads data-state.
 	noStateAxis := map[string]bool{"avatar": true, "progress": true}
 
-	knownDead := map[string]bool{}
-	if sweep, err := read("tools/interactivity-sweep.mjs"); err == nil {
-		if m := reKnownDead.FindSubmatch(sweep); m != nil {
-			for _, s := range strings.Split(string(m[1]), ",") {
-				s = strings.TrimSpace(s)
-				if q := reQuotedIdent.FindStringSubmatch(s); q != nil {
-					if q[1] != "" {
-						knownDead[q[1]] = true
-					}
-				}
-			}
-		}
-	}
+	// The known-dead families, read from the sweep gate itself. This used to
+	// parse tools/interactivity-sweep.mjs, deleted in the Go port — the read
+	// always failed, so knownDead was permanently empty and this gate and the
+	// ledger (which already reads the Go map) disagreed about what "known
+	// dead" meant.
+	knownDead := sweepKnownDead
 
 	paths := []string{"demo-inline", "css-import", "full-css"}
 	themes := []string{"light", "dark"}
@@ -309,7 +300,21 @@ func gateCoverage(root string, argv []string) error {
 							shallow = append(shallow, "demo-smoke")
 						}
 						if path == "css-import" || path == "full-css" {
-							if state == "closed" || stateTokens[c] || noCSS[c] || noStateAxis[c] {
+							switch {
+							case noCSS[c]:
+								// path-parity SKIPS a component with no
+								// dist/css/<name>.css — path_parity.go's
+								// `if !fileExists("dist/css/"+name+".css") { continue }`
+								// — so crediting it here claimed an assertion
+								// that provably never ran, for 40 cells across
+								// aspect-ratio, collapsible and direction.
+								// Nothing computes a style for these paths on a
+								// component that ships no stylesheet; that is
+								// structural, not a computed check, so it is
+								// recorded as shallow with its reason rather
+								// than as a gate that was not there.
+								shallow = append(shallow, "no-stylesheet")
+							case state == "closed" || stateTokens[c] || noStateAxis[c]:
 								by = append(by, "path-parity")
 							}
 						}
