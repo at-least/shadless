@@ -11,10 +11,15 @@ Utilities for adding a shimmer effect to text elements.
 
 ## Installation
 
-In shadless, the `shimmer` utilities ship precompiled inside `dist/shadless-core.css`
-(npm: bare `shadless`) — the same file every shadless component already needs, so
-if you're using any component there is nothing extra to install or import.
-Standalone, load `shadless-core.css` and use the classes directly (see the
+The `shimmer` utilities are declared as Tailwind `@utility` rules in
+`dist/shadless-core.css` (npm: bare `shadless`) — the same file every shadless
+component already needs — so on the Tailwind path there is nothing extra to
+install or import: write the class and your build emits it.
+
+They are not in the no-build stylesheet. `dist/shadless.full.min.css` is
+compiled ahead of time from shadless's own demo markup, and Tailwind emits a
+utility only where it saw the class, so a class you have not used yet is not in
+there. These utilities need Tailwind running over your own markup (see the
 [Installation](/guides/installation) guide).
 
 ## Usage

@@ -502,8 +502,15 @@ func (ctx *docsBuildCtx) componentTransform(name, raw string) (string, error) {
 	return applyTextAdjustments(name+".mdx", out)
 }
 
+// utilsInstallMdx used to say the utilities "ship precompiled inside
+// dist/shadless-core.css" and that you could "load shadless-core.css and use
+// the classes directly". Neither is true: that file opens with
+// `@import "tailwindcss"` and declares the utilities as `@utility` rules — it
+// is a Tailwind SOURCE, not a stylesheet a browser can load — and the
+// precompiled `shadless.full.min.css` carries none of them beyond the single
+// `.shimmer` one of the demos happens to use.
 func utilsInstallMdx(util string) string {
-	return "## Installation\n\nIn shadless, the `" + util + "` utilities ship precompiled inside `dist/shadless-core.css`\n(npm: bare `shadless`) — the same file every shadless component already needs, so\nif you're using any component there is nothing extra to install or import.\nStandalone, load `shadless-core.css` and use the classes directly (see the\n[Installation](/docs/installation) guide)."
+	return "## Installation\n\nThe `" + util + "` utilities are declared as Tailwind `@utility` rules in\n`dist/shadless-core.css` (npm: bare `shadless`) — the same file every shadless\ncomponent already needs — so on the Tailwind path there is nothing extra to\ninstall or import: write the class and your build emits it.\n\nThey are not in the no-build stylesheet. `dist/shadless.full.min.css` is\ncompiled ahead of time from shadless's own demo markup, and Tailwind emits a\nutility only where it saw the class, so a class you have not used yet is not in\nthere. These utilities need Tailwind running over your own markup (see the\n[Installation](/docs/installation) guide)."
 }
 
 func rtlMigrateMdx() string {

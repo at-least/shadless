@@ -145,7 +145,7 @@ shadless's `message-scroller` is pure static markup and CSS — `generated/ir/me
 transcript announceable without forcing a specific message UI.
 
 `MessageScrollerViewport` is a labelled, keyboard-focusable scroll region by
-default. It uses `role="region"`, `aria-label="Messages"`, and `tabIndex={0}`,
+default. It uses `role="region"`, `aria-label="Messages"`, and `tabindex="0"`,
 so keyboard users can focus the transcript and scroll it directly.
 
 `MessageScrollerContent` marks the transcript as a live region with
@@ -158,19 +158,13 @@ streamed text mutations do not have to be announced token by token.
 </div>
 ```
 
-Toggle `aria-busy` yourself while a turn streams — there is no built-in status tracking.
-Pass `aria-busy` while a turn streams if announcements should wait for the
-completed message row.
+Toggle `aria-busy` yourself while a turn streams, so announcements wait for the completed message row — there is no built-in status tracking.
 
-`MessageScrollerButton` renders a real button. When there is nothing to scroll
-toward, it sets `inert`, uses `tabIndex={-1}`, and exposes `data-active="false"`
-so inactive scroll controls do not create extra focus stops.
+The scroll button is a real `<button data-slot="message-scroller-button">`, and when there is nothing to scroll toward it exposes `data-active="false"`. Nothing else follows from that here: no shipped stylesheet reads `data-active` on this slot (only `dist/css/tabs.css` and `dist/css/navigation-menu.css` use that attribute at all), and the button sets neither `inert` nor `tabindex="-1"`. Style the attribute and take the inactive control out of the focus order yourself.
 
 ## Unstyled
 
-The behavior in `MessageScroller` comes from the `@shadcn/react` package. To use
-it directly with your own markup and styles, see
-Message Scroller under @shadcn/react.
+There is no behavior package to reach past: the shipped markup IS the whole component. Copy any example on this page and restyle it — the `data-slot` names are the only contract.
 
 ## API Reference
 
