@@ -131,16 +131,54 @@ func stripImportsOutsideFences(src string) string {
 
 var calloutKind = map[string]string{"info": "tip", "warning": "warning", "danger": "danger"}
 
-var reCalloutOpen = regexp.MustCompile(`<Callout\b[^>]*>`)
+var reCalloutStart = regexp.MustCompile(`<Callout\b`)
+
+// findCalloutOpen returns the [start, end) of a <Callout …> opening tag.
+//
+// It is a scanner rather than `<Callout\b[^>]*>` because a JSX attribute value
+// is an expression that can contain ">": native-select.mdx opens with
+// `<Callout variant="info" icon={<InfoIcon className="translate-y-[3px]!" />}>`,
+// where the character class stopped at the ">" inside "/>" and left a bare
+// "}>" as the first line of the rendered callout. Braces nest, quotes are
+// opaque, and the tag ends at the first ">" outside both.
+func findCalloutOpen(s string) (int, int) {
+	m := reCalloutStart.FindStringIndex(s)
+	if m == nil {
+		return -1, -1
+	}
+	depth := 0
+	var quote byte
+	for i := m[1]; i < len(s); i++ {
+		c := s[i]
+		switch {
+		case quote != 0:
+			if c == quote {
+				quote = 0
+			}
+		case c == '"' || c == '\'':
+			quote = c
+		case c == '{':
+			depth++
+		case c == '}':
+			if depth > 0 {
+				depth--
+			}
+		case c == '>' && depth == 0:
+			return m[0], i + 1
+		}
+	}
+	return -1, -1 // an unterminated tag is not an opening tag
+}
 
 func convertCallouts(text, page string) (string, error) {
 	out := text
 	for {
 		shadow := markupShadow(out)
-		open := reCalloutOpen.FindStringSubmatchIndex(shadow)
-		if open == nil {
+		os_, oe := findCalloutOpen(shadow)
+		if os_ < 0 {
 			break
 		}
+		open := []int{os_, oe}
 		close := strings.Index(shadow[open[1]:], "</Callout>")
 		if close < 0 {
 			return "", fmt.Errorf("%s: <Callout> without a closing tag", page)

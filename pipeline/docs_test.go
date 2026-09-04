@@ -346,3 +346,36 @@ func TestUnitReactPropsInMarkup(t *testing.T) {
 		}
 	}
 }
+
+// findCalloutOpen must survive a JSX attribute whose value is an expression
+// containing ">". native-select.mdx is the real case; the old
+// `<Callout\b[^>]*>` stopped inside `/>` and printed a bare "}>" as the first
+// line of the callout.
+func TestUnitFindCalloutOpen(t *testing.T) {
+	for _, c := range []struct {
+		name, in, want string
+	}{
+		{"plain", `<Callout>body`, `<Callout>`},
+		{"attrs", `<Callout variant="warning" title="x">body`, `<Callout variant="warning" title="x">`},
+		{"jsx expression with a > inside",
+			`<Callout variant="info" icon={<InfoIcon className="translate-y-[3px]!" />}>body`,
+			`<Callout variant="info" icon={<InfoIcon className="translate-y-[3px]!" />}>`},
+		{"nested braces", `<Callout icon={f({a: <X/>})}>body`, `<Callout icon={f({a: <X/>})}>`},
+		{"a > inside a quoted value", `<Callout title="a > b">body`, `<Callout title="a > b">`},
+	} {
+		s, e := findCalloutOpen(c.in)
+		if s < 0 {
+			t.Errorf("%s: no match", c.name)
+			continue
+		}
+		if got := c.in[s:e]; got != c.want {
+			t.Errorf("%s: got %q want %q", c.name, got, c.want)
+		}
+	}
+	// negatives: the scanner must not claim a tag that is not there
+	for _, c := range []string{"no callout here", "<CalloutBox>", "<Callout unterminated"} {
+		if s, _ := findCalloutOpen(c); s >= 0 {
+			t.Errorf("%q: matched but should not have", c)
+		}
+	}
+}

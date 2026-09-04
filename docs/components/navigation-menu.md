@@ -467,7 +467,7 @@ There's no `asChild`/framework-Link composition in shadless — `navigation-menu
 
 To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rtl).
 
-<div class="demo-missing" data-demo="navigation-menu-rtl" data-status="tombstoned">demo not available in shadless (component greyed) — <code>navigation-menu-rtl</code></div>
+<div class="demo-missing" data-demo="navigation-menu-rtl" data-status="to-author">demo not yet available — <code>navigation-menu-rtl</code></div>
 
 ## API Reference
 

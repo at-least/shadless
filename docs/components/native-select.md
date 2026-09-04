@@ -8,7 +8,6 @@ description: "A styled native HTML select element with consistent design system 
 A styled native HTML select element with consistent design system integration.
 
 ::: tip
-}>
 For a styled select component, see the [Select](/components/select)
 component.
 :::

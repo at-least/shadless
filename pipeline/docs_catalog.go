@@ -280,14 +280,17 @@ func contains(xs []string, x string) bool {
 // Preview names with these component prefixes cannot be authored (no shadless
 // implementation exists). Matched by exact name or "<prefix>-" so 'data-table'
 // beats 'data' and 'date-picker' beats 'date'.
-var tombstonePrefixes = []string{
-	"calendar", "chart", "combobox", "command", "data-table", "date-picker",
-	"drawer", "form", "input-otp", "menubar", "navigation-menu", "questionnaire",
-	"resizable", "sidebar", "sonner", "toast", "typography",
-}
+// Derived from greyComponents, not hand-kept beside it. The two lists drifted:
+// menubar and navigation-menu were emitted (contract-tested glue, as
+// greyComponents' own comment says) and removed from the grey list, but stayed
+// here — so navigation-menu.md told readers "demo not available in shadless
+// (component greyed)" about a component that ships css, js and markup, and
+// navigation-menu-rtl could never be authored. The build's grey-list
+// cross-check compared greySet to the catalog and to meta.Pages, never to this.
+func tombstonePrefixList() []string { return greyComponents }
 
 func isTombstoneName(name string) bool {
-	for _, p := range tombstonePrefixes {
+	for _, p := range tombstonePrefixList() {
 		if name == p || strings.HasPrefix(name, p+"-") {
 			return true
 		}

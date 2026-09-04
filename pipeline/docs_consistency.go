@@ -1,6 +1,6 @@
 package main
 
-// docs-consistency, ported from tools/docs-consistency.mjs. Four checks
+// docs-consistency, ported from tools/docs-consistency.mjs. Five checks
 // that a builder cannot answer for itself:
 //
 //  1. skin residue: shipped HTML carries zero non-allowlist cn-* classes
@@ -11,6 +11,8 @@ package main
 //  3. no built page may teach @/components/ui (React import retirement)
 //  4. every dist/js/<name>.js that has a component page is shown on it — read
 //     off the artifacts, never re-deriving which scripts a demo carries
+//  5. no built page carries JSX expression residue in prose ("}>" left by a
+//     mis-scanned opening tag)
 import (
 	"encoding/json"
 	"fmt"
@@ -153,6 +155,24 @@ func runDocsConsistency() int {
 			if !strings.Contains(string(b), "js:line-numbers [behavior]") {
 				addProblem("behavior-tab-missing", page,
 					"dist/js/"+e.Name()+" ships but the page shows no [behavior] tab")
+			}
+		}
+	}
+
+	// 5. no JSX expression residue in prose. Artifact-only: it reads the built
+	// page and never re-runs convertCallouts. The case it exists for printed a
+	// bare "}>" as the first line of native-select's tip, because the opening
+	// tag was matched with `<Callout\b[^>]*>` and the attribute
+	// `icon={<InfoIcon … />}` carries a ">" of its own. docs-fidelity compares
+	// headings, previews and fences, so leftover prose was invisible to it.
+	for _, f := range pageFiles {
+		b, err := os.ReadFile(f)
+		if err != nil {
+			continue
+		}
+		for i, line := range strings.Split(fenceShadow(string(b)), "\n") {
+			if t := strings.TrimSpace(line); strings.HasPrefix(t, "}>") || strings.HasPrefix(t, "/>}") {
+				addProblem("jsx-residue", f, fmt.Sprintf("line %d: %q — an unclosed JSX attribute expression leaked into prose", i+1, t))
 			}
 		}
 	}

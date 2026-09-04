@@ -3188,8 +3188,8 @@
       "hostPages": [
         "navigation-menu"
       ],
-      "status": "tombstoned",
-      "demoPath": null
+      "status": "to-author",
+      "demoPath": "docs/demos/navigation-menu-rtl.html"
     },
     {
       "name": "pagination-demo",
