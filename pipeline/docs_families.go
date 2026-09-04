@@ -315,10 +315,20 @@ func apiReferenceMdx(comp string, slots []string, axes []cvaAxisRow, tier string
 		}
 		if len(axes) > 0 {
 			b.WriteString(cvaAxisTableMdx(comp, axes))
-		} else {
+		} else if fileExists("dist/css/" + comp + ".css") {
 			b.WriteString("No `cva`-declared variants. Check `dist/css/" + comp + ".css` for any `data-*` attribute this slot's styling depends on.\n")
+		} else {
+			// aspect-ratio, collapsible and direction ship no stylesheet of
+			// their own; the page's own Installation section says exactly that
+			// two hundred lines earlier, and pointing at a file that does not
+			// exist made the two halves contradict each other.
+			b.WriteString("No `cva`-declared variants, and no stylesheet of its own — the styling rides the core theme and utilities in `shadless`.\n")
 		}
-		if tier != "static" {
+		// Tier is not the question the sentence asks. field is tier `logic` and
+		// ships no dist/js/field.js, so the page promised JavaScript in its API
+		// Reference while its own Installation table said "no JavaScript: this
+		// component is markup + CSS". Ask the artifact instead.
+		if fileExists("dist/js/" + comp + ".js") {
 			b.WriteString("See Installation → Files this component needs for the JavaScript this component requires.\n")
 		}
 		runtime = b.String()

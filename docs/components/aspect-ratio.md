@@ -195,5 +195,4 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | --- |
 | `data-slot="aspect-ratio"` |
 
-**Runtime:** No `cva`-declared variants. Check `dist/css/aspect-ratio.css` for any `data-*` attribute this slot's styling depends on.
-See Installation → Files this component needs for the JavaScript this component requires.
+**Runtime:** No `cva`-declared variants, and no stylesheet of its own — the styling rides the core theme and utilities in `shadless`.

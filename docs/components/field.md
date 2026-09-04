@@ -3587,4 +3587,3 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | Slot | Attribute | Values | Default |
 | --- | --- | --- | --- |
 | `field` | `data-orientation` | `vertical`, `horizontal`, `responsive` | `vertical` |
-See Installation → Files this component needs for the JavaScript this component requires.

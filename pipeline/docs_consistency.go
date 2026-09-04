@@ -1,6 +1,6 @@
 package main
 
-// docs-consistency, ported from tools/docs-consistency.mjs. Five checks
+// docs-consistency, ported from tools/docs-consistency.mjs. Six checks
 // that a builder cannot answer for itself:
 //
 //  1. skin residue: shipped HTML carries zero non-allowlist cn-* classes
@@ -13,6 +13,7 @@ package main
 //     off the artifacts, never re-deriving which scripts a demo carries
 //  5. no built page carries JSX expression residue in prose ("}>" left by a
 //     mis-scanned opening tag)
+//  6. every dist/… path a table row hands the reader is on disk
 import (
 	"encoding/json"
 	"fmt"
@@ -25,6 +26,7 @@ import (
 
 var reCN = regexp.MustCompile(`\bcn-[a-z0-9-]+`)
 var reImportTeach = regexp.MustCompile(`@import\s+(?:"|&quot;)shadless[^"&]*`)
+var reDistPath = regexp.MustCompile("`(dist/[A-Za-z0-9._/-]+)`")
 
 func runDocsConsistency() int {
 	loadSkin()
@@ -177,6 +179,31 @@ func runDocsConsistency() int {
 		}
 	}
 
+	// 6. every dist/… path a table row hands the reader exists. Scoped to
+	// table rows on purpose: prose legitimately names a file to say it is NOT
+	// there ("there is no `dist/js/direction.js`"), while a row in "Files this
+	// component needs" is an instruction. aspect-ratio's API Reference told
+	// readers to check dist/css/aspect-ratio.css two hundred lines after its
+	// own Installation section said the component has no stylesheet.
+	distRefs := 0
+	for _, f := range pageFiles {
+		b, err := os.ReadFile(f)
+		if err != nil {
+			continue
+		}
+		for i, line := range strings.Split(string(b), "\n") {
+			if !strings.HasPrefix(strings.TrimSpace(line), "|") {
+				continue
+			}
+			for _, m := range reDistPath.FindAllStringSubmatch(line, -1) {
+				distRefs++
+				if _, err := os.Stat(m[1]); err != nil {
+					addProblem("dist-ref", f, fmt.Sprintf("line %d: table row names %s, which is not on disk", i+1, m[1]))
+				}
+			}
+		}
+	}
+
 	// report
 	byKind := map[string][]problemT{}
 	for _, p := range problems {
@@ -201,8 +228,8 @@ func runDocsConsistency() int {
 			fmt.Fprintf(os.Stderr, "  … +%d more\n", len(list)-10)
 		}
 	}
-	fmt.Printf("docs consistency: %d shipped pages scanned for skin residue, %d taught @imports resolved, %d built pages checked for React imports, %d shipped js files checked for a behavior tab — problems: %d\n",
-		skinScanned, importsChecked, len(pageFiles), behaviorChecked, len(problems))
+	fmt.Printf("docs consistency: %d shipped pages scanned for skin residue, %d taught @imports resolved, %d built pages checked for React imports, %d shipped js files checked for a behavior tab, %d table dist refs resolved — problems: %d\n",
+		skinScanned, importsChecked, len(pageFiles), behaviorChecked, distRefs, len(problems))
 	if len(problems) > 0 {
 		return 1
 	}
