@@ -239,9 +239,9 @@ func (r *Runner) runOne(n Node, key string, skippable bool) result {
 		// recompute after the run: a node whose own output feeds its key
 		// would otherwise be stamped with a key it no longer has
 		if after, ok, e := NewKeyer(r.root, r.graph).Key(n.ID); e == nil && ok {
-			r.record(n.ID, after)
+			r.record(n.ID, stampValue(r.root, n, after))
 		} else {
-			r.record(n.ID, key)
+			r.record(n.ID, stampValue(r.root, n, key))
 		}
 	}
 	return res
@@ -297,7 +297,9 @@ func (r *Runner) Run(plan []Node) (ran, skipped, failed, violations, badReads in
 			stop = true
 			return
 		}
-		fresh := skippable && r.recorded(id) == key && !r.force
+		// the recorded stamp carries the output digest too: a node whose own
+		// output was edited under it is stale, however the edit got there
+		fresh := skippable && r.recorded(id) == stampValue(r.root, n, key) && !r.force
 		if fresh {
 			if present, missing := OutputsPresent(r.root, n); !present {
 				fmt.Printf("  %s: key matches but %s is missing — rebuilding\n", id, missing)

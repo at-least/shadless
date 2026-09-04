@@ -18,6 +18,21 @@ package main
 // inputs are all committed — while the gitignored half of the outputs does not
 // exist yet. Checking the key alone would skip the work and hand the next node
 // an empty directory.
+//
+// Existence is not enough either, so the stamp records TWO fields:
+//
+//	stamp(n) = key(n) ":" H( contents of every file n declares as output )
+//
+// The key covers inputs; the digest covers what the last green run actually
+// produced. Without it, a hand-edit of a generated file left the node fresh —
+// the inputs had not moved — and `reproducible` could not see it either once
+// the edit was committed, because that gate is `git status` over the generated
+// trees and a committed file is not dirty. Both halves are needed: the digest
+// makes the node rebuild, and the rebuild is what makes the tree dirty again
+// for `reproducible` to report.
+//
+// A stamp written before this (one field) simply never matches, so the node
+// rebuilds once and re-stamps itself.
 
 import (
 	"crypto/sha256"
@@ -239,6 +254,32 @@ func (k *Keyer) Key(id NodeID) (string, bool, error) {
 // disk. Checked against the literal prefix of each pattern rather than an
 // exact file list: the question is "did this get built", not "is every file
 // byte-for-byte what it was", which is `reproducible`'s job.
+// OutputsDigest hashes the contents of everything the node declares as
+// output. Errors collapse to "" — an unreadable output set is never equal to a
+// recorded digest, so the node rebuilds, which is the safe direction.
+func OutputsDigest(root string, n Node) string {
+	files, err := Files(root, n.Produces)
+	if err != nil {
+		return ""
+	}
+	h := sha256.New()
+	for _, f := range files {
+		fh, err := hashFile(filepath.Join(root, f))
+		if err != nil {
+			return ""
+		}
+		fmt.Fprintf(h, "out\x00%s\x00%s\n", f, fh)
+	}
+	return hex.EncodeToString(h.Sum(nil))
+}
+
+// stampValue is what a stamp file holds and what a freshness check compares
+// against: the input key and the output digest, together. Every writer and
+// every reader goes through this, so the two cannot drift.
+func stampValue(root string, n Node, key string) string {
+	return key + ":" + OutputsDigest(root, n)
+}
+
 func OutputsPresent(root string, n Node) (bool, string) {
 	for _, pat := range n.Produces {
 		if strings.HasPrefix(pat, "!") {

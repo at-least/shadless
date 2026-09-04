@@ -359,7 +359,7 @@ func main() {
 			if !skippable {
 				continue
 			}
-			die(writeStamp(root, n.ID, key))
+			die(writeStamp(root, n.ID, stampValue(root, n, key)))
 			n0++
 		}
 		fmt.Printf("adopted %d nodes as fresh (assumes the tree is a green full run)\n", n0)
@@ -373,7 +373,7 @@ func main() {
 			switch {
 			case !skippable:
 				fmt.Printf("%-22s NEVER-FRESH\n", n.ID)
-			case rec[n.ID] == key:
+			case rec[n.ID] == stampValue(root, n, key):
 				if present, missing := OutputsPresent(root, n); !present {
 					fmt.Printf("%-22s STALE (output missing: %s)\n", n.ID, missing)
 					continue

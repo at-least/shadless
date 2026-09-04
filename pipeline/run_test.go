@@ -104,3 +104,58 @@ func TestUnitTailOf(t *testing.T) {
 		t.Errorf("kept %d lines, want the last 25", n)
 	}
 }
+
+// A node whose OWN OUTPUT changed under it is not fresh. The stamp used to
+// hold the input key alone, so hand-editing a generated file left the node
+// fresh (its inputs had not moved) and the edit survived every build; once
+// the edit was committed, `reproducible` could not see it either, because
+// that gate is `git status` over the generated trees and a committed file is
+// not dirty. The digest is what makes the node rebuild — and the rebuild is
+// what makes the tree dirty again for `reproducible` to report.
+func TestUnitStampInvalidatesOnOutputEdit(t *testing.T) {
+	root := t.TempDir()
+	if err := os.WriteFile(filepath.Join(root, "in.txt"), []byte("source\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	g, err := newGraph([]Node{{
+		ID: "gen", Kind: "build", Tier: "fast",
+		Run:      [][]string{{"sh", "-c", "cp in.txt out.txt"}},
+		Inputs:   []string{"in.txt"},
+		Produces: []string{"out.txt"},
+	}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	plan, err := g.Plan([]NodeID{"gen"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	run := func() (ran, skipped int) {
+		r := &Runner{root: root, graph: g, jobs: 1, stamps: loadStamps(root)}
+		ran, skipped, _, _, _ = r.Run(plan)
+		return
+	}
+
+	if ran, _ := run(); ran != 1 {
+		t.Fatalf("first run: ran = %d, want 1", ran)
+	}
+	if ran, skipped := run(); ran != 0 || skipped != 1 {
+		t.Fatalf("second run with nothing changed: ran=%d skipped=%d, want 0/1", ran, skipped)
+	}
+
+	out := filepath.Join(root, "out.txt")
+	if err := os.WriteFile(out, []byte("HAND EDIT\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	ran, skipped := run()
+	if ran != 1 || skipped != 0 {
+		t.Fatalf("after editing the node's own output: ran=%d skipped=%d, want 1/0", ran, skipped)
+	}
+	b, err := os.ReadFile(out)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(b) != "source\n" {
+		t.Errorf("the hand edit survived the rebuild: %q", b)
+	}
+}
