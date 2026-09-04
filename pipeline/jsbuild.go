@@ -10,9 +10,9 @@ package main
 //	                       component's behavior with the base; carousel
 //	                       bundles the vendored embla engine in front
 //
-//	dist/esm/shadless.min.mjs  the same, minified (the `import` condition of
-//	                       shadless/js.min)
-//	dist/esm/shadless.mjs  the base as an ES module: the same IIFE body
+//	dist/esm/shadless.mjs  the ONLY ES-module base — see the note at the write
+//	                       below for why a minified second one cannot exist.
+//	                       The same IIFE body
 //	                       (window.shadless is still set — the component files
 //	                       address it by that global) followed by
 //	                       `export default shadless` + named exports
@@ -135,15 +135,12 @@ func buildJs(root, dist string) ([]string, error) {
 	if err := write("esm/shadless.mjs", esm); err != nil {
 		return nil, err
 	}
-	// the `import` condition of shadless/js.min — the IIFE min has no
-	// export statement, so an ESM consumer of the min entry got undefined
-	minESM, err := minify(esm, api.FormatESModule)
-	if err != nil {
-		return nil, err
-	}
-	if err := write("esm/shadless.min.mjs", minESM); err != nil {
-		return nil, err
-	}
+	// No minified ESM base is emitted. dist/esm/<name>.mjs hardcodes
+	// `import "./shadless.mjs"`, so a second base module cannot be shared with
+	// them: importing one alongside any component yields two instances, the
+	// components register on the base they imported, and the consumer's handle
+	// is permanently empty. shadless/js.min keeps the minified IIFE for
+	// <script>, and resolves to this one base under `import`.
 	dts, err := read("src/runtime/shadless.d.ts")
 	if err != nil {
 		return nil, err

@@ -22,6 +22,7 @@ package main
 //  4. the tarball carries nothing outside the product surface.
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -133,6 +134,32 @@ func gatePack(root string) error {
 		if !reExportStmt.Match(src) {
 			fail = append(fail, fmt.Sprintf("export %s [import] → %s has no export statement (an IIFE under the import condition yields undefined)", k, imp))
 		}
+	}
+
+	// ONE ES-module base. Every dist/esm/<name>.mjs opens with
+	// `import "./shadless.mjs"` and then registers on the global, so a second
+	// base module cannot be shared with them: a consumer importing it next to
+	// any component holds an instance nothing ever registers on, and every
+	// get() returns null. shadless/js.min shipped exactly that for one
+	// release. Read off the artifacts — a base is any dist/esm/*.mjs that does
+	// not import the base.
+	esmEnts, _ := os.ReadDir(filepath.Join(root, "dist/esm"))
+	var bases []string
+	for _, e := range esmEnts {
+		if e.IsDir() || !strings.HasSuffix(e.Name(), ".mjs") {
+			continue
+		}
+		src, err := os.ReadFile(filepath.Join(root, "dist/esm", e.Name()))
+		if err != nil {
+			continue
+		}
+		if !bytes.Contains(src, []byte(`import "./shadless.mjs"`)) {
+			bases = append(bases, "dist/esm/"+e.Name())
+		}
+	}
+	if len(bases) > 1 {
+		fail = append(fail, fmt.Sprintf("%d ES-module bases in dist/esm (%s) — component modules import ./shadless.mjs by path, so any other base is an instance they never register on",
+			len(bases), strings.Join(bases, ", ")))
 	}
 
 	packed, err := npmPackFiles(root)

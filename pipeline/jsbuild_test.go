@@ -154,7 +154,7 @@ func TestUnitBuildJsClearsStaleOutputs(t *testing.T) {
 	for _, want := range []string{
 		"dist/shadless.js", "dist/shadless.min.js",
 		"dist/js/dialog.js", "dist/esm/dialog.mjs", "dist/esm/dialog.d.ts",
-		"dist/esm/shadless.mjs", "dist/esm/shadless.min.mjs", "dist/esm/shadless.d.ts",
+		"dist/esm/shadless.mjs", "dist/esm/shadless.d.ts",
 	} {
 		if _, err := os.Stat(filepath.Join(root, want)); err != nil {
 			t.Errorf("%s was not written", want)

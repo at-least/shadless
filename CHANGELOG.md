@@ -10,9 +10,12 @@ upstream is `src/registry/pin.json`; re-pins land through the upstream drill
 - `package.json`: React and the conversion toolchain moved from
   `dependencies` to `devDependencies` — installing shadless no longer
   installs React 19. `tailwindcss` is an optional peer.
-- `shadless/js.min` has a real ES-module `import` condition
-  (`dist/esm/shadless.min.mjs`); the bare string served the IIFE (no
-  exports) to `import`.
+- `shadless/js.min` resolves to the one ES-module base under `import`.
+  It briefly pointed at a separate `dist/esm/shadless.min.mjs`, but every
+  `dist/esm/<name>.mjs` hardcodes `import "./shadless.mjs"` and registers on
+  the global, so importing the minified base beside any component gave two
+  instances and `shadless.get()` returned `null` forever. The minified ESM
+  base is no longer built; `<script>` still gets `dist/shadless.min.js`.
 - The tarball carries the product surface only (`dist/css`, `dist/js`,
   `dist/esm`, the entry stylesheets and runtimes) — no demo pages, oracle
   stylesheets or the retired `dist/glue/` tree.

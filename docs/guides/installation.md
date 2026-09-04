@@ -95,7 +95,7 @@ instead of by path.
 | `dist/shadless-core.css` | `shadless` | theme vars, `@theme`, animate layer — the tailwind entry source |
 | `dist/css/<name>.css` | `shadless/<name>.css` | per-component slot styles (`@apply` source) |
 | `dist/shadless.full.css` / `.full.min.css` | `shadless/full.css` / `full.min.css` | every component precompiled into one stylesheet (no-build path; `.min` for production) |
-| `dist/shadless.js` / `.min.js` | `shadless/js` / `js.min` | the JS base: delegation engine, registry, theme, the vendored radix kernel |
+| `dist/shadless.js` / `.min.js` | `shadless/js` / `js.min` | the JS base: delegation engine, registry, theme, the vendored radix kernel. `js.min` is the minified `<script>` build; under `import` both specifiers resolve to the one ES-module base |
 | `dist/js/<name>.js` | `shadless/js/<name>` | one behavior file per interactive component (carousel bundles the embla engine) |
 | `dist/esm/shadless.mjs`, `dist/esm/<name>.mjs` | `shadless/esm/<name>` | the same two as ES modules, for bundlers and `<script type="module">` |
 
