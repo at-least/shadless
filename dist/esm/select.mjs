@@ -89,6 +89,13 @@ import "./shadless.mjs"
       trigger.addEventListener("keydown", function (e) {
         if (["Enter", " ", "ArrowDown", "ArrowUp"].indexOf(e.key) !== -1 && !handles.isOpen()) {
           e.preventDefault();
+          // open() mounts the listbox, and mounting attaches the kernel's
+          // document keydown listener. Bubbling continues after that, so
+          // without this the SAME keystroke reaches the kernel: Enter/Space
+          // there commits the highlighted item (a select that already holds a
+          // value opens and closes in one press) and ArrowDown/Up advances the
+          // highlight a second time.
+          e.stopPropagation();
           open();
         }
       }, { signal: w.signal });

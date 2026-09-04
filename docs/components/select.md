@@ -222,6 +222,13 @@ Displays a list of options for the user to pick from—triggered by a button.
       trigger.addEventListener("keydown", function (e) {
         if (["Enter", " ", "ArrowDown", "ArrowUp"].indexOf(e.key) !== -1 && !handles.isOpen()) {
           e.preventDefault();
+          // open() mounts the listbox, and mounting attaches the kernel's
+          // document keydown listener. Bubbling continues after that, so
+          // without this the SAME keystroke reaches the kernel: Enter/Space
+          // there commits the highlighted item (a select that already holds a
+          // value opens and closes in one press) and ArrowDown/Up advances the
+          // highlight a second time.
+          e.stopPropagation();
           open();
         }
       }, { signal: w.signal });
@@ -617,6 +624,13 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
       trigger.addEventListener("keydown", function (e) {
         if (["Enter", " ", "ArrowDown", "ArrowUp"].indexOf(e.key) !== -1 && !handles.isOpen()) {
           e.preventDefault();
+          // open() mounts the listbox, and mounting attaches the kernel's
+          // document keydown listener. Bubbling continues after that, so
+          // without this the SAME keystroke reaches the kernel: Enter/Space
+          // there commits the highlighted item (a select that already holds a
+          // value opens and closes in one press) and ArrowDown/Up advances the
+          // highlight a second time.
+          e.stopPropagation();
           open();
         }
       }, { signal: w.signal });
@@ -959,6 +973,13 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
       trigger.addEventListener("keydown", function (e) {
         if (["Enter", " ", "ArrowDown", "ArrowUp"].indexOf(e.key) !== -1 && !handles.isOpen()) {
           e.preventDefault();
+          // open() mounts the listbox, and mounting attaches the kernel's
+          // document keydown listener. Bubbling continues after that, so
+          // without this the SAME keystroke reaches the kernel: Enter/Space
+          // there commits the highlighted item (a select that already holds a
+          // value opens and closes in one press) and ArrowDown/Up advances the
+          // highlight a second time.
+          e.stopPropagation();
           open();
         }
       }, { signal: w.signal });
@@ -1601,6 +1622,13 @@ A select with many items that scrolls.
       trigger.addEventListener("keydown", function (e) {
         if (["Enter", " ", "ArrowDown", "ArrowUp"].indexOf(e.key) !== -1 && !handles.isOpen()) {
           e.preventDefault();
+          // open() mounts the listbox, and mounting attaches the kernel's
+          // document keydown listener. Bubbling continues after that, so
+          // without this the SAME keystroke reaches the kernel: Enter/Space
+          // there commits the highlighted item (a select that already holds a
+          // value opens and closes in one press) and ArrowDown/Up advances the
+          // highlight a second time.
+          e.stopPropagation();
           open();
         }
       }, { signal: w.signal });
@@ -1752,6 +1780,13 @@ A select with many items that scrolls.
       trigger.addEventListener("keydown", function (e) {
         if (["Enter", " ", "ArrowDown", "ArrowUp"].indexOf(e.key) !== -1 && !handles.isOpen()) {
           e.preventDefault();
+          // open() mounts the listbox, and mounting attaches the kernel's
+          // document keydown listener. Bubbling continues after that, so
+          // without this the SAME keystroke reaches the kernel: Enter/Space
+          // there commits the highlighted item (a select that already holds a
+          // value opens and closes in one press) and ArrowDown/Up advances the
+          // highlight a second time.
+          e.stopPropagation();
           open();
         }
       }, { signal: w.signal });
@@ -2016,6 +2051,13 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
       trigger.addEventListener("keydown", function (e) {
         if (["Enter", " ", "ArrowDown", "ArrowUp"].indexOf(e.key) !== -1 && !handles.isOpen()) {
           e.preventDefault();
+          // open() mounts the listbox, and mounting attaches the kernel's
+          // document keydown listener. Bubbling continues after that, so
+          // without this the SAME keystroke reaches the kernel: Enter/Space
+          // there commits the highlighted item (a select that already holds a
+          // value opens and closes in one press) and ArrowDown/Up advances the
+          // highlight a second time.
+          e.stopPropagation();
           open();
         }
       }, { signal: w.signal });
@@ -2360,6 +2402,13 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       trigger.addEventListener("keydown", function (e) {
         if (["Enter", " ", "ArrowDown", "ArrowUp"].indexOf(e.key) !== -1 && !handles.isOpen()) {
           e.preventDefault();
+          // open() mounts the listbox, and mounting attaches the kernel's
+          // document keydown listener. Bubbling continues after that, so
+          // without this the SAME keystroke reaches the kernel: Enter/Space
+          // there commits the highlighted item (a select that already holds a
+          // value opens and closes in one press) and ArrowDown/Up advances the
+          // highlight a second time.
+          e.stopPropagation();
           open();
         }
       }, { signal: w.signal });

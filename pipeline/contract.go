@@ -359,9 +359,18 @@ func orDefault(s, def string) string {
 	return def
 }
 
+// cClosedStart reports whether a scenario runs from the CLOSED state — the
+// harness otherwise opens the component before every step, which cannot
+// express "does the keyboard open it at all". Written as a "closed:" prefix
+// on the scenario string.
+const cClosedPrefix = "closed:"
+
+func cClosedStart(step string) bool { return strings.HasPrefix(step, cClosedPrefix) }
+
 // stepIt: ops chain ("focus:#t1+key:ArrowRight"); legacy single-op names
 // still work.
 func cStepIt(page *bpage, def cdef, step string) (string, error) {
+	step = strings.TrimPrefix(step, cClosedPrefix)
 	for _, op := range strings.Split(step, "+") {
 		switch {
 		case op == "overlay-mouse-click":
@@ -602,7 +611,7 @@ func cOracleRun(shell *browserShell, def cdef, out, step string) (cRunResult, er
 	}
 	var mounted []string
 	mountedOK := false
-	if def.Open != "" {
+	if def.Open != "" && !cClosedStart(step) {
 		if step == "" {
 			m, err := cMountedDiff(page, boolOrTrue(def.MountedClasses), def.Open)
 			if err != nil {
@@ -650,7 +659,7 @@ func cShadlessRun(shell *browserShell, def cdef, out, step, recorder string) (cR
 	}
 	var mounted []string
 	mountedOK := false
-	if def.OpenShadless != "" {
+	if def.OpenShadless != "" && !cClosedStart(step) {
 		if step == "" {
 			m, err := cMountedDiff(page, boolOrTrue(def.MountedClasses), def.OpenShadless)
 			if err != nil {

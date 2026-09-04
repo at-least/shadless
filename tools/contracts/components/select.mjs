@@ -35,5 +35,14 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@
   // kernel puts positioning on the wrapper instead; recorded difference
   ignoreAttrs: { "select-content": ["style", "text"] }, // text: radix viewport internals
 
-  scenarios: ["escape", "outside-click", "mouse-click:[data-slot=select-trigger]", "click:[role=option]", "key:ArrowDown+key:Enter"],
+  // The "closed:" scenarios start from the CLOSED state — every other one is
+  // run after the harness has opened the component, which cannot express
+  // "does the keyboard open it at all". The fixture carries defaultValue, so
+  // the kernel mounts with an item already highlighted: exactly the case where
+  // opening and committing collapse into one keystroke if the opening event
+  // reaches the kernel's document keydown listener.
+  scenarios: ["escape", "outside-click", "mouse-click:[data-slot=select-trigger]", "click:[role=option]", "key:ArrowDown+key:Enter",
+    "closed:focus:[data-slot=select-trigger]+key:Enter",
+    "closed:focus:[data-slot=select-trigger]+key: ",
+    "closed:focus:[data-slot=select-trigger]+key:ArrowDown"],
 }
