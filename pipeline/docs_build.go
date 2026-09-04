@@ -276,7 +276,6 @@ func (ctx *docsBuildCtx) installStepsMdx(name string) string {
 	if hasOwnCss {
 		rows = append(rows, "| `dist/css/"+name+".css` | this component's slot styles (`@apply` source — your build compiles it) |")
 	}
-	rows = append(rows, "| `dist/components/"+name+".html` | component markup — copy your page's structure from here |")
 	var loadLines []string
 	hasShadlessJS := false
 	for _, s := range scripts.srcScripts {
@@ -332,7 +331,7 @@ func (ctx *docsBuildCtx) installStepsMdx(name string) string {
 	}
 	return "<Steps>\n\n<Step>Add shadless" + andComp + " to your Tailwind v4 entry:</Step>\n\n```css\n@import \"shadless\";" + cssImports + "\n```\n" + noCssNote +
 		"\nThe files this component needs:\n\n| File | Purpose |\n| --- | --- |\n" + strings.Join(rows, "\n") + "\n" + jsStep +
-		"\n\n<Step>" + stepTail + " from `dist/components/" + name + ".html` into your page and adapt it" + inlineTail + " — the inline utilities are picked up by your build's content scan.</Step>\n" +
+		"\n\n<Step>" + stepTail + " from any example on this page (the code tab under its preview) into your page and adapt it" + inlineTail + " — the inline utilities are picked up by your build's content scan.</Step>\n" +
 		protocolMdx(name) + trivialMdx(name) +
 		"\nNo Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.\n\n</Steps>"
 }

@@ -100,9 +100,17 @@ func runDocsFidelity() int {
 		H := mdPageFacts(string(mdB))
 		fidelityRawMDX = adjusted
 
+		// The rewritten Installation must name something specific to THIS
+		// component, proving the manual tab was regenerated and not left as
+		// upstream's shadcn-CLI text. It used to be
+		// dist/components/<name>.html; that file is a repo artifact an npm
+		// consumer never receives, so the install step points at the page's
+		// own examples now and the per-component anchor is the stylesheet
+		// specifier. The 3 components with no stylesheet of their own
+		// (aspect-ratio, collapsible, direction) get no anchor.
 		expected := ""
-		if isComponent {
-			expected = "dist/components/" + name + ".html"
+		if isComponent && fileExists(filepath.Join("dist/css", name+".css")) {
+			expected = "shadless/" + name + ".css"
 		}
 		for _, d := range comparePage(M, H, name, isComponent, expected) {
 			kind := d

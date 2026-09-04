@@ -3,7 +3,7 @@
 React-free shadcn/ui components — HTML + Tailwind CSS + vanilla JS,
 mechanically converted from the pinned shadcn-ui registry.
 
-Every component is converted by an automated pipeline (babel AST → IR →
+Every component is converted by an automated pipeline (TSX parser → IR →
 emit), and every converted component is proven equivalent to the React
 original by machine: contract tests replay real-browser recordings of the
 React source against the emitted pages, and a golden dual-hop gate proves
@@ -11,6 +11,18 @@ each shipped demo page equals both a fresh React render of the upstream
 example and the live ui.shadcn.com snapshot.
 
 ## Consume
+
+```bash
+npm install shadless
+```
+
+No dependencies — the package is compiled CSS and vanilla JS, nothing else.
+
+The component **markup** is deliberately not in the package: it is text you
+copy and edit, not a file you import. Get it from this repo — every example's
+markup is in `docs/demos/*.html`, rendered with a copyable code tab by the
+docs site (`npm run docs && npm run docs:preview`), and `dist/components/`
+holds one minimal page per component.
 
 Primary path — your own Tailwind v4 build (tree-shaken to exactly the
 components you import; machine-checked by the repo's consumer-sim gate):

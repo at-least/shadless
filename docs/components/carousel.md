@@ -1874,7 +1874,6 @@ The files this component needs:
 | --- | --- |
 | `dist/shadless-core.css` | theme + animate layer — self-contained, needs only your tailwindcss build |
 | `dist/css/carousel.css` | this component's slot styles (`@apply` source — your build compiles it) |
-| `dist/components/carousel.html` | component markup — copy your page's structure from here |
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 | `dist/js/carousel.js` | this component's behavior — registers with the base |
 
@@ -1885,7 +1884,7 @@ The files this component needs:
 <script src="js/carousel.js"></script>
 ```
 
-**Copy the markup from `dist/components/carousel.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
+**Copy the markup from any example on this page (the code tab under its preview) into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 **Behavior protocol**
 

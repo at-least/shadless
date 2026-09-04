@@ -8,6 +8,22 @@ carrying plain Tailwind utilities, a self-contained theme/stylesheet
 source, and (only where needed) vanilla JavaScript. There is no CLI and no
 framework requirement.
 
+## Install
+
+```bash
+npm install shadless
+```
+
+The package has no dependencies — it is the compiled CSS and the vanilla JS,
+nothing else.
+
+The component **markup** is not in the package, by design: it is text you copy
+into your own page and edit, not a module you import. Every example on this
+site shows its markup in a code tab under the preview — that is the copy
+source. (Working from a clone instead of npm? The same files are
+`docs/demos/*.html`, and `dist/components/<name>.html` holds one minimal page
+per component.)
+
 <Callout>
 
 The library is a mechanical conversion of the pinned
@@ -35,7 +51,7 @@ Import exactly the components you use — nothing else lands in your build
 (this is machine-checked: the repo's `consumer-sim` gate compiles a scratch
 consumer and asserts zero leakage from non-imported components).
 
-<Step>Copy the component markup you need from `dist/components/<name>.html` into your page.</Step>
+<Step>Copy the markup you need from the code tab under any example on that component's page.</Step>
 
 The markup carries plain utilities inline; your build's content scan picks
 them up like any class you wrote yourself.
@@ -71,23 +87,25 @@ the imports above:
 component — the trade-off is size: it is all-or-nothing, while the import
 path emits only what you use.
 
-## Get the artifacts
+## What the package contains
 
-Build the distribution once from the repo:
+Every path below is also an npm specifier, so you can import it by name
+instead of by path.
 
-```bash
-npm run demo
-```
+| File | npm | Purpose |
+| --- | --- | --- |
+| `dist/shadless-core.css` | `shadless` | theme vars, `@theme`, animate layer — the tailwind entry source |
+| `dist/css/<name>.css` | `shadless/<name>.css` | per-component slot styles (`@apply` source) |
+| `dist/shadless.full.css` / `.full.min.css` | `shadless/full.css` / `full.min.css` | every component precompiled into one stylesheet (no-build path; `.min` for production) |
+| `dist/shadless.js` / `.min.js` | `shadless/js` / `js.min` | the JS base: delegation engine, registry, theme, the vendored radix kernel |
+| `dist/js/<name>.js` | `shadless/js/<name>` | one behavior file per interactive component (carousel bundles the embla engine) |
+| `dist/esm/shadless.mjs`, `dist/esm/<name>.mjs` | `shadless/esm/<name>` | the same two as ES modules, for bundlers and `<script type="module">` |
 
-| File | Purpose |
-| --- | --- |
-| `dist/shadless-core.css` | theme vars, `@theme`, animate layer — the tailwind entry source |
-| `dist/css/<name>.css` | per-component slot styles (`@apply` source) |
-| `dist/components/<name>.html` | one demo page per component — the markup to copy |
-| `dist/shadless.full.css` / `.full.min.css` | every component precompiled into one stylesheet (no-build path; `.min` for production) |
-| `dist/shadless.js` / `.min.js` | the JS base: delegation engine, registry, theme, the vendored radix kernel |
-| `dist/js/<name>.js` | one behavior file per interactive component (carousel bundles the embla engine) |
-| `dist/esm/shadless.mjs`, `dist/esm/<name>.mjs` | the same two as ES modules, for bundlers and `<script type="module">` |
+Component markup is not on this list — see [Install](#install) above for where
+to copy it from.
+
+Building from a clone instead? `npm run demo` regenerates all of it into
+`dist/`.
 
 ## Theming
 

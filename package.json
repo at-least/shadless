@@ -1,7 +1,7 @@
 {
   "name": "shadless",
   "version": "1.0.0",
-  "description": "React-free shadcn/ui components \u2014 HTML + Tailwind CSS + vanilla JS, mechanically converted from the pinned shadcn registry",
+  "description": "React-free shadcn/ui components — HTML + Tailwind CSS + vanilla JS, mechanically converted from the pinned shadcn registry",
   "license": "MIT",
   "author": "newlix",
   "engines": {
@@ -91,6 +91,14 @@
     "vanilla",
     "no-react"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/at-least/shadless.git"
+  },
+  "homepage": "https://github.com/at-least/shadless#readme",
+  "bugs": {
+    "url": "https://github.com/at-least/shadless/issues"
+  },
   "peerDependencies": {
     "tailwindcss": "^4"
   },

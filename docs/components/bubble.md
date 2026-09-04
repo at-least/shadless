@@ -127,10 +127,9 @@ The files this component needs:
 | --- | --- |
 | `dist/shadless-core.css` | theme + animate layer — self-contained, needs only your tailwindcss build |
 | `dist/css/bubble.css` | this component's slot styles (`@apply` source — your build compiles it) |
-| `dist/components/bubble.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-**Copy the markup from `dist/components/bubble.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
+**Copy the markup from any example on this page (the code tab under its preview) into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
 
@@ -1117,14 +1116,14 @@ When reactions are interactive, render buttons instead and give icon-only button
 When a bubble is clickable, render it as a real `<button>` or `<a>` with the `asChild` prop so it is focusable and exposes the correct role. `BubbleContent` ships a visible focus ring for interactive elements, and the accessible name comes from the bubble text. No extra label is needed.
 
 ```html showLineNumbers
-<div data-slot="bubble">
+<div data-slot="bubble" data-variant="muted" data-align="end">
   <button type="button" data-slot="bubble-content">
     I forgot my password
   </button>
 </div>
 ```
 
-`variant`/`align` compile into static Tailwind classes at build time (no runtime data attribute) — copy the class list for the variant you want from `dist/components/bubble.html`.
+There is no `asChild`: put `data-slot="bubble-content"` on the real `<button>` (or `<a>`) itself, and wire your click handler to it like any other element.
 
 ### Meaning Beyond Color
 

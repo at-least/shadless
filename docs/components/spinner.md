@@ -83,16 +83,15 @@ The files this component needs:
 | --- | --- |
 | `dist/shadless-core.css` | theme + animate layer — self-contained, needs only your tailwindcss build |
 | `dist/css/spinner.css` | this component's slot styles (`@apply` source — your build compiles it) |
-| `dist/components/spinner.html` | component markup — copy your page's structure from here |
 | — | no JavaScript: this component is markup + CSS |
 
-**Copy the markup from `dist/components/spinner.html` into your page and adapt it — the inline utilities are picked up by your build's content scan.**
+**Copy the markup from any example on this page (the code tab under its preview) into your page and adapt it — the inline utilities are picked up by your build's content scan.**
 
 No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.
 
 ## Customization
 
-You can replace the default spinner icon with any other icon — swap the inner `<svg>` in `dist/components/spinner.html` for a different one.
+You can replace the default spinner icon with any other icon — swap the inner `<svg>` in the spinner markup for a different one.
 
 ::::demo spinner-custom
 <iframe class="demo" src="/demos/spinner-custom.html" title="spinner-custom" data-status="authored" loading="lazy"></iframe>
@@ -131,7 +130,7 @@ You can replace the default spinner icon with any other icon — swap the inner 
 
 ::::
 
-```html showLineNumbers title="dist/components/spinner.html"
+```html showLineNumbers
 <svg data-slot="spinner">
   <!-- swap this inner <svg> for a different icon's markup -->
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="..."/></svg>
