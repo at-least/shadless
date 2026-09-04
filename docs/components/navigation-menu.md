@@ -282,11 +282,24 @@ A collection of links for navigating websites.
     if (shadless.__menuWired.installed_navigation_menu) return
     shadless.__menuWired.installed_navigation_menu = true
     var EXIT = 120;
-    var root = document.querySelector("[data-slot=navigation-menu]");
+    var idOf = function (t) { return t.getAttribute("data-radixuigo-nav-trigger"); };
+
+    // One state set PER ROOT. This used to be a single
+    // document.querySelector("[data-slot=navigation-menu]"), so a second nav
+    // on the page got no handle and clicking its trigger mounted the content
+    // into the FIRST nav's viewport — while the protocol table promised
+    // "wires every instance it finds — several per page".
+    var navs = [];
+    function navOf(el) {
+      var r = el && el.closest && el.closest("[data-slot=navigation-menu]");
+      for (var i = 0; i < navs.length; i++) if (navs[i].root === r) return navs[i];
+      return null;
+    }
+
+    function wire(root) {
     var triggers = function () {
       return Array.prototype.slice.call(root.querySelectorAll("[data-radixuigo-nav-trigger]"));
     };
-    var idOf = function (t) { return t.getAttribute("data-radixuigo-nav-trigger"); };
     var viewport = function () { return root.querySelector("[data-slot=navigation-menu-viewport]"); };
     var openId = null;
     var exitTimer = null;
@@ -359,28 +372,44 @@ A collection of links for navigating websites.
         isOpen: function () { return openId === id },
       })
     })
+      return { root: root, triggers: triggers,
+        openId: function () { return openId }, open: open, close: close };
+    }
+
+    Array.prototype.forEach.call(document.querySelectorAll("[data-slot=navigation-menu]"), function (r) {
+      navs.push(wire(r));
+    });
+
     document.addEventListener("click", function (e) {
       var trig = e.target.closest && e.target.closest("[data-radixuigo-nav-trigger]")
       if (trig) {
+        var n = navOf(trig)
+        if (!n) return
         e.preventDefault()
         var id = idOf(trig)
-        if (id === openId) close()
-        else open(id, trig)
+        if (id === n.openId()) n.close()
+        else n.open(id, trig)
         return
       }
       var link = e.target.closest && e.target.closest("[data-slot=navigation-menu-link]")
-      if (link) { if (openId) close(); return }
-      if (openId && !root.contains(e.target)) close()
+      if (link) { var ln = navOf(link); if (ln && ln.openId()) ln.close(); return }
+      navs.forEach(function (n) { if (n.openId() && !n.root.contains(e.target)) n.close() })
     })
 
     document.addEventListener("keydown", function (e) {
       var key = e.key
-      if (key === "Escape") { if (openId) { e.preventDefault(); close() } return }
+      if (key === "Escape") {
+        var opened = navs.filter(function (n) { return n.openId() })
+        if (opened.length) { e.preventDefault(); opened.forEach(function (n) { n.close() }) }
+        return
+      }
       if (key !== "ArrowRight" && key !== "ArrowLeft" && key !== "Home" && key !== "End") return
       var trig = e.target.closest && e.target.closest("[data-radixuigo-nav-trigger]")
       if (!trig) return
+      var kn = navOf(trig)
+      if (!kn) return
       e.preventDefault()
-      var ts = triggers()
+      var ts = kn.triggers()
       var i = ts.indexOf(trig)
       var next = key === "Home" ? ts[0]
         : key === "End" ? ts[ts.length - 1]

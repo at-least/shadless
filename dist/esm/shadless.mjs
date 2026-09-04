@@ -4044,7 +4044,13 @@ globalThis.RadixKernel = RadixKernel;
     else if (ev.key === "End" || idx < 0) pick = enabled.length - 1
     else {
       var fwd = ev.key === "ArrowRight" || ev.key === "ArrowDown"
-      if (isRtl(ev.currentTarget || enabled[idx]) && (ev.key === "ArrowRight" || ev.key === "ArrowLeft")) fwd = !fwd
+      // Ask the ITEM, not ev.currentTarget: currentTarget is always the
+      // delegated live root the listener is attached to, so isRtl walked up
+      // from there and never saw a dir="rtl" sitting on a wrapper INSIDE it —
+      // which is exactly where the shipped radio-group-rtl-he and
+      // toggle-group-rtl-he demos put it. dist/js/tabs.js already asks the
+      // list element for this reason.
+      if (isRtl(enabled[idx] || ev.currentTarget) && (ev.key === "ArrowRight" || ev.key === "ArrowLeft")) fwd = !fwd
       pick = (idx + (fwd ? 1 : -1) + enabled.length) % enabled.length
     }
     return items.indexOf(enabled[pick])
