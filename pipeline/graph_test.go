@@ -8,6 +8,7 @@ package main
 // the copy matched — never that the graph itself was coherent.
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -263,5 +264,68 @@ func TestUnitGraphRejectsUnknownDependency(t *testing.T) {
 	})
 	if err == nil {
 		t.Fatal("a node needing an undeclared id loaded without error")
+	}
+}
+
+// The runner's browser-concurrency cap keys off isBrowserNode, which infers
+// from the one input every Chromium-launching node must already declare. This
+// pins the inferred set on both graph views the runner can see: the authored
+// graph and the fan-out-expanded one (the 29 contracts shards are exactly the
+// contention this cap exists for, and they inherit the input only through
+// fanContracts's struct copy). It cannot see a NEW node that launches
+// Chromium without declaring the shell input — for those the backstop is the
+// runtime undeclared-read audit, weakened by closure-exemption when the node
+// depends on an existing browser node; the review adding a browser node has
+// to check the cap by hand.
+func TestUnitBrowserNodeSet(t *testing.T) {
+	g, err := AuthoredGraph()
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := map[NodeID]bool{
+		NOverlay:            true,
+		NContractFixture:    true,
+		NExampleOracle:      true,
+		NExampleFixture:     true,
+		NPathParity:         true,
+		NDemoParity:         true,
+		NContracts:          true,
+		NStyleParity:        true,
+		NDemoSmoke:          true,
+		NDocsSmoke:          true,
+		NInteractivitySweep: true,
+		NGoldenGate:         true,
+		NExampleGate:        true,
+	}
+	got := map[NodeID]bool{}
+	for _, id := range g.IDs() {
+		n, _ := g.Node(id)
+		if isBrowserNode(n) {
+			got[id] = true
+		}
+	}
+	for id := range want {
+		if !got[id] {
+			t.Errorf("%s launches a browser but is not inferred as one (missing %q in inputs?)", id, shellInput)
+		}
+	}
+	for id := range got {
+		if !want[id] {
+			t.Errorf("%s is inferred as a browser node but is not in the expected set — does it really launch one, or does it just declare %q?", id, shellInput)
+		}
+	}
+
+	expanded, err := LoadGraphAt(repoRoot(t))
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, id := range expanded.IDs() {
+		if !strings.HasPrefix(string(id), "contracts:") {
+			continue
+		}
+		n, _ := expanded.Node(id)
+		if !isBrowserNode(n) {
+			t.Errorf("%s lost the browser-shell input in fan-out — the shard would run uncapped", id)
+		}
 	}
 }

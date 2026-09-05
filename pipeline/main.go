@@ -391,8 +391,22 @@ func main() {
 				jobs = n
 			}
 		}
+		// Each browser node runs its own Chromium (~0.5–1 GB, bursty CPU
+		// during render). At full -j the fan-out contracts alone put 16 of
+		// them on the machine at once and their hover/click waits start
+		// timing out at 30s in wherever the load lands. A small cap keeps
+		// them off that cliff; fast non-browser nodes still run at -j.
+		browserJobs := min(4, jobs)
+		if v := os.Getenv("PIPELINE_BROWSER_JOBS"); v != "" {
+			if n, err := strconv.Atoi(v); err == nil && n > 0 {
+				browserJobs = n
+			}
+		}
+		// the main semaphore bounds everything; a browser cap above -j is a
+		// lie the summary line would print
+		browserJobs = min(browserJobs, jobs)
 		r := &Runner{
-			root: root, graph: g, jobs: jobs, force: force,
+			root: root, graph: g, jobs: jobs, browserJobs: browserJobs, force: force,
 			continueOnFail: keepGoing || os.Getenv("PIPELINE_FAILURES") == "continue",
 			stamps:         loadStamps(root),
 		}
@@ -404,7 +418,7 @@ func main() {
 				fmt.Fprintln(os.Stderr, "pipeline: writing run report:", err)
 			}
 		}
-		fmt.Printf("ran %d, skipped %d in %.1fs (-j%d)\n", ran, skipped, time.Since(start).Seconds(), jobs)
+		fmt.Printf("ran %d, skipped %d in %.1fs (-j%d, browsers ≤%d)\n", ran, skipped, time.Since(start).Seconds(), jobs, browserJobs)
 		if jobs > 1 && ran > 0 {
 			fmt.Println("note: the undeclared-write check only runs at -j1 (PIPELINE_PARALLEL=1)")
 		}

@@ -26,6 +26,8 @@ Read it before porting anything else: the four toolchains that cannot move are
 listed there with the measurements behind each.
 
     PIPELINE_PARALLEL=<n>       concurrency (default: NumCPU)
+    PIPELINE_BROWSER_JOBS=<n>   cap on concurrent Chromium-launching nodes
+                                (default: min(4, concurrency))
     PIPELINE_FAILURES=continue  keep going past a failed node
     PIPELINE_VERBOSE=1          print each node's output even when it passes
 

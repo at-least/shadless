@@ -38,6 +38,7 @@ type Runner struct {
 	root           string
 	graph          *Graph
 	jobs           int
+	browserJobs    int // cap on concurrent Chromium-launching nodes, ≤ jobs
 	force          bool
 	continueOnFail bool
 
@@ -126,6 +127,29 @@ func (r *Runner) recorded(id NodeID) string {
 // only kind that can be asked for a testlog.
 func isGoTest(argv []string) bool {
 	return len(argv) >= 2 && argv[0] == "go" && argv[1] == "test"
+}
+
+// shellInput is the one input every browser node already has to declare: a
+// node that drives tools/browser-shell.mjs without listing it would go
+// falsely fresh on a shell change, and the undeclared-read audit would call
+// the omission out on the next run. So the declaration doubles as the
+// identity — there is no second list of browser nodes to forget to update.
+const shellInput = "tools/browser-shell.mjs"
+
+// isBrowserNode reports whether the node launches a Chromium (one browser
+// shell process each, see browser_shell.go). The runner caps how many run
+// concurrently: dozens of Chromiums sharing one machine starve each other's
+// event loops and hover/click actions time out at 30s — the failure moves
+// between nodes and vanishes at -j1, which is how contention looks.
+// overlay spawns the shell process but launches no browser; it is over-capped
+// as a result, which only costs a token at PIPELINE_BROWSER_JOBS=1.
+func isBrowserNode(n Node) bool {
+	for _, p := range n.Inputs {
+		if p == shellInput {
+			return true
+		}
+	}
+	return false
 }
 
 // fsRecorder is the JS half of the same evidence. NODE_OPTIONS is inherited by
@@ -283,6 +307,7 @@ func (r *Runner) Run(plan []Node) (ran, skipped, failed, violations, badReads in
 	}
 
 	sem := make(chan struct{}, r.jobs)
+	browserSem := make(chan struct{}, max(r.browserJobs, 1))
 	results := make(chan result)
 	inflight := 0
 	stop := false
@@ -319,6 +344,13 @@ func (r *Runner) Run(plan []Node) (ran, skipped, failed, violations, badReads in
 		}
 		inflight++
 		go func() {
+			if isBrowserNode(n) {
+				// the browser token comes BEFORE the main slot: a browser node
+				// waiting for its turn must not occupy a worker slot that a
+				// fast node could be running in
+				browserSem <- struct{}{}
+				defer func() { <-browserSem }()
+			}
 			sem <- struct{}{}
 			defer func() { <-sem }()
 			results <- r.runOne(n, key, skippable)
