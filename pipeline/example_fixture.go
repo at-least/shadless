@@ -134,9 +134,13 @@ var (
 	efReIdAttr        = regexp.MustCompile(`\sid="(radix-[^"]*)"`)
 	efReLabelledBy    = regexp.MustCompile(`aria-labelledby="(radix-[^"]*)"`)
 	efReIdInTag       = regexp.MustCompile(`\sid="(radix-[^"]*)"`)
-	efReTrailingSub   = regexp.MustCompile(`s\d+$`)
-	efReWordTrigger   = regexp.MustCompile(`^(\w+)-trigger$`)
-	efReHasIdAttr     = regexp.MustCompile(`\sid="`)
+	// "k0s1" → "k0": a submenu layer's stable id carries its parent's plus a
+	// sub index. The head is REQUIRED: a select instance's own prefix is "s0",
+	// and `s\d+$` on its own turned that into "" — nine fixture pages shipped
+	// aria-labelledby="-trigger".
+	efReTrailingSub = regexp.MustCompile(`^(.+?)s\d+$`)
+	efReWordTrigger = regexp.MustCompile(`^(\w+)-trigger$`)
+	efReHasIdAttr   = regexp.MustCompile(`\sid="`)
 )
 
 func efStripRadixIds(h string) string {
@@ -191,7 +195,7 @@ func efLearn(html string, slotToStable []efSlotStable, idMap map[string]string) 
 	// internal id for the TRIGGER: point it at the stable trigger id
 	triggerStable := ""
 	if base != "x" {
-		triggerStable = efReTrailingSub.ReplaceAllString(base, "") + "-trigger"
+		triggerStable = efReTrailingSub.ReplaceAllString(base, "$1") + "-trigger"
 	}
 	for _, m := range efReLabelledBy.FindAllStringSubmatch(html, -1) {
 		if _, ok := idMap[m[1]]; !ok && triggerStable != "" {
@@ -200,11 +204,14 @@ func efLearn(html string, slotToStable []efSlotStable, idMap map[string]string) 
 	}
 }
 
-// efEnsureContentId — the JS builds a tempered pattern (negative lookahead
-// on \sid= after the data-slot attr) that RE2 cannot express; the manual
-// scan below is its exact semantics: on the FIRST tag carrying the
-// data-slot, insert id before ">" unless an id attribute follows the
-// data-slot attribute inside that tag.
+// efEnsureContentId — on the FIRST tag carrying the data-slot, insert id
+// before ">" unless the tag already has one. The JS this was ported from
+// used a lookahead that only saw the text AFTER the data-slot attribute;
+// radix renders `id` BEFORE `data-slot` (`role="dialog" id="k0"
+// data-slot="popover-content"`), so the check missed the id that efRemap
+// had just written and spliced a second id="k0" onto the same element —
+// every popover-family fixture page shipped a tag with two id attributes.
+// The whole tag is inspected now, from its "<" to its ">".
 func efEnsureContentId(h, comp, id string) string {
 	attr := `data-slot="` + comp + `-content"`
 	idx := strings.Index(h, attr)
@@ -216,8 +223,11 @@ func efEnsureContentId(h, comp, id string) string {
 		return h
 	}
 	end += idx
-	after := h[idx+len(attr) : end]
-	if efReHasIdAttr.MatchString(after) {
+	start := strings.LastIndexByte(h[:idx], '<')
+	if start < 0 {
+		start = 0
+	}
+	if efReHasIdAttr.MatchString(h[start:end]) {
 		return h
 	}
 	return h[:end] + ` id="` + id + `">` + h[end+1:]
@@ -238,6 +248,14 @@ func efTriggerWithId(bodyHtml, comp, id string) string {
 	}
 	return bodyHtml[:loc[3]] + ` id="` + id + `">` + bodyHtml[loc[1]:]
 }
+
+// efRetargetJs — spliced into every place a trigger is renamed: whatever in
+// the root pointed at the OLD id (a <label for>, aria-labelledby,
+// aria-describedby, aria-controls, aria-owns) now points at the new one.
+// Upstream authors ids on triggers (<SelectTrigger id="checkout-exp-month-
+// ts6"> with a matching <FieldLabel htmlFor>); renaming the trigger to
+// s0-trigger without this left every such label orphaned.
+const efRetargetJs = `if (o && o !== t.id) { const A = ["for", "aria-labelledby", "aria-describedby", "aria-controls", "aria-owns"]; document.querySelectorAll("#root " + A.map((a) => "[" + a + "]").join(",")).forEach((e) => { for (const a of A) { const v = e.getAttribute(a); if (v == null) continue; const ts = v.split(/\s+/); if (ts.includes(o)) e.setAttribute(a, ts.map((x) => (x === o ? t.id : x)).join(" ")) } }) }`
 
 // ---- the runner ----
 
@@ -626,7 +644,7 @@ func runExampleFixture(args []string) int {
 						ids[i] = prefixOf(i) + "-trigger"
 						prefixes[i] = prefixOf(i)
 					}
-					page.evaluateFnArg(`({ sel, ids }) => document.querySelectorAll("#root " + sel).forEach((t, i) => { t.id = ids[i] })`,
+					page.evaluateFnArg(`({ sel, ids }) => document.querySelectorAll("#root " + sel).forEach((t, i) => { const o = t.id; t.id = ids[i]; `+efRetargetJs+` })`,
 						map[string]any{"sel": triggerSel, "ids": ids})
 					rh, err := rootHtml()
 					if err != nil {

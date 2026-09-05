@@ -272,24 +272,10 @@ func runDocsConsistency() int {
 		// a faithful capture of an upstream bug, not ours to edit
 		"collapsible-settings": {"radius": "upstream tsx repeats id=radius"},
 	}
-	// fixture pages captured in the OPEN state: the popper wrapper carries
-	// the same id as the popover-content inside it. A separate defect
-	// (recorded 2026-09-05), not the one this check was written for.
-	for _, pg := range []string{"bubble-popover", "button-group-popover", "input-group-button", "popover-basic", "popover-form"} {
-		dupExempt[pg] = map[string]string{"k0": "open-state capture: popper wrapper shares the content id"}
-	}
-	for pg, ks := range map[string][]string{
-		"popover-alignments": {"k0", "k1", "k2"},
-		"popover-rtl":        {"k0", "k1", "k2", "k3"},
-		"popover-rtl-en":     {"k0", "k1", "k2", "k3"},
-		"popover-rtl-he":     {"k0", "k1", "k2", "k3"},
-	} {
-		m := map[string]string{}
-		for _, k := range ks {
-			m[k] = "open-state capture: popper wrapper shares the content id"
-		}
-		dupExempt[pg] = m
-	}
+	// (the popover-family k0 exemptions that lived here are gone: the
+	// duplicate was efEnsureContentId splicing a second id onto the content
+	// tag, fixed at the source — the stale-exemption check below is what
+	// demanded their removal once the pages were regenerated)
 	demoIdPages := 0
 	if ents, err := os.ReadDir("docs/demos"); err == nil {
 		for _, e := range ents {

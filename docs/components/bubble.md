@@ -1043,7 +1043,6 @@ Pair a bubble with a [`Popover`](/components/popover) to surface more informatio
         --radix-popover-trigger-width: var(--radix-popper-anchor-width);
         --radix-popover-trigger-height: var(--radix-popper-anchor-height);
       "
-      id="k0"
     >
       <div data-slot="popover-header" class="flex flex-col gap-0.5 text-sm">
         <div data-slot="popover-title" class="font-medium text-sm">

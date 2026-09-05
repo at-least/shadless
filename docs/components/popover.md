@@ -60,7 +60,6 @@ Displays rich content in a portal, triggered by a button.
         --radix-popover-trigger-width: var(--radix-popper-anchor-width);
         --radix-popover-trigger-height: var(--radix-popper-anchor-height);
       "
-      id="p1"
     >
       <div data-slot="popover-header" class="flex flex-col gap-0.5 text-sm">
         <div data-slot="popover-title" class="font-medium">Dimensions</div>
@@ -239,7 +238,6 @@ A simple popover with a header, title, and description.
         --radix-popover-trigger-width: var(--radix-popper-anchor-width);
         --radix-popover-trigger-height: var(--radix-popper-anchor-height);
       "
-      id="k0"
     >
       <div data-slot="popover-header" class="flex flex-col gap-0.5 text-sm">
         <div data-slot="popover-title" class="font-medium">Dimensions</div>
@@ -396,7 +394,6 @@ Use the `align` prop on `PopoverContent` to control the horizontal alignment.
         --radix-popover-trigger-width: var(--radix-popper-anchor-width);
         --radix-popover-trigger-height: var(--radix-popper-anchor-height);
       "
-      id="k0"
     >
       Aligned to start
     </div>
@@ -435,7 +432,6 @@ Use the `align` prop on `PopoverContent` to control the horizontal alignment.
         --radix-popover-trigger-width: var(--radix-popper-anchor-width);
         --radix-popover-trigger-height: var(--radix-popper-anchor-height);
       "
-      id="k1"
     >
       Aligned to center
     </div>
@@ -474,7 +470,6 @@ Use the `align` prop on `PopoverContent` to control the horizontal alignment.
         --radix-popover-trigger-width: var(--radix-popper-anchor-width);
         --radix-popover-trigger-height: var(--radix-popper-anchor-height);
       "
-      id="k2"
     >
       Aligned to end
     </div>
@@ -598,7 +593,6 @@ A popover with form fields inside.
         --radix-popover-trigger-width: var(--radix-popper-anchor-width);
         --radix-popover-trigger-height: var(--radix-popper-anchor-height);
       "
-      id="k0"
     >
       <div data-slot="popover-header" class="flex flex-col gap-0.5 text-sm">
         <div data-slot="popover-title" class="font-medium">Dimensions</div>
@@ -811,7 +805,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
         --radix-popover-trigger-width: var(--radix-popper-anchor-width);
         --radix-popover-trigger-height: var(--radix-popper-anchor-height);
       "
-      id="k0"
     >
       <div data-slot="popover-header" class="flex flex-col gap-0.5 text-sm">
         <div data-slot="popover-title" class="font-medium">الأبعاد</div>
@@ -855,7 +848,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
         --radix-popover-trigger-width: var(--radix-popper-anchor-width);
         --radix-popover-trigger-height: var(--radix-popper-anchor-height);
       "
-      id="k1"
     >
       <div data-slot="popover-header" class="flex flex-col gap-0.5 text-sm">
         <div data-slot="popover-title" class="font-medium">الأبعاد</div>
@@ -899,7 +891,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
         --radix-popover-trigger-width: var(--radix-popper-anchor-width);
         --radix-popover-trigger-height: var(--radix-popper-anchor-height);
       "
-      id="k2"
     >
       <div data-slot="popover-header" class="flex flex-col gap-0.5 text-sm">
         <div data-slot="popover-title" class="font-medium">الأبعاد</div>
@@ -943,7 +934,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
         --radix-popover-trigger-width: var(--radix-popper-anchor-width);
         --radix-popover-trigger-height: var(--radix-popper-anchor-height);
       "
-      id="k3"
     >
       <div data-slot="popover-header" class="flex flex-col gap-0.5 text-sm">
         <div data-slot="popover-title" class="font-medium">الأبعاد</div>

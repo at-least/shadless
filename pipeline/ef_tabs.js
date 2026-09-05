@@ -18,7 +18,10 @@ async () => {
     const pid = (t, i) => { const c = t.getAttribute("aria-controls"); return (c && !c.startsWith("radix-")) ? c : `panel${r}-${i}` }
     const pids = triggers.map((t, i) => pid(t, i))
     triggers.forEach((t, i) => {
-      t.id = tid(t, i); t.setAttribute("aria-controls", pids[i])
+      // four upstream tabs demos (line, vertical, disabled, icons) render
+      // triggers only — no <TabsContent> at all; naming a panel that does
+      // not exist left aria-controls dangling on every one of them
+      t.id = tid(t, i); if (panels[i]) t.setAttribute("aria-controls", pids[i]); else t.removeAttribute("aria-controls")
       const st = i === Math.max(activeIdx, 0) ? "active" : "inactive"
       t.setAttribute("data-state", st); t.setAttribute("aria-selected", st === "active" ? "true" : "false")
     })

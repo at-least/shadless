@@ -436,7 +436,12 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
       class="data-[position=popper]:h-(--radix-select-trigger-height) data-[position=popper]:w-full data-[position=popper]:min-w-(--radix-select-trigger-width)"
       style="position: relative; flex: 1 1 0%; overflow: hidden auto"
     >
-      <div role="group" aria-labelledby="-trigger" data-slot="select-group" class="scroll-my-1 p-1">
+      <div
+        role="group"
+        aria-labelledby="s0-trigger"
+        data-slot="select-group"
+        class="scroll-my-1 p-1"
+      >
         <div
           role="option"
           aria-labelledby="s0-e0"
@@ -1905,7 +1910,12 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
       class="data-[position=popper]:h-(--radix-select-trigger-height) data-[position=popper]:w-full data-[position=popper]:min-w-(--radix-select-trigger-width)"
       style="position: relative; flex: 1 1 0%; overflow: hidden auto"
     >
-      <div role="group" aria-labelledby="-trigger" data-slot="select-group" class="scroll-my-1 p-1">
+      <div
+        role="group"
+        aria-labelledby="s0-trigger"
+        data-slot="select-group"
+        class="scroll-my-1 p-1"
+      >
         <div
           role="option"
           aria-labelledby="s0-e0"

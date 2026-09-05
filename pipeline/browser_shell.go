@@ -308,11 +308,13 @@ func (p *bpage) locEvalAllArg(frame, selector, expr string, arg any) (any, error
 
 // locClick clicks the nth match; button "right" for context-menu triggers.
 func (p *bpage) locClick(frame, selector string, index int, button string) error {
-	return p.locClickTimeout(frame, selector, index, button, 5000)
+	return p.locClickTimeout(frame, selector, index, button, 15000)
 }
 
 // locClickTimeout is locClick with an explicit actionability timeout —
-// page.click's playwright default is 30000ms, not locator.click's 5000ms.
+// page.click's playwright default is 30000ms; locator.click's is 5000ms,
+// which example-fixture overran twice under 16-way browser load (a dialog
+// trigger click), so the shared default here is 15000ms.
 func (p *bpage) locClickTimeout(frame, selector string, index int, button string, timeoutMS int) error {
 	_, err := p.s.call(map[string]any{"op": "locClick", "pageId": p.id, "frame": frame, "selector": selector, "index": index, "button": button, "timeout": timeoutMS})
 	return err

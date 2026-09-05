@@ -95,7 +95,7 @@ Combine labels, controls, and help text to compose accessible form fields and gr
               <label
                 data-slot="field-label"
                 class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[&gt;[data-slot=field]]:rounded-lg has-[&gt;[data-slot=field]]:border has-[&gt;[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:border-ring has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[&gt;[data-slot=field]]:w-full has-[&gt;[data-slot=field]]:flex-col"
-                for="checkout-exp-month-ts6"
+                for="s0-trigger"
                 >Month</label
               ><button
                 type="button"
@@ -164,7 +164,7 @@ Combine labels, controls, and help text to compose accessible form fields and gr
               <label
                 data-slot="field-label"
                 class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[&gt;[data-slot=field]]:rounded-lg has-[&gt;[data-slot=field]]:border has-[&gt;[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:border-ring has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[&gt;[data-slot=field]]:w-full has-[&gt;[data-slot=field]]:flex-col"
-                for="checkout-7j9-exp-year-f59"
+                for="s1-trigger"
                 >Year</label
               ><button
                 type="button"
@@ -422,7 +422,12 @@ Combine labels, controls, and help text to compose accessible form fields and gr
       class="data-[position=popper]:h-(--radix-select-trigger-height) data-[position=popper]:w-full data-[position=popper]:min-w-(--radix-select-trigger-width)"
       style="position: relative; flex: 1 1 0%; overflow: hidden auto"
     >
-      <div role="group" aria-labelledby="-trigger" data-slot="select-group" class="scroll-my-1 p-1">
+      <div
+        role="group"
+        aria-labelledby="s0-trigger"
+        data-slot="select-group"
+        class="scroll-my-1 p-1"
+      >
         <div
           role="option"
           aria-labelledby="s0-e0"
@@ -644,7 +649,12 @@ Combine labels, controls, and help text to compose accessible form fields and gr
       class="data-[position=popper]:h-(--radix-select-trigger-height) data-[position=popper]:w-full data-[position=popper]:min-w-(--radix-select-trigger-width)"
       style="position: relative; flex: 1 1 0%; overflow: hidden auto"
     >
-      <div role="group" aria-labelledby="-trigger" data-slot="select-group" class="scroll-my-1 p-1">
+      <div
+        role="group"
+        aria-labelledby="s1-trigger"
+        data-slot="select-group"
+        class="scroll-my-1 p-1"
+      >
         <div
           role="option"
           aria-labelledby="s1-e0"
@@ -1160,7 +1170,12 @@ See the Form documentation for building forms with the `Field` component and Rea
       class="data-[position=popper]:h-(--radix-select-trigger-height) data-[position=popper]:w-full data-[position=popper]:min-w-(--radix-select-trigger-width)"
       style="position: relative; flex: 1 1 0%; overflow: hidden auto"
     >
-      <div role="group" aria-labelledby="-trigger" data-slot="select-group" class="scroll-my-1 p-1">
+      <div
+        role="group"
+        aria-labelledby="s0-trigger"
+        data-slot="select-group"
+        class="scroll-my-1 p-1"
+      >
         <div
           role="option"
           aria-labelledby="s0-e0"
@@ -2616,7 +2631,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
               <label
                 data-slot="field-label"
                 class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[&gt;[data-slot=field]]:rounded-lg has-[&gt;[data-slot=field]]:border has-[&gt;[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:border-ring has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[&gt;[data-slot=field]]:w-full has-[&gt;[data-slot=field]]:flex-col"
-                for="checkout-exp-month-ts6-rtl"
+                for="s0-trigger"
                 >الشهر</label
               ><button
                 type="button"
@@ -2687,7 +2702,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
               <label
                 data-slot="field-label"
                 class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[&gt;[data-slot=field]]:rounded-lg has-[&gt;[data-slot=field]]:border has-[&gt;[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:border-ring has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[&gt;[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[&gt;[data-slot=field]]:w-full has-[&gt;[data-slot=field]]:flex-col"
-                for="checkout-7j9-exp-year-f59-rtl"
+                for="s1-trigger"
                 >السنة</label
               ><button
                 type="button"
@@ -2947,7 +2962,12 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       class="data-[position=popper]:h-(--radix-select-trigger-height) data-[position=popper]:w-full data-[position=popper]:min-w-(--radix-select-trigger-width)"
       style="position: relative; flex: 1 1 0%; overflow: hidden auto"
     >
-      <div role="group" aria-labelledby="-trigger" data-slot="select-group" class="scroll-my-1 p-1">
+      <div
+        role="group"
+        aria-labelledby="s0-trigger"
+        data-slot="select-group"
+        class="scroll-my-1 p-1"
+      >
         <div
           role="option"
           aria-labelledby="s0-e0"
@@ -3184,7 +3204,12 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       class="data-[position=popper]:h-(--radix-select-trigger-height) data-[position=popper]:w-full data-[position=popper]:min-w-(--radix-select-trigger-width)"
       style="position: relative; flex: 1 1 0%; overflow: hidden auto"
     >
-      <div role="group" aria-labelledby="-trigger" data-slot="select-group" class="scroll-my-1 p-1">
+      <div
+        role="group"
+        aria-labelledby="s1-trigger"
+        data-slot="select-group"
+        class="scroll-my-1 p-1"
+      >
         <div
           role="option"
           aria-labelledby="s1-e0"

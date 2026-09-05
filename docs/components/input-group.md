@@ -1023,7 +1023,6 @@ Use `align="block-end"` to position the addon below the input.
         --radix-popover-trigger-width: var(--radix-popper-anchor-width);
         --radix-popover-trigger-height: var(--radix-popper-anchor-height);
       "
-      id="k0"
     >
       <p class="font-medium">Your connection is not secure.</p>
       <p>You should not enter any sensitive information on this site.</p>

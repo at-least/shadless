@@ -161,7 +161,7 @@ async function handle(req) {
     }
     case "waitForFunction": {
       const { page } = pages.get(req.pageId)
-      await page.waitForFunction(req.expr, null, { timeout: req.timeout ?? 5000 })
+      await page.waitForFunction(req.expr, null, { timeout: req.timeout ?? 15_000 })
       return { ok: true }
     }
     case "events": {
@@ -201,14 +201,14 @@ async function handle(req) {
     case "locWait": {
       const { page } = pages.get(req.pageId)
       const loc = await locatorIn(page, req)
-      await loc.first().waitFor({ state: req.state ?? "visible", timeout: req.timeout ?? 5000 })
+      await loc.first().waitFor({ state: req.state ?? "visible", timeout: req.timeout ?? 15_000 })
       return { ok: true }
     }
     case "locScroll": {
       const { page } = pages.get(req.pageId)
       const loc = await locatorIn(page, req)
       const nth = loc.nth(req.index ?? 0)
-      await nth.scrollIntoViewIfNeeded({ timeout: req.timeout ?? 5000 }).catch(() => {})
+      await nth.scrollIntoViewIfNeeded({ timeout: req.timeout ?? 15_000 }).catch(() => {})
       return { ok: true }
     }
     case "locAttr": {
@@ -245,11 +245,15 @@ async function handle(req) {
       for (const h of handles) values.push(await h.evaluate(fn, req.arg ?? undefined))
       return { value: values }
     }
+    // 15 s, not 5, on every interaction/wait default: example-fixture
+    // --contracts timed out twice on a dialog trigger click under 16-way
+    // browser load and passed five forced runs alone. Playwright's own
+    // default is 30 s; 5 s only ever fit a quiet machine.
     case "locClick": {
       const { page } = pages.get(req.pageId)
       const loc = await locatorIn(page, req)
       const nth = loc.nth(req.index ?? 0)
-      await nth.click({ timeout: req.timeout ?? 5000, button: req.button ?? "left" })
+      await nth.click({ timeout: req.timeout ?? 15_000, button: req.button ?? "left" })
       return { ok: true }
     }
     case "mouseMove": {
