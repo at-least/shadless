@@ -20,6 +20,7 @@
 // Single inline <script>; idempotent (string-detect on the IIFE prefix).
 export const THEME_PREPAINT_SCRIPT = `<script>(function(){try{var k="shadless-docs-theme";var apply=function(d){document.documentElement.classList.toggle("dark",!!d)};var s=localStorage.getItem(k);var d=s?s==="dark":matchMedia("(prefers-color-scheme: dark)").matches;apply(d);addEventListener("storage",function(e){if(e.key===k)apply(e.newValue==="dark")});}catch(e){}})();</script>`
 
+/** @param {string} html @returns {string} */
 export function injectPrePaint(html) {
   // Idempotency: check for the actual script-tag shape, not just the
   // localStorage key (some demos already use the key in their own JS).
@@ -46,6 +47,7 @@ export function injectPrePaint(html) {
 // derive their image from THIS function so the three can't drift —
 // the FT11 lesson, applied.
 export const SITE_FONTS_LINK = '<link rel="stylesheet" href="../fonts.css">'
+/** @param {string} html @returns {string} */
 export function injectSiteSkin(html) {
   const out = injectPrePaint(html)
   if (out.includes(SITE_FONTS_LINK)) return out

@@ -15,6 +15,13 @@ import { SKIN_ALLOWLIST } from "./skin.mjs"
 import { NAT, VOID, normalizeTag } from "../tags.mjs"
 import { THEME_PREPAINT_SCRIPT, SHADLESS_CSS_FIXES } from "../docs/theme-prepaint.mjs"
 
+/** @typedef {import("../ir.d.ts").Ir} Ir */
+/** @typedef {import("../ir.d.ts").IrComponent} IrComponent */
+/** resolved element tree node (buildTree output) */
+/** @typedef {{ tag: string, slot: string | null, anchor: string | null, anchorM: string[] | null, kids: TreeNode[] }} TreeNode */
+/** one DEFAULT_CONTENT value: text → escaped text node; html/attrs/children compose; null → leave empty */
+/** @typedef {string | { html?: string, attrs?: Record<string, string>, children?: Record<string, string> } | null} DefaultEntry */
+
 
 const IRDIR = "generated/ir"
 
@@ -23,8 +30,17 @@ const IRDIR = "generated/ir"
 // coerced every non-native root to <button> and emitted children like
 // <ChevronLeftIcon> literally. anchors maps "fn#elementIndex" → class token
 // for slotless-with-classes elements (componentCss assigns them).
+/**
+ * @param {Ir} ir
+ * @param {IrComponent} fn
+ * @param {Set<number>} [claimed]
+ * @param {Map<string, string>} [anchors]
+ * @param {Map<string, string[]>} [anchorMarkers]
+ * @returns {TreeNode}
+ */
 export function buildTree(ir, fn, claimed = new Set(), anchors = new Map(), anchorMarkers = new Map()) {
   const byKey = fn.elements.map((e, i) => ({ e, i }))
+  /** @type {(el: IrComponent["elements"][number], i: number) => TreeNode} */
   const resolve = (el, i) => {
     const kids = []
     for (const sk of el.children || []) {
@@ -65,6 +81,14 @@ export function buildTree(ir, fn, claimed = new Set(), anchors = new Map(), anch
 //     it to leaf roots, silently dropping table/pagination compositions.
 //   - defaultBySlot (slot → content): fills EMPTY leaves (native-select
 //     options into the <select>).
+/**
+ * @param {TreeNode} node
+ * @param {Record<string, string[]>} [markers]
+ * @param {string} [defaultInner]
+ * @param {Record<string, string>} [defaultBySlot]
+ * @param {boolean} [isRoot]
+ * @returns {string}
+ */
 export function renderTree(node, markers = {}, defaultInner = "", defaultBySlot = {}, isRoot = false) {
   const classes = []
   if (node.slot && markers[node.slot]?.length) classes.push(...new Set(markers[node.slot]))
@@ -79,13 +103,21 @@ export function renderTree(node, markers = {}, defaultInner = "", defaultBySlot 
   if (isRoot && defaultInner) inner = defaultInner
   else if (node.kids.length)
     inner = node.kids.map((k) => renderTree(k, markers, "", defaultBySlot)).join("")
-  else inner = defaultBySlot[node.slot] ?? ""
+  else inner = defaultBySlot[node.slot ?? ""] ?? ""
   return `${open}${inner}</${node.tag}>`
 }
 
 // stray table-parts get dropped by HTML parsers at body level — wrap ancestors
+/** @type {Record<string, string>} */
 const TABLE_WRAP = { thead: "table", tbody: "table", tfoot: "table",
   caption: "table", colgroup: "table", tr: "table", th: "table", td: "table" }
+/**
+ * @param {TreeNode} tree
+ * @param {Record<string, string[]>} [markers]
+ * @param {string} [defaultInner]
+ * @param {Record<string, string>} [defaultBySlot]
+ * @returns {string}
+ */
 export function renderFn(tree, markers = {}, defaultInner = "", defaultBySlot = {}) {
   let html = renderTree(tree, markers, defaultInner, defaultBySlot, true)
   let tag = tree.tag
@@ -113,6 +145,7 @@ export function renderFn(tree, markers = {}, defaultInner = "", defaultBySlot = 
 // styling nothing. Nothing gates inline style, so this is the only place the
 // rule is written down. Token/opacity uses color-mix(in oklab, …), tailwind
 // v4's own spelling, not the `/alpha` slash form (also hsl-only).
+/** @type {Record<string, Record<string, DefaultEntry>>} */
 export const DEFAULT_CONTENT = {
   badge: { Badge: "Badge" },
   button: { Button: "Button" },
@@ -262,16 +295,23 @@ export const DEFAULT_CONTENT = {
   },
 }
 
+/** @param {string} s */
 export const escHtml = (s) => String(s)
   .replace(/&/g, "&amp;").replace(/</g, "&lt;")
   .replace(/>/g, "&gt;").replace(/"/g, "&quot;")
 
+/**
+ * @param {Ir} ir
+ * @param {IrComponent} fn
+ * @returns {{ inner?: string, attrs?: Record<string, string>, children?: Record<string, string> } | null}
+ */
 export function resolveDefault(ir, fn) {
   const entry = DEFAULT_CONTENT[ir.name]?.[fn.fn]
   if (entry === undefined || entry === null) return null
   if (typeof entry === "string") return { inner: escHtml(entry) }
   // Compose html + attrs + children; previously picked one and dropped the
   // others, so adding role= to an entry that already had html was a no-op.
+  /** @type {{ inner?: string, attrs?: Record<string, string>, children?: Record<string, string> }} */
   const out = {}
   if (entry.html) out.inner = entry.html
   if (entry.attrs) out.attrs = entry.attrs
@@ -282,6 +322,7 @@ export function resolveDefault(ir, fn) {
 // Apply extra attrs (e.g. placeholder, style) to the root open tag of the
 // rendered fn output. Quote-aware scan for the end of the first open tag —
 // a plain [^>]* break on attribute values containing ">" (aria-label="→").
+/** @param {string} html @param {Record<string, string>} attrs @returns {string} */
 export function mergeRootAttrs(html, attrs) {
   const extra = Object.entries(attrs)
     .map(([k, v]) => `${k}="${escHtml(v)}"`)
@@ -302,12 +343,13 @@ export function mergeRootAttrs(html, attrs) {
 
 // validate DEFAULT_CONTENT keys against the actual IRs (stale keys previously
 // survived silently)
+/** @param {Ir[]} statics @returns {string[]} */
 export function validateDefaultContent(statics) {
   const errs = []
   const names = new Set(statics.map((ir) => ir.name))
   for (const [comp, fns] of Object.entries(DEFAULT_CONTENT)) {
     if (!names.has(comp)) { errs.push(`unknown component key: ${comp}`); continue }
-    const ir = statics.find((s) => s.name === comp)
+    const ir = /** @type {Ir} */ (statics.find((s) => s.name === comp))
     const exported = new Set(ir.components.filter((c) => c.export).map((c) => c.fn))
     for (const fn of Object.keys(fns))
       if (!exported.has(fn)) errs.push(`[${comp}] unknown fn key: ${fn}`)
@@ -332,8 +374,9 @@ function main() {
   mkdirSync("build/emit", { recursive: true })
 
   const files = readdirSync(IRDIR).filter((f) => f.endsWith(".json")).sort()
-  const statics = files.map((f) => JSON.parse(readFileSync(join(IRDIR, f), "utf8")))
+  const statics = /** @type {Ir[]} */ (files.map((f) => JSON.parse(readFileSync(join(IRDIR, f), "utf8"))))
     .filter((ir) => ir.tier === "static")
+  /** @type {Record<string, import("../ir.d.ts").TierEntry>} */
   const EXPECTED_STATIC = JSON.parse(readFileSync("src/registry/tiers.json", "utf8"))
   const wantStatic = Object.values(EXPECTED_STATIC).filter((t) => t.tier === "static").length
   let fail = false
@@ -345,14 +388,20 @@ function main() {
 
   const cssParts = []
   const allAnchors = new Set()
+  /** @type {Map<string, { ir: Ir, trees: TreeNode[] }>} */
   const treesByIr = new Map() // for the jsdom nesting gate
   let totalSlots = 0
   for (const ir of statics) {
     const fns = ir.components.filter((c) => c.export)
-    let rules, markers, anchors, anchorMarkers, unlayered
+    /** @type {string[]} */ let rules
+    /** @type {Record<string, string[]>} */ let markers
+    /** @type {Map<string, string>} */ let anchors
+    /** @type {Map<string, string[]>} */ let anchorMarkers
+    /** @type {string[]} */ let unlayered
     try { ({ rules, markers, anchors, anchorMarkers, unlayered } = componentCss(ir)) }
-    catch (e) { console.error(`FAIL css[${ir.name}]: ${e.message}`); fail = true; continue }
+    catch (/** @type {any} */ e) { console.error(`FAIL css[${ir.name}]: ${e.message}`); fail = true; continue }
     for (const t of anchors.values()) allAnchors.add(t)
+    /** @type {TreeNode[]} */
     const trees = []
     const body = fns.map((c) => {
       try {
@@ -364,7 +413,7 @@ function main() {
         let html = renderFn(tree, markers, inner, children)
         if (def?.attrs) html = mergeRootAttrs(html, def.attrs)
         return html
-      } catch (e) { console.error(`FAIL emit[${ir.name}.${c.fn}]: ${e.message}`); fail = true; return "" }
+      } catch (/** @type {any} */ e) { console.error(`FAIL emit[${ir.name}.${c.fn}]: ${e.message}`); fail = true; return "" }
     }).join("\n")
     treesByIr.set(ir.name, { ir, trees })
     const html = `<!doctype html>
@@ -446,6 +495,7 @@ ${body}
 
     // union of (tag, slot) pairs across fn trees — exactly what we render
     const treePairs = new Set(), treeEdges = new Set()
+    /** @type {(n: TreeNode, parentSlot: string | null) => void} */
     const collect = (n, parentSlot) => {
       if (n.slot) {
         treePairs.add(`${n.tag}@${n.slot}`)

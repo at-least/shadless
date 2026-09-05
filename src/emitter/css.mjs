@@ -17,6 +17,17 @@ import { normalizeTag, kebab } from "../tags.mjs"
 import { SKIN_ALLOWLIST, SKIN_MAP } from "./skin.mjs"
 import { twMerge } from "tailwind-merge"
 
+/** @typedef {import("../ir.d.ts").Ir} Ir */
+/** @typedef {import("../ir.d.ts").IrElement} IrElement */
+/** @typedef {import("../ir.d.ts").IrConditional} IrConditional */
+/** @typedef {import("../ir.d.ts").CvaTable} CvaTable */
+/** @typedef {import("../ir.d.ts").CvaRef} CvaRef */
+/** a conditionals[] entry the converter could fully read (kind/class-cond) */
+/** @typedef {{ kind: "class-cond", fn: string, slot?: string, then: string, else: string, test: import("../ir.d.ts").IrCondTest }} ClassCond */
+/** class string partitioned by splitMarkers: @apply-able utilities vs markup-only tokens */
+/** @typedef {{ apply: string, markers: string[] }} Split */
+/** @typedef {{ rules: string[], markers: Record<string, string[]>, anchors: Map<string, string>, anchorMarkers: Map<string, string[]>, unlayered: string[] }} ComponentCssResult */
+
 // twMerge residue. React renders cn(table({…})) — twMerge DROPS a base
 // utility that a value utility conflicts with. Usually the value sets the
 // same property and later-wins in our rules is equivalent. Not when the
@@ -30,12 +41,15 @@ import { twMerge } from "tailwind-merge"
 // [dropped-token shape, [reset utility, shape of a value token that already sets it]]
 // (twMerge itself cannot answer "does the value set line-height": it treats
 // any font-size utility as conflicting with leading-*, because text-sm does)
+/** @type {[RegExp, [string, RegExp][]][]} */
 const RESIDUE = [
   [/^text-(xs|sm|base|lg|xl|\dxl)$/, [["leading-[inherit]", /^(leading-|text-(xs|sm|base|lg|xl|\dxl)$)/]]],   // font-size + line-height
   [/^size-/, [["w-auto", /^(w-|size-)/], ["h-auto", /^(h-|size-)/]]],                                          // width + height
 ]
 // Tailwind's class-name escaping for a utility used as a selector
+/** @param {string} t */
 export const cssEscape = (t) => t.replace(/[^A-Za-z0-9_-]/g, (ch) => "\\" + ch)
+/** @param {string} base @param {string} value @returns {string[]} */
 export function residueResets(base, value) {
   const merged = new Set(twMerge(`${base} ${value}`).split(/\s+/))
   const out = []
@@ -69,6 +83,7 @@ export const DEAD_UTILITIES = new Set(["origin-top-center"])
 // the CLI installs into a user project, so they must never reach @apply
 // (an unresolvable utility) and simply stay on the element's class=.
 
+/** @param {string} str @returns {Split} */
 export function splitMarkers(str) {
   const toks = str.split(/\s+/).filter(Boolean)
   return {
@@ -78,9 +93,11 @@ export function splitMarkers(str) {
 }
 
 // cva table → slot mapping: naming convention (buttonVariants→Button) else single
+/** @param {Ir} ir @returns {Record<string, { table: CvaTable, slot: string | null }>} */
 export function cvaSlot(ir) {
   const entries = Object.entries(ir.cva)
   if (!entries.length) return {}
+  /** @type {Record<string, { table: CvaTable, slot: string | null }>} */
   const out = {}
   for (const [varName, table] of entries) {
     const stem = varName.replace(/Variants$/, "")
@@ -93,20 +110,23 @@ export function cvaSlot(ir) {
     const slot = fn?.elements.find((e) => e.slot)?.slot || null
     out[varName] = { table, slot }
   }
-  return out
+  return /** @type {Record<string, { table: CvaTable, slot: string | null }>} */ (out)
 }
 
-const cleanTag = (t) => kebab(String(t).replace(/^<ternary:[^/]+\//, "").replace(/>$/, ""))
+const cleanTag = (/** @type {string} */ t) => kebab(String(t).replace(/^<ternary:[^/]+\//, "").replace(/>$/, ""))
 
+/** @param {Ir} ir @returns {ComponentCssResult} */
 export function componentCss(ir) {
   const rules = []
   const cvaMap = cvaSlot(ir)
   const cvaSlots = new Set(Object.values(cvaMap).map((v) => v.slot).filter(Boolean))
+  /** @type {Record<string, string[]>} */
   const markers = {} // slot -> marker tokens (group/peer + allowlist), stay in HTML
   const anchors = new Map() // "fn#elementIndex" -> class token
   const anchorMarkers = new Map() // "fn#elementIndex" -> allowlist tokens for slotless elements (stay in HTML, no rule)
   const lateAnchorRules = [] // same-slot conflicting-remainder anchor rules
   const usedTokens = new Set()
+  /** @type {(t: string) => string} */
   const token = (t) => {
     let out = t, n = 1
     while (usedTokens.has(out)) out = `${t}-${++n}`
@@ -115,14 +135,16 @@ export function componentCss(ir) {
   }
 
   // pass 1: group elements — slotted (by slot) / slotless (anchors)
+  /** @type {Map<string, { el: IrElement, key: string }[]>} */
   const bySlot = new Map() // slot -> [{ el, key }]
   for (const c of ir.components)
     c.elements.forEach((el, idx) => {
       if (!el.classes.length) return
       const key = `${c.fn}#${idx}`
       if (el.slot && !cvaSlots.has(el.slot)) {
-        if (!bySlot.has(el.slot)) bySlot.set(el.slot, [])
-        bySlot.get(el.slot).push({ el, key })
+        const list = bySlot.get(el.slot) ?? []
+        list.push({ el, key })
+        bySlot.set(el.slot, list)
       } else if (!el.slot) {
         const base = c.elements[0] === el ? kebab(c.fn) : `${kebab(c.fn)}-${cleanTag(el.tag)}`
         anchors.set(key, token(base))
@@ -139,23 +161,29 @@ export function componentCss(ir) {
   // fn's default. Only conditionals whose test the converter could read
   // (ident === "literal", ir.conditionals[].test) are split; the rest keep
   // the old merged shape and stay visible to style-parity.
+  /** @type {Map<string, ClassCond[]>} */
   const condBranches = new Map() // "fn#idx" -> [{ then, else, test }]
   const rootSlot = ir.components.map((c) => c.elements.find((e) => e.slot)?.slot).find(Boolean)
   for (const cond of ir.conditionals ?? []) {
     if (cond.kind !== "class-cond" || !cond.test) continue
-    const c = ir.components.find((cc) => cc.fn === cond.fn)
+    // the runtime guard above proves the ClassCond shape
+    const ccond = /** @type {ClassCond} */ (cond)
+    const c = ir.components.find((cc) => cc.fn === ccond.fn)
     c?.elements.forEach((el, idx) => {
-      if (el.classes.includes(cond.then) && el.classes.includes(cond.else)) {
-        const key = `${cond.fn}#${idx}`
-        if (!condBranches.has(key)) condBranches.set(key, [])
-        condBranches.get(key).push(cond)
+      if (el.classes.includes(ccond.then) && el.classes.includes(ccond.else)) {
+        const key = `${ccond.fn}#${idx}`
+        const list = condBranches.get(key) ?? []
+        list.push(ccond)
+        condBranches.set(key, list)
       }
     })
   }
+  /** @type {(el: IrElement, key: string) => string} */
   const stripBranches = (el, key) => {
     const conds = condBranches.get(key) ?? []
     return el.classes.filter((c) => !conds.some((cd) => c === cd.then || c === cd.else)).join(" ")
   }
+  /** @type {(selector: string, key: string) => string[]} */
   const branchRules = (selector, key) => {
     const out = []
     for (const cond of condBranches.get(key) ?? []) {
@@ -180,6 +208,7 @@ export function componentCss(ir) {
       // branch's utilities as inline classes.
       // …including the logical twin of a physical utility (pl-4 ↔ ps-4): the
       // RTL examples carry the logical form inline
+      /** @type {(tok: string) => string[]} */
       const twins = (tok) => {
         const m = /^(-?)(p|m|inset|scroll-p|scroll-m)(l|r|s|e)-(.+)$/.exec(tok)
         if (!m) return [tok]
@@ -192,6 +221,7 @@ export function componentCss(ir) {
       // an RTL box is padding-right, so adding our physical pl-4 doubles
       // it). Spacing/inset utilities are matched by GROUP prefix so pt-1
       // shadows pt-4; everything else by exact token.
+      /** @type {(tok: string) => string[]} */
       const shadows = (tok) => {
         const m = /^(-?)(p|m|inset|top|right|bottom|left|start|end)([tblrsexy])?-/.exec(tok)
         if (!m) return [`:not(.${cssEscape(tok)})`]
@@ -226,11 +256,13 @@ export function componentCss(ir) {
 
   // plain-class slot rules (elements with classes, not covered by cva)
   for (const [slot, items] of bySlot) {
+    /** @type {Map<string, { tags: Set<string>, markers: string[] }>} */
     const sigs = new Map() // apply string -> { tags:Set, markers:[] }
     for (const { el, key } of items) {
       const s = splitMarkers(stripBranches(el, key))
       if (!sigs.has(s.apply)) sigs.set(s.apply, { tags: new Set(), markers: [] })
       const info = sigs.get(s.apply)
+      if (!info) continue
       const tag = normalizeTag(el.tag, ir.tagHints)
       info.tags.add(tag ?? "?")
       info.markers.push(...s.markers)
@@ -386,13 +418,18 @@ export function componentCss(ir) {
   // line-height under the arbitrary font-size — 18.29px where React, having
   // dropped text-sm, inherits 19.2px (gates/demo-parity.mjs, toggle). twMerge
   // keeps the later utility and drops the earlier conflicting one.
+  /** @type {(list: string[]) => string[]} */
   const merged = (list) => list.map((r) => r.replace(/@apply ([^;]+);/g, (m, a) => `@apply ${twMerge(a)};`))
   return { rules: merged(rules), markers, anchors, anchorMarkers, unlayered: merged(unlayered) }
 }
 
-// Wrap one component's rule set exactly the way every writer must: the slot
-// and anchor rules in @layer components, the skin-marker rules after it,
-// unlayered. One definition, used by the static emitter and the demo builder.
+/** Wrap one component's rule set exactly the way every writer must: the slot
+ * and anchor rules in @layer components, the skin-marker rules after it,
+ * unlayered. One definition, used by the static emitter and the demo builder.
+ * @param {string} name
+ * @param {{ rules: string[], unlayered?: string[] }} param1
+ * @returns {string}
+ */
 export function wrapComponentCss(name, { rules, unlayered = [] }) {
   const parts = [`/* ${name} */\n@layer components {\n${rules.join("\n")}\n}`]
   if (unlayered.length) parts.push(`/* ${name}: skin markers (unlayered, as upstream ships them) */\n${unlayered.join("\n")}`)

@@ -36,9 +36,11 @@ export const VOID = new Set(["br","hr","img","input","meta","link","area","base"
 // External member-expression tag suffix rule (see header). `X.Button` → button.
 // KNOWN_MEMBER_TAGS overrides first — primitives whose real root tag is known
 // (verified against node_modules) and differs from the suffix rule.
+/** @type {Record<string, "label" | "button" | "div">} */
 const KNOWN_MEMBER_TAGS = {
   "LabelPrimitive.Root": "label", // @radix-ui/react-label renders <label>
 }
+/** @param {string} tag @returns {"label" | "button" | "div"} */
 export function externalMemberTag(tag) {
   if (Object.hasOwn(KNOWN_MEMBER_TAGS, tag)) return KNOWN_MEMBER_TAGS[tag]
   const suffix = tag.slice(tag.lastIndexOf(".") + 1)
@@ -46,10 +48,18 @@ export function externalMemberTag(tag) {
 }
 
 // kebab-case a PascalCase identifier (ButtonGroupText → button-group-text)
+/** @param {string} s @returns {string} */
 export function kebab(s) {
   return s.replace(/([a-z0-9])([A-Z])/g, "$1-$2").replace(/[\s.]+/g, "-").toLowerCase()
 }
 
+/**
+ * Resolve a raw IR tag to its native HTML tag. Returns null when unresolved —
+ * callers must fail loudly (see the resolution-order notes in the header).
+ * @param {string | null | undefined} tag
+ * @param {Record<string, string>} hints
+ * @returns {string | null}
+ */
 export function normalizeTag(tag, hints = {}) {
   if (tag == null) return null
   if (NAT.has(tag)) return tag

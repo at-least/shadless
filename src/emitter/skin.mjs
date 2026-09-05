@@ -16,8 +16,9 @@ import { readFileSync } from "node:fs"
 
 export const SKIN_PATH = ".upstream/shadcn-ui/apps/v4/registry/styles/style-nova.css"
 
-// cn-X → its @apply body (the same map upstream's generator builds via
-// packages/shadcn/src/styles/create-style-map.ts).
+/** cn-X → its @apply body (the same map upstream's generator builds via
+ * packages/shadcn/src/styles/create-style-map.ts).
+ * @type {Record<string, string>} */
 export const SKIN_MAP = {}
 
 // Upstream transform-style-map.ts ALLOWLIST: cn-* names that stay
@@ -32,6 +33,7 @@ export const SKIN_ALLOWLIST = new Set([
   "cn-font-heading",
 ])
 
+/** @param {string} css @returns {void} */
 export function parseSkinMap(css) {
   const start = css.indexOf("{")
   const end = css.lastIndexOf("}")

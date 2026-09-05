@@ -18,8 +18,10 @@
 // preserved) so span searches see only prose/markup. Line-based (3+
 // backtick fences, info strings, unclosed fences blank to EOF) —
 // strictly more robust than the regex-pair scan it replaced.
+/** @param {string} text @returns {string} */
 export const fenceShadow = (text) => {
   const lines = text.split("\n")
+  /** @type {number | null} */
   let open = null
   return lines.map((line) => {
     if (open === null) {
@@ -35,6 +37,13 @@ export const fenceShadow = (text) => {
 // Returns [{start, end}] with end just past the matching
 // </TabsContent>. Malformed (no close) stops the scan — the builder
 // throws on anything other than exactly one well-formed span.
+/**
+ * @typedef {{ start: number, end: number }} Span
+ */
+/**
+ * @param {string} shadow
+ * @returns {Span[]}
+ */
 export function locateManualTabSpans(shadow) {
   const spans = []
   const re = /<TabsContent value=("manual"|manual)>/g
@@ -52,6 +61,7 @@ export function locateManualTabSpans(shadow) {
 // The `## Installation` … `## Usage` span in utils guides (outside
 // fences). end = the '#' of "## Usage" (guideTransform replaces up to
 // it, keeping the Usage heading). Null when absent/malformed.
+/** @param {string} shadow @returns {Span | null} */
 export function locateInstallSection(shadow) {
   const open = /^## Installation$/m.exec(shadow)
   if (!open) return null
@@ -67,6 +77,7 @@ export function locateInstallSection(shadow) {
 // — and the gate drops the same span from mdx facts (replacement content
 // adds no headings; extra html fences pass the one-directional fence
 // check).
+/** @param {string} shadow @returns {Span[]} */
 export function locateCodeTabsSpans(shadow) {
   const spans = []
   const re = /<CodeTabs>/g
@@ -86,6 +97,7 @@ export function locateCodeTabsSpans(shadow) {
 // (migrate command, base-component link list, add direction,
 // DirectionProvider wiring) with no shadless equivalent; the builder
 // replaces it with vanilla prose, the gate drops it from mdx facts.
+/** @param {string} shadow @returns {Span | null} */
 export function locateRtlMigrateSpan(shadow) {
   const open = /^## Migrating existing components$/m.exec(shadow)
   if (!open) return null
@@ -98,6 +110,7 @@ export function locateRtlMigrateSpan(shadow) {
 // with React import + JSX fences; the builder replaces it with the shadless
 // usage story (copy-markup + the JSX-prop → data-attribute API table).
 // end = the '#' of the next section heading. Null when absent/malformed.
+/** @param {string} shadow @returns {Span | null} */
 export function locateUsageSpan(shadow) {
   const open = /^## Usage$/m.exec(shadow)
   if (!open) return null
@@ -109,6 +122,7 @@ export function locateUsageSpan(shadow) {
 // The `## Composition` … next `## ` span on component pages. Upstream
 // shows the component tree (PascalCase names) + React composition
 // examples; the builder keeps ONLY the tree, translated to slot names.
+/** @param {string} shadow @returns {Span | null} */
 export function locateCompositionSpan(shadow) {
   const open = /^## Composition$/m.exec(shadow)
   if (!open) return null
@@ -126,6 +140,7 @@ export function locateCompositionSpan(shadow) {
 // across a closing fence and swallowing whatever sits between two import
 // fences (that bug ate a whole CodeTabs block before the locator saw it).
 const IMPORT_FENCE = /```tsx[^\n]*\n((?:import(?:(?!```)[\s\S])*?from\s+"[@/][^"]+"[^\n]*\n?)+)```\n?/g
+/** @param {string} raw @returns {string} */
 export function dropReactImportFences(raw) {
   return raw.replace(IMPORT_FENCE, "")
 }
@@ -134,6 +149,7 @@ export function dropReactImportFences(raw) {
 // import statements and shift the shiki line-number highlights ({1,4-6})
 // past them, so the remaining JSX keeps correct highlight positions. Same
 // lockstep rule — builder and gate both apply this.
+/** @param {string} raw @returns {string} */
 export function stripImportsFromMixedFences(raw) {
   return raw.replace(/```tsx([^\n]*)\n([\s\S]*?)```/g, (whole, meta, body) => {
     const lines = body.split("\n")
@@ -154,8 +170,9 @@ export function stripImportsFromMixedFences(raw) {
     const kept = lines.slice(removed - (lines[removed - 1]?.trim() === "" ? 1 : 0))
     if (kept.join("").trim() === "") return "" // fence was imports-only — drop it
     // renumber {…} highlight refs: drop refs into the removed range, shift the rest
-    const metaOut = meta.replace(/\{([0-9,\s-]+)\}/, (m0, list) => {
-      const shifted = list.split(",").map((s) => s.trim()).filter(Boolean).map((part) => {
+    const metaOut = meta.replace(/\{([0-9,\s-]+)\}/, (/** @type {string} */ m0, /** @type {string} */ list) => {
+      const shifted = list.split(",").map((/** @type {string} */ s) => s.trim()).filter(Boolean).map((/** @type {string} */ part) => {
+        /** @type {number[]} */
         const range = part.split("-").map(Number)
         if (range.some((n) => Number.isNaN(n))) return part
         if (range[0] <= removed) return null
@@ -204,6 +221,7 @@ export const TEXT_ADJUSTMENTS = [
 // basename). Returns the raw text unchanged for unlisted files; throws
 // if a declared find string is missing (upstream changed the prose —
 // the adjustment must be re-anchored, never silently skipped).
+/** @param {string} basename @param {string} raw @returns {string} */
 export function applyTextAdjustments(basename, raw) {
   let out = raw
   for (const adj of TEXT_ADJUSTMENTS) {
