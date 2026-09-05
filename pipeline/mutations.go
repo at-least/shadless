@@ -580,6 +580,19 @@ var Mutations = []Mutation{
 		},
 	},
 	{
+		ID: "typecheck-break-ir-contract", Gate: "typecheck",
+		Why:   "the IR contract types drift from what the code passes (a hint stops being a tag map)",
+		Files: []string{"src/tags.mjs"},
+		// normalizeTag's hints parameter is annotated as the IR tagHints map;
+		// retyping it breaks every call site that passes ir.tagHints, so tsc
+		// must refuse — proving checkJs actually constrains the JS surface.
+		Apply: func(root string, f []string) error {
+			return mutReplaceOnce(root, f[0],
+				"* @param {Record<string, string>} hints",
+				"* @param {number} hints")
+		},
+	},
+	{
 		ID: "variant-merge-defaults", Gate: "path-parity",
 		Why:   "default-variant utilities cascade into non-default variants",
 		Files: []string{"dist/css/button.css"},

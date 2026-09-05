@@ -46,6 +46,7 @@ type NodeID string
 
 const (
 	NPin                NodeID = "pin"
+	NTypecheck          NodeID = "typecheck"
 	NUnit               NodeID = "unit"
 	NLedger             NodeID = "ledger"
 	NScriptRefs         NodeID = "script-refs"
@@ -141,6 +142,18 @@ var Nodes = []Node{
 		Produces:  nil,
 		Why:       "seconds-level guard over the pure functions cleanup rounds touch; born from a dead-code delete in rewritePaths that only surfaced minutes later",
 		Mutations: []string{"unit-break-pure-fn"},
+	},
+	{
+		ID: NTypecheck, Kind: "gate", Tier: "fast",
+		Needs: nil,
+		Run:   [][]string{{"npx", "tsc", "-p", "tsconfig.json"}},
+		// src/** covers the annotated sources and src/ir.d.ts (the IR
+		// contract types); the tsconfig itself and the toolchain pin close
+		// the key so a strictness or types-package change re-runs it.
+		Inputs:    []string{"src/**", "tsconfig.json", "package.json", "package-lock.json"},
+		Produces:  nil,
+		Why:       "the JSDoc types are the IR/emit contract — checkJs keeps them machine-checked; npm run verify alone would not enforce it for direct pipeline runs",
+		Mutations: []string{"typecheck-break-ir-contract"},
 	},
 	{
 		ID: NLedger, Kind: "gate", Tier: "fast",
