@@ -456,7 +456,7 @@ var Nodes = []Node{
 		// The site generator. It also FAILS on a dead internal link, which is
 		// what tools/docs-links.mjs asserted over our own HTML template —
 		// deleted with the template.
-		Inputs:   []string{"docs/components/**", "docs/guides/**", "docs/index.md", "docs/.vitepress/config.mts", "docs/.vitepress/theme/**", "docs/.vitepress/sidebar.json", "docs/public/**", "package.json", "package-lock.json"},
+		Inputs:   []string{"docs/components/**", "docs/guides/**", "docs/index.md", "docs/.vitepress/config.mts", "docs/.vitepress/theme/**", "docs/.vitepress/sidebar.json", "docs/public/**", "package.json", "package-lock.json", "tsconfig.json"},
 		Produces: []string{"docs/.vitepress/dist"},
 		Why:      "the markdown becomes a site, and a link to a page this mirror does not carry stops the build",
 	},
