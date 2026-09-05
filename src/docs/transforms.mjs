@@ -175,7 +175,7 @@ export function stripImportsFromMixedFences(raw) {
         /** @type {number[]} */
         const range = part.split("-").map(Number)
         if (range.some((n) => Number.isNaN(n))) return part
-        if (range[0] <= removed) return null
+        if ((/** @type {number} */ (range[0])) <= removed) return null
         return range.map((n) => n - removed).join("-")
       }).filter(Boolean)
       return shifted.length ? `{${shifted.join(",")}}` : ""

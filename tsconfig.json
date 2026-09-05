@@ -5,6 +5,7 @@
     "checkJs": true,
     "noEmit": true,
     "strict": true,
+    "noUncheckedIndexedAccess": true,
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "allowImportingTsExtensions": true,

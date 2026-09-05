@@ -212,7 +212,7 @@ export function componentCss(ir) {
       const twins = (tok) => {
         const m = /^(-?)(p|m|inset|scroll-p|scroll-m)(l|r|s|e)-(.+)$/.exec(tok)
         if (!m) return [tok]
-        const alt = { l: "s", r: "e", s: "l", e: "r" }[m[3]]
+        const alt = { l: "s", r: "e", s: "l", e: "r" }[/** @type {"l" | "r" | "s" | "e"} */ (m[3])]
         return [tok, `${m[1]}${m[2]}${alt}-${m[4]}`]
       }
       // A branch rule yields whenever EITHER branch's utilities are already
@@ -292,7 +292,7 @@ export function componentCss(ir) {
     }
     const tokenLists = [...sigs.keys()].map((a) => a.split(/\s+/).filter(Boolean))
     if (!tokenLists.every((l) => l.length)) continue // an empty set can't anchor
-    const common = tokenLists[0].filter((t) => tokenLists.every((l) => l.includes(t)))
+    const common = (/** @type {string[]} */ (tokenLists[0])).filter((t) => tokenLists.every((l) => l.includes(t)))
     if (common.length) rules.push(`  [data-slot="${slot}"] { @apply ${common.join(" ")}; }`)
     for (const { el, key } of items) {
       const own = splitMarkers(el.classes.join(" ")).apply.split(/\s+/).filter(Boolean)

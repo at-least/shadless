@@ -44,7 +44,7 @@ export function parseSkinMap(css) {
   for (const b of blocks) {
     const m = /^\.([\w-]+)\s*\{([^{}]*)\}$/.exec(b)
     if (!m) throw new Error(`skin: unparsable block: ${b.slice(0, 60)}`)
-    const [, name, inner] = m
+    const [, name, inner] = /** @type {[string, string, string]} */ (/** @type {unknown} */ (m))
     const decls = inner.trim()
     if (!/^@apply [^;]+;$/.test(decls))
       throw new Error(`skin: cn-${name} is not a flat pure-@apply block: ${decls.slice(0, 60)}`)

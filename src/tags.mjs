@@ -42,7 +42,7 @@ const KNOWN_MEMBER_TAGS = {
 }
 /** @param {string} tag @returns {"label" | "button" | "div"} */
 export function externalMemberTag(tag) {
-  if (Object.hasOwn(KNOWN_MEMBER_TAGS, tag)) return KNOWN_MEMBER_TAGS[tag]
+  if (Object.hasOwn(KNOWN_MEMBER_TAGS, tag)) return /** @type {"label" | "button" | "div"} */ (KNOWN_MEMBER_TAGS[tag])
   const suffix = tag.slice(tag.lastIndexOf(".") + 1)
   return ["Button", "Trigger", "Link"].includes(suffix) ? "button" : "div"
 }

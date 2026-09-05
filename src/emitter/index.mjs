@@ -51,7 +51,7 @@ export function buildTree(ir, fn, claimed = new Set(), anchors = new Map(), anch
           (m[2] ? o.e.slot === m[2] && o.e.tag === m[1] : o.e.tag === m[1]))
         if (hit) { claimed.add(hit.i); kids.push(resolve(hit.e, hit.i)); continue }
         // unresolvable sketch: icon → svg; native → bare; else skip
-        const tag = normalizeTag(m[1], ir.tagHints) ?? m[1]
+        const tag = normalizeTag(/** @type {string} */ (m[1]), ir.tagHints) ?? /** @type {string} */ (m[1])
         if (NAT.has(tag)) kids.push({ tag, slot: m[2] || null, anchor: null, anchorM: null, kids: [] })
       }
       // text/{children}/OPT?/expr → nothing structural
@@ -68,7 +68,7 @@ export function buildTree(ir, fn, claimed = new Set(), anchors = new Map(), anch
       kids,
     }
   }
-  const root = fn.elements[0]
+  const root = /** @type {IrComponent["elements"][number]} */ (fn.elements[0])
   claimed.add(0)
   const tree = resolve(root, 0)
   return tree
@@ -121,7 +121,10 @@ const TABLE_WRAP = { thead: "table", tbody: "table", tfoot: "table",
 export function renderFn(tree, markers = {}, defaultInner = "", defaultBySlot = {}) {
   let html = renderTree(tree, markers, defaultInner, defaultBySlot, true)
   let tag = tree.tag
-  while (TABLE_WRAP[tag]) { html = `<${TABLE_WRAP[tag]}>${html}</${TABLE_WRAP[tag]}>`; tag = TABLE_WRAP[tag] }
+  for (let wrap = TABLE_WRAP[tag]; wrap; wrap = TABLE_WRAP[tag]) {
+    html = `<${wrap}>${html}</${wrap}>`
+    tag = wrap
+  }
   return html
 }
 
@@ -471,7 +474,7 @@ ${body}
   for (const ir of statics) {
     const html = readFileSync(`dist/components/${ir.name}.html`, "utf8")
     const bad = [...html.matchAll(/class="([^"]*)"/g)]
-      .filter((m) => m[1].split(/\s+/).some((t) => t && !MARKER.test(t) && !SKIN_ALLOWLIST.has(t) && !allAnchors.has(t)))
+      .filter((m) => (/** @type {string} */ (m[1])).split(/\s+/).some((t) => t && !MARKER.test(t) && !SKIN_ALLOWLIST.has(t) && !allAnchors.has(t)))
     if (bad.length) {
       console.error(`FAIL [${ir.name}]: non-anchor class= in HTML: ${bad.map((b) => b[1]).join(" | ")}`)
       fail = true
@@ -513,7 +516,7 @@ ${body}
       const def = resolveDefault(ir, c)
       const inner = def?.inner
       if (!inner) continue
-      const rootEl = c.elements[0]
+      const rootEl = /** @type {IrComponent["elements"][number]} */ (c.elements[0])
       const rootTag = normalizeTag(rootEl.tag, ir.tagHints) ?? "div"
       const rootSlot = rootEl.slot
       // table-part roots (thead/tbody/tfoot/tr…) need a <table> scope or the
