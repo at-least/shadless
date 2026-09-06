@@ -154,23 +154,16 @@ func withBrowser(c *dagger.Container) *dagger.Container {
 // Both steps run the Go pipeline binary (resolve-skins, then convert); the
 // node toolchain is gone from this step entirely.
 func (m *Shadless) converted(ctx context.Context, source *dagger.Directory) (*dagger.Container, error) {
-	bin, err := m.pipelineBin(ctx, source)
+	c, err := goContainer(ctx, source)
 	if err != nil {
 		return nil, err
 	}
-	img, err := goImage(ctx, source)
-	if err != nil {
-		return nil, err
-	}
-	return dag.Container().
-		From(img).
-		WithWorkdir("/w").
-		WithFile("/w/build/pipeline", bin).
+	return c.
 		WithDirectory("/w/src", source.Directory("src")).
 		WithDirectory("/w/.upstream/shadcn-ui/apps/v4/registry",
 			source.Directory(".upstream/shadcn-ui/apps/v4/registry")).
-		WithExec([]string{"./build/pipeline", "resolve-skins"}).
-		WithExec([]string{"./build/pipeline", "convert"}), nil
+		WithExec([]string{"pipeline", "resolve-skins"}).
+		WithExec([]string{"pipeline", "convert"}), nil
 }
 
 // Convert turns the pinned registry .tsx into the versioned IR.
@@ -199,22 +192,6 @@ func (m *Shadless) ConvertCheck(ctx context.Context, source *dagger.Directory) (
 		return "", err
 	}
 	return c.Stdout(ctx)
-}
-
-// pipelineBin builds the Go runner. `emit` no longer needs it — the tailwind
-// wrapper it used is one WithWorkdir in a container — but `product-css` and
-// `oracle-css` are Go subcommands with real logic, so the next slice does.
-func (m *Shadless) pipelineBin(ctx context.Context, source *dagger.Directory) (*dagger.File, error) {
-	img, err := goImage(ctx, source)
-	if err != nil {
-		return nil, err
-	}
-	return dag.Container().
-		From(img).
-		WithDirectory("/s", source.Directory("pipeline")).
-		WithWorkdir("/s").
-		WithExec([]string{"go", "build", "-o", "/pipeline", "."}).
-		File("/pipeline"), nil
 }
 
 // emitted is the container after the static tier has been emitted: IR becomes
@@ -306,8 +283,8 @@ func (m *Shadless) Contract(ctx context.Context, source *dagger.Directory, name 
 	if err != nil {
 		return "", err
 	}
+	c = c.WithFile("/usr/local/bin/pipeline", bin)
 	return withContractDef(c, source, name).
-		WithFile("/usr/local/bin/pipeline", bin).
 		WithExec([]string{"pipeline", "contract", name}).
 		Stdout(ctx)
 }

@@ -28,18 +28,11 @@ import (
 // os.Getwd), so /w with the two input trees under it is the whole contract; no
 // repo marker has to be present.
 func (m *Shadless) BuildJs(ctx context.Context, source *dagger.Directory) (*dagger.Directory, error) {
-	img, err := goImage(ctx, source)
+	c, err := goContainer(ctx, source)
 	if err != nil {
 		return nil, err
 	}
-	bin, err := m.pipelineBin(ctx, source)
-	if err != nil {
-		return nil, err
-	}
-	return dag.Container().
-		From(img).
-		WithWorkdir("/w").
-		WithFile("/usr/local/bin/pipeline", bin).
+	return c.
 		WithDirectory("/w/src/runtime", source.Directory("src/runtime")).
 		WithDirectory("/w/vendor", source.Directory("vendor")).
 		WithExec([]string{"pipeline", "build-js"}).

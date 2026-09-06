@@ -22,7 +22,7 @@ func (m *Shadless) cssTools(ctx context.Context, source *dagger.Directory) (*dag
 	if err != nil {
 		return nil, err
 	}
-	bin, err := m.pipelineBin(ctx, source)
+	bin, err := goBinary(ctx, source)
 	if err != nil {
 		return nil, err
 	}
@@ -65,20 +65,17 @@ func (m *Shadless) OracleCss(ctx context.Context, source *dagger.Directory) (*da
 // walks whatever is there and silently emits a smaller stylesheet, so the only
 // way to know the mount set is right is to compare the bytes.
 //
-// dist/ and docs/demos are each written by TWO steps, and both halves have to
-// be here: demo writes the component pages, demo-rtl adds the RTL variants;
-// the fixture generator's docs/demos already carries the oracle's pages
-// (it mounts them and overwrites the 105 it owns), and demo-rtl adds the
-// variants on top.
+// dist/ is written by TWO steps and both halves have to be here: demo writes
+// the component pages, demo-rtl adds the RTL variants.
 //
-// docs/demos ALSO comes from source, underneath those, and that is not
-// laziness. The directory is mixed: 11 message-scroller pages cannot be
-// bundled at all (their upstream imports are not in this repo) and stay
-// hand-authored, plus the demos with no upstream example. Mounting only the
-// generated halves dropped .outline-card from out.css — it lives in
-// docs/demos/message-scroller-visibility.html, which no step produces.
-// The generated pages are layered on top, so they win where both exist.
-// audit-boundary is the gate that knows which file is which.
+// docs/demos is the same overlay, and it is trees.go's demosTree that builds
+// it: source underneath (11 message-scroller pages cannot be bundled at all —
+// their upstream imports are not in this repo — plus the demos with no
+// upstream example, so they stay hand-authored), the fixture generator's
+// pages next (it overwrites the 105 it owns), demo-rtl's variants on top.
+// Mounting only the generated halves dropped .outline-card from out.css — it
+// lives in docs/demos/message-scroller-visibility.html, which no step
+// produces. audit-boundary is the gate that knows which file is which.
 func (m *Shadless) scanTree(ctx context.Context, source *dagger.Directory, c *dagger.Container) (*dagger.Container, error) {
 	demo, err := m.Demo(ctx, source)
 	if err != nil {
@@ -88,7 +85,7 @@ func (m *Shadless) scanTree(ctx context.Context, source *dagger.Directory, c *da
 	if err != nil {
 		return nil, err
 	}
-	fixture, err := m.ExampleFixture(ctx, source)
+	demos, err := m.demosTree(ctx, source)
 	if err != nil {
 		return nil, err
 	}
@@ -103,9 +100,7 @@ func (m *Shadless) scanTree(ctx context.Context, source *dagger.Directory, c *da
 	return c.
 		WithDirectory("/w/dist", demo).
 		WithDirectory("/w/dist/components", rtl.Directory("dist/components")).
-		WithDirectory("/w/docs/demos", source.Directory("docs/demos")).
-		WithDirectory("/w/docs/demos", fixture.Directory("docs/demos")).
-		WithDirectory("/w/docs/demos", rtl.Directory("docs/demos")).
+		WithDirectory("/w/docs/demos", demos).
 		WithDirectory("/w/docs/content", source.Directory("docs/content")).
 		WithDirectory("/w/src/kernel", kernel).
 		WithDirectory("/w/generated/ir", ir).
