@@ -20,20 +20,20 @@ import (
 
 // IR shape as css.mjs + the emitter consume it (superset of tiers.json's).
 type cssIrComponent struct {
-	Name     string           `json:"name"`
-	Tier     string           `json:"tier"`
-	Imports  []string         `json:"imports"`
-	Cva      orderedCva          `json:"cva"`
-	Components []irFn          `json:"components"`
-	Conditionals []irCond      `json:"conditionals"`
-	CvaRefs  []irCvaRef       `json:"cvaRefs"`
-	TagHints map[string]string `json:"tagHints"`
+	Name         string            `json:"name"`
+	Tier         string            `json:"tier"`
+	Imports      []string          `json:"imports"`
+	Cva          orderedCva        `json:"cva"`
+	Components   []irFn            `json:"components"`
+	Conditionals []irCond          `json:"conditionals"`
+	CvaRefs      []irCvaRef        `json:"cvaRefs"`
+	TagHints     map[string]string `json:"tagHints"`
 }
 
 type irFn struct {
-	Fn      string      `json:"fn"`
-	Export  bool        `json:"export"`
-	Elements []irEl     `json:"elements"`
+	Fn       string `json:"fn"`
+	Export   bool   `json:"export"`
+	Elements []irEl `json:"elements"`
 }
 
 type irEl struct {
@@ -45,12 +45,12 @@ type irEl struct {
 }
 
 type irCond struct {
-	Kind   string `json:"kind"`
-	Fn     string `json:"fn"`
-	Slot   *string `json:"slot"`
-	Then   string `json:"then"`
-	Else   string `json:"else"`
-	Test   *irCondTest `json:"test"`
+	Kind string      `json:"kind"`
+	Fn   string      `json:"fn"`
+	Slot *string     `json:"slot"`
+	Then string      `json:"then"`
+	Else string      `json:"else"`
+	Test *irCondTest `json:"test"`
 }
 
 type irCondTest struct {
@@ -80,17 +80,17 @@ type irCvaDyn struct {
 // (which axis's default block comes first) is observable in dist output.
 type cvaTable struct {
 	Base       string
-	axisOrder  []string              // axis keys in JSON order
+	axisOrder  []string // axis keys in JSON order
 	variants   map[string]map[string]string
-	valueOrder map[string][]string   // per-axis value keys in JSON order
+	valueOrder map[string][]string // per-axis value keys in JSON order
 	defaults   map[string]string
 }
 
 func (t *cvaTable) UnmarshalJSON(b []byte) error {
 	var raw struct {
-		Base     string                     `json:"base"`
-		Variants json.RawMessage            `json:"variants"`
-		Defaults map[string]string          `json:"defaults"`
+		Base     string            `json:"base"`
+		Variants json.RawMessage   `json:"variants"`
+		Defaults map[string]string `json:"defaults"`
 	}
 	if err := json.Unmarshal(b, &raw); err != nil {
 		return err
@@ -189,7 +189,6 @@ func (o *orderedCva) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
-
 // ---- from css.mjs, verbatim in intent --------------------------------------
 
 var reCssEscape = regexp.MustCompile(`[^A-Za-z0-9_-]`)
@@ -235,6 +234,41 @@ func residueResets(base, value string) []string {
 		}
 	}
 	return dedup(out)
+}
+
+// residueRuleParts computes the (optional) residue-reset rule and the main
+// `[data-slot=slot]:where(...)` rule for one cva axis value — widened to also
+// match the unset/empty attribute when val is the axis default. apply is the
+// value's own classes, before any reset tokens (from residueResets) are
+// appended into the main rule's @apply list; causes are read from that
+// original apply so the reset rule's selector names the utility that actually
+// needs the reset, never a reset token appended here. hasReset reports
+// whether resetRule is populated. Local cva table rules and cross-file
+// cvaRefs rules order the two returned rules differently to match their
+// respective JS sources, so the caller appends them, not this function.
+func residueRuleParts(slot, axis, val, def, baseApply, apply string) (resetRule string, hasReset bool, mainRule string) {
+	full := apply
+	resets := residueResets(baseApply, apply)
+	if len(resets) > 0 {
+		full = apply + " " + strings.Join(resets, " ")
+		causes := filterToks(apply, func(vt string) bool {
+			return len(residueResets(baseApply, vt)) > 0
+		})
+		if len(causes) > 0 {
+			sel := "." + cssEscape(causes[0])
+			for _, c := range causes[1:] {
+				sel += ", ." + cssEscape(c)
+			}
+			resetRule = fmt.Sprintf("  [data-slot=\"%s\"]:where(%s) { @apply %s; }", slot, sel, strings.Join(resets, " "))
+			hasReset = true
+		}
+	}
+	mainRule = fmt.Sprintf("  [data-slot=\"%s\"]:where([data-%s=\"%s\"]) { @apply %s; }", slot, axis, val, full)
+	if val == def {
+		mainRule = fmt.Sprintf("  [data-slot=\"%s\"]:where(:not([data-%s]), [data-%s=\"%s\"], [data-%s=\"\"]) { @apply %s; }",
+			slot, axis, axis, val, axis, full)
+	}
+	return resetRule, hasReset, mainRule
 }
 
 func someMatch(toks []string, re *regexp.Regexp) bool {
@@ -669,26 +703,11 @@ func componentCss(ir cssIrComponent) (componentCssOut, error) {
 				if t.apply == "" {
 					continue
 				}
-				resets := residueResets(baseApply, t.apply)
-				if len(resets) > 0 {
-					t.apply += " " + strings.Join(resets, " ")
-					causes := filterToks(t.apply, func(vt string) bool {
-						return len(residueResets(baseApply, vt)) > 0
-					})
-					if len(causes) > 0 {
-						sel := "." + cssEscape(causes[0])
-						for _, c := range causes[1:] {
-							sel += ", ." + cssEscape(c)
-						}
-						rules = append(rules, fmt.Sprintf("  [data-slot=\"%s\"]:where(%s) { @apply %s; }", cv.slot, sel, strings.Join(resets, " ")))
-					}
+				resetRule, hasReset, mainRule := residueRuleParts(cv.slot, axis, val, def, baseApply, t.apply)
+				if hasReset {
+					rules = append(rules, resetRule)
 				}
-				rule := fmt.Sprintf("  [data-slot=\"%s\"]:where([data-%s=\"%s\"]) { @apply %s; }", cv.slot, axis, val, t.apply)
-				if val == def {
-					rule = fmt.Sprintf("  [data-slot=\"%s\"]:where(:not([data-%s]), [data-%s=\"%s\"], [data-%s=\"\"]) { @apply %s; }",
-						cv.slot, axis, axis, val, axis, t.apply)
-				}
-				rules = append(rules, rule)
+				rules = append(rules, mainRule)
 			}
 		}
 	}
@@ -715,28 +734,10 @@ func componentCss(ir cssIrComponent) (componentCssOut, error) {
 					rules = append(rules, fmt.Sprintf("  [data-slot=\"%s\"][data-%s=\"%s\"] { @apply %s; }", r.Slot, axis, val, t.apply))
 					continue
 				}
-				resets := residueResets(baseApply, t.apply)
-				apply := t.apply
-				if len(resets) > 0 {
-					apply = t.apply + " " + strings.Join(resets, " ")
-				}
-				rule := fmt.Sprintf("  [data-slot=\"%s\"]:where([data-%s=\"%s\"]) { @apply %s; }", r.Slot, axis, val, apply)
-				if val == def {
-					rule = fmt.Sprintf("  [data-slot=\"%s\"]:where(:not([data-%s]), [data-%s=\"%s\"], [data-%s=\"\"]) { @apply %s; }",
-						r.Slot, axis, axis, val, axis, apply)
-				}
-				rules = append(rules, rule)
-				if len(resets) > 0 {
-					causes := filterToks(t.apply, func(vt string) bool {
-						return len(residueResets(baseApply, vt)) > 0
-					})
-					if len(causes) > 0 {
-						sel := "." + cssEscape(causes[0])
-						for _, c := range causes[1:] {
-							sel += ", ." + cssEscape(c)
-						}
-						rules = append(rules, fmt.Sprintf("  [data-slot=\"%s\"]:where(%s) { @apply %s; }", r.Slot, sel, strings.Join(resets, " ")))
-					}
+				resetRule, hasReset, mainRule := residueRuleParts(r.Slot, axis, val, def, baseApply, t.apply)
+				rules = append(rules, mainRule)
+				if hasReset {
+					rules = append(rules, resetRule)
 				}
 			}
 		}
@@ -774,7 +775,7 @@ func componentCss(ir cssIrComponent) (componentCssOut, error) {
 		unlayered = append(unlayered, fmt.Sprintf(".%s { @apply %s; }", t, skinData.Map[t]))
 	}
 
-return componentCssOut{
+	return componentCssOut{
 		rules:         reApplyMerge(rules),
 		markers:       markers,
 		anchors:       anchors,
@@ -816,18 +817,6 @@ func findFn(ir cssIrComponent, name string) *irFn {
 		}
 	}
 	return nil
-}
-
-func sortedKeysCva(m map[string]struct {
-	table cvaTable
-	slot  string
-}) []string {
-	var out []string
-	for k := range m {
-		out = append(out, k)
-	}
-	sort.Strings(out)
-	return out
 }
 
 func splitAnchorKey(key string) (string, int) {

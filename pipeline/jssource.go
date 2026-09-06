@@ -98,41 +98,19 @@ func jsSetLiteral(src, name string) ([]string, error) {
 }
 
 // jsBalanced returns the text between the opening delimiter at src[0] and its
-// match, exclusive. It skips over strings and template literals so a bracket
-// inside one does not close the region early.
+// match, exclusive. It delegates to convert.go's cvMatchBracket, so it skips
+// over strings, template-literal `${...}` interpolation, and `//`/`/* */`
+// comments the same way the converter's own bracket scanner does, instead of
+// keeping a second, weaker copy of that logic.
 func jsBalanced(src string, open, close byte) (string, error) {
 	if len(src) == 0 || src[0] != open {
 		return "", fmt.Errorf("expected %q at the start of the region", open)
 	}
-	depth := 0
-	for i := 0; i < len(src); i++ {
-		switch c := src[i]; c {
-		case '"', '\'', '`':
-			j := i + 1
-			for j < len(src) {
-				if src[j] == '\\' {
-					j += 2
-					continue
-				}
-				if src[j] == c {
-					break
-				}
-				j++
-			}
-			if j >= len(src) {
-				return "", fmt.Errorf("unterminated string literal")
-			}
-			i = j
-		case open:
-			depth++
-		case close:
-			depth--
-			if depth == 0 {
-				return src[1:i], nil
-			}
-		}
+	e := cvMatchBracket(src, 0, open, close)
+	if e < 0 {
+		return "", fmt.Errorf("unbalanced %q ... %q", open, close)
 	}
-	return "", fmt.Errorf("unbalanced %q ... %q", open, close)
+	return src[1:e], nil
 }
 
 // jsObjectField returns the text of `name: { ... }` within src, or ok=false

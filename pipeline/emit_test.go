@@ -26,3 +26,31 @@ func TestUnitEmitParity(t *testing.T) {
 		t.Fatalf("rebuild changed outputs:\n%s", out)
 	}
 }
+
+// mergeRootAttrs exists instead of a plain `[^>]*` regex because a naive scan
+// breaks on a ">" inside an attribute value. Drive it into exactly that: an
+// open tag whose own attribute value embeds a literal ">".
+func TestUnitMergeRootAttrs(t *testing.T) {
+	// the case the quote-aware scan is for: a ">" inside a quoted attribute
+	// value must not be mistaken for the tag's real close.
+	h := `<div class="a>b">body</div>`
+	got := mergeRootAttrs(h, []attrPair{{"title", "a > b"}})
+	want := `<div class="a>b" title="a &gt; b">body</div>`
+	if got != want {
+		t.Fatalf("mergeRootAttrs with an embedded > in an attribute value:\n got  %q\n want %q\n(a naive [^>]* scan would insert mid-attribute, e.g. %q)",
+			got, want, `<div class="a title="a &gt; b">b">body</div>`)
+	}
+
+	// plain case, no embedded ">": still inserts right before the real close.
+	h = `<button type="button">Click</button>`
+	got = mergeRootAttrs(h, []attrPair{{"aria-label", "Save"}})
+	want = `<button type="button" aria-label="Save">Click</button>`
+	if got != want {
+		t.Fatalf("mergeRootAttrs(%q, ...) = %q, want %q", h, got, want)
+	}
+
+	// no attrs: the tag is returned untouched.
+	if got := mergeRootAttrs(h, nil); got != h {
+		t.Fatalf("mergeRootAttrs with no attrs changed the tag: %q", got)
+	}
+}

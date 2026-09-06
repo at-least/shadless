@@ -335,6 +335,7 @@ func runEmit() int {
 		trees []*treeNode
 	}
 	treesByIr := map[string]irTrees{}
+	pages := map[string]string{}
 	totalSlots := 0
 	for _, ir := range statics {
 		css, err := componentCss(ir)
@@ -382,6 +383,7 @@ func runEmit() int {
 			fmt.Fprintln(os.Stderr, "emit:", err)
 			return 1
 		}
+		pages[ir.Name] = page
 		cssParts = append(cssParts, wrapComponentCss(ir.Name, css))
 		totalSlots += strings.Count(page, `data-slot="`)
 	}
@@ -460,8 +462,8 @@ func runEmit() int {
 
 	// gate: no class= beyond markers/anchors/allowlist
 	for _, ir := range statics {
-		h, _ := os.ReadFile("dist/components/" + ir.Name + ".html")
-		for _, m := range reClass.FindAllStringSubmatch(string(h), -1) {
+		h := pages[ir.Name]
+		for _, m := range reClass.FindAllStringSubmatch(h, -1) {
 			bad := false
 			for _, t := range strings.Fields(m[1]) {
 				if t == "" || markerRe.MatchString(t) || skinData.Allowlist[t] || allAnchors[t] {
@@ -479,8 +481,8 @@ func runEmit() int {
 
 	// gate: literal PascalCase / ternary tags
 	for _, ir := range statics {
-		h, _ := os.ReadFile("dist/components/" + ir.Name + ".html")
-		if m := rePascal.FindStringSubmatch(string(h)); m != nil {
+		h := pages[ir.Name]
+		if m := rePascal.FindStringSubmatch(h); m != nil {
 			fmt.Fprintf(os.Stderr, "FAIL [%s]: literal component tag in HTML: %s\n", ir.Name, m[1])
 			fail = true
 		}
@@ -489,8 +491,8 @@ func runEmit() int {
 	// gate: slot-tree vs IR (exact tags + nesting) — x/net/html's parse is
 	// the jsdom twin: same lowercased tags, same foster-parenting rules.
 	for _, it := range treesByIr {
-		h, _ := os.ReadFile("dist/components/" + it.ir.Name + ".html")
-		doc, err := html.Parse(strings.NewReader(string(h)))
+		h := pages[it.ir.Name]
+		doc, err := html.Parse(strings.NewReader(h))
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "FAIL [%s]: parse: %v\n", it.ir.Name, err)
 			fail = true
@@ -677,14 +679,6 @@ func firstNonEmpty(a, b string) string {
 		return a
 	}
 	return b
-}
-
-func mapKeys(m map[string]bool) []string {
-	var out []string
-	for k := range m {
-		out = append(out, k)
-	}
-	return out
 }
 
 func unionKeys(a, b map[string]bool) map[string]bool {
