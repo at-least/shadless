@@ -8,11 +8,11 @@ import (
 // Tag normalization, shared by converter / emitter / css — the Go twin of
 // src/tags.mjs. Resolution order:
 //
-//	1. native tag            → itself
-//	2. <ternary:A/B>         → alternate B (asChild ? Slot.Root : "div"; the
-//	                           Slot branch is React-only)
-//	3. ir.tagHints[tag]      → explicit converter hint
-//	4. anything else         → false (UNRESOLVED — callers must fail loudly)
+//  1. native tag            → itself
+//  2. <ternary:A/B>         → alternate B (asChild ? Slot.Root : "div"; the
+//     Slot branch is React-only)
+//  3. ir.tagHints[tag]      → explicit converter hint
+//  4. anything else         → false (UNRESOLVED — callers must fail loudly)
 var nativeTags = map[string]bool{}
 
 func init() {
