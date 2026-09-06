@@ -24,8 +24,8 @@ import (
 //
 // Six steps write into dist/ and no single one of them holds it: emit the
 // static pages, demo the rest plus globals and the per-component @apply
-// sources, demo-rtl the language variants, build-js the JS surface (which demo
-// re-runs on its way through), demo-css the stylesheet every page loads, and
+// sources, demo-rtl the language variants, build-js the JS surface (which
+// Demo mounts into its dist), demo-css the stylesheet every page loads, and
 // product-css/product-build the consumer-facing entry. The host graph splits
 // ownership between them for freshness; what docs-build needs is the union.
 func (m *Shadless) distTree(ctx context.Context, source *dagger.Directory) (*dagger.Directory, error) {

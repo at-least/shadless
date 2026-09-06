@@ -114,18 +114,27 @@ func (m *Shadless) ExampleFixtureCheck(ctx context.Context, source *dagger.Direc
 // It is the only step that touches examples/aria. This repo targets the radix
 // registry, and the dictionaries are the one thing anything wanted from aria —
 // plain {en,ar,he} -> {dir,values} strings, not a React Aria artifact.
+//
+// `pipeline rtl-dict` is pure Go — the tools it replaced (rtl-dict.mjs,
+// rtl-lib.mjs) ported with it — so the toolchain image, the binary and two
+// input mounts are the whole step; no node and no dependency install.
 func (m *Shadless) RtlDict(ctx context.Context, source *dagger.Directory) (*dagger.File, error) {
-	c, err := m.deps(ctx, source)
+	img, err := goImage(ctx, source)
 	if err != nil {
 		return nil, err
 	}
-	return c.
-		WithFile("/w/tools/rtl-dict.mjs", source.File("tools/rtl-dict.mjs")).
-		WithFile("/w/tools/rtl-lib.mjs", source.File("tools/rtl-lib.mjs")).
+	bin, err := goBinary(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	return dag.Container().
+		From(img).
+		WithWorkdir("/w").
+		WithFile("/usr/local/bin/pipeline", bin).
 		WithFile("/w/src/registry/tiers.json", source.File("src/registry/tiers.json")).
 		WithDirectory("/w/.upstream/shadcn-ui/apps/v4/examples/aria",
 			source.Directory(".upstream/shadcn-ui/apps/v4/examples/aria")).
-		WithExec([]string{"node", "tools/rtl-dict.mjs"}).
+		WithExec([]string{"pipeline", "rtl-dict"}).
 		File("/w/src/registry/rtl-translations.json"), nil
 }
 
@@ -133,7 +142,9 @@ func (m *Shadless) RtlDict(ctx context.Context, source *dagger.Directory) (*dagg
 // upstream's own aria dictionaries.
 //
 // The dictionaries come from RtlDict; this step no longer reads examples/aria
-// at all.
+// at all. `pipeline build-rtl` is pure Go (tools/build-rtl.mjs + rtl-lib.mjs
+// ported with it) and creates its own output directories, so the inputs are
+// the only mounts.
 //
 // docs/demos comes from the two steps that write it rather than from the host:
 // the tool reads docs/demos/<name>.html as the base it substitutes into, and
@@ -146,7 +157,11 @@ func (m *Shadless) RtlDict(ctx context.Context, source *dagger.Directory) (*dagg
 // writes one file per variant and removes nothing, so a mounted tree would
 // keep the variants of a retired example forever.
 func (m *Shadless) demoRtl(ctx context.Context, source *dagger.Directory) (*dagger.Container, error) {
-	c, err := m.deps(ctx, source)
+	img, err := goImage(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	bin, err := goBinary(ctx, source)
 	if err != nil {
 		return nil, err
 	}
@@ -162,12 +177,13 @@ func (m *Shadless) demoRtl(ctx context.Context, source *dagger.Directory) (*dagg
 	if err != nil {
 		return nil, err
 	}
-	return c.
-		WithFile("/w/tools/build-rtl.mjs", source.File("tools/build-rtl.mjs")).
-		WithFile("/w/tools/rtl-lib.mjs", source.File("tools/rtl-lib.mjs")).
-		WithDirectory("/w/src", source.Directory("src")).
+	return dag.Container().
+		From(img).
+		WithWorkdir("/w").
+		WithFile("/usr/local/bin/pipeline", bin).
 		// from the step that produces it, not the committed copy
 		WithFile("/w/src/registry/rtl-translations.json", dict).
+		WithFile("/w/src/registry/tiers.json", source.File("src/registry/tiers.json")).
 		WithDirectory("/w/docs/demos", oracle.Directory("docs/demos")).
 		// The fixture pages OVERWRITE the oracle's for the 105 targets that
 		// carry kernel families, and four of the -rtl base pages this step
@@ -178,7 +194,7 @@ func (m *Shadless) demoRtl(ctx context.Context, source *dagger.Directory) (*dagg
 		// never had.
 		WithDirectory("/w/docs/demos", fixture.Directory("docs/demos")).
 		WithDirectory("/w/dist/components", dag.Directory()).
-		WithExec([]string{"node", "tools/build-rtl.mjs"}), nil
+		WithExec([]string{"pipeline", "build-rtl"}), nil
 }
 
 // DemoRtl returns the RTL pages and the language manifest, laid out as the
@@ -267,20 +283,32 @@ func (m *Shadless) ContractFixtureCheck(ctx context.Context, source *dagger.Dire
 // slot rule folded in, the demo index, the per-component @apply sources the npm
 // surface exports, and a page for each non-static component.
 //
-// No browser: this step composes fixtures other steps rendered.
+// No node and no browser: `pipeline demo` is pure Go, and this step composes
+// fixtures other steps rendered. The static pages are only Stat-ed (demo
+// refuses to run without them), which is why Emit is a real dependency and
+// not just ordering.
 //
-// It does need the Go binary, because tools/demo.mjs spawns `./build/pipeline
-// build-js` itself (the builder stopped living in JS). That is a genuine
-// redundancy in the host graph — demo both `needs` build-js and re-runs it —
-// and mounting the binary reproduces the tool as written rather than quietly
-// improving it.
+// The JS surface is mounted from BuildJs under dist/ — on the host it is on
+// disk by the time demo runs (build-js is in demo's closure in nodes.go),
+// demo's pages link it, and the tailwind pass after demo scans dist/js — so
+// the exported dist carries it for the same reason. The two dist layers own
+// disjoint paths (build-js: js/, esm/, shadless*.js; emit: components/), so
+// the overlay order is only load-bearing if either side's produces grow.
 //
 // generated/ir and src/kernel come from the steps that produce them, not
 // from the host tree: the IR from the conversion, the kernel fixtures from the
-// contract harvest. dist/components comes from emit, which is a real
-// dependency and not just ordering — demo throws if a static page is missing.
+// contract harvest.
+//
+// dist/css starts empty for the reason the oracle's docs/demos does: demo
+// writes the per-component @apply sources there AND prunes files it no longer
+// produces, so a mounted tree would keep a retired component's stylesheet
+// forever.
 func (m *Shadless) demoTree(ctx context.Context, source *dagger.Directory) (*dagger.Container, error) {
-	c, err := m.deps(ctx, source)
+	img, err := goImage(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	bin, err := goBinary(ctx, source)
 	if err != nil {
 		return nil, err
 	}
@@ -296,38 +324,33 @@ func (m *Shadless) demoTree(ctx context.Context, source *dagger.Directory) (*dag
 	if err != nil {
 		return nil, err
 	}
-	bin, err := m.pipelineBin(ctx, source)
+	js, err := m.BuildJs(ctx, source)
 	if err != nil {
 		return nil, err
 	}
-	return c.
-		WithDirectory("/w/src", source.Directory("src").Filter(
-			dagger.DirectoryFilterOpts{Exclude: []string{"kernel/**"}})).
-		WithDirectory("/w/generated/ir", ir).
-		WithDirectory("/w/src/kernel", kernel).
-		WithFile("/w/tools/demo.mjs", source.File("tools/demo.mjs")).
-		WithFile("/w/tools/demo-lib.mjs", source.File("tools/demo-lib.mjs")).
-		WithDirectory("/w/probes", source.Directory("probes")).
-		WithDirectory("/w/vendor", source.Directory("vendor")).
-		// src/emitter/css.mjs reads upstream's style-nova.css, and demo
-		// imports componentCss from it. The host node does not declare that
-		// file and does not have to: `convert` does, and convert is in demo's
-		// closure, so it already reaches demo's key. The access check is
-		// therefore right to stay quiet. A container asks a different
-		// question — is the file THERE — and the two are not the same
-		// property. This mount answers the second one.
+	return dag.Container().
+		From(img).
+		WithWorkdir("/w").
+		WithFile("/usr/local/bin/pipeline", bin).
+		WithDirectory("/w/dist", js).
+		WithDirectory("/w/dist/components", emitted.Directory("components")).
+		WithDirectory("/w/dist/css", dag.Directory()).
+		WithFile("/w/src/registry/tiers.json", source.File("src/registry/tiers.json")).
+		// demo folds the skin into globals.css through loadSkin, which reads
+		// upstream's style-nova.css directly — the same undeclared-input the
+		// sandbox caught in emitted() before it
 		WithDirectory("/w/.upstream/shadcn-ui/apps/v4/registry",
 			source.Directory(".upstream/shadcn-ui/apps/v4/registry")).
-		WithDirectory("/w/dist/components", emitted.Directory("components")).
-		WithFile("/w/build/pipeline", bin, dagger.ContainerWithFileOpts{Permissions: 0o755}).
-		WithExec([]string{"node", "tools/demo.mjs"}), nil
+		WithDirectory("/w/generated/ir", ir).
+		WithDirectory("/w/src/kernel", kernel).
+		WithDirectory("/w/probes", source.Directory("probes")).
+		WithExec([]string{"pipeline", "demo"}), nil
 }
 
 // Demo returns the whole dist tree at this point in the graph, which is what
-// the directory means: emit's static pages, this step's own, and the JS surface
-// the tool rebuilt on its way through. The per-node ownership split lives in
-// pipeline/nodes.go, where the freshness check needs it; here the useful unit
-// is the shipped surface.
+// the directory means: emit's static pages, this step's own pages, the JS
+// surface mounted from BuildJs, the unified globals.css and the per-component
+// @apply sources.
 //
 // The RTL variants are NOT in it — DemoRtl writes those, from the oracle side
 // of the graph.
