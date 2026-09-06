@@ -19,6 +19,27 @@ import (
 // context — the snapshot corpus still holds the old collapsed form.
 var reGoldenAutoId = regexp.MustCompile(`radix-(?:<auto>_?|a\\d+)`)
 
+// firstDiffWindow finds the first index where a and b differ (the length of
+// the shorter string if one is a prefix of the other) and returns a
+// [i-before, i+after) slice of each, clamped to its own bounds.
+func firstDiffWindow(a, b string, before, after int) (string, string) {
+	i := 0
+	for i < len(a) && i < len(b) && a[i] == b[i] {
+		i++
+	}
+	window := func(s string) string {
+		lo, hi := i-before, i+after
+		if lo < 0 {
+			lo = 0
+		}
+		if hi > len(s) {
+			hi = len(s)
+		}
+		return s[lo:hi]
+	}
+	return window(a), window(b)
+}
+
 func runExampleGolden(args []string) int {
 	const examplesDir = ".upstream/shadcn-ui/apps/v4/examples/radix"
 	const snapshotDir = "src/registry/upstream-snapshot"
@@ -105,26 +126,9 @@ func runExampleGolden(args []string) int {
 			fmt.Println("EQUAL")
 			return 0
 		}
-		i := 0
-		for i < len(a) && i < len(b) && a[i] == b[i] {
-			i++
-		}
-		loA, hiA := i-80, i+120
-		if loA < 0 {
-			loA = 0
-		}
-		if hiA > len(a) {
-			hiA = len(a)
-		}
-		loB, hiB := i-80, i+120
-		if loB < 0 {
-			loB = 0
-		}
-		if hiB > len(b) {
-			hiB = len(b)
-		}
-		fmt.Println("ORACLE  :", a[loA:hiA])
-		fmt.Println("UPSTREAM:", b[loB:hiB])
+		wa, wb := firstDiffWindow(a, b, 80, 120)
+		fmt.Println("ORACLE  :", wa)
+		fmt.Println("UPSTREAM:", wb)
 		return 1
 	}
 
@@ -143,22 +147,8 @@ func runExampleGolden(args []string) int {
 	}
 
 	sig := func(a, b string) string {
-		i := 0
-		for i < len(a) && i < len(b) && a[i] == b[i] {
-			i++
-		}
-		lo := i - 60
-		if lo < 0 {
-			lo = 0
-		}
-		ha, hb := i+60, i+60
-		if ha > len(a) {
-			ha = len(a)
-		}
-		if hb > len(b) {
-			hb = len(b)
-		}
-		ctx := a[lo:ha] + " ||| " + b[lo:hb]
+		wa, wb := firstDiffWindow(a, b, 60, 60)
+		ctx := wa + " ||| " + wb
 		ctx = reGoldenAutoId.ReplaceAllString(ctx, "#")
 		if len(ctx) > 200 {
 			ctx = ctx[:200]

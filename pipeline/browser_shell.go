@@ -148,8 +148,7 @@ func (p *bpage) gotoURL(url string) error {
 	return err
 }
 
-// evaluate runs expr; for expressions taking an argument, the shell passes
-// it as playwright's `arg` (the expression sees it as its single param).
+// evaluate runs expr, a plain (non-function-shaped) expression, in the page.
 func (p *bpage) evaluate(expr string) (any, error) {
 	res, err := p.s.call(map[string]any{"op": "evaluate", "pageId": p.id, "expr": expr})
 	if err != nil {
@@ -162,14 +161,6 @@ func (p *bpage) evaluate(expr string) (any, error) {
 // (an object built in the page by literal property assignment, not a Go map).
 func (p *bpage) evaluateOrdered(expr string) (json.RawMessage, error) {
 	return p.s.callRawValue(map[string]any{"op": "evaluate", "pageId": p.id, "expr": expr})
-}
-
-func (p *bpage) evaluateArg(expr string, arg any) (any, error) {
-	res, err := p.s.call(map[string]any{"op": "evaluate", "pageId": p.id, "expr": expr, "arg": arg})
-	if err != nil {
-		return nil, err
-	}
-	return res["value"], nil
 }
 
 // evaluateFn runs a function-shaped expression ("() => {…}") in the page;

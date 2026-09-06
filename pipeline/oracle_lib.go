@@ -25,6 +25,7 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"sync"
 
 	"github.com/evanw/esbuild/pkg/api"
 )
@@ -36,49 +37,84 @@ func oracleCacheDir() string {
 	return "node_modules/.cache/shadless/oracle"
 }
 
-// oracleBundleCacheKey: pin commit + lockfile + example + stubs +
-// resolve-skins + skin tables + this file.
+// oracleInvariantCacheKey hashes the inputs that are the same on every
+// oracleBundleCacheKey call within a process (pin commit, lockfile,
+// resolve-skins, skin tables, this file, and every stub) exactly once —
+// buildOracleGo calls oracleBundleCacheKey once per example target (200+
+// times across a full pipeline run), and re-reading + re-hashing a 512KB
+// package-lock.json plus ~9 stub files that many times bought nothing since
+// none of them vary with `name`.
+var (
+	oracleInvariantOnce sync.Once
+	oracleInvariantSum  []byte
+	oracleInvariantErr  error
+)
+
+func oracleInvariantCacheKey() ([]byte, error) {
+	oracleInvariantOnce.Do(func() {
+		h := sha256.New()
+		pinB, err := os.ReadFile("src/registry/pin.json")
+		if err != nil {
+			oracleInvariantErr = err
+			return
+		}
+		var pin struct {
+			ShadcnUI struct {
+				Commit string `json:"commit"`
+			} `json:"shadcn_ui"`
+		}
+		if err := json.Unmarshal(pinB, &pin); err != nil {
+			oracleInvariantErr = err
+			return
+		}
+		h.Write([]byte(pin.ShadcnUI.Commit + "\n"))
+		for _, f := range []string{"package-lock.json",
+			"pipeline/resolve_skins.go", "src/emitter/skin.mjs", "pipeline/oracle_lib.go"} {
+			b, err := os.ReadFile(f)
+			if err != nil {
+				oracleInvariantErr = err
+				return
+			}
+			h.Write(b)
+		}
+		stubs, err := os.ReadDir("tools/contracts/stubs")
+		if err != nil {
+			oracleInvariantErr = err
+			return
+		}
+		var names []string
+		for _, e := range stubs {
+			names = append(names, e.Name())
+		}
+		sort.Strings(names)
+		for _, n := range names {
+			b, err := os.ReadFile(filepath.Join("tools/contracts/stubs", n))
+			if err != nil {
+				oracleInvariantErr = err
+				return
+			}
+			h.Write([]byte(n))
+			h.Write(b)
+		}
+		oracleInvariantSum = h.Sum(nil)
+	})
+	return oracleInvariantSum, oracleInvariantErr
+}
+
+// oracleBundleCacheKey: the process-invariant hash above, plus the one
+// per-example input that actually varies with `name`.
 func oracleBundleCacheKey(name string) (string, error) {
+	inv, err := oracleInvariantCacheKey()
+	if err != nil {
+		return "", err
+	}
+	tsx, err := os.ReadFile(filepath.Join(".upstream/shadcn-ui/apps/v4/examples/radix", name+".tsx"))
+	if err != nil {
+		return "", err
+	}
 	h := sha256.New()
-	pinB, err := os.ReadFile("src/registry/pin.json")
-	if err != nil {
-		return "", err
-	}
-	var pin struct {
-		ShadcnUI struct {
-			Commit string `json:"commit"`
-		} `json:"shadcn_ui"`
-	}
-	if err := json.Unmarshal(pinB, &pin); err != nil {
-		return "", err
-	}
-	h.Write([]byte(pin.ShadcnUI.Commit + "\n"))
-	for _, f := range []string{"package-lock.json",
-		filepath.Join(".upstream/shadcn-ui/apps/v4/examples/radix", name+".tsx"),
-		"pipeline/resolve_skins.go", "src/emitter/skin.mjs", "pipeline/oracle_lib.go"} {
-		b, err := os.ReadFile(f)
-		if err != nil {
-			return "", err
-		}
-		h.Write(b)
-	}
-	stubs, err := os.ReadDir("tools/contracts/stubs")
-	if err != nil {
-		return "", err
-	}
-	var names []string
-	for _, e := range stubs {
-		names = append(names, e.Name())
-	}
-	sort.Strings(names)
-	for _, n := range names {
-		b, err := os.ReadFile(filepath.Join("tools/contracts/stubs", n))
-		if err != nil {
-			return "", err
-		}
-		h.Write([]byte(n))
-		h.Write(b)
-	}
+	h.Write(inv)
+	h.Write(tsx)
 	return hex.EncodeToString(h.Sum(nil)), nil
 }
 
@@ -99,20 +135,23 @@ func oracleAliases() (map[string]string, error) {
 		return a
 	}
 	a := map[string]string{
-		"@":                                          up,
-		"@/registry/bases/radix/ui":                  resolved + "/ui",
-		"@/registry/bases/radix/lib":                 resolved + "/lib",
-		"@/registry/bases/radix/hooks":               resolved + "/hooks",
-		"@/components/language-selector":             abs("tools/contracts/stubs/app-components.jsx"),
-		"@/components/markdown":                      abs("tools/contracts/stubs/app-components.jsx"),
-		"@/components/message-animated":              abs("tools/contracts/stubs/message-animated.jsx"),
+		"@":                              up,
+		"@/registry/bases/radix/ui":      resolved + "/ui",
+		"@/registry/bases/radix/lib":     resolved + "/lib",
+		"@/registry/bases/radix/hooks":   resolved + "/hooks",
+		"@/components/language-selector": abs("tools/contracts/stubs/app-components.jsx"),
+		"@/components/markdown":          abs("tools/contracts/stubs/app-components.jsx"),
+		"@/components/message-animated":  abs("tools/contracts/stubs/message-animated.jsx"),
+		// route-group indirection + subtree cut: ui components import the
+		// demo-app icon switcher, which pulls next/navigation + nuqs
+		// into the oracle bundle — stub it
 		"@/app/(create)/components/icon-placeholder": abs("tools/contracts/stubs/icon-placeholder.jsx"),
-		"next/image":                                 abs("tools/contracts/stubs/next-image.jsx"),
-		"next/link":                                  abs("tools/contracts/stubs/next-link.jsx"),
-		"date-fns":                                   abs("tools/contracts/stubs/date-fns.mjs"),
-		"sonner":                                     abs("tools/contracts/stubs/sonner.jsx"),
-		"embla-carousel-autoplay":                    abs("tools/contracts/stubs/embla-autoplay.mjs"),
-		"react-textarea-autosize":                    abs("tools/contracts/stubs/textarea-autosize.jsx"),
+		"next/image":              abs("tools/contracts/stubs/next-image.jsx"),
+		"next/link":               abs("tools/contracts/stubs/next-link.jsx"),
+		"date-fns":                abs("tools/contracts/stubs/date-fns.mjs"),
+		"sonner":                  abs("tools/contracts/stubs/sonner.jsx"),
+		"embla-carousel-autoplay": abs("tools/contracts/stubs/embla-autoplay.mjs"),
+		"react-textarea-autosize": abs("tools/contracts/stubs/textarea-autosize.jsx"),
 	}
 	for _, f := range []string{"radix", "base", "aria"} {
 		for _, s := range skins {

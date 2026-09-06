@@ -91,6 +91,10 @@ func buildContractOracleGo(def efDef, out, recorder string) error {
 	if err := os.WriteFile(entryFile, []byte(entry), 0o644); err != nil {
 		return err
 	}
+	aliases, err := oracleAliases()
+	if err != nil {
+		return err
+	}
 	res := api.Build(api.BuildOptions{
 		EntryPoints: []string{entryFile},
 		Bundle:      true,
@@ -98,18 +102,9 @@ func buildContractOracleGo(def efDef, out, recorder string) error {
 		Outfile:     bundle,
 		Write:       true, // the Go API's zero value is false — no file on disk
 		LogLevel:    api.LogLevelError,
-		Alias: map[string]string{
-			"@":                            absOrDie(".upstream/shadcn-ui/apps/v4"),
-			"@/registry/bases/radix/ui":    absOrDie("build/resolved-ui/ui"),
-			"@/registry/bases/radix/lib":   absOrDie("build/resolved-ui/lib"),
-			"@/registry/bases/radix/hooks": absOrDie("build/resolved-ui/hooks"),
-			// route-group indirection + subtree cut: ui components import the
-			// demo-app icon switcher, which pulls next/navigation + nuqs
-			// into the oracle bundle — stub it
-			"@/app/(create)/components/icon-placeholder": absOrDie("tools/contracts/stubs/icon-placeholder.jsx"),
-		},
-		Loader: map[string]api.Loader{".tsx": api.LoaderTSX},
-		JSX:    api.JSXAutomatic,
+		Alias:       aliases,
+		Loader:      map[string]api.Loader{".tsx": api.LoaderTSX},
+		JSX:         api.JSXAutomatic,
 	})
 	if len(res.Errors) > 0 {
 		return fmt.Errorf("esbuild: %s", res.Errors[0].Text)

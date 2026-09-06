@@ -37,6 +37,37 @@ const (
 
 var skinRule = regexp.MustCompile(`\.style-nova\s+\.cn-[\w-]+`)
 
+// buildOracleEntryCSS applies the app's own globals.css line-by-line: the
+// shadcn/tailwind.css import is inlined verbatim, the legacy-themes.css
+// import is spliced back in (as an @import of legacyImportPath) only when
+// hasLegacy says the file exists, every @source line the app declared is
+// dropped (the oracle scans its own resolved tree instead, appended below),
+// and every other line passes through unchanged. sourceDirs become the
+// oracle's own @source list, and skinCSS (the pinned skin, verbatim) is
+// appended last.
+func buildOracleEntryCSS(appCSS, shadcnTailwindCSS, skinCSS, legacyImportPath string, hasLegacy bool, sourceDirs []string) string {
+	var lines []string
+	for _, line := range strings.Split(appCSS, "\n") {
+		switch {
+		case strings.Contains(line, `"shadcn/tailwind.css"`):
+			lines = append(lines, "/* shadcn/tailwind.css (inlined from packages/shadcn/src) */", shadcnTailwindCSS)
+		case strings.Contains(line, `"./legacy-themes.css"`):
+			if hasLegacy {
+				lines = append(lines, fmt.Sprintf("@import %q;", legacyImportPath))
+			}
+		case strings.HasPrefix(line, "@source "):
+			// the app's own style dirs; replaced below
+		default:
+			lines = append(lines, line)
+		}
+	}
+	for _, d := range sourceDirs {
+		lines = append(lines, fmt.Sprintf("@source %q;", d))
+	}
+	lines = append(lines, "/* === style-nova.css (the pinned skin, verbatim) === */", skinCSS)
+	return strings.Join(lines, "\n")
+}
+
 func runOracleCSS() int {
 	wd, err := os.Getwd()
 	if err != nil {
@@ -70,37 +101,23 @@ func runOracleCSS() int {
 		return 1
 	}
 	legacy := abs(upstreamDir + "/apps/v4/app/legacy-themes.css")
+	_, legacyErr := os.Stat(legacy)
 
-	var lines []string
-	for _, line := range strings.Split(app, "\n") {
-		switch {
-		case strings.Contains(line, `"shadcn/tailwind.css"`):
-			lines = append(lines, "/* shadcn/tailwind.css (inlined from packages/shadcn/src) */", shadcnTw)
-		case strings.Contains(line, `"./legacy-themes.css"`):
-			if _, err := os.Stat(legacy); err == nil {
-				lines = append(lines, fmt.Sprintf("@import %q;", legacy))
-			}
-		case strings.HasPrefix(line, "@source "):
-			// the app's own style dirs; replaced below
-		default:
-			lines = append(lines, line)
-		}
-	}
-	lines = append(lines,
-		fmt.Sprintf("@source %q;", abs("build/resolved-ui")),
+	entryCSS := buildOracleEntryCSS(app, shadcnTw, skin, legacy, legacyErr == nil, []string{
+		abs("build/resolved-ui"),
 		// usage trees carry example classes
-		fmt.Sprintf("@source %q;", abs("tools/contracts/components")),
+		abs("tools/contracts/components"),
 		// the examples' own utilities (max-w-lg on an accordion demo, …): the
 		// demo pages carry them inline, so the oracle stylesheet must define them
-		fmt.Sprintf("@source %q;", abs(upstreamDir+"/apps/v4/examples")),
-		"/* === style-nova.css (the pinned skin, verbatim) === */", skin)
+		abs(upstreamDir + "/apps/v4/examples"),
+	})
 
 	if err := os.MkdirAll(abs(oracleOutDir), 0o755); err != nil {
 		fmt.Fprintln(os.Stderr, "oracle-css:", err)
 		return 1
 	}
 	entry := oracleOutDir + "/oracle.entry.css"
-	if err := os.WriteFile(abs(entry), []byte(strings.Join(lines, "\n")), 0o644); err != nil {
+	if err := os.WriteFile(abs(entry), []byte(entryCSS), 0o644); err != nil {
 		fmt.Fprintln(os.Stderr, "oracle-css:", err)
 		return 1
 	}
