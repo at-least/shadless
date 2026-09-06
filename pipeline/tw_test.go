@@ -9,6 +9,7 @@ package main
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -56,21 +57,10 @@ func TestUnitFindRepoRootFailureIsActionable(t *testing.T) {
 	if err == nil {
 		t.Fatal("a tree with no marker resolved a root")
 	}
-	if !contains([]string{err.Error()}, err.Error()) || len(err.Error()) == 0 {
+	if len(err.Error()) == 0 {
 		t.Fatal("empty error")
 	}
-	if want := "SHADLESS_ROOT"; !containsStr(err.Error(), want) {
+	if want := "SHADLESS_ROOT"; !strings.Contains(err.Error(), want) {
 		t.Errorf("error %q does not mention %s", err, want)
 	}
-}
-
-func containsStr(hay, needle string) bool {
-	return len(hay) >= len(needle) && (func() bool {
-		for i := 0; i+len(needle) <= len(hay); i++ {
-			if hay[i:i+len(needle)] == needle {
-				return true
-			}
-		}
-		return false
-	})()
 }

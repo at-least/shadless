@@ -79,6 +79,83 @@ func TestUnitTestlogOpens(t *testing.T) {
 	}
 }
 
+// The write-side mirror of TestUnitTestlogOpens: a log mixing an excluded
+// node_modules/ line, an excluded build/ line and a real repo-relative file
+// that must survive both the exclusion filter and the dedupe/sort pass.
+func TestUnitFsRecordOpens(t *testing.T) {
+	root := writeTree(t, map[string]string{
+		"src/kept.mjs":            "keep",
+		"node_modules/pkg/idx.js": "dep",
+		"build/scratch.txt":       "scratch",
+	})
+	var b strings.Builder
+	b.WriteString(filepath.Join(root, "node_modules/pkg/idx.js") + "\n")
+	b.WriteString(filepath.Join(root, "build/scratch.txt") + "\n")
+	b.WriteString(filepath.Join(root, "src/kept.mjs") + "\n")
+	b.WriteString(filepath.Join(root, "src/kept.mjs") + "\n") // duplicate: reported once
+	log := filepath.Join(t.TempDir(), "fs-record.log")
+	if err := os.WriteFile(log, []byte(b.String()), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	got, err := fsRecordOpens(root, log)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(got) != 1 || got[0] != "src/kept.mjs" {
+		t.Errorf("got %v, want only [src/kept.mjs] — node_modules/ and build/ must be dropped", got)
+	}
+}
+
+// The write-side mirror of TestUnitUndeclaredReadsFindsTheGap: a node writes a
+// file it does not declare in `produces`, and something else declares that
+// file as an input — the exact shape that would drive that other node's
+// freshness off an undeclared write.
+func TestUnitUndeclaredWritesFindsTheGap(t *testing.T) {
+	root := writeTree(t, map[string]string{"a": "1", "b": "1"})
+	g, err := newGraph([]Node{
+		{ID: "w", Kind: "build", Tier: "fast", Run: [][]string{{"true"}}, Produces: []string{"a"}},
+		{ID: "reader", Kind: "gate", Tier: "fast", Run: [][]string{{"true"}}, Inputs: []string{"b"}},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	w, _ := g.Node("w")
+	before := map[string]string{"a": "h0", "b": "h0"}
+	after := map[string]string{"a": "h1", "b": "h1"} // "b" changed too, but only "a" is declared
+	got, err := undeclaredWrites(root, g, w, before, after)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(got) != 1 || got[0].Path != "b" {
+		t.Fatalf("got %+v, want one violation on b", got)
+	}
+	if len(got[0].Readers) != 1 || got[0].Readers[0] != "reader" {
+		t.Errorf("violation readers = %v, want [reader]", got[0].Readers)
+	}
+}
+
+// A write that nothing reads cannot affect freshness, so it must not be
+// reported — noise here would teach people to ignore the check.
+func TestUnitUndeclaredWritesIgnoresUnreadFile(t *testing.T) {
+	root := writeTree(t, map[string]string{"a": "1", "c": "1"})
+	g, err := newGraph([]Node{
+		{ID: "w", Kind: "build", Tier: "fast", Run: [][]string{{"true"}}, Produces: []string{"a"}},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	w, _ := g.Node("w")
+	before := map[string]string{"a": "h0", "c": "h0"}
+	after := map[string]string{"a": "h1", "c": "h1"}
+	got, err := undeclaredWrites(root, g, w, before, after)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(got) != 0 {
+		t.Errorf("a write nobody reads was reported: %v", got)
+	}
+}
+
 // The point of the check: a file the node reads but does not declare.
 func TestUnitUndeclaredReadsFindsTheGap(t *testing.T) {
 	root := writeTree(t, map[string]string{

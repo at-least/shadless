@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"regexp"
 	"sort"
 	"strings"
 )
@@ -57,22 +56,10 @@ const styleParityCollect = `(props) => {
   return out
 }`
 
-var reStyleCalc = regexp.MustCompile(`calc\([^)]*\)`)
-
-func styleParityNorm(v string) string {
-	if v == "" {
-		return v
-	}
-	v = reParityNum.ReplaceAllStringFunc(v, func(n string) string {
-		r := parseFloat2dp(n)
-		if r == 0 {
-			return "0" // Object.is(-0) guard
-		}
-		return jsNumberString(r)
-	})
-	v = reParityOklab.ReplaceAllString(v, "oklch($1 0 0)")
-	return reStyleCalc.ReplaceAllString(v, "calc(…)")
-}
+// styleParityNorm is parityNormValue with calc(...) canonicalization on — see
+// parity_baseline.go's parityNormValue for the shared core all three parity
+// gates (style-parity, demo-parity, path-parity) normalize through.
+func styleParityNorm(v string) string { return parityNormValue(v, true) }
 
 type spCellEnt struct {
 	component string
@@ -156,8 +143,8 @@ func runStyleParity(strict, record bool) int {
 			continue
 		}
 		defRes, err := shell.call(map[string]any{
-			"op":         "loadContractDef",
-			"file":       "file://" + absOrDie(filepath.Join(cwd0(), "tools/contracts/components", name+".mjs")),
+			"op":   "loadContractDef",
+			"file": "file://" + absOrDie(filepath.Join(cwd0(), "tools/contracts/components", name+".mjs")),
 		})
 		if err != nil {
 			harnessErrors = append(harnessErrors, name+": harness error — "+firstLine(err.Error()))

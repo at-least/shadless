@@ -48,11 +48,11 @@ var ppShorthand = map[string][2]string{
 var ppCvaAxes = map[string]bool{"variant": true, "size": true}
 
 var (
-	rePPChildSlot = regexp.MustCompile(`data-\[slot=([-\w]+)\]`)
+	rePPChildSlot  = regexp.MustCompile(`data-\[slot=([-\w]+)\]`)
 	rePPCombinator = regexp.MustCompile(`^(group|peer|has|in)-`)
-	rePPAttr      = regexp.MustCompile(`^(data|aria)-\[([\w-]+)(?:=([\w-]+))?\]$`)
-	rePPAria      = regexp.MustCompile(`^aria-(expanded|invalid|checked|disabled|pressed|selected|current)$`)
-	rePPDataBare  = regexp.MustCompile(`^data-(inset|highlighted|empty|pressed|autoscrolling|popup-open)$`)
+	rePPAttr       = regexp.MustCompile(`^(data|aria)-\[([\w-]+)(?:=([\w-]+))?\]$`)
+	rePPAria       = regexp.MustCompile(`^aria-(expanded|invalid|checked|disabled|pressed|selected|current)$`)
+	rePPDataBare   = regexp.MustCompile(`^data-(inset|highlighted|empty|pressed|autoscrolling|popup-open)$`)
 )
 
 func ppChildSlots(cls string) []string {
@@ -173,23 +173,19 @@ func ppStateConfigs(cls string) [][2]string {
 //go:embed pp_readall.js
 var ppReadAll string
 
-
-
-func ppNorm(v string) string {
-	v = reParityNum.ReplaceAllStringFunc(v, func(n string) string {
-		return jsNumberString(parseFloat2dp(n))
-	})
-	return reParityOklab.ReplaceAllString(v, "oklch($1 0 0)")
-}
+// ppNorm is parityNormValue with calc(...) canonicalization off — see
+// parity_baseline.go's parityNormValue for the shared core all three parity
+// gates (style-parity, demo-parity, path-parity) normalize through.
+func ppNorm(v string) string { return parityNormValue(v, false) }
 
 type ppItem struct {
-	id       int
-	label    string
-	kids     []struct{ id, label string }
-	slotHtml  string
+	id         int
+	label      string
+	kids       []struct{ id, label string }
+	slotHtml   string
 	inlineHtml string
-	state    bool
-	variant  bool
+	state      bool
+	variant    bool
 }
 
 func runPathParity(record, details bool) int {
@@ -406,7 +402,14 @@ func runPathParity(record, details bool) int {
 					continue
 				}
 				seen[el.Slot] = true
-				cc, elc := &ir.Components[func() int { for i := range ir.Components { if ir.Components[i].Fn == c.Fn { return i } }; return 0 }()], el
+				cc, elc := &ir.Components[func() int {
+					for i := range ir.Components {
+						if ir.Components[i].Fn == c.Fn {
+							return i
+						}
+					}
+					return 0
+				}()], el
 				cls := classesOf(cc, elc, nil)
 				if strings.TrimSpace(cls) == "" {
 					continue
@@ -505,9 +508,15 @@ func runPathParity(record, details bool) int {
 		pB.close()
 		pO.close()
 		for _, it := range items {
-			nodes := []struct{ id int; label string }{{it.id, it.label}}
+			nodes := []struct {
+				id    int
+				label string
+			}{{it.id, it.label}}
 			for _, k := range it.kids {
-				nodes = append(nodes, struct{ id int; label string }{-1, k.label})
+				nodes = append(nodes, struct {
+					id    int
+					label string
+				}{-1, k.label})
 				_ = k
 			}
 			_ = nodes

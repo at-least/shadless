@@ -9,9 +9,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"strconv"
 	"os"
+	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -19,6 +20,34 @@ type parityCell struct {
 	id       string
 	oracle   string
 	shadless string
+}
+
+var reParityCalc = regexp.MustCompile(`calc\([^)]*\)`)
+
+// parityNormValue is the shared getComputedStyle() normalizer behind all
+// three parity gates (style-parity, demo-parity, path-parity): round every
+// embedded number to 2dp, using reParityNum/reParityOklab declared in
+// demo_parity.go, and canonicalise axis-only oklab() to oklch() (Chrome
+// serialises the same colour both ways). style-parity additionally
+// canonicalizes calc(...) via canonicalizeCalc; demoParityNorm and ppNorm
+// call this with it off, which demo-parity and path-parity do not do
+// themselves.
+func parityNormValue(v string, canonicalizeCalc bool) string {
+	if v == "" {
+		return v
+	}
+	v = reParityNum.ReplaceAllStringFunc(v, func(n string) string {
+		r := parseFloat2dp(n)
+		if r == 0 {
+			return "0" // Object.is(-0) guard
+		}
+		return jsNumberString(r)
+	})
+	v = reParityOklab.ReplaceAllString(v, "oklch($1 0 0)")
+	if canonicalizeCalc {
+		v = reParityCalc.ReplaceAllString(v, "calc(…)")
+	}
+	return v
 }
 
 // cellMap: duplicate ids would silently drop a difference — rejected.
@@ -36,8 +65,8 @@ func cellMap(cells []parityCell) (map[string]parityCell, []string) {
 }
 
 type parityBaseline struct {
-	Pin   string `json:"pin"`
-	Note  string `json:"note"`
+	Pin   string   `json:"pin"`
+	Note  string   `json:"note"`
 	Flaky []string `json:"flaky,omitempty"`
 	Cells []struct {
 		ID       string `json:"id"`
@@ -58,15 +87,7 @@ func loadParityBaseline(path string) (*parityBaseline, map[string]parityCell, er
 	}
 	cells := map[string]parityCell{}
 	for _, c := range raw.Cells {
-		if c.Oracle == "" && c.Shadless == "" && strings.HasPrefix(c.ID, "/") == false && !strings.Contains(c.ID, "/") {
-			// pre-value format: cells were bare strings
-		}
 		cells[c.ID] = parityCell{c.ID, c.Oracle, c.Shadless}
-	}
-	// detect pre-value format: cells as bare strings
-	var probe []any
-	if json.Unmarshal(b, &map[string]any{}) == nil {
-		_ = probe
 	}
 	if err := detectPrevalue(b); err != nil {
 		return nil, nil, err

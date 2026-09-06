@@ -166,10 +166,12 @@ func reportViolations(id NodeID, vs []Violation) {
 // Under-reporting is the safe direction: this finds real undeclared reads and
 // never invents one.
 
-// testlogOpens returns the repo-relative regular files a testlog records as
-// opened. Directories, absent paths and anything outside the repo (GOROOT,
-// the module cache) are dropped.
-func testlogOpens(root, logPath string) ([]string, error) {
+// parseOpenedFiles is the shared skeleton behind both file-access logs: read
+// logPath, pull a path out of each line with parseLine, resolve it against
+// root, drop anything outside the repo or excluded by exclude, drop
+// directories, dedupe, and sort. testlogOpens and fsRecordOpens differ only in
+// how a line is parsed and what (if anything) gets excluded.
+func parseOpenedFiles(root, logPath string, parseLine func(string) (string, bool), exclude func(string) bool) ([]string, error) {
 	b, err := os.ReadFile(logPath)
 	if err != nil {
 		return nil, err
@@ -177,7 +179,7 @@ func testlogOpens(root, logPath string) ([]string, error) {
 	seen := map[string]bool{}
 	var out []string
 	for _, line := range strings.Split(string(b), "\n") {
-		path, ok := strings.CutPrefix(line, "open ")
+		path, ok := parseLine(line)
 		if !ok {
 			continue
 		}
@@ -188,7 +190,7 @@ func testlogOpens(root, logPath string) ([]string, error) {
 		if err != nil || strings.HasPrefix(rel, "..") {
 			continue // outside the repo
 		}
-		if seen[rel] {
+		if seen[rel] || exclude(rel) {
 			continue
 		}
 		info, err := os.Stat(path)
@@ -200,6 +202,15 @@ func testlogOpens(root, logPath string) ([]string, error) {
 	}
 	sort.Strings(out)
 	return out, nil
+}
+
+// testlogOpens returns the repo-relative regular files a testlog records as
+// opened. Directories, absent paths and anything outside the repo (GOROOT,
+// the module cache) are dropped.
+func testlogOpens(root, logPath string) ([]string, error) {
+	return parseOpenedFiles(root, logPath, func(line string) (string, bool) {
+		return strings.CutPrefix(line, "open ")
+	}, func(string) bool { return false })
 }
 
 // undeclaredReads reports files the node opened that nothing puts in its key.
@@ -311,33 +322,10 @@ func reportUndeclaredReads(id NodeID, paths []string) {
 //   - build/. The pipeline's own scratch space, where a node's intermediate
 //     output is neither an input nor something worth declaring.
 func fsRecordOpens(root, logPath string) ([]string, error) {
-	b, err := os.ReadFile(logPath)
-	if err != nil {
-		return nil, err
-	}
-	seen := map[string]bool{}
-	var out []string
-	for _, line := range strings.Split(string(b), "\n") {
-		path := strings.TrimSpace(line)
-		if path == "" || !filepath.IsAbs(path) {
-			continue
-		}
-		rel, err := filepath.Rel(root, path)
-		if err != nil || strings.HasPrefix(rel, "..") {
-			continue // outside the repo
-		}
-		if seen[rel] || excludedFromAccessCheck(rel) {
-			continue
-		}
-		info, err := os.Stat(path)
-		if err != nil || info.IsDir() {
-			continue
-		}
-		seen[rel] = true
-		out = append(out, rel)
-	}
-	sort.Strings(out)
-	return out, nil
+	return parseOpenedFiles(root, logPath, func(line string) (string, bool) {
+		p := strings.TrimSpace(line)
+		return p, p != ""
+	}, excludedFromAccessCheck)
 }
 
 func excludedFromAccessCheck(rel string) bool {
