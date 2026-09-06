@@ -7,16 +7,17 @@ import (
 	"testing"
 )
 
-func TestStringLiteralsHandCases(t *testing.T) {
+func TestUnitStringLiteralsHandCases(t *testing.T) {
 	for src, want := range map[string][][3]any{
-		`"a" 'b' `:                     {{1, 2, `"`}, {5, 6, `'`}},
-		`x = "don't"`:                  {{5, 10, `"`}},
-		`x = 'don\'t'`:                 {{5, 11, `'`}},
-		"x = `plain`":                  {{5, 10, "T"}},
-		"`tem${x}plate`":               {}, // interpolated templates surface nothing
+		`"a" 'b' `:                        {{1, 2, `"`}, {5, 6, `'`}},
+		`x = "don't"`:                     {{5, 10, `"`}},
+		`x = 'don\'t'`:                    {{5, 11, `'`}},
+		"x = `plain`":                     {{5, 10, "T"}},
+		"`tem${x}plate`":                  {}, // interpolated templates surface nothing
 		`x = "a" /* "comment" */ y = "b"`: {{5, 6, `"`}, {29, 30, `"`}},
 		"x = \"a\" // \"comment\"\n\"b\"": {{5, 6, `"`}, {22, 23, `"`}}, // the "b" is its own line → babel: directive (dropped there); this scanner KEEPS it — the directive heuristic is conservative
-		`x = "nested ${'no'}"`:         {{5, 19, `"`}}, // ${…} inside a plain string is TEXT
+		`x = "nested ${'no'}"`:            {{5, 19, `"`}},               // ${…} inside a plain string is TEXT
+		`/"/ 'b'`:                         {{5, 6, `'`}},                // regexAllowedHere defaults to true at start-of-source: /"/ opens a regex, swallowing the quote; only 'b' is a string
 	} {
 		got := StringLiterals(src)
 		if len(got) != len(want) {
@@ -33,15 +34,18 @@ func TestStringLiteralsHandCases(t *testing.T) {
 
 // Conformance: every span the hand-rolled scanner finds must match
 // @babel/parser's StringLiteral offsets over the tsx corpus these tools
-// consume. spans-snapshot.json is emitted by the dump script next to
-// twmerge's (same node run).
-func TestStringLiteralsSnapshot(t *testing.T) {
+// consume. spans-snapshot.json is a frozen fixture — see the package doc
+// comment in strings.go for its shape and how to rebuild it; there is
+// currently no committed dump script for it (unlike twmerge's
+// tools/twmerge-dump.mjs, which is a different corpus for a different
+// package).
+func TestUnitStringLiteralsSnapshot(t *testing.T) {
 	b, err := os.ReadFile("spans-snapshot.json")
 	if err != nil {
 		t.Skip(err)
 	}
 	var corpus map[string]struct {
-		Src   string `json:"src"`
+		Src   string  `json:"src"`
 		Spans [][]any `json:"spans"`
 	}
 	if err := json.Unmarshal(b, &corpus); err != nil {
@@ -61,30 +65,24 @@ func TestStringLiteralsSnapshot(t *testing.T) {
 		for _, s := range got {
 			flat = append(flat, [2]int{s.Start, s.End})
 		}
-		// babel anchors JSX-CONTAINER strings ({" "}, {'…'}) on the '{';
-		// this scanner anchors on the quote. Compare on the quote position.
-		wantBabel, wantQuote, _ := splitBabelSpans(rec.Src, want)
-		if !equalSpans(flat, wantQuote) {
+		if !equalSpans(flat, want) {
 			// One known divergence is tolerated: inline-code backticks inside
 			// JSXText at the document's LAST open element chain
 			// (message-scroller-streaming's <div> prose). The scanner treats
 			// them as text when jsxDepth>0, which is correct — the residual is
 			// depth accounting for `}`-expressions interleaved with text,
 			// something only a full parser could fix.
-			if name == "aria/message-scroller-streaming.tsx" && len(flat) == len(wantQuote)+1 {
+			if name == "aria/message-scroller-streaming.tsx" && len(flat) == len(want)+1 {
 				t.Logf("%s: known +1 (prose backtick inside an unbalanced JSX depth scan)", name)
 			} else {
-				t.Errorf("%s: %d spans vs babel %d quote-anchored", name, len(flat), len(wantQuote))
+				t.Errorf("%s: %d spans vs babel %d", name, len(flat), len(want))
 			}
-			for i := 0; i < len(flat) && i < len(wantQuote); i++ {
-				if flat[i] != wantQuote[i] {
+			for i := 0; i < len(flat) && i < len(want); i++ {
+				if flat[i] != want[i] {
 					t.Errorf("  first divergence: got %v want %v near %q",
-						flat[i], wantQuote[i], substringContext(rec.Src, flat[i][0]))
+						flat[i], want[i], substringContext(rec.Src, flat[i][0]))
 					break
 				}
-			}
-			for _, s := range wantBabel {
-				_ = s // container spans live in toleratedDivergence
 			}
 			bad++
 			if bad > 4 {
@@ -96,21 +94,6 @@ func TestStringLiteralsSnapshot(t *testing.T) {
 		}
 	}
 	t.Logf("conformance: %d files clean, %d spans", files, total)
-}
-
-// splitBabelSpans separates babel's spans: any span whose byte BEFORE the
-// span start is '{' was a JSXExpressionContainer — babel reports the
-// container braces, not the quotes. Those are excluded from the direct
-// comparison and must instead appear in toleratedContainers' count.
-func splitBabelSpans(src string, spans [][2]int) (container, quote [][2]int, _ struct{}) {
-	for _, s := range spans {
-		if s[0] > 0 && src[s[0]-1] == '{' {
-			container = append(container, s)
-		} else {
-			quote = append(quote, s)
-		}
-	}
-	return container, quote, struct{}{}
 }
 
 func equalSpans(a, b [][2]int) bool {

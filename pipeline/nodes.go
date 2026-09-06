@@ -130,15 +130,18 @@ var Nodes = []Node{
 	{
 		ID: NUnit, Kind: "gate", Tier: "fast",
 		Needs: []NodeID{NBuildJs},
-		Run:   [][]string{{"node", "tools/unit-check.mjs"}, {"go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestUnit", "."}},
+		Run:   [][]string{{"node", "tools/unit-check.mjs"}, {"go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestUnit", "./..."}},
 		// docs/example-oracle.json and docs/example-fixture-targets.json are
 		// example-oracle's output, read here by the audit-boundary
 		// classifier's TestUnit. Declared as inputs but deliberately NOT as a
 		// `needs`: that would put a browser build in unit's closure and drag
 		// the whole fast tier to full. `pipeline/*.go` rather than the three
 		// files named before it — the test binary is the whole package, so
-		// any source in it can change the verdict.
-		Inputs:    []string{"tools/unit-check.mjs", "tools/unit/**", "src/**", "generated/ir/**", "tools/**/*.mjs", "vendor/**", "package.json", "dist/esm/**", "dist/shadless.js", "probes/h4/globals.css", ".upstream/shadcn-ui/apps/v4/registry/styles/style-nova.css", "pipeline/*.go", "docs/example-oracle.json", "docs/example-fixture-targets.json"},
+		// any source in it can change the verdict. `./...` on the Run line
+		// (rather than `.`) is what actually reaches the TestUnit* suites in
+		// pipeline/internal/tsx and pipeline/internal/twmerge — pipeline/*.go
+		// alone doesn't cover them, hence pipeline/internal/** below.
+		Inputs:    []string{"tools/unit-check.mjs", "tools/unit/**", "src/**", "generated/ir/**", "tools/**/*.mjs", "vendor/**", "package.json", "dist/esm/**", "dist/shadless.js", "probes/h4/globals.css", ".upstream/shadcn-ui/apps/v4/registry/styles/style-nova.css", "pipeline/*.go", "pipeline/internal/**", "docs/example-oracle.json", "docs/example-fixture-targets.json"},
 		Produces:  nil,
 		Why:       "seconds-level guard over the pure functions cleanup rounds touch; born from a dead-code delete in rewritePaths that only surfaced minutes later",
 		Mutations: []string{"unit-break-pure-fn"},

@@ -17,26 +17,26 @@ var configJSON []byte
 // Strings are trie endpoints; {"prefix": […]} nests under that path
 // component; null never survives the dump (it is absent from the v3 dump).
 type rawConfig struct {
-	Theme                       map[string][]any    `json:"theme"`
-	ClassGroups                 map[string][]any    `json:"classGroups"`
+	Theme       map[string][]any `json:"theme"`
+	ClassGroups map[string][]any `json:"classGroups"`
 	// ClassGroupOrder preserves JS Object.keys order: groups that SHARE a
 	// trie prefix (text-*, border-*) add validators to the same node, and
 	// the first match wins. Go maps iterate in random order, so without
 	// this list a catch-all validator (color's isAny) can be probed before
 	// the group-specific one and the wrong group claims the class.
-	ClassGroupOrder             []string            `json:"classGroupOrder"`
-	ConflictingGroups           map[string][]string `json:"conflictingClassGroups"`
-	ConflictingGroupModifiers   map[string][]string `json:"conflictingClassGroupModifiers"`
-	PostfixLookupGroups         []string            `json:"postfixLookupClassGroups"`
-	OrderSensitiveModifiers     []string            `json:"orderSensitiveModifiers"`
+	ClassGroupOrder           []string            `json:"classGroupOrder"`
+	ConflictingGroups         map[string][]string `json:"conflictingClassGroups"`
+	ConflictingGroupModifiers map[string][]string `json:"conflictingClassGroupModifiers"`
+	PostfixLookupGroups       []string            `json:"postfixLookupClassGroups"`
+	OrderSensitiveModifiers   []string            `json:"orderSensitiveModifiers"`
 }
 
 var (
-	rawCfg                   rawConfig
-	conflictingGroups        map[string][]string
+	rawCfg                    rawConfig
+	conflictingGroups         map[string][]string
 	conflictingGroupModifiers map[string][]string
-	postfixLookupGroups      = map[string]bool{}
-	orderSensitiveModifiers  []string
+	postfixLookupGroups       = map[string]bool{}
+	orderSensitiveModifiers   []string
 )
 
 func loadConfig() (map[string][]any, map[string][]any) {
@@ -56,6 +56,7 @@ func loadConfig() (map[string][]any, map[string][]any) {
 }
 
 // processDefinition dispatches the JSON-encoded definition onto the trie.
+//
 //	"literal"                → endpoint
 //	{"$fn": name}            → validator at the current node
 //	{"$theme": key}          → theme list expanded in place

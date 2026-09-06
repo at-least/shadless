@@ -9,7 +9,21 @@
 // only ever needed "where is the literal and what's in it". A hand-rolled
 // scanner with escapes, comments, template literals and regex-literal
 // disambiguation covers it; conformance to babel is pinned over 562 files
-// in spans-snapshot.json (regenerate: tools/tsx-spans-dump.mjs).
+// in spans-snapshot.json — frozen, with no regeneration script committed.
+// The corpus: 61 files keyed "ui/<name>.tsx", dumped from
+// .upstream/shadcn-ui/apps/v4/registry/bases/radix/ui/*.tsx, and 501 keyed
+// "aria/<name>.tsx", dumped from
+// .upstream/shadcn-ui/apps/v4/examples/aria/*.tsx. Each record is
+// {"src": <file text>, "spans": [[start,end], ...]} with start/end in
+// babel's UTF-16 code-unit offsets over that same src (see MapUTF16), one
+// pair per span StringLiterals itself returns: StringLiteral nodes with
+// directive-position ones excluded (spans[0] on every corpus file starts
+// well past a leading "use client"), plus un-interpolated template
+// literals. Rebuilding it means writing that dumper (parse with
+// @babel/parser using the typescript+jsx plugins, walk the AST collecting
+// the same set StringLiterals documents above) — nothing under tools/ does
+// this today; tools/twmerge-dump.mjs is a different corpus for a different
+// package.
 package tsx
 
 import "strings"
@@ -105,57 +119,33 @@ func (sc *scanner) scan() []Span {
 // corpus JSX text nodes, `{" "}` and `{'…'}` are the only container shapes
 // that carry strings.
 //
-// Babel's JSXExpressionContainer>StringLiteral node starts at the '{' —
-// off by one from the quote — so its span never matches a quote-anchored
-// scanner's. skipCode therefore DISCARDS the container string (mirroring
-// the babel offsets would be a lie for splicing); the conformance delta
-// (one span per `{" "}`-style node, 5 files in the corpus) is documented in
-// strings_test.go's tolerated-divergence list.
+// scan() routes a container's interior through skipCode (below), which
+// records the string via stringLit exactly like any other code-context
+// literal — so a JSX-container string IS reported, quote-anchored
+// (Start/End bracket the content, not babel's container-anchored '{').
+// Empirically the corpus never exercises babel's own container-anchored
+// offset (TestUnitStringLiteralsSnapshot compares every span in
+// spans-snapshot.json directly, no reconciliation needed): whatever
+// produced that fixture already recorded these quote-anchored too.
 func (sc *scanner) jsxExpr(i int) bool {
+	c, ok := sc.prevSignificant(i)
+	return ok && c == '>'
+}
+
+// prevSignificant walks backward from i over ASCII whitespace and returns
+// the byte it lands on. ok is false when i is at (or before) the start of
+// the source; jsxExpr and regexAllowedHere disagree on what that boundary
+// should mean for them, so each applies its own default rather than one
+// being baked in here.
+func (sc *scanner) prevSignificant(i int) (c byte, ok bool) {
 	for j := i - 1; j >= 0; j-- {
 		c := sc.s[j]
 		if c == ' ' || c == '\t' || c == '\n' || c == '\r' {
 			continue
 		}
-		return c == '>'
+		return c, true
 	}
-	return false
-}
-
-// skipCodeDiscard is skipCode with literal recording OFF: used only for
-// JSX expression containers.
-func (sc *scanner) skipCodeDiscard(i int) int {
-	depth := 1
-	for i < len(sc.s) && depth > 0 {
-		c := sc.s[i]
-		switch {
-		case c == '{':
-			depth++
-			i++
-		case c == '}':
-			depth--
-			i++
-		case c == '"' || c == '\'':
-			i = sc.discardString(i)
-		case c == '`':
-			if sc.jsxDepth > 0 {
-				i++ // JSX text: `autoScroll` in prose is JSXText, not a template literal
-			} else {
-				i = sc.templateLit(i)
-			}
-		case c == '/' && i+1 < len(sc.s) && sc.s[i+1] == '/':
-			for i < len(sc.s) && sc.s[i] != '\n' {
-				i++
-			}
-		case c == '/' && i+1 < len(sc.s) && sc.s[i+1] == '*':
-			i = sc.blockComment(i)
-		case c == '/' && sc.regexAllowedHere(i):
-			i = sc.regex(i)
-		default:
-			i++
-		}
-	}
-	return i
+	return 0, false
 }
 
 func (sc *scanner) stringLit(i int) int {
@@ -242,63 +232,27 @@ func (sc *scanner) skipCode(i int) int {
 	return i
 }
 
-func (sc *scanner) discardString(i int) int {
-	q := sc.s[i]
-	i++
-	for i < len(sc.s) {
-		c := sc.s[i]
-		if c == '\\' {
-			i += 2
-			continue
-		}
-		if c == q {
-			return i + 1
-		}
-		i++
-	}
-	return i
-}
-
-func (sc *scanner) discardTemplate(i int) int {
-	i++
-	for i < len(sc.s) {
-		c := sc.s[i]
-		if c == '\\' {
-			i += 2
-			continue
-		}
-		if c == '`' {
-			return i + 1
-		}
-		if c == '$' && i+1 < len(sc.s) && sc.s[i+1] == '{' {
-			i = sc.skipCodeDiscard(i + 2)
-			continue
-		}
-		i++
-	}
-	return i
-}
-
 // regexAllowedHere: '/' opens a regex only where a value cannot precede it.
 // The previous significant byte decides; the operator/opener set permits a
 // regex, operand terminators (identifier char, literal end, ')' ']' '}')
-// do not. '"' and '\'' are operand terminators too: a quote always closes a
-// preceding string literal, so what follows is at least an expression —
-// never a regex. A heuristic; the corpus conformance test is the arbiter.
+// do not. A double quote or an escaped single quote is an operand
+// terminator too: a quote always closes a preceding string literal, so
+// what follows is at least an expression — never a regex. A heuristic; the
+// corpus conformance test is the arbiter.
+// At the start of the source (no previous byte at all) a regex IS allowed
+// — the opposite default from jsxExpr, which is why each caller of
+// prevSignificant makes its own !ok decision.
 func (sc *scanner) regexAllowedHere(i int) bool {
-	for j := i - 1; j >= 0; j-- {
-		c := sc.s[j]
-		if c == ' ' || c == '\t' || c == '\n' || c == '\r' {
-			continue
-		}
-		switch c {
-		case ',', ';', ':', '(', '[', '{', '=', '<', '>',
-			'&', '|', '^', '!', '~', '?', '-':
-			return true
-		}
-		return false
+	c, ok := sc.prevSignificant(i)
+	if !ok {
+		return true
 	}
-	return true
+	switch c {
+	case ',', ';', ':', '(', '[', '{', '=', '<', '>',
+		'&', '|', '^', '!', '~', '?', '-':
+		return true
+	}
+	return false
 }
 
 // regex consumes a regex literal from src[i]=='/'. Char classes are tracked
@@ -361,10 +315,12 @@ func (sc *scanner) isClosingJSXTag(i int) bool {
 }
 
 // jsxTag consumes `<Ident attr=…>` through its '>'. Attributes:
+//
 //	k=v        (string attribute → recorded via stringLit)
 //	k={expr}   (recorded via skipCode for its interior strings)
 //	k          (boolean attribute)
 //	{...spread}
+//
 // Strings in attribute values ARE StringLiterals in babel, so recording is
 // on. After '>': if the previous byte before '>' was '/', the element
 // self-closes; otherwise we are INSIDE its children and the main loop

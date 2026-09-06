@@ -13,12 +13,13 @@
 // looked up in a trie built from getDefaultConfig(), and arbitrary values
 // ([...]) / variables ((...)) answer the group's validators. The config is
 // embedded as config.json, dumped from node getDefaultConfig() with
-// functions replaced by $fn/$theme tokens. Regenerate it with the script in
-// ../twmerge_gen.go's header.
+// functions replaced by $fn/$theme tokens. Regenerate it (and
+// snapshot.json) with tools/twmerge-dump.mjs: `node tools/twmerge-dump.mjs`.
 package twmerge
 
 import (
 	"regexp"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
@@ -162,9 +163,11 @@ func getIsArbitraryVariable(value string, testLabel func(string) bool, shouldMat
 	return shouldMatchNoLabel
 }
 
-func isLabelPosition(label string) bool   { return label == "position" || label == "percentage" }
-func isLabelImage(label string) bool      { return label == "image" || label == "url" }
-func isLabelSize(label string) bool       { return label == "length" || label == "size" || label == "bg-size" }
+func isLabelPosition(label string) bool { return label == "position" || label == "percentage" }
+func isLabelImage(label string) bool    { return label == "image" || label == "url" }
+func isLabelSize(label string) bool {
+	return label == "length" || label == "size" || label == "bg-size"
+}
 func isLabelLength(label string) bool     { return label == "length" }
 func isLabelNumber(label string) bool     { return label == "number" }
 func isLabelFamilyName(label string) bool { return label == "family-name" }
@@ -258,15 +261,30 @@ var (
 	classMapOnce sync.Once
 )
 
+// buildClassMap is the package's one lazy-init closure, guarded by
+// classMapOnce via ensureClassMap: it builds the trie AND the
+// order-sensitive-modifier weights together so there is no way to run one
+// half without the other (see ensureClassMap).
 func buildClassMap() *classPart {
 	root := newClassPart()
 	groups, theme := loadConfig()
+	initModifierWeights()
 	for _, id := range rawCfg.ClassGroupOrder {
 		for _, def := range groups[id] {
 			processDefinition(def, root, id, theme)
 		}
 	}
 	return root
+}
+
+// ensureClassMap lazily builds classMap (and, via buildClassMap,
+// modifierWeight) exactly once. Merge and getClassGroupID both call this
+// same function rather than each guarding their own classMapOnce.Do with
+// a different closure, so there is only one way this package initializes.
+func ensureClassMap() {
+	classMapOnce.Do(func() {
+		classMap = buildClassMap()
+	})
 }
 
 // ---------------------------------------------------------------------------
@@ -294,9 +312,7 @@ func getGroupRecursive(parts []string, start int, node *classPart) string {
 // ([margin:0]) gets a synthetic "$prop" group; real classes split on '-'
 // and a leading empty part (negative values) is skipped.
 func getClassGroupID(className string) string {
-	if classMap == nil {
-		classMapOnce.Do(func() { classMap = buildClassMap() })
-	}
+	ensureClassMap()
 	if strings.HasPrefix(className, "[") && strings.HasSuffix(className, "]") {
 		content := className[1 : len(className)-1]
 		i := strings.IndexByte(content, ':')
@@ -411,10 +427,7 @@ var whitespaceRe = mustRe(`\s+`)
 
 // Merge implements twMerge("…") over the embedded default config.
 func Merge(classList string) string {
-	classMapOnce.Do(func() {
-		classMap = buildClassMap()
-		initModifierWeights()
-	})
+	ensureClassMap()
 	classes := whitespaceRe.Split(strings.TrimSpace(classList), -1)
 	var conflictIDs []string
 	var result []string
@@ -457,7 +470,7 @@ func Merge(classList string) string {
 			modifier += "!"
 		}
 		classID := modifier + groupID
-		if contains(conflictIDs, classID) {
+		if slices.Contains(conflictIDs, classID) {
 			continue
 		}
 		conflictIDs = append(conflictIDs, classID)
@@ -476,13 +489,4 @@ func Merge(classList string) string {
 		result[i], result[j] = result[j], result[i]
 	}
 	return strings.Join(result, " ")
-}
-
-func contains(ss []string, s string) bool {
-	for _, x := range ss {
-		if x == s {
-			return true
-		}
-	}
-	return false
 }

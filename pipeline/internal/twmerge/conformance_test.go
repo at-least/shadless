@@ -10,7 +10,7 @@ import (
 // snapshotted by the JS implementation (snapshot.json). If this diverges the
 // port is wrong, not the snapshot — regenerate the snapshot only against a
 // deliberate tailwind-merge version bump.
-func TestMergeSnapshot(t *testing.T) {
+func TestUnitMergeSnapshot(t *testing.T) {
 	b, err := os.ReadFile("snapshot.json")
 	if err != nil {
 		t.Skip("snapshot not generated")
