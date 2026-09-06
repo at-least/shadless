@@ -265,8 +265,8 @@ func drillRepin(root, to string, args []string, from *pinFile, rep *drillReport)
 	}
 	rep.H(fmt.Sprintf("Re-pin %s → %s", from.ShadcnUI.Tag, toPin.ShadcnUI.Tag))
 	rep.P(fmt.Sprintf("- from: `%s` (%s)\n- to:   `%s` (%s)",
-		from.ShadcnUI.Tag, short(from.ShadcnUI.Commit, 10),
-		toPin.ShadcnUI.Tag, short(toPin.ShadcnUI.Commit, 10)))
+		from.ShadcnUI.Tag, truncate(from.ShadcnUI.Commit, 10),
+		toPin.ShadcnUI.Tag, truncate(toPin.ShadcnUI.Commit, 10)))
 	log, _ := upGit(root, "log", "--oneline", from.ShadcnUI.Commit+".."+toPin.ShadcnUI.Commit)
 	rep.P(fmt.Sprintf("- upstream commits in range: %d", len(nonEmptyLines(log))))
 

@@ -180,7 +180,7 @@ func runPin(root string, checkOnly, force bool) int {
 		}
 		if recorded.ShadcnUI.Commit != head {
 			fmt.Fprintf(os.Stderr, "PIN FAIL: pin.json commit %s != upstream HEAD %s\n",
-				short(recorded.ShadcnUI.Commit, 10), short(head, 10))
+				truncate(recorded.ShadcnUI.Commit, 10), truncate(head, 10))
 			fail = true
 		}
 		if !releaseTagRe.MatchString(recorded.ShadcnUI.Tag) {
@@ -189,14 +189,14 @@ func runPin(root string, checkOnly, force bool) int {
 		}
 		if recorded.Kernel.Sha256 != kernelSha {
 			fmt.Fprintf(os.Stderr, "PIN FAIL: kernel sha256 drift (pin.json %s… != vendor %s…)\n",
-				short(recorded.Kernel.Sha256, 12), short(kernelSha, 12))
+				truncate(recorded.Kernel.Sha256, 12), truncate(kernelSha, 12))
 			fail = true
 		}
 		if fail {
 			return 1
 		}
 		fmt.Printf("pin OK (check-only): shadcn=%s (%s) kernel=%s…\n",
-			recorded.ShadcnUI.Tag, short(head, 10), short(kernelSha, 12))
+			recorded.ShadcnUI.Tag, truncate(head, 10), truncate(kernelSha, 12))
 		return 0
 	}
 
@@ -220,7 +220,7 @@ func runPin(root string, checkOnly, force bool) int {
 		if len(tagsAtHead) > 0 {
 			at = strings.Join(tagsAtHead, ", ")
 		}
-		fmt.Fprintf(os.Stderr, "PIN FAIL: upstream HEAD %s is not a shadcn@* release tag\n", short(head, 10))
+		fmt.Fprintf(os.Stderr, "PIN FAIL: upstream HEAD %s is not a shadcn@* release tag\n", truncate(head, 10))
 		fmt.Fprintf(os.Stderr, "  tags at HEAD: %s\n", at)
 		fmt.Fprintf(os.Stderr, "  checkout a shadcn@* tag before pinning (e.g. git -C %s checkout shadcn@4.19.0)\n", shadcnDir)
 		return 1
@@ -252,7 +252,7 @@ func runPin(root string, checkOnly, force bool) int {
 			fmt.Fprintln(os.Stderr, "PIN FAIL:", err)
 			return 1
 		}
-		fmt.Printf("pin recorded: shadcn=%s (%s) kernel=%s…\n", releaseTag, short(head, 10), short(kernelSha, 12))
+		fmt.Printf("pin recorded: shadcn=%s (%s) kernel=%s…\n", releaseTag, truncate(head, 10), truncate(kernelSha, 12))
 		return 0
 	}
 
@@ -263,7 +263,7 @@ func runPin(root string, checkOnly, force bool) int {
 			return 1
 		}
 		fmt.Printf("pin re-recorded: shadcn=%s -> %s (%s) kernel=%s…\n",
-			old.ShadcnUI.Tag, releaseTag, short(head, 10), short(kernelSha, 12))
+			old.ShadcnUI.Tag, releaseTag, truncate(head, 10), truncate(kernelSha, 12))
 		return 0
 	}
 	if drift {
@@ -276,13 +276,6 @@ func runPin(root string, checkOnly, force bool) int {
 		}
 		return 1
 	}
-	fmt.Printf("pin OK: shadcn=%s (%s) kernel=%s…\n", releaseTag, short(head, 10), short(kernelSha, 12))
+	fmt.Printf("pin OK: shadcn=%s (%s) kernel=%s…\n", releaseTag, truncate(head, 10), truncate(kernelSha, 12))
 	return 0
-}
-
-func short(s string, n int) string {
-	if len(s) <= n {
-		return s
-	}
-	return s[:n]
 }

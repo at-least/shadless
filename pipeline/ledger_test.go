@@ -11,6 +11,7 @@ package main
 // source extraction, where a moved anchor could silently yield nothing.
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -301,7 +302,7 @@ func ledgerFixture(t *testing.T, max int) string {
 			t.Fatal(err)
 		}
 	}
-	write(pinRegistry, `{"shadcn_ui":{"tag":"shadcn@4.19.0"}}`)
+	write(pinFilePath, `{"shadcn_ui":{"tag":"shadcn@4.19.0"}}`)
 	write(goldenExPath, `{"examples":{}}`)
 	write(emitterCSS, `export const DEAD_UTILITIES = new Set([])`)
 	write(emitterSkin, `export const SKIN_ALLOWLIST = new Set([])`)
@@ -539,5 +540,95 @@ func TestUnitLedgerDissolve(t *testing.T) {
 	// step reports the improvement as an UNEXPECTED failure
 	if b := after.Budgets["golden.exempt-demos"]; b != nil && b.Max != len(g.Order) {
 		t.Errorf("golden budget = %d, want %d after pruning", b.Max, len(g.Order))
+	}
+}
+
+// -------------------------------------------------------------- render
+
+// ledgerRender is real transform logic — grouping entries by class, sorting
+// each section, escaping `|` in free-text reason fields, rendering the
+// budgets table and the work-items checklist — with no test and no gate
+// anywhere in the graph (its own doc comment: "not compared against
+// anything"). A broken grouping or a missed escape would be invisible until a
+// human reads the generated file, so this pins the shape by hand.
+func TestUnitLedgerRender(t *testing.T) {
+	root := ledgerFixture(t, 0)
+	l, err := readLedger(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for id, e := range map[string]*ledgerEntry{
+		"permanent:one": {Class: "permanent", Reason: "a real engine difference",
+			Source: "emitter", Recorded: "shadcn@4.19.0"},
+		"auto:one": {Class: "auto-dissolve", Reason: "deploy lag; re-check on re-pin",
+			Source: "golden", Recorded: "shadcn@4.19.0"},
+		"debt:one": {Class: "debt", Reason: "tracked | with a pipe in it",
+			Source: "contracts", Recorded: "shadcn@4.19.0"},
+		"debt:two": {Class: "debt", Reason: "second debt row",
+			Source: "contracts", Recorded: "shadcn@4.19.0"},
+	} {
+		l.Entries[id] = e
+		l.EntryOrder = append(l.EntryOrder, id)
+	}
+	l.Budgets["render-test.metric"] = &ledgerBudget{Max: 5, Target: 0, Class: "debt", Reason: "a budget | with a pipe"}
+	l.BudgetOrder = append(l.BudgetOrder, "render-test.metric")
+	l.Notes = append(l.Notes, "an open work item")
+	if err := l.write(root); err != nil {
+		t.Fatal(err)
+	}
+
+	if err := ledgerRender(root); err != nil {
+		t.Fatal(err)
+	}
+	b, err := os.ReadFile(filepath.Join(root, renderedPath))
+	if err != nil {
+		t.Fatal(err)
+	}
+	md := string(b)
+
+	// section boundaries: the four `## ` headings, in the order ledgerRender
+	// emits them, each carrying the right per-class count.
+	permAt := strings.Index(md, "## Permanent (1)")
+	autoAt := strings.Index(md, "## Auto-dissolve on re-pin (1)")
+	debtAt := strings.Index(md, "## Debt (2)")
+	budgetsAt := strings.Index(md, "## Budgets")
+	if permAt < 0 || autoAt < 0 || debtAt < 0 || budgetsAt < 0 {
+		t.Fatalf("a section heading is missing or has the wrong count:\n%s", md)
+	}
+	if !(permAt < autoAt && autoAt < debtAt && debtAt < budgetsAt) {
+		t.Fatalf("sections are out of order: perm=%d auto=%d debt=%d budgets=%d", permAt, autoAt, debtAt, budgetsAt)
+	}
+
+	// a permanent-class id sits under Permanent, not under Debt (or anywhere
+	// else) — bounded by the NEXT heading, not just "after Permanent".
+	if i := strings.Index(md, "`permanent:one`"); i < permAt || i > autoAt {
+		t.Errorf("permanent:one is not inside the Permanent section (at %d, want %d..%d)", i, permAt, autoAt)
+	}
+	if i := strings.Index(md, "`debt:one`"); i < debtAt || i > budgetsAt {
+		t.Errorf("debt:one is not inside the Debt section (at %d, want %d..%d)", i, debtAt, budgetsAt)
+	}
+	if strings.Contains(md, "`debt:one`") && strings.Index(md, "`debt:one`") < debtAt {
+		t.Errorf("debt:one leaked into an earlier section")
+	}
+
+	if !strings.Contains(md, `tracked \| with a pipe in it`) {
+		t.Errorf("the `|` in an entry reason was not escaped as `\\|`:\n%s", md)
+	}
+	if strings.Contains(md, "tracked | with a pipe in it") {
+		t.Errorf("an entry reason's `|` reached the file unescaped")
+	}
+
+	// every budget lists its Max/Target/Reason, `|` escaped there too.
+	for _, name := range l.BudgetOrder {
+		bud := l.Budgets[name]
+		want := fmt.Sprintf("| `%s` | %d | %d | %s |",
+			name, bud.Max, bud.Target, strings.ReplaceAll(bud.Reason, "|", `\|`))
+		if !strings.Contains(md, want) {
+			t.Errorf("budget %s row missing or malformed; want a line containing %q", name, want)
+		}
+	}
+
+	if !strings.Contains(md, "- [ ] an open work item") {
+		t.Errorf("the note did not render as a work-item checklist entry")
 	}
 }

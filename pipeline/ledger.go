@@ -52,7 +52,6 @@ const (
 	emitterCSS    = "src/emitter/css.mjs"
 	emitterSkin   = "src/emitter/skin.mjs"
 	sweepPath     = "pipeline/interactivity_sweep.go"
-	pinRegistry   = "src/registry/pin.json"
 	todoReasonPfx = "TODO"
 )
 
@@ -381,16 +380,8 @@ func baselineCellCount(root, path string) int {
 }
 
 func currentPin(root string) (string, error) {
-	b, err := os.ReadFile(filepath.Join(root, pinRegistry))
+	p, err := readPin(root)
 	if err != nil {
-		return "", err
-	}
-	var p struct {
-		ShadcnUI struct {
-			Tag string `json:"tag"`
-		} `json:"shadcn_ui"`
-	}
-	if err := json.Unmarshal(b, &p); err != nil {
 		return "", err
 	}
 	return p.ShadcnUI.Tag, nil

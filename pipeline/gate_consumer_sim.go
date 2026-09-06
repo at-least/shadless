@@ -33,7 +33,10 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"runtime"
+	"sort"
 	"strings"
+	"sync"
 )
 
 var reCoreImport = regexp.MustCompile(`(?m)^@import\s+("[^"]+"|url\([^)]*\));?$`)
@@ -147,26 +150,57 @@ func gateConsumerSim(root string) error {
 	// (2026-08-27 survey became a gate: a component that only compiles as part
 	// of the full product entry — e.g. referencing something a sibling part
 	// defines — would ship a file consumers cannot import alone)
+	//
+	// Each name below is fully independent (its own scratch write + its own
+	// tailwindcss subprocess), so they run concurrently, bounded by the same
+	// channel-semaphore pattern run.go's dispatcher uses — each goroutine gets
+	// its own entry-<name>.css/out-<name>.css so parallel writers don't race on
+	// the shared entry.css/out.css paths used above.
 	names, err := os.ReadDir(filepath.Join(root, "dist/css"))
 	if err != nil {
 		return fmt.Errorf("FAIL  consumer-sim: %v", err)
 	}
+	var toCompile []string
+	for _, e := range names {
+		if strings.HasSuffix(e.Name(), ".css") {
+			toCompile = append(toCompile, strings.TrimSuffix(e.Name(), ".css"))
+		}
+	}
+	type indivResult struct {
+		name string
+		err  error
+	}
+	sem := make(chan struct{}, runtime.NumCPU())
+	resultsCh := make(chan indivResult, len(toCompile))
+	var wg sync.WaitGroup
+	for _, n := range toCompile {
+		wg.Add(1)
+		go func(n string) {
+			defer wg.Done()
+			sem <- struct{}{}
+			defer func() { <-sem }()
+			entryN := filepath.Join(sim, "entry-"+n+".css")
+			outN := filepath.Join(sim, "out-"+n+".css")
+			body := fmt.Sprintf("@import \"shadless\";\n@import %q;\n", "shadless/"+n+".css")
+			if err := os.WriteFile(entryN, []byte(body), 0o644); err != nil {
+				resultsCh <- indivResult{n, err}
+				return
+			}
+			resultsCh <- indivResult{n, twCompile(root, entryN, outN, sim, false, true)}
+		}(n)
+	}
+	wg.Wait()
+	close(resultsCh)
 	individualOK := 0
 	var individualFail []string
-	for _, e := range names {
-		if !strings.HasSuffix(e.Name(), ".css") {
-			continue
-		}
-		n := strings.TrimSuffix(e.Name(), ".css")
-		if err := writeEntry(n); err != nil {
-			return fmt.Errorf("FAIL  consumer-sim: %v", err)
-		}
-		if err := twCompile(root, entry, outCSS, sim, false, true); err != nil {
-			individualFail = append(individualFail, n)
+	for r := range resultsCh {
+		if r.err != nil {
+			individualFail = append(individualFail, r.name)
 		} else {
 			individualOK++
 		}
 	}
+	sort.Strings(individualFail) // deterministic report regardless of goroutine finish order
 	if len(individualFail) > 0 {
 		problems = append(problems, "components that do NOT compile individually with the core: "+
 			strings.Join(individualFail, ", "))

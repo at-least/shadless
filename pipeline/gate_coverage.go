@@ -84,7 +84,7 @@ func hasStateToken(all string) bool {
 }
 
 func gateCoverage(root string, argv []string) error {
-	has := func(f string) bool { return hasArg(argv, f) }
+	flag := func(f string) bool { return has(argv, f) }
 	read := func(p string) ([]byte, error) { return os.ReadFile(filepath.Join(root, p)) }
 
 	tiersRaw, err := read("src/registry/tiers.json")
@@ -204,21 +204,14 @@ func gateCoverage(root string, argv []string) error {
 	// computed/behavioral assertion — a documented, already-accepted gap,
 	// not unexplained debt.
 	oracleExempt := map[string]bool{}
-	if eb, err := read("src/registry/upstream-snapshot/exemptions.json"); err == nil {
-		var ex struct {
-			Examples map[string]struct {
-				Reason string `json:"reason"`
-			} `json:"examples"`
-		}
-		if json.Unmarshal(eb, &ex) == nil {
-			for name, e := range ex.Examples {
-				if !reExtDepGate.MatchString(e.Reason) {
-					continue
-				}
-				for _, n := range components {
-					if name == n+"-demo" || strings.HasPrefix(name, n+"-") {
-						oracleExempt[n] = true
-					}
+	if g, err := readGoldenExemptions(root); err == nil {
+		for name, reason := range g.Reasons {
+			if !reExtDepGate.MatchString(reason) {
+				continue
+			}
+			for _, n := range components {
+				if name == n+"-demo" || strings.HasPrefix(name, n+"-") {
+					oracleExempt[n] = true
 				}
 			}
 		}
@@ -372,7 +365,7 @@ func gateCoverage(root string, argv []string) error {
 		return err
 	}
 
-	if has("--cells") {
+	if flag("--cells") {
 		for _, x := range uncovered {
 			fmt.Printf("%s %s %s %s %s\n", x.Component, x.Path, x.Theme, x.Dir, x.State)
 		}
@@ -385,7 +378,7 @@ func gateCoverage(root string, argv []string) error {
 	fmt.Printf("  uncovered by state: %s\n", byDim(func(x covCell) string { return x.State }))
 	fmt.Printf("  detail: build/gates/coverage.json  (--cells lists them)\n")
 
-	return coverageBudget(root, len(uncovered), len(covered), has("--record"), has("--check"))
+	return coverageBudget(root, len(uncovered), len(covered), flag("--record"), flag("--check"))
 }
 
 // gateCoverageExit is the CLI entry for `pipeline coverage --record` — the
@@ -407,13 +400,4 @@ func gateCoverageExit(argv []string) int {
 		return 1
 	}
 	return 0
-}
-
-func hasArg(args []string, f string) bool {
-	for _, a := range args {
-		if a == f {
-			return true
-		}
-	}
-	return false
 }
