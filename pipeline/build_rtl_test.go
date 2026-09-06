@@ -8,10 +8,11 @@ import (
 	"testing"
 )
 
-// substituteAndPatch: pure-string translation, ported from tools/rtl-lib.mjs.
-// Each assertion pins a Wave-G bug the original tool shipped (bare <html>
+// substituteAndPatch: pure-string translation, ported from tools/rtl-lib.mjs
+// (retired with its tools/unit/rtl.mjs suite when this port landed). Each
+// assertion pins a Wave-G bug the original tool shipped (bare <html>
 // lang injection, Persian dir=rtl, longest-first substitution, dir
-// attribute boundary), exactly the cases tools/unit/rtl.mjs asserted on.
+// attribute boundary).
 func TestUnitSubstituteAndPatch(t *testing.T) {
 	type dictT = map[string]struct {
 		Dir    string            `json:"dir"`

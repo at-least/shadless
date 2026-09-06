@@ -42,7 +42,9 @@ the whole of the remainder; nothing is left in JS for lack of effort.
 
 ### `@babel/parser` — parsing TSX
 
-`tools/rtl-lib.mjs`, `tools/five-components.mjs`, and the probe scripts.
+`tools/five-components.mjs`, and the probe scripts. (`tools/rtl-lib.mjs`
+went with its build-rtl Go port; its assertions live in
+`TestUnitSubstituteAndPatch`.)
 The converter — the biggest consumer, the registry `.tsx` → IR heart of the
 product — since ported to Go (`pipeline/convert.go`): esbuild's Transform
 downgrades TSX to classic `React.createElement` calls whose plain-JS text is

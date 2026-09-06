@@ -139,7 +139,7 @@ data. What stays in JS, and why:
   `demo-smoke`, `docs-smoke`, `example-oracle`,
   `example-fixture`, `example-golden`, `interactivity-sweep`, `contracts`),
   esbuild + React + radix (`oracle-lib`, `contracts/oracle-build`, `build-js`,
-  `demo`, `docs-build`), `@babel/parser` (`build-demo`, `rtl-lib`),
+  `demo`, `docs-build`), `@babel/parser` (`build-demo`),
   mdx/remark/shiki (`docs-build`).
 - **Shares a table with a JS consumer.** `docs-links` resolves `/docs/…` routes
   through `resolveDocsRoute` + `GUIDES` in `tools/docs-guides.mjs`, which
