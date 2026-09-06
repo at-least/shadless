@@ -158,10 +158,23 @@ var programmaticPatterns = []boundaryPattern{
 		source: "src/runtime/core.js + src/runtime/components/*.js + src/runtime/shadless.d.ts + vendor/*.iife.js"},
 	{match: oneOf("dist/demo-index.html"),
 		tool: "pipeline/demo.go", source: "per-tier IR list (built into demo.mjs)"},
-	// docs/site — docs-build output
-	{match: prefixSuffix("docs/site/", ".html", ".css", ".js"),
-		tool:   "tools/docs-build.mjs",
-		source: "apps/v4/content/docs/components/*/*.mdx (compiled via MDX)"},
+	// docs/site — the Zola site. content/ + static/ are docs-build output;
+	// public/ is zola build output; themes/vitezola is vendored.
+	{match: func(p string) bool {
+		return strings.HasPrefix(p, "docs/site/content/") || strings.HasPrefix(p, "docs/site/static/")
+	},
+		tool:   "pipeline/docs_build.go (zola markdown + copied dist/demos)",
+		source: ".upstream mdx + docs/content/*.mdx + dist/** + docs/demos/**"},
+	{match: func(p string) bool {
+		return strings.HasPrefix(p, "docs/site/public/")
+	},
+		tool:   "zola build --root docs/site",
+		source: "docs/site/content/** + docs/site/static/** + docs/site/themes/vitezola"},
+	{match: func(p string) bool {
+		return strings.HasPrefix(p, "docs/site/themes/vitezola/")
+	},
+		tool:   "vendored (github.com/newlix/vitezola — see docs/site/themes/vitezola/ORIGIN.txt)",
+		source: "the vitezola release tree, stripped of its demo content"},
 	{match: oneOf("build/rtl-langs.json"),
 		tool: "pipeline/build_rtl.go", source: "src/registry/rtl-translations.json (lifted from examples/aria by pipeline/rtl_dict.go)"},
 	// catalog + reports
@@ -184,6 +197,13 @@ var handAuthoredPatterns = []boundaryPattern{
 	// Guide source content (consumed by docs-build)
 	{match: prefixSuffix("docs/content/", ".mdx"),
 		owner: "human (guide source — compiled by docs-build into docs/site/)"},
+	// The Zola site shell — hand-authored sources around the vendored theme
+	{match: oneOf("docs/site/config.toml"),
+		owner: "human (site shell — Zola config, nav, search)"},
+	{match: prefixSuffix("docs/site/templates/", ".html"),
+		owner: "human (site components — the demo card the content transform emits)"},
+	{match: prefixSuffix("docs/site/sass/", ".scss", ".sass"),
+		owner: "human (site CSS — demo cards, demo-missing, linked-card)"},
 	{match: oneOf("docs/content-map.json"), owner: "human (FT7 build state)"},
 	// Pin tracking
 	{match: oneOf("src/registry/pin.json"),
@@ -395,8 +415,8 @@ var heuristicHints = []heuristicHint{
 	{re: re(`^dist/.+\.html$`),
 		kind: "programmatic", tool: "src/emitter/index.mjs OR pipeline/demo.go (per-tier fixture)",
 		source: "generated/ir/*.json + probes/t{6,7,8,9}/*"},
-	{re: re(`^docs/site/[^/]+\.html$`),
-		kind: "programmatic", tool: "tools/docs-build.mjs", source: "apps/v4/content/docs/components/*/*.mdx"},
+	{re: re(`^docs/site/(content|static)/`),
+		kind: "programmatic", tool: "pipeline/docs_build.go", source: "upstream mdx + dist/** + docs/demos/**"},
 	{re: re(`^generated/ir/[^/]+\.json$`),
 		kind: "programmatic", tool: "pipeline/convert.go", source: "apps/v4/registry/bases/radix/ui/*.tsx"},
 	{re: re(`^tools/[^/]+\.mjs$`),

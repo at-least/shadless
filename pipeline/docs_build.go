@@ -1,10 +1,11 @@
 package main
 
-// docs-build, ported from tools/docs-build.mjs: upstream mdx → VitePress
-// markdown. The text transform chain, the four MDX shapes, the grey-list
-// cross-check, content-map emission, index + sidebar. The ONE node
-// dependency left is prettier's html printer for the demo markup shown under
-// each preview (tools/prettier-batch.mjs — one subprocess per build).
+// docs-build, ported from tools/docs-build.mjs: upstream mdx → Zola markdown
+// (built by the vitezola theme — see docs/site/). The text transform chain,
+// the four MDX shapes, the grey-list cross-check, content-map emission,
+// index + section pages. The ONE node dependency left is prettier's html
+// printer for the demo markup shown under each preview
+// (tools/prettier-batch.mjs — one subprocess per build).
 
 import (
 	"bytes"
@@ -21,6 +22,11 @@ import (
 const (
 	docsRadixDir = docsUpstreamMirror + "/components/radix"
 	docsRoot     = "docs"
+	// docs/site is the Zola site (config.toml, templates/, sass/, themes/).
+	// Its content/ and static/ are fully generated here each run.
+	siteRoot    = docsRoot + "/site"
+	contentRoot = siteRoot + "/content"
+	staticRoot  = siteRoot + "/static"
 )
 
 // FT5: canonical grey list — the radix meta.json entries with NO shadless
@@ -194,11 +200,16 @@ func convertCallouts(text, page string) (string, error) {
 			ls = append(ls, stripUpTo3Spaces(l))
 		}
 		trimmed := strings.TrimSpace(strings.Join(ls, "\n"))
-		block := "::: " + kind
-		if attrs["title"] != "" {
-			block += " " + attrs["title"]
+		// vitezola's tip component; `title` must be listed on a block call
+		// (empty falls back to the kind's default title). A title with a
+		// double quote would break the call — none of the sources carry one,
+		// so fail loudly instead of emitting a page that cannot render.
+		title := attrs["title"]
+		if strings.ContainsAny(title, `"\`) {
+			return "", fmt.Errorf("%s: <Callout> title with a quote/backslash is not expressible: %q", page, title)
 		}
-		block += "\n" + trimmed + "\n:::"
+		block := "{% <tip kind=\"" + kind + "\" title=\"" + title + "\" no_title={false}> %}"
+		block += "\n" + trimmed + "\n{% </tip> %}"
 		out = out[:open[0]] + block + out[close+len("</Callout>"):]
 	}
 	return out, nil
@@ -215,6 +226,47 @@ func stripUpTo3Spaces(l string) string {
 		return l[n:]
 	}
 	return l
+}
+
+// convertDetails rewrites the VitePress `::: details <summary>` container
+// (hand-authored in docs/content/introduction.mdx and passed through the
+// guide transforms) into vitezola's details component. Embedded double
+// quotes are HTML-escaped: &quot; inside the attribute round-trips to a
+// literal quote in the rendered summary.
+func convertDetails(text, page string) (string, error) {
+	lines := strings.Split(text, "\n")
+	var out []string
+	inFence := false
+	open := false
+	for _, l := range lines {
+		trimmed := strings.TrimSpace(l)
+		if strings.HasPrefix(trimmed, "```") {
+			inFence = !inFence
+			out = append(out, l)
+			continue
+		}
+		if inFence {
+			out = append(out, l)
+			continue
+		}
+		if !open && strings.HasPrefix(l, "::: details ") {
+			sum := strings.TrimSpace(strings.TrimPrefix(l, "::: details "))
+			sum = strings.ReplaceAll(sum, `"`, "&quot;")
+			out = append(out, `{% <details summary="`+sum+`" open={false}> %}`)
+			open = true
+			continue
+		}
+		if open && l == ":::" {
+			out = append(out, "{% </details> %}")
+			open = false
+			continue
+		}
+		out = append(out, l)
+	}
+	if open {
+		return "", fmt.Errorf("%s: ::: details without a closing :::", page)
+	}
+	return strings.Join(out, "\n"), nil
 }
 
 func convertSteps(text string) string {
@@ -681,15 +733,18 @@ func (ctx *docsBuildCtx) previewMarkdown(attrs map[string]string, page string) (
 	if len(others) > 0 {
 		othersS = " · " + strings.Join(others, " · ")
 	}
-	return "::::demo " + name + "\n" +
+	// vitezola's demo component (docs/site/templates/demo.html): the card
+	// wrapping the preview iframe and the demo's source. Block calls list
+	// every parameter.
+	return "{% <demo name=\"" + name + "\" status=\"" + status + "\"> %}\n" +
 		"<iframe class=\"demo\" src=\"/demos/" + file + "\" title=\"" + name + "\" data-status=\"" + status + "\" loading=\"lazy\"></iframe>\n" +
 		"\n<p class=\"demo-langs\"><a href=\"/demos/" + file + "\">Open the demo page</a>" + othersS + "</p>\n" +
 		ctx.demoSource(name, file) +
-		"\n::::\n", nil
+		"\n{% </demo> %}\n", nil
 }
 
 func (ctx *docsBuildCtx) demoSource(name, file string) string {
-	path := filepath.Join(docsRoot, "public", "demos", file)
+	path := filepath.Join(staticRoot, "demos", file)
 	markup, ok := ctx.markup[file]
 	if !ok {
 		return ""
@@ -711,13 +766,16 @@ func (ctx *docsBuildCtx) demoSource(name, file string) string {
 	}
 	js = append(js, scripts.inlineScripts...)
 	jsText := strings.TrimSpace(strings.Join(js, "\n\n"))
+	// vitezola's codegroup: one fenced block per tab, the tab label from the
+	// name= annotation. Markup rides the `text` language (highlighting off —
+	// it is code a reader copies verbatim out of the shipped demo page).
 	if jsText == "" {
-		return "\n::: code-group\n```text:line-numbers [" + file + "]\n" + markup + "\n```\n:::\n"
+		return "\n{% <codegroup> %}\n```text,name=" + file + "\n" + markup + "\n```\n{% </codegroup> %}\n"
 	}
-	return "\n::: code-group\n```text:line-numbers [" + file + "]\n" + markup + "\n```\n\n```js:line-numbers [behavior]\n" + jsText + "\n```\n:::\n"
+	return "\n{% <codegroup> %}\n```text,name=" + file + "\n" + markup + "\n```\n\n```js,name=behavior\n" + jsText + "\n```\n{% </codegroup> %}\n"
 }
 
-func (ctx *docsBuildCtx) buildPage(name, source string, transform func(string) (string, error), skipJsxCheck bool) ([]byte, error) {
+func (ctx *docsBuildCtx) buildPage(name, source string, weight int, transform func(string) (string, error), skipJsxCheck bool) ([]byte, error) {
 	rawB, err := os.ReadFile(source)
 	if err != nil {
 		return nil, err
@@ -732,6 +790,10 @@ func (ctx *docsBuildCtx) buildPage(name, source string, transform func(string) (
 	body = stripImportsOutsideFences(body)
 	body = replaceMarkup(body, reCompSourceAll, func(w string, m []string) string { return "" })
 	body, err = convertCallouts(body, name)
+	if err != nil {
+		return nil, err
+	}
+	body, err = convertDetails(body, name)
 	if err != nil {
 		return nil, err
 	}
@@ -777,11 +839,13 @@ func (ctx *docsBuildCtx) buildPage(name, source string, transform func(string) (
 	// sentence that says what it is. Two (carousel's, to embla) were dead
 	// 404s. The links themselves are kept, with their context, in the body.
 	// docs-fidelity asserts the built page carries no page-links chips.
-	front := "---\ntitle: " + yamlScalar(title) + "\n"
-	if d := fmString(fm, "description"); d != "" {
-		front += "description: " + yamlScalar(d) + "\n"
-	}
-	front += "---"
+		front := "---\ntitle: " + yamlScalar(title) + "\n"
+		if d := fmString(fm, "description"); d != "" {
+			front += "description: " + yamlScalar(d) + "\n"
+		}
+		// sidebar order on the Zola site: sections sort their pages by weight
+		front += "weight: " + fmt.Sprint(weight) + "\n"
+		front += "---"
 	desc := fmString(fm, "description")
 	lead := ""
 	if desc != "" {
@@ -936,9 +1000,10 @@ func runDocsBuild() int {
 			return 1
 		}
 	}
-	// .vitepress is NOT wiped: config.mts + theme/ are tracked; only the
-	// generated sidebar.json inside it is rewritten below
-	for _, d := range []string{docsRoot + "/components", docsRoot + "/guides", docsRoot + "/public/demos", docsRoot + "/public/js"} {
+	// docs/site's content/ and static/ are generated in full; only the theme
+	// (themes/vitezola), the site shell (config.toml, templates/, sass/) and
+	// this pipeline's own inputs are tracked
+	for _, d := range []string{contentRoot + "/components", contentRoot + "/guides", staticRoot + "/demos", staticRoot + "/js"} {
 		if err := os.RemoveAll(d); err != nil {
 			fmt.Fprintln(os.Stderr, "docs-build:", err)
 			return 1
@@ -957,7 +1022,7 @@ func runDocsBuild() int {
 				continue
 			}
 			b, _ := os.ReadFile(filepath.Join(tree, e.Name()))
-			if err := os.WriteFile(filepath.Join(docsRoot, "public/demos", e.Name()), b, 0o644); err != nil {
+			if err := os.WriteFile(filepath.Join(staticRoot, "demos", e.Name()), b, 0o644); err != nil {
 				fmt.Fprintln(os.Stderr, "docs-build:", err)
 				return 1
 			}
@@ -966,7 +1031,7 @@ func runDocsBuild() int {
 	}
 	for _, asset := range []string{"out.css", "shadless.js"} {
 		b, _ := os.ReadFile("dist/" + asset)
-		if err := os.WriteFile(filepath.Join(docsRoot, "public", asset), b, 0o644); err != nil {
+		if err := os.WriteFile(filepath.Join(staticRoot, asset), b, 0o644); err != nil {
 			fmt.Fprintln(os.Stderr, "docs-build:", err)
 			return 1
 		}
@@ -974,8 +1039,8 @@ func runDocsBuild() int {
 	glue := 0
 	ents, _ := os.ReadDir("dist/js")
 	for _, e := range ents {
-		b, _ := os.ReadFile(filepath.Join("dist/js", e.Name()))
-		if err := os.WriteFile(filepath.Join(docsRoot, "public/js", e.Name()), b, 0o644); err != nil {
+		b, _ := os.ReadFile("dist/js/" + e.Name())
+		if err := os.WriteFile(filepath.Join(staticRoot, "js", e.Name()), b, 0o644); err != nil {
 			fmt.Fprintln(os.Stderr, "docs-build:", err)
 			return 1
 		}
@@ -985,12 +1050,12 @@ func runDocsBuild() int {
 
 	// markup pretty-printed ONCE per file via the prettier shell
 	var items []prettierItem
-	demoEnts, _ := os.ReadDir(docsRoot + "/public/demos")
+	demoEnts, _ := os.ReadDir(staticRoot + "/demos")
 	for _, e := range demoEnts {
 		if !strings.HasSuffix(e.Name(), ".html") {
 			continue
 		}
-		raw, _ := os.ReadFile(filepath.Join(docsRoot, "public/demos", e.Name()))
+		raw, _ := os.ReadFile(filepath.Join(staticRoot, "demos", e.Name()))
 		body := string(raw)
 		if m := reBodyTag.FindStringSubmatch(body); m != nil {
 			body = m[1]
@@ -1013,26 +1078,27 @@ func runDocsBuild() int {
 
 	type pageJob struct {
 		name, source, dir string
+		weight            int
 		transform         func(string) (string, error)
 		skipJsxCheck      bool
 	}
 	var allPages []pageJob
-	for _, c := range componentPages {
+	for i, c := range componentPages {
 		c := c
-		allPages = append(allPages, pageJob{c.name, c.source, docsRoot + "/components", func(src string) (string, error) {
+		allPages = append(allPages, pageJob{c.name, c.source, contentRoot + "/components", i + 1, func(src string) (string, error) {
 			return ctx.componentTransform(c.name, src)
 		}, false})
 	}
-	for _, g := range guides {
+	for i, g := range guides {
 		g := g
-		allPages = append(allPages, pageJob{g.slug, g.source, docsRoot + "/guides", func(src string) (string, error) {
+		allPages = append(allPages, pageJob{g.slug, g.source, contentRoot + "/guides", i + 1, func(src string) (string, error) {
 			return guideTransform(g, src)
 		}, false})
 	}
 	built := 0
 	var errors_ []string
 	for _, page := range allPages {
-		out, err := ctx.buildPage(page.name, page.source, page.transform, page.skipJsxCheck)
+		out, err := ctx.buildPage(page.name, page.source, page.weight, page.transform, page.skipJsxCheck)
 		if err != nil {
 			errors_ = append(errors_, page.name+": "+err.Error())
 			continue
@@ -1054,12 +1120,14 @@ func runDocsBuild() int {
 		return 1
 	}
 
-	// index + sidebar
+	// home + section pages. The Zola sidebar is derived per top-level section
+	// from the content tree (weight order set above), so there is no sidebar
+	// artifact to emit.
 	guideBySlug := map[string]guide{}
 	for _, g := range guides {
 		guideBySlug[g.slug] = g
 	}
-	idx := "---\ntitle: \"Components\"\n---\n\n# Components\n\n" +
+	compIndex := "---\ntitle: \"Components\"\nsort_by: \"weight\"\n---\n\n# Components\n\n" +
 		fmt.Sprintf("%d components ported · %d not ported (they need React, or upstream removed them) · %d guides.\n\n",
 			len(mirrorSetCache), len(greyComponents), len(guides)) +
 		"New here? Read the [Introduction](/guides/introduction) to learn what shadless is and why it exists.\n\n"
@@ -1071,22 +1139,41 @@ func runDocsBuild() int {
 			if g, ok := guideBySlug[n]; ok {
 				line += " — see the [" + g.title + "](/guides/" + g.slug + ") guide"
 			}
-			idx += line + "\n"
+			compIndex += line + "\n"
 		} else {
-			idx += "- [" + n + "](/components/" + n + ")\n"
+			compIndex += "- [" + n + "](/components/" + n + ")\n"
 		}
 	}
-	idx += "\n## Guides\n\n"
+	compIndex += "\n## Guides\n\n"
 	for _, g := range guides {
-		idx += "- [" + g.title + "](/guides/" + g.slug + ")\n"
+		compIndex += "- [" + g.title + "](/guides/" + g.slug + ")\n"
 	}
-	if err := os.WriteFile(docsRoot+"/index.md", []byte(idx), 0o644); err != nil {
+	if err := os.MkdirAll(contentRoot+"/components", 0o755); err != nil {
 		fmt.Fprintln(os.Stderr, "docs-build:", err)
 		return 1
 	}
-
-	sidebar := stringifyJSON(buildSidebarDocs(meta.Pages, greySet, mirrorSetCache), 0)
-	if err := os.WriteFile(docsRoot+"/.vitepress/sidebar.json", []byte(sidebar+"\n"), 0o644); err != nil {
+	if err := os.WriteFile(contentRoot+"/components/_index.md", []byte(compIndex), 0o644); err != nil {
+		fmt.Fprintln(os.Stderr, "docs-build:", err)
+		return 1
+	}
+	guidesIndex := "---\ntitle: \"Guides\"\nsort_by: \"weight\"\n---\n\n# Guides\n\n" +
+		fmt.Sprintf("%d guides — ported where they make sense for a component library that ships static HTML.\n", len(guides))
+	if err := os.WriteFile(contentRoot+"/guides/_index.md", []byte(guidesIndex), 0o644); err != nil {
+		fmt.Fprintln(os.Stderr, "docs-build:", err)
+		return 1
+	}
+	// the hero home — the theme's index.html renders vitepress_home and
+	// nothing else, so the component listing lives on /components/ above
+	// TOML frontmatter: the vitepress_home tables are TOML, and a YAML block
+	// cannot carry them (the pages keep YAML — Zola accepts either per file)
+	home := "+++\ntemplate = \"index.html\"\n" +
+		"[extra.vitepress_home]\ntext = \"shadless\"\ntagline = \"shadcn/ui as static HTML and a vanilla runtime — no React. Copy the markup, load the stylesheets, done.\"\n" +
+		"[[extra.vitepress_home.actions]]\ntext = \"Get Started\"\ntheme = \"brand\"\nlink = \"/guides/introduction/\"\n\n" +
+		"[[extra.vitepress_home.actions]]\ntext = \"Components\"\ntheme = \"alt\"\nlink = \"/components/\"\n\n" +
+		"[[extra.vitepress_home.features]]\ntitle = \"Static HTML\"\ndetails = \"Every component is markup + CSS you copy — data-slot attributes, Tailwind utilities, no framework.\"\n\n" +
+		"[[extra.vitepress_home.features]]\ntitle = \"Vanilla runtime\"\ndetails = \"A dependency-free JS base wires the interactive pieces; shadless.init(root) for content added later.\"\n\n" +
+		"[[extra.vitepress_home.features]]\ntitle = \"shadcn/ui, ported\"\ndetails = \"" + fmt.Sprintf("%d components mirrored from the pinned upstream registry, plus the guides that still apply.", len(mirrorSetCache)) + "\"\n+++\n"
+	if err := os.WriteFile(contentRoot+"/_index.md", []byte(home), 0o644); err != nil {
 		fmt.Fprintln(os.Stderr, "docs-build:", err)
 		return 1
 	}
@@ -1107,43 +1194,14 @@ func runDocsBuild() int {
 	return 0
 }
 
-// buildSidebarDocs constructs the sidebar in JS object order (text, items;
-// text, link) for stringifyJSON.
+// jsonKV + stringifyJSON emit JSON.stringify(v, null, 2) byte-exactly for
+// the value shapes docs-build produces (objects as []jsonKV, arrays,
+// strings) — still used by writeContentMap (docs/content-map.json).
 type jsonKV struct {
 	k string
 	v any
 }
 
-func buildSidebarDocs(metaPages []string, greySet map[string]bool, mirrorSet []string) []any {
-	var pinned, other []any
-	for _, g := range guides {
-		entry := []jsonKV{{"text", g.title}, {"link", "/guides/" + g.slug}}
-		if g.pinned {
-			pinned = append(pinned, entry)
-		} else {
-			other = append(other, entry)
-		}
-	}
-	compItems := []any{[]jsonKV{{"text", "All components"}, {"link", "/"}}}
-	for _, n := range mirrorSet {
-		compItems = append(compItems, []jsonKV{{"text", n}, {"link", "/components/" + n}})
-	}
-	var greyItems []any
-	for _, p := range metaPages {
-		if greySet[p] {
-			greyItems = append(greyItems, []jsonKV{{"text", p}})
-		}
-	}
-	return []any{
-		[]jsonKV{{"text", "Getting started"}, {"items", pinned}},
-		[]jsonKV{{"text", "Components"}, {"items", compItems}},
-		[]jsonKV{{"text", "Guides"}, {"items", other}},
-		[]jsonKV{{"text", "Not available"}, {"items", greyItems}},
-	}
-}
-
-// stringifyJSON emits JSON.stringify(v, null, 2) byte-exactly for the value
-// shapes docs-build produces (objects as []jsonKV, arrays, strings).
 func stringifyJSON(v any, depth int) string {
 	ind := strings.Repeat("  ", depth)
 	inner := strings.Repeat("  ", depth+1)

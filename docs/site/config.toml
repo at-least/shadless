@@ -1,0 +1,50 @@
+# The site shell. Zola's job now — routing, the sidebar, dead-link checking,
+# markdown, highlighting (vitezola recreates the VitePress default theme in
+# plain HTML/CSS/JS). What this repo owns is the CONTENT transform
+# (pipeline/docs_build.go: upstream React mdx → markdown for a product that
+# ships static HTML) and the demos the pages iframe from /demos/, which are
+# the pipeline's own output copied into static/ at build time.
+# NOTE: base_url's PATH must stay "/" — the generated pages hardcode
+# root-absolute hrefs (/demos/*.html, /js/*), which Zola does not rewrite.
+base_url = "https://shadless.dev/"
+title = "shadless"
+description = "shadcn/ui as static HTML and a vanilla runtime — no React."
+default_language = "en"
+theme = "vitezola"
+compile_sass = true
+build_search_index = true
+
+[search]
+index_format = "fuse_json"
+
+[markdown.highlighting]
+style = "class"
+light_theme = "github-light"
+dark_theme = "github-dark"
+
+[extra]
+vitepress_site_title = "shadless"
+vitepress_outline_title = "On this page"
+vitepress_footer_message = "shadcn/ui as static HTML — no React."
+vitepress_footer_copyright = "The shadless authors"
+# site-owned styles for the demo cards the content transform emits
+extra_css = ["shadless-site.css"]
+
+[[extra.nav]]
+text = "Components"
+link = "/components/"
+active_match = "/components/"
+
+[[extra.nav]]
+text = "Introduction"
+link = "/guides/introduction/"
+active_match = "/guides/introduction/"
+
+[[extra.nav]]
+text = "Installation"
+link = "/guides/installation/"
+active_match = "/guides/installation/"
+
+[[extra.social]]
+kind = "github"
+link = "https://github.com/at-least/shadless"

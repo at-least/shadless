@@ -270,7 +270,7 @@ var Mutations = []Mutation{
 	{
 		ID: "docs-consistency-react-import", Gate: "docs-consistency",
 		Why:   "a built page teaches `@/components/ui` again after an upstream mdx reshape",
-		Files: []string{"docs/components/accordion.md"},
+		Files: []string{"docs/site/content/components/accordion.md"},
 		// bc755b5: a no-React product must not teach React imports. The
 		// detector exists so a NEW upstream mdx shape lands loudly.
 		Apply: func(root string, f []string) error {
@@ -281,7 +281,7 @@ var Mutations = []Mutation{
 	{
 		ID: "docs-fidelity-drop-heading", Gate: "docs-fidelity",
 		Why:   "a built page silently loses a heading its mdx source has",
-		Files: []string{"docs/components/accordion.md"},
+		Files: []string{"docs/site/content/components/accordion.md"},
 		// One missing newline in a transform once glued a heading into the
 		// previous paragraph and silently removed it from 51 pages. Render
 		// and console checks cannot see content loss; only the mdx compare can.
@@ -294,7 +294,7 @@ var Mutations = []Mutation{
 		Why: "a preview iframe points at a page that does not exist",
 		// the BUILT page: docs-smoke drives the rendered site, and rebuilding
 		// it is not part of running the gate
-		Files: []string{"docs/.vitepress/dist/components/accordion.html"},
+		Files: []string{"docs/site/public/components/accordion/index.html"},
 		Apply: func(root string, f []string) error {
 			return mutReplaceOnce(root, f[0],
 				`src="/demos/accordion-demo.html"`, `src="/demos/mutation-missing.html"`)
@@ -377,7 +377,7 @@ var Mutations = []Mutation{
 	{
 		ID: "interactivity-strip-script", Gate: "interactivity-sweep",
 		Why:   "an interactive example ships without its behavior — a dead button",
-		Files: []string{"docs/public/demos/dialog.html"},
+		Files: []string{"docs/site/static/demos/dialog.html"},
 		// f4759ef: contracts click FIXTURES, golden compares SNAPSHOTS, smoke
 		// listens to the CONSOLE — the dead-button bug lived in the gap where
 		// nobody asked whether the shipped page RESPONDS.

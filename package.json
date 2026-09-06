@@ -60,9 +60,9 @@
     "demo:smoke": "npm run pipeline && ./build/pipeline demo-smoke",
     "verify": "npm run typecheck && npm run pipeline && ./build/pipeline run all",
     "gate:direction": "go test -C pipeline -count=1 -v -run '^TestCssDirection$' .",
-    "docs": "npm run pipeline && ./build/pipeline build-rtl && ./build/pipeline docs-catalog && ./build/pipeline docs-build && vitepress build docs",
-    "docs:dev": "vitepress dev docs",
-    "docs:preview": "vitepress preview docs",
+    "docs": "npm run pipeline && ./build/pipeline build-rtl && ./build/pipeline docs-catalog && ./build/pipeline docs-build && zola --root docs/site build",
+    "docs:dev": "./build/pipeline docs-build && zola --root docs/site serve -u http://127.0.0.1/",
+    "docs:preview": "zola --root docs/site serve -u http://127.0.0.1/",
     "docs:verify": "npm run docs && ./build/pipeline docs-consistency && ./build/pipeline docs-fidelity && ./build/pipeline docs-smoke --all",
     "docs:consistency": "npm run pipeline && ./build/pipeline docs-consistency",
     "docs:fidelity": "npm run pipeline && ./build/pipeline docs-fidelity",
@@ -134,8 +134,7 @@
     "tailwind-merge": "^3.6.0",
     "tailwindcss": "^4.3.3",
     "tw-animate-css": "^1.4.0",
-    "typescript": "^5.9.3",
-    "vitepress": "^1.6.4"
+    "typescript": "^5.9.3"
   },
   "overrides": {
     "@radix-ui/primitive": "1.1.3",

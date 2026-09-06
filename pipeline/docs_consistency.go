@@ -36,7 +36,7 @@ var reSlotTableRow = regexp.MustCompile(`^\| ` + "`" + `data-slot="([a-z0-9-]+)"
 func runDocsConsistency() int {
 	loadSkin()
 
-	for _, dir := range []string{"docs/components", "docs/guides"} {
+	for _, dir := range []string{"docs/site/content/components", "docs/site/content/guides"} {
 		if _, err := os.Stat(dir); err != nil {
 			fmt.Fprintln(os.Stderr, "FAIL  docs-consistency: the markdown pages are not built — run the docs chain first (make docs)")
 			return 1
@@ -44,7 +44,7 @@ func runDocsConsistency() int {
 	}
 
 	pageFiles := []string{}
-	for _, d := range []string{"docs/components", "docs/guides"} {
+	for _, d := range []string{"docs/site/content/components", "docs/site/content/guides"} {
 		ents, err := os.ReadDir(d)
 		if err != nil {
 			continue
@@ -153,13 +153,13 @@ func runDocsConsistency() int {
 			if e.IsDir() || !strings.HasSuffix(e.Name(), ".js") {
 				continue
 			}
-			page := filepath.Join("docs/components", name+".md")
+			page := filepath.Join("docs/site/content/components", name+".md")
 			b, err := os.ReadFile(page)
 			if err != nil {
 				continue // not every dist/js entry has a component page
 			}
 			behaviorChecked++
-			if !strings.Contains(string(b), "js:line-numbers [behavior]") {
+			if !strings.Contains(string(b), "js,name=behavior") {
 				addProblem("behavior-tab-missing", page,
 					"dist/js/"+e.Name()+" ships but the page shows no [behavior] tab")
 			}

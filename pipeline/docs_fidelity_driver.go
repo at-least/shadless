@@ -14,18 +14,18 @@ import (
 )
 
 func runDocsFidelity() int {
-	const demos = "docs/public/demos"
+	const demos = "docs/site/static/demos"
 	guideBySlug := map[string]guide{}
 	for _, g := range guides {
 		guideBySlug[g.slug] = g
 	}
 	pagePath := func(name string) string {
 		if _, ok := guideBySlug[name]; ok {
-			return "docs/guides/" + name + ".md"
+			return "docs/site/content/guides/" + name + ".md"
 		}
-		return "docs/components/" + name + ".md"
+		return "docs/site/content/components/" + name + ".md"
 	}
-	if !fileExists("docs/index.md") {
+	if !fileExists("docs/site/content/_index.md") {
 		fmt.Fprintln(os.Stderr, "FAIL  docs-fidelity: the markdown pages are not built — run the docs chain first (make docs)")
 		return 1
 	}

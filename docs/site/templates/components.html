@@ -1,0 +1,16 @@
+{# shadless site components (Zola 0.23 / Tera 2). Registered globally from
+   any template file; kept out of the theme's components.html so a theme
+   re-vendor never clashes. #}
+
+{# The demo card: one bordered card per preview — the iframe on top, the
+   demo's source under it inside the same border. Emitted by
+   pipeline/docs_build.go around each <ComponentPreview>. `status` is the
+   catalog's preview status; "authored"/"existing-dist" carry an iframe. #}
+{% component demo(name, status) %}
+{% set s = status | default(value="authored") %}
+<div class="demo-card" data-demo="{{ name }}" data-status="{{ s }}">
+
+{{ body }}
+
+</div>
+{% endcomponent demo %}

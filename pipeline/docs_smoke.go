@@ -1,6 +1,6 @@
 package main
 
-// docs-smoke, ported from tools/docs-smoke.mjs — serve the built VitePress
+// docs-smoke, ported from tools/docs-smoke.mjs — serve the built Zola
 // site over http and drive the browser with the REAL mouse (synthetic
 // PointerEvents are rejected by radix-like filters):
 //   1. dialog.html: real-mouse open inside the iframe + Escape close
@@ -21,7 +21,7 @@ import (
 )
 
 func runDocsSmoke(all bool) int {
-	siteDir := "docs/.vitepress/dist"
+	siteDir := "docs/site/public"
 	if _, err := os.Stat(siteDir); err != nil {
 		fmt.Fprintln(os.Stderr, "FAIL  docs smoke: the site is not built — run make docs first")
 		return 1
@@ -92,7 +92,7 @@ func runDocsSmoke(all bool) int {
 		fmt.Fprintln(os.Stderr, "docs smoke:", err)
 		return 1
 	}
-	if err := page.gotoURL(base + "/components/dialog.html"); err != nil {
+	if err := page.gotoURL(base + "/components/dialog/"); err != nil {
 		fmt.Fprintln(os.Stderr, "docs smoke:", err)
 		return 1
 	}
@@ -143,7 +143,7 @@ func runDocsSmoke(all bool) int {
 	// ---- 2. avatar preview over http: 0 console errors ----
 	avPage, _ := shell.newPageOrigin(true, base)
 	avFrame := `iframe.demo[title="avatar-demo"]`
-	avPage.gotoURL(base + "/components/avatar.html")
+	avPage.gotoURL(base + "/components/avatar/")
 	avPage.locWait(avFrame, `[data-slot="avatar"]`, "visible", 5000)
 	avBox, _ := page2box(avPage, avFrame)
 	avPage.mouseClick(avBox.X+2, avBox.Y+2)
@@ -191,23 +191,22 @@ func runDocsSmoke(all bool) int {
 	// ---- 4. --all: every-page sweep ----
 	verifyN := 0
 	if all {
+		// Zola emits one directory per page: <path>/index.html
 		var pageFiles []string
-		pageFiles = append(pageFiles, "index.html")
-		for _, sub := range []string{"components", "guides"} {
-			ents, _ := os.ReadDir(filepath.Join(siteDir, sub))
-			for _, e := range ents {
-				if strings.HasSuffix(e.Name(), ".html") {
-					pageFiles = append(pageFiles, sub+"/"+e.Name())
-				}
+		filepath.WalkDir(siteDir, func(p string, d os.DirEntry, err error) error {
+			if err == nil && !d.IsDir() && d.Name() == "index.html" {
+				rel, _ := filepath.Rel(siteDir, p)
+				pageFiles = append(pageFiles, rel)
 			}
-		}
+			return nil
+		})
 		sort.Strings(pageFiles)
 		renderFail, leakFail := 0, 0
 		consoleErrCount, iframesLoaded := 0, 0
 		nComponents, nGuides, nIndex := 0, 0, 0
 		for _, f := range pageFiles {
 			p, _ := shell.newPageOrigin(true, base)
-			p.gotoURL(base + "/" + f)
+			p.gotoURL(base + "/" + strings.TrimSuffix(strings.TrimSuffix(f, "index.html"), "/") + "/")
 			n, _ := p.locCount("", `iframe.demo`)
 			for i := 0; i < n; i++ {
 				p.locScroll("", `iframe.demo`, i)
@@ -221,7 +220,8 @@ func runDocsSmoke(all bool) int {
           { acceptNode: (n) => (n.parentElement.closest('pre, code') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT) })
         let visible = ''
         for (; walker.nextNode();) visible += walker.currentNode.data + '\n'
-        return { rendered: !!article && text.length > 0, leaks: visible.match(/Component(Preview|Source)\b/g) ?? [] }
+        const home = document.querySelector('.VPHome')
+        return { rendered: (!!article && text.length > 0) || !!home, leaks: visible.match(/Component(Preview|Source)\b/g) ?? [] }
       }`)
 			if f == "index.html" {
 				nIndex++

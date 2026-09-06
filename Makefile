@@ -124,13 +124,13 @@ ir-diff: $(PIPELINE)
 
 serve:
 	@echo "serving the built docs on http://localhost:$(PORT) (Ctrl-C to stop)"
-	npx vitepress preview docs --port $(PORT)
+	zola --root docs/site serve --port $(PORT) -u http://127.0.0.1/
 
 clean:
 	rm -rf dist build node_modules/.cache/shadless
 	rm -rf docs/catalog.json
-	rm -rf docs/site docs/public docs/.vitepress/dist docs/.vitepress/cache
-	@echo "cleaned: dist/ + build/ + the docs site and its served tree"
+	rm -rf docs/site/public docs/site/content docs/site/static
+	@echo "cleaned: dist/ + build/ + the docs site's generated trees"
 
 help:
 	@sed -n '2,16p' Makefile | sed 's/^# \{0,1\}//'

@@ -49,7 +49,7 @@ func sweepFamilyOf(name string) string {
 }
 
 func runInteractivitySweep() int {
-	site := "docs/public/demos"
+	site := "docs/site/static/demos"
 	tiersB, err := os.ReadFile("src/registry/tiers.json")
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "interactivity-sweep:", err)

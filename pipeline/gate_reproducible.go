@@ -10,10 +10,12 @@ package main
 // tree must be clean under the generated paths.
 //
 // Keeping dist/ in git is deliberate: a re-pin PR's most useful review surface
-// is the diff of what consumers actually receive. docs/site/ is NOT in that
-// list any more (2026-08-31) — it is a 12 MB rendering of trees already
-// reviewed here, and the docs site is moving to VitePress, whose output is a
-// build artifact like any other.
+// is the diff of what consumers actually receive. The docs site's generated
+// MARKDOWN (docs/site/content) is tracked for the same reason — it is what
+// the transform made of upstream's mdx. docs/site/public (the rendered HTML)
+// and docs/site/static (copied dist/demos trees) are gitignored renderings
+// and deliberately absent: there is no committed tree to compare them
+// against.
 
 import (
 	"fmt"
@@ -27,8 +29,9 @@ import (
 // committed, so there is no committed tree to compare it against.
 var generatedRoots = []string{
 	"dist", "docs/catalog.json", "docs/demos", "docs/example-oracle.json",
-	"docs/components", "docs/guides", "docs/index.md", "docs/content-map.json",
-	"docs/.vitepress/sidebar.json",
+	"docs/site/content/components", "docs/site/content/guides",
+	"docs/site/content/_index.md", "docs/site/content/components/_index.md",
+	"docs/site/content/guides/_index.md", "docs/content-map.json",
 	"generated/ir", "generated/docs-upstream", "src/kernel/*.html",
 }
 

@@ -21,17 +21,11 @@ tools/contracts/out/*/oracle.html
 /pipeline/stamps/
 /tools/contracts/out/
 
-# The rendered docs site: 12 MB of HTML that is a RENDERING of trees already
-# reviewed in this repo (dist/, docs/demos/). Tracked until 2026-08-31, when
-# the mirror checks that justified it (docs-consistency §1-3) were deleted as
-# tautological and the site started moving to VitePress. `reproducible` no
-# longer lists it.
-/docs/site/
-
-# VitePress: the rendered site, its cache, and the demo tree docs-build copies
-# into the served root. The generated MARKDOWN (docs/components, docs/guides,
-# docs/index.md, docs/.vitepress/sidebar.json) IS tracked — that is the re-pin
-# review surface: what the transform made of upstream's mdx.
-/docs/.vitepress/dist/
-/docs/.vitepress/cache/
-/docs/public/
+# Zola: the rendered site (public/) and the demo tree docs-build copies into
+# the served root (static/) are RENDERINGS of trees already reviewed in this
+# repo (dist/, docs/demos/). The generated MARKDOWN (docs/site/content) IS
+# tracked — that is the re-pin review surface: what the transform made of
+# upstream's mdx. The theme (docs/site/themes/vitezola), the site shell
+# (config.toml, templates/, sass/) are tracked sources too.
+/docs/site/public/
+/docs/site/static/
