@@ -70,6 +70,12 @@ func (m *Shadless) renderBase(ctx context.Context, source *dagger.Directory) (*d
 		// gates/ledger.json — golden-gate reads the exemption budgets from it.
 		WithDirectory("/w/gates", source.Directory("gates")).
 		WithDirectory("/w/src", source.Directory("src")).
+		// oracleBundleCacheKey re-reads these two files at RUNTIME as cache-key
+		// material (everything else it hashes is compiled into the binary or
+		// already mounted: package-lock.json via deps, skin.mjs via src/,
+		// stubs/ via tools/). A missing one is an ENOENT at the point of use.
+		WithFile("/w/pipeline/resolve_skins.go", source.File("pipeline/resolve_skins.go")).
+		WithFile("/w/pipeline/oracle_lib.go", source.File("pipeline/oracle_lib.go")).
 		WithDirectory("/w/.upstream/shadcn-ui/apps/v4",
 			source.Directory(".upstream/shadcn-ui/apps/v4")).
 		WithDirectory("/w/build/resolved-ui", resolved).
@@ -204,7 +210,8 @@ func goBinary(ctx context.Context, source *dagger.Directory) (*dagger.File, erro
 	return dag.Container().
 		From(img).
 		WithDirectory("/src/pipeline", source.Directory("pipeline")).
-		WithExec([]string{"go", "build", "-o", "/out/pipeline", "./pipeline"}).
+		WithWorkdir("/src/pipeline").
+		WithExec([]string{"go", "build", "-o", "/out/pipeline", "."}).
 		File("/out/pipeline"), nil
 }
 

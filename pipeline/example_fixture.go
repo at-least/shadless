@@ -96,6 +96,7 @@ func buildContractOracleGo(def efDef, out, recorder string) error {
 		Bundle:      true,
 		Format:      api.FormatIIFE,
 		Outfile:     bundle,
+		Write:       true, // the Go API's zero value is false — no file on disk
 		LogLevel:    api.LogLevelError,
 		Alias: map[string]string{
 			"@":                            absOrDie(".upstream/shadcn-ui/apps/v4"),
