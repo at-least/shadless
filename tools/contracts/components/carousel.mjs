@@ -9,7 +9,6 @@
 // to shadless.get(), the real per-instance handle API, when window.__api is
 // unset.
 export default {
-  name: "carousel",
   usage: `
 React.createElement(Carousel, { setApi: function (api) { window.__api = api; } },
   React.createElement(CarouselContent, null,

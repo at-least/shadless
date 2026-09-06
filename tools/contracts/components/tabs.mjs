@@ -3,7 +3,6 @@
 // "&<css>" slots = raw selectors (inactive panel is absent in oracle DOM —
 // radix unmounts it; we record only the visible panel).
 export default {
-  name: "tabs",
 
   usage: `
 React.createElement(Tabs, { defaultValue: "account" },

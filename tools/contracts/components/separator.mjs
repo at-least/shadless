@@ -1,6 +1,5 @@
 // Per-component contract: separator (Wave C, zero JS)
 export default {
-  name: "separator",
   usage: `
 React.createElement(Separator, null)
 `,

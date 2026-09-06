@@ -1,6 +1,5 @@
 // Per-component contract: toggle-group (Wave C, trivial runtime, type=single)
 export default {
-  name: "toggle-group",
 
   usage: `
 React.createElement(ToggleGroup, { type: "single", id: "grp" },
@@ -25,7 +24,6 @@ import { ToggleGroup, ToggleGroupItem } from "@/registry/bases/radix/ui/toggle-g
     "focus:#grp+key:ArrowRight", // arrow from group focus lands on LAST item
     "click:#gi1+key:ArrowRight", // arrow from active item moves focus only
     "focus:#grp+key:ArrowRight+key:Space", // Space selects the focused item
-,
     "focus:#grp+key:Home",
     "focus:#grp+key:End",
   ],

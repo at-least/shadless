@@ -1,6 +1,5 @@
 // Per-component contract: label (Wave C, native `for` — zero JS)
 export default {
-  name: "label",
 
   usage: `
 React.createElement("div", null,

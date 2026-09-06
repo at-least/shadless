@@ -1,6 +1,5 @@
 // Per-component contract: context-menu (Wave B, kernel wireMenu, point anchor)
 export default {
-  name: "context-menu",
 
   usage: `
 React.createElement(ContextMenu, null,

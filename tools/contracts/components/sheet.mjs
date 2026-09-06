@@ -1,6 +1,5 @@
 // Per-component contract: sheet (Wave B, kernel wireDialog — sheet IS radix Dialog)
 export default {
-  name: "sheet",
 
   usage: `
 React.createElement(Sheet, {

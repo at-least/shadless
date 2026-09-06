@@ -1,6 +1,5 @@
 // Per-component contract: switch (Wave C, trivial runtime)
 export default {
-  name: "switch",
 
   usage: `
 React.createElement(Switch, { id: "s1" })

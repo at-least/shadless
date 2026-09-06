@@ -1,6 +1,5 @@
 // Per-component contract: checkbox (Wave C, trivial runtime)
 export default {
-  name: "checkbox",
 
   usage: `
 React.createElement(Checkbox, { id: "c1" })

@@ -1,6 +1,5 @@
 // Per-component contract: hover-card (Wave B, kernel wireHoverCard, hover-open)
 export default {
-  name: "hover-card",
 
   usage: `
 React.createElement(HoverCard, null,

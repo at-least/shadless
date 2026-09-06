@@ -1,6 +1,5 @@
 // Per-component contract: tooltip (Wave B, kernel wireTooltip, hover-open)
 export default {
-  name: "tooltip",
 
   usage: `
 React.createElement(TooltipProvider, null,

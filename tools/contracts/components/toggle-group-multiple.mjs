@@ -1,6 +1,5 @@
 // Per-component contract: toggle-group type=multiple (Wave C audit fix)
 export default {
-  name: "toggle-group-multiple",
   usage: `
 React.createElement(ToggleGroup, { type: "multiple", id: "grp" },
   React.createElement(ToggleGroupItem, { id: "gi1", value: "a" }, "A"),

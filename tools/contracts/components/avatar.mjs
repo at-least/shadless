@@ -1,6 +1,5 @@
 // Per-component contract: avatar (Wave C, trivial runtime)
 export default {
-  name: "avatar",
   usage: `
 React.createElement("div", null,
   React.createElement(Avatar, { id: "av1" },

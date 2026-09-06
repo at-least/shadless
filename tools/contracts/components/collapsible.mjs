@@ -1,6 +1,5 @@
 // Per-component contract: collapsible (Wave C, trivial runtime)
 export default {
-  name: "collapsible",
   usage: `
 React.createElement(Collapsible, { id: "co" },
   React.createElement(CollapsibleTrigger, { id: "d1-ct" }, "Toggle"),

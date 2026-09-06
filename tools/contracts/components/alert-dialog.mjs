@@ -2,7 +2,6 @@
 // click swallow). Semantics: overlay-click does NOT dismiss; Escape does;
 // Action/Cancel dismiss; open-autofocus lands on Cancel.
 export default {
-  name: "alert-dialog",
 
   usage: `
 React.createElement(AlertDialog, {

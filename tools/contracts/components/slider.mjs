@@ -1,7 +1,6 @@
 // Per-component contract: slider (Wave B, kernel wireSlider)
 // stateProbe = aria-valuenow of the thumb → scenarios compare VALUE, not open/close
 export default {
-  name: "slider",
 
   usage: `
 React.createElement(Slider, { defaultValue: [50], id: "s1" })`,

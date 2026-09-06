@@ -38,6 +38,11 @@ let browser = null
 
 const send = (obj) => process.stdout.write(JSON.stringify(obj) + "\n")
 
+// evaluate/elementHandle.evaluate treat a string as an EXPRESSION, not a
+// function — "el => …" evaluates to a function value and returns undefined.
+// Parse the expr string into a real function first.
+const toFn = (expr) => new Function("return (" + expr + ")")()
+
 async function frameOf(page, frameSel) {
   if (!frameSel) return null
   const handle = await page.locator(frameSel).first().contentFrame({ timeout: 10_000 })
@@ -95,11 +100,8 @@ async function handle(req) {
       return { value }
     }
     case "evaluateFn": {
-      // string FUNCTIONS ("() => {…}") evaluate to undefined under plain
-      // evaluate (strings are EXPRESSIONS there) — parse into a function
       const { page } = pages.get(req.pageId)
-      const fn = new Function("return (" + req.expr + ")")()
-      const value = await page.evaluate(fn, req.arg ?? null)
+      const value = await page.evaluate(toFn(req.expr), req.arg ?? null)
       return { value }
     }
     case "setContent": {
@@ -140,7 +142,7 @@ async function handle(req) {
       const d = mod.default
       // JSON-safe projection of the fields the Go gates consume
       return { def: {
-        name: d.name ?? null, usage: d.usage ?? null, imports: d.imports ?? null,
+        usage: d.usage ?? null, imports: d.imports ?? null,
         slots: d.slots ?? [], open: d.open ?? null, openShadless: d.openShadless ?? null,
         mountedClasses: d.mountedClasses ?? null, mountedCheck: d.mountedCheck ?? null,
         shadlessPage: d.shadlessPage ?? null, scenarios: d.scenarios ?? [],
@@ -225,21 +227,15 @@ async function handle(req) {
       return { value: box }
     }
     case "locEval": {
-      // playwright's elementHandle.evaluate treats a string as an EXPRESSION
-      // — "el => …" evaluates to a function value and returns undefined.
       const { page } = pages.get(req.pageId)
       const loc = await locatorIn(page, req)
       const nth = loc.nth(req.index ?? 0)
-      const fn = new Function("return (" + req.expr + ")")()
-      return { value: await nth.evaluate(fn, req.arg ?? undefined) }
+      return { value: await nth.evaluate(toFn(req.expr), req.arg ?? undefined) }
     }
     case "locEvalAll": {
       const { page } = pages.get(req.pageId)
       const loc = await locatorIn(page, req)
-      // elementHandle.evaluate treats a string as an EXPRESSION —
-      // "el => …" evaluates to a function value and returns undefined.
-      // Parse it into a real function first.
-      const fn = new Function("return (" + req.expr + ")")()
+      const fn = toFn(req.expr)
       const handles = await loc.elementHandles()
       const values = []
       for (const h of handles) values.push(await h.evaluate(fn, req.arg ?? undefined))

@@ -1,6 +1,5 @@
 // Per-component contract: accordion type=multiple (Wave C audit fix)
 export default {
-  name: "accordion-multiple",
   usage: `
 React.createElement(Accordion, { type: "multiple", id: "ac" },
   React.createElement(AccordionItem, { value: "x" },

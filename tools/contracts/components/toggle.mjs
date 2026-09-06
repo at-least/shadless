@@ -1,6 +1,5 @@
 // Per-component contract: toggle (Wave C, trivial runtime)
 export default {
-  name: "toggle",
 
   usage: `
 React.createElement(Toggle, { id: "tg1" }, "Bold")

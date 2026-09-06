@@ -1,6 +1,5 @@
 // Per-component contract: accordion (Wave C, trivial runtime, single+collapsible)
 export default {
-  name: "accordion",
   usage: `
 React.createElement(Accordion, { type: "single", id: "ac", collapsible: true },
   React.createElement(AccordionItem, { value: "x" },

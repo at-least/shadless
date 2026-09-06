@@ -1,6 +1,5 @@
 // Per-component contract: menubar (medium tier — wireMenu + menubar glue)
 export default {
-  name: "menubar",
 
   usage: `
 React.createElement(Menubar, null,

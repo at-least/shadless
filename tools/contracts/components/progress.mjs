@@ -1,6 +1,5 @@
 // Per-component contract: progress (Wave C, zero JS)
 export default {
-  name: "progress",
   usage: `
 React.createElement(Progress, { id: "pg", value: 42 })
 `,

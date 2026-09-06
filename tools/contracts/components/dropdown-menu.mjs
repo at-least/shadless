@@ -1,6 +1,5 @@
 // Per-component contract: dropdown-menu (Wave B, kernel wireMenu)
 export default {
-  name: "dropdown-menu",
 
   usage: `
 React.createElement(DropdownMenu, null,

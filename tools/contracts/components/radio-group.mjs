@@ -1,6 +1,5 @@
 // Per-component contract: radio-group (Wave C, trivial runtime)
 export default {
-  name: "radio-group",
   usage: `
 React.createElement(RadioGroup, { id: "rg" },
   React.createElement(RadioGroupItem, { id: "ri1", value: "a" }),

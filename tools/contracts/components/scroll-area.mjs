@@ -1,7 +1,6 @@
 // Per-component contract: scroll-area (Wave B, kernel wireScrollArea)
 // stateProbe = scrollTop | scrollbar data-state | thumb data-state
 export default {
-  name: "scroll-area",
 
   usage: `
 React.createElement(ScrollArea, { style: { height: "200px", width: "200px" } },

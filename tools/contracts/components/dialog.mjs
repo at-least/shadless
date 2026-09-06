@@ -1,7 +1,6 @@
 // Per-component contract definition. The usage tree mirrors how a consumer
 // uses the shadcn component (oracle side renders it with React).
 export default {
-  name: "dialog",
 
   // React usage tree for the oracle entry (runs in browser after bundle).
   usage: `

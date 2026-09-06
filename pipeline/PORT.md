@@ -42,7 +42,7 @@ the whole of the remainder; nothing is left in JS for lack of effort.
 
 ### `@babel/parser` — parsing TSX
 
-`tools/five-components.mjs`, and the probe scripts. (`tools/rtl-lib.mjs`
+The probe scripts (e.g. `tools/twmerge-dump.mjs`). (`tools/rtl-lib.mjs`
 went with its build-rtl Go port; its assertions live in
 `TestUnitSubstituteAndPatch`.)
 The converter — the biggest consumer, the registry `.tsx` → IR heart of the

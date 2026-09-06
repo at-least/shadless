@@ -1,6 +1,5 @@
 // Per-component contract: navigation-menu (medium tier — viewport menu)
 export default {
-  name: "navigation-menu",
 
   usage: `
 React.createElement(NavigationMenu, { viewport: true },

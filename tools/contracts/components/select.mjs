@@ -1,6 +1,5 @@
 // Per-component contract: select (Wave B, kernel wireSelect)
 export default {
-  name: "select",
 
   usage: `
 React.createElement(Select, { defaultValue: "a" },

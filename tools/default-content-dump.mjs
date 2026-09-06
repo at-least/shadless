@@ -2,8 +2,16 @@
 // Shape per entry: string | null | { html } | { attrs } | { children } | mix.
 // Go: type contentEntry struct { Inner string; Attrs map[string]string; Children map[string]string; Set bool }
 // Set distinguishes "present and null" from "absent" (JS: undefined key).
-process.chdir("/home/newlix/github/at-least/shadless")
-const { DEFAULT_CONTENT } = await import("/home/newlix/github/at-least/shadless/src/emitter/index.mjs")
+import { fileURLToPath, pathToFileURL } from "node:url"
+import { join } from "node:path"
+
+// src/emitter/index.mjs reads several paths relative to cwd (e.g.
+// readFileSync("src/registry/tiers.json", ...)), so this chdir is
+// load-bearing — derive the repo root from this script's own location
+// instead of hardcoding one checkout's absolute path.
+const ROOT = fileURLToPath(new URL("..", import.meta.url))
+process.chdir(ROOT)
+const { DEFAULT_CONTENT } = await import(pathToFileURL(join(ROOT, "src/emitter/index.mjs")).href)
 
 const q = (s) => JSON.stringify(s)
 let out = `// Code generated from src/emitter/index.mjs DEFAULT_CONTENT. DO NOT EDIT;

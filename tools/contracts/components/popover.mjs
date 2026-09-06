@@ -1,6 +1,5 @@
 // Per-component contract: popover (Wave B, kernel wirePopover)
 export default {
-  name: "popover",
 
   usage: `
 React.createElement(Popover, null,
