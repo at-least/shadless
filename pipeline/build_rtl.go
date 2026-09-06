@@ -19,6 +19,17 @@ import (
 	"strings"
 )
 
+// reHtmlHasLang / reHtmlLangValue / reHtmlOpenTag / reDirAttr are static
+// patterns compiled once (this cluster's own pattern for every other
+// regex): substituteAndPatch runs 100+ times per build-rtl invocation, once
+// per (component × language).
+var (
+	reHtmlHasLang  = regexp.MustCompile(`<html[^>]*\slang="`)
+	reHtmlLangAttr = regexp.MustCompile(`(<html[^>]*\slang=")[^"]*(")`)
+	reHtmlOpenTag  = regexp.MustCompile(`<html(\s[^>]*)?>`)
+	reDirAttr      = regexp.MustCompile(`([\s"'])dir="(rtl|ltr)"`)
+)
+
 // substituteAndPatch mirrors tools/rtl-lib.mjs. Order of the two phases is
 // load-bearing: ar→X substitution first (longest-value ordering avoids a
 // "Loading" / "Loading…" prefix collision), then the lang/dir attribute
@@ -27,16 +38,7 @@ func substituteAndPatch(arabicHTML string, translations map[string]struct {
 	Dir    string            `json:"dir"`
 	Values map[string]string `json:"values"`
 }, fromLang, toLang string, toValues map[string]string, toDirOverride string) string {
-	type langEnt struct {
-		Dir    string
-		Values map[string]string
-	}
-	// typed view
-	tr := map[string]langEnt{}
-	for k, v := range translations {
-		tr[k] = langEnt{Dir: v.Dir, Values: v.Values}
-	}
-	from := tr[fromLang].Values
+	from := translations[fromLang].Values
 	// keys sorted by descending from-value length so longer strings match
 	// first (longest-prefix problem); missing from-side sorts last
 	keys := make([]string, 0, len(toValues))
@@ -67,31 +69,27 @@ func substituteAndPatch(arabicHTML string, translations map[string]struct {
 	}
 	langDir := toDirOverride
 	if langDir == "" {
-		langDir = tr[toLang].Dir
+		langDir = translations[toLang].Dir
 	}
 	if langDir == "" {
 		langDir = "ltr"
 	}
 	// <html lang>: replace or inject
-	if regexp.MustCompile(`<html[^>]*\slang="`).MatchString(out) {
-		out = regexp.MustCompile(`(<html[^>]*\slang=")[^"]*(")`).
-			ReplaceAllString(out, `${1}`+toLang+`${2}`)
+	if reHtmlHasLang.MatchString(out) {
+		out = reHtmlLangAttr.ReplaceAllString(out, `${1}`+toLang+`${2}`)
 	} else {
-		out = regexp.MustCompile(`<html(\s[^>]*)?>`).
-			ReplaceAllStringFunc(out, func(m string) string {
-				if !strings.HasSuffix(m, ">") {
-					return m
-				}
-				return m[:len(m)-1] + ` lang="` + toLang + `">`
-			})
+		out = reHtmlOpenTag.ReplaceAllStringFunc(out, func(m string) string {
+			if !strings.HasSuffix(m, ">") {
+				return m
+			}
+			return m[:len(m)-1] + ` lang="` + toLang + `">`
+		})
 	}
 	// every dir attribute (attribute-boundary anchored: a bare global would
 	// also rewrite data-dir="ltr")
-	out = regexp.MustCompile(`([\s"'])dir="(rtl|ltr)"`).
-		ReplaceAllString(out, `${1}dir="`+langDir+`"`)
+	out = reDirAttr.ReplaceAllString(out, `${1}dir="`+langDir+`"`)
 	return out
 }
-
 
 func runBuildRtl() int {
 	dictB, err := os.ReadFile("src/registry/rtl-translations.json")
@@ -160,21 +158,10 @@ func runBuildRtl() int {
 			continue
 		}
 		ar := dict[name]
-		translations := map[string]struct {
-			Dir    string            `json:"dir"`
-			Values map[string]string `json:"values"`
-		}{}
-		for k, v := range ar {
-			translations[k] = v
-		}
 
 		langs := []string{"ar"}
-		for _, lang := range []string{"he", "en"} {
-			entry, ok := ar[lang]
-			if !ok {
-				continue
-			}
-			html := injectPrePaint(substituteAndPatch(string(b), translations, "ar", lang, entry.Values, ""))
+		emit := func(lang string, values map[string]string, dirOverride string) {
+			html := injectPrePaint(substituteAndPatch(string(b), ar, "ar", lang, values, dirOverride))
 			for _, dst := range []string{
 				filepath.Join("docs/demos", name+"-"+lang+".html"),
 				filepath.Join("dist/components", name+"-"+lang+".html"),
@@ -184,16 +171,15 @@ func runBuildRtl() int {
 			emitted++
 			langs = append(langs, lang)
 		}
-		if name == "alert-rtl" {
-			html := injectPrePaint(substituteAndPatch(string(b), translations, "ar", "fa", persian, "rtl"))
-			for _, dst := range []string{
-				filepath.Join("docs/demos", name+"-fa.html"),
-				filepath.Join("dist/components", name+"-fa.html"),
-			} {
-				pendingWrites = append(pendingWrites, pending{dst, html})
+		for _, lang := range []string{"he", "en"} {
+			entry, ok := ar[lang]
+			if !ok {
+				continue
 			}
-			emitted++
-			langs = append(langs, "fa")
+			emit(lang, entry.Values, "")
+		}
+		if name == "alert-rtl" {
+			emit("fa", persian, "rtl")
 		}
 		manifest[name] = langs
 	}

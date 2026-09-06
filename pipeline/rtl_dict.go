@@ -167,13 +167,19 @@ func writeLangsJSON(b *strings.Builder, l rtlLangs, depth int) {
 		if i > 0 {
 			b.WriteString(",")
 		}
-		b.WriteString("\n"); b.WriteString(ind); b.WriteString(" ")
+		b.WriteString("\n")
+		b.WriteString(ind)
+		b.WriteString(" ")
 		kb := jsonString(name)
 		db := jsonString(l.dir[name])
 		b.WriteString(kb)
-		b.WriteString(": {\n"); b.WriteString(ind); b.WriteString("  \"dir\": ")
+		b.WriteString(": {\n")
+		b.WriteString(ind)
+		b.WriteString("  \"dir\": ")
 		b.WriteString(db)
-		b.WriteString(",\n"); b.WriteString(ind); b.WriteString("  \"values\": {")
+		b.WriteString(",\n")
+		b.WriteString(ind)
+		b.WriteString("  \"values\": {")
 		v := l.values[name]
 		if len(v.keys) == 0 {
 			b.WriteString("}") // empty object stays one line, as JSON.stringify emits it
@@ -182,18 +188,26 @@ func writeLangsJSON(b *strings.Builder, l rtlLangs, depth int) {
 				if j > 0 {
 					b.WriteString(",")
 				}
-				b.WriteString("\n"); b.WriteString(ind); b.WriteString("   ")
+				b.WriteString("\n")
+				b.WriteString(ind)
+				b.WriteString("   ")
 				kb2 := jsonString(k)
 				vb := jsonString(v.vals[k])
 				b.WriteString(kb2)
 				b.WriteString(": ")
 				b.WriteString(vb)
 			}
-			b.WriteString("\n"); b.WriteString(ind); b.WriteString("  }")
+			b.WriteString("\n")
+			b.WriteString(ind)
+			b.WriteString("  }")
 		}
-		b.WriteString("\n"); b.WriteString(ind); b.WriteString(" }")   // one space — matches JSON.stringify's pretty layout between values
+		b.WriteString("\n")
+		b.WriteString(ind)
+		b.WriteString(" }") // one space — matches JSON.stringify's pretty layout between values
 	}
-	b.WriteString("\n"); b.WriteString(strings.Repeat(" ", depth)); b.WriteString("}")
+	b.WriteString("\n")
+	b.WriteString(strings.Repeat(" ", depth))
+	b.WriteString("}")
 }
 
 // ---------------------------------------------------------------------------
@@ -411,13 +425,6 @@ func skipWS(s string, i int) int {
 
 func isIdent(c byte) bool {
 	return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c == '_' || c == '$' || c >= '0' && c <= '9'
-}
-
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
 }
 
 // decodeJSString decodes the escape sequences that appear in this corpus.

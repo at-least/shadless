@@ -68,8 +68,12 @@ func runDemoSmoke() int {
 	}
 
 	// global slot vocabulary across all emitted components (fixtures
-	// legitimately compose multiple components)
+	// legitimately compose multiple components), plus each IR file's own
+	// slot count — collected in the same pass so the per-page loop below
+	// doesn't re-read and re-unmarshal every generated/ir/<name>.json a
+	// second time.
 	allSlots := map[string]bool{}
+	slotCounts := map[string]int{}
 	irEnts, _ := os.ReadDir("generated/ir")
 	for _, e := range irEnts {
 		if !strings.HasSuffix(e.Name(), ".json") {
@@ -80,6 +84,15 @@ func runDemoSmoke() int {
 		if json.Unmarshal(b, &ir) != nil {
 			continue
 		}
+		n := 0
+		for _, c := range ir.Components {
+			for _, el := range c.Elements {
+				if el.Slot != "" {
+					n++
+				}
+			}
+		}
+		slotCounts[strings.TrimSuffix(e.Name(), ".json")] = n
 		if !shipped(ir.Name, ir.Tier) {
 			continue
 		}
@@ -90,25 +103,6 @@ func runDemoSmoke() int {
 				}
 			}
 		}
-	}
-	irSlots := func(name string) int {
-		b, err := os.ReadFile("generated/ir/" + name + ".json")
-		if err != nil {
-			return 0
-		}
-		var ir cssIrComponent
-		if json.Unmarshal(b, &ir) != nil {
-			return 0
-		}
-		n := 0
-		for _, c := range ir.Components {
-			for _, el := range c.Elements {
-				if el.Slot != "" {
-					n++
-				}
-			}
-		}
-		return n
 	}
 
 	shell, err := startBrowserShell()
@@ -127,17 +121,13 @@ func runDemoSmoke() int {
 	for _, f := range pages {
 		name := strings.TrimSuffix(f, ".html")
 		html, _ := os.ReadFile("dist/components/" + f)
-		pageSlots := map[string]bool{}
-		for _, m := range reSlotAttr.FindAllStringSubmatch(string(html), -1) {
-			pageSlots[m[1]] = true
-		}
 		var phantom []string
 		for _, m := range reSlotAttr.FindAllStringSubmatch(string(html), -1) {
 			if !allSlots[m[1]] && !containsTok(phantom, m[1]) {
 				phantom = append(phantom, m[1])
 			}
 		}
-		nIRSlots := irSlots(name)
+		nIRSlots := slotCounts[name]
 		page, err := shell.newPage(true)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "demo-smoke:", err)

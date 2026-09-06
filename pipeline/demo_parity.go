@@ -27,23 +27,17 @@ var demoParityProps = []string{
 const demoParityFreeze = "*,*::before,*::after{transition:none!important;animation:none!important} body{padding:0!important;margin:0;color:var(--foreground);background:var(--background)}"
 
 // collect runs in the page: all four theme×dir cells for every [data-slot].
+//
 //go:embed demo_parity_collect.js
 var demoParityCollect string
-
-
 
 var reParityNum = regexp.MustCompile(`-?\d*\.?\d+(?:e[-+]?\d+)?`)
 var reParityOklab = regexp.MustCompile(`oklab\((-?[\d.]+) 0 0\)`)
 
-// demoParityNorm rounds every number to 2dp and canonicalises axis-only
-// oklab() to oklch() (Chrome serialises the same colour both ways).
-func demoParityNorm(v string) string {
-	v = reParityNum.ReplaceAllStringFunc(v, func(n string) string {
-		r := parseFloat2dp(n)
-		return jsNumberString(r)
-	})
-	return reParityOklab.ReplaceAllString(v, "oklch($1 0 0)")
-}
+// demoParityNorm is parityNormValue with calc(...) canonicalization off — see
+// parity_baseline.go's parityNormValue for the shared core all three parity
+// gates (style-parity, demo-parity, path-parity) normalize through.
+func demoParityNorm(v string) string { return parityNormValue(v, false) }
 
 func runDemoParity(record, details bool) int {
 	var owned []struct {
@@ -162,10 +156,7 @@ func runDemoParity(record, details bool) int {
 	}
 	d := diffParityBaseline(recorded, actual, order)
 	if len(d.appeared) > 0 {
-		n := 40
-		if len(d.appeared) < n {
-			n = len(d.appeared)
-		}
+		n := min(40, len(d.appeared))
 		var parts []string
 		for _, id := range d.appeared[:n] {
 			parts = append(parts, id+": "+showCell(actual[id]))
@@ -175,10 +166,7 @@ func runDemoParity(record, details bool) int {
 		return 1
 	}
 	if len(d.changed) > 0 {
-		n := 20
-		if len(d.changed) < n {
-			n = len(d.changed)
-		}
+		n := min(20, len(d.changed))
 		var parts []string
 		for _, c := range d.changed[:n] {
 			parts = append(parts, showChange(c))
@@ -188,10 +176,7 @@ func runDemoParity(record, details bool) int {
 		return 1
 	}
 	if len(d.fixed) > 0 {
-		n := 20
-		if len(d.fixed) < n {
-			n = len(d.fixed)
-		}
+		n := min(20, len(d.fixed))
 		fmt.Fprintf(os.Stderr, "FAIL  demo-parity (%d recorded cells no longer differ — record the win: ./build/pipeline demo-parity --record && ./build/pipeline ledger --record)\n  %s\n",
 			len(d.fixed), strings.Join(d.fixed[:n], "\n  "))
 		return 1

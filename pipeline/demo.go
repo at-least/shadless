@@ -132,10 +132,6 @@ func runDemo() int {
 	}
 	var names []string
 	var fileOrder []string // ReadDir order: "alert-dialog.json" sorts BEFORE "alert.json" ('-' < '.')
-	type irEnt struct {
-		name string
-		ir   cssIrComponent
-	}
 	irAll := map[string]cssIrComponent{}
 	for _, e := range ents {
 		if !strings.HasSuffix(e.Name(), ".json") {
@@ -299,8 +295,8 @@ func runDemo() int {
 		}
 		emitted++
 	}
-	if emitted != 51 {
-		fmt.Fprintf(os.Stderr, "demo: emitted %d, expected 51\n", emitted)
+	if emitted != expected {
+		fmt.Fprintf(os.Stderr, "demo: emitted %d, expected %d\n", emitted, expected)
 		return 1
 	}
 

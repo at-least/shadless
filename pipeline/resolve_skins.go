@@ -302,7 +302,11 @@ func resolveSource(src string, rtl bool) (string, int) {
 			continue
 		}
 		if next != content {
-			edits = append(edits, resolveEdit{sp.Start, sp.End, jsStringQuote(next)})
+			// jsonString == JSON.stringify semantics (escapes control chars,
+			// passes non-ASCII through raw) — encoding/json's HTML-safe
+			// default would turn '&' into unicode escapes, a byte
+			// difference the parity test caught.
+			edits = append(edits, resolveEdit{sp.Start, sp.End, jsonString(next)})
 		}
 	}
 	out := src
@@ -313,41 +317,12 @@ func resolveSource(src string, rtl bool) (string, int) {
 	return out, len(edits)
 }
 
-// jsStringQuote emits JSON.stringify(s): double-quoted, \-escapes for
-// control chars, `\"`, `\\`; unicode passed through raw (JSON.stringify
-// escapes NOTHING non-ASCII, unlike encoding/json's HTML-safe default which
-// turned `&` into — a byte-difference the parity test caught).
-func jsStringQuote(s string) string {
-	var b strings.Builder
-	b.WriteByte('"')
-	for _, r := range s {
-		switch {
-		case r == '"':
-			b.WriteString(`\"`)
-		case r == '\\':
-			b.WriteString(`\\`)
-		case r == '\n':
-			b.WriteString(`\n`)
-		case r == '\r':
-			b.WriteString(`\r`)
-		case r == '\t':
-			b.WriteString(`\t`)
-		case r < 0x20:
-			fmt.Fprintf(&b, `\u%04x`, r)
-		default:
-			b.WriteRune(r)
-		}
-	}
-	b.WriteByte('"')
-	return b.String()
-}
-
 // resolveFixtureHtml expands cn-* in kernel fixtures' class attributes.
 // Idempotent.
 func resolveFixtureHtml(html string) string {
 	return classAttrRe.ReplaceAllStringFunc(html, func(m string) string {
 		inner := m[len(`class="`) : len(m)-1]
-		if !regexp.MustCompile(`(^|\s)cn-`).MatchString(inner) {
+		if !reCnPrefix.MatchString(inner) {
 			return m
 		}
 		next := expandClassString(inner)
@@ -356,6 +331,7 @@ func resolveFixtureHtml(html string) string {
 }
 
 var classAttrRe = regexp.MustCompile(`class="[^"]*"`)
+var reCnPrefix = regexp.MustCompile(`(^|\s)cn-`)
 
 // runResolveSkins is the `pipeline resolve-skins [--fixtures]` entry.
 func runResolveSkins(args []string) int {
@@ -454,26 +430,21 @@ func loadSkin() {
 	parseSkinMap(string(b))
 }
 
-var skinBlockRe = regexp.MustCompile(`(?s)\.([\w-]+)\s*\{[^{}]*\}`)
-var skinBlockInner = regexp.MustCompile(`(?s)^\.[\w-]+\s*\{(.*)\}$`)
+var skinBlockRe = regexp.MustCompile(`(?s)\.([\w-]+)\s*\{([^{}]*)\}`)
+var styleNovaRe = regexp.MustCompile(`^\s*\.style-nova\s*\{`)
 var applyStmt = regexp.MustCompile(`^\s*@apply\s+([^;]+);\s*$`)
 
 func parseSkinMap(css string) {
 	start := strings.Index(css, "{")
 	end := strings.LastIndex(css, "}")
-	if start == -1 || end == -1 || !regexp.MustCompile(`^\s*\.style-nova\s*\{`).MatchString(css) {
+	if start == -1 || end == -1 || !styleNovaRe.MatchString(css) {
 		fmt.Fprintln(os.Stderr, "skin: expected a single top-level .style-nova block")
 		os.Exit(1)
 	}
 	body := css[start+1 : end]
-	for _, m := range skinBlockRe.FindAllString(body, -1) {
-		inner := skinBlockInner.FindStringSubmatch(m)
-		if inner == nil {
-			fmt.Fprintf(os.Stderr, "skin: unparsable block: %.60s\n", m)
-			os.Exit(1)
-		}
-		name := regexp.MustCompile(`^\.([\w-]+)`).FindStringSubmatch(m)[1]
-		decls := strings.TrimSpace(inner[1])
+	for _, m := range skinBlockRe.FindAllStringSubmatch(body, -1) {
+		name := m[1]
+		decls := strings.TrimSpace(m[2])
 		sub := applyStmt.FindStringSubmatch(decls)
 		if sub == nil {
 			fmt.Fprintf(os.Stderr, "skin: cn-%s is not a flat pure-@apply block: %.60s\n", name, decls)

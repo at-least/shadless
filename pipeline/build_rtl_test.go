@@ -79,13 +79,23 @@ func TestUnitSubstituteAndPatch(t *testing.T) {
 // build/rtl-langs.json unchanged. Skipped when the fixture pages are not
 // built yet (a fresh clone lacks docs/demos/*-rtl.html — example-fixture
 // writes them); the pin exists wherever the demo chain has run.
+//
+// build/rtl-langs.json is gitignored (build/), so `git status` can never
+// see it change — read its bytes before the rerun and compare directly
+// after, the same real-content-diff approach TestUnitResolveSkinsParity
+// uses for its own gitignored build/resolved-ui tree.
 func TestUnitBuildRtlParity(t *testing.T) {
-	root := "/home/newlix/github/at-least/shadless"
-	if out, _ := exec.Command("git", "-C", root, "status", "--porcelain", "--", "docs/demos", "dist/components", "build/rtl-langs.json").Output(); len(out) != 0 {
+	root := repoRoot(t)
+	if out, _ := exec.Command("git", "-C", root, "status", "--porcelain", "--", "docs/demos", "dist/components").Output(); len(out) != 0 {
 		t.Skipf("tree dirty, skip parity: %s", strings.SplitN(string(out), "\n", 2)[0])
 	}
 	if _, err := os.Stat(root + "/docs/demos/button-group-rtl.html"); err != nil {
 		t.Skip("fixture pages not built yet — run the demo chain first")
+	}
+	manifestPath := filepath.Join(root, "build/rtl-langs.json")
+	before, err := os.ReadFile(manifestPath)
+	if err != nil {
+		t.Skip("build/rtl-langs.json not built yet — run the demo chain first")
 	}
 	pipelineBin := filepath.Join(t.TempDir(), "pipeline")
 	if out, err := exec.Command("go", "build", "-o", pipelineBin, ".").CombinedOutput(); err != nil {
@@ -96,7 +106,14 @@ func TestUnitBuildRtlParity(t *testing.T) {
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("build-rtl: %v\n%s", err, out)
 	}
-	if out, _ := exec.Command("git", "-C", root, "status", "--porcelain", "--", "docs/demos", "dist/components", "build/rtl-langs.json").Output(); len(out) != 0 {
+	if out, _ := exec.Command("git", "-C", root, "status", "--porcelain", "--", "docs/demos", "dist/components").Output(); len(out) != 0 {
 		t.Fatalf("rebuild changed outputs:\n%s", out)
+	}
+	after, err := os.ReadFile(manifestPath)
+	if err != nil {
+		t.Fatalf("build/rtl-langs.json missing after rebuild: %v", err)
+	}
+	if string(before) != string(after) {
+		t.Fatalf("rebuild changed build/rtl-langs.json:\nbefore:\n%s\nafter:\n%s", before, after)
 	}
 }

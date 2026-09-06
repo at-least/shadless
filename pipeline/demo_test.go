@@ -38,7 +38,7 @@ func TestUnitEnsureLink(t *testing.T) {
 
 // demo parity: the Go demo rebuild leaves the JS-built dist tree untouched.
 func TestUnitDemoParity(t *testing.T) {
-	root := "/home/newlix/github/at-least/shadless"
+	root := repoRoot(t)
 	if out, _ := exec.Command("git", "-C", root, "status", "--porcelain", "--", "dist").Output(); len(out) != 0 {
 		t.Skipf("dist dirty, skip parity: %s", strings.SplitN(string(out), "\n", 2)[0])
 	}
