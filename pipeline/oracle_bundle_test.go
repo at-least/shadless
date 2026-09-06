@@ -11,20 +11,14 @@ package main
 import (
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
 )
 
-func TestUnitOracleColdCacheBundle(t *testing.T) {
-	// under the runner, every open is audited against the node's declared
-	// inputs (run.go's -test.testlogfile) and this test's esbuild resolution
-	// reads node_modules/**, which is undeclarable — so it only runs on
-	// direct `go test` invocations
-	for _, a := range os.Args {
-		if strings.HasPrefix(a, "-test.testlogfile=") {
-			t.Skip("skipped under the pipeline runner: its opens are audited and node_modules is undeclarable")
-		}
-	}
+// Named without the Unit infix — deliberately outside the unit node's
+// `-run ^TestUnit` sweep (nodes.go), since this test's esbuild resolution
+// reads node_modules/** and that is undeclarable as a node input. It only
+// runs on a direct `go test` invocation.
+func TestOracleColdCacheBundle(t *testing.T) {
 	root := repoRoot(t)
 	// gitignored prerequisites; absent on a fresh clone (jsbuild_test.go's
 	// convention for environment-dependent checks)

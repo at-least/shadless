@@ -119,18 +119,11 @@ func (m *Shadless) ExampleFixtureCheck(ctx context.Context, source *dagger.Direc
 // rtl-lib.mjs) ported with it — so the toolchain image, the binary and two
 // input mounts are the whole step; no node and no dependency install.
 func (m *Shadless) RtlDict(ctx context.Context, source *dagger.Directory) (*dagger.File, error) {
-	img, err := goImage(ctx, source)
+	c, err := goContainer(ctx, source)
 	if err != nil {
 		return nil, err
 	}
-	bin, err := goBinary(ctx, source)
-	if err != nil {
-		return nil, err
-	}
-	return dag.Container().
-		From(img).
-		WithWorkdir("/w").
-		WithFile("/usr/local/bin/pipeline", bin).
+	return c.
 		WithFile("/w/src/registry/tiers.json", source.File("src/registry/tiers.json")).
 		WithDirectory("/w/.upstream/shadcn-ui/apps/v4/examples/aria",
 			source.Directory(".upstream/shadcn-ui/apps/v4/examples/aria")).
@@ -157,11 +150,7 @@ func (m *Shadless) RtlDict(ctx context.Context, source *dagger.Directory) (*dagg
 // writes one file per variant and removes nothing, so a mounted tree would
 // keep the variants of a retired example forever.
 func (m *Shadless) demoRtl(ctx context.Context, source *dagger.Directory) (*dagger.Container, error) {
-	img, err := goImage(ctx, source)
-	if err != nil {
-		return nil, err
-	}
-	bin, err := goBinary(ctx, source)
+	c, err := goContainer(ctx, source)
 	if err != nil {
 		return nil, err
 	}
@@ -177,10 +166,7 @@ func (m *Shadless) demoRtl(ctx context.Context, source *dagger.Directory) (*dagg
 	if err != nil {
 		return nil, err
 	}
-	return dag.Container().
-		From(img).
-		WithWorkdir("/w").
-		WithFile("/usr/local/bin/pipeline", bin).
+	return c.
 		// from the step that produces it, not the committed copy
 		WithFile("/w/src/registry/rtl-translations.json", dict).
 		WithFile("/w/src/registry/tiers.json", source.File("src/registry/tiers.json")).
@@ -304,11 +290,7 @@ func (m *Shadless) ContractFixtureCheck(ctx context.Context, source *dagger.Dire
 // produces, so a mounted tree would keep a retired component's stylesheet
 // forever.
 func (m *Shadless) demoTree(ctx context.Context, source *dagger.Directory) (*dagger.Container, error) {
-	img, err := goImage(ctx, source)
-	if err != nil {
-		return nil, err
-	}
-	bin, err := goBinary(ctx, source)
+	c, err := goContainer(ctx, source)
 	if err != nil {
 		return nil, err
 	}
@@ -328,10 +310,7 @@ func (m *Shadless) demoTree(ctx context.Context, source *dagger.Directory) (*dag
 	if err != nil {
 		return nil, err
 	}
-	return dag.Container().
-		From(img).
-		WithWorkdir("/w").
-		WithFile("/usr/local/bin/pipeline", bin).
+	return c.
 		WithDirectory("/w/dist", js).
 		WithDirectory("/w/dist/components", emitted.Directory("components")).
 		WithDirectory("/w/dist/css", dag.Directory()).

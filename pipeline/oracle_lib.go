@@ -175,12 +175,8 @@ try {
 			Bundle:      true,
 			Format:      api.FormatIIFE,
 			Outfile:     outfile,
-			// the Go API's Write zero value is FALSE — without this the bundle
-			// exists only in memory and every render ENOENTs. Went unseen for
-			// the whole life of the Go port because the pre-port JS tool had
-			// left bundles in node_modules/.cache and the .key hit skipped
-			// rebuilding them; any cold cache (fresh clone, CI, the dagger
-			// cache volume) rendered nothing.
+			// the Go API's zero value is false — no file on disk without this;
+			// see oracle_bundle_test.go for the cold-cache regression it fixes
 			Write:    true,
 			LogLevel: api.LogLevelError,
 			Alias:    aliases,

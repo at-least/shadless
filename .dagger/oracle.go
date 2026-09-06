@@ -200,19 +200,40 @@ func (m *Shadless) GoldenGate(ctx context.Context, source *dagger.Directory) (st
 }
 
 // goBinary builds the pipeline binary in the Go toolchain the repo declares.
-// The node-image containers (renderBase etc.) run it — Go toolchain absent
-// there by design; the binary is the interface.
+// Both the node-image containers (renderBase etc.) and the pure-Go steps
+// (goContainer) run it — the binary is the interface either way.
 func goBinary(ctx context.Context, source *dagger.Directory) (*dagger.File, error) {
 	img, err := goImage(ctx, source)
 	if err != nil {
 		return nil, err
 	}
+	return goBinaryFromImage(ctx, source, img)
+}
+
+func goBinaryFromImage(ctx context.Context, source *dagger.Directory, img string) (*dagger.File, error) {
 	return dag.Container().
 		From(img).
 		WithDirectory("/src/pipeline", source.Directory("pipeline")).
 		WithWorkdir("/src/pipeline").
 		WithExec([]string{"go", "build", "-o", "/out/pipeline", "."}).
 		File("/out/pipeline"), nil
+}
+
+// goContainer is the base for steps that need no node image at all: the Go
+// toolchain image with the pipeline binary mounted at /w, ready to run.
+func goContainer(ctx context.Context, source *dagger.Directory) (*dagger.Container, error) {
+	img, err := goImage(ctx, source)
+	if err != nil {
+		return nil, err
+	}
+	bin, err := goBinaryFromImage(ctx, source, img)
+	if err != nil {
+		return nil, err
+	}
+	return dag.Container().
+		From(img).
+		WithWorkdir("/w").
+		WithFile("/usr/local/bin/pipeline", bin), nil
 }
 
 // ExampleGate is hop 2: each shipped demo page must equal a fresh oracle
