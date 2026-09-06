@@ -421,6 +421,18 @@ func runExampleFixture(args []string) int {
 			outPath = target.def.ShadlessPage
 			css, base, jsdir = "../../dist/out.css", "../../dist/shadless.js", "../../dist/js/"
 		}
+		// the self-test page: the regeneration's bytes, written into the
+		// scratch tree at the DEPTH the target sits at (default pages point
+		// their asset tags one level up, contracts pages at the repo root
+		// two levels up), renamed over the committed page only after the
+		// self-test passes. The page must keep its .html name: chromium
+		// refuses file:// navigation to anything else (a hidden path or an
+		// unknown extension renders nothing), and the self-test would time
+		// out on a blank document.
+		scratchPath := filepath.Join(efSelftest, "pages", name+".html")
+		if contracts {
+			scratchPath = filepath.Join(efSelftest, name+".html")
+		}
 		err := func() (err error) {
 			defer func() {
 				if r := recover(); r != nil {
@@ -1125,20 +1137,15 @@ func runExampleFixture(args []string) int {
 				strings.Join(trivTags, "\n") + "\n" +
 				"</body></html>\n"
 
-			// write to the final path, then prove the page interactive;
-			// delete on any failure so a dead page can never land
-			if err := os.WriteFile(outPath, []byte(html), 0o644); err != nil {
+			// prove the page interactive BEFORE it lands: a red node keeps
+			// previous contents instead of deleting or half-updating them
+			// (the same policy example-oracle states)
+			if err := os.WriteFile(scratchPath, []byte(html), 0o644); err != nil {
 				return err
 			}
 			ev0, _ := page.events()
 			errBase := len(ev0)
-			testPath := outPath
-			if !contracts {
-				testPath = filepath.Join(efSelftest, "pages", name+".html")
-				if err := os.WriteFile(testPath, []byte(html), 0o644); err != nil {
-					return err
-				}
-			}
+			testPath := scratchPath
 			if err := page.gotoURL("file://" + absOrDie(testPath)); err != nil {
 				return err
 			}
@@ -1176,6 +1183,8 @@ func runExampleFixture(args []string) int {
 			if n := len(ev1) - errBase; n > 0 {
 				return fmt.Errorf("self-test: page errors — %s", strings.Join(efTruncateAll(ev1[errBase:]), " | "))
 			}
+			// compare against the committed page BEFORE the rename: after it,
+			// outPath is the regeneration and the comparison is vacuous
 			if check {
 				committed, err := os.ReadFile(outPath)
 				if err != nil {
@@ -1185,12 +1194,16 @@ func runExampleFixture(args []string) int {
 					return fmt.Errorf("committed page drifted from regeneration")
 				}
 			}
+			if err := os.Rename(testPath, outPath); err != nil {
+				return err
+			}
 			return nil
 		}()
 		if err != nil {
-			if os.Getenv("EF_KEEP") == "" && !contracts {
-				os.Remove(outPath)
-				os.Remove(filepath.Join(efSelftest, "pages", name+".html"))
+			// the committed page was never touched; the scratch page only
+			// survives for EF_KEEP debugging
+			if os.Getenv("EF_KEEP") == "" {
+				os.Remove(scratchPath)
 			}
 			failures = append(failures, name+": "+firstLine(err.Error()))
 			continue

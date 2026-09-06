@@ -50,7 +50,7 @@ func TestUnitRtlMigrate(t *testing.T) {
 	if s == nil || rtlRAW[s.start:s.start+2] != "##" {
 		t.Fatal("span located at the migrate heading")
 	}
-	if got := rtlRAW[s.end-len("</Steps>"):s.end]; got != "</Steps>" {
+	if got := rtlRAW[s.end-len("</Steps>") : s.end]; got != "</Steps>" {
 		t.Errorf("end after </Steps>: %q", got)
 	}
 	gated := withoutRtlMigrate(rtlRAW)
@@ -257,10 +257,20 @@ func TestUnitFixtureFamiliesGolden(t *testing.T) {
 
 // ---- docs-build parity: the Go rebuild leaves the committed docs tree ----
 // byte-identical (the committed pages are the JS build's record).
+//
+// docs-build WIPES and regenerates docs/components, docs/guides and the
+// public assets, and its output folds in docs/demos and dist — so this test
+// only runs when both trees are git-clean. Anything uncommitted there means
+// the comparison is meaningless AND rebuilding over it would destroy the
+// uncommitted work. When the parity fails anyway, the rebuild is rolled back
+// before the failure is raised: a red gate must not leave a damaged tree.
 func TestUnitDocsBuildParity(t *testing.T) {
-	root := "/home/newlix/github/at-least/shadless"
-	if out, _ := exec.Command("git", "-C", root, "status", "--porcelain", "--", "docs/components", "docs/guides", "docs/index.md", "docs/content-map.json").Output(); len(out) != 0 {
-		t.Skipf("docs dirty, skip parity: %s", strings.SplitN(string(out), "\n", 2)[0])
+	root := repoRoot(t)
+	// the surface docs-build reads AND writes: generated/ir and the pin move
+	// the pages' content, so a dirty one would make the rebuild differ and
+	// the parity red for a reason the tree did not cause
+	if out, _ := exec.Command("git", "-C", root, "status", "--porcelain", "--", "docs", "dist", "generated", "src/registry/pin.json", "package.json", "package-lock.json").Output(); len(out) != 0 {
+		t.Skipf("docs inputs dirty, skip parity: %s", strings.SplitN(string(out), "\n", 2)[0])
 	}
 	if !fileExists(root + "/docs/index.md") {
 		t.Skip("docs not built yet")
@@ -272,9 +282,14 @@ func TestUnitDocsBuildParity(t *testing.T) {
 	cmd := exec.Command(pipelineBin, "docs-build")
 	cmd.Dir = root
 	if out, err := cmd.CombinedOutput(); err != nil {
+		// docs-build wipes docs/components and docs/guides before it can
+		// fail mid-rebuild (prettier, page errors, counts) — never leave
+		// that state behind
+		_ = exec.Command("git", "-C", root, "checkout", "--", "docs").Run()
 		t.Fatalf("docs-build: %v\n%s", err, out)
 	}
-	if out, _ := exec.Command("git", "-C", root, "status", "--porcelain", "--", "docs/components", "docs/guides", "docs/index.md", "docs/content-map.json").Output(); len(out) != 0 {
+	if out, _ := exec.Command("git", "-C", root, "status", "--porcelain", "--", "docs").Output(); len(out) != 0 {
+		_ = exec.Command("git", "-C", root, "checkout", "--", "docs").Run()
 		t.Fatalf("Go docs-build changed the committed tree:\n%s", out)
 	}
 }
