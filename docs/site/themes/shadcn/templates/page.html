@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} | {{ config.title }}{% endblock title %}
+{% block description %}{{ page.description | default(value=config.description) }}{% endblock description %}
+
+{% block content %}
+{% set current_permalink = page.permalink %}
+{% set doc = page %}
+{% set toc = page.toc %}
+<div class="container-wrapper sidebar-wrapper" data-slot="sidebar-wrapper">
+  {% include "partials/sidebar.html" %}
+  {% include "partials/docs_article.html" %}
+</div>
+{% endblock content %}

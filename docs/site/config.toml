@@ -1,6 +1,7 @@
 # The site shell. Zola's job now — routing, the sidebar, dead-link checking,
-# markdown, highlighting (vitezola recreates the VitePress default theme in
-# plain HTML/CSS/JS). What this repo owns is the CONTENT transform
+# markdown, highlighting. The theme (themes/shadcn) is this repo's own,
+# replicating the ui.shadcn.com layout (calibrated against .upstream/
+# shadcn-ui apps/v4). What this repo owns is the CONTENT transform
 # (pipeline/docs_build.go: upstream React mdx → markdown for a product that
 # ships static HTML) and the demos the pages iframe from /demos/, which are
 # the pipeline's own output copied into static/ at build time.
@@ -10,12 +11,15 @@ base_url = "https://shadless.dev/"
 title = "shadless"
 description = "shadcn/ui as static HTML and a vanilla runtime — no React."
 default_language = "en"
-theme = "vitezola"
+theme = "shadcn"
 compile_sass = true
 build_search_index = true
 
 [search]
 index_format = "fuse_json"
+
+[markdown]
+insert_anchor_links = "right"
 
 [markdown.highlighting]
 style = "class"
@@ -28,6 +32,7 @@ vitepress_outline_title = "On this page"
 vitepress_footer_message = "shadcn/ui as static HTML — no React."
 vitepress_footer_copyright = "The shadless authors"
 # site-owned styles for the demo cards the content transform emits
+# (the theme defines the --vp-c-* compat aliases it reads)
 extra_css = ["shadless-site.css"]
 
 [[extra.nav]]

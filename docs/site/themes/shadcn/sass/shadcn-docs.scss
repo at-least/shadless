@@ -1,0 +1,12 @@
+// shadcn-docs — the site's own Zola theme, replicating the ui.shadcn.com
+// layout (calibrated against .upstream/shadcn-ui apps/v4 @ 4.19.0).
+@import "fonts";
+@import "tokens";
+@import "base";
+@import "header";
+@import "sidebar";
+@import "docs";
+@import "toc";
+@import "code";
+@import "search";
+@import "home";

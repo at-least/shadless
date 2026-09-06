@@ -1,0 +1,35 @@
+{# Docs sidebar: group label + ul/li/a rows, data-active on the current page
+   (upstream docs-sidebar.tsx / sidebar.tsx markup). #}
+{% set guides = get_section(path="guides/_index.md", lang=lang, allow_missing=true) %}
+{% set components = get_section(path="components/_index.md", lang=lang, allow_missing=true) %}
+
+<div class="docs-sidebar" data-slot="sidebar">
+  {% if guides %}
+  <div class="sidebar-group" data-slot="sidebar-group">
+    <div class="sidebar-group-label" data-slot="sidebar-group-label">Guides</div>
+    <div class="sidebar-group-content" data-slot="sidebar-group-content">
+      <ul class="sidebar-menu" data-slot="sidebar-menu">
+        {% for p in guides.pages %}
+        <li class="sidebar-menu-item" data-slot="sidebar-menu-item">
+          <a class="sidebar-menu-button" data-slot="sidebar-menu-button" data-active="{% if p.permalink == current_permalink %}true{% else %}false{% endif %}" href="{{ p.permalink }}" {% if p.permalink == current_permalink %}aria-current="page"{% endif %}>{{ p.title }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% endif %}
+  {% if components %}
+  <div class="sidebar-group" data-slot="sidebar-group">
+    <div class="sidebar-group-label" data-slot="sidebar-group-label">Components</div>
+    <div class="sidebar-group-content" data-slot="sidebar-group-content">
+      <ul class="sidebar-menu" data-slot="sidebar-menu">
+        {% for p in components.pages %}
+        <li class="sidebar-menu-item" data-slot="sidebar-menu-item">
+          <a class="sidebar-menu-button" data-slot="sidebar-menu-button" data-active="{% if p.permalink == current_permalink %}true{% else %}false{% endif %}" href="{{ p.permalink }}" {% if p.permalink == current_permalink %}aria-current="page"{% endif %}>{{ p.title }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% endif %}
+</div>

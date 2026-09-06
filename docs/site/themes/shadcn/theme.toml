@@ -1,0 +1,10 @@
+name = "shadcn-docs"
+description = "The shadless docs theme — replicates the ui.shadcn.com layout (calibrated against .upstream/shadcn-ui apps/v4)."
+license = "MIT"
+min_version = "0.23.0"
+
+[extra]
+vitepress_site_title = ""
+vitepress_outline_title = "On This Page"
+vitepress_footer_message = ""
+vitepress_footer_copyright = ""

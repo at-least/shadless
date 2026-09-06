@@ -1,0 +1,106 @@
+// Docs sidebar (upstream docs-sidebar.tsx): sticky 14rem column, group
+// labels + ul/li/a menu rows, active item on bg-accent, and the fading
+// hairline on the right edge.
+
+.sidebar-wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.docs-sidebar {
+  display: none;
+  position: sticky;
+  top: var(--header-height);
+  z-index: 20;
+  height: calc(100svh - var(--header-height));
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background-color: transparent;
+  padding: 1.5rem 0.625rem 3rem 1rem;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (min-width: 64rem) {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+// The fading right hairline (upstream: a 1px gradient div, top-12 to bottom)
+.docs-sidebar::after {
+  content: '';
+  position: absolute;
+  top: 3rem;
+  bottom: 0;
+  right: 0.125rem;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--border) 10%,
+    var(--border) 90%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.sidebar-group-label {
+  display: flex;
+  height: 2rem;
+  align-items: center;
+  padding: 0 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar-menu-button {
+  display: flex;
+  align-items: center;
+  min-height: 1.875rem; // h-[30px] upstream
+  padding: 0 0.5rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  width: fit-content;
+  transition: color 0.15s, background-color 0.15s;
+
+  &:hover {
+    color: var(--foreground);
+    background-color: var(--muted);
+  }
+
+  &[data-active='true'] {
+    color: var(--foreground);
+    background-color: var(--accent);
+    border-color: var(--accent);
+  }
+}
+
+// Nested pages inside a section group
+.sidebar-menu .sidebar-menu {
+  padding-left: 0.625rem;
+}
+
+.sidebar-menu .sidebar-menu .sidebar-menu-button {
+  font-weight: 400;
+  min-height: 1.75rem;
+}

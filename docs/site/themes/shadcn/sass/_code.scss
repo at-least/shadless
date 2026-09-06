@@ -1,0 +1,157 @@
+// Code blocks. Zola emits bare <pre class="giallo">; app.js adds the
+// language-* class, the span.lang label and the copy button at runtime.
+// Code groups (.vp-code-group) are emitted by the site's content pipeline
+// and turned into radio tabs by app.js — the same contract as before.
+
+html .typeset pre.giallo {
+  position: relative;
+  margin: 1.25rem 0;
+  padding: 1rem 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: var(--code-surface);
+  overflow-x: auto;
+  text-align: left;
+}
+
+html .typeset pre.giallo code {
+  display: block;
+  padding: 0 1rem;
+  width: fit-content;
+  min-width: 100%;
+  tab-size: 4;
+  line-height: 1.7;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--code-foreground);
+}
+
+// giallo base styles (per Zola syntax highlighting docs)
+.giallo-l {
+  display: inline-block;
+  min-height: 1lh;
+  width: 100%;
+}
+
+.giallo-ln {
+  display: inline-block;
+  user-select: none;
+  margin-right: 0.4em;
+  padding: 0.4em;
+  min-width: 3ch;
+  text-align: right;
+  opacity: 0.8;
+}
+
+html .typeset pre.giallo .lang {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  z-index: 3;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  pointer-events: none;
+}
+
+// Copy button (top-right, appears over the lang label on hover)
+html .typeset pre.giallo .vp-copy-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius);
+  color: var(--muted-foreground);
+  opacity: 0;
+  transition: opacity 0.15s, background-color 0.15s;
+
+  &::before {
+    content: '';
+    width: 15px;
+    height: 15px;
+    background-color: currentColor;
+    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><rect x='9' y='9' width='13' height='13' rx='2'/><path d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/></svg>");
+    mask-repeat: no-repeat;
+    mask-size: contain;
+  }
+
+  &.copied::before {
+    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><polyline points='20 6 9 17 4 12'/></svg>");
+  }
+}
+
+html .typeset pre.giallo:hover .vp-copy-button {
+  opacity: 1;
+
+  &:hover {
+    background-color: var(--muted);
+    color: var(--foreground);
+  }
+}
+
+html .typeset pre.giallo:hover .lang:not(:hover) {
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+// ── Code groups (pipeline markup: .vp-code-group > .blocks > pre) ───────
+.vp-code-group {
+  position: relative;
+  margin: 1.25rem 0;
+
+  .tabs {
+    display: flex;
+    gap: 0.25rem;
+    margin-bottom: -1px;
+    padding: 0 0.5rem;
+    position: relative;
+    z-index: 2;
+
+    input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    label {
+      padding: 0.375rem 0.625rem;
+      border: 1px solid var(--border);
+      border-bottom: 0;
+      border-radius: var(--radius) var(--radius) 0 0;
+      background-color: var(--background);
+      font-size: 0.8125rem;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+
+    label:hover {
+      color: var(--foreground);
+    }
+
+    input:focus-visible + label {
+      outline: 2px solid var(--ring);
+      outline-offset: 2px;
+    }
+
+    input:checked + label {
+      color: var(--foreground);
+      font-weight: 500;
+      // overlap the block's top border so the tab looks connected
+      border-bottom: 1px solid var(--background);
+      margin-bottom: -1px;
+    }
+  }
+
+  .blocks > pre {
+    display: none;
+
+    &.active {
+      display: block;
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{# Tera components for the shadcn theme. `tip`/`details`/`codegroup` are the
+   markdown containers the generated content uses (same contract as
+   vitezola's components.html); `demo` lives in the site's own
+   templates/components.html. #}
+
+{# ── TOC ──────────────────────────────────────────────────────────────── #}
+
+{% component toc_items(headers, depth = 0) %}
+{% set d = depth | default(value=0) %}
+{# The page's H1 arrives as a level-1 root node; "On this page" lists
+   H2+ only (upstream behavior), so unwrap it. #}
+{% if d == 0 and headers | length == 1 and headers[0].level == 1 %}
+{{ <toc_items headers={headers[0].children} depth={d} /> }}
+{% else %}
+<ul{% if d == 0 %} class="toc-root"{% endif %}>
+  {% for h in headers %}
+  <li>
+    <a href="#{{ h.id }}" title="{{ h.title }}">{{ h.title }}</a>
+    {% if h.children %}{{ <toc_items headers={h.children} depth={d + 1} /> }}{% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endcomponent toc_items %}
+
+{# ── Custom containers (kind: tip warning danger note info important caution) #}
+
+{% component tip(kind, title, no_title) %}
+{% set k = kind | default(value="tip") %}
+{% set t = title | default(value="") %}
+{% set nt = no_title | default(value=false) %}
+<div class="custom-block {{ k }}">
+{% if not nt %}<p class="custom-block-title">{% if t != "" %}{{ t }}{% else %}{{ k | upper }}{% endif %}</p>{% endif %}
+
+{{ body }}
+
+</div>
+{% endcomponent tip %}
+
+{% component details(summary, open) %}
+{% set s = summary | default(value="") %}
+{% set op = open | default(value=false) %}
+<details class="custom-block details"{% if op %} open{% endif %}>
+<summary>{% if s != "" %}{{ s }}{% else %}DETAILS{% endif %}</summary>
+
+{{ body }}
+
+</details>
+{% endcomponent details %}
+
+{# ── Code group ───────────────────────────────────────────────────────── #}
+{# Body: fenced code blocks with a name annotation, one per tab:
+   ```js,name=a.js
+   ```                                                                  #}
+
+{% component codegroup() %}
+<div class="vp-code-group">
+<div class="blocks">
+
+{{ body }}
+
+</div>
+</div>
+{% endcomponent codegroup %}

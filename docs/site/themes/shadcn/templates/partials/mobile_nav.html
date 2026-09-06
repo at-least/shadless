@@ -1,0 +1,32 @@
+{% set guides = get_section(path="guides/_index.md", lang=lang, allow_missing=true) %}
+{% set components = get_section(path="components/_index.md", lang=lang, allow_missing=true) %}
+
+<div class="mobile-nav" id="MobileNav" hidden>
+  <div class="site-backdrop" data-mobile-nav-close></div>
+  <div class="mobile-nav-panel">
+    <div class="mobile-nav-header">
+      <a class="site-title" href="{{ get_url(path='/') }}">
+        <span>{{ config.extra.vitepress_site_title | default(value=config.title) }}</span>
+      </a>
+      <button type="button" class="icon-button" data-mobile-nav-close aria-label="Close menu">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    {% if guides %}
+    <div class="sidebar-group-label">Guides</div>
+    <ul class="sidebar-menu">
+      {% for p in guides.pages %}
+      <li><a class="sidebar-menu-button" data-active="{% if p.permalink == current_permalink %}true{% else %}false{% endif %}" href="{{ p.permalink }}">{{ p.title }}</a></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% if components %}
+    <div class="sidebar-group-label">Components</div>
+    <ul class="sidebar-menu">
+      {% for p in components.pages %}
+      <li><a class="sidebar-menu-button" data-active="{% if p.permalink == current_permalink %}true{% else %}false{% endif %}" href="{{ p.permalink }}">{{ p.title }}</a></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+</div>

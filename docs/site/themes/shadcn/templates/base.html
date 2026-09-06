@@ -1,0 +1,60 @@
+{% if not lang %}{% set lang = config.default_language | default(value='en') %}{% endif %}
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ config.title }}{% endblock title %}</title>
+    <meta name="description" content="{% block description %}{{ config.description }}{% endblock description %}">
+    <link rel="stylesheet" href="{{ get_url(path='syntax.css') }}">
+    <link rel="stylesheet" href="{{ get_url(path='shadcn-docs.css') }}">
+    {% if config.extra.extra_css %}{% for css in config.extra.extra_css %}<link rel="stylesheet" href="{{ get_url(path=css) }}">
+    {% endfor %}{% endif %}
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('vitepress-theme-appearance') || 'auto';
+          var dark = t === 'dark' || (t === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          document.documentElement.classList.toggle('dark', dark);
+        } catch (e) {}
+      })();
+      if (/Mac|iPhone|iPad/.test(navigator.platform)) document.documentElement.classList.add('mac');
+    </script>
+  </head>
+  <body>
+    <a class="visually-hidden" href="#main">Skip to content</a>
+
+    <div class="layout" data-slot="layout">
+      {% include "partials/header.html" %}
+
+      <main class="site-main">
+        {% block content %}{% endblock content %}
+      </main>
+
+      {% if config.extra.vitepress_footer_message or config.extra.vitepress_footer_copyright %}
+      <footer class="site-footer">
+        <div class="container-wrapper">
+          {% if config.extra.vitepress_footer_message %}
+          <p class="message">{{ config.extra.vitepress_footer_message | safe }}</p>
+          {% endif %}
+          {% if config.extra.vitepress_footer_copyright %}
+          <p class="copyright">© {{ now() | date(format="%Y") }} {{ config.extra.vitepress_footer_copyright | safe }}</p>
+          {% endif %}
+        </div>
+      </footer>
+      {% endif %}
+    </div>
+
+    {% include "partials/mobile_nav.html" %}
+    {% include "partials/search_modal.html" %}
+
+    {% if config.build_search_index %}
+    <script>
+      window.shadcnDocs = {
+        searchIndexUrl: "{{ get_url(path='search_index.' ~ lang ~ '.json') }}"
+      };
+    </script>
+    {% endif %}
+    <script src="{{ get_url(path='js/app.js') }}" defer></script>
+  </body>
+</html>

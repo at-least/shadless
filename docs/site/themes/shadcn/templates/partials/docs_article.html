@@ -1,0 +1,59 @@
+{# Shared docs article shell: breadcrumb, h1 + description, typeset content,
+   prev/next pager, right TOC. Expects `doc` (page or section) and `toc`
+   (array of heading nodes) to be set. #}
+<div class="docs-area">
+  <div class="docs-body">
+    <article class="docs-article">
+      <nav class="docs-breadcrumb" aria-label="Breadcrumb">
+        <a href="{{ get_url(path='/') }}">Docs</a>
+        {% for anc in doc.ancestors %}
+        {% set anc_sec = get_section(path=anc, lang=lang, allow_missing=true) %}
+        {% if anc_sec and anc != "_index.md" %}
+        <span class="crumb-sep" aria-hidden="true">/</span>
+        <a href="{{ anc_sec.permalink }}">{{ anc_sec.title }}</a>
+        {% endif %}
+        {% endfor %}
+        <span class="crumb-sep" aria-hidden="true">/</span>
+        <span class="crumb-current" aria-current="page">{{ doc.title }}</span>
+      </nav>
+
+      {% if doc.title and not doc.content is starting_with(pat="<h1") %}
+      <h1>{{ doc.title }}</h1>
+      {% endif %}
+      {% if doc.description %}
+      <p class="docs-description">{{ doc.description }}</p>
+      {% endif %}
+
+      {# .vp-doc id/main kept: the site's demo-card CSS and app.js behaviors
+         (code groups, copy buttons) key off content inside it. #}
+      <div class="typeset vp-doc" id="main">{{ doc.content | safe }}</div>
+
+      {% set pager = doc.lower or doc.higher %}
+      {% if pager %}
+      <nav class="docs-pager" aria-label="Pager">
+        {% if doc.lower %}
+        <a href="{{ doc.lower.permalink }}" class="pager-prev">
+          <span class="pager-label">Previous</span>
+          <span class="pager-title">{{ doc.lower.title }}</span>
+        </a>
+        {% endif %}
+        {% if doc.higher %}
+        <a href="{{ doc.higher.permalink }}" class="pager-next">
+          <span class="pager-label">Next</span>
+          <span class="pager-title">{{ doc.higher.title }}</span>
+        </a>
+        {% endif %}
+      </nav>
+      {% endif %}
+    </article>
+
+    {# the toc's single level-1 node is the page H1 — toc_items unwraps it;
+       guard the rail against being empty after that unwrap #}
+    {% if toc | length > 1 or (toc | length == 1 and (toc[0].level != 1 or toc[0].children | length > 0)) %}
+    <nav class="docs-toc" aria-label="On this page">
+      <p class="docs-toc-title">{{ config.extra.vitepress_outline_title | default(value="On This Page") }}</p>
+      {{ <toc_items headers={toc} /> }}
+    </nav>
+    {% endif %}
+  </div>
+</div>

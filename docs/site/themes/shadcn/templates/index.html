@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}{{ config.title }}{% endblock title %}
+
+{% block content %}
+{% set h = section.extra.vitepress_home | default(value=false) %}
+<div class="container-wrapper">
+  {% if h %}
+  <section class="home-hero" id="main">
+    <h1>{{ h.text | default(value=config.title) }}</h1>
+    {% if h.tagline %}<p class="tagline">{{ h.tagline }}</p>{% endif %}
+    {% if h.actions %}
+    <div class="actions">
+      {% for a in h.actions %}
+      <a class="action {{ a.theme | default(value='alt') }}" href="{{ get_url(path=a.link) }}">{{ a.text }}</a>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </section>
+  {% if h.features %}
+  <section class="home-features">
+    {% for f in h.features %}
+    <div class="home-feature">
+      <h2>{{ f.title }}</h2>
+      {% if f.details %}<p>{{ f.details }}</p>{% endif %}
+    </div>
+    {% endfor %}
+  </section>
+  {% endif %}
+  {% endif %}
+  {% if section.content and section.content != "<p>placeholder</p>" %}
+  <div class="container-wrapper">
+    <div class="typeset vp-doc" id="main">{{ section.content | safe }}</div>
+  </div>
+  {% endif %}
+</div>
+{% endblock content %}

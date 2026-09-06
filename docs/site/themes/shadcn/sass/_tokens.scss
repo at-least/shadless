@@ -1,0 +1,62 @@
+// Design tokens, calibrated against .upstream/shadcn-ui apps/v4 @ 4.19.0
+// (app/globals.css). Hex are sRGB roundings of the oklch originals.
+// --vp-c-* aliases exist for the site-owned shadless-site.css (demo cards),
+// which was written against the old theme's variable names.
+
+:root {
+  // shadcn semantic tokens
+  --background: #ffffff;
+  --foreground: #000000;
+  --muted: #f5f5f5; // neutral-100, oklch(0.97)
+  --muted-foreground: #737373; // neutral-500
+  --accent: #f5f5f5;
+  --accent-foreground: #171717;
+  --primary: #000000;
+  --primary-foreground: #fafafa;
+  --border: #e5e5e5; // neutral-200, oklch(0.922)
+  --ring: #ababab; // oklch(0.708)
+  --radius: 0.625rem;
+  --code-surface: #f5f5f5;
+  --code-foreground: #171717; // oklch(0.205)
+
+  // layout metrics (upstream: --header-height 3.5rem <lg, 4rem lg+;
+  // --sidebar-menu-width --spacing(56) = 14rem)
+  --header-height: 4rem;
+  --header-height-mobile: 3.5rem;
+  --sidebar-width: 14rem;
+  --toc-width: 14rem;
+  --container: 1600px;
+  --article-max: 46rem;
+
+  --font-sans: 'Geist', 'Inter', ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', SFMono-Regular, Menlo,
+    Consolas, 'Liberation Mono', monospace;
+
+  // compat aliases consumed by the site-owned demo-card stylesheet
+  --vp-c-bg: var(--background);
+  --vp-c-text-1: var(--foreground);
+  --vp-c-text-2: var(--muted-foreground);
+  --vp-c-text-3: #a3a3a3;
+  --vp-c-divider: var(--border);
+
+  // search modal
+  --search-selected-bg: var(--muted);
+}
+
+.dark {
+  --background: #0a0a0a; // oklch(0.145)
+  --foreground: #fafafa; // oklch(0.985)
+  --muted: #262626; // oklch(0.269)
+  --muted-foreground: #a3a3a3; // oklch(0.708)
+  --accent: #3d3d3d; // oklch(0.371)
+  --accent-foreground: #fafafa;
+  --primary: #e5e5e5; // oklch(0.922)
+  --primary-foreground: #171717;
+  --border: rgba(255, 255, 255, 0.1);
+  --ring: #5e5e5e; // oklch(0.556)
+  --code-surface: #171717;
+  --code-foreground: #a3a3a3;
+
+  --search-selected-bg: var(--accent);
+}

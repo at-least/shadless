@@ -1,0 +1,17 @@
+{# Search modal. IDs/classnames kept from the previous theme so the forked
+   app.js search implementation works unchanged. #}
+{% if config.build_search_index %}
+<div class="VPLocalSearchBox" id="VPLocalSearchBox" hidden role="dialog" aria-modal="true" aria-label="Search">
+  <div class="backdrop" id="VPSearchBackdrop"></div>
+  <div class="shell">
+    <div class="search-input-container">
+      <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="localsearch-input" type="text" placeholder="Search documentation..." autocomplete="off" spellcheck="false" aria-label="Search documentation">
+      <button type="button" class="clear" id="VPSearchClear" aria-label="Clear search" disabled>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <ul class="results" id="VPSearchResults" role="listbox" aria-label="Search results"></ul>
+  </div>
+</div>
+{% endif %}
