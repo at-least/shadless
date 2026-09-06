@@ -33,29 +33,38 @@ export const fenceShadow = (text) => {
   }).join("\n")
 }
 
-// All <TabsContent value="manual"> blocks outside fences.
-// Returns [{start, end}] with end just past the matching
-// </TabsContent>. Malformed (no close) stops the scan — the builder
-// throws on anything other than exactly one well-formed span.
 /**
  * @typedef {{ start: number, end: number }} Span
  */
+// Shared by locateManualTabSpans/locateCodeTabsSpans: scan for openRe's
+// (global) matches outside fences, each paired with the next occurrence of
+// closeTag. Malformed (no close) stops the scan — the builder throws on
+// anything other than exactly the expected well-formed span(s).
 /**
  * @param {string} shadow
+ * @param {RegExp} openRe global regex matching the opening tag
+ * @param {string} closeTag literal closing-tag text
  * @returns {Span[]}
  */
-export function locateManualTabSpans(shadow) {
+function locateTagSpans(shadow, openRe, closeTag) {
   const spans = []
-  const re = /<TabsContent value=("manual"|manual)>/g
   let m
-  while ((m = re.exec(shadow))) {
-    const close = shadow.indexOf("</TabsContent>", m.index)
+  while ((m = openRe.exec(shadow))) {
+    const close = shadow.indexOf(closeTag, m.index)
     if (close === -1) break
-    const end = close + "</TabsContent>".length
+    const end = close + closeTag.length
     spans.push({ start: m.index, end })
-    re.lastIndex = end
+    openRe.lastIndex = end
   }
   return spans
+}
+
+// All <TabsContent value="manual"> blocks outside fences.
+// Returns [{start, end}] with end just past the matching
+// </TabsContent>.
+/** @param {string} shadow @returns {Span[]} */
+export function locateManualTabSpans(shadow) {
+  return locateTagSpans(shadow, /<TabsContent value=("manual"|manual)>/g, "</TabsContent>")
 }
 
 // The `## Installation` … `## Usage` span in utils guides (outside
@@ -79,17 +88,7 @@ export function locateInstallSection(shadow) {
 // check).
 /** @param {string} shadow @returns {Span[]} */
 export function locateCodeTabsSpans(shadow) {
-  const spans = []
-  const re = /<CodeTabs>/g
-  let m
-  while ((m = re.exec(shadow))) {
-    const close = shadow.indexOf("</CodeTabs>", m.index)
-    if (close === -1) break
-    const end = close + "</CodeTabs>".length
-    spans.push({ start: m.index, end })
-    re.lastIndex = end
-  }
-  return spans
+  return locateTagSpans(shadow, /<CodeTabs>/g, "</CodeTabs>")
 }
 
 // The shadcn-CLI migration section of the rtl guide (## Migrating existing
@@ -106,17 +105,33 @@ export function locateRtlMigrateSpan(shadow) {
   return { start: open.index, end: close + "</Steps>".length }
 }
 
+// Shared by locateUsageSpan/locateCompositionSpan: find `openRe`'s heading,
+// then the NEXT `## ` heading that isn't a repeat of it, outside fences.
+// end = the '#' of that next heading. The skip past the opening heading is
+// derived from the match itself (its text + trailing newline) rather than a
+// hand-counted literal, so it can never drift from the heading string.
+/**
+ * @param {string} shadow
+ * @param {RegExp} openRe anchored, multiline regex matching the heading line (e.g. /^## Usage$/m)
+ * @param {string} headingSuffix the heading text after "## ", so the next-heading scan skips a repeat of it
+ * @returns {Span | null}
+ */
+function locateSectionSpan(shadow, openRe, headingSuffix) {
+  const open = openRe.exec(shadow)
+  if (!open) return null
+  const skip = open.index + open[0].length + 1
+  const next = new RegExp(`^## (?!${headingSuffix}$)`, "m").exec(shadow.slice(skip))
+  if (!next) return null
+  return { start: open.index, end: skip + next.index }
+}
+
 // The `## Usage` … next `## ` span on component pages. Upstream fills it
 // with React import + JSX fences; the builder replaces it with the shadless
 // usage story (copy-markup + the JSX-prop → data-attribute API table).
-// end = the '#' of the next section heading. Null when absent/malformed.
+// Null when absent/malformed.
 /** @param {string} shadow @returns {Span | null} */
 export function locateUsageSpan(shadow) {
-  const open = /^## Usage$/m.exec(shadow)
-  if (!open) return null
-  const next = /^## (?!Usage$)/m.exec(shadow.slice(open.index + 9))
-  if (!next) return null
-  return { start: open.index, end: open.index + 9 + next.index }
+  return locateSectionSpan(shadow, /^## Usage$/m, "Usage")
 }
 
 // The `## Composition` … next `## ` span on component pages. Upstream
@@ -124,11 +139,7 @@ export function locateUsageSpan(shadow) {
 // examples; the builder keeps ONLY the tree, translated to slot names.
 /** @param {string} shadow @returns {Span | null} */
 export function locateCompositionSpan(shadow) {
-  const open = /^## Composition$/m.exec(shadow)
-  if (!open) return null
-  const next = /^## (?!Composition$)/m.exec(shadow.slice(open.index + 15))
-  if (!next) return null
-  return { start: open.index, end: open.index + 15 + next.index }
+  return locateSectionSpan(shadow, /^## Composition$/m, "Composition")
 }
 
 // Pure React import fences (content is ONLY import statements from

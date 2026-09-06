@@ -110,6 +110,16 @@ export interface Helpers {
   formMirror(root: Element, def: FormMirrorDef<boolean | string | null | number[]>): unknown
   /** refresh the mirror after a state change */
   syncForm(root: Element): void
+  /** body-scroll-lock idiom shared by the menu family and select: lock the body and (while locking) restore hit-testing on contentEl; unlock reverts the body only */
+  lockBody(on: boolean, contentEl?: Element | null): void
+  /** clone tpl's content into a scratch host and return the one slot element found by `slot` (a CSS selector) */
+  mountFromTemplate(tpl: HTMLTemplateElement, slot: string): Element | null
+  /** wire a kernel's { on<Event>: handler } map onto trigger, aborting every listener with signal */
+  bindHandlers(trigger: Element, handlers: Record<string, EventListener>, signal: AbortSignal | undefined): void
+  /** shared dropdown-menu/context-menu init body — both files register with this same function */
+  installMenuFamily(root: Element): void
+  /** dialog/alert-dialog/sheet portal-glue factory — pass the slot-name prefix and each family's 1-2 config values to get the component's init(live) */
+  wireDialogFamily(component: string, opts: { dismissSelector: string; swallowOverlayClick?: boolean }): (live: Element) => void
 }
 
 /**

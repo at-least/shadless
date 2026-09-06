@@ -151,11 +151,13 @@ import "./shadless.mjs"
       if (!kn) return
       e.preventDefault()
       var ts = kn.triggers()
-      var i = ts.indexOf(trig)
-      var next = key === "Home" ? ts[0]
-        : key === "End" ? ts[ts.length - 1]
-        : ts[(i + (key === "ArrowRight" ? 1 : ts.length - 1)) % ts.length]
-      next.focus()
+      // nextIndex also skips disabled triggers and swaps the horizontal
+      // arrows under dir=rtl — the shipped oracle-navigation-menu-rtl
+      // fixture exercises exactly this, which the old hand-rolled formula
+      // never did
+      var n = shadless.h.nextIndex(e, ts)
+      if (n < 0) return
+      ts[n].focus()
     })
   } })
 })()

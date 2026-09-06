@@ -66,6 +66,36 @@ export function residueResets(base, value) {
   return [...new Set(out)]
 }
 
+// The pieces of a cva axis value's CSS: an optional resetRule
+// (`[data-slot=slot]:where(<causes>) { @apply <resets>; }`) when the base's
+// residue (per residueResets) isn't restated by apply, and the mainRule
+// (`[data-slot=slot]:where(...)`) for the axis value itself — widened to
+// also match the unset/empty attribute when val is the axis default (cva's
+// defaultVariants modeled on the attribute API — see the comment above the
+// local-cva loop below). apply is the value's own classes, before any reset
+// tokens are appended; causes are read from that original list so the
+// selector names the utility that actually needs the reset, never a reset
+// token appended here. Shared by the local-cva loop and the cross-file
+// cvaRefs loop (componentCss below) — both need the exact same twin-block /
+// :where / residue computation for a (axis, val) pair, though each pushes
+// resetRule and mainRule in its own order (matched below) rather than one
+// the other never had.
+/** @param {string} slot @param {string} axis @param {string} val @param {string | undefined} def @param {string} baseApply @param {string} apply @returns {{ resetRule: string | null, mainRule: string }} */
+export function residueRuleParts(slot, axis, val, def, baseApply, apply) {
+  let full = apply
+  let resetRule = null
+  const resets = residueResets(baseApply, apply)
+  if (resets.length) {
+    full = `${apply} ${resets.join(" ")}`
+    const causes = apply.split(/\s+/).filter((vt) => residueResets(baseApply, vt).length)
+    if (causes.length) resetRule = `  [data-slot="${slot}"]:where(${causes.map((c) => "." + cssEscape(c)).join(", ")}) { @apply ${resets.join(" ")}; }`
+  }
+  const mainRule = val === def
+    ? `  [data-slot="${slot}"]:where(:not([data-${axis}]), [data-${axis}="${val}"], [data-${axis}=""]) { @apply ${full}; }`
+    : `  [data-slot="${slot}"]:where([data-${axis}="${val}"]) { @apply ${full}; }`
+  return { resetRule, mainRule }
+}
+
 export const MARKER = /^(group|peer)(\/[\w-]+)?$/
 
 // Utilities the pinned registry references but that are defined NOWHERE in
@@ -326,36 +356,28 @@ export function componentCss(ir) {
         const t = splitMarkers(cls)
         if (t.markers.length) markers[slot] = [...(markers[slot] || []), ...t.markers]
         if (!t.apply) continue
-        const resets = residueResets(splitMarkers(table.base || "").apply, t.apply)
-        if (resets.length) {
-          t.apply += " " + resets.join(" ")
-          // the same residue on the DEMO path: React's element carries the
-          // value's utilities inline (twMerge dropped the base's text-sm),
-          // while our bare slot rule still contributes text-sm's line-height.
-          // Key the reset on the inline utility that caused the drop, so an
-          // element styled by inline classes gets the reset too.
-          const baseApply = splitMarkers(table.base || "").apply
-          const causes = t.apply.split(/\s+/).filter((vt) => residueResets(baseApply, vt).length)
-          if (causes.length) rules.push(`  [data-slot="${slot}"]:where(${causes.map((c) => "." + cssEscape(c)).join(", ")}) { @apply ${resets.join(" ")}; }`)
-        }
-        // Specificity is part of cva's semantics. In React every value class
-        // is a plain utility (0,1,0): a variant's `bg-transparent` loses to
-        // the base's `data-[state=on]:bg-muted` (0,2,0) whenever the state is
-        // on. An attribute-qualified rule ([data-slot][data-variant=…]) is
-        // (0,2,0) and, coming later, beat the base's state variants — toggle
-        // rendered transparent while pressed on the css-import path
-        // (gates/path-parity.mjs, state renders). :where() zeroes the
-        // qualifier: every value rule is (0,1,0) like the bare slot rule,
-        // later-wins resolves value-vs-base exactly like twMerge, and the
-        // base's own state variants keep their rank.
-        if (val === def)
-          // one rule, three selectors — the default applies when the axis
-          // is unspecified, explicitly set to it, or set to "" (cva treats
-          // a falsy variant prop as unset → defaultVariants)
-          rules.push(
-            `  [data-slot="${slot}"]:where(:not([data-${axis}]), [data-${axis}="${val}"], [data-${axis}=""]) { @apply ${t.apply}; }`,
-          )
-        else rules.push(`  [data-slot="${slot}"]:where([data-${axis}="${val}"]) { @apply ${t.apply}; }`)
+        // the same residue reset applies on the DEMO path too: React's
+        // element carries the value's utilities inline (twMerge dropped the
+        // base's text-sm), while our bare slot rule still contributes
+        // text-sm's line-height — residueRuleParts keys the reset on the
+        // inline utility that caused the drop, so an element styled by
+        // inline classes gets it too. Specificity is part of cva's semantics
+        // too: in React every value class is a plain utility (0,1,0); an
+        // attribute-qualified rule ([data-slot][data-variant=…]) is (0,2,0)
+        // and would beat the base's own state variants (toggle rendered
+        // transparent while pressed on the css-import path —
+        // gates/path-parity.mjs, state renders) — :where() zeroes the
+        // qualifier so later-wins resolves value-vs-base exactly like
+        // twMerge. val === def gets three selectors in one rule — the
+        // default applies when the axis is unspecified, explicitly set to
+        // it, or set to "" (cva treats a falsy variant prop as unset →
+        // defaultVariants). The reset rule (when there is one) rides ahead
+        // of the value rule here — reusing s.apply instead of recomputing
+        // splitMarkers(table.base || "").apply, which the pre-extraction
+        // code did twice more.
+        const { resetRule, mainRule } = residueRuleParts(slot, axis, val, def, s.apply, t.apply)
+        if (resetRule) rules.push(resetRule)
+        rules.push(mainRule)
       }
     }
   }
@@ -377,16 +399,12 @@ export function componentCss(ir) {
         if (!t.apply) continue
         if (def === undefined) { rules.push(`  [data-slot="${r.slot}"][data-${axis}="${val}"] { @apply ${t.apply}; }`); continue }
         // context-driven axis with a known default (toggle-group items): the
-        // same twin-block / :where / residue shape as a local cva table
-        const resets = residueResets(baseApply, t.apply)
-        const apply = resets.length ? `${t.apply} ${resets.join(" ")}` : t.apply
-        rules.push(val === def
-          ? `  [data-slot="${r.slot}"]:where(:not([data-${axis}]), [data-${axis}="${val}"], [data-${axis}=""]) { @apply ${apply}; }`
-          : `  [data-slot="${r.slot}"]:where([data-${axis}="${val}"]) { @apply ${apply}; }`)
-        if (resets.length) {
-          const causes = t.apply.split(/\s+/).filter((vt) => residueResets(baseApply, vt).length)
-          if (causes.length) rules.push(`  [data-slot="${r.slot}"]:where(${causes.map((c) => "." + cssEscape(c)).join(", ")}) { @apply ${resets.join(" ")}; }`)
-        }
+        // same twin-block / :where / residue computation as a local cva
+        // table, but the value rule rides ahead of the reset rule here — the
+        // order this loop already shipped, kept as-is
+        const { resetRule, mainRule } = residueRuleParts(r.slot, axis, val, def, baseApply, t.apply)
+        rules.push(mainRule)
+        if (resetRule) rules.push(resetRule)
       }
     }
   }

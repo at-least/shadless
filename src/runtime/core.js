@@ -1,6 +1,11 @@
 // shadless runtime base — delegation engine + component registry + theme.
-// dist/shadless.js = the vendored radix kernel + this file. Behaviors live in
-// dist/js/<name>.js, one per component. Global `shadless` with:
+// dist/shadless.js = the vendored radix kernel + this file (RadixKernel is a
+// global by the time any of this runs). Most behaviors live in
+// dist/js/<name>.js, one per component; a few component FAMILIES whose files
+// were otherwise near-identical register with a body kept here instead
+// (h.installMenuFamily — dropdown-menu/context-menu; h.wireDialogFamily —
+// dialog/alert-dialog/sheet), so the family lives once instead of drifting
+// across copies. Global `shadless` with:
 //   init(root?, {force}) — delegation on a root (default body); force
 //     destroys and re-initializes (framework cache-restored DOM)
 //   initAll({force})     — init(document.body)
@@ -140,6 +145,32 @@
   function linkControls(trigger, content) {
     if (content && content.id) trigger.setAttribute("aria-controls", content.id)
   }
+  // body-scroll-lock idiom shared by the menu family and select: lock sets
+  // the body-level attribute radix's RemoveScroll leaves behind and restores
+  // hit-testing on the one element that stays interactive; unlock reverts
+  // the body only (the locked element is about to unmount or lose its lock)
+  function lockBody(on, contentEl) {
+    if (on) {
+      document.body.setAttribute("data-scroll-locked", "1")
+      document.body.style.setProperty("pointer-events", "none")
+      if (contentEl) contentEl.style.setProperty("pointer-events", "auto")
+    } else {
+      document.body.removeAttribute("data-scroll-locked")
+      document.body.style.removeProperty("pointer-events")
+    }
+  }
+  // popover/hover-card/tooltip portal-content idiom: clone a template's
+  // content into a scratch host, hand back the one slot element requested
+  function mountFromTemplate(tpl, slot) {
+    var host = document.createElement("div")
+    host.appendChild(tpl.content.cloneNode(true))
+    return host.querySelector(slot)
+  }
+  // wire a kernel's { on<Event>: handler } map onto a trigger, aborting
+  // every listener with the same signal wire() issued
+  function bindHandlers(trigger, handlers, signal) {
+    for (var ev in handlers) trigger.addEventListener(ev.slice(2), handlers[ev], { signal: signal })
+  }
 
   // ---- form integration -----------------------------------------------------
   // radix renders a hidden native input beside a control that carries a
@@ -268,6 +299,203 @@
     else ROOT_WIRED.delete(live)
   }
 
+  // ---- shared kernel-family wiring -----------------------------------------
+  // Whole component-file bodies that only differ by a slot-name prefix or a
+  // couple of config values live here once, so the component files that
+  // register with them (src/runtime/components/*.js) stay a handful of lines
+  // and can never drift apart the way two pasted copies eventually do.
+
+  // dropdown-menu.js and context-menu.js register with this SAME function.
+  // Document-level: wireMenu owns every trigger on the page through its
+  // data-radixuigo-* protocol, so the behavior installs ONCE per page and
+  // ignores the root it is initialised with (a later shadless.init(subtree)
+  // finds the listeners already there). Both files still register their OWN
+  // component name unconditionally (register() is keyed by name — the
+  // engine would never see the second name otherwise), and fileTriggers
+  // labels every element by its actual data-radixuigo-{menu,context}-trigger
+  // attribute rather than by which file happened to install first, so a page
+  // carrying both component types gets every trigger labelled correctly
+  // regardless of load order. installMenuFamily itself never reads the name
+  // it was registered under, which is exactly why one shared body is safe.
+  function installMenuFamily(root) {
+    shadless.__menuWired = shadless.__menuWired || {}
+    if (shadless.__menuWired.installed_menu) { if (shadless.__menuWired.fileTriggers) shadless.__menuWired.fileTriggers(root); return }
+    shadless.__menuWired.installed_menu = true
+    // shadless:open / shadless:close: the kernel has no open hook, so every
+    // path into it is followed by sync(), which diffs the ROOT layer's
+    // trigger (sub menus do not emit) and dispatches the edges
+    var openTrigger = null;
+    var sync = function () {
+      var l = handles.rootLayer();
+      var t = l ? l.trigger : null;
+      if (t === openTrigger) return;
+      var prev = openTrigger;
+      openTrigger = t;
+      if (prev) emit(prev, "close", prev.hasAttribute("data-radixuigo-context-trigger") ? "context-menu" : "dropdown-menu");
+      if (t) emit(t, "open", t.hasAttribute("data-radixuigo-context-trigger") ? "context-menu" : "dropdown-menu");
+    };
+    var handles = RadixKernel.wireMenu({
+      // radix keeps the trigger out of the background aria-hidden set and locks
+      // scroll while a root menu is open — kernel wireMenu does neither
+      isPortalMarker: function (el) {
+        return el.hasAttribute("data-radixuigo-menu-trigger")
+          || el.hasAttribute("data-radixuigo-context-trigger");
+      },
+      onAllClosed: function () {
+        lockBody(false);
+        sync();
+      },
+      mountLayer: function (id) {
+        var tpl = document.getElementById(id + "-tpl");
+        if (!tpl) return null;
+        var content = tpl.content.firstElementChild.cloneNode(true);
+        var wrapper = document.createElement("div");
+        wrapper.setAttribute("data-radix-popper-content-wrapper", "");
+        wrapper.appendChild(content);
+        document.body.appendChild(wrapper);
+        // modal body lock inherits down — re-enable hit-testing in the layer
+        // (radix sets pointer-events:auto on content while open)
+        lockBody(true, content);
+        return {
+          id: id,
+          wrapper: wrapper,
+          content: content,
+          trigger: document.getElementById(id + "-trigger"),
+        };
+      },
+    });
+    document.addEventListener("click", function (e) {
+      handles.onDocumentClick(e.target, function () { e.preventDefault(); });
+      sync();
+    });
+    // programmatic handles, one per trigger (found by the kernel's protocol
+    // attributes; a later shadless.init(root) files any new ones)
+    var noop = function () {}
+    var fileTriggers = function (root) {
+      Array.prototype.forEach.call((root || document).querySelectorAll("[data-radixuigo-menu-trigger], [data-radixuigo-context-trigger]"), function (t) {
+        if (INSTANCES.has(t)) return
+        var isContext = t.hasAttribute("data-radixuigo-context-trigger")
+        var isOpen = function () { var l = handles.rootLayer(); return !!l && l.trigger === t }
+        var openIt = function () {
+          if (isOpen()) return
+          if (isContext) {
+            var r = t.getBoundingClientRect()
+            handles.onContextmenu(t, r.left + r.width / 2, r.top + r.height / 2, noop)
+          } else handles.onDocumentClick(t, noop)
+          sync()
+        }
+        INSTANCES.set(t, { component: isContext ? "context-menu" : "dropdown-menu",
+          open: openIt,
+          close: function () { if (isOpen()) { handles.closeAll(); sync() } },
+          toggle: function () { if (isOpen()) { handles.closeAll(); sync() } else openIt() },
+          isOpen: isOpen,
+        })
+      })
+    }
+    fileTriggers(document)
+    shadless.__menuWired.fileTriggers = fileTriggers
+    // radix opens a sub menu when the pointer moves onto its trigger; the
+    // kernel only opens it on click / ArrowRight (onDocumentClick has the sub
+    // path) — route pointer entry through the same path. openMenuLayer is
+    // idempotent for an already-open layer.
+    document.addEventListener("pointerover", function (e) {
+      if (e.pointerType && e.pointerType !== "mouse") return;
+      var sub = e.target.closest && e.target.closest("[data-radixuigo-menu-subtrigger]");
+      if (sub && sub.getAttribute("data-state") !== "open") handles.onDocumentClick(sub, function () {});
+    });
+    document.addEventListener("contextmenu", function (e) {
+      handles.onContextmenu(e.target, e.clientX, e.clientY, function () { e.preventDefault(); });
+      sync();
+    });
+    document.addEventListener("keydown", function (e) {
+      handles.onKeydown(e.target, e.key, function () { e.preventDefault(); });
+      sync();
+    });
+  }
+
+  // dialog.js / alert-dialog.js / sheet.js register with a call to this
+  // factory, passing their own slot-name prefix (`component`, e.g. "sheet")
+  // and the couple of values that actually differ between them: which
+  // element inside the portal dismisses it, and whether an overlay click
+  // must be swallowed instead of closing (alert-dialog's confirm semantics).
+  // The portal creation, pointer-events restore, RadixKernel.wireDialog
+  // wiring and instance handle are otherwise identical across all three.
+  function wireDialogFamily(component, opts) {
+    opts = opts || {}
+    var dismissSelector = opts.dismissSelector
+    var swallowOverlayClick = !!opts.swallowOverlayClick
+    return function (live) {
+      var triggers = live.querySelectorAll("[data-slot=" + component + "-trigger][id$='-trigger']");
+      Array.prototype.forEach.call(triggers, function (trigger) {
+        var w = wire(trigger, live)
+        if (!w) return
+        var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-portal"));
+        if (!tpl) return;
+        var open = false, handles = null, portal = null;
+
+        function setState(s) {
+          trigger.setAttribute("data-state", s);
+          trigger.setAttribute("aria-expanded", s === "open" ? "true" : "false");
+          var o = portal && portal.querySelector("[data-slot=" + component + "-overlay]");
+          var c = portal && portal.querySelector("[data-slot=" + component + "-content]");
+          if (o) o.setAttribute("data-state", s);
+          if (c) c.setAttribute("data-state", s);
+        }
+
+        function mount() {
+          portal = document.createElement("div");
+          portal.setAttribute("data-slot", component + "-portal");
+          portal.appendChild(tpl.content.cloneNode(true));
+          document.body.appendChild(portal);
+          var overlay = portal.querySelector("[data-slot=" + component + "-overlay]");
+          var content = portal.querySelector("[data-slot=" + component + "-content]");
+          // pointer-events restored on the portal chain, overlay aria-hidden,
+          // trigger<->content wiring (the h3b contract)
+          if (overlay) {
+            overlay.style.pointerEvents = "auto";
+            overlay.setAttribute("aria-hidden", "true");
+            overlay.setAttribute("data-aria-hidden", "true");
+          }
+          content.style.pointerEvents = "auto";
+          trigger.setAttribute("aria-controls", content.id);
+          // alert-dialog semantics: clicking the overlay must NOT dismiss —
+          // swallow overlay clicks so wireDialog's portal click-close never fires
+          if (swallowOverlayClick && overlay) overlay.addEventListener("click", function (e) { e.stopPropagation(); });
+
+          setState("open");
+          handles = RadixKernel.wireDialog({
+            content: content,
+            portal: portal,
+            trigger: trigger,
+            onClosed: function () {
+              setState("closed");
+              portal.remove();
+              portal = null; handles = null; open = false;
+              emit(trigger, "close", component);
+            },
+          });
+          portal.querySelectorAll(dismissSelector).forEach(function (b) {
+            b.addEventListener("click", function () { handles && handles.close(true); });
+          });
+          open = true;
+          emit(trigger, "open", component);
+        }
+
+        function unmount(restoreFocus) {
+          if (handles) handles.close(restoreFocus !== false);
+        }
+
+        trigger.addEventListener("click", function () { open ? unmount() : mount(); }, { signal: w.signal });
+        INSTANCES.set(trigger, { component: component,
+          open: function () { if (!open) mount() },
+          close: function (restoreFocus) { if (open) unmount(restoreFocus) },
+          toggle: function () { open ? unmount() : mount() },
+          isOpen: function () { return open },
+        })
+      });
+    }
+  }
+
   var LIVE_ROOTS = []
   function register(name, def) {
     if (COMPONENTS[name]) return
@@ -392,7 +620,9 @@
     h: { nextIndex: nextIndex, NAV_KEYS: NAV_KEYS, setChecked: setChecked, setGroupItem: setGroupItem,
       findTemplate: findTemplate, cloneTemplate: cloneTemplate, setRadioItem: setRadioItem,
       setDisclosed: setDisclosed, linkControls: linkControls, emit: emit, itemValue: itemValue, wire: wire,
-      isDisabled: isDisabled, isRtl: isRtl, formMirror: formMirror, syncForm: syncForm },
+      isDisabled: isDisabled, isRtl: isRtl, formMirror: formMirror, syncForm: syncForm,
+      lockBody: lockBody, mountFromTemplate: mountFromTemplate, bindHandlers: bindHandlers,
+      installMenuFamily: installMenuFamily, wireDialogFamily: wireDialogFamily },
     theme: {
       get: themeGet,
       set: themeSet,

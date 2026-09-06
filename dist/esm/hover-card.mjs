@@ -16,10 +16,7 @@ import "./shadless.mjs"
         openDelay: 700, closeDelay: 300,  // radix HoverCard.Root defaults
         popperOptions: { sideOffset: 4 }, // shadcn HoverCardContent default
         buildContent: function () {
-          var frag = tpl.content.cloneNode(true);
-          var host = document.createElement("div");
-          host.appendChild(frag);
-          var content = host.querySelector("[data-slot=hover-card-content]");
+          var content = shadless.h.mountFromTemplate(tpl, "[data-slot=hover-card-content]");
           content.setAttribute("data-state", "open");
           current = content;
           return content;
@@ -27,8 +24,7 @@ import "./shadless.mjs"
         onOpen: function () { open = true; shadless.h.emit(trigger, "open", "hover-card"); },
         onClosed: function () { open = false; current = null; shadless.h.emit(trigger, "close", "hover-card"); },
       });
-      for (var ev in wired.handlers)
-        trigger.addEventListener(ev.slice(2), wired.handlers[ev], { signal: w.signal });
+      shadless.h.bindHandlers(trigger, wired.handlers, w.signal);
       shadless.instances.set(trigger, { component: "hover-card",
         open: function () { if (!open) trigger.dispatchEvent(new PointerEvent("pointerenter", { pointerType: "mouse" })) },
         close: function () { if (open) wired.dismiss() },

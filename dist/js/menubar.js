@@ -86,6 +86,13 @@
     var clearHighlights = function () {
       triggers().forEach(function (t) { t.removeAttribute("data-highlighted") });
     };
+    // NOT routed through shadless.h.nextIndex: nextIndex locates "current"
+    // via document.activeElement, but while a menu is open focus has moved
+    // into its content (RadixKernel's focusLayerIn) — the open trigger this
+    // needs to step from is handles.rootLayer().trigger, which nextIndex has
+    // no way to receive. This wrap-around IS a third copy of the same
+    // arithmetic, kept separate on purpose rather than fed a synthetic
+    // "current index" that would silently stop matching real focus.
     var switchMenu = function (dir) {
       var ts = triggers();
       var root = handles.rootLayer();
@@ -146,12 +153,14 @@
       var trig = e.target.closest && e.target.closest("[data-radixuigo-menu-trigger]");
       if (!trig) { handles.onKeydown(e.target, key, function () {}); return; }
       var ts = triggers();
-      var i = ts.indexOf(trig);
       if (key === "ArrowRight" || key === "ArrowLeft" || key === "Home" || key === "End") {
         e.preventDefault();
-        var next = key === "Home" ? ts[0]
-          : key === "End" ? ts[ts.length - 1]
-          : ts[(i + (key === "ArrowRight" ? 1 : ts.length - 1)) % ts.length];
+        // nextIndex also skips disabled triggers and swaps the horizontal
+        // arrows under dir=rtl — the shipped oracle-menubar-rtl fixture
+        // exercises exactly this, which the old hand-rolled formula never did
+        var n = shadless.h.nextIndex(e, ts);
+        if (n < 0) return;
+        var next = ts[n];
         setCursor(next);
         next.focus();
         return;

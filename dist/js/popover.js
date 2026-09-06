@@ -16,10 +16,7 @@
         if (content) content.setAttribute("data-state", s);
       }
       function mount() {
-        var frag = tpl.content.cloneNode(true);
-        var host = document.createElement("div");
-        host.appendChild(frag);
-        content = host.querySelector("[data-slot=popover-content]");
+        content = shadless.h.mountFromTemplate(tpl, "[data-slot=popover-content]");
         document.body.appendChild(content);
         setState("open");
         handles = RadixKernel.wirePopover({

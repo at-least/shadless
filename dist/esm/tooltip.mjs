@@ -26,17 +26,13 @@ import "./shadless.mjs"
           shadless.h.emit(trigger, isOpen ? "open" : "close", "tooltip");
         },
         buildContent: function (state) {
-          var frag = tpl.content.cloneNode(true);
-          var host = document.createElement("div");
-          host.appendChild(frag);
-          var content = host.querySelector("[data-slot=tooltip-content]");
+          var content = shadless.h.mountFromTemplate(tpl, "[data-slot=tooltip-content]");
           content.setAttribute("data-state", state);
           var arrow = content.querySelector("svg");
           return arrow ? { content: content, arrow: arrow } : { content: content };
         },
       });
-      for (var ev in wired.handlers)
-        trigger.addEventListener(ev.slice(2), wired.handlers[ev], { signal: w.signal });
+      shadless.h.bindHandlers(trigger, wired.handlers, w.signal);
       shadless.instances.set(trigger, { component: "tooltip",
         open: function () { if (wired.state() === "closed") trigger.dispatchEvent(new FocusEvent("focus")) },
         close: function () { wired.close() },
