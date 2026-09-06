@@ -9,7 +9,6 @@ package main
 // fences. Pinned by TestUnitFixtureFamiliesGolden.
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -347,23 +346,3 @@ func apiReferenceMdx(comp string, slots []string, axes []cvaAxisRow, tier string
 	}
 	return preamble + slotTable + runtime
 }
-
-// sortedFamilyKeys / sortedTrivialKeys for deterministic golden dumps.
-func sortedFamilyKeys() []string {
-	var out []string
-	for k := range family {
-		out = append(out, k)
-	}
-	sortStrings(out)
-	return out
-}
-
-func sortStrings(s []string) {
-	for i := 1; i < len(s); i++ {
-		for j := i; j > 0 && s[j] < s[j-1]; j-- {
-			s[j], s[j-1] = s[j-1], s[j]
-		}
-	}
-}
-
-var _ = fmt.Sprintf // keep fmt for future use in this file

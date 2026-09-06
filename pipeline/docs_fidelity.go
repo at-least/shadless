@@ -48,27 +48,6 @@ func scanFences(src string) []fenceInfo {
 	return out
 }
 
-// blankFences returns a length-stable view with fence content blanked.
-func blankFences(src string) string {
-	lines := strings.Split(src, "\n")
-	open := false
-	for i, line := range lines {
-		t := strings.HasPrefix(strings.TrimSpace(line), "```")
-		if !open && t {
-			open = true
-			lines[i] = blankLine(line)
-			continue
-		}
-		if open {
-			if t {
-				open = false
-			}
-			lines[i] = blankLine(line)
-		}
-	}
-	return strings.Join(lines, "\n")
-}
-
 // ---- span-dropping helpers (gate side of the shared locators) --------------
 
 func replaceSpan(raw string, s span, replacement string) string {
@@ -77,9 +56,6 @@ func replaceSpan(raw string, s span, replacement string) string {
 
 func withoutCodeTabs(raw string) string {
 	out := raw
-	for _, s := range locateCodeTabsSpans(fenceShadow(raw)) {
-		_ = s
-	}
 	// reverse order to keep offsets valid
 	spans := locateCodeTabsSpans(fenceShadow(raw))
 	for i := len(spans) - 1; i >= 0; i-- {
@@ -526,11 +502,6 @@ func reactPropsInMarkup(fence string) []string {
 	sort.Strings(out)
 	return out
 }
-
-// fidelityRawMDX is set by the fidelity driver per page (chips compare needs
-// the raw mdx for ordered links). A package-level hand-off keeps comparePage's
-// signature identical to the JS.
-var fidelityRawMDX string
 
 // rawHeading is one <hN>…</hN> hit (JS used a \1 backreference RE2 lacks).
 type rawHeading struct {

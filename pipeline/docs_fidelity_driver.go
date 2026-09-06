@@ -98,7 +98,6 @@ func runDocsFidelity() int {
 		}
 		mdB, _ := os.ReadFile(mdPath)
 		H := mdPageFacts(string(mdB))
-		fidelityRawMDX = adjusted
 
 		// The rewritten Installation must name something specific to THIS
 		// component, proving the manual tab was regenerated and not left as

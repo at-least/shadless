@@ -220,9 +220,6 @@ func main() {
 	if cmd == "docs-build" {
 		os.Exit(runDocsBuild())
 	}
-	if cmd == "docs-guides" {
-		os.Exit(runDocsGuides())
-	}
 	if cmd == "docs-fidelity" {
 		os.Exit(runDocsFidelity())
 	}

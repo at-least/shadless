@@ -43,7 +43,7 @@ func fenceShadow(text string) string {
 }
 
 var (
-	reFenceOpen       = regexp.MustCompile("^`{3,}")
+	reFenceOpen        = regexp.MustCompile("^`{3,}")
 	reLeadingBackticks = regexp.MustCompile("^`+")
 )
 
@@ -455,7 +455,7 @@ var (
 // "marker-content"; dist/components/spinner.html: a single
 // data-slot="spinner" svg) rather than guessed.
 const (
-	shimmerMarkerJsx = "```tsx\n<Marker role=\"status\">\n  <MarkerIcon>\n    <Spinner />\n  </MarkerIcon>\n  <MarkerContent className=\"shimmer\">Thinking&hellip;</MarkerContent>\n</Marker>\n```"
+	shimmerMarkerJsx  = "```tsx\n<Marker role=\"status\">\n  <MarkerIcon>\n    <Spinner />\n  </MarkerIcon>\n  <MarkerContent className=\"shimmer\">Thinking&hellip;</MarkerContent>\n</Marker>\n```"
 	shimmerMarkerHtml = "```html\n<div data-slot=\"marker\" role=\"status\">\n  <span data-slot=\"marker-icon\"><!-- Spinner markup — see /components/spinner --></span>\n  <span data-slot=\"marker-content\" class=\"shimmer\">Thinking&hellip;</span>\n</div>\n```"
 )
 
@@ -507,11 +507,11 @@ func rewriteUtilityJsxFences(slug, raw string) (string, error) {
 // same exact-anchor pattern as rewriteUtilityJsxFences's Marker+Spinner one.
 
 var (
-	reLeakedFenceOpen = regexp.MustCompile("(?m)^```(tsx|jsx|ts)\\b.*$")
-	reJsxTag          = regexp.MustCompile(`</?([A-Z][A-Za-z0-9]*)\b[^<>]*?(/?)>`)
-	reIconFn          = regexp.MustCompile(`^[A-Z][A-Za-z0-9]*Icon$`)
-	reCamelWord       = regexp.MustCompile(`[A-Z][a-z0-9]*`)
-	reDataSlot        = regexp.MustCompile(`<([a-zA-Z][\w-]*)\b[^>]*\bdata-slot="([^"]+)"`)
+	reLeakedFenceOpen  = regexp.MustCompile("(?m)^```(tsx|jsx|ts)\\b.*$")
+	reJsxTag           = regexp.MustCompile(`</?([A-Z][A-Za-z0-9]*)\b[^<>]*?(/?)>`)
+	reIconFn           = regexp.MustCompile(`^[A-Z][A-Za-z0-9]*Icon$`)
+	reCamelWord        = regexp.MustCompile(`[A-Z][a-z0-9]*`)
+	reDataSlot         = regexp.MustCompile(`<([a-zA-Z][\w-]*)\b[^>]*\bdata-slot="([^"]+)"`)
 	reInlineJsxMention = regexp.MustCompile("`</?([A-Z][A-Za-z0-9]*)[^`]*`")
 )
 

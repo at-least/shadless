@@ -9,7 +9,6 @@ package main
 //   --all: every built page — render, no raw mdx leak, 0 errors
 
 import (
-	"encoding/json"
 	"fmt"
 	"net"
 	"net/http"
@@ -296,5 +295,3 @@ func runDocsSmoke(all bool) int {
 func page2box(p *bpage, frame string) (*bbox, error) {
 	return p.locBox(frame, `[data-slot="avatar"]`, 0)
 }
-
-var _ = json.Marshal

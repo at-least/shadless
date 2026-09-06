@@ -79,27 +79,6 @@ func fmString(fm frontmatter, key string) string {
 	return ""
 }
 
-// fmLinksOrdered reads frontmatter.links sub-keys from the RAW source in
-// textual order — the page-links <p> emits them in that order and a Go map
-// would lose it.
-var reLinksBlock = regexp.MustCompile(`(?m)^links:\s*$((?:\n\s+[A-Za-z][\w-]*: .*)*)`)
-
-func fmLinksOrdered(raw string) []attrPair {
-	m := reLinksBlock.FindStringSubmatch(raw)
-	if m == nil {
-		return nil
-	}
-	var out []attrPair
-	for _, line := range strings.Split(strings.TrimPrefix(m[1], "\n"), "\n") {
-		if sub := reSubKey.FindStringSubmatch(line); sub != nil {
-			if s, ok := coerceScalar(sub[2]).(string); ok {
-				out = append(out, attrPair{sub[1], s})
-			}
-		}
-	}
-	return out
-}
-
 // stripImports removes ESM import statements outside fences is NOT this
 // function's job (see stripImportsOutsideFences in docs-build): this is the
 // fence-agnostic line-anchored strip.

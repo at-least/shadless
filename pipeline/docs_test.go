@@ -425,3 +425,202 @@ func TestUnitHeadingFacts(t *testing.T) {
 		t.Errorf("inline code stripped away the heading text: %q", a[0].text)
 	}
 }
+
+// resolveImport mirrors the JS gate's package.json exports resolution:
+// bare "shadless"/"shadless/" -> exports['.'], an exact subkey, an
+// object-form export needing import/default, and a "./*" wildcard fallback.
+func TestUnitResolveImport(t *testing.T) {
+	exports := map[string]any{
+		".":                  "./dist/shadless-core.css",
+		"./accordion.css":    "./dist/css/accordion.css",
+		"./js":               map[string]any{"import": "./dist/esm/shadless.mjs", "default": "./dist/shadless.js"},
+		"./only-default.css": map[string]any{"default": "./dist/css/only-default.css"},
+		"./*":                "./dist/css/*",
+	}
+	cases := []struct{ spec, want string }{
+		{"shadless", "dist/shadless-core.css"},
+		{"shadless/", "dist/shadless-core.css"},
+		{"shadless/accordion.css", "dist/css/accordion.css"},
+		{"shadless/js", "dist/esm/shadless.mjs"},
+		{"shadless/only-default.css", "dist/css/only-default.css"},
+		{"shadless/whatever.css", "dist/css/whatever.css"}, // wildcard fallback
+	}
+	for _, c := range cases {
+		if got := resolveImport(exports, c.spec); got != c.want {
+			t.Errorf("resolveImport(%q) = %q, want %q", c.spec, got, c.want)
+		}
+	}
+	// no exact key and no wildcard at all: resolves to nothing
+	if got := resolveImport(map[string]any{".": "./dist/shadless-core.css"}, "shadless/nope.css"); got != "" {
+		t.Errorf("no rule resolves it: got %q, want \"\"", got)
+	}
+}
+
+// dedupePreviews/dedupeSources merge by name, first-seen metadata wins,
+// hostPages accumulate in first-seen order with no duplicates.
+func TestUnitDedupePreviews(t *testing.T) {
+	in := []previewRec{
+		{Name: "accordion-demo", Component: "accordion",
+			StyleName: optStr{Present: true, Val: "radix-nova"}, Description: optStr{Present: true, Val: "first"}},
+		{Name: "card-rtl", Component: "card"},
+		{Name: "accordion-demo", Component: "rtl", Description: optStr{Present: true, Val: "second (must not win)"}},
+		{Name: "accordion-demo", Component: "accordion"}, // repeat host page: must not duplicate
+	}
+	out := dedupePreviews(in)
+	if len(out) != 2 {
+		t.Fatalf("2 unique names, got %d: %+v", len(out), out)
+	}
+	if out[0].Name != "accordion-demo" || out[1].Name != "card-rtl" {
+		t.Fatalf("first-seen name order: %+v", out)
+	}
+	a := out[0]
+	if a.StyleName.Val != "radix-nova" {
+		t.Errorf("first entry's StyleName wins: %+v", a.StyleName)
+	}
+	if a.Description.Val != "first" {
+		t.Errorf("first entry's Description wins: %+v", a.Description)
+	}
+	if got := strings.Join(a.HostPages, ","); got != "accordion,rtl" {
+		t.Errorf("hostPages accumulate in first-seen order, no dup: %q", got)
+	}
+}
+
+func TestUnitDedupeSources(t *testing.T) {
+	in := []sourceRec{
+		{Name: "button", Component: "button"},
+		{Name: "select", Component: "select"},
+		{Name: "button", Component: "button-group"},
+		{Name: "button", Component: "button"}, // repeat: must not duplicate
+	}
+	out := dedupeSources(in)
+	if len(out) != 2 {
+		t.Fatalf("2 unique names, got %d: %+v", len(out), out)
+	}
+	if out[0].Name != "button" || out[1].Name != "select" {
+		t.Fatalf("first-seen name order: %+v", out)
+	}
+	if got := strings.Join(out[0].HostPages, ","); got != "button,button-group" {
+		t.Errorf("hostPages accumulate in first-seen order, no dup: %q", got)
+	}
+}
+
+// isTombstoneName pins the exact-vs-prefix boundary the comment above
+// tombstonePrefixList documents a real historical bug in: menubar and
+// navigation-menu were once wrongly matched by prefix drift and must not be
+// again now that they are contract-tested glue, not grey.
+func TestUnitIsTombstoneName(t *testing.T) {
+	cases := []struct {
+		name string
+		want bool
+	}{
+		{"calendar", true},         // exact member of greyComponents
+		{"date-picker-demo", true}, // genuine prefix match: "date-picker-"
+		{"menubar", false},         // historical bug: no longer grey, must not prefix-match
+		{"navigation-menu", false}, // historical bug: no longer grey, must not prefix-match
+		{"date", false},            // shares letters with "date-picker" but no "-" boundary
+		{"forms", false},           // shares letters with "form" but no "-" boundary
+	}
+	for _, c := range cases {
+		if got := isTombstoneName(c.name); got != c.want {
+			t.Errorf("isTombstoneName(%q) = %v, want %v", c.name, got, c.want)
+		}
+	}
+}
+
+// kebabIconName matches lucide's own kebab-case icon ids.
+func TestUnitKebabIconName(t *testing.T) {
+	cases := map[string]string{
+		"ChevronLeftIcon": "chevron-left",
+		"XIcon":           "x",
+	}
+	for in, want := range cases {
+		if got := kebabIconName(in); got != want {
+			t.Errorf("kebabIconName(%q) = %q, want %q", in, got, want)
+		}
+	}
+}
+
+// rewriteJsxAttrs: aria-*/data-* and plain HTML attrs pass through, a
+// declared cva axis becomes its data attribute, an undeclared axis value
+// and an unrelated prop both fail loud (the cue for a docs_overrides.go
+// entry) rather than shipping markup no stylesheet selects.
+func TestUnitRewriteJsxAttrs(t *testing.T) {
+	info := jsxTagInfo{tag: "button", slot: "button", axes: map[string][]string{"variant": {"default", "ghost"}}}
+
+	if got, err := rewriteJsxAttrs("Button", `aria-label="Close" data-foo="bar"`, info); err != nil || got != ` aria-label="Close" data-foo="bar"` {
+		t.Errorf("aria-/data- passthrough: got %q err %v", got, err)
+	}
+	if got, err := rewriteJsxAttrs("Button", `id="x"`, info); err != nil || got != ` id="x"` {
+		t.Errorf("plain html attr passthrough: got %q err %v", got, err)
+	}
+	if got, err := rewriteJsxAttrs("Button", `variant="ghost"`, info); err != nil || got != ` data-variant="ghost"` {
+		t.Errorf("declared axis value rewritten: got %q err %v", got, err)
+	}
+	if _, err := rewriteJsxAttrs("Button", `variant="fancy"`, info); err == nil || !strings.Contains(err.Error(), "not a declared value") {
+		t.Errorf("undeclared axis value must fail loud: %v", err)
+	}
+	if _, err := rewriteJsxAttrs("Button", `asChild`, info); err == nil || !strings.Contains(err.Error(), "has no markup form") {
+		t.Errorf("unrelated prop must fail loud: %v", err)
+	}
+}
+
+// shiftHighlightRefs/atoiSafe: TestUnitStripImportsFromMixedFences's existing
+// cases all use a single-line import, whose greedy inner loop (documented at
+// docs_transforms.go:338) swallows the whole fence body before EOF, so
+// removed always equals len(lines) and shiftHighlightRefs is never called. A
+// multi-line import whose closing line matches reImportFrom before EOF stops
+// early instead, leaving real code behind to renumber.
+func TestUnitStripImportsFromMixedFencesRenumber(t *testing.T) {
+	// 3 lines removed (the multi-line import), 2 lines of real code survive.
+	// Highlight refs: "1" is inside the removed range (dropped), "4-" has a
+	// blank endpoint (kept verbatim, whatever it referred to), "5-6" is past
+	// the removed range (shifted by -3 to "2-3").
+	in := "```tsx {1,4-,5-6}\nimport {\n  A,\n} from \"@/a\"\nconst x = 1\nconst y = 2\n```"
+	want := "```tsx {4-,2-3}\nconst x = 1\nconst y = 2\n```"
+	if got := stripImportsFromMixedFences(in); got != want {
+		t.Errorf("multi-line import renumber:\n got %q\nwant %q", got, want)
+	}
+}
+
+// normalizeBlankLines: collapse repeated blank lines outside fences, leave
+// fence content (blank lines and "#"-looking lines alike) untouched, and
+// insert a blank line above a heading that does not already have one.
+func TestUnitNormalizeBlankLines(t *testing.T) {
+	in := strings.Join([]string{
+		"prose line",
+		"## Heading After Prose", // no blank above -> one inserted
+		"text",
+		"",
+		"## Heading Already Spaced", // already preceded by blank -> unchanged
+		"para",
+		"",
+		"", // double blank OUTSIDE a fence -> collapses to one
+		"after double blank",
+		"```text",
+		"",
+		"",                                // double blank INSIDE a fence -> survives untouched
+		"## not a heading, fence content", // "#" line inside a fence -> left alone
+		"```",
+		"closing prose",
+	}, "\n")
+	want := strings.Join([]string{
+		"prose line",
+		"",
+		"## Heading After Prose",
+		"text",
+		"",
+		"## Heading Already Spaced",
+		"para",
+		"",
+		"after double blank",
+		"```text",
+		"",
+		"",
+		"## not a heading, fence content",
+		"```",
+		"closing prose",
+	}, "\n")
+	if got := normalizeBlankLines(in); got != want {
+		t.Errorf("normalizeBlankLines:\n got %q\nwant %q", got, want)
+	}
+}

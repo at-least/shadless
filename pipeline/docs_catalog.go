@@ -57,10 +57,29 @@ func stripFences(text string) string {
 	})
 }
 
+// attrRe caches one compiled regex per attribute name so a per-attribute hot
+// loop (scanSet: 1-3 attrOf calls per preview/source tag across every
+// upstream mdx file; mdxPageFacts: 3 attrOf calls per preview + 2 per source
+// for every built page, every docs-fidelity run) does not recompile the same
+// pattern on every call. Pre-seeded with the handful of names actually
+// queried anywhere in this package (name/styleName/description/direction/
+// src); an unlisted name still works, compiled on first use.
+var attrRe = map[string]*regexp.Regexp{
+	"name":        regexp.MustCompile(`(?:^|\s)name="([^"]*)"`),
+	"styleName":   regexp.MustCompile(`(?:^|\s)styleName="([^"]*)"`),
+	"description": regexp.MustCompile(`(?:^|\s)description="([^"]*)"`),
+	"direction":   regexp.MustCompile(`(?:^|\s)direction="([^"]*)"`),
+	"src":         regexp.MustCompile(`(?:^|\s)src="([^"]*)"`),
+}
+
 // attrOf reads one attribute out of a tag's attribute text. The (^|\s) anchor
 // is deliberate: a bare \b would let data-name= match name=.
 func attrOf(attrs, name string) (string, bool) {
-	re := regexp.MustCompile(`(?:^|\s)` + regexp.QuoteMeta(name) + `="([^"]*)"`)
+	re, ok := attrRe[name]
+	if !ok {
+		re = regexp.MustCompile(`(?:^|\s)` + regexp.QuoteMeta(name) + `="([^"]*)"`)
+		attrRe[name] = re
+	}
 	if m := re.FindStringSubmatch(attrs); m != nil {
 		return m[1], true
 	}
@@ -219,63 +238,59 @@ func scanGuides(root string) (scanResult, error) {
 	return r, nil
 }
 
-// dedupePreviews merges by name: a name may be referenced from several pages,
-// FT7 authors it once. hostPages keeps every referencing page; the defining
-// page's metadata wins.
-func dedupePreviews(records []previewRec) []previewRec {
+// dedupeByName merges records by name: a name may be referenced from several
+// pages, FT7 authors it once. hostPages keeps every referencing page (in
+// first-seen order, no duplicates); the defining record's own metadata wins.
+// dedupePreviews and dedupeSources used to be ~20-line copy-paste twins of
+// this, differing only in which record type they merged.
+func dedupeByName[T any](records []T, name, component func(T) string, hostPages func(*T) *[]string) []T {
 	var order []string
-	byName := map[string]*previewRec{}
+	byName := map[string]*T{}
 	for _, r := range records {
-		e, ok := byName[r.Name]
+		key := name(r)
+		e, ok := byName[key]
 		if !ok {
 			cp := r
-			cp.HostPages = nil
-			byName[r.Name] = &cp
-			order = append(order, r.Name)
+			*hostPages(&cp) = nil
+			byName[key] = &cp
+			order = append(order, key)
 			e = &cp
 		}
-		if !contains(e.HostPages, r.Component) {
-			e.HostPages = append(e.HostPages, r.Component)
+		hp := hostPages(e)
+		if !contains(*hp, component(r)) {
+			*hp = append(*hp, component(r))
 		}
 	}
-	out := make([]previewRec, len(order))
+	out := make([]T, len(order))
 	for i, n := range order {
 		out[i] = *byName[n]
 	}
 	return out
+}
+
+func dedupePreviews(records []previewRec) []previewRec {
+	return dedupeByName(records,
+		func(r previewRec) string { return r.Name },
+		func(r previewRec) string { return r.Component },
+		func(r *previewRec) *[]string { return &r.HostPages },
+	)
 }
 
 func dedupeSources(records []sourceRec) []sourceRec {
-	var order []string
-	byName := map[string]*sourceRec{}
-	for _, r := range records {
-		e, ok := byName[r.Name]
-		if !ok {
-			cp := r
-			cp.HostPages = nil
-			byName[r.Name] = &cp
-			order = append(order, r.Name)
-			e = &cp
-		}
-		if !contains(e.HostPages, r.Component) {
-			e.HostPages = append(e.HostPages, r.Component)
-		}
-	}
-	out := make([]sourceRec, len(order))
-	for i, n := range order {
-		out[i] = *byName[n]
-	}
-	return out
+	return dedupeByName(records,
+		func(r sourceRec) string { return r.Name },
+		func(r sourceRec) string { return r.Component },
+		func(r *sourceRec) *[]string { return &r.HostPages },
+	)
 }
 
-func contains(xs []string, x string) bool {
-	for _, v := range xs {
-		if v == x {
-			return true
-		}
-	}
-	return false
-}
+// contains and containsTok (emitter_css.go) were the same linear scan under
+// two names. Reconciling every call site would touch files outside this
+// cluster (emitter_css.go, demo.go, demo_smoke.go, path_parity.go, or —
+// going the other direction — meta.go, tw_test.go, verify_test.go), so this
+// keeps both names but collapses them to one implementation: a fix to the
+// scan itself can no longer drift between them.
+func contains(xs []string, x string) bool { return containsTok(xs, x) }
 
 // Preview names with these component prefixes cannot be authored (no shadless
 // implementation exists). Matched by exact name or "<prefix>-" so 'data-table'

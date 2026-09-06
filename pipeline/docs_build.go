@@ -10,7 +10,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -300,6 +299,31 @@ type docsBuildCtx struct {
 	markup    map[string]string // demo file → prettier-formatted markup
 	sections  map[string][]string
 	realSlots map[string]bool // lazily built by shippedSlots()
+	irCache   map[string]*cssIrComponent
+}
+
+// componentIR reads+parses generated/ir/<name>.json once per name — memoized
+// the way shippedSlots() memoizes ctx.realSlots — instead of each of
+// compositionTransform/apiReferenceTransform independently os.ReadFile +
+// json.Unmarshal'ing the same small file for the same page. nil (on a
+// missing file or a parse error) is a valid cached result: both callers
+// already treat "no IR" as "skip this bit of content".
+func (ctx *docsBuildCtx) componentIR(name string) *cssIrComponent {
+	if ir, ok := ctx.irCache[name]; ok {
+		return ir
+	}
+	if ctx.irCache == nil {
+		ctx.irCache = map[string]*cssIrComponent{}
+	}
+	var ir *cssIrComponent
+	if irb, err := os.ReadFile(filepath.Join("generated/ir", name+".json")); err == nil {
+		var parsed cssIrComponent
+		if json.Unmarshal(irb, &parsed) == nil {
+			ir = &parsed
+		}
+	}
+	ctx.irCache[name] = ir
+	return ir
 }
 
 var reDataSlotAttr = regexp.MustCompile(`data-slot="([a-z0-9-]+)"`)
@@ -459,15 +483,12 @@ func (ctx *docsBuildCtx) compositionTransform(name, raw string, seen *[]string) 
 	mapped := ""
 	if tree != "" {
 		nameToSlot := map[string]string{}
-		if irb, err := os.ReadFile(filepath.Join("generated/ir", name+".json")); err == nil {
-			var ir cssIrComponent
-			if json.Unmarshal(irb, &ir) == nil {
-				for _, c := range ir.Components {
-					for _, e := range c.Elements {
-						if e.Slot != "" {
-							nameToSlot[c.Fn] = e.Slot
-							break
-						}
+		if ir := ctx.componentIR(name); ir != nil {
+			for _, c := range ir.Components {
+				for _, e := range c.Elements {
+					if e.Slot != "" {
+						nameToSlot[c.Fn] = e.Slot
+						break
 					}
 				}
 			}
@@ -497,20 +518,17 @@ func (ctx *docsBuildCtx) apiReferenceTransform(name, raw string, seen *[]string)
 	tier := ""
 	slotSeen := map[string]bool{}
 	real := ctx.shippedSlots()
-	if irb, err := os.ReadFile(filepath.Join("generated/ir", name+".json")); err == nil {
-		var ir cssIrComponent
-		if json.Unmarshal(irb, &ir) == nil {
-			for _, c := range ir.Components {
-				for _, e := range c.Elements {
-					if e.Slot != "" && !slotSeen[e.Slot] && real[e.Slot] {
-						slotSeen[e.Slot] = true
-						slots = append(slots, e.Slot)
-					}
+	if ir := ctx.componentIR(name); ir != nil {
+		for _, c := range ir.Components {
+			for _, e := range c.Elements {
+				if e.Slot != "" && !slotSeen[e.Slot] && real[e.Slot] {
+					slotSeen[e.Slot] = true
+					slots = append(slots, e.Slot)
 				}
 			}
-			axes = cvaAxisRows(ir)
-			tier = ir.Tier
 		}
+		axes = cvaAxisRows(*ir)
+		tier = ir.Tier
 	}
 	s := locateApiReferenceSpan(name, fenceShadow(raw))
 	extra := apiReferenceMdx(name, slots, axes, tier, s != nil)
@@ -672,15 +690,11 @@ func (ctx *docsBuildCtx) previewMarkdown(attrs map[string]string, page string) (
 
 func (ctx *docsBuildCtx) demoSource(name, file string) string {
 	path := filepath.Join(docsRoot, "public", "demos", file)
-	raw, err := os.ReadFile(path)
-	if err != nil {
-		return ""
-	}
 	markup, ok := ctx.markup[file]
 	if !ok {
 		return ""
 	}
-	scripts := extractDemoScripts(string(raw))
+	scripts := readDemoScripts(path)
 	var js []string
 	for _, s := range scripts.srcScripts {
 		if s == "shadless.js" {
@@ -922,9 +936,6 @@ func runDocsBuild() int {
 			return 1
 		}
 	}
-	sidebarOrder := mirrorSetCache // meta order restricted to mirror set
-	_ = sidebarOrder
-
 	// .vitepress is NOT wiped: config.mts + theme/ are tracked; only the
 	// generated sidebar.json inside it is rewritten below
 	for _, d := range []string{docsRoot + "/components", docsRoot + "/guides", docsRoot + "/public/demos", docsRoot + "/public/js"} {
@@ -1187,5 +1198,3 @@ func prettierBatch(items []prettierItem) (map[string]string, error) {
 	}
 	return res, nil
 }
-
-var _ = io.Discard

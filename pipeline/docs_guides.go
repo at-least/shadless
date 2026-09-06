@@ -8,11 +8,8 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
-	"path/filepath"
 	"regexp"
-	"sort"
 	"strings"
 )
 
@@ -56,13 +53,13 @@ var guides = []guide{
 }
 
 var prunedGuides = map[string]struct{ Source, Reason string }{
-	"forms":                {guidesUp + "/forms/", "React-only (react-hook-form / tanstack-form / formisch guides); field.mdx links ×4 → greyed spans"},
-	"react":                {guidesUp + "/react/", "React-only component recipes (message-scroller, questionnaire); radix links ×6 → greyed spans"},
-	"registry":             {guidesUp + "/registry/", "shadcn CLI registry system (json schema, MCP, namespaces) — no vanilla equivalent"},
-	"changelog":            {guidesUp + "/changelog/", "shadcn release notes — not shadless content"},
-	"(root)":               {guidesUp + "/(root)/", "shadcn-site root pages (theming, cli, components.json…) — React/CLI specific"},
+	"forms":               {guidesUp + "/forms/", "React-only (react-hook-form / tanstack-form / formisch guides); field.mdx links ×4 → greyed spans"},
+	"react":               {guidesUp + "/react/", "React-only component recipes (message-scroller, questionnaire); radix links ×6 → greyed spans"},
+	"registry":            {guidesUp + "/registry/", "shadcn CLI registry system (json schema, MCP, namespaces) — no vanilla equivalent"},
+	"changelog":           {guidesUp + "/changelog/", "shadcn release notes — not shadless content"},
+	"(root)":              {guidesUp + "/(root)/", "shadcn-site root pages (theming, cli, components.json…) — React/CLI specific"},
 	"helpers":             {guidesUp + "/helpers/", "React helper packages (@shadcn/helpers/ai-sdk, /tanstack-ai) — useChat/JSX end to end, no vanilla port and no shadless artifact to document"},
-	"framework sub-pages":  {guidesUp + "/{installation,dark-mode,rtl}/* (non-index)", "per-React-framework setup guides (next/vite/astro/remix/tanstack/laravel/gatsby…) — installation/dark-mode/rtl index pages kept instead"},
+	"framework sub-pages": {guidesUp + "/{installation,dark-mode,rtl}/* (non-index)", "per-React-framework setup guides (next/vite/astro/remix/tanstack/laravel/gatsby…) — installation/dark-mode/rtl index pages kept instead"},
 }
 
 // routeTarget is resolveDocsRoute's result: routable (file+frag) or grey.
@@ -99,10 +96,7 @@ func resolveDocsRoute(href string, members map[string]bool) *routeTarget {
 
 // scanGuidePreviews enumerates guide ComponentPreview names with the same
 // fence-stripped tag-scoped discipline as the catalog.
-var (
-	reGuidePreviewTag = regexp.MustCompile(`<ComponentPreview\b([^>]*)>`)
-	reGuideFences     = regexp.MustCompile("(?s)```.*?```")
-)
+var reGuidePreviewTag = regexp.MustCompile(`<ComponentPreview\b([^>]*)>`)
 
 func scanGuidePreviews(catalogPreviewStatus map[string]string) (map[string]guidePreviewInfo, []string) {
 	out := map[string]guidePreviewInfo{}
@@ -112,14 +106,7 @@ func scanGuidePreviews(catalogPreviewStatus map[string]string) (map[string]guide
 		if err != nil {
 			continue
 		}
-		text := reGuideFences.ReplaceAllStringFunc(string(b), func(m string) string {
-			return strings.Map(func(r rune) rune {
-				if r == '\n' {
-					return '\n'
-				}
-				return ' '
-			}, m)
-		})
+		text := stripFences(string(b))
 		for _, m := range reGuidePreviewTag.FindAllStringSubmatch(text, -1) {
 			name := attrOfJS(m[1], "name")
 			if name == "" {
@@ -156,13 +143,11 @@ type guidePreviewInfo struct {
 	reason      string
 }
 
-// attrOfJS: (^|\s)name="value" — a bare \b would let data-name= match name=.
+// attrOfJS: attrOf's (string, bool) collapsed to a bare string, for callers
+// that only need the value.
 func attrOfJS(attrs, name string) string {
-	re := regexp.MustCompile(`(?:^|\s)` + regexp.QuoteMeta(name) + `="([^"]*)"`)
-	if m := re.FindStringSubmatch(attrs); m != nil {
-		return m[1]
-	}
-	return ""
+	v, _ := attrOf(attrs, name)
+	return v
 }
 
 // writeContentMap emits docs/content-map.json byte-compatibly with the JS
@@ -269,52 +254,4 @@ func writeContentMap(componentPages []struct{ name, source string }, sections ma
 		return err
 	}
 	return os.WriteFile("docs/content-map.json", []byte(stringifyJSON(root, 0)+"\n"), 0o644)
-}
-
-// runDocsGuides is the CLI entry (the old tools/docs-guides.mjs main).
-func runDocsGuides() int {
-	catalogB, err := os.ReadFile("docs/catalog.json")
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "docs-guides:", err)
-		return 1
-	}
-	var catalog struct {
-		Sources []struct {
-			Name   string `json:"name"`
-			Status string `json:"status"`
-		} `json:"sources"`
-	}
-	if err := json.Unmarshal(catalogB, &catalog); err != nil {
-		fmt.Fprintln(os.Stderr, "docs-guides:", err)
-		return 1
-	}
-	var componentPages []struct{ name, source string }
-	for _, s := range catalog.Sources {
-		if s.Status != "existing-dist" {
-			continue
-		}
-		p := filepath.Join(docsRadixDir, s.Name+".mdx")
-		if _, err := os.Stat(p); err != nil {
-			continue
-		}
-		componentPages = append(componentPages, struct{ name, source string }{s.Name, p})
-	}
-	sort.Slice(componentPages, func(i, j int) bool {
-		return componentPages[i].name < componentPages[j].name
-	})
-	if err := writeContentMap(componentPages, nil); err != nil {
-		fmt.Fprintln(os.Stderr, "docs-guides:", err)
-		return 1
-	}
-	nMirror, nAdapted := 0, 0
-	for _, g := range guides {
-		if g.disposition == "mirror" {
-			nMirror++
-		} else {
-			nAdapted++
-		}
-	}
-	fmt.Printf("guides keep-list: %d kept (%d mirror, %d adapted), %d pruned groups\n",
-		len(guides), nMirror, nAdapted, len(prunedGuides))
-	return 0
 }
