@@ -152,23 +152,12 @@ Displays a list of options for the user to pick from—triggered by a button.
       var content = holder.querySelector("[data-slot=select-content]");
       var viewport = content.querySelector("[data-slot=select-viewport], [data-radix-select-viewport]") || content.children[1];
 
-      function lock(on) {
-        if (on) {
-          document.body.setAttribute("data-scroll-locked", "1");
-          document.body.style.setProperty("pointer-events", "none");
-          content.style.setProperty("pointer-events", "auto");
-        } else {
-          document.body.removeAttribute("data-scroll-locked");
-          document.body.style.removeProperty("pointer-events");
-        }
-      }
-
       var handles = RadixKernel.wireSelect({
         trigger: trigger,
         content: content,
         viewport: viewport,
         valueNode: valueNode,
-        onClosed: function () { lock(false); shadless.h.emit(trigger, "close", "select"); },
+        onClosed: function () { shadless.h.lockBody(false); shadless.h.emit(trigger, "close", "select"); },
       });
 
       // the selected option: its value is `value` / `data-value` / id (the
@@ -201,7 +190,7 @@ Displays a list of options for the user to pick from—triggered by a button.
         // kernel hides all body children incl. the trigger (radix keeps it visible)
         trigger.removeAttribute("aria-hidden");
         trigger.removeAttribute("data-aria-hidden");
-        lock(true);
+        shadless.h.lockBody(true, content);
         shadless.h.emit(trigger, "open", "select");
       }
 
@@ -559,23 +548,12 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
       var content = holder.querySelector("[data-slot=select-content]");
       var viewport = content.querySelector("[data-slot=select-viewport], [data-radix-select-viewport]") || content.children[1];
 
-      function lock(on) {
-        if (on) {
-          document.body.setAttribute("data-scroll-locked", "1");
-          document.body.style.setProperty("pointer-events", "none");
-          content.style.setProperty("pointer-events", "auto");
-        } else {
-          document.body.removeAttribute("data-scroll-locked");
-          document.body.style.removeProperty("pointer-events");
-        }
-      }
-
       var handles = RadixKernel.wireSelect({
         trigger: trigger,
         content: content,
         viewport: viewport,
         valueNode: valueNode,
-        onClosed: function () { lock(false); shadless.h.emit(trigger, "close", "select"); },
+        onClosed: function () { shadless.h.lockBody(false); shadless.h.emit(trigger, "close", "select"); },
       });
 
       // the selected option: its value is `value` / `data-value` / id (the
@@ -608,7 +586,7 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
         // kernel hides all body children incl. the trigger (radix keeps it visible)
         trigger.removeAttribute("aria-hidden");
         trigger.removeAttribute("data-aria-hidden");
-        lock(true);
+        shadless.h.lockBody(true, content);
         shadless.h.emit(trigger, "open", "select");
       }
 
@@ -908,23 +886,12 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
       var content = holder.querySelector("[data-slot=select-content]");
       var viewport = content.querySelector("[data-slot=select-viewport], [data-radix-select-viewport]") || content.children[1];
 
-      function lock(on) {
-        if (on) {
-          document.body.setAttribute("data-scroll-locked", "1");
-          document.body.style.setProperty("pointer-events", "none");
-          content.style.setProperty("pointer-events", "auto");
-        } else {
-          document.body.removeAttribute("data-scroll-locked");
-          document.body.style.removeProperty("pointer-events");
-        }
-      }
-
       var handles = RadixKernel.wireSelect({
         trigger: trigger,
         content: content,
         viewport: viewport,
         valueNode: valueNode,
-        onClosed: function () { lock(false); shadless.h.emit(trigger, "close", "select"); },
+        onClosed: function () { shadless.h.lockBody(false); shadless.h.emit(trigger, "close", "select"); },
       });
 
       // the selected option: its value is `value` / `data-value` / id (the
@@ -957,7 +924,7 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
         // kernel hides all body children incl. the trigger (radix keeps it visible)
         trigger.removeAttribute("aria-hidden");
         trigger.removeAttribute("data-aria-hidden");
-        lock(true);
+        shadless.h.lockBody(true, content);
         shadless.h.emit(trigger, "open", "select");
       }
 
@@ -1557,23 +1524,12 @@ A select with many items that scrolls.
       var content = holder.querySelector("[data-slot=select-content]");
       var viewport = content.querySelector("[data-slot=select-viewport], [data-radix-select-viewport]") || content.children[1];
 
-      function lock(on) {
-        if (on) {
-          document.body.setAttribute("data-scroll-locked", "1");
-          document.body.style.setProperty("pointer-events", "none");
-          content.style.setProperty("pointer-events", "auto");
-        } else {
-          document.body.removeAttribute("data-scroll-locked");
-          document.body.style.removeProperty("pointer-events");
-        }
-      }
-
       var handles = RadixKernel.wireSelect({
         trigger: trigger,
         content: content,
         viewport: viewport,
         valueNode: valueNode,
-        onClosed: function () { lock(false); shadless.h.emit(trigger, "close", "select"); },
+        onClosed: function () { shadless.h.lockBody(false); shadless.h.emit(trigger, "close", "select"); },
       });
 
       // the selected option: its value is `value` / `data-value` / id (the
@@ -1606,7 +1562,7 @@ A select with many items that scrolls.
         // kernel hides all body children incl. the trigger (radix keeps it visible)
         trigger.removeAttribute("aria-hidden");
         trigger.removeAttribute("data-aria-hidden");
-        lock(true);
+        shadless.h.lockBody(true, content);
         shadless.h.emit(trigger, "open", "select");
       }
 
@@ -1715,23 +1671,12 @@ A select with many items that scrolls.
       var content = holder.querySelector("[data-slot=select-content]");
       var viewport = content.querySelector("[data-slot=select-viewport], [data-radix-select-viewport]") || content.children[1];
 
-      function lock(on) {
-        if (on) {
-          document.body.setAttribute("data-scroll-locked", "1");
-          document.body.style.setProperty("pointer-events", "none");
-          content.style.setProperty("pointer-events", "auto");
-        } else {
-          document.body.removeAttribute("data-scroll-locked");
-          document.body.style.removeProperty("pointer-events");
-        }
-      }
-
       var handles = RadixKernel.wireSelect({
         trigger: trigger,
         content: content,
         viewport: viewport,
         valueNode: valueNode,
-        onClosed: function () { lock(false); shadless.h.emit(trigger, "close", "select"); },
+        onClosed: function () { shadless.h.lockBody(false); shadless.h.emit(trigger, "close", "select"); },
       });
 
       // the selected option: its value is `value` / `data-value` / id (the
@@ -1764,7 +1709,7 @@ A select with many items that scrolls.
         // kernel hides all body children incl. the trigger (radix keeps it visible)
         trigger.removeAttribute("aria-hidden");
         trigger.removeAttribute("data-aria-hidden");
-        lock(true);
+        shadless.h.lockBody(true, content);
         shadless.h.emit(trigger, "open", "select");
       }
 
@@ -1991,23 +1936,12 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
       var content = holder.querySelector("[data-slot=select-content]");
       var viewport = content.querySelector("[data-slot=select-viewport], [data-radix-select-viewport]") || content.children[1];
 
-      function lock(on) {
-        if (on) {
-          document.body.setAttribute("data-scroll-locked", "1");
-          document.body.style.setProperty("pointer-events", "none");
-          content.style.setProperty("pointer-events", "auto");
-        } else {
-          document.body.removeAttribute("data-scroll-locked");
-          document.body.style.removeProperty("pointer-events");
-        }
-      }
-
       var handles = RadixKernel.wireSelect({
         trigger: trigger,
         content: content,
         viewport: viewport,
         valueNode: valueNode,
-        onClosed: function () { lock(false); shadless.h.emit(trigger, "close", "select"); },
+        onClosed: function () { shadless.h.lockBody(false); shadless.h.emit(trigger, "close", "select"); },
       });
 
       // the selected option: its value is `value` / `data-value` / id (the
@@ -2040,7 +1974,7 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
         // kernel hides all body children incl. the trigger (radix keeps it visible)
         trigger.removeAttribute("aria-hidden");
         trigger.removeAttribute("data-aria-hidden");
-        lock(true);
+        shadless.h.lockBody(true, content);
         shadless.h.emit(trigger, "open", "select");
       }
 
@@ -2342,23 +2276,12 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       var content = holder.querySelector("[data-slot=select-content]");
       var viewport = content.querySelector("[data-slot=select-viewport], [data-radix-select-viewport]") || content.children[1];
 
-      function lock(on) {
-        if (on) {
-          document.body.setAttribute("data-scroll-locked", "1");
-          document.body.style.setProperty("pointer-events", "none");
-          content.style.setProperty("pointer-events", "auto");
-        } else {
-          document.body.removeAttribute("data-scroll-locked");
-          document.body.style.removeProperty("pointer-events");
-        }
-      }
-
       var handles = RadixKernel.wireSelect({
         trigger: trigger,
         content: content,
         viewport: viewport,
         valueNode: valueNode,
-        onClosed: function () { lock(false); shadless.h.emit(trigger, "close", "select"); },
+        onClosed: function () { shadless.h.lockBody(false); shadless.h.emit(trigger, "close", "select"); },
       });
 
       // the selected option: its value is `value` / `data-value` / id (the
@@ -2391,7 +2314,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
         // kernel hides all body children incl. the trigger (radix keeps it visible)
         trigger.removeAttribute("aria-hidden");
         trigger.removeAttribute("data-aria-hidden");
-        lock(true);
+        shadless.h.lockBody(true, content);
         shadless.h.emit(trigger, "open", "select");
       }
 

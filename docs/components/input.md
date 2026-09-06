@@ -946,23 +946,12 @@ A full form example with multiple inputs, a select, and a button.
       var content = holder.querySelector("[data-slot=select-content]");
       var viewport = content.querySelector("[data-slot=select-viewport], [data-radix-select-viewport]") || content.children[1];
 
-      function lock(on) {
-        if (on) {
-          document.body.setAttribute("data-scroll-locked", "1");
-          document.body.style.setProperty("pointer-events", "none");
-          content.style.setProperty("pointer-events", "auto");
-        } else {
-          document.body.removeAttribute("data-scroll-locked");
-          document.body.style.removeProperty("pointer-events");
-        }
-      }
-
       var handles = RadixKernel.wireSelect({
         trigger: trigger,
         content: content,
         viewport: viewport,
         valueNode: valueNode,
-        onClosed: function () { lock(false); shadless.h.emit(trigger, "close", "select"); },
+        onClosed: function () { shadless.h.lockBody(false); shadless.h.emit(trigger, "close", "select"); },
       });
 
       // the selected option: its value is `value` / `data-value` / id (the
@@ -995,7 +984,7 @@ A full form example with multiple inputs, a select, and a button.
         // kernel hides all body children incl. the trigger (radix keeps it visible)
         trigger.removeAttribute("aria-hidden");
         trigger.removeAttribute("data-aria-hidden");
-        lock(true);
+        shadless.h.lockBody(true, content);
         shadless.h.emit(trigger, "open", "select");
       }
 

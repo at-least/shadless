@@ -459,120 +459,12 @@ A container that groups related buttons together with consistent styling.
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/dropdown-menu.js
-// generated: shadless menu behavior (wireMenu) — dropdown-menu & context-menu
-// Document-level: wireMenu owns every trigger on the page through its
-// data-radixuigo-* protocol, so the behavior installs ONCE per page and
-// ignores the root it is initialised with (a later shadless.init(subtree)
-// finds the listeners already there). dropdown-menu.js and context-menu.js
-// share that single installation (shadless.__menuWired.installed_menu) —
-// whichever file's init runs first does the real RadixKernel.wireMenu()
-// setup, the other reuses it via shadless.__menuWired.fileTriggers. Each
-// file still registers its OWN component name unconditionally, and
-// fileTriggers labels every element by its actual
-// data-radixuigo-{menu,context}-trigger attribute rather than by which file
-// happened to install — otherwise, on a page carrying both component types,
-// whichever file loaded second would never call shadless.register at all
-// (its component type invisible to the engine) and every trigger, of both
-// kinds, would be mislabelled with the first file's component name.
+// shadless dropdown-menu behavior — registers with shadless.h.installMenuFamily,
+// the shared wireMenu glue also used by context-menu.js (core.js has the full
+// story: the two files' bodies were byte-identical but for this line, so the
+// body now lives once and both files just point at it).
 (function () {
-  shadless.register("dropdown-menu", { init: function (root) {
-    shadless.__menuWired = shadless.__menuWired || {}
-    if (shadless.__menuWired.installed_menu) { if (shadless.__menuWired.fileTriggers) shadless.__menuWired.fileTriggers(root); return }
-    shadless.__menuWired.installed_menu = true
-    // shadless:open / shadless:close: the kernel has no open hook, so every
-    // path into it is followed by sync(), which diffs the ROOT layer's
-    // trigger (sub menus do not emit) and dispatches the edges
-    var openTrigger = null;
-    var sync = function () {
-      var l = handles.rootLayer();
-      var t = l ? l.trigger : null;
-      if (t === openTrigger) return;
-      var prev = openTrigger;
-      openTrigger = t;
-      if (prev) shadless.h.emit(prev, "close", prev.hasAttribute("data-radixuigo-context-trigger") ? "context-menu" : "dropdown-menu");
-      if (t) shadless.h.emit(t, "open", t.hasAttribute("data-radixuigo-context-trigger") ? "context-menu" : "dropdown-menu");
-    };
-    var handles = RadixKernel.wireMenu({
-      // radix keeps the trigger out of the background aria-hidden set and locks
-      // scroll while a root menu is open — kernel wireMenu does neither
-      isPortalMarker: function (el) {
-        return el.hasAttribute("data-radixuigo-menu-trigger")
-          || el.hasAttribute("data-radixuigo-context-trigger");
-      },
-      onAllClosed: function () {
-        document.body.removeAttribute("data-scroll-locked");
-        document.body.style.removeProperty("pointer-events");
-        sync();
-      },
-      mountLayer: function (id) {
-        var tpl = document.getElementById(id + "-tpl");
-        if (!tpl) return null;
-        var content = tpl.content.firstElementChild.cloneNode(true);
-        var wrapper = document.createElement("div");
-        wrapper.setAttribute("data-radix-popper-content-wrapper", "");
-        wrapper.appendChild(content);
-        document.body.appendChild(wrapper);
-        document.body.setAttribute("data-scroll-locked", "1");
-        document.body.style.setProperty("pointer-events", "none");
-        // modal body lock inherits down — re-enable hit-testing in the layer
-        // (radix sets pointer-events:auto on content while open)
-        content.style.setProperty("pointer-events", "auto");
-        return {
-          id: id,
-          wrapper: wrapper,
-          content: content,
-          trigger: document.getElementById(id + "-trigger"),
-        };
-      },
-    });
-    document.addEventListener("click", function (e) {
-      handles.onDocumentClick(e.target, function () { e.preventDefault(); });
-      sync();
-    });
-    // programmatic handles, one per trigger (found by the kernel's protocol
-    // attributes; a later shadless.init(root) files any new ones)
-    var noop = function () {}
-    var fileTriggers = function (root) {
-      Array.prototype.forEach.call((root || document).querySelectorAll("[data-radixuigo-menu-trigger], [data-radixuigo-context-trigger]"), function (t) {
-        if (shadless.instances.has(t)) return
-        var isContext = t.hasAttribute("data-radixuigo-context-trigger")
-        var isOpen = function () { var l = handles.rootLayer(); return !!l && l.trigger === t }
-        var openIt = function () {
-          if (isOpen()) return
-          if (isContext) {
-            var r = t.getBoundingClientRect()
-            handles.onContextmenu(t, r.left + r.width / 2, r.top + r.height / 2, noop)
-          } else handles.onDocumentClick(t, noop)
-          sync()
-        }
-        shadless.instances.set(t, { component: isContext ? "context-menu" : "dropdown-menu",
-          open: openIt,
-          close: function () { if (isOpen()) { handles.closeAll(); sync() } },
-          toggle: function () { if (isOpen()) { handles.closeAll(); sync() } else openIt() },
-          isOpen: isOpen,
-        })
-      })
-    }
-    fileTriggers(document)
-    shadless.__menuWired.fileTriggers = fileTriggers
-    // radix opens a sub menu when the pointer moves onto its trigger; the
-    // kernel only opens it on click / ArrowRight (onDocumentClick has the sub
-    // path) — route pointer entry through the same path. openMenuLayer is
-    // idempotent for an already-open layer.
-    document.addEventListener("pointerover", function (e) {
-      if (e.pointerType && e.pointerType !== "mouse") return;
-      var sub = e.target.closest && e.target.closest("[data-radixuigo-menu-subtrigger]");
-      if (sub && sub.getAttribute("data-state") !== "open") handles.onDocumentClick(sub, function () {});
-    });
-    document.addEventListener("contextmenu", function (e) {
-      handles.onContextmenu(e.target, e.clientX, e.clientY, function () { e.preventDefault(); });
-      sync();
-    });
-    document.addEventListener("keydown", function (e) {
-      handles.onKeydown(e.target, e.key, function () { e.preventDefault(); });
-      sync();
-    });
-  } })
+  shadless.register("dropdown-menu", { init: shadless.h.installMenuFamily })
 })()
 ```
 :::
@@ -1045,17 +937,13 @@ Nest `data-slot="button-group"` components to create button groups with spacing.
           shadless.h.emit(trigger, isOpen ? "open" : "close", "tooltip");
         },
         buildContent: function (state) {
-          var frag = tpl.content.cloneNode(true);
-          var host = document.createElement("div");
-          host.appendChild(frag);
-          var content = host.querySelector("[data-slot=tooltip-content]");
+          var content = shadless.h.mountFromTemplate(tpl, "[data-slot=tooltip-content]");
           content.setAttribute("data-state", state);
           var arrow = content.querySelector("svg");
           return arrow ? { content: content, arrow: arrow } : { content: content };
         },
       });
-      for (var ev in wired.handlers)
-        trigger.addEventListener(ev.slice(2), wired.handlers[ev], { signal: w.signal });
+      shadless.h.bindHandlers(trigger, wired.handlers, w.signal);
       shadless.instances.set(trigger, { component: "tooltip",
         open: function () { if (wired.state() === "closed") trigger.dispatchEvent(new FocusEvent("focus")) },
         close: function () { wired.close() },
@@ -1418,17 +1306,13 @@ Wrap an `InputGroup` component to create complex input layouts.
           shadless.h.emit(trigger, isOpen ? "open" : "close", "tooltip");
         },
         buildContent: function (state) {
-          var frag = tpl.content.cloneNode(true);
-          var host = document.createElement("div");
-          host.appendChild(frag);
-          var content = host.querySelector("[data-slot=tooltip-content]");
+          var content = shadless.h.mountFromTemplate(tpl, "[data-slot=tooltip-content]");
           content.setAttribute("data-state", state);
           var arrow = content.querySelector("svg");
           return arrow ? { content: content, arrow: arrow } : { content: content };
         },
       });
-      for (var ev in wired.handlers)
-        trigger.addEventListener(ev.slice(2), wired.handlers[ev], { signal: w.signal });
+      shadless.h.bindHandlers(trigger, wired.handlers, w.signal);
       shadless.instances.set(trigger, { component: "tooltip",
         open: function () { if (wired.state() === "closed") trigger.dispatchEvent(new FocusEvent("focus")) },
         close: function () { wired.close() },
@@ -1721,120 +1605,12 @@ Create a split button group with a `DropdownMenu` component.
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/dropdown-menu.js
-// generated: shadless menu behavior (wireMenu) — dropdown-menu & context-menu
-// Document-level: wireMenu owns every trigger on the page through its
-// data-radixuigo-* protocol, so the behavior installs ONCE per page and
-// ignores the root it is initialised with (a later shadless.init(subtree)
-// finds the listeners already there). dropdown-menu.js and context-menu.js
-// share that single installation (shadless.__menuWired.installed_menu) —
-// whichever file's init runs first does the real RadixKernel.wireMenu()
-// setup, the other reuses it via shadless.__menuWired.fileTriggers. Each
-// file still registers its OWN component name unconditionally, and
-// fileTriggers labels every element by its actual
-// data-radixuigo-{menu,context}-trigger attribute rather than by which file
-// happened to install — otherwise, on a page carrying both component types,
-// whichever file loaded second would never call shadless.register at all
-// (its component type invisible to the engine) and every trigger, of both
-// kinds, would be mislabelled with the first file's component name.
+// shadless dropdown-menu behavior — registers with shadless.h.installMenuFamily,
+// the shared wireMenu glue also used by context-menu.js (core.js has the full
+// story: the two files' bodies were byte-identical but for this line, so the
+// body now lives once and both files just point at it).
 (function () {
-  shadless.register("dropdown-menu", { init: function (root) {
-    shadless.__menuWired = shadless.__menuWired || {}
-    if (shadless.__menuWired.installed_menu) { if (shadless.__menuWired.fileTriggers) shadless.__menuWired.fileTriggers(root); return }
-    shadless.__menuWired.installed_menu = true
-    // shadless:open / shadless:close: the kernel has no open hook, so every
-    // path into it is followed by sync(), which diffs the ROOT layer's
-    // trigger (sub menus do not emit) and dispatches the edges
-    var openTrigger = null;
-    var sync = function () {
-      var l = handles.rootLayer();
-      var t = l ? l.trigger : null;
-      if (t === openTrigger) return;
-      var prev = openTrigger;
-      openTrigger = t;
-      if (prev) shadless.h.emit(prev, "close", prev.hasAttribute("data-radixuigo-context-trigger") ? "context-menu" : "dropdown-menu");
-      if (t) shadless.h.emit(t, "open", t.hasAttribute("data-radixuigo-context-trigger") ? "context-menu" : "dropdown-menu");
-    };
-    var handles = RadixKernel.wireMenu({
-      // radix keeps the trigger out of the background aria-hidden set and locks
-      // scroll while a root menu is open — kernel wireMenu does neither
-      isPortalMarker: function (el) {
-        return el.hasAttribute("data-radixuigo-menu-trigger")
-          || el.hasAttribute("data-radixuigo-context-trigger");
-      },
-      onAllClosed: function () {
-        document.body.removeAttribute("data-scroll-locked");
-        document.body.style.removeProperty("pointer-events");
-        sync();
-      },
-      mountLayer: function (id) {
-        var tpl = document.getElementById(id + "-tpl");
-        if (!tpl) return null;
-        var content = tpl.content.firstElementChild.cloneNode(true);
-        var wrapper = document.createElement("div");
-        wrapper.setAttribute("data-radix-popper-content-wrapper", "");
-        wrapper.appendChild(content);
-        document.body.appendChild(wrapper);
-        document.body.setAttribute("data-scroll-locked", "1");
-        document.body.style.setProperty("pointer-events", "none");
-        // modal body lock inherits down — re-enable hit-testing in the layer
-        // (radix sets pointer-events:auto on content while open)
-        content.style.setProperty("pointer-events", "auto");
-        return {
-          id: id,
-          wrapper: wrapper,
-          content: content,
-          trigger: document.getElementById(id + "-trigger"),
-        };
-      },
-    });
-    document.addEventListener("click", function (e) {
-      handles.onDocumentClick(e.target, function () { e.preventDefault(); });
-      sync();
-    });
-    // programmatic handles, one per trigger (found by the kernel's protocol
-    // attributes; a later shadless.init(root) files any new ones)
-    var noop = function () {}
-    var fileTriggers = function (root) {
-      Array.prototype.forEach.call((root || document).querySelectorAll("[data-radixuigo-menu-trigger], [data-radixuigo-context-trigger]"), function (t) {
-        if (shadless.instances.has(t)) return
-        var isContext = t.hasAttribute("data-radixuigo-context-trigger")
-        var isOpen = function () { var l = handles.rootLayer(); return !!l && l.trigger === t }
-        var openIt = function () {
-          if (isOpen()) return
-          if (isContext) {
-            var r = t.getBoundingClientRect()
-            handles.onContextmenu(t, r.left + r.width / 2, r.top + r.height / 2, noop)
-          } else handles.onDocumentClick(t, noop)
-          sync()
-        }
-        shadless.instances.set(t, { component: isContext ? "context-menu" : "dropdown-menu",
-          open: openIt,
-          close: function () { if (isOpen()) { handles.closeAll(); sync() } },
-          toggle: function () { if (isOpen()) { handles.closeAll(); sync() } else openIt() },
-          isOpen: isOpen,
-        })
-      })
-    }
-    fileTriggers(document)
-    shadless.__menuWired.fileTriggers = fileTriggers
-    // radix opens a sub menu when the pointer moves onto its trigger; the
-    // kernel only opens it on click / ArrowRight (onDocumentClick has the sub
-    // path) — route pointer entry through the same path. openMenuLayer is
-    // idempotent for an already-open layer.
-    document.addEventListener("pointerover", function (e) {
-      if (e.pointerType && e.pointerType !== "mouse") return;
-      var sub = e.target.closest && e.target.closest("[data-radixuigo-menu-subtrigger]");
-      if (sub && sub.getAttribute("data-state") !== "open") handles.onDocumentClick(sub, function () {});
-    });
-    document.addEventListener("contextmenu", function (e) {
-      handles.onContextmenu(e.target, e.clientX, e.clientY, function () { e.preventDefault(); });
-      sync();
-    });
-    document.addEventListener("keydown", function (e) {
-      handles.onKeydown(e.target, e.key, function () { e.preventDefault(); });
-      sync();
-    });
-  } })
+  shadless.register("dropdown-menu", { init: shadless.h.installMenuFamily })
 })()
 ```
 :::
@@ -2054,23 +1830,12 @@ Pair with a `Select` component.
       var content = holder.querySelector("[data-slot=select-content]");
       var viewport = content.querySelector("[data-slot=select-viewport], [data-radix-select-viewport]") || content.children[1];
 
-      function lock(on) {
-        if (on) {
-          document.body.setAttribute("data-scroll-locked", "1");
-          document.body.style.setProperty("pointer-events", "none");
-          content.style.setProperty("pointer-events", "auto");
-        } else {
-          document.body.removeAttribute("data-scroll-locked");
-          document.body.style.removeProperty("pointer-events");
-        }
-      }
-
       var handles = RadixKernel.wireSelect({
         trigger: trigger,
         content: content,
         viewport: viewport,
         valueNode: valueNode,
-        onClosed: function () { lock(false); shadless.h.emit(trigger, "close", "select"); },
+        onClosed: function () { shadless.h.lockBody(false); shadless.h.emit(trigger, "close", "select"); },
       });
 
       // the selected option: its value is `value` / `data-value` / id (the
@@ -2103,7 +1868,7 @@ Pair with a `Select` component.
         // kernel hides all body children incl. the trigger (radix keeps it visible)
         trigger.removeAttribute("aria-hidden");
         trigger.removeAttribute("data-aria-hidden");
-        lock(true);
+        shadless.h.lockBody(true, content);
         shadless.h.emit(trigger, "open", "select");
       }
 
@@ -2309,10 +2074,7 @@ Use with a `Popover` component.
         if (content) content.setAttribute("data-state", s);
       }
       function mount() {
-        var frag = tpl.content.cloneNode(true);
-        var host = document.createElement("div");
-        host.appendChild(frag);
-        content = host.querySelector("[data-slot=popover-content]");
+        content = shadless.h.mountFromTemplate(tpl, "[data-slot=popover-content]");
         document.body.appendChild(content);
         setState("open");
         handles = RadixKernel.wirePopover({
@@ -2805,120 +2567,12 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/dropdown-menu.js
-// generated: shadless menu behavior (wireMenu) — dropdown-menu & context-menu
-// Document-level: wireMenu owns every trigger on the page through its
-// data-radixuigo-* protocol, so the behavior installs ONCE per page and
-// ignores the root it is initialised with (a later shadless.init(subtree)
-// finds the listeners already there). dropdown-menu.js and context-menu.js
-// share that single installation (shadless.__menuWired.installed_menu) —
-// whichever file's init runs first does the real RadixKernel.wireMenu()
-// setup, the other reuses it via shadless.__menuWired.fileTriggers. Each
-// file still registers its OWN component name unconditionally, and
-// fileTriggers labels every element by its actual
-// data-radixuigo-{menu,context}-trigger attribute rather than by which file
-// happened to install — otherwise, on a page carrying both component types,
-// whichever file loaded second would never call shadless.register at all
-// (its component type invisible to the engine) and every trigger, of both
-// kinds, would be mislabelled with the first file's component name.
+// shadless dropdown-menu behavior — registers with shadless.h.installMenuFamily,
+// the shared wireMenu glue also used by context-menu.js (core.js has the full
+// story: the two files' bodies were byte-identical but for this line, so the
+// body now lives once and both files just point at it).
 (function () {
-  shadless.register("dropdown-menu", { init: function (root) {
-    shadless.__menuWired = shadless.__menuWired || {}
-    if (shadless.__menuWired.installed_menu) { if (shadless.__menuWired.fileTriggers) shadless.__menuWired.fileTriggers(root); return }
-    shadless.__menuWired.installed_menu = true
-    // shadless:open / shadless:close: the kernel has no open hook, so every
-    // path into it is followed by sync(), which diffs the ROOT layer's
-    // trigger (sub menus do not emit) and dispatches the edges
-    var openTrigger = null;
-    var sync = function () {
-      var l = handles.rootLayer();
-      var t = l ? l.trigger : null;
-      if (t === openTrigger) return;
-      var prev = openTrigger;
-      openTrigger = t;
-      if (prev) shadless.h.emit(prev, "close", prev.hasAttribute("data-radixuigo-context-trigger") ? "context-menu" : "dropdown-menu");
-      if (t) shadless.h.emit(t, "open", t.hasAttribute("data-radixuigo-context-trigger") ? "context-menu" : "dropdown-menu");
-    };
-    var handles = RadixKernel.wireMenu({
-      // radix keeps the trigger out of the background aria-hidden set and locks
-      // scroll while a root menu is open — kernel wireMenu does neither
-      isPortalMarker: function (el) {
-        return el.hasAttribute("data-radixuigo-menu-trigger")
-          || el.hasAttribute("data-radixuigo-context-trigger");
-      },
-      onAllClosed: function () {
-        document.body.removeAttribute("data-scroll-locked");
-        document.body.style.removeProperty("pointer-events");
-        sync();
-      },
-      mountLayer: function (id) {
-        var tpl = document.getElementById(id + "-tpl");
-        if (!tpl) return null;
-        var content = tpl.content.firstElementChild.cloneNode(true);
-        var wrapper = document.createElement("div");
-        wrapper.setAttribute("data-radix-popper-content-wrapper", "");
-        wrapper.appendChild(content);
-        document.body.appendChild(wrapper);
-        document.body.setAttribute("data-scroll-locked", "1");
-        document.body.style.setProperty("pointer-events", "none");
-        // modal body lock inherits down — re-enable hit-testing in the layer
-        // (radix sets pointer-events:auto on content while open)
-        content.style.setProperty("pointer-events", "auto");
-        return {
-          id: id,
-          wrapper: wrapper,
-          content: content,
-          trigger: document.getElementById(id + "-trigger"),
-        };
-      },
-    });
-    document.addEventListener("click", function (e) {
-      handles.onDocumentClick(e.target, function () { e.preventDefault(); });
-      sync();
-    });
-    // programmatic handles, one per trigger (found by the kernel's protocol
-    // attributes; a later shadless.init(root) files any new ones)
-    var noop = function () {}
-    var fileTriggers = function (root) {
-      Array.prototype.forEach.call((root || document).querySelectorAll("[data-radixuigo-menu-trigger], [data-radixuigo-context-trigger]"), function (t) {
-        if (shadless.instances.has(t)) return
-        var isContext = t.hasAttribute("data-radixuigo-context-trigger")
-        var isOpen = function () { var l = handles.rootLayer(); return !!l && l.trigger === t }
-        var openIt = function () {
-          if (isOpen()) return
-          if (isContext) {
-            var r = t.getBoundingClientRect()
-            handles.onContextmenu(t, r.left + r.width / 2, r.top + r.height / 2, noop)
-          } else handles.onDocumentClick(t, noop)
-          sync()
-        }
-        shadless.instances.set(t, { component: isContext ? "context-menu" : "dropdown-menu",
-          open: openIt,
-          close: function () { if (isOpen()) { handles.closeAll(); sync() } },
-          toggle: function () { if (isOpen()) { handles.closeAll(); sync() } else openIt() },
-          isOpen: isOpen,
-        })
-      })
-    }
-    fileTriggers(document)
-    shadless.__menuWired.fileTriggers = fileTriggers
-    // radix opens a sub menu when the pointer moves onto its trigger; the
-    // kernel only opens it on click / ArrowRight (onDocumentClick has the sub
-    // path) — route pointer entry through the same path. openMenuLayer is
-    // idempotent for an already-open layer.
-    document.addEventListener("pointerover", function (e) {
-      if (e.pointerType && e.pointerType !== "mouse") return;
-      var sub = e.target.closest && e.target.closest("[data-radixuigo-menu-subtrigger]");
-      if (sub && sub.getAttribute("data-state") !== "open") handles.onDocumentClick(sub, function () {});
-    });
-    document.addEventListener("contextmenu", function (e) {
-      handles.onContextmenu(e.target, e.clientX, e.clientY, function () { e.preventDefault(); });
-      sync();
-    });
-    document.addEventListener("keydown", function (e) {
-      handles.onKeydown(e.target, e.key, function () { e.preventDefault(); });
-      sync();
-    });
-  } })
+  shadless.register("dropdown-menu", { init: shadless.h.installMenuFamily })
 })()
 ```
 :::

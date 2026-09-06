@@ -115,22 +115,6 @@ A set of layered sections of content—known as tab panels—that are displayed 
       });
       if (!triggers.length) return;
       var initial = Math.max(0, triggers.findIndex(function (t) { return t.getAttribute("data-state") === "active"; }));
-      // roving step: skips disabled triggers (radix), horizontal arrows swap under dir=rtl
-      function step(idx, key) {
-        var last = triggers.length - 1;
-        if (key === "Home" || key === "End") {
-          var i = key === "Home" ? 0 : last, d = key === "Home" ? 1 : -1;
-          for (var n = 0; n <= last; n++, i += d) if (!shadless.h.isDisabled(triggers[i])) return i;
-          return -1;
-        }
-        var fwd = key === "ArrowRight" || key === "ArrowDown";
-        if (shadless.h.isRtl(list) && (key === "ArrowRight" || key === "ArrowLeft")) fwd = !fwd;
-        for (var k = 1; k <= last; k++) {
-          var j = (idx + (fwd ? k : -k) + triggers.length) % triggers.length;
-          if (!shadless.h.isDisabled(triggers[j])) return j;
-        }
-        return -1;
-      }
       // panel-less tab lists (tabs-icons, tabs-line, …: triggers only): the
       // kernel's wireTabs needs panels, so activation is wired here — click
       // and arrow keys flip data-state / aria-selected / roving tabindex
@@ -153,8 +137,8 @@ A set of layered sections of content—known as tab panels—that are displayed 
         list.addEventListener("keydown", function (e) {
           var idx = triggers.indexOf(document.activeElement);
           if (idx === -1) return;
-          if (["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp", "Home", "End"].indexOf(e.key) < 0) return;
-          var next = step(idx, e.key);
+          if (shadless.h.NAV_KEYS.indexOf(e.key) < 0) return;
+          var next = shadless.h.nextIndex(e, triggers);
           if (next === -1) return;
           e.preventDefault();
           activate(next); triggers[next].focus();
@@ -191,7 +175,7 @@ A set of layered sections of content—known as tab panels—that are displayed 
         var idx = triggers.indexOf(document.activeElement);
         if (idx === -1) return;
         e.preventDefault(); e.stopPropagation();
-        var next = step(idx, e.key);
+        var next = shadless.h.nextIndex(e, triggers);
         if (next === -1) return;
         wired.activate(next, true);
         triggers[next].focus();
@@ -350,22 +334,6 @@ Use the `variant="line"` prop on `TabsList` for a line style.
       });
       if (!triggers.length) return;
       var initial = Math.max(0, triggers.findIndex(function (t) { return t.getAttribute("data-state") === "active"; }));
-      // roving step: skips disabled triggers (radix), horizontal arrows swap under dir=rtl
-      function step(idx, key) {
-        var last = triggers.length - 1;
-        if (key === "Home" || key === "End") {
-          var i = key === "Home" ? 0 : last, d = key === "Home" ? 1 : -1;
-          for (var n = 0; n <= last; n++, i += d) if (!shadless.h.isDisabled(triggers[i])) return i;
-          return -1;
-        }
-        var fwd = key === "ArrowRight" || key === "ArrowDown";
-        if (shadless.h.isRtl(list) && (key === "ArrowRight" || key === "ArrowLeft")) fwd = !fwd;
-        for (var k = 1; k <= last; k++) {
-          var j = (idx + (fwd ? k : -k) + triggers.length) % triggers.length;
-          if (!shadless.h.isDisabled(triggers[j])) return j;
-        }
-        return -1;
-      }
       // panel-less tab lists (tabs-icons, tabs-line, …: triggers only): the
       // kernel's wireTabs needs panels, so activation is wired here — click
       // and arrow keys flip data-state / aria-selected / roving tabindex
@@ -388,8 +356,8 @@ Use the `variant="line"` prop on `TabsList` for a line style.
         list.addEventListener("keydown", function (e) {
           var idx = triggers.indexOf(document.activeElement);
           if (idx === -1) return;
-          if (["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp", "Home", "End"].indexOf(e.key) < 0) return;
-          var next = step(idx, e.key);
+          if (shadless.h.NAV_KEYS.indexOf(e.key) < 0) return;
+          var next = shadless.h.nextIndex(e, triggers);
           if (next === -1) return;
           e.preventDefault();
           activate(next); triggers[next].focus();
@@ -426,7 +394,7 @@ Use the `variant="line"` prop on `TabsList` for a line style.
         var idx = triggers.indexOf(document.activeElement);
         if (idx === -1) return;
         e.preventDefault(); e.stopPropagation();
-        var next = step(idx, e.key);
+        var next = shadless.h.nextIndex(e, triggers);
         if (next === -1) return;
         wired.activate(next, true);
         triggers[next].focus();
@@ -533,22 +501,6 @@ Use `orientation="vertical"` for vertical tabs.
       });
       if (!triggers.length) return;
       var initial = Math.max(0, triggers.findIndex(function (t) { return t.getAttribute("data-state") === "active"; }));
-      // roving step: skips disabled triggers (radix), horizontal arrows swap under dir=rtl
-      function step(idx, key) {
-        var last = triggers.length - 1;
-        if (key === "Home" || key === "End") {
-          var i = key === "Home" ? 0 : last, d = key === "Home" ? 1 : -1;
-          for (var n = 0; n <= last; n++, i += d) if (!shadless.h.isDisabled(triggers[i])) return i;
-          return -1;
-        }
-        var fwd = key === "ArrowRight" || key === "ArrowDown";
-        if (shadless.h.isRtl(list) && (key === "ArrowRight" || key === "ArrowLeft")) fwd = !fwd;
-        for (var k = 1; k <= last; k++) {
-          var j = (idx + (fwd ? k : -k) + triggers.length) % triggers.length;
-          if (!shadless.h.isDisabled(triggers[j])) return j;
-        }
-        return -1;
-      }
       // panel-less tab lists (tabs-icons, tabs-line, …: triggers only): the
       // kernel's wireTabs needs panels, so activation is wired here — click
       // and arrow keys flip data-state / aria-selected / roving tabindex
@@ -571,8 +523,8 @@ Use `orientation="vertical"` for vertical tabs.
         list.addEventListener("keydown", function (e) {
           var idx = triggers.indexOf(document.activeElement);
           if (idx === -1) return;
-          if (["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp", "Home", "End"].indexOf(e.key) < 0) return;
-          var next = step(idx, e.key);
+          if (shadless.h.NAV_KEYS.indexOf(e.key) < 0) return;
+          var next = shadless.h.nextIndex(e, triggers);
           if (next === -1) return;
           e.preventDefault();
           activate(next); triggers[next].focus();
@@ -609,7 +561,7 @@ Use `orientation="vertical"` for vertical tabs.
         var idx = triggers.indexOf(document.activeElement);
         if (idx === -1) return;
         e.preventDefault(); e.stopPropagation();
-        var next = step(idx, e.key);
+        var next = shadless.h.nextIndex(e, triggers);
         if (next === -1) return;
         wired.activate(next, true);
         triggers[next].focus();
@@ -703,22 +655,6 @@ Use `orientation="vertical"` for vertical tabs.
       });
       if (!triggers.length) return;
       var initial = Math.max(0, triggers.findIndex(function (t) { return t.getAttribute("data-state") === "active"; }));
-      // roving step: skips disabled triggers (radix), horizontal arrows swap under dir=rtl
-      function step(idx, key) {
-        var last = triggers.length - 1;
-        if (key === "Home" || key === "End") {
-          var i = key === "Home" ? 0 : last, d = key === "Home" ? 1 : -1;
-          for (var n = 0; n <= last; n++, i += d) if (!shadless.h.isDisabled(triggers[i])) return i;
-          return -1;
-        }
-        var fwd = key === "ArrowRight" || key === "ArrowDown";
-        if (shadless.h.isRtl(list) && (key === "ArrowRight" || key === "ArrowLeft")) fwd = !fwd;
-        for (var k = 1; k <= last; k++) {
-          var j = (idx + (fwd ? k : -k) + triggers.length) % triggers.length;
-          if (!shadless.h.isDisabled(triggers[j])) return j;
-        }
-        return -1;
-      }
       // panel-less tab lists (tabs-icons, tabs-line, …: triggers only): the
       // kernel's wireTabs needs panels, so activation is wired here — click
       // and arrow keys flip data-state / aria-selected / roving tabindex
@@ -741,8 +677,8 @@ Use `orientation="vertical"` for vertical tabs.
         list.addEventListener("keydown", function (e) {
           var idx = triggers.indexOf(document.activeElement);
           if (idx === -1) return;
-          if (["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp", "Home", "End"].indexOf(e.key) < 0) return;
-          var next = step(idx, e.key);
+          if (shadless.h.NAV_KEYS.indexOf(e.key) < 0) return;
+          var next = shadless.h.nextIndex(e, triggers);
           if (next === -1) return;
           e.preventDefault();
           activate(next); triggers[next].focus();
@@ -779,7 +715,7 @@ Use `orientation="vertical"` for vertical tabs.
         var idx = triggers.indexOf(document.activeElement);
         if (idx === -1) return;
         e.preventDefault(); e.stopPropagation();
-        var next = step(idx, e.key);
+        var next = shadless.h.nextIndex(e, triggers);
         if (next === -1) return;
         wired.activate(next, true);
         triggers[next].focus();
@@ -901,22 +837,6 @@ Use `orientation="vertical"` for vertical tabs.
       });
       if (!triggers.length) return;
       var initial = Math.max(0, triggers.findIndex(function (t) { return t.getAttribute("data-state") === "active"; }));
-      // roving step: skips disabled triggers (radix), horizontal arrows swap under dir=rtl
-      function step(idx, key) {
-        var last = triggers.length - 1;
-        if (key === "Home" || key === "End") {
-          var i = key === "Home" ? 0 : last, d = key === "Home" ? 1 : -1;
-          for (var n = 0; n <= last; n++, i += d) if (!shadless.h.isDisabled(triggers[i])) return i;
-          return -1;
-        }
-        var fwd = key === "ArrowRight" || key === "ArrowDown";
-        if (shadless.h.isRtl(list) && (key === "ArrowRight" || key === "ArrowLeft")) fwd = !fwd;
-        for (var k = 1; k <= last; k++) {
-          var j = (idx + (fwd ? k : -k) + triggers.length) % triggers.length;
-          if (!shadless.h.isDisabled(triggers[j])) return j;
-        }
-        return -1;
-      }
       // panel-less tab lists (tabs-icons, tabs-line, …: triggers only): the
       // kernel's wireTabs needs panels, so activation is wired here — click
       // and arrow keys flip data-state / aria-selected / roving tabindex
@@ -939,8 +859,8 @@ Use `orientation="vertical"` for vertical tabs.
         list.addEventListener("keydown", function (e) {
           var idx = triggers.indexOf(document.activeElement);
           if (idx === -1) return;
-          if (["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp", "Home", "End"].indexOf(e.key) < 0) return;
-          var next = step(idx, e.key);
+          if (shadless.h.NAV_KEYS.indexOf(e.key) < 0) return;
+          var next = shadless.h.nextIndex(e, triggers);
           if (next === -1) return;
           e.preventDefault();
           activate(next); triggers[next].focus();
@@ -977,7 +897,7 @@ Use `orientation="vertical"` for vertical tabs.
         var idx = triggers.indexOf(document.activeElement);
         if (idx === -1) return;
         e.preventDefault(); e.stopPropagation();
-        var next = step(idx, e.key);
+        var next = shadless.h.nextIndex(e, triggers);
         if (next === -1) return;
         wired.activate(next, true);
         triggers[next].focus();
@@ -1249,22 +1169,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       });
       if (!triggers.length) return;
       var initial = Math.max(0, triggers.findIndex(function (t) { return t.getAttribute("data-state") === "active"; }));
-      // roving step: skips disabled triggers (radix), horizontal arrows swap under dir=rtl
-      function step(idx, key) {
-        var last = triggers.length - 1;
-        if (key === "Home" || key === "End") {
-          var i = key === "Home" ? 0 : last, d = key === "Home" ? 1 : -1;
-          for (var n = 0; n <= last; n++, i += d) if (!shadless.h.isDisabled(triggers[i])) return i;
-          return -1;
-        }
-        var fwd = key === "ArrowRight" || key === "ArrowDown";
-        if (shadless.h.isRtl(list) && (key === "ArrowRight" || key === "ArrowLeft")) fwd = !fwd;
-        for (var k = 1; k <= last; k++) {
-          var j = (idx + (fwd ? k : -k) + triggers.length) % triggers.length;
-          if (!shadless.h.isDisabled(triggers[j])) return j;
-        }
-        return -1;
-      }
       // panel-less tab lists (tabs-icons, tabs-line, …: triggers only): the
       // kernel's wireTabs needs panels, so activation is wired here — click
       // and arrow keys flip data-state / aria-selected / roving tabindex
@@ -1287,8 +1191,8 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
         list.addEventListener("keydown", function (e) {
           var idx = triggers.indexOf(document.activeElement);
           if (idx === -1) return;
-          if (["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp", "Home", "End"].indexOf(e.key) < 0) return;
-          var next = step(idx, e.key);
+          if (shadless.h.NAV_KEYS.indexOf(e.key) < 0) return;
+          var next = shadless.h.nextIndex(e, triggers);
           if (next === -1) return;
           e.preventDefault();
           activate(next); triggers[next].focus();
@@ -1325,7 +1229,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
         var idx = triggers.indexOf(document.activeElement);
         if (idx === -1) return;
         e.preventDefault(); e.stopPropagation();
-        var next = step(idx, e.key);
+        var next = shadless.h.nextIndex(e, triggers);
         if (next === -1) return;
         wired.activate(next, true);
         triggers[next].focus();

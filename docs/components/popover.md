@@ -92,10 +92,7 @@ Displays rich content in a portal, triggered by a button.
         if (content) content.setAttribute("data-state", s);
       }
       function mount() {
-        var frag = tpl.content.cloneNode(true);
-        var host = document.createElement("div");
-        host.appendChild(frag);
-        content = host.querySelector("[data-slot=popover-content]");
+        content = shadless.h.mountFromTemplate(tpl, "[data-slot=popover-content]");
         document.body.appendChild(content);
         setState("open");
         handles = RadixKernel.wirePopover({
@@ -272,10 +269,7 @@ A simple popover with a header, title, and description.
         if (content) content.setAttribute("data-state", s);
       }
       function mount() {
-        var frag = tpl.content.cloneNode(true);
-        var host = document.createElement("div");
-        host.appendChild(frag);
-        content = host.querySelector("[data-slot=popover-content]");
+        content = shadless.h.mountFromTemplate(tpl, "[data-slot=popover-content]");
         document.body.appendChild(content);
         setState("open");
         handles = RadixKernel.wirePopover({
@@ -499,10 +493,7 @@ Use the `align` prop on `PopoverContent` to control the horizontal alignment.
         if (content) content.setAttribute("data-state", s);
       }
       function mount() {
-        var frag = tpl.content.cloneNode(true);
-        var host = document.createElement("div");
-        host.appendChild(frag);
-        content = host.querySelector("[data-slot=popover-content]");
+        content = shadless.h.mountFromTemplate(tpl, "[data-slot=popover-content]");
         document.body.appendChild(content);
         setState("open");
         handles = RadixKernel.wirePopover({
@@ -668,10 +659,7 @@ A popover with form fields inside.
         if (content) content.setAttribute("data-state", s);
       }
       function mount() {
-        var frag = tpl.content.cloneNode(true);
-        var host = document.createElement("div");
-        host.appendChild(frag);
-        content = host.querySelector("[data-slot=popover-content]");
+        content = shadless.h.mountFromTemplate(tpl, "[data-slot=popover-content]");
         document.body.appendChild(content);
         setState("open");
         handles = RadixKernel.wirePopover({
@@ -966,10 +954,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
         if (content) content.setAttribute("data-state", s);
       }
       function mount() {
-        var frag = tpl.content.cloneNode(true);
-        var host = document.createElement("div");
-        host.appendChild(frag);
-        content = host.querySelector("[data-slot=popover-content]");
+        content = shadless.h.mountFromTemplate(tpl, "[data-slot=popover-content]");
         document.body.appendChild(content);
         setState("open");
         handles = RadixKernel.wirePopover({
