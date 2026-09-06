@@ -16,10 +16,6 @@ import { build as esbuild } from "esbuild"
 // assertions below is what a bundler sees in dist/, not what a helper agrees
 // to produce.
 const dist = (rel) => readFileSync(new URL(`../../dist/esm/${rel}`, import.meta.url), "utf8")
-// the base's public members, read back out of the shipped module so the list
-// cannot drift from what is actually exported
-const NAMED_EXPORTS = (dist("shadless.mjs").match(/export const \{ ([^}]*) \} = shadless/) ?? [, ""])[1]
-  .split(",").map((s) => s.trim()).filter(Boolean)
 
 // the runtime is now a base + one file per component: boot the base with
 // every trivial-tier behavior registered (what a page that uses them loads)
@@ -596,7 +592,13 @@ window.__esm = { default: shadless, get, theme, init, named: Object.keys(ns).sor
     await tick()
     const esm = dom.window.__esm
     t.ok("esm: default export is window.shadless", esm.default === dom.window.shadless)
-    t.eq("esm: named exports = the base's public members", esm.named, ["default", ...NAMED_EXPORTS].sort())
+    // Ground truth is the LIVE global the bundle just built (evaluated
+    // above), not another derivation of the same shipped export line: a
+    // member added to core.js's global.shadless without updating
+    // jsbuild.go's namedExports list would be missing from the shipped
+    // line on both sides of a same-source comparison and still pass.
+    t.eq("esm: named exports = the base's public members",
+      esm.named.filter((n) => n !== "default").sort(), Object.keys(dom.window.shadless).sort())
     t.ok("esm: named get() is the same function", esm.get === dom.window.shadless.get)
     const api = esm.get("#d1-trigger")
     t.ok("esm: component imported BEFORE the base still registers (import order independent)", !!api && typeof api.open === "function")

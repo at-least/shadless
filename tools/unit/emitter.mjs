@@ -1,7 +1,7 @@
 // emitter (src/emitter/index.mjs) + tags.mjs — Wave H: tree building, render
 // semantics (root-replace defaults, leaf fills, anchors), attr merging,
 // DEFAULT_CONTENT key validation.
-import { buildTree, renderTree, renderFn, escHtml, mergeRootAttrs, validateDefaultContent }
+import { buildTree, renderTree, renderFn, escHtml, mergeRootAttrs, validateDefaultContent, resolveDefault, DEFAULT_CONTENT }
   from "../../src/emitter/index.mjs"
 import { normalizeTag, kebab, NAT, VOID, externalMemberTag } from "../../src/tags.mjs"
 
@@ -85,6 +85,44 @@ export function run(t) {
   t.eq("mergeRootAttrs: attr value containing > (quote-aware)",
     mergeRootAttrs('<button data-slot="b" aria-label="→ go"></button>', { "data-x": "1" }),
     '<button data-slot="b" aria-label="→ go" data-x="1"></button>')
+
+  // ---- resolveDefault: html + attrs + children compose, none get dropped ----
+  {
+    // alert/Alert: the historical regression shape — html AND attrs on the
+    // same entry; a prior bug picked one and dropped the other, so role=
+    // on an entry that already had html was a no-op.
+    const alert = resolveDefault({ name: "alert" }, { fn: "Alert" })
+    t.eq("resolveDefault: html+attrs — inner survives", alert.inner, DEFAULT_CONTENT.alert.Alert.html)
+    t.eq("resolveDefault: html+attrs — attrs survive alongside inner",
+      alert.attrs, DEFAULT_CONTENT.alert.Alert.attrs)
+
+    // input/Input: attrs-only entry — no inner, no children keys present
+    const input = resolveDefault({ name: "input" }, { fn: "Input" })
+    t.eq("resolveDefault: attrs-only", input, { attrs: DEFAULT_CONTENT.input.Input.attrs })
+
+    // native-select/NativeSelect: children-only entry
+    const nativeSelect = resolveDefault({ name: "native-select" }, { fn: "NativeSelect" })
+    t.eq("resolveDefault: children-only",
+      nativeSelect, { children: DEFAULT_CONTENT["native-select"].NativeSelect.children })
+
+    // spinner/Spinner: object-form html is used verbatim — escHtml only
+    // applies to the string-shorthand branch (a bare text default), never
+    // to an object entry's html chunk (already markup).
+    const spinner = resolveDefault({ name: "spinner" }, { fn: "Spinner" })
+    t.eq("resolveDefault: object-form html is NOT escaped", spinner.inner, DEFAULT_CONTENT.spinner.Spinner.html)
+    t.ok("resolveDefault: object-form html keeps raw markup", spinner.inner.includes("<svg"))
+
+    // string-shorthand entry → escaped text node
+    t.eq("resolveDefault: string shorthand is escaped",
+      resolveDefault({ name: "badge" }, { fn: "Badge" }), { inner: escHtml(DEFAULT_CONTENT.badge.Badge) })
+
+    // explicit null entry (a real fn with deliberately no default) → null,
+    // same result as a fn absent from the map entirely
+    t.eq("resolveDefault: explicit null entry → null",
+      resolveDefault({ name: "message" }, { fn: "MessageGroup" }), null)
+    // no entry for this fn at all → null
+    t.eq("resolveDefault: no entry → null", resolveDefault({ name: "alert" }, { fn: "NoSuchFn" }), null)
+  }
 
   // ---- validateDefaultContent: stale keys must fail ----
   {

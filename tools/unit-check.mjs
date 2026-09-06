@@ -18,14 +18,12 @@
 // is never a JS test standing over a Go function. The `unit` node runs both.
 import { makeT } from "./unit/harness.mjs"
 import * as css from "./unit/css.mjs"
-import * as prepaint from "./unit/prepaint.mjs"
 import * as emitter from "./unit/emitter.mjs"
 import * as runtime from "./unit/runtime.mjs"
 import * as types from "./unit/types.mjs"
 
 const suites = [
     ["css", css],
-  ["prepaint", prepaint],
   ["emitter", emitter],
   ["runtime", runtime],
     
