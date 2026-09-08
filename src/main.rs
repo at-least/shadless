@@ -438,10 +438,45 @@ fn main() {
         "audit-boundary" => {
             std::process::exit(pipeline::gates::audit_boundary::run_audit_boundary(&rest))
         }
-        "oracle-css" | "docs-catalog" | "docs-upstream-mirror"
-        | "ir-diff" | "css-direction" | "upstream"
-        | "resolve-skins" | "rtl-dict"
-        | "docs-consistency" | "docs-build" | "docs-fidelity" => not_ported(&cmd),
+        "oracle-css" => std::process::exit(pipeline::tools::oracle_css::run_oracle_css()),
+        "docs-catalog" => std::process::exit(pipeline::tools::docs_catalog::run_docs_catalog(
+            &std::env::current_dir().unwrap_or_default(),
+        )),
+        "docs-upstream-mirror" => std::process::exit(
+            pipeline::tools::docs_upstream_mirror::run_docs_upstream_mirror(),
+        ),
+        "ir-diff" => std::process::exit(pipeline::tools::ir_diff::run_ir_diff(&rest)),
+        "css-direction" => {
+            if !has_flag(&rest, "--update") {
+                eprintln!(
+                    "the css-direction GATE is a #[test]: cargo test css_direction\nthis subcommand only re-records the baseline: pipeline css-direction --update"
+                );
+                std::process::exit(2);
+            }
+            std::process::exit(pipeline::tools::css_direction_update::run_css_direction_update(
+                &std::env::current_dir().unwrap_or_default(),
+            ));
+        }
+        "upstream" => std::process::exit(pipeline::tools::upstream::run_upstream(
+            &std::env::current_dir().unwrap_or_default(),
+            &rest,
+        )),
+        "resolve-skins" => std::process::exit(pipeline::tools::resolve_skins::run_resolve_skins(
+            &std::env::current_dir().unwrap_or_default(),
+            &rest,
+        )),
+        "rtl-dict" => std::process::exit(pipeline::tools::rtl_dict::run_rtl_dict()),
+        "docs-consistency" => std::process::exit(
+            pipeline::tools::docs_consistency::run_docs_consistency(
+                &std::env::current_dir().unwrap_or_default(),
+            ),
+        ),
+        "docs-build" => std::process::exit(pipeline::tools::docs_build::run_docs_build(
+            &std::env::current_dir().unwrap_or_default(),
+        )),
+        "docs-fidelity" => std::process::exit(pipeline::tools::docs_fidelity::run_docs_fidelity(
+            &std::env::current_dir().unwrap_or_default(),
+        )),
         "example-fixture" => std::process::exit(pipeline::oracle::example_fixture::run_example_fixture(&rest)),
         "example-golden" => std::process::exit(pipeline::oracle::example_golden::run_example_golden(&rest)),
         "contract" => {
@@ -451,9 +486,40 @@ fn main() {
             std::process::exit(pipeline::oracle::contract::run_contract(&rest[0]));
         }
         "contracts" => std::process::exit(pipeline::oracle::contract::run_contracts_all()),
-        | "upstream-snapshot" | "demo-smoke" | "docs-smoke"
-        | "overlay" | "interactivity-sweep" | "demo-parity" | "style-parity"
-        | "path-parity" => not_ported(&cmd),
+        "upstream-snapshot" => std::process::exit(
+            pipeline::tools::upstream_snapshot::run_upstream_snapshot(&rest),
+        ),
+        "demo-smoke" => std::process::exit(pipeline::tools::demo_smoke::run_demo_smoke(
+            &std::env::current_dir().unwrap_or_default(),
+        )),
+        "docs-smoke" => std::process::exit(pipeline::tools::docs_smoke::run_docs_smoke(
+            &std::env::current_dir().unwrap_or_default(),
+            has_flag(&rest, "--all"),
+        )),
+        "overlay" => std::process::exit(pipeline::tools::overlay::run_overlay(
+            &std::env::current_dir().unwrap_or_default(),
+            &rest,
+        )),
+        "interactivity-sweep" => std::process::exit(
+            pipeline::tools::interactivity_sweep::run_interactivity_sweep(
+                &std::env::current_dir().unwrap_or_default(),
+            ),
+        ),
+        "demo-parity" => std::process::exit(pipeline::tools::demo_parity::run_demo_parity(
+            &std::env::current_dir().unwrap_or_default(),
+            has_flag(&rest, "--record"),
+            has_flag(&rest, "--details"),
+        )),
+        "style-parity" => std::process::exit(pipeline::tools::style_parity::run_style_parity(
+            &std::env::current_dir().unwrap_or_default(),
+            has_flag(&rest, "--strict"),
+            has_flag(&rest, "--record"),
+        )),
+        "path-parity" => std::process::exit(pipeline::tools::path_parity::run_path_parity(
+            &std::env::current_dir().unwrap_or_default(),
+            has_flag(&rest, "--record"),
+            has_flag(&rest, "--details"),
+        )),
         other => {
             eprintln!("unknown command: {}", other);
             std::process::exit(2);

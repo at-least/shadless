@@ -31,7 +31,7 @@ const CV_TIERS: &str = "src/registry/tiers.json";
 
 // ------------------------------------------------------------------ tier set
 
-fn cv_tier_sets() -> &'static [(&'static str, &'static [&'static str])] {
+pub(crate) fn cv_tier_sets() -> &'static [(&'static str, &'static [&'static str])] {
     &[
         ("kernel", &["alert-dialog", "context-menu", "dialog", "dropdown-menu", "hover-card", "popover", "select", "slider", "scroll-area", "sheet", "tabs", "tooltip"]),
         ("trivial-js", &["accordion", "aspect-ratio", "avatar", "checkbox", "collapsible", "label", "progress", "radio-group", "separator", "switch", "toggle", "toggle-group"]),
@@ -42,7 +42,7 @@ fn cv_tier_sets() -> &'static [(&'static str, &'static [&'static str])] {
     ]
 }
 
-fn cv_known_icons() -> &'static [&'static str] {
+pub(crate) fn cv_known_icons() -> &'static [&'static str] {
     &["ChevronRight", "ChevronDown", "MoreHorizontal", "Check", "X", "Plus", "Minus", "Search"]
 }
 

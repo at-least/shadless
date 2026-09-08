@@ -24,7 +24,7 @@ use crate::verify::{
     input_universe, opens_from_logs, report_undeclared_reads, report_violations,
     undeclared_reads, undeclared_writes, Violation,
 };
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, HashMap, HashSet, VecDeque};
 use std::io;
 use std::io::Write as _;
@@ -94,7 +94,7 @@ pub fn tail_of(out: &[u8]) -> String {
     lines[start..].join("\n")
 }
 
-#[derive(Serialize, Clone)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct FailedNode {
     pub cmd: String,
     pub tail: String,
@@ -102,7 +102,7 @@ pub struct FailedNode {
 
 /// Mirrors the shape gates/run.mjs wrote, because gates/upstream.mjs reads it
 /// as data. BTreeMap keeps keys sorted, as Go's json.Marshal does for maps.
-#[derive(Serialize, Default)]
+#[derive(Serialize, Deserialize, Default)]
 pub struct RunReport {
     pub failed: BTreeMap<String, FailedNode>,
     pub blocked: Vec<String>,

@@ -15,6 +15,7 @@ pub mod oracle;
 pub mod produces;
 pub mod runner;
 pub mod stamps;
+pub mod tools;
 pub mod tsx;
 pub mod twmerge;
 pub mod verify;

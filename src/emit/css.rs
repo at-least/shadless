@@ -325,7 +325,7 @@ pub fn marker_re() -> &'static Regex {
     R.get_or_init(|| Regex::new(r"^(group|peer)(/[0-9A-Za-z_-]+)?$").unwrap())
 }
 
-fn dead_utilities(t: &str) -> bool {
+pub(crate) fn dead_utilities(t: &str) -> bool {
     t == "origin-top-center"
 }
 

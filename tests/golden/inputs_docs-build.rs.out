@@ -1,3 +1,4 @@
+build/rtl-langs.json
 dist/components/accordion-rtl-en.html
 dist/components/accordion-rtl-he.html
 dist/components/accordion.html

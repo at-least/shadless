@@ -290,3 +290,60 @@ MenuOrSelect 空 trigger 跳過、nav click 改真實滑鼠事件。)
   (runner 單頁長流程 + 機器高載 → CDP 動作性等待窗被拉爆);安靜機器上連續
   綠。不加 fresh-page 偏差,維持與 Go 完全相同的單頁長流程語意。
 - EF_DEBUG 探針保留在碼中但無 env 時完全惰性。
+
+## 剩餘 18 指令全部移植(2026-09-08,本輪)
+
+### 純檔案指令 → src/tools/
+- docs-upstream-mirror(copy_tree+3 guide 檔)、oracle-css(buildOracleEntryCSS 行分類
+  迴圈+tw_compile 空 cwd)、upstream-snapshot(normSnapshot/stack-balanced slice/
+  ureq 30s 爬取、SHADLESS_SNAPSHOT_ORIGIN)、parity-baseline(parityNormValue 用
+  ryu 對 Go FormatFloat 'f' -1 位元一致、cellMap/diff/write 位元形)、
+  docs-consistency(8 檢查)、ir-diff(orderedSet/diffIr/renderIrDiff/--json)、
+  resolve-skins(expandClassString/applyRtlMapping 40 案例對 upstream
+  transform-rtl.test.ts、resolveSource 逆序 splice)、rtl-dict(esbuild_tsx+
+  tsx::string_literals+decodeJSString 嚴格)、upstream(重 pin drill 全流程+
+  classifyFailures)、docs-catalog(scanSet/dedupe/status 規則/120KB catalog)、
+  overlay(rule/authored/source 三類單元、--audit/--record/--tasks)、
+  docs-build(四 MDX 形狀+prettier-batch+content-map+index 頁)。
+- css-direction --update 接線(src/tools/css_direction_update.rs)。
+
+### 瀏覽器指令 → src/tools/
+- demo-smoke、demo-parity、interactivity-sweep、docs-smoke(python3 http.server
+  暫態埠)、style-parity、docs-fidelity、path-parity(pp 模擬樹+tw 子行程)。
+
+### 雙側位元組驗證(全部與 Go 二進位比對)
+- 讀取型:demo-smoke、demo-parity(226 頁 8096 比較)、interactivity-sweep、
+  style-parity(29 組件 544 元素)、path-parity(48 組件 4104 比較)、
+  docs-smoke、docs-consistency、docs-fidelity、ir-diff 4 模式、
+  css-direction --update、upstream --report-only(含 upstream-report.md 2556B)。
+- 寫入型(快照/還原協定):docs-catalog 120,304B、docs-build 58 頁+static+
+  content-map、resolve-skins 全樹、rtl-dict 62,225B、overlay --record
+  manifest 11,130B、overlay --tasks 72 封包、docs-upstream-mirror、
+  oracle-css(唯一差:tailwind CLI 自身 Done in Xms 計時行,Go-vs-Go 亦漂移)。
+- upstream-snapshot:live ui.shadcn.com 爬取雙側位元組一致(7 previews);
+  與 committed 的 7 行漂移是 live 站自 pin 後移動,已還原。
+
+### 移植中修的 bug(全部由雙側比對抓出)
+1. serde 拒 JSON null 而 Go 容忍:IR `"slot": null`、catalog `"demoPath":
+   null`、contract def null 欄位 → drop_nulls/Option 正規化(overlay、
+   demo-smoke、path-parity、style-parity、docs-build component_ir、
+   docs_transforms load_jsx_tag_index 共 6 處)。
+2. overlay OvIrComponent 缺 serde rename "fn"。
+3. overlay tasks 的 git diff 失敗訊息(Go 取 stderr 首行)。
+4. overlay manifest 陣列格式(Go Encoder 單元素也斷行、元素縮排深一層)。
+5. path-parity 的 tw 子行程輸出(Go CombinedOutput 吞 banner)。
+6. docs-smoke settled 布林陣列格式(Go %v 空白分隔)。
+7. docs-build:remove_dir_all 對不存在路徑(Go RemoveAll 容忍)、
+   prettier stdin 要物件陣列、parse_attrs 對 {expr} 分支的 group 存取、
+   mirror_set_cache 兩個 OnceLock 分裂(寫入/讀取不同 cell)。
+8. upstream 尾行多一個換行(println! vs Go Printf)。
+
+### 回歸
+cargo test 112+1 綠(新增 upstream 8 單元測試、resolve_skins 3 測試改為
+Go 原版案例)、gen_golden 469/469(重新錄製:樹新增 build/rtl-langs.json)、
+ir_diff 61/61、dist_diff 268/268 ×3。
+
+### 環境註記
+- build/rtl-langs.json 是 build-rtl 產物(非 committed),本輪以 RS build-rtl
+  重新生成;golden 矩陣因此重錄(go.out 與 rs.out 同步更新)。
+- Go repo 的 pipeline/pipeline 二進位仍為重建版(該 repo 顯示 M)。
