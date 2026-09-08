@@ -1,0 +1,5 @@
+GATE  pin       [fast]
+build build-js  [fast]
+build convert   [full]  needs: pin, build-js
+
+3 nodes (1 gates)

@@ -1,0 +1,1 @@
+inputs docs-upstream-mirror

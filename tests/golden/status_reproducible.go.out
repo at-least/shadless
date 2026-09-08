@@ -1,0 +1,17 @@
+pin                    STALE
+build-js               STALE
+convert                STALE
+emit                   STALE
+example-oracle         STALE
+example-fixture        STALE
+rtl-dict               STALE
+demo-rtl               STALE
+contract-fixture       STALE
+demo                   STALE
+docs-catalog           STALE
+docs-upstream-mirror   STALE
+demo-css               STALE
+docs-build             STALE
+product-css            STALE
+product-build          STALE
+reproducible           NEVER-FRESH

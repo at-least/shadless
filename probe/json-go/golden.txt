@@ -1,0 +1,65 @@
+==== plain-string ====
+"hello world"
+==== escapes ====
+"a\"b\\c\bd\fe\nf\rg\th\u0000\u0001\u001f<b>&</b>  é中😀 "
+==== rtl ====
+"زر عربي עברית"
+==== raw-numbers ====
+{
+  "a": 1.5,
+  "b": 2e3,
+  "c": -0,
+  "d": 0.30000000000000004,
+  "e": 1e-5
+}
+==== ints ====
+{
+  "zero": 0,
+  "neg": -7,
+  "big": 9223372036854775807
+}
+==== bools-null ====
+{
+  "t": true,
+  "f": false,
+  "null": null
+}
+==== empty ====
+{}
+[]
+==== nested ====
+{
+  "obj": {
+    "list": [
+      "a",
+      1,
+      true,
+      null
+    ],
+    "e": {}
+  },
+  "arr": [
+    {
+      "k": "v"
+    }
+  ]
+}
+==== arrays-of-strings ====
+{
+  "ss": [
+    "x",
+    "y\"z"
+  ]
+}
+==== step-indent-1 ====
+{
+ "k": {
+  "in": "v"
+ }
+}
+==== top-indent ====
+{
+    "k": "v"
+  }
+==== colon-slash ====
+"hover:before:bg-[url('a:b')][/&]"

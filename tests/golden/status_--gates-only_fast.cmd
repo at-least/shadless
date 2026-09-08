@@ -1,0 +1,1 @@
+status --gates-only fast

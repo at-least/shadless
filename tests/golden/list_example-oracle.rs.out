@@ -1,0 +1,7 @@
+GATE  pin             [fast]
+build build-js        [fast]
+build convert         [full]  needs: pin, build-js
+build emit            [full]  needs: convert, build-js
+build example-oracle  [full]  needs: emit, build-js
+
+5 nodes (1 gates)

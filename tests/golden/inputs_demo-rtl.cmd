@@ -1,0 +1,1 @@
+inputs demo-rtl

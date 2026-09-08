@@ -1,0 +1,1 @@
+plan --gates-only fast

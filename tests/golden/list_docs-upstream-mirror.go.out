@@ -1,0 +1,4 @@
+GATE  pin                   [fast]
+build docs-upstream-mirror  [fast]  needs: pin
+
+2 nodes (1 gates)

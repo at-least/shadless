@@ -1,0 +1,348 @@
+//! Port of pipeline/example_golden.go — hop 1 of the 1:1 gate: local oracle
+//! render == upstream live-site snapshot. Both sides are canonicalized in a
+//! real browser (canonOf); the snapshot is the committed SSR artifact.
+//! Exemptions are explicit and their staleness fails the gate.
+
+use super::browser_shell::BrowserShell;
+use super::oracle_lib::{await_oracle, build_oracle, canon_of, oracle_root_html};
+use regex::Regex;
+use serde::Deserialize;
+use std::collections::{BTreeMap, HashMap, HashSet};
+use std::path::Path;
+use std::sync::OnceLock;
+
+/// Both spellings a normalised auto-id can have in a diff context.
+fn re_golden_auto_id() -> &'static Regex {
+    static R: OnceLock<Regex> = OnceLock::new();
+    R.get_or_init(|| Regex::new(r"radix-(?:<auto>_?|a\\d+)").unwrap())
+}
+
+fn re_long_quoted() -> &'static Regex {
+    static R: OnceLock<Regex> = OnceLock::new();
+    R.get_or_init(|| Regex::new(r#""[^"]{20,}""#).unwrap())
+}
+
+/// First-difference window with clamped context on both sides.
+fn first_diff_window(a: &str, b: &str, before: usize, after: usize) -> (String, String) {
+    let ab = a.as_bytes();
+    let bb = b.as_bytes();
+    let mut i = 0;
+    while i < ab.len() && i < bb.len() && ab[i] == bb[i] {
+        i += 1;
+    }
+    let window = |s: &str| -> String {
+        let lo = i.saturating_sub(before);
+        let hi = (i + after).min(s.len());
+        s[lo..hi].to_string()
+    };
+    (window(a), window(b))
+}
+
+fn file_exists(p: &str) -> bool {
+    Path::new(p).exists()
+}
+
+pub fn run_example_golden(args: &[String]) -> i32 {
+    match run_inner(args) {
+        Ok(()) => 0,
+        Err(msg) => {
+            eprintln!("example-golden: {}", msg);
+            1
+        }
+    }
+}
+
+fn run_inner(args: &[String]) -> Result<(), String> {
+    const EXAMPLES_DIR: &str = ".upstream/shadcn-ui/apps/v4/examples/radix";
+    const SNAPSHOT_DIR: &str = "src/registry/upstream-snapshot";
+    const TMP: &str = "build/example-golden";
+
+    let mut mode = "gate";
+    let mut diff_name = String::new();
+    let mut diff_page = String::new();
+    for i in 0..args.len() {
+        match args[i].as_str() {
+            "--classify" => mode = "classify",
+            "--diff" => {
+                mode = "diff";
+                if i + 1 < args.len() {
+                    diff_name = args[i + 1].clone();
+                }
+                if i + 2 < args.len() {
+                    diff_page = args[i + 2].clone();
+                }
+            }
+            _ => {}
+        }
+    }
+
+    let shell = BrowserShell::start()?;
+    let result = run_inner_shell(&shell, args, mode, &diff_name, &diff_page, EXAMPLES_DIR, SNAPSHOT_DIR, TMP);
+    shell.close();
+    result
+}
+
+fn run_inner_shell(
+    shell: &BrowserShell,
+    _args: &[String],
+    mode: &str,
+    diff_name: &str,
+    diff_page: &str,
+    examples_dir: &str,
+    snapshot_dir: &str,
+    tmp: &str,
+) -> Result<(), String> {
+    shell.launch()?;
+    let page = shell.new_page(false).ok();
+    let page_ref = page.as_ref();
+
+    // keep avatar-style examples in their INITIAL render state: a loaded
+    // image flips radix Avatar to the img branch and the trees diverge on
+    // structure, not styling
+    if let Some(p) = page_ref {
+        p.route_abort_external()?;
+        p.goto_url("about:blank")?;
+    }
+
+    let oracle_canon = |name: &str| -> Result<String, String> {
+        let page = page_ref.ok_or("no page")?;
+        let html_file = build_oracle(Path::new("."), name, Path::new(tmp))?;
+        await_oracle(page, &html_file)?;
+        let root_html = oracle_root_html(page)?;
+        canon_of(page, &root_html)
+    };
+
+    if mode == "diff" {
+        let mut page_name = diff_page.to_string();
+        if page_name.is_empty() {
+            page_name = diff_name.splitn(2, '-').next().unwrap_or("").to_string();
+        }
+        let snap_b = std::fs::read_to_string(Path::new(snapshot_dir).join(format!("{}.json", page_name)))
+            .map_err(|e| format!("example-golden: {}", e))?;
+        let snap: serde_json::Value = serde_json::from_str(&snap_b).unwrap_or(serde_json::Value::Null);
+        let upstream_html = snap["previews"][diff_name].as_str().unwrap_or("").to_string();
+        if upstream_html.is_empty() {
+            return Err(format!("no snapshot preview {:?} in {}.json", diff_name, page_name));
+        }
+        let a = oracle_canon(diff_name)?;
+        let b = canon_of(page_ref.ok_or("no page")?, &upstream_html)?;
+        if a == b {
+            println!("EQUAL");
+            return Ok(());
+        }
+        let (wa, wb) = first_diff_window(&a, &b, 80, 120);
+        println!("ORACLE  : {}", wa);
+        println!("UPSTREAM: {}", wb);
+        return Err("differs".to_string());
+    }
+
+    #[derive(Deserialize, Default, Clone)]
+    struct Exemption {
+        #[serde(default)]
+        stale: bool,
+        #[serde(default)]
+        reason: String,
+    }
+    #[derive(Deserialize, Default)]
+    struct Exemptions {
+        #[serde(default)]
+        examples: HashMap<String, Exemption>,
+    }
+    let exemptions: Exemptions = std::fs::read_to_string(format!("{}/exemptions.json", snapshot_dir))
+        .ok()
+        .and_then(|eb| serde_json::from_str(&eb).ok())
+        .unwrap_or_default();
+
+    let sig = |a: &str, b: &str| -> String {
+        let (wa, wb) = first_diff_window(a, b, 60, 60);
+        let mut ctx = format!("{} ||| {}", wa, wb);
+        ctx = re_golden_auto_id().replace_all(&ctx, "#").into_owned();
+        if ctx.len() > 200 {
+            ctx.truncate(200);
+        }
+        ctx
+    };
+
+    let mut pass = 0;
+    let mut fail = 0;
+    let mut exempt = 0;
+    let mut stale_exemptions: Vec<String> = Vec::new();
+    let mut buckets: BTreeMap<String, Vec<String>> = BTreeMap::new();
+    struct FailureRec {
+        name: String,
+        page: String,
+        kind: String,
+        signature: String,
+        error: String,
+    }
+    let mut failures: Vec<FailureRec> = Vec::new();
+    let bucket_of = |key: &str, name: &str, buckets: &mut BTreeMap<String, Vec<String>>| {
+        let mut k = re_long_quoted().replace_all(key, "\"…\"").into_owned();
+        if k.len() > 110 {
+            k.truncate(110);
+        }
+        buckets.entry(k).or_default().push(name.to_string());
+    };
+
+    let mut pages: Vec<String> = Vec::new();
+    for e in std::fs::read_dir(snapshot_dir).map_err(|e| e.to_string())? {
+        let e = e.map_err(|e| e.to_string())?;
+        let name = e.file_name().to_string_lossy().into_owned();
+        if name.ends_with(".json") && name != "exemptions.json" {
+            pages.push(name);
+        }
+    }
+    pages.sort();
+    for pf in &pages {
+        let snap_b = match std::fs::read_to_string(Path::new(snapshot_dir).join(pf)) {
+            Ok(b) => b,
+            Err(_) => continue,
+        };
+        let snap: serde_json::Value = match serde_json::from_str(&snap_b) {
+            Ok(v) => v,
+            Err(_) => continue,
+        };
+        // insertion order for stable output: preserve_order Map keys
+        let empty = serde_json::Map::new();
+        let previews = snap
+            .get("previews")
+            .and_then(|p| p.as_object())
+            .unwrap_or(&empty);
+        for (name, preview) in previews {
+            let Some(upstream_html) = preview.as_str() else {
+                continue;
+            };
+            let ex = exemptions.examples.get(name).cloned().unwrap_or_default();
+            if !ex.reason.is_empty() && !ex.stale {
+                exempt += 1;
+                continue;
+            }
+            let tsx = format!("{}/{}.tsx", examples_dir, name);
+            if !file_exists(&tsx) {
+                if !ex.reason.is_empty() {
+                    exempt += 1;
+                    continue;
+                }
+                eprintln!(
+                    "FAIL [{}]: snapshot demo has no example tsx and no exemption",
+                    name
+                );
+                fail += 1;
+                continue;
+            }
+            let sa = match oracle_canon(name) {
+                Ok(v) => v,
+                Err(e) => {
+                    if !ex.reason.is_empty() {
+                        exempt += 1;
+                        continue;
+                    }
+                    let msg = e.splitn(2, '\n').next().unwrap_or("").to_string();
+                    if mode == "classify" {
+                        bucket_of(&format!("RENDER-FAIL {}", msg), name, &mut buckets);
+                        failures.push(FailureRec {
+                            name: name.clone(),
+                            page: pf.trim_end_matches(".json").to_string(),
+                            kind: "render".to_string(),
+                            signature: String::new(),
+                            error: msg,
+                        });
+                    } else {
+                        eprintln!(
+                            "FAIL [{}]: oracle build/render failed — {} (add an exemption with a reason if unfixable)",
+                            name, msg
+                        );
+                    }
+                    fail += 1;
+                    continue;
+                }
+            };
+            let sb = canon_of(page_ref.ok_or("no page")?, upstream_html)?;
+            if sa == sb {
+                pass += 1;
+            } else {
+                if mode == "classify" {
+                    let s = sig(&sa, &sb);
+                    bucket_of(&s, name, &mut buckets);
+                    failures.push(FailureRec {
+                        name: name.clone(),
+                        page: pf.trim_end_matches(".json").to_string(),
+                        kind: "diff".to_string(),
+                        signature: s,
+                        error: String::new(),
+                    });
+                } else {
+                    eprintln!("FAIL [{}]: oracle != upstream snapshot", name);
+                }
+                fail += 1;
+            }
+            if !ex.reason.is_empty() {
+                stale_exemptions.push(name.clone());
+            }
+        }
+    }
+    let mut exit = 0;
+    if !stale_exemptions.is_empty() {
+        eprintln!(
+            "FAIL  example-golden: stale exemptions (rendered fine, remove them): {}",
+            stale_exemptions.join(", ")
+        );
+        exit = 1;
+    }
+    if mode == "classify" {
+        let mut out = String::from("[");
+        for (i, f) in failures.iter().enumerate() {
+            if i > 0 {
+                out.push(',');
+            }
+            out.push_str(&format!(
+                "\n {{\n  \"name\": {},\n  \"page\": {},\n  \"kind\": {},{}\n  \"error\": {}\n }}",
+                crate::jsonorder::json_string(&f.name),
+                crate::jsonorder::json_string(&f.page),
+                crate::jsonorder::json_string(&f.kind),
+                if f.signature.is_empty() {
+                    String::new()
+                } else {
+                    format!("  \"signature\": {},", crate::jsonorder::json_string(&f.signature))
+                },
+                crate::jsonorder::json_string(&f.error)
+            ));
+        }
+        out.push_str("\n]\n");
+        std::fs::create_dir_all(tmp).map_err(|e| e.to_string())?;
+        std::fs::write(format!("{}/failures.json", tmp), out).map_err(|e| e.to_string())?;
+        println!(
+            "classify: {} pass, {} fail, {} exempt ({} recorded to {}/failures.json)",
+            pass,
+            fail,
+            exempt,
+            failures.len(),
+            tmp
+        );
+        let mut keys: Vec<&String> = buckets.keys().collect();
+        keys.sort_by(|a, b| buckets[*b].len().cmp(&buckets[*a].len()));
+        for k in keys {
+            println!(
+                "\n{:>4}×  {}\n     {}",
+                buckets[k].len(),
+                k,
+                buckets[k].join(", ")
+            );
+        }
+        if fail > 0 {
+            exit = 1;
+        }
+    } else if fail > 0 {
+        eprintln!(
+            "FAIL  example-golden ({} failed, {} passed, {} exempt)",
+            fail, pass, exempt
+        );
+        exit = 1;
+    } else if exit == 0 {
+        println!(
+            "PASS  example-golden ({} == upstream snapshot, {} exempt)",
+            pass, exempt
+        );
+    }
+    Ok(())
+}

@@ -1,0 +1,29 @@
+[package]
+name = "pipeline"
+version = "0.1.0"
+edition = "2024"
+
+# shadless-rs — Rust port of shadless/pipeline (the graph runner + converters).
+# Byte-identity with the Go binary is the acceptance bar; see PLAN.md.
+
+[dependencies]
+sha2 = "0.10"
+hex = "0.4"
+regex = "1"
+walkdir = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order"] }
+tempfile = "3"
+markup5ever_rcdom = "0.39.0"
+html5ever = "0.39.0"
+
+[[bin]]
+name = "pipeline"
+path = "src/main.rs"
+
+[lib]
+name = "pipeline"
+path = "src/lib.rs"
+
+[profile.release]
+debug = true

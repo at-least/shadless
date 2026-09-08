@@ -1,0 +1,8 @@
+GATE  pin             [fast]
+build build-js        [fast]
+build convert         [full]  needs: pin, build-js
+build emit            [full]  needs: convert, build-js
+build example-oracle  [full]  needs: emit, build-js
+GATE  overlay         [full (self fast)]  needs: convert, example-oracle
+
+6 nodes (2 gates)
