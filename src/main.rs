@@ -339,12 +339,6 @@ fn run_keys() -> Result<(), String> {
     Ok(())
 }
 
-fn not_ported(cmd: &str) -> ! {    eprintln!(
-        "pipeline: {} is not ported yet in shadless-rs (see PLAN.md milestones)",
-        cmd
-    );
-    std::process::exit(2);
-}
 
 fn has_flag(args: &[String], flag: &str) -> bool {
     args.iter().any(|a| a == flag)
