@@ -110,11 +110,7 @@ fn run_rtl_dict_at(root: &Path) -> i32 {
             Ok(l) => Some(l),
             Err(e) => {
                 if !e.contains("no translations") {
-                    failures.push(format!(
-                        "{}: {}",
-                        name,
-                        e.split('\n').next().unwrap_or("")
-                    ));
+                    failures.push(format!("{}: {}", name, e.split('\n').next().unwrap_or("")));
                     continue;
                 }
                 None
@@ -322,7 +318,11 @@ fn parse_lang_object(
     loop {
         i = skip_ws(src, i);
         if i >= src.len() {
-            return (None, 0, Some("unterminated translations object".to_string()));
+            return (
+                None,
+                0,
+                Some("unterminated translations object".to_string()),
+            );
         }
         if src.as_bytes()[i] == b'}' {
             return (Some(out), i + 1, None);
@@ -603,19 +603,43 @@ fn decode_js_string(raw: &str) -> Result<String, String> {
                     return Err("short \\u escape".to_string());
                 }
                 let hi = (i + 6).min(b.len());
-                let window = &raw[i + 2..hi];
-                let hex: String = window
-                    .chars()
-                    .take_while(|c| c.is_ascii_hexdigit())
-                    .collect();
-                if hex.is_empty() {
-                    return Err(format!(
-                        "bad \\u escape {}",
-                        go_quote_bytes(&b[i..hi])
-                    ));
+                let window = &b[i + 2..hi];
+                // Go's Sscanf %04x over this exact 4-byte window: skip
+                // leading whitespace, optional sign, then hex digits until
+                // the first non-hex byte. Zero hex digits is an error.
+                let mut j = 0;
+                while j < window.len()
+                    && matches!(window[j], b' ' | b'\t' | b'\n' | b'\r' | 0x0b | 0x0c)
+                {
+                    j += 1;
                 }
-                let cp = u32::from_str_radix(&hex, 16).expect("hex digits");
+                let neg = if j < window.len() && window[j] == b'-' {
+                    j += 1;
+                    true
+                } else {
+                    if j < window.len() && window[j] == b'+' {
+                        j += 1;
+                    }
+                    false
+                };
+                let k0 = j;
+                while j < window.len() && window[j].is_ascii_hexdigit() {
+                    j += 1;
+                }
+                if j == k0 {
+                    return Err(format!("bad \\u escape {}", go_quote_bytes(&b[i..hi])));
+                }
+                let hex = std::str::from_utf8(&window[k0..j]).expect("hex digits are ASCII");
+                let mut cp = u32::from_str_radix(hex, 16).expect("hex digits");
+                if neg {
+                    cp = cp.wrapping_neg();
+                }
+                // Go writes rune(cp); an invalid rune becomes U+FFFD
                 out.push(char::from_u32(cp).unwrap_or('\u{FFFD}'));
+                // Go bug-compat: i += 6 unconditionally — any non-hex bytes
+                // inside the 4-byte window are consumed too (probed against
+                // the Go binary: "a\u12zzb" decodes to "a\x12b", not
+                // "a\x12zzb"). Do not "fix" this.
                 i += 6;
                 continue;
             }
@@ -793,7 +817,12 @@ mod tests {
     #[test]
     fn decode_js_string_cases() {
         let cases: Vec<(&str, &str, &str, bool)> = vec![
-            ("no backslash: fast path returns raw unchanged", "plain text", "plain text", false),
+            (
+                "no backslash: fast path returns raw unchanged",
+                "plain text",
+                "plain text",
+                false,
+            ),
             ("newline", "a\\nb", "a\nb", false),
             ("tab", "a\\tb", "a\tb", false),
             ("carriage return", "a\\rb", "a\rb", false),
@@ -805,14 +834,35 @@ mod tests {
             ("trailing backslash", "a\\", "", true),
             ("short \\u escape", "a\\u12", "", true),
             ("unsupported escape", "a\\zb", "", true),
+            // Go's Sscanf %04x over the 4-byte window: leading whitespace is
+            // skipped, a sign is accepted, hex stops at the first non-hex
+            // byte, and zero hex digits is an error. The loop then advances
+            // i += 6 unconditionally, so any non-hex bytes inside the window
+            // are consumed too.
+            ("\\u with leading space", "a\\u 123b", "a\u{123}b", false),
+            ("\\u with sign", "a\\u-123b", "a\u{FFFD}b", false),
+            ("\\u stops at non-hex", "a\\u12zzb", "a\u{12}b", false),
+            ("\\u no hex digits", "a\\uzzzzb", "", true),
         ];
         for (name, input, want, want_err) in cases {
             let got = decode_js_string(input);
             if want_err {
-                assert!(got.is_err(), "{}: decode_js_string({:?}) = {:?}, want an error", name, input, got);
+                assert!(
+                    got.is_err(),
+                    "{}: decode_js_string({:?}) = {:?}, want an error",
+                    name,
+                    input,
+                    got
+                );
                 continue;
             }
-            assert_eq!(got, Ok(want.to_string()), "{}: decode_js_string({:?})", name, input);
+            assert_eq!(
+                got,
+                Ok(want.to_string()),
+                "{}: decode_js_string({:?})",
+                name,
+                input
+            );
         }
     }
 
@@ -825,7 +875,13 @@ mod tests {
         let (langs, next, err) = parse_lang_object(&tsx::string_literals(src), src, 0);
         assert!(err.is_none(), "unexpected error: {:?}", err);
         let langs = langs.expect("langs");
-        assert_eq!(next, src.len(), "next = {}, want {} (end of object)", next, src.len());
+        assert_eq!(
+            next,
+            src.len(),
+            "next = {}, want {} (end of object)",
+            next,
+            src.len()
+        );
         assert_eq!(langs.names, vec!["en", "ar"]);
         assert_eq!(langs.dir["en"], "ltr");
         assert_eq!(langs.dir["ar"], "rtl");
@@ -833,15 +889,30 @@ mod tests {
         assert_eq!(en_vals.keys, vec!["title", "greeting"]);
         assert_eq!(en_vals.vals["title"], "Title");
         assert_eq!(en_vals.vals["greeting"], "Hi");
-        assert!(langs.values["ar"].keys.is_empty(), "ar values should be empty");
+        assert!(
+            langs.values["ar"].keys.is_empty(),
+            "ar values should be empty"
+        );
 
         let padded = format!("{{,{}", " ".repeat(25));
         let err_cases: Vec<(&str, &str, &str)> = vec![
-            ("unterminated object", "{", "unterminated translations object"),
+            (
+                "unterminated object",
+                "{",
+                "unterminated translations object",
+            ),
             // padded well past the error's own (unguarded) src[i:i+20] slice
             ("missing key", &padded, "expected identifier key"),
-            ("missing colon after key", "{ en }", "expected ':' after \"en\""),
-            ("value not an object literal", "{ en: \"x\" }", "as value of \"en\""),
+            (
+                "missing colon after key",
+                "{ en }",
+                "expected ':' after \"en\"",
+            ),
+            (
+                "value not an object literal",
+                "{ en: \"x\" }",
+                "as value of \"en\"",
+            ),
         ];
         for (name, src, want_substr) in err_cases {
             let (_, _, err) = parse_lang_object(&tsx::string_literals(src), src, 0);
@@ -866,7 +937,11 @@ mod tests {
         let (vals, next, err) = parse_values(&tsx::string_literals(src), src, 0);
         assert!(err.is_none(), "unexpected error: {:?}", err);
         assert_eq!(next, src.len(), "next = {}, want {}", next, src.len());
-        assert_eq!(vals.keys, vec!["a", "b"], "duplicate key must not append twice");
+        assert_eq!(
+            vals.keys,
+            vec!["a", "b"],
+            "duplicate key must not append twice"
+        );
         assert_eq!(vals.vals["a"], "z", "last write wins");
         assert_eq!(vals.vals["b"], "y");
 
@@ -877,13 +952,17 @@ mod tests {
 
         let (_, _, err) = parse_values(&[], "{", 0);
         assert!(
-            err.as_ref().expect("error").contains("unterminated values object"),
+            err.as_ref()
+                .expect("error")
+                .contains("unterminated values object"),
             "unterminated: error = {:?}",
             err
         );
         let (_, _, err) = parse_values(&[], "{ a }", 0);
         assert!(
-            err.as_ref().expect("error").contains("expected ':' after value key \"a\""),
+            err.as_ref()
+                .expect("error")
+                .contains("expected ':' after value key \"a\""),
             "missing colon: error = {:?}",
             err
         );
@@ -891,7 +970,9 @@ mod tests {
         // through): spans intentionally empty even though the source has one.
         let (_, _, err) = parse_values(&[], "{ \"a\": \"x\" }", 0);
         assert!(
-            err.as_ref().expect("error").contains("no string literal at"),
+            err.as_ref()
+                .expect("error")
+                .contains("no string literal at"),
             "quoted key, no span: error = {:?}",
             err
         );

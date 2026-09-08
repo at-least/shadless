@@ -34,6 +34,18 @@ fn golden_matrix_replays() {
         eprintln!("skip: no shadless tree next to the crate (set SHADLESS_ROOT)");
         return;
     };
+    // The recorded goldens were captured on a BUILT tree: several `inputs`
+    // cases glob build/ artifacts (build/rtl-langs.json, build/resolved-ui).
+    // On a fresh checkout those files are absent and the replay diverges for
+    // an environmental reason, not a porting one — say so instead of failing
+    // green-looking red.
+    if !root.join("build/rtl-langs.json").exists() {
+        eprintln!(
+            "skip: build/rtl-langs.json missing under {} — the golden matrix was recorded on a built tree; run the build chain (or tests/gen_golden.sh) first",
+            root.display()
+        );
+        return;
+    }
     let golden = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/golden");
     let Ok(entries) = std::fs::read_dir(&golden) else {
         panic!("no golden matrix under tests/golden — run tests/gen_golden.sh first");

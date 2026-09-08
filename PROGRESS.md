@@ -347,3 +347,24 @@ ir_diff 61/61、dist_diff 268/268 ×3。
 - build/rtl-langs.json 是 build-rtl 產物(非 committed),本輪以 RS build-rtl
   重新生成;golden 矩陣因此重錄(go.out 與 rs.out 同步更新)。
 - Go repo 的 pipeline/pipeline 二進位仍為重建版(該 repo 顯示 M)。
+
+## upstream drill 實跑驗證(2026-09-08,advisor 要求)
+
+- 4 份 scratch 副本(node_modules symlink、.upstream git 完整),Go 與 RS 各跑
+  `upstream --to=shadcn@4.19.0`(same-tag self-test,完整 tier 含瀏覽器 gates,
+  各 ~14 分鐘)。
+- **成功路徑**:stdout 逐行多集比對,唯一差異是計時值(go test 自身秒數、
+  runner wall-clock 836.5s vs 836.7s)與並發完成順序;pin.json、ledger.json、
+  overlays/manifest.json、upstream-report.md(除計時行)全同;兩側 .upstream
+  同 commit、working tree 皆乾淨。stamps 差異是 scratch 路徑嵌入
+  shadless.html(環境性)。
+- **失敗路徑**(--to=shadcn@9.99.99):抓出一個真 bug——Go cmd.Output() 的
+  錯誤是 exec.ExitError("exit status 1"),不是 git stderr;RS 原本印了
+  pathspec 訊息。已修(up_git 回 exit status N),修後程式輸出位元組一致、
+  兩樹零差異(rollback-on-error 正確)。
+- oracle-css 計時行改為機械化驗證:tests/oracle_css.rs 對 Go/RS 各跑一次,
+  剝除 `Done in Xms` 後比對 stdout/stderr/exit,並比對 oracle.css 與
+  oracle.entry.css 位元組(跑前快照、跑後還原)。
+- golden.rs 加 build/rtl-langs.json 前置檢查:未建樹時 skip 並說明,不再
+  環境性紅。
+- cargo clean 後全新 release build + 全測試:113+1+1 綠。

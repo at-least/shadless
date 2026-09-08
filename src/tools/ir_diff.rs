@@ -146,7 +146,9 @@ fn slots_of(ir: &IrComponent) -> (HashMap<String, OrderedSet>, Vec<String>) {
             }
             let joined = e.classes.as_deref().unwrap_or(&[]).join(" ");
             for tok in joined.split_whitespace() {
-                m.get_mut(slot).expect("inserted above").add(tok.to_string());
+                m.get_mut(slot)
+                    .expect("inserted above")
+                    .add(tok.to_string());
             }
         }
     }
@@ -160,13 +162,68 @@ fn js_string(v: &Value) -> String {
         Value::Null => "undefined".to_string(),
         Value::String(s) => s.clone(),
         Value::Number(n) => {
-            if let Some(i) = n.as_i64() {
-                i.to_string()
+            // Go's json.Unmarshal decodes every JSON number into float64, so
+            // the comparison is float64-based: x == float64(int64(x)) — the
+            // int64 conversion WRAPS out-of-range values, so the %d branch
+            // fires exactly for integral x in [-2^63, 2^63). serde_json's
+            // as_i64 is not equivalent (it returns None for float-typed
+            // numbers and Some for integer literals > 2^53), so route
+            // everything through f64.
+            let f = n.as_f64().unwrap_or(0.0);
+            if f.fract() == 0.0 && f >= -9223372036854775808.0 && f < 9223372036854775808.0 {
+                format!("{}", f as i64)
             } else {
-                format!("{}", n.as_f64().unwrap_or(0.0))
+                go_g_shortest(f)
             }
         }
         other => format!("{}", other),
+    }
+}
+
+/// go_g_shortest renders a float64 the way Go's %v does: shortest digits
+/// that round-trip, %e form when the decimal exponent is < -4 or >= 6,
+/// plain decimal otherwise. Rust's {} never uses exponent notation, so the
+/// exponent form is built from {:e}'s shortest mantissa and exponent.
+/// Go bug-compat: the exponent is zero-padded to at least two digits with
+/// an always-present sign ("1e-07", "1.5e+100") — do not "fix" this.
+fn go_g_shortest(x: f64) -> String {
+    if x == 0.0 {
+        return "0".to_string();
+    }
+    let e = format!("{:e}", x); // shortest round-trip, e.g. "-1.23456789123e8"
+    let (mantissa, exp) = e.split_once('e').expect("{:e} has an exponent");
+    let (sign, digits) = match mantissa.strip_prefix('-') {
+        Some(d) => ("-", d),
+        None => ("", mantissa),
+    };
+    let digits: String = digits.chars().filter(|c| *c != '.').collect();
+    let exp: i32 = exp.parse().expect("exponent is an integer");
+    if exp < -4 || exp >= 6 {
+        // %e form: d.ddde±XX — sign always present, exponent zero-padded to
+        // at least two digits
+        let (d0, rest) = digits.split_at(1);
+        let mant = if rest.is_empty() {
+            d0.to_string()
+        } else {
+            format!("{}.{}", d0, rest)
+        };
+        let (esign, eabs) = if exp < 0 { ("-", -exp) } else { ("+", exp) };
+        format!("{}{}e{}{:02}", sign, mant, esign, eabs)
+    } else {
+        // %f form: decimal point at exp+1
+        let point = exp + 1;
+        let s = if point <= 0 {
+            format!("0.{}{}", "0".repeat((-point) as usize), digits)
+        } else if (point as usize) < digits.len() {
+            format!(
+                "{}.{}",
+                &digits[..point as usize],
+                &digits[point as usize..]
+            )
+        } else {
+            format!("{}{}", digits, "0".repeat(point as usize - digits.len()))
+        };
+        format!("{}{}", sign, s)
     }
 }
 
@@ -327,7 +384,9 @@ fn diff_ir(before: &IrSet, after: &IrSet) -> (Vec<String>, HashMap<String, IrEnt
                 }
             }
             for ax in sorted_keys(&ca.variants) {
-                let Some(vb) = cb.variants.get(&ax) else { continue };
+                let Some(vb) = cb.variants.get(&ax) else {
+                    continue;
+                };
                 let va = &ca.variants[&ax];
                 let mut s_a = OrderedSet::new();
                 let mut s_b = OrderedSet::new();
@@ -448,10 +507,9 @@ fn render_ir_diff(order: &[String], components: &HashMap<String, IrEntry>) -> St
                         0
                     )
                 ),
-                "cva-default" => format!(
-                    "cva {}.{} default {} -> {}",
-                    c.table, c.axis, c.from, c.to
-                ),
+                "cva-default" => {
+                    format!("cva {}.{} default {} -> {}", c.table, c.axis, c.from, c.to)
+                }
                 "cva-value-classes" => {
                     format!("cva {}.{}={} classes changed", c.table, c.axis, c.value)
                 }
@@ -682,17 +740,127 @@ mod tests {
         let w = &components["widget"];
         assert_eq!(w.kind, "changed");
         let want: Vec<WantChange> = vec![
-            WantChange { what: "tier", slot: "", table: "", axis: "", value: "", from: "core", to: "extended", added: None, removed: None },
-            WantChange { what: "slot-added", slot: "label", table: "", axis: "", value: "", from: "", to: "", added: None, removed: None },
-            WantChange { what: "slot-removed", slot: "icon", table: "", axis: "", value: "", from: "", to: "", added: None, removed: None },
-            WantChange { what: "classes", slot: "root", table: "", axis: "", value: "", from: "", to: "", added: Some(vec!["px-2"]), removed: Some(vec!["gap-2"]) },
-            WantChange { what: "cva-added", slot: "", table: "shape", axis: "", value: "", from: "", to: "", added: None, removed: None },
-            WantChange { what: "cva-removed", slot: "", table: "color", axis: "", value: "", from: "", to: "", added: None, removed: None },
-            WantChange { what: "cva-axis-added", slot: "", table: "variant", axis: "state", value: "", from: "", to: "", added: Some(vec!["active"]), removed: None },
-            WantChange { what: "cva-axis-removed", slot: "", table: "variant", axis: "tone", value: "", from: "", to: "", added: None, removed: None },
-            WantChange { what: "cva-values", slot: "", table: "variant", axis: "size", value: "", from: "", to: "", added: Some(vec!["xl"]), removed: None },
-            WantChange { what: "cva-value-classes", slot: "", table: "variant", axis: "size", value: "sm", from: "", to: "", added: None, removed: None },
-            WantChange { what: "cva-default", slot: "", table: "variant", axis: "size", value: "", from: "sm", to: "lg", added: None, removed: None },
+            WantChange {
+                what: "tier",
+                slot: "",
+                table: "",
+                axis: "",
+                value: "",
+                from: "core",
+                to: "extended",
+                added: None,
+                removed: None,
+            },
+            WantChange {
+                what: "slot-added",
+                slot: "label",
+                table: "",
+                axis: "",
+                value: "",
+                from: "",
+                to: "",
+                added: None,
+                removed: None,
+            },
+            WantChange {
+                what: "slot-removed",
+                slot: "icon",
+                table: "",
+                axis: "",
+                value: "",
+                from: "",
+                to: "",
+                added: None,
+                removed: None,
+            },
+            WantChange {
+                what: "classes",
+                slot: "root",
+                table: "",
+                axis: "",
+                value: "",
+                from: "",
+                to: "",
+                added: Some(vec!["px-2"]),
+                removed: Some(vec!["gap-2"]),
+            },
+            WantChange {
+                what: "cva-added",
+                slot: "",
+                table: "shape",
+                axis: "",
+                value: "",
+                from: "",
+                to: "",
+                added: None,
+                removed: None,
+            },
+            WantChange {
+                what: "cva-removed",
+                slot: "",
+                table: "color",
+                axis: "",
+                value: "",
+                from: "",
+                to: "",
+                added: None,
+                removed: None,
+            },
+            WantChange {
+                what: "cva-axis-added",
+                slot: "",
+                table: "variant",
+                axis: "state",
+                value: "",
+                from: "",
+                to: "",
+                added: Some(vec!["active"]),
+                removed: None,
+            },
+            WantChange {
+                what: "cva-axis-removed",
+                slot: "",
+                table: "variant",
+                axis: "tone",
+                value: "",
+                from: "",
+                to: "",
+                added: None,
+                removed: None,
+            },
+            WantChange {
+                what: "cva-values",
+                slot: "",
+                table: "variant",
+                axis: "size",
+                value: "",
+                from: "",
+                to: "",
+                added: Some(vec!["xl"]),
+                removed: None,
+            },
+            WantChange {
+                what: "cva-value-classes",
+                slot: "",
+                table: "variant",
+                axis: "size",
+                value: "sm",
+                from: "",
+                to: "",
+                added: None,
+                removed: None,
+            },
+            WantChange {
+                what: "cva-default",
+                slot: "",
+                table: "variant",
+                axis: "size",
+                value: "",
+                from: "sm",
+                to: "lg",
+                added: None,
+                removed: None,
+            },
         ];
         assert_eq!(
             w.changes.len(),
@@ -700,17 +868,19 @@ mod tests {
             "widget.Changes has {} entries, want {}: {:?}",
             w.changes.len(),
             want.len(),
-            w.changes
-                .iter()
-                .map(|c| c.what.clone())
-                .collect::<Vec<_>>()
+            w.changes.iter().map(|c| c.what.clone()).collect::<Vec<_>>()
         );
         for (i, c) in w.changes.iter().enumerate() {
             assert!(
                 want[i].matches(c),
                 "change[{}] = {:?}, want {:?}",
                 i,
-                (c.what.clone(), c.slot.clone(), c.table.clone(), c.axis.clone()),
+                (
+                    c.what.clone(),
+                    c.slot.clone(),
+                    c.table.clone(),
+                    c.axis.clone()
+                ),
                 want[i].what
             );
         }
@@ -728,8 +898,16 @@ mod tests {
             b.add(x.to_string());
         }
         let (added, removed) = set_diff(&a, &b);
-        assert_eq!(added, vec!["b", "a"], "insertion order (sorted would be [a b])");
-        assert_eq!(removed, vec!["z", "q"], "insertion order (sorted would be [q z])");
+        assert_eq!(
+            added,
+            vec!["b", "a"],
+            "insertion order (sorted would be [a b])"
+        );
+        assert_eq!(
+            removed,
+            vec!["z", "q"],
+            "insertion order (sorted would be [q z])"
+        );
     }
 
     /// jsString mirrors JS String(): undefined for a missing (null) cva value,
@@ -745,6 +923,41 @@ mod tests {
         ];
         for (v, want) in cases {
             assert_eq!(js_string(&v), want, "js_string({:?})", v);
+        }
+    }
+
+    /// Go %v on a non-integral float is shortest-%g: exponent form when the
+    /// decimal exponent is < -4 or >= 6, plain decimal otherwise. Rust's {}
+    /// never uses exponent notation, so this pins the ported rule against
+    /// values probed from the Go binary.
+    #[test]
+    fn js_string_float_g_format() {
+        let cases: Vec<(f64, &str)> = vec![
+            (0.0001, "0.0001"),
+            (0.00001, "1e-05"),
+            (1e5, "100000"),
+            (1e6, "1000000"), // integral: Go's %d branch, not %v
+            (1e21, "1e+21"),
+            (1e-7, "1e-07"),
+            (123456789.123, "1.23456789123e+08"),
+            (0.30000000000000004, "0.30000000000000004"),
+            (1.5e6, "1500000"), // integral: Go's %d branch, not %v
+            (1.5e-5, "1.5e-05"),
+            (9999999.0, "9999999"), // integral: Go's %d branch, not %v
+            (0.00009999, "9.999e-05"),
+            (5e-324, "5e-324"),
+            (1.7976931348623157e308, "1.7976931348623157e+308"),
+            (1e100, "1e+100"),
+            (1e-100, "1e-100"),
+            (123456789012345678901.0, "1.2345678901234568e+20"),
+            (0.00000000000000000001, "1e-20"),
+            // integral values beyond i64: Go's int64 conversion wraps, the
+            // equality fails, and %v (shortest-%g) prints
+            (9223372036854775808.0, "9.223372036854776e+18"),
+            (1e19, "1e+19"),
+        ];
+        for (x, want) in cases {
+            assert_eq!(js_string(&serde_json::json!(x)), want, "js_string({:?})", x);
         }
     }
 }

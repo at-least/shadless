@@ -31,7 +31,12 @@ fn up_git(root: &Path, args: &[&str]) -> Result<String, String> {
         .output()
         .map_err(|e| e.to_string())?;
     if !out.status.success() {
-        return Err(String::from_utf8_lossy(&out.stderr).trim().to_string());
+        // Go cmd.Output() returns the *exec.ExitError, whose %v is
+        // "exit status N" — the git stderr text never reaches the caller.
+        return Err(format!(
+            "exit status {}",
+            out.status.code().unwrap_or(-1)
+        ));
     }
     Ok(String::from_utf8_lossy(&out.stdout).trim().to_string())
 }
@@ -283,7 +288,7 @@ fn drill_repin(root: &Path, to: &str, args: &[String], from: &PinFile, rep: &mut
         }
     }
     if let Err(e) = up_git(root, &["checkout", "--quiet", to]) {
-        eprintln!("cannot checkout {}: {}  (try --fetch)\n", to, e);
+        eprintln!("cannot checkout {}: {}  (try --fetch)", to, e);
         return 1;
     }
     if let Err(e) = copy_tree(
