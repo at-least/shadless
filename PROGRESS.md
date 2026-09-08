@@ -278,3 +278,15 @@ MenuOrSelect 空 trigger 跳過、nav click 改真實滑鼠事件。)
 ### 環境註記
 - shadless Go repo 的 pipeline/pipeline 二進位已用其 committed source 重建
   (原二進位過舊、無 contract 指令)→ 該 repo `git status` 顯示此檔 M。
+
+## example-fixture self-test 收斂(2026-09-08,本輪)
+
+- RS `example-fixture --check`:**PASS 105/105**(「105 interactive pages ==
+  committed, open/close self-verified」,exit 0)——生成層、committed 比對、
+  open/close 自檢、api 句柄檢查、page-error 檢查全綠。
+- Go 二進位同旗標同樹:PASS 105/105,輸出與 RS 一致(同一行 PASS 文本)。
+- 先前 navigation-menu-demo 的 locator.click timeout 為**負載誘發 flake**:
+  當時 RS 跑 self-test 的同時有 cargo build / go build / contracts 全量在跑
+  (runner 單頁長流程 + 機器高載 → CDP 動作性等待窗被拉爆);安靜機器上連續
+  綠。不加 fresh-page 偏差,維持與 Go 完全相同的單頁長流程語意。
+- EF_DEBUG 探針保留在碼中但無 env 時完全惰性。
