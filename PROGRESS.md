@@ -452,3 +452,31 @@ docs-fidelity/interactivity-sweep 轉綠。
   usage 文案分叉等)。
 - 環境註記:goldens 的 status 案例與真樹 stamps 狀態耦合——在真樹上跑過引擎後
   先重跑 gen_golden 再跑 cargo test(與既有 dist 陷阱同類)。
+
+## parity WARN 收尾(2026-09-09,第二輪)
+
+三個 WARN 的最終處置,全部結案:
+
+1. **docs-smoke(index.html article missing/empty)——真產品 bug,已修**。
+   根因:67621cd 遷 Zola 時舊 vitezola 主題首頁渲染 `<div class="VPHome">`,
+   smoke 的 render 檢查以 `.VPHome` 為首頁 fallback;ba179f1 換成復刻
+   ui.shadcn.com DOM 的自製主題後,首頁改渲染 `<section class="home-hero">`,
+   檢查沒跟著更新——60 個內頁走 `.vp-doc` 全過,只有 index 紅,雙引擎同輸出
+   (移植忠實,上游 stale check)。修法:檢查選擇器 `.VPHome` → `.home-hero`
+   (advisor 確認 check 側修、且直接刪死選擇器不留 alternation;全庫僅此一處
+   引用,無測試/golden 釘住)。Go pipeline/docs_smoke.go 與 RS
+   src/tools/docs_smoke.rs 同步修改,雙引擎 stdout/stderr/exit 位元組一致,
+   `docs verify (61 pages, 0 console errors)` 雙綠;圖級 `run docs-smoke` 綠。
+   教訓:`go build -C pipeline -o build/pipeline` 的 -o 相對 -C 目錄解析——
+   少寫 `../` 時新二進位落在 pipeline/build/ 下,跑到的仍是舊 binary(本輪
+   「修了還紅」的假象來源;以 pipeline/build/ 誤產物已刪)。
+2. **reproducible(dist/out.css stale)——已按上游先例重新生成並提交上游**。
+   機制同 parity 記錄:globals.css 是 source(none)+@source 白名單,白名單
+   九個目錄逐一 grep 證實無任何 `invisible` 引用,dist/demos/docs 也無頁面
+   使用該 class——committed out.css 的 `.invisible`(3 行)是 stale 殘留,
+   fresh tw(雙引擎)一致地不再產出。按上游 29e7368「regenerate out.css」
+   同款處置,重新生成的 dist/out.css 已提交上游(bd194f6;check 修復為
+   38830ae),reproducible 恢復恆綠(此前每輪 parity/run 後都要手動
+   git checkout 的循環到此為止)。
+3. **style-parity(24 格 dialog/dialog-close presence)——S3 已結案**
+   (狀態相依,完整圖中轉綠,見上方 S3 總結;非產品 bug)。

@@ -220,7 +220,7 @@ func runDocsSmoke(all bool) int {
           { acceptNode: (n) => (n.parentElement.closest('pre, code') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT) })
         let visible = ''
         for (; walker.nextNode();) visible += walker.currentNode.data + '\n'
-        const home = document.querySelector('.VPHome')
+        const home = document.querySelector('.home-hero')
         return { rendered: (!!article && text.length > 0) || !!home, leaks: visible.match(/Component(Preview|Source)\b/g) ?? [] }
       }`)
 			if f == "index.html" {

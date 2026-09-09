@@ -302,7 +302,7 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
           { acceptNode: (n) => (n.parentElement.closest('pre, code') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT) })
         let visible = ''
         for (; walker.nextNode();) visible += walker.currentNode.data + '\n'
-        const home = document.querySelector('.VPHome')
+        const home = document.querySelector('.home-hero')
         return { rendered: (!!article && text.length > 0) || !!home, leaks: visible.match(/Component(Preview|Source)\b/g) ?? [] }
       }"#,
             );
