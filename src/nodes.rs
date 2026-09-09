@@ -1209,6 +1209,89 @@ mod self_host_tests {
         }
     }
 
+    /// Remove `#[test]`- and `#[cfg(test)]`-attributed brace blocks: test
+    /// code does not compile into the shipped binary, so its includes are
+    /// exempt from the fingerprint-coverage audit.
+    fn strip_test_attributed_items(text: &str) -> String {
+        let mut out = String::with_capacity(text.len());
+        let mut rest = text;
+        loop {
+            let Some(idx) = rest.find("#[test]").or_else(|| rest.find("#[cfg(test)]")) else {
+                out.push_str(rest);
+                break;
+            };
+            out.push_str(&rest[..idx]);
+            rest = &rest[idx..];
+            let end = rest.find('{').and_then(|b| {
+                let mut depth = 0;
+                for (off, ch) in rest[b..].char_indices() {
+                    match ch {
+                        '{' => depth += 1,
+                        '}' => {
+                            depth -= 1;
+                            if depth == 0 {
+                                return Some(b + off + 1);
+                            }
+                        }
+                        _ => {}
+                    }
+                }
+                None
+            });
+            match end {
+                Some(end) => {
+                    out.push(' ');
+                    rest = &rest[end..];
+                }
+                // attribute without a brace block (e.g. on a use item): keep
+                // scanning after the attribute itself
+                None => {
+                    out.push_str(rest.get(..14).unwrap_or(rest));
+                    rest = rest.get(14..).unwrap_or("");
+                }
+            }
+        }
+        out
+    }
+
+    /// Non-test `include_str!`/`include!`/`include_bytes!` paths must stay
+    /// inside `src/`: anything else compiled into the binary (probe assets,
+    /// files next to the crate) is invisible to every fingerprint group.
+    /// `#[test]`/`#[cfg(test)]` items are stripped first — test code does not
+    /// ship (the jsonorder Go-golden include and this file's build.rs pairing
+    /// read live there).
+    #[test]
+    fn product_includes_stay_inside_src() {
+        let src = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src");
+        let src_real = std::fs::canonicalize(&src).unwrap();
+        let include_re =
+            regex::Regex::new(r#"include(?:_str|_bytes)?!\(\s*"([^"]+)""#).unwrap();
+        for entry in walkdir::WalkDir::new(&src)
+            .into_iter()
+            .filter_map(|e| e.ok())
+            .filter(|e| e.file_type().is_file() && e.path().extension().map_or(false, |x| x == "rs"))
+        {
+            let path = entry.path();
+            let text = std::fs::read_to_string(path)
+                .unwrap_or_else(|e| panic!("{}: {}", path.display(), e));
+            let text = strip_test_attributed_items(&text);
+            for caps in include_re.captures_iter(&text) {
+                let found = &caps[1];
+                let target = path.parent().unwrap().join(found);
+                // canonicalize: lexical `..` after the src prefix would fool a
+                // component-wise starts_with. Unresolvable = fail closed.
+                let resolved = std::fs::canonicalize(&target);
+                assert!(
+                    resolved.as_ref().map(|p| p.starts_with(&src_real)).unwrap_or(false),
+                    "{}: `{found}` escapes src/ and compiles into the binary while being \
+                     hashed by no fingerprint group — move it under src/ (hashed by \
+                     its group) or into HULL_FILES",
+                    path.display()
+                );
+            }
+        }
+    }
+
     /// fp properties that document the granularity: same-entry nodes share a
     /// fp, different entries differ, and hull edits change everything
     /// (simulated by composing — the real hull-sensitivity is shell-verified
