@@ -23,3 +23,8 @@ pub mod rtl_dict;
 pub mod style_parity;
 pub mod upstream;
 pub mod upstream_snapshot;
+
+// The Oxc A/B experiment (PLAN.md「為什麼不是 Rolldown/Oxc」) is compiled
+// only under `--features oxc`; the default build never sees this module.
+#[cfg(feature = "oxc")]
+pub mod oxc_probe;

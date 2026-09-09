@@ -64,6 +64,17 @@ powering Vite 8+")。注意官網宣稱的是**功能對等(feature parity),不�
 掛 feature flag 作為 M4 之後的獨立實驗;oracle bundle(`api.Build` 處)若要移植,
 Rolldown/Oxc 在該點無位元組負擔,可先行。
 
+**實驗第一輪(2026-09-10,probe/oxc/REPORT.md)**:`__oxc-probe` 隱藏子命令
+(cargo feature `oxc`,optional deps oxc 0.149.0;預設建置與圖鍵零影響)對 M0
+同輸入(61 檔)A/B:esbuild CLI vs oxc parse→transform→codegen。結果
+**0/61 位元組一致;29 檔僅空白差異;32 檔真實分歧(export 語句順序、
+`undefined`→`void 0`、遮蔽綁定改名 `api→api2`)**——全部印表機/序層,
+且皆非 CodegenOptions 可配置項。路線 (a) transform 替換按預測判死
+(掃描器 regex 連改名形狀都消費);oracle bundle 點(無位元組負擔)仍開放。
+旗標機制定案:Cargo feature 只護實驗碼編譯,**圖行為旗標用群組內
+env/arg 閘**(Cargo feature 進 Cargo.toml = hull,切換即全圖 stale,
+違反隔離目的);oxc 依賴變更 Cargo.lock 屬一次性 hull 收斂,已付。
+
 ### DAG runner:為什麼自寫(已定案:本地 runner 為主要交付)
 
 使用者定案:本地 `pipeline run` 取代 Dagger 成為日常路徑;`.dagger` module 留給 CI 不動。

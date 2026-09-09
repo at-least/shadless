@@ -527,6 +527,24 @@ fn main() {
         // this binary so the gates it runs resolve __self__ correctly. An
         // optional argument narrows the run to one gate's mutations.
         "__meta" => std::process::exit(run_hidden_meta(&rest)),
+        // hidden: the Oxc A/B probe (PLAN.md「Oxc 替換」). Compiled only
+        // under --features oxc; never part of the graph.
+        #[cfg(feature = "oxc")]
+        "__oxc-probe" => match pipeline::tools::oxc_probe::run_oxc_probe(
+            &std::env::current_dir().unwrap_or_default(),
+            &rest,
+        ) {
+            Ok(code) => std::process::exit(code),
+            Err(e) => {
+                eprintln!("__oxc-probe: {e}");
+                std::process::exit(1);
+            }
+        },
+        #[cfg(not(feature = "oxc"))]
+        "__oxc-probe" => {
+            eprintln!("__oxc-probe: binary built without --features oxc");
+            std::process::exit(2);
+        }
         other => {
             eprintln!("unknown command: {}", other);
             std::process::exit(2);

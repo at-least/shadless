@@ -504,6 +504,11 @@ golden 台零影響。
   GROUP_DEPS 與實測引用一致、go-mirror/__keys/gate_parity/resolve_argv0
   無漂移、 dropping rerun-if-changed 正確(cargo 預設=任何 package 檔案
   變更即重跑 build script,是舊清單的超集)。
+- **新陷阱(實證)**:對 `target/release/pipeline` 重連結與正在跑的
+  `run` 並行 → 重連結的 unlink 窗口內子行程 `fork/exec` 撞 ENOENT,
+  該節點 FAIL、下游 51 節點 not reached(2026-09-10 demo-rtl 案例;
+  與 `__gate unit` 巢狀 cargo 同類,但這次連建置 runner 本身都算)。
+  run 進行中完全不要動 cargo。
 - **餘留(記錄,done-call 顧問要求)**:(1) 覆蓋測試只保證「src 下所有
   檔案都被雜湊」,不保證「非測試碼的 include_str!/include! 不伸出 src」
   ——未來若有人加超出 src 的 embed 會重演 reviewer 的洞;廉價跟進:
