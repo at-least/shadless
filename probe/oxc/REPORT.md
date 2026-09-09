@@ -50,11 +50,41 @@ runtime、`React.createElement`/`React.Fragment`)→ codegen(2 空格縮排、
   與 PLAN 預測一致:位元組契約(掃描器 regex 逐字消費輸出,連遮蔽
   改名 `api2` 這種形狀都餵進 regex)在 0/61 的現實下沒有旗標可救。
   export 順序與改名都不是 CodegenOptions 可配置項。
-- **路線 (c) oracle api.Bundle 點——仍開放**:該點輸出是暫存、無位元組
-  要求(驗收只看 oracle render 結果),oxc/rolldown 可行性不受本輪
-  結論影響。
+- **路線 (c) oracle api.Bundle 點——已實作並通過驗收(見下輪)**。
 - minify(`--minify --target=es2017`)尚未探:優先級低於以上判讀,
   同樣受位元組契約約束(dist/shadless.min.js 是 committed 產品)。
+
+## 第二輪:oracle bundle 點的 rolldown 替換(2026-09-10,通過)
+
+`src/oracle/oxc_bundle.rs`(cargo feature `oxc`)+ `SHADLESS_ORACLE_BUNDLER=oxc`
+運行時閘(閘在 oracle 群組內——Cargo feature 進 hull,切換即全圖 stale,
+違反隔離目的)。rolldown 1.2.8:`BundlerBuilder` → `BundlerOptions`
+(input/cwd/format=Iife/resolve.alias)→ `generate()` 取單一 JS chunk。
+
+與 esbuild 對齊的三件事(缺一即失敗,均由 227 頁驗收逼出):
+
+1. **alias 最長匹配優先**:alias 表含 `@` catch-all(指向 upstream app
+   目錄);oxc_resolver 走 webpack 語意「第一個符合者勝」,按鍵長度降序
+   餵入才等價於 esbuild 的最長匹配。
+2. **關閉 tsconfig 自動探測**(`TsConfig::Auto(false)`):rolldown 會沿
+   importer 樹自動發現 tsconfig.json 並套用其 paths——upstream app 的
+   `@/*` 映射壓過我們的 alias 表,把無法解析的 app 依賴(streamdown)
+   拖進 bundle → 頁面 ReferenceError。esbuild 不讀 tsconfig,故無此題。
+   (診斷線索:esbuild bundle 裡 `Markdown` 是 stub,rolldown bundle 卻
+   含 upstream markdown.tsx。)
+3. **NODE_ENV**:rolldown 對 Browser 平台自動定義 `process.env.NODE_ENV`
+   (非 minify → development),規則與 esbuild 相同,react 走同一分支,
+   無需 define。
+
+快取語意:oracle 快取為 Go/RS 兩引擎共用、key 必須與 Go 位元組同值,
+故 oxc 路徑使用**獨立**的 outfile(`bundle-<name>.oxc.js`)與 key 檔
+(`.key-<name>.oxc`),不污染共用快取;feature-less binary + 環境變數 +
+快取命中時會沿用既有 oxc bundle(實驗語意,可接受)。
+
+驗收:`SHADLESS_ORACLE_BUNDLER=oxc pipeline example-oracle --check`
+**PASS 227 pages == oracle render**;預設 esbuild 路徑同跑 PASS(無回歸)。
+bundle 大小對照(bubble-variants):esbuild 1,399,996 B vs rolldown
+約 1.14 MB(渲染結果等價,位元組本就不要求一致)。
 
 ## 基線(指紋隔離的前置,顧問要求)
 

@@ -148,6 +148,13 @@ pub fn oracle_aliases() -> Result<HashMap<String, String>, String> {
     Ok(a)
 }
 
+/// The experiment-only bundler switch: `SHADLESS_ORACLE_BUNDLER=oxc`. Lives
+/// inside the oracle group on purpose — a Cargo feature would sit in the
+/// hull and stale the whole graph on every toggle.
+fn oxc_bundler_requested() -> bool {
+    std::env::var("SHADLESS_ORACLE_BUNDLER").as_deref() == Ok("oxc")
+}
+
 /// Bundles the pinned example and writes the oracle page. Returns the
 /// htmlFile path — goto it, then await_oracle. The esbuild Build API call is
 /// realized through the pinned CLI with one repeated --alias:from=to flag per
@@ -193,35 +200,65 @@ try {{
 "##
     );
     std::fs::write(&entry, &entry_src).map_err(|e| e.to_string())?;
-    let outfile = cache.join(format!("bundle-{}.js", name));
-    let key_file = cache.join(format!(".key-{}", name));
+    // The oracle cache is shared between the Go and Rust engines ("one cache
+    // without ever reusing a bundle the other side would reject"), so the
+    // cache key must stay byte-identical with Go's. The experiment-only
+    // rolldown path therefore keeps its OWN outfile and key file (prefixed
+    // `oxc-`, so no `bundle-*.js` glob can ever sweep them up) and never
+    // touches the shared ones.
+    let use_oxc = oxc_bundler_requested();
+    if use_oxc && !cfg!(feature = "oxc") {
+        // gate before any cache lookup: a warm oxc cache must not make a
+        // feature-less binary silently serve rolldown bundles
+        return Err(
+            "SHADLESS_ORACLE_BUNDLER=oxc needs a binary built with --features oxc".to_string(),
+        );
+    }
+    let (outfile, key_file) = if use_oxc {
+        (
+            cache.join(format!("oxc-bundle-{}.js", name)),
+            cache.join(format!(".oxc-key-{}", name)),
+        )
+    } else {
+        (
+            cache.join(format!("bundle-{}.js", name)),
+            cache.join(format!(".key-{}", name)),
+        )
+    };
     let key = oracle_bundle_cache_key(name)?;
     let old_key = std::fs::read_to_string(&key_file).unwrap_or_default();
     if old_key != key {
         let aliases = oracle_aliases()?;
-        let mut argv: Vec<String> = vec![
-            entry.to_string_lossy().into_owned(),
-            "--bundle".into(),
-            "--format=iife".into(),
-            format!("--outfile={}", outfile.to_string_lossy()),
-            "--log-level=error".into(),
-            "--loader:.tsx=tsx".into(),
-            "--jsx=automatic".into(),
-        ];
-        let mut alias_keys: Vec<&String> = aliases.keys().collect();
-        alias_keys.sort();
-        for k in alias_keys {
-            argv.push(format!("--alias:{}={}", k, aliases[k]));
-        }
-        let out = std::process::Command::new(root.join("node_modules/.bin/esbuild"))
-            .args(&argv)
-            .current_dir(root)
-            .output()
-            .map_err(|e| format!("esbuild: {}", e))?;
-        if !out.status.success() {
-            let text = String::from_utf8_lossy(&out.stderr);
-            let first = text.lines().next().unwrap_or("").to_string();
-            return Err(format!("esbuild: {}", first));
+        if use_oxc {
+            #[cfg(feature = "oxc")]
+            crate::oracle::oxc_bundle::bundle_oracle_oxc(root, &entry, &aliases, &outfile)?;
+            #[cfg(not(feature = "oxc"))]
+            unreachable!("gated above");
+        } else {
+            let mut argv: Vec<String> = vec![
+                entry.to_string_lossy().into_owned(),
+                "--bundle".into(),
+                "--format=iife".into(),
+                format!("--outfile={}", outfile.to_string_lossy()),
+                "--log-level=error".into(),
+                "--loader:.tsx=tsx".into(),
+                "--jsx=automatic".into(),
+            ];
+            let mut alias_keys: Vec<&String> = aliases.keys().collect();
+            alias_keys.sort();
+            for k in alias_keys {
+                argv.push(format!("--alias:{}={}", k, aliases[k]));
+            }
+            let out = std::process::Command::new(root.join("node_modules/.bin/esbuild"))
+                .args(&argv)
+                .current_dir(root)
+                .output()
+                .map_err(|e| format!("esbuild: {}", e))?;
+            if !out.status.success() {
+                let text = String::from_utf8_lossy(&out.stderr);
+                let first = text.lines().next().unwrap_or("").to_string();
+                return Err(format!("esbuild: {}", first));
+            }
         }
         std::fs::write(&key_file, &key).map_err(|e| e.to_string())?;
     }

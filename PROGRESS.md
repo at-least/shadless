@@ -453,6 +453,36 @@ docs-fidelity/interactivity-sweep 轉綠。
 - 環境註記:goldens 的 status 案例與真樹 stamps 狀態耦合——在真樹上跑過引擎後
   先重跑 gen_golden 再跑 cargo test(與既有 dist 陷阱同類)。
 
+## Oxc 實驗第二輪:oracle bundle 的 rolldown 替換(2026-09-10,通過)
+
+PLAN.md 掛帳的「無位元組負擔點先行」完成:`src/oracle/oxc_bundle.rs` 以
+rolldown 1.2.8 取代 oracle `api.Build` 點的 esbuild spawn,
+`SHADLESS_ORACLE_BUNDLER=oxc` 運行時閘(在 oracle 群組內——Cargo feature
+會進 hull,切換即全圖 stale,違反隔離目的),cargo feature `oxc` 護編譯。
+build_oracle 的所有呼叫方(example-oracle/example-fixture/contracts/
+example-gate)自動獲得此開關。
+
+- **兩個根因(由 227 頁驗收逼出,均為 rolldown 與 esbuild 的解析語意差)**:
+  1. oxc_resolver 的 alias 是「第一個符合者勝」(webpack 語意),esbuild
+     是最長匹配——alias 表的 `@` catch-all 按原序會攔走所有 `@/…`;
+     修法:按鍵長度降序餵入。
+  2. rolldown 預設 `TsConfig::Auto(true)` 沿 importer 樹自動探測
+     tsconfig.json 並套用其 paths——upstream app tsconfig 的 `@/*` 映射
+     壓過 alias 表,把無法解析的 `streamdown`/`@streamdown/code` 以
+     external 形式留進 IIFE(`_streamdown_code is not defined`);
+     修法:`TsConfig::Auto(false)`。esbuild 不讀 tsconfig,故無此題。
+- **快取語意**:oracle 快取為 Go/RS 共用且 key 與 Go 位元組同值,oxc
+  路徑用獨立 outfile/key 檔(`bundle-<n>.oxc.js`/`.key-<n>.oxc`)。
+  診斷教訓:改完 alias 排序後仍見舊行為,是測試自己的陳舊快取在重建
+  後命中——實驗改旗標行為後必須清 oxc 快取檔再驗。
+- **驗收**:`SHADLESS_ORACLE_BUNDLER=oxc example-oracle --check` PASS
+  227 pages == oracle render;預設 esbuild 路徑同 PASS(無回歸);
+  cargo test 全綠;圖收斂(run all)exit 0。
+- 附註:NODE_ENV 兩引擎對 Browser 平台同規則自動定義(非 minify →
+  development),react 分支一致,免 define。feature-less binary + 環境
+  變數 + 快取命中 → 沿用既有 oxc bundle(實驗語意);快取 miss →
+  清晰報錯要求 --features oxc。
+
 ## per-node 引擎指紋(2026-09-09,本輪)
 
 M7 的引擎級指紋(改任何 .rs → 全圖 STALE)細化為 per-node:build.rs 對

@@ -10,3 +10,8 @@ pub mod example_oracle;
 pub mod families;
 pub mod fixture_families;
 pub mod oracle_lib;
+
+// rolldown-backed oracle bundle, gated by SHADLESS_ORACLE_BUNDLER=oxc at
+// runtime; compiled only under --features oxc (see oxc_bundle.rs).
+#[cfg(feature = "oxc")]
+pub mod oxc_bundle;

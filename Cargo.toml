@@ -30,9 +30,13 @@ oxc_syntax = { version = "0.149.0", optional = true }
 oxc_transformer = { version = "0.149.0", optional = true }
 oxc_codegen = { version = "0.149.0", optional = true }
 oxc_semantic = { version = "0.149.0", optional = true }
+# the bundler for the oracle api.Build point (no byte contract); pulls the
+# oxc family in via rolldown_common
+rolldown = { version = "1.2.8", optional = true }
+tokio = { version = "1", features = ["rt"], optional = true }
 
 [features]
-oxc = ["dep:oxc_allocator", "dep:oxc_ast", "dep:oxc_parser", "dep:oxc_span", "dep:oxc_syntax", "dep:oxc_transformer", "dep:oxc_codegen", "dep:oxc_semantic"]
+oxc = ["dep:oxc_allocator", "dep:oxc_ast", "dep:oxc_parser", "dep:oxc_span", "dep:oxc_syntax", "dep:oxc_transformer", "dep:oxc_codegen", "dep:oxc_semantic", "dep:rolldown", "dep:tokio"]
 
 [build-dependencies]
 sha2 = "0.10"

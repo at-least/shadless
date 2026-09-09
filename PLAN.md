@@ -75,6 +75,15 @@ Rolldown/Oxc 在該點無位元組負擔,可先行。
 env/arg 閘**(Cargo feature 進 Cargo.toml = hull,切換即全圖 stale,
 違反隔離目的);oxc 依賴變更 Cargo.lock 屬一次性 hull 收斂,已付。
 
+**實驗第二輪(2026-09-10,同 REPORT)**:oracle `api.Build` 點以
+rolldown 1.2.8 替換,`SHADLESS_ORACLE_BUNDLER=oxc` 群組內運行時閘,
+獨立快取檔不污染 Go 共用快取。與 esbuild 對齊的關鍵:alias 最長匹配
+優先(oxc_resolver 是首個符合者勝,`@` catch-all 必須排最後)、關閉
+tsconfig 自動探測(upstream tsconfig 的 `@/*` 會壓過 alias 表)、
+NODE_ENV 自動定義兩引擎同規則。驗收:`example-oracle --check` 227 頁
+PASS(rolldown 與 esbuild 路徑皆 PASS)。去 node 化在無位元組契約的點
+已證可行;位元組契約點(convert/jsbuild minify)維持 esbuild。
+
 ### DAG runner:為什麼自寫(已定案:本地 runner 為主要交付)
 
 使用者定案:本地 `pipeline run` 取代 Dagger 成為日常路徑;`.dagger` module 留給 CI 不動。
