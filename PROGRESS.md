@@ -368,3 +368,86 @@ ir_diff 61/61、dist_diff 268/268 ×3。
 - golden.rs 加 build/rtl-langs.json 前置檢查:未建樹時 skip 並說明,不再
   環境性紅。
 - cargo clean 後全新 release build + 全測試:113+1+1 綠。
+
+## 自我接管(2026-09-09):引擎預設不再 spawn 任何 Go
+
+三段式:S1 圖層(5329f7e)、S2 執行層(3b201e8)、S3 驗收層+文件(本段)。
+設計與偏差清單見 PLAN.md「自我接管」節。
+
+- **S1 圖層**:`all_go()`=authored Go 逐字表(驗收 oracle);`all()`=self_host 轉換
+  (`./build/pipeline`→`__self__@<fp>`、10 個 go-test gates+unit 的 engine 半→
+  `__gate`);build.rs 引擎指紋(argv[0] 後綴摺進 key);`SHADLESS_GRAPH=go-mirror`
+  呈現 Go 表。pipeline/ inputs 只留資料性讀取(16 條 keep 規則,證據在 nodes.rs
+  KEEP_PIPELINE_INPUTS)。教訓:fanout shards 的 argv[0] 要 env-aware——第一版寫死
+  `__self__`,gen_golden layer-2 key parity 抓出 29 個 shards 全數漂移。
+- **S2 執行層**:engine::resolve_argv0(runner.exec、run_gate、fanout、upstream 四處
+  唯一解析點);`__gate <id>` 分發器(10 gates+unit=cargo test --lib);
+  usage env 分叉;upstream drill 自我驅動(mirror 才 make pipeline)。
+  script-refs gate 的 -run 檢查改對 all_go()(reviewer 抓出:對自我表檢查會空轉)。
+- **S3 驗收層**:`__meta [gate]`(Go TestMeta 的 binary 版,run_mutation 從 binary
+  驅動——嵌套 cargo lock 的教訓來自 reviewer);tests/gate_parity.rs
+  (SHADLESS_GATE_PARITY=1):24 gates 乾淨 verdict 相等+雙邊突變 verdict 相等
+  (agreement 制:雙紅=樹狀態警告不計失敗;單邊不一致才失敗;pre-build 先跑
+  `run all --builds-only`)。
+
+### parity 第一輪抓到的三個真問題(全部修復,各有獨立重現)
+
+1. **example-golden 印 FAIL 卻 exit 0**:`run_inner` 算完 `exit` 後回
+   `Ok(())`,外層只看 Ok/Err——runner/meta 視為綠。這是移植形狀錯誤
+   (Go 每路徑直接 `return exit`),修為 `Result<i32, String>` 逐路徑回傳。
+   突變下 exit=1、乾淨 exit=0 已驗證。parity 的紅側設計(不只比乾淨綠)
+   正是為了抓這種 vacuous gate。
+2. **typecheck 突變 anchor 雙花括號**:`mut_replace_once` 是精確匹配無
+   format 展開,RS 版把 `* @param {Record<string, string>} hints` 寫成
+   `{{...}}` → anchor 永遠找不到(免疫化)。全檔 audit 僅此一處。
+3. **harness 自身的 SHADLESS_ROOT 洩漏**:parity 把查找用 env 傳給 Go gate,
+   `TestUnitFindRepoRootMarker` 走 env 短路而在暫存樹失敗(Go gate 假紅)。
+   gate_parity 所有子行程 env_remove(SHADLESS_ROOT/SHADLESS_GRAPH/...)。
+
+另:docs-smoke/docs-fidelity/interactivity-sweep 在未建 docs demos 的樹上
+雙紅(「build first」)→ parity 加 pre-build(`run all --builds-only`)後
+docs-fidelity/interactivity-sweep 轉綠。
+
+### parity 第二輪結果(2026-09-09,完整 24 gates)
+
+- **23/24 verdict 一致**(clean 與突變紅側皆然);唯一不一致 unit,根因是
+  **`__gate unit` 語意錯誤**:跑整套 lib 會把其他 gate 的真樹測試掃進來
+  (reproducible 的真樹測試),已修回 Go 的 `^TestUnit` 語意=unit_ 前綴過濾
+  (57 個移植測試;Go 188 含 internal/ 子套件,移植時整併)。GATE_ONLY=unit
+  重跑:clean 雙綠、meta 雙抓。
+- **WARN(雙紅=樹狀態,兩引擎逐位元組同輸出,非 parity 問題)**:
+  - `reproducible`:**上游 committed 的 dist/out.css 已 stale**——fresh tw
+    (兩引擎)比 committed 少 `.invisible` 一個 utility(3 行)。機制:
+    globals.css 是 `source(none)`+@source 白名單,白名單內已無任何檔案含
+    "invisible";上游 commit 29e7368 自己就寫過「regenerate out.css — stale
+    since the probes/t7/out cleanup」,同一模式重演。漣漪:跑過 Go
+    `^TestUnit` 套件(部分 TestUnit* 重建產物)或 parity pre-build 後,
+    dist/out.css 會變 M——樹敏感的驗收(dist_diff/gen_golden)前先
+    `git checkout dist/out.css`。
+  - `style-parity`:24 格 dialog/dialog-close 系 presence missing
+    (oracle=present shadless=missing),兩引擎同輸出;待上游查。
+  - `docs-smoke`:index.html article missing/empty,兩引擎同;待上游查。
+- **給下一個 session**:gate_parity 重跑很貴(完整 ~80 分鐘),用
+  `GATE_ONLY=id1,id2` 切片;SHADLESS_GATE_PARITY=1 才會跑。
+
+### S3 驗收總結(2026-09-09)
+
+- gen_golden(go-mirror)469/469;cargo test 117+1+1;ir_diff 61/61;
+  dist_diff 268/268 ×3(build-js/emit/demo)。
+- gate_parity:24 gates 中 23 個 verdict 完全一致;unit 修復後
+  GATE_ONLY=unit 一致;三個 WARN 皆兩引擎同輸出的上游樹狀態問題。
+- `run all`(自我接管,69 節點)兩次:#1 ran 50 / skipped 16——24 gates 全走
+  RS(`__gate`/`__self__`,含 29 個 contract shards、example-gate 227 頁、
+  golden-gate、style-parity 64.6s ✔);red 僅 reproducible(上游 stale)與
+  docs-smoke(同 WARN)。#2 ran 7 / skipped 60——失敗節點拔 stamp 重跑+
+  輸入被 #1 改寫的節點重跑,其餘全 fresh,stamp 語意正確。
+  **style-parity 在完整圖中轉綠**——parity 輪的雙紅是狀態相依(pre-build 後
+  docs demos 未被 demo 節點重排),非產品 bug;兩引擎同步紅/同步綠,parity 無虞。
+- 環境註記:parity/run 後 dist/out.css 常呈 M(上游 stale),樹敏感驗收前還原。
+- **驗收契約變化**:產物鏈位元組同值不變;圖面 Go 對照移到 go-mirror 模式
+  (gen_golden 469 案零重錄,只加 export);gates 驗收從 argv/keys 同值改為
+  verdict 同值(含紅側)。
+- 已知偏差 6 條見 PLAN.md(讀檔審計覆蓋縮減、跨引擎 stamps 全 STALE 一次、
+  usage 文案分叉等)。
+- 環境註記:goldens 的 status 案例與真樹 stamps 狀態耦合——在真樹上跑過引擎後
+  先重跑 gen_golden 再跑 cargo test(與既有 dist 陷阱同類)。

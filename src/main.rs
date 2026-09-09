@@ -523,11 +523,91 @@ fn main() {
         // hidden: the self-hosted gate dispatcher — the graph's gate nodes
         // call this instead of `go test`. Not part of the public surface.
         "__gate" => std::process::exit(run_hidden_gate(&rest)),
+        // hidden: the mutation harness (Go's opt-in TestMeta), driven from
+        // this binary so the gates it runs resolve __self__ correctly. An
+        // optional argument narrows the run to one gate's mutations.
+        "__meta" => std::process::exit(run_hidden_meta(&rest)),
         other => {
             eprintln!("unknown command: {}", other);
             std::process::exit(2);
         }
     }
+}
+
+/// `__meta [gate]`: apply each selected mutation, run its gate through the
+/// presented graph's own commands, restore — exit 0 iff every one is caught.
+fn run_hidden_meta(rest: &[String]) -> i32 {
+    let root = std::env::current_dir().unwrap_or_default();
+    let g = match pipeline::graph::authored() {
+        Ok(g) => g,
+        Err(e) => {
+            eprintln!("pipeline: {}", e);
+            return 1;
+        }
+    };
+    let selected: Vec<&pipeline::gates::mutations::Mutation> =
+        match rest.first() {
+            Some(gate) => {
+                let hits: Vec<_> = pipeline::gates::mutations::MUTATIONS
+                    .iter()
+                    .filter(|m| m.gate == gate.as_str())
+                    .collect();
+                if hits.is_empty() {
+                    eprintln!("pipeline __meta: no mutations for gate: {}", gate);
+                    return 2;
+                }
+                hits
+            }
+            None => pipeline::gates::mutations::MUTATIONS.iter().collect(),
+        };
+    println!("meta: {} mutations", selected.len());
+    let mut failures: Vec<String> = Vec::new();
+    for m in &selected {
+        match pipeline::gates::mutations::run_mutation(&root, &g, m) {
+            Err(e) => {
+                // a tree left mutated is worse than any missed mutation
+                eprintln!("{}: {}", m.id, e);
+                return 1;
+            }
+            Ok((res, Some(restore_err))) => {
+                eprintln!("{}: {}", res.id, restore_err);
+                return 1;
+            }
+            Ok((res, None)) => {
+                if res.caught {
+                    println!("  {:<34} -> {:<20} CAUGHT", res.id, res.gate);
+                } else {
+                    let note = if res.note.is_empty() {
+                        String::new()
+                    } else {
+                        format!(" ({})", res.note)
+                    };
+                    println!(
+                        "  {:<34} -> {:<20} NOT CAUGHT{}",
+                        res.id, res.gate, note
+                    );
+                    failures.push(format!(
+                        "{}: {} stayed green under \"{}\"{}",
+                        res.id, res.gate, m.why, note
+                    ));
+                }
+            }
+        }
+    }
+    if !failures.is_empty() {
+        eprintln!(
+            "FAIL  meta ({}/{} mutations not caught)\n  {}\n\n  A gate that cannot fail is not a gate. Fix the gate, not the mutation.",
+            failures.len(),
+            selected.len(),
+            failures.join("\n  ")
+        );
+        return 1;
+    }
+    println!(
+        "PASS  meta ({} mutations, every one caught by its gate)",
+        selected.len()
+    );
+    0
 }
 
 /// `__gate <id>`: run the ported gate implementation in this engine, mapping
@@ -554,17 +634,20 @@ fn run_hidden_gate(rest: &[String]) -> i32 {
         "reproducible" => pipeline::gates::gate_reproducible(&root).map(|_| ()),
         "product-verify" => pipeline::gates::gate_product_verify(&root),
         "css-direction" => pipeline::gates::gate_css_direction(&root).map(|_| ()),
-        // Go's `-run '^TestUnit ./...'` runs the pipeline's own tests; the
-        // engine's own tests are the whole lib suite (the port consolidated
-        // Go's 188 TestUnit* fns into fewer, so a prefix filter would be
-        // arbitrary — the lib target also excludes the Go-parity harness
-        // tests in tests/, which must not run inside a gate).
+        // Go's `-run '^TestUnit ./...'` runs the pipeline's own TestUnit*
+        // functions; the port named their Rust twins with the same `unit_`
+        // prefix (57 of them — Go's 188 includes internal/ subpackage tests
+        // the port consolidated). The WHOLE lib suite would sweep in other
+        // gates' real-tree tests — gate_parity round 2 caught exactly that:
+        // a stale committed artifact reds the reproducible test, and unit
+        // must not care, because reproducible is its own gate on both
+        // engines. --lib keeps the Go-parity harness tests (tests/) out.
         "unit" => {
             // The runner injects the JS fs-recorder into node children; the
             // nested cargo test must not inherit that (or its own node
             // children would write into the gate's scratch js.log).
             let status = std::process::Command::new("cargo")
-                .args(["test", "--release", "--lib"])
+                .args(["test", "--release", "--lib", "--", "unit_"])
                 .current_dir(env!("CARGO_MANIFEST_DIR"))
                 .env_remove("NODE_OPTIONS")
                 .env_remove("SHADLESS_FSLOG")

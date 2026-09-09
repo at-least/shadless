@@ -161,6 +161,13 @@ pub fn load_graph_at(root: &Path) -> Result<Graph, String> {
     Graph::new(list)
 }
 
+/// AuthoredGraph (Go meta.go): the authored table with no fanout expansion —
+/// the view the mutation harness reasons about (`contracts` as one gate, not
+/// 29 shards).
+pub fn authored() -> Result<Graph, String> {
+    Graph::new(nodes::all())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

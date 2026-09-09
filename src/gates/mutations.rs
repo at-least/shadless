@@ -476,8 +476,10 @@ fn apply_typecheck_break_ir_contract(root: &Path, f: &[String]) -> Result<(), St
     mut_replace_once(
         root,
         &f[0],
-        "* @param {{Record<string, string>}} hints",
-        "* @param {{number}} hints",
+        // exact match — mut_replace_once does no format expansion, so these
+        // braces are single, as in the file and in Go's mutations.go
+        "* @param {Record<string, string>} hints",
+        "* @param {number} hints",
     )
 }
 

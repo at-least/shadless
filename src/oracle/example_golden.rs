@@ -44,7 +44,7 @@ fn file_exists(p: &str) -> bool {
 
 pub fn run_example_golden(args: &[String]) -> i32 {
     match run_inner(args) {
-        Ok(()) => 0,
+        Ok(code) => code,
         Err(msg) => {
             eprintln!("example-golden: {}", msg);
             1
@@ -52,7 +52,7 @@ pub fn run_example_golden(args: &[String]) -> i32 {
     }
 }
 
-fn run_inner(args: &[String]) -> Result<(), String> {
+fn run_inner(args: &[String]) -> Result<i32, String> {
     const EXAMPLES_DIR: &str = ".upstream/shadcn-ui/apps/v4/examples/radix";
     const SNAPSHOT_DIR: &str = "src/registry/upstream-snapshot";
     const TMP: &str = "build/example-golden";
@@ -91,7 +91,7 @@ fn run_inner_shell(
     examples_dir: &str,
     snapshot_dir: &str,
     tmp: &str,
-) -> Result<(), String> {
+) -> Result<i32, String> {
     shell.launch()?;
     let page = shell.new_page(false).ok();
     let page_ref = page.as_ref();
@@ -128,12 +128,12 @@ fn run_inner_shell(
         let b = canon_of(page_ref.ok_or("no page")?, &upstream_html)?;
         if a == b {
             println!("EQUAL");
-            return Ok(());
+            return Ok(0);
         }
         let (wa, wb) = first_diff_window(&a, &b, 80, 120);
         println!("ORACLE  : {}", wa);
         println!("UPSTREAM: {}", wb);
-        return Err("differs".to_string());
+        return Ok(1);
     }
 
     #[derive(Deserialize, Default, Clone)]
@@ -344,5 +344,5 @@ fn run_inner_shell(
             pass, exempt
         );
     }
-    Ok(())
+    Ok(exit)
 }

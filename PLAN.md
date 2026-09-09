@@ -157,3 +157,39 @@ README/CONTRIBUTING/docs 零提及。`dagger.json`(v0.21.9, Go SDK)與 PORT.md �
 6. **stamps 序列化**:node id 的 `:`→`__` 跳脫、檔案尾換行,跨工具要能互讀。
 7. Go map 迭代隨機 → 任何在 Go 裡靠 sort 自救的地方,Rust 端用 BTreeMap/IndexMap 保持決定性。
 8. UTF-16 語意:`internal/tsx/utf16.go` 處理 JS 字串位置,移植時位置計算要逐 case 對測。
+
+## 自我接管(self-hosting,2026-09-09 定案並實作)
+
+移植完成後的下一段:引擎的圖預設**不再 spawn 任何 Go**——節點命令 `./build/pipeline X`
+改為 `__self__@<fp> X`(本 binary),11 個 go-test gates 改為 `__gate <id>`(本 binary
+的移植 gate 實作)。`SHADLESS_GRAPH=go-mirror` 則呈現 Go 逐字表,供驗收台續用。
+
+| 機制 | 設計 |
+|---|---|
+| 引擎指紋 | build.rs 對排序 `src/**/*.rs` + Cargo.toml/lock + build.rs + rust-toolchain.toml 求 sha256,以 argv[0] 後綴 `@<fp>` 摺進 key(免碰各子命令參數解析)。粒度=引擎級:改任何 .rs → 全圖 stale(寧可全重跑,不可假 fresh;per-module 是未來細化) |
+| 雙表 | `all_go()` 是 authored 的 Go 逐字表(位元組驗收 oracle,gen_golden/golden.rs 用);`all()` = `all_go()` 經 `self_host()` 轉換。轉換是單向 forward——Go 表手工維護,自我表永遠導出,不做反向 |
+| inputs 分類 | `pipeline/...` inputs 只保留「RS 以資料身分讀取」者(oracle invariant 的 resolve_skins.go+oracle_lib.go、ledger 的 interactivity_sweep.go、script-refs 解析的 main.go+*_test.go、overlay 的 build_rtl.go 波斯字典);其餘是「被執行的實作」,由指紋取代 |
+| gates | `__gate <id>` 直呼移植 gate 函式;unit = `cargo test --release --lib`(Go 188 個 TestUnit* 在移植中整併,前綴過濾無意義;--lib 排除 Go 對照用整合測試)。typecheck(npx tsc)、unit 的 unit-check.mjs(node)、docs-site 的 zola 是產品面命令,兩側引擎共用,維持原樣 |
+| meta | `__meta [gate]`:突變紅驗證必須從 binary 跑(runner/mutation 內 `__self__` 才會解析到正確 binary;從 cargo test 內跑會嵌套 cargo lock)。gate_parity 從 binary spawn,不由 #[test] 直接呼叫 |
+| unit 語意 | `__gate unit` = `cargo test --release --lib -- unit_`(Go `^TestUnit` 的移植命名;57 個)。**不可**跑整套 lib——會把其他 gate 的真樹測試掃進 unit(parity 第二輪實證)。`unit_` 前綴與 Go `TestUnit*` 的命名耦合:新增引擎測試若屬 TestUnit* 對應物必須用 unit_ 前綴,否則靜默離開 gate |
+| 雙紅治理 | gate_parity 對雙紅採 `PARITY_EXPECT_RED=id1,id2` 允許清單:未宣告的雙紅=失敗(共用盲區必須是顯式決定),宣告的=WARN |
+
+**驗收契約的變化**:產物鏈(IR/dist)的位元組同值契約不變(ir_diff 61/61、
+dist_diff 268/268×3 仍以 committed 樹為 oracle);圖面(plan/list/status/keys)的
+Go 對照改為 **go-mirror 模式下執行**(gen_golden 四層 469 案零重錄);gates 的驗收
+從「argv/keys 同值」改為 **verdict 同值**——tests/gate_parity.rs(SHADLESS_GATE_PARITY=1
+啟用):24 gates 乾淨樹雙引擎皆綠 + 雙邊各自的突變 harness 皆紅(Go: SHADLESS_META+
+META_ONLY;RS: `__meta <gate>`)。
+
+**已知偏差(自我接管模式)**:
+1. `__self__` 子行程無 go-testlogfile 等讀檔證據 → undeclared-read 審計(-j1)對
+   gate 的覆蓋變弱(build 鏈的 node 子行程仍有 fs-record);寫入審計同理只餘 fs-record。
+2. script-refs gate 的 `-run` 模式檢查改對 `all_go()` 執行——自我表上沒有 go test
+   argv,對它檢查會空轉。
+3. usage 文案 env 分叉:go-mirror 逐字印 Go 文本(golden layer 1 錄製它),預設印
+   自我接管描述。
+4. 引擎指紋使跨引擎 stamps 互不匹配:換引擎後首次 run 全 STALE,重跑一次即綠。
+5. `__gate unit` 會巢狀 spawn `cargo test`——與並行的 cargo 建置有 target-lock 競爭
+   可能;unit 的突變紅由 cmd[0](unit-check.mjs)先觸發,不會抵達 cargo。
+6. upstream drill 的報告建議文字仍寫 `./build/pipeline <verb>`(機器無關的路徑;
+   自我驅動的執行走 `pipeline_exe()`)。
