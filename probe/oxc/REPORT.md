@@ -77,9 +77,10 @@ runtime、`React.createElement`/`React.Fragment`)→ codegen(2 空格縮排、
    無需 define。
 
 快取語意:oracle 快取為 Go/RS 兩引擎共用、key 必須與 Go 位元組同值,
-故 oxc 路徑使用**獨立**的 outfile(`bundle-<name>.oxc.js`)與 key 檔
-(`.key-<name>.oxc`),不污染共用快取;feature-less binary + 環境變數 +
-快取命中時會沿用既有 oxc bundle(實驗語意,可接受)。
+故 oxc 路徑使用**獨立**的 outfile(`oxc-bundle-<name>.js`)與 key 檔
+(`.oxc-key-<name>`;前綴避開 `bundle-*.js` glob),不污染共用快取。
+gate 在快取查找之前檢查:feature-less binary + 環境變數一律報錯,
+暖快取不會被靜默沿用。
 
 驗收:`SHADLESS_ORACLE_BUNDLER=oxc pipeline example-oracle --check`
 **PASS 227 pages == oracle render**;預設 esbuild 路徑同跑 PASS(無回歸)。

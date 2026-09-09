@@ -81,8 +81,15 @@ rolldown 1.2.8 替換,`SHADLESS_ORACLE_BUNDLER=oxc` 群組內運行時閘,
 優先(oxc_resolver 是首個符合者勝,`@` catch-all 必須排最後)、關閉
 tsconfig 自動探測(upstream tsconfig 的 `@/*` 會壓過 alias 表)、
 NODE_ENV 自動定義兩引擎同規則。驗收:`example-oracle --check` 227 頁
-PASS(rolldown 與 esbuild 路徑皆 PASS)。去 node 化在無位元組契約的點
-已證可行;位元組契約點(convert/jsbuild minify)維持 esbuild。
+PASS(rolldown 與 esbuild 路徑皆 PASS)。
+
+**實驗結案(2026-09-10)**:三個 esbuild 呼叫點的最終處置——
+transform(convert/rtl-dict):**測死**(0/61 位元組一致,印表機層分歧
+不可配置);oracle bundle:**證明可換**(rolldown 1.2.8,
+`SHADLESS_ORACLE_BUNDLER=oxc`,227 頁驗收 PASS,預設仍 esbuild——
+「可替換」不等於「已採用」,去 node 化收益由使用者按需開閘);minify:
+**依契約封閉**(dist/shadless.min.js 與 Go 位元組同值,換印表機即毀約,
+無需測量)。實驗到此自然終點。
 
 ### DAG runner:為什麼自寫(已定案:本地 runner 為主要交付)
 

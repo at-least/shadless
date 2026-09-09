@@ -472,16 +472,18 @@ example-gate)自動獲得此開關。
      external 形式留進 IIFE(`_streamdown_code is not defined`);
      修法:`TsConfig::Auto(false)`。esbuild 不讀 tsconfig,故無此題。
 - **快取語意**:oracle 快取為 Go/RS 共用且 key 與 Go 位元組同值,oxc
-  路徑用獨立 outfile/key 檔(`bundle-<n>.oxc.js`/`.key-<n>.oxc`)。
+  路徑用獨立 outfile/key 檔(`oxc-bundle-<n>.js`/`.oxc-key-<n>`,前綴
+  避開 `bundle-*.js` glob;reviewer 建議)。
   診斷教訓:改完 alias 排序後仍見舊行為,是測試自己的陳舊快取在重建
   後命中——實驗改旗標行為後必須清 oxc 快取檔再驗。
 - **驗收**:`SHADLESS_ORACLE_BUNDLER=oxc example-oracle --check` PASS
   227 pages == oracle render;預設 esbuild 路徑同 PASS(無回歸);
   cargo test 全綠;圖收斂(run all)exit 0。
 - 附註:NODE_ENV 兩引擎對 Browser 平台同規則自動定義(非 minify →
-  development),react 分支一致,免 define。feature-less binary + 環境
-  變數 + 快取命中 → 沿用既有 oxc bundle(實驗語意);快取 miss →
-  清晰報錯要求 --features oxc。
+  development),react 分支一致,免 define。gate 在快取查找**之前**
+  檢查(reviewer 修正):feature-less binary + 環境變數 = 一律清晰報錯,
+  暖 oxc 快取也不會被靜默沿用。首批 `bundle-*.oxc.js` 孤兒檔(改名前
+  產物)已手動刪除。
 
 ## per-node 引擎指紋(2026-09-09,本輪)
 
