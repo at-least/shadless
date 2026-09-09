@@ -453,6 +453,62 @@ docs-fidelity/interactivity-sweep 轉綠。
 - 環境註記:goldens 的 status 案例與真樹 stamps 狀態耦合——在真樹上跑過引擎後
   先重跑 gen_golden 再跑 cargo test(與既有 dist 陷阱同類)。
 
+## per-node 引擎指紋(2026-09-09,本輪)
+
+M7 的引擎級指紋(改任何 .rs → 全圖 STALE)細化為 per-node:build.rs 對
+hull(src 根檔案 + Cargo.toml/lock/build.rs/rust-toolchain.toml)與八個實作
+群組(convert/emit/gates/oracle/tools/twmerge/tsx 目錄 + jsbuild.rs)分別求
+sha256;nodes.rs 以 NODE_ENTRIES(節點→群組,main.rs 動詞分派的鏡射;convert
+節點因執行 resolve-skins 動詞而含 tools 群組)與 GROUP_DEPS(群組依賴 DAG)
+摺出 `__self__@<fp>`。unit → global(整 crate 雜湊);typecheck/docs-site/
+unit cmd[0] 維持產品面命令、無指紋、不受引擎編輯影響。fanout shards 走
+`contracts:<name>` 前綴取 oracle 群組。go-mirror 模式照舊回 `./build/pipeline`,
+golden 台零影響。
+
+- **advisor checkpoint(採納其修正)**:原設計把 import 閉包解析器放
+  build.rs(regex 抓 crate::/super::/uniform paths)——顧問指出兩個真洞
+  (`use crate::{a, b::c}` brace 形式、`as` 別名)且覆蓋測試抓不到,改採
+  「群組 DAG + build.rs 零解析」:soundness 由執法測試以 raw-text grep
+  (註解/字串都算引用,過近似=安全向)驗證,並直接禁掉 `crate::{` 與
+  `use crate::x as y` 兩種看不見的慣用法。tools 內檔案級粒度
+  (docs_transforms.rs 被 6 檔共享,需第二層依賴表)列為未來細化。
+- **新執法測試 5 個**(nodes.rs):build.rs 配對(GROUPS/HULL_FILES 兩表
+  逐元素相等)、hull 覆蓋(src 根檔案不在 hull 即紅——新根檔案永不會靜默
+  失去 stale 能力)、NODE_ENTRIES 雙向覆蓋(self_host 後帶 __self__ 的節點
+  集合 == 表列集合)、raw-grep 依賴審計(群組內任何跨群組引用必須在
+  GROUP_DEPS)、粒度性質(tools 同群組同 fp、跨群組不同)。
+- **重要語意發現(修正本檔早前的心智模型)**:key.rs 的 key() 摺疊
+  **依賴鍵**(`dep\x00{d}\x00{dk}`,遞迴)——上游 key 變更會結構性級聯到
+  needs 下游,即使上游輸出位元組不變。這是 Go 位元組同值契約的一部分,
+  必須保留。因此 per-node 指紋的真實收益 = 「執行該群組的節點 + 其
+  needs 下游」:編輯 gates 葉群組(ledger/script-refs 等)只 stale 自己;
+  編輯 tools 會經 convert(其 entries 含 tools)級聯全圖;oracle/emit
+  編輯沿 demo 鏈級聯。
+- **驗證(全部可證偽預測,逐一通過)**:
+  1. 收斂:方案切換後 `run all` ran 68 / skipped 1(typecheck)/ 857.1s /
+     exit 0 零失敗;事後 status 68 fresh + 1 NEVER-FRESH。
+  2. Spot A(append 註解到 src/tools/docs_smoke.rs → 重建):fresh 僅剩
+     pin / build-js / typecheck / ledger / script-refs(舊方案會 68 全
+     stale);還原重建後 68 fresh 完整恢復(stamps 有效,零重跑)。
+  3. Spot B(append 註解到 src/runner.rs = hull → 重建):除 typecheck 與
+     NEVER-FRESH 外全部 STALE(寧可全重跑方向無假 fresh);還原後恢復。
+  4. gen_golden 469/469(go-mirror 無指紋,零重錄)+ cargo test 全套綠。
+- **review_change 抓出一個真洞,已修**:12 個非 .rs 檔案經
+  include_str!/include! 編進 binary(oracle_canon.js、ef_*.js、twmerge 的
+  config/snapshot.json、jsx_overrides.inc 等),但群組雜湊只收 .rs——改
+  oracle_canon.js 不會 stale 任何節點(舊方案同款洞,但執法測試的
+  soundness 宣告歸本輪修)。修法:walk 改收目錄內**全部檔案**;覆蓋測試
+  延伸:src 根的非 .rs 檔必須進 HULL_FILES、src 下新目錄必須宣告為
+  ENGINE_GROUP(否則未來新 tier 目錄只被 hull 引用時永遠不 stale)。
+  reviewer 其餘查核全過:NODE_ENTRIES 對 main.rs 分派逐動詞核實、
+  GROUP_DEPS 與實測引用一致、go-mirror/__keys/gate_parity/resolve_argv0
+  無漂移、 dropping rerun-if-changed 正確(cargo 預設=任何 package 檔案
+  變更即重跑 build script,是舊清單的超集)。
+- 環境註記:上一輪的「全 stamps STALE 預期」已在本輪開頭實證收口
+  (ran 52 / skipped 17 / 294.2s / exit 0,事後 68 fresh;gen_golden 469
+  零漂移;goprobe 重建屬環境性 churn 已還原)。upstream 樹維持已知唯一
+  `M pipeline/pipeline`(重建的 Go 二進位)。
+
 ## parity WARN 收尾(2026-09-09,第二輪)
 
 三個 WARN 的最終處置,全部結案:

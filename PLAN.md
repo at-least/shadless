@@ -166,7 +166,7 @@ README/CONTRIBUTING/docs 零提及。`dagger.json`(v0.21.9, Go SDK)與 PORT.md �
 
 | 機制 | 設計 |
 |---|---|
-| 引擎指紋 | build.rs 對排序 `src/**/*.rs` + Cargo.toml/lock + build.rs + rust-toolchain.toml 求 sha256,以 argv[0] 後綴 `@<fp>` 摺進 key(免碰各子命令參數解析)。粒度=引擎級:改任何 .rs → 全圖 stale(寧可全重跑,不可假 fresh;per-module 是未來細化) |
+| 引擎指紋 | per-node:build.rs 對 hull(src 根檔案 + Cargo.toml/lock + build.rs + rust-toolchain.toml)與各實作群組(convert/emit/gates/oracle/tools/twmerge/tsx 目錄 + jsbuild.rs)分別求 sha256;nodes.rs 的 NODE_ENTRIES(節點→群組)與 GROUP_DEPS(群組依賴 DAG,手寫、由 raw-grep 測試執法)摺出 `__self__@<fp>`(改任何 .rs 只 stale「執行它的群組」的節點;hull 或群組依賴變更才會放大)。soundness 不賭在解析上:build.rs 零解析,執法測試以 raw-text grep(註解/字串都算引用)驗證 DAG 覆蓋,並禁 `crate::{` 與 `use crate::x as y` 兩種看不見的慣用法。粒度歷史:2026-09-09 前為引擎級(改任何 .rs → 全圖 stale);tools 內檔案級是未來細化 |
 | 雙表 | `all_go()` 是 authored 的 Go 逐字表(位元組驗收 oracle,gen_golden/golden.rs 用);`all()` = `all_go()` 經 `self_host()` 轉換。轉換是單向 forward——Go 表手工維護,自我表永遠導出,不做反向 |
 | inputs 分類 | `pipeline/...` inputs 只保留「RS 以資料身分讀取」者(oracle invariant 的 resolve_skins.go+oracle_lib.go、ledger 的 interactivity_sweep.go、script-refs 解析的 main.go+*_test.go、overlay 的 build_rtl.go 波斯字典);其餘是「被執行的實作」,由指紋取代 |
 | gates | `__gate <id>` 直呼移植 gate 函式;unit = `cargo test --release --lib`(Go 188 個 TestUnit* 在移植中整併,前綴過濾無意義;--lib 排除 Go 對照用整合測試)。typecheck(npx tsc)、unit 的 unit-check.mjs(node)、docs-site 的 zola 是產品面命令,兩側引擎共用,維持原樣 |

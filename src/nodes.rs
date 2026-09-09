@@ -589,12 +589,174 @@ pub fn all_go() -> Vec<Node> {
     ]
 }
 
-/// argv[0] of every self-hosted command: this binary, tagged with the engine
-/// fingerprint (build.rs sha256 over src/**/*.rs + Cargo.toml + Cargo.lock +
-/// build.rs + rust-toolchain.toml). The tag rides argv[0] so it folds into
-/// every node key without any subcommand's argument parser ever seeing it;
-/// the runner splits on '@' and spawns the running executable.
-pub const ENGINE_SELF: &str = concat!("__self__@", env!("ENGINE_FP"));
+/// Implementation groups hashed by build.rs (order-free; the pairing test
+/// against build.rs's own tables keeps the two lists identical).
+pub const ENGINE_GROUPS: &[&str] = &[
+    "convert", "emit", "gates", "oracle", "tools", "twmerge", "tsx",
+];
+
+/// The hull: engine-level files every node executes through (dispatch, key
+/// folding, stamp/runner semantics). Must pair with build.rs::HULL_FILES —
+/// the pairing test compares both lists element-for-element. A src root file
+/// missing here would silently never stale the graph.
+#[cfg(test)]
+const HULL_FILES: &[&str] = &[
+    "Cargo.toml",
+    "Cargo.lock",
+    "build.rs",
+    "rust-toolchain.toml",
+    "src/lib.rs",
+    "src/main.rs",
+    "src/engine.rs",
+    "src/fanout.rs",
+    "src/glob.rs",
+    "src/graph.rs",
+    "src/jsonorder.rs",
+    "src/key.rs",
+    "src/nodes.rs",
+    "src/produces.rs",
+    "src/runner.rs",
+    "src/stamps.rs",
+    "src/verify.rs",
+];
+
+/// The group dependency DAG: which groups a group's code references. Hand
+/// written and enforced by the raw-text grep test below — any `crate::<dir>`
+/// / `super::super::<dir>` reference found in a group's sources must be
+/// declared here (hull modules need no declaration; they are in every fp).
+const GROUP_DEPS: &[(&str, &[&str])] = &[
+    ("convert", &["tsx"]),
+    ("emit", &["convert", "twmerge", "tsx"]),
+    ("oracle", &["convert", "emit"]),
+    ("gates", &["convert", "emit"]),
+    ("tools", &["convert", "emit", "gates", "oracle", "twmerge", "tsx"]),
+    ("twmerge", &[]),
+    ("tsx", &[]),
+    ("jsbuild", &[]),
+];
+
+/// Which implementation groups each node executes — the mirror of main.rs's
+/// verb dispatch. `contracts:<x>` fanout shards use the `contracts` entry.
+/// Nodes WITHOUT an entry carry no `__self__` argv (typecheck's tsc, docs
+/// site's zola, unit's cmd[0] unit-check.mjs) and never re-key on engine
+/// edits. `global` is the whole-crate hash: unit's `__gate` half runs
+/// `cargo test --lib`, which compiles everything.
+const NODE_ENTRIES: &[(&str, &[&str])] = &[
+    ("pin", &["gates"]),
+    ("unit", &["global"]),
+    ("ledger", &["gates"]),
+    ("script-refs", &["gates"]),
+    ("dist-complete", &["gates"]),
+    ("pack", &["gates"]),
+    ("coverage", &["gates"]),
+    ("product-verify", &["gates"]),
+    ("consumer-sim", &["gates"]),
+    ("css-direction", &["gates"]),
+    ("reproducible", &["gates"]),
+    ("overlay", &["tools"]),
+    ("convert", &["convert", "tools"]), // resolve-skins verb + convert verb
+    ("emit", &["emit"]),
+    ("build-js", &["jsbuild"]),
+    ("contract-fixture", &["oracle"]),
+    ("example-oracle", &["oracle"]),
+    ("example-fixture", &["oracle"]),
+    ("rtl-dict", &["tools"]),
+    ("demo-rtl", &["emit"]), // build-rtl verb
+    ("demo", &["emit"]),
+    ("product-css", &["emit"]),
+    ("demo-css", &["emit"]),      // tw verb → emit/tw.rs
+    ("product-build", &["emit"]), // tw + tw --minify
+    ("path-parity", &["tools"]),
+    ("demo-parity", &["tools"]),
+    ("contracts", &["oracle"]),
+    ("oracle-css", &["tools"]),
+    ("style-parity", &["tools"]),
+    ("demo-smoke", &["tools"]),
+    ("docs-catalog", &["tools"]),
+    ("docs-upstream-mirror", &["tools"]),
+    ("docs-build", &["tools"]),
+    ("docs-consistency", &["tools"]),
+    ("docs-fidelity", &["tools"]),
+    ("docs-smoke", &["tools"]),
+    ("interactivity-sweep", &["tools"]),
+    ("golden-gate", &["oracle"]),  // example-golden verb
+    ("example-gate", &["oracle"]), // example-oracle --check
+];
+
+/// Parsed build.rs ENGINE_FPS ("name=hex;...").
+fn engine_fps() -> &'static std::collections::HashMap<String, String> {
+    static FPS: std::sync::OnceLock<std::collections::HashMap<String, String>> =
+        std::sync::OnceLock::new();
+    FPS.get_or_init(|| {
+        env!("ENGINE_FPS")
+            .split(';')
+            .map(|pair| {
+                let (k, v) = pair.split_once('=').unwrap_or_else(|| {
+                    panic!("ENGINE_FPS: malformed pair {pair:?}")
+                });
+                (k.to_string(), v.to_string())
+            })
+            .collect()
+    })
+}
+
+/// The entry groups for a node id, or None for nodes with no engine-run
+/// command (their argv never carries a fingerprint).
+fn node_entries(id: &str) -> Option<&'static [&'static str]> {
+    NODE_ENTRIES
+        .iter()
+        .find(|(nid, _)| *nid == id)
+        .map(|(_, e)| *e)
+        .or_else(|| id.starts_with("contracts:").then_some(&["oracle"][..]))
+}
+
+/// Per-node engine fingerprint: the hull hash plus the node's entry groups
+/// and their transitive GROUP_DEPS closure, each folded by name+hash in
+/// sorted order. Deterministic across runs; changes iff hull or an involved
+/// group's sources change.
+pub fn node_fp(id: &str) -> String {
+    use sha2::{Digest, Sha256};
+    let entries = node_entries(id).unwrap_or_else(|| {
+        panic!("node {id} has no NODE_ENTRIES but is engine-run (argv __self__/__gate)")
+    });
+    let fps = engine_fps();
+    let mut groups: Vec<&str> = entries.to_vec();
+    let mut i = 0;
+    while i < groups.len() {
+        let g = groups[i];
+        if let Some((_, deps)) = GROUP_DEPS.iter().find(|(name, _)| *name == g) {
+            for d in deps.iter() {
+                if !groups.contains(d) {
+                    groups.push(d);
+                }
+            }
+        }
+        i += 1;
+    }
+    groups.sort();
+    let mut h = Sha256::new();
+    h.update(format!("hull={}", fps["hull"]));
+    for g in &groups {
+        let hash = fps.get(*g).unwrap_or_else(|| panic!("ENGINE_FPS: no hash for group {g}"));
+        h.update(format!(";{g}={hash}"));
+    }
+    hex::encode(h.finalize())
+}
+
+/// argv[0] for an engine-run node command: this binary, tagged with the
+/// node's own fingerprint (see `node_fp`). The tag rides argv[0] so it folds
+/// into the node key without any subcommand's parser seeing it; the runner
+/// splits on '@' and spawns the running executable.
+///
+/// Under `go-mirror` the Go-verbatim shape is mandatory (shard keys are
+/// byte-compared against the Go keyer), so the Go binary path goes back in.
+pub fn engine_argv0(id: &str) -> String {
+    if mirror_mode() {
+        "./build/pipeline".to_string()
+    } else {
+        format!("__self__@{}", node_fp(id))
+    }
+}
 
 /// Gates whose Go form was `go test -run '^TestX..'`. Self-hosted, each runs
 /// the ported gate implementation in this binary via `__gate`.
@@ -647,7 +809,7 @@ fn self_host(n: Node) -> Node {
     let mut n = n;
     if GO_TEST_GATES.contains(&id) {
         n.run = vec![vec![
-            ENGINE_SELF.to_string(),
+            engine_argv0(id),
             "__gate".to_string(),
             n.id.clone(),
         ]];
@@ -656,7 +818,7 @@ fn self_host(n: Node) -> Node {
         // and stays; only the go-test half becomes this engine's own tests.
         if let Some(second) = n.run.get_mut(1) {
             *second = vec![
-                ENGINE_SELF.to_string(),
+                engine_argv0(id),
                 "__gate".to_string(),
                 "unit".to_string(),
             ];
@@ -664,7 +826,7 @@ fn self_host(n: Node) -> Node {
     } else {
         for cmd in n.run.iter_mut() {
             if cmd.first().map(String::as_str) == Some("./build/pipeline") {
-                cmd[0] = ENGINE_SELF.to_string();
+                cmd[0] = engine_argv0(id);
             }
         }
     }
@@ -690,16 +852,9 @@ pub fn mirror_mode() -> bool {
     std::env::var("SHADLESS_GRAPH").as_deref() == Ok("go-mirror")
 }
 
-/// argv[0] for engine-run commands in the graph currently presented.
-/// Under `go-mirror` the Go-verbatim shape is mandatory (shard keys are
-/// byte-compared against the Go keyer), so the Go binary path goes back in.
-pub fn engine_argv0() -> String {
-    if mirror_mode() {
-        "./build/pipeline".to_string()
-    } else {
-        ENGINE_SELF.to_string()
-    }
-}
+/// (Per-node fingerprints — see `engine_argv0(id)`; fanout shards pass
+/// their own `contracts:<name>` id so the shard key carries the oracle
+/// group's fingerprint, not the parent's.)
 
 #[cfg(test)]
 mod self_host_tests {
@@ -767,9 +922,9 @@ mod self_host_tests {
                     ("unit", Some("node")) | ("typecheck", Some("npx")) | ("docs-site", Some("zola"))
                 );
                 if !product_side {
-                    assert_eq!(
-                        cmd.first().map(String::as_str),
-                        Some(ENGINE_SELF),
+                    let argv0 = cmd.first().map(String::as_str).unwrap_or("");
+                    assert!(
+                        argv0.starts_with("__self__@") && argv0.len() > "__self__@".len(),
                         "{} cmd {} not engine-run: {:?}",
                         n.id,
                         i,
@@ -818,12 +973,257 @@ mod self_host_tests {
         let unit = g.iter().find(|n| n.id == "unit").unwrap();
         assert_eq!(unit.run.len(), 2);
         assert_eq!(unit.run[0], vec!["node", "tools/unit-check.mjs"]);
-        assert_eq!(unit.run[1], vec![ENGINE_SELF, "__gate", "unit"]);
+        assert_eq!(
+            unit.run[1],
+            vec![engine_argv0("unit").as_str(), "__gate", "unit"]
+        );
         // The go-test inputs (pipeline/*.go, pipeline/internal/**) are gone;
         // the product side stays.
         let inputs = unit.inputs.as_ref().unwrap();
         assert!(!inputs.iter().any(|p| p.starts_with("pipeline/")));
         assert!(inputs.contains(&"tools/unit-check.mjs".to_string()));
         assert!(inputs.contains(&"src/**".to_string()));
+    }
+
+    // ---- fingerprint table enforcement ---------------------------------
+    //
+    // The fp scheme's soundness lives here, not in build.rs (which only
+    // hashes directories). These tests over-approximate on purpose: raw
+    // text, comments and string literals all count as references.
+
+    /// The engine-run tables in build.rs (GROUPS, HULL_FILES) and here must
+    /// stay identical — build.rs hashes by them, the fp composer keys off
+    /// the same names.
+    #[test]
+    fn build_rs_tables_pair_with_nodes_rs_tables() {
+        let build_src = include_str!("../build.rs");
+        let groups_line = build_src
+            .lines()
+            .find(|l| l.starts_with("const GROUPS"))
+            .expect("build.rs GROUPS");
+        for g in ENGINE_GROUPS {
+            assert!(
+                groups_line.contains(&format!("\"{g}\"")),
+                "group {g} missing from build.rs GROUPS"
+            );
+        }
+        let hull_start = build_src.find("const HULL_FILES").expect("build.rs HULL_FILES");
+        let hull_end = build_src[hull_start..].find("];").unwrap() + hull_start;
+        let hull_block = &build_src[hull_start..hull_end];
+        let build_hull: Vec<&str> = hull_block
+            .lines()
+            .filter_map(|l| l.trim().strip_prefix('"')?.split('"').next())
+            .collect();
+        let nodes_hull: Vec<&str> = HULL_FILES.to_vec();
+        assert_eq!(build_hull, nodes_hull, "HULL_FILES diverged");
+    }
+
+    /// Every src root file must be in the hull list (or jsbuild.rs): a file
+    /// outside every group and the hull would silently never stale anything.
+    /// Covers non-.rs files too — include_str!-ed assets at the root would
+    /// otherwise compile into the binary while staling nothing. Also: every
+    /// DIRECTORY under src must be a declared group — a new tier dir would
+    /// otherwise stale nothing except unit (global).
+    #[test]
+    fn every_root_file_is_in_the_hull() {
+        let src = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src");
+        let mut rs_roots: Vec<String> = std::fs::read_dir(&src)
+            .unwrap()
+            .filter_map(|e| e.ok())
+            .map(|e| e.file_name().to_string_lossy().to_string())
+            .filter(|n| n.ends_with(".rs") && n != "jsbuild.rs")
+            .collect();
+        rs_roots.sort();
+        for f in &rs_roots {
+            let rel = format!("src/{f}");
+            assert!(
+                HULL_FILES.contains(&rel.as_str()),
+                "{rel} is neither in HULL_FILES (build.rs + this file) nor jsbuild.rs — \
+                 it would never stale the graph"
+            );
+        }
+        let mut non_rs: Vec<String> = std::fs::read_dir(&src)
+            .unwrap()
+            .filter_map(|e| e.ok())
+            .filter(|e| e.file_type().map_or(false, |t| t.is_file()))
+            .map(|e| e.file_name().to_string_lossy().to_string())
+            .filter(|n| !n.ends_with(".rs"))
+            .collect();
+        non_rs.sort();
+        assert!(
+            non_rs.is_empty(),
+            "non-.rs files at src root are not covered by any fingerprint group \
+             (add them to HULL_FILES in build.rs + this file, or move them into a \
+             group dir): {non_rs:?}"
+        );
+        let mut dirs: Vec<String> = std::fs::read_dir(&src)
+            .unwrap()
+            .filter_map(|e| e.ok())
+            .filter(|e| e.file_type().map_or(false, |t| t.is_dir()))
+            .map(|e| e.file_name().to_string_lossy().to_string())
+            .collect();
+        dirs.sort();
+        for d in &dirs {
+            assert!(
+                ENGINE_GROUPS.contains(&d.as_str()),
+                "src/{d}/ is not a declared ENGINE_GROUP — nodes executing it would \
+                 never stale on its edits (add it to GROUPS in build.rs + here)"
+            );
+        }
+    }
+
+    /// Every engine-run node needs fp entries, and every entry is a known
+    /// group; the set of nodes carrying `__self__` after self_host must be
+    /// exactly NODE_ENTRIES.
+    #[test]
+    fn node_entries_cover_exactly_the_engine_run_nodes() {
+        let go = all_go();
+        let self_hosted: Vec<String> = go
+            .iter()
+            .map(|n| self_host(n.clone()))
+            .filter(|n| n.run.iter().any(|cmd| cmd.first().map_or(false, |a| a.starts_with("__self__@"))))
+            .map(|n| n.id)
+            .collect();
+        let mut listed: Vec<String> = NODE_ENTRIES
+            .iter()
+            .map(|(id, _)| id.to_string())
+            .collect();
+        for id in &listed {
+            assert!(
+                go.iter().any(|n| &n.id == id),
+                "NODE_ENTRIES lists {id}, which no node declares"
+            );
+        }
+        let mut a = self_hosted.clone();
+        let mut b = listed.clone();
+        a.sort();
+        b.sort();
+        assert_eq!(a, b, "NODE_ENTRIES must list exactly the engine-run nodes");
+        for (id, entries) in NODE_ENTRIES {
+            assert!(!entries.is_empty(), "{id}: empty entries");
+            for e in entries.iter() {
+                assert!(
+                    *e == "global" || *e == "jsbuild" || ENGINE_GROUPS.contains(e),
+                    "{id}: unknown entry group {e}"
+                );
+            }
+        }
+        // fanout shards resolve through the contracts prefix
+        assert_eq!(node_entries("contracts:tooltip"), Some(&["oracle"][..]));
+        assert_eq!(node_entries("no-such-node"), None);
+    }
+
+    /// Raw-text dependency audit: any cross-group module reference in a
+    /// group's sources must be declared in GROUP_DEPS. Hull modules are
+    /// exempt (present in every fp). Deliberately crude: comments, string
+    /// literals and cfg(test) blocks all count — over-stale, never falsely
+    /// fresh. Also bans the two idioms this audit cannot see through:
+    /// brace-grouped crate imports and module-path renames.
+    #[test]
+    fn group_deps_declare_every_cross_group_reference() {
+        let src = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src");
+        // crate-root single-file modules: reference = hull, no declaration needed
+        let hull_modules: Vec<String> = HULL_FILES
+            .iter()
+            .filter(|f| f.starts_with("src/") && f.ends_with(".rs"))
+            .map(|f| f.trim_start_matches("src/").trim_end_matches(".rs").to_string())
+            .collect();
+
+        let mut targets: Vec<(String, std::path::PathBuf)> = Vec::new();
+        for g in ENGINE_GROUPS {
+            targets.push((g.to_string(), src.join(g)));
+        }
+        targets.push(("jsbuild".to_string(), src.join("jsbuild.rs")));
+
+        let head_re = regex::Regex::new(r"\b(?:crate|pipeline)::([a-z_][a-z0-9_]*)").unwrap();
+        let supersuper_re = regex::Regex::new(r"\bsuper::super::([a-z_][a-z0-9_]*)").unwrap();
+        let super_mod_rs_re = regex::Regex::new(r"\bsuper::([a-z_][a-z0-9_]*)").unwrap();
+        let banned_brace = regex::Regex::new(r"crate::\{").unwrap();
+        let banned_alias = regex::Regex::new(r"use (?:crate|pipeline)::[a-z_][a-z0-9_]* as ").unwrap();
+
+        for (group, path) in &targets {
+            let files: Vec<std::path::PathBuf> = if path.is_dir() {
+                walkdir::WalkDir::new(path)
+                    .into_iter()
+                    .filter_map(|e| e.ok())
+                    .filter(|e| e.file_type().is_file() && e.path().extension().map_or(false, |x| x == "rs"))
+                    .map(|e| e.path().to_path_buf())
+                    .collect()
+            } else {
+                vec![path.clone()]
+            };
+            let mut found: Vec<String> = Vec::new();
+            for f in &files {
+                let text = std::fs::read_to_string(f)
+                    .unwrap_or_else(|e| panic!("{}: {}", f.display(), e));
+                assert!(
+                    banned_brace.find(&text).is_none(),
+                    "{}: `crate::{{...}}` brace imports are invisible to the dependency \
+                     audit — split them into one `use crate::x::y;` per path",
+                    f.display()
+                );
+                assert!(
+                    banned_alias.find(&text).is_none(),
+                    "{}: `use crate::x as y` renames hide module references from the \
+                     dependency audit — import through the full path instead",
+                    f.display()
+                );
+                let is_top_mod_rs = f.file_name().map_or(false, |n| n == "mod.rs")
+                    && f
+                        .parent()
+                        .and_then(|p| p.parent())
+                        .map_or(false, |p| p == src);
+                for caps in head_re.captures_iter(&text) {
+                    found.push(caps[1].to_string());
+                }
+                for caps in supersuper_re.captures_iter(&text) {
+                    found.push(caps[1].to_string());
+                }
+                if is_top_mod_rs {
+                    // `super::` in a top-level dir's mod.rs IS the crate root
+                    for caps in super_mod_rs_re.captures_iter(&text) {
+                        found.push(caps[1].to_string());
+                    }
+                }
+            }
+            let declared: &[&str] = GROUP_DEPS
+                .iter()
+                .find(|(name, _)| name == group)
+                .map(|(_, deps)| *deps)
+                .unwrap_or_else(|| panic!("GROUP_DEPS: no entry for group {group}"));
+            for head in &found {
+                if head == group || hull_modules.contains(head) || head == "global" {
+                    continue; // intra-group or hull (in every fp already)
+                }
+                assert!(
+                    ENGINE_GROUPS.contains(&head.as_str()) || head == "jsbuild",
+                    "group {group}: reference to `{head}` is neither a group nor a hull \
+                     module — extend the audit's module table"
+                );
+                assert!(
+                    declared.contains(&head.as_str()),
+                    "group {group}: reference to group `{head}` missing from GROUP_DEPS — \
+                     either declare it or the fp scheme goes falsely fresh"
+                );
+            }
+        }
+    }
+
+    /// fp properties that document the granularity: same-entry nodes share a
+    /// fp, different entries differ, and hull edits change everything
+    /// (simulated by composing — the real hull-sensitivity is shell-verified
+    /// by file-touch checks).
+    #[test]
+    fn node_fp_granularity() {
+        assert_eq!(node_fp("docs-smoke"), node_fp("demo-smoke"), "tools peers");
+        assert_ne!(node_fp("docs-smoke"), node_fp("contracts:tooltip"));
+        assert_ne!(node_fp("pin"), node_fp("unit"));
+        // engine-run nodes always carry a nonempty tag; fp is stable
+        assert_eq!(node_fp("docs-smoke"), node_fp("docs-smoke"));
+        assert!(engine_argv0("docs-smoke").starts_with("__self__@"));
+        assert_eq!(
+            engine_argv0("docs-smoke").split('@').next().unwrap(),
+            "__self__"
+        );
     }
 }

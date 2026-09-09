@@ -33,7 +33,7 @@ fn fan_contracts(root: &Path, n: &Node) -> std::io::Result<Vec<Node>> {
         let mut c = n.clone();
         c.id = format!("contracts:{}", name);
         c.run = vec![vec![
-            crate::nodes::engine_argv0(),
+            crate::nodes::engine_argv0(&c.id),
             "contract".to_string(),
             name.clone(),
         ]];
@@ -101,11 +101,12 @@ mod tests {
             vec!["contracts:button", "contracts:dialog"]
         );
         // shard run/inputs/produces — argv0 must be whatever the presented
-        // graph runs (Go path under SHADLESS_GRAPH=go-mirror, else __self__)
+        // graph runs (Go path under SHADLESS_GRAPH=go-mirror, else __self__
+        // tagged with the shard's own fingerprint)
         assert_eq!(
             shards[0].run,
             vec![vec![
-                crate::nodes::engine_argv0(),
+                crate::nodes::engine_argv0(&shards[0].id),
                 "contract".to_string(),
                 "button".to_string()
             ]]
