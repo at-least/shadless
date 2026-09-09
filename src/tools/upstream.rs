@@ -52,6 +52,23 @@ fn inherit(root: &Path, name: &str, args: &[&str]) -> bool {
         .unwrap_or(false)
 }
 
+/// The engine binary the drill drives: the Go binary path under
+/// `SHADLESS_GRAPH=go-mirror` (the drill is itself a parity harness there),
+/// otherwise this running binary — by definition already built. Resolving
+/// the latter is not allowed to fall back to the Go path.
+fn pipeline_exe() -> String {
+    if crate::nodes::mirror_mode() {
+        return "./build/pipeline".to_string();
+    }
+    match std::env::current_exe() {
+        Ok(p) => p.to_string_lossy().into_owned(),
+        Err(e) => {
+            eprintln!("pipeline: cannot resolve the running binary: {}", e);
+            std::process::exit(1);
+        }
+    }
+}
+
 fn upstream_step(title: &str) {
     println!("\n##### upstream: {}", title);
 }
@@ -109,8 +126,11 @@ pub fn run_upstream(root: &Path, args: &[String]) -> i32 {
         }
         if !no_build {
             upstream_step("full tier, keep going");
-            inherit(root, "make", &["pipeline"]);
-            inherit(root, "./build/pipeline", &["run", "all", "--keep-going"]);
+            let exe = pipeline_exe();
+            if crate::nodes::mirror_mode() {
+                inherit(root, "make", &["pipeline"]);
+            }
+            inherit(root, &exe, &["run", "all", "--keep-going"]);
         }
     }
 
@@ -142,11 +162,12 @@ pub fn run_upstream(root: &Path, args: &[String]) -> i32 {
     // The IR diff lives in ir_diff. The drill consumes it as data — the
     // --json shape is the interface.
     let ir_before = format!("{}/ir-before", GATES_OUT);
-    let ir_text = capture_output(root, "./build/pipeline", &["ir-diff", &ir_before, "generated/ir"])
+    let exe = pipeline_exe();
+    let ir_text = capture_output(root, &exe, &["ir-diff", &ir_before, "generated/ir"])
         .unwrap_or_default();
     let ir_json = capture_output(
         root,
-        "./build/pipeline",
+        &exe,
         &["ir-diff", &ir_before, "generated/ir", "--json"],
     )
     .unwrap_or_default();
@@ -207,7 +228,7 @@ pub fn run_upstream(root: &Path, args: &[String]) -> i32 {
 
     // ----------------------------------------------------------- 6. overlay
     upstream_step("overlay audit + task packets");
-    inherit(root, "./build/pipeline", &["overlay", "--tasks"]);
+    inherit(root, &pipeline_exe(), &["overlay", "--tasks"]);
     let tasks = list_dir(&root.join(GATES_OUT).join("tasks"));
     let conflicts = read_conflicts(root);
     rep.h("Manual work");
@@ -298,7 +319,7 @@ fn drill_repin(root: &Path, to: &str, args: &[String], from: &PinFile, rep: &mut
         eprintln!("pipeline: {}", e);
         return 1;
     }
-    if !inherit(root, "./build/pipeline", &["pin", "--force"]) {
+    if !inherit(root, &pipeline_exe(), &["pin", "--force"]) {
         return 1;
     }
     let to_pin = match read_pin(root) {
@@ -331,7 +352,7 @@ fn drill_repin(root: &Path, to: &str, args: &[String], from: &PinFile, rep: &mut
     ));
 
     upstream_step("dissolve auto-dissolve exemptions");
-    inherit(root, "./build/pipeline", &["ledger", "--dissolve"]);
+    inherit(root, &pipeline_exe(), &["ledger", "--dissolve"]);
 
     upstream_step("apply overlays/upstream");
     let series = patch_series(root);

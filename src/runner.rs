@@ -219,7 +219,14 @@ impl Runner {
                     logs.push(log);
                 }
             }
-            let mut c = Command::new(&cmd[0]);
+            let exe = match crate::engine::resolve_argv0(&cmd[0]) {
+                Ok(p) => p,
+                Err(e) => {
+                    let msg = format!("fork/exec {}: {}", cmd[0], e);
+                    return (buf, logs, Some(msg));
+                }
+            };
+            let mut c = Command::new(exe);
             c.args(&cmd[1..]).current_dir(&self.root);
             if let Some(jl) = &js_log {
                 let node_opts = format!(

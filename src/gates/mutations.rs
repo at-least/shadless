@@ -840,7 +840,14 @@ pub fn restore_active_mutation() -> Result<(), String> {
 pub fn run_gate(root: &Path, n: &crate::nodes::Node) -> (bool, String) {
     let mut buf = String::new();
     for argv in &n.run {
-        let out = std::process::Command::new(&argv[0])
+        let exe = match crate::engine::resolve_argv0(&argv[0]) {
+            Ok(p) => p,
+            Err(e) => {
+                buf.push_str(&format!("fork/exec {}: {}", argv[0], e));
+                return (true, buf);
+            }
+        };
+        let out = std::process::Command::new(exe)
             .args(&argv[1..])
             .current_dir(root)
             .output();

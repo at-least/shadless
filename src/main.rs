@@ -19,9 +19,15 @@ use std::path::Path;
 use std::sync::Arc;
 
 fn usage() -> ! {
-    eprint!(
+    // The usage text is part of the presented surface, so it follows the
+    // graph shape: go-mirror reproduces the Go binary's text byte-for-byte
+    // (golden layer 1 records it); the self-hosted engine describes itself.
+    let text = if std::env::var("SHADLESS_GRAPH").as_deref() == Ok("go-mirror") {
         "usage: pipeline <plan|list|status|run|adopt> <fast|full|builds|all|node…>\n       pipeline pin [--check-only]\n       pipeline tw <in> <out> [--minify] [--cwd DIR]\n       pipeline oracle-css\n       pipeline product-css\n       pipeline docs-catalog\n       pipeline ir-diff <git-ref>|<dirA> <dirB> [--json]\n       pipeline css-direction --update\n       pipeline ledger --record|--render|--dissolve\n       pipeline audit-boundary [--strict|discover]\n       pipeline upstream --to=shadcn@X.Y.Z [--fetch] [--no-build]\n       pipeline build-js\n       pipeline resolve-skins [--fixtures]\n       pipeline inputs <node> [--produces]\n\nThe gates are Go tests: go test -C pipeline -count=1 -v [-run '^TestPack$']\n"
-    );
+    } else {
+        "usage: pipeline <plan|list|status|run|adopt> <fast|full|builds|all|node…>\n       pipeline pin [--check-only]\n       pipeline tw <in> <out> [--minify] [--cwd DIR]\n       pipeline oracle-css\n       pipeline product-css\n       pipeline docs-catalog\n       pipeline ir-diff <git-ref>|<dirA> <dirB> [--json]\n       pipeline css-direction --update\n       pipeline ledger --record|--render|--dissolve\n       pipeline audit-boundary [--strict|discover]\n       pipeline upstream --to=shadcn@X.Y.Z [--fetch] [--no-build]\n       pipeline build-js\n       pipeline resolve-skins [--fixtures]\n       pipeline inputs <node> [--produces]\n\nThe engine runs its own gates: every node executes this binary (__gate / subcommands). SHADLESS_GRAPH=go-mirror presents the Go-verbatim graph; the Go gates remain go test -C pipeline -count=1 -v [-run '^TestPack$']\n"
+    };
+    eprint!("{}", text);
     std::process::exit(2);
 }
 
@@ -514,9 +520,74 @@ fn main() {
             has_flag(&rest, "--record"),
             has_flag(&rest, "--details"),
         )),
+        // hidden: the self-hosted gate dispatcher — the graph's gate nodes
+        // call this instead of `go test`. Not part of the public surface.
+        "__gate" => std::process::exit(run_hidden_gate(&rest)),
         other => {
             eprintln!("unknown command: {}", other);
             std::process::exit(2);
+        }
+    }
+}
+
+/// `__gate <id>`: run the ported gate implementation in this engine, mapping
+/// Go's per-gate `go test -run '^TestX..'` semantics to an exit code.
+fn run_hidden_gate(rest: &[String]) -> i32 {
+    let Some(gate) = rest.first() else {
+        eprintln!("usage: pipeline __gate <pin|unit|ledger|script-refs|dist-complete|pack|coverage|product-verify|consumer-sim|css-direction|reproducible>");
+        return 2;
+    };
+    let root = std::env::current_dir().unwrap_or_default();
+    let checked: Result<(), String> = match gate.as_str() {
+        "pin" => {
+            let code = pipeline::gates::pin::run_pin(&root, true, false);
+            return code;
+        }
+        "pack" => pipeline::gates::pack::gate_pack(&root),
+        "consumer-sim" => pipeline::gates::consumer_sim::gate_consumer_sim(&root),
+        "coverage" => {
+            pipeline::gates::coverage::gate_coverage(&root, &["--check".to_string()])
+        }
+        "ledger" => pipeline::gates::ledger::gate_ledger(&root),
+        "script-refs" => pipeline::gates::gate_script_refs(&root).map(|_| ()),
+        "dist-complete" => pipeline::gates::gate_dist_complete(&root).map(|_| ()),
+        "reproducible" => pipeline::gates::gate_reproducible(&root).map(|_| ()),
+        "product-verify" => pipeline::gates::gate_product_verify(&root),
+        "css-direction" => pipeline::gates::gate_css_direction(&root).map(|_| ()),
+        // Go's `-run '^TestUnit ./...'` runs the pipeline's own tests; the
+        // engine's own tests are the whole lib suite (the port consolidated
+        // Go's 188 TestUnit* fns into fewer, so a prefix filter would be
+        // arbitrary — the lib target also excludes the Go-parity harness
+        // tests in tests/, which must not run inside a gate).
+        "unit" => {
+            // The runner injects the JS fs-recorder into node children; the
+            // nested cargo test must not inherit that (or its own node
+            // children would write into the gate's scratch js.log).
+            let status = std::process::Command::new("cargo")
+                .args(["test", "--release", "--lib"])
+                .current_dir(env!("CARGO_MANIFEST_DIR"))
+                .env_remove("NODE_OPTIONS")
+                .env_remove("SHADLESS_FSLOG")
+                .status();
+            return match status {
+                Ok(s) if s.success() => 0,
+                Ok(s) => s.code().unwrap_or(1),
+                Err(e) => {
+                    eprintln!("pipeline __gate unit: cargo test: {}", e);
+                    1
+                }
+            };
+        }
+        other => {
+            eprintln!("pipeline __gate: unknown gate: {}", other);
+            return 2;
+        }
+    };
+    match checked {
+        Ok(()) => 0,
+        Err(e) => {
+            eprintln!("{}", e);
+            1
         }
     }
 }

@@ -1,5 +1,5 @@
 pin                    STALE
 unit                   STALE
-typecheck              STALE
+typecheck              fresh
 ledger                 STALE
 script-refs            STALE

@@ -686,7 +686,7 @@ pub fn all() -> Vec<Node> {
     all_go().into_iter().map(self_host).collect()
 }
 
-fn mirror_mode() -> bool {
+pub fn mirror_mode() -> bool {
     std::env::var("SHADLESS_GRAPH").as_deref() == Ok("go-mirror")
 }
 

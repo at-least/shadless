@@ -2,6 +2,7 @@
 //! Byte-identity with the Go binary is the acceptance bar; see PLAN.md.
 
 pub mod convert;
+pub mod engine;
 pub mod fanout;
 pub mod glob;
 pub mod emit;
