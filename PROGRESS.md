@@ -504,6 +504,19 @@ golden 台零影響。
   GROUP_DEPS 與實測引用一致、go-mirror/__keys/gate_parity/resolve_argv0
   無漂移、 dropping rerun-if-changed 正確(cargo 預設=任何 package 檔案
   變更即重跑 build script,是舊清單的超集)。
+- **餘留(記錄,done-call 顧問要求)**:(1) 覆蓋測試只保證「src 下所有
+  檔案都被雜湊」,不保證「非測試碼的 include_str!/include! 不伸出 src」
+  ——未來若有人加超出 src 的 embed 會重演 reviewer 的洞;廉價跟進:
+  raw-grep 審計加一條對 `include!(..`/`include_str!(..` 伸出 src 的
+  失敗。(2) stamps 是 upstream 樹的 runtime 產物(未 commit)——fresh
+  clone 上 status 全 STALE 直到第一次收斂,「68 fresh」不是 repo 不變量。
+- **給 Oxc 實驗的前置(顧問建議)**:實驗開工前先 pin 基線(記錄
+  convert/jsbuild 群組的 fp hex,事後 diff 證明只有這兩群組移動,讓
+  隔離宣告可證偽);feature flag 若放 Cargo.toml 屬 hull,每切換一次
+  全圖 stale——應在群組內以 env/arg 閘,或接受功能落地時的一次性
+  hull stale;新增 oxc/rolldown 依賴必改 Cargo.lock(hull)→ 排一次
+  ~15 分鐘全圖收斂再開始迭代。首次切換 flag 後 status 應顯示「僅
+  convert/jsbuild 相依節點 STALE、瀏覽器層 fresh」,否則隔離假設有誤。
 - 環境註記:上一輪的「全 stamps STALE 預期」已在本輪開頭實證收口
   (ran 52 / skipped 17 / 294.2s / exit 0,事後 68 fresh;gen_golden 469
   零漂移;goprobe 重建屬環境性 churn 已還原)。upstream 樹維持已知唯一
