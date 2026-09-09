@@ -30,6 +30,11 @@ fn shadless_root() -> Option<PathBuf> {
 
 #[test]
 fn golden_matrix_replays() {
+    // The goldens record the Go-verbatim graph (see gen_golden.sh); the
+    // engine's default table is self-hosted and intentionally diverges.
+    // Single test fn and no other test in this binary reads the variable,
+    // so there is no concurrent access to race with (edition-2024 unsafe).
+    unsafe { std::env::set_var("SHADLESS_GRAPH", "go-mirror") };
     let Some(root) = shadless_root() else {
         eprintln!("skip: no shadless tree next to the crate (set SHADLESS_ROOT)");
         return;

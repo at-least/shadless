@@ -21,6 +21,10 @@ set -u
 HERE="$(cd "$(dirname "$0")" && pwd)"
 RS_ROOT="$(cd "$HERE/.." && pwd)"
 SHADLESS_ROOT="${SHADLESS_ROOT:-$RS_ROOT/../shadless}"
+# Every RS invocation below must present the Go-verbatim graph: the goldens
+# and the goprobe key comparison are byte-parity oracles against the Go
+# binary, and the engine's default (self-hosted) table intentionally diverges.
+export SHADLESS_GRAPH=go-mirror
 GO_BIN="$SHADLESS_ROOT/build/pipeline"
 RS_BIN="$RS_ROOT/target/release/pipeline"
 KEYS_BIN="$RS_ROOT/probe/keys-go/goprobe"

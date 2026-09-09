@@ -2,6 +2,17 @@
 //! Transcribed field-for-field: any drift shows up as a key mismatch in the
 //! `status` golden-diff against the Go binary. `inputs: None` is Go's nil
 //! (never fresh); `produces: None` is Go's nil (no declared outputs).
+//!
+//! Two graph shapes live here:
+//!
+//! - `all_go()` is the authored, Go-verbatim table — the byte-parity oracle
+//!   the acceptance harness (tests/gen_golden.sh + tests/golden.rs) runs
+//!   against the Go binary. Transcription errors surface there as key
+//!   mismatches.
+//! - `all()` returns the graph the engine actually runs. Default is the
+//!   self-hosted shape (`self_host`): every node executes this binary, not
+//!   the Go one. `SHADLESS_GRAPH=go-mirror` selects `all_go()` verbatim for
+//!   the harness.
 
 // Two pinned-upstream trees that several nodes read DIRECTLY (nodes.go:
 // declared whole rather than per-file; over-declaring an input only costs a
@@ -59,8 +70,11 @@ fn node(
     }
 }
 
-/// The pipeline graph, in declaration order (nodes.go `var Nodes`).
-pub fn all() -> Vec<Node> {
+/// The Go-verbatim graph, in declaration order (nodes.go `var Nodes`).
+/// Authored data — do not edit except to track upstream nodes.go changes;
+/// the acceptance harness byte-compares keys derived from this table
+/// against the real Go keyer (probe/keys-go).
+pub fn all_go() -> Vec<Node> {
     vec![
         node(
             "pin", "gate", "fast",
@@ -573,4 +587,243 @@ pub fn all() -> Vec<Node> {
             &["example-perturb-shipped"],
         ),
     ]
+}
+
+/// argv[0] of every self-hosted command: this binary, tagged with the engine
+/// fingerprint (build.rs sha256 over src/**/*.rs + Cargo.toml + Cargo.lock +
+/// build.rs + rust-toolchain.toml). The tag rides argv[0] so it folds into
+/// every node key without any subcommand's argument parser ever seeing it;
+/// the runner splits on '@' and spawns the running executable.
+pub const ENGINE_SELF: &str = concat!("__self__@", env!("ENGINE_FP"));
+
+/// Gates whose Go form was `go test -run '^TestX..'`. Self-hosted, each runs
+/// the ported gate implementation in this binary via `__gate`.
+const GO_TEST_GATES: &[&str] = &[
+    "pin",
+    "ledger",
+    "script-refs",
+    "dist-complete",
+    "pack",
+    "coverage",
+    "product-verify",
+    "consumer-sim",
+    "css-direction",
+    "reproducible",
+];
+
+/// pipeline/ inputs that SURVIVE self-hosting: files this engine reads as
+/// data, not as the implementation being run. Everything else under
+/// `pipeline/` was an input because Go executed it; that role is now covered
+/// by the engine fingerprint in argv[0].
+/// Evidence per rule:
+/// - ledger: gates/ledger.rs SWEEP_PATH parses interactivity_sweep.go
+/// - script-refs: gates/mod.rs parses main.go verbs + *_test.go test names
+/// - overlay: tools/overlay.rs reads build_rtl.go for the Persian-dict rule
+/// - oracle chain (contract-fixture/example-fixture/example-oracle/contracts/
+///   example-golden/example-gate): oracle_lib.rs folds resolve_skins.go +
+///   oracle_lib.go contents into the oracle invariant cache key
+const KEEP_PIPELINE_INPUTS: &[(&str, &str)] = &[
+    ("ledger", "pipeline/interactivity_sweep.go"),
+    ("script-refs", "pipeline/main.go"),
+    ("script-refs", "pipeline/*_test.go"),
+    ("overlay", "pipeline/build_rtl.go"),
+    ("contract-fixture", "pipeline/oracle_lib.go"),
+    ("contract-fixture", "pipeline/resolve_skins.go"),
+    ("example-fixture", "pipeline/oracle_lib.go"),
+    ("example-fixture", "pipeline/resolve_skins.go"),
+    ("example-oracle", "pipeline/oracle_lib.go"),
+    ("example-oracle", "pipeline/resolve_skins.go"),
+    ("contracts", "pipeline/oracle_lib.go"),
+    ("contracts", "pipeline/resolve_skins.go"),
+    ("example-gate", "pipeline/oracle_lib.go"),
+    ("golden-gate", "pipeline/oracle_lib.go"),
+    ("golden-gate", "pipeline/resolve_skins.go"),
+];
+
+/// Rewrite one Go-verbatim node into the self-hosted shape.
+fn self_host(n: Node) -> Node {
+    let id = n.id.clone();
+    let id = id.as_str();
+    let mut n = n;
+    if GO_TEST_GATES.contains(&id) {
+        n.run = vec![vec![
+            ENGINE_SELF.to_string(),
+            "__gate".to_string(),
+            n.id.clone(),
+        ]];
+    } else if id == "unit" {
+        // cmd[0] (node tools/unit-check.mjs) tests the product's JS surface
+        // and stays; only the go-test half becomes this engine's own tests.
+        if let Some(second) = n.run.get_mut(1) {
+            *second = vec![
+                ENGINE_SELF.to_string(),
+                "__gate".to_string(),
+                "unit".to_string(),
+            ];
+        }
+    } else {
+        for cmd in n.run.iter_mut() {
+            if cmd.first().map(String::as_str) == Some("./build/pipeline") {
+                cmd[0] = ENGINE_SELF.to_string();
+            }
+        }
+    }
+    if let Some(inputs) = n.inputs.as_mut() {
+        inputs.retain(|p| {
+            !p.starts_with("pipeline/")
+                || KEEP_PIPELINE_INPUTS.contains(&(id, p.as_str()))
+        });
+    }
+    n
+}
+
+/// The graph the engine runs: self-hosted by default, `SHADLESS_GRAPH=go-mirror`
+/// for the Go-parity acceptance harness.
+pub fn all() -> Vec<Node> {
+    if mirror_mode() {
+        return all_go();
+    }
+    all_go().into_iter().map(self_host).collect()
+}
+
+fn mirror_mode() -> bool {
+    std::env::var("SHADLESS_GRAPH").as_deref() == Ok("go-mirror")
+}
+
+/// argv[0] for engine-run commands in the graph currently presented.
+/// Under `go-mirror` the Go-verbatim shape is mandatory (shard keys are
+/// byte-compared against the Go keyer), so the Go binary path goes back in.
+pub fn engine_argv0() -> String {
+    if mirror_mode() {
+        "./build/pipeline".to_string()
+    } else {
+        ENGINE_SELF.to_string()
+    }
+}
+
+#[cfg(test)]
+mod self_host_tests {
+    use super::*;
+
+    #[test]
+    fn all_go_is_the_go_verbatim_shape() {
+        let g = all_go();
+        assert_eq!(g.len(), 41, "nodes.go declares 41 nodes");
+        let gates = g.iter().filter(|n| n.kind == "gate").count();
+        assert_eq!(gates, 24, "nodes.go declares 24 gates");
+        // Spot-checks against the Go source, verbatim (nodes.go:122-148, 518-524):
+        let pin = g.iter().find(|n| n.id == "pin").unwrap();
+        assert_eq!(
+            pin.run,
+            vec![vec![
+                "go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestPin$", "."
+            ]]
+        );
+        let unit = g.iter().find(|n| n.id == "unit").unwrap();
+        assert_eq!(unit.run.len(), 2);
+        assert_eq!(unit.run[0], vec!["node", "tools/unit-check.mjs"]);
+        assert_eq!(
+            unit.run[1],
+            vec![
+                "go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestUnit", "./..."
+            ]
+        );
+        assert!(unit
+            .inputs
+            .as_ref()
+            .unwrap()
+            .contains(&"pipeline/*.go".to_string()));
+        let convert = g.iter().find(|n| n.id == "convert").unwrap();
+        assert_eq!(
+            convert.run,
+            vec![
+                vec!["./build/pipeline", "resolve-skins"],
+                vec!["./build/pipeline", "convert"]
+            ]
+        );
+        let reproducible = g.iter().find(|n| n.id == "reproducible").unwrap();
+        assert_eq!(reproducible.inputs, None, "judges state outside the tree");
+    }
+
+    #[test]
+    fn self_hosted_table_spawns_no_go() {
+        let go = all_go();
+        let g: Vec<Node> = go.iter().cloned().map(self_host).collect();
+        assert_eq!(g.len(), 41);
+        assert_eq!(g.iter().filter(|n| n.kind == "gate").count(), 24);
+        for n in &g {
+            for (i, cmd) in n.run.iter().enumerate() {
+                assert!(
+                    !cmd.iter().any(|a| a == "go" || a == "./build/pipeline"),
+                    "{} still references Go: {:?}",
+                    n.id,
+                    cmd
+                );
+                // The only commands not run by this engine are the
+                // product-side tools the Go table already ran directly:
+                // unit's JS checker, typecheck's tsc, docs-site's zola.
+                let product_side = matches!(
+                    (n.id.as_str(), cmd.first().map(String::as_str)),
+                    ("unit", Some("node")) | ("typecheck", Some("npx")) | ("docs-site", Some("zola"))
+                );
+                if !product_side {
+                    assert_eq!(
+                        cmd.first().map(String::as_str),
+                        Some(ENGINE_SELF),
+                        "{} cmd {} not engine-run: {:?}",
+                        n.id,
+                        i,
+                        cmd
+                    );
+                }
+            }
+            // Structural fields must survive the transform untouched.
+            let go_n = go.iter().find(|m| m.id == n.id).unwrap();
+            assert_eq!(n.kind, go_n.kind, "{}", n.id);
+            assert_eq!(n.tier, go_n.tier, "{}", n.id);
+            assert_eq!(n.needs, go_n.needs, "{}", n.id);
+            assert_eq!(n.produces, go_n.produces, "{}", n.id);
+            assert_eq!(n.mutations, go_n.mutations, "{}", n.id);
+        }
+    }
+
+    #[test]
+    fn self_hosted_pipeline_inputs_are_exactly_the_keep_list() {
+        let g: Vec<Node> = all_go().into_iter().map(self_host).collect();
+        let mut surviving: Vec<(String, String)> = Vec::new();
+        for n in &g {
+            if let Some(inputs) = &n.inputs {
+                for p in inputs {
+                    if p.starts_with("pipeline/") {
+                        surviving.push((n.id.clone(), p.clone()));
+                    }
+                }
+            }
+        }
+        surviving.sort();
+        let mut keep: Vec<(String, String)> = KEEP_PIPELINE_INPUTS
+            .iter()
+            .map(|(a, b)| (a.to_string(), b.to_string()))
+            .collect();
+        keep.sort();
+        assert_eq!(
+            surviving, keep,
+            "every surviving pipeline/ input must be a documented data-read"
+        );
+    }
+
+    #[test]
+    fn unit_keeps_product_check_and_swaps_only_the_engine_half() {
+        let g: Vec<Node> = all_go().into_iter().map(self_host).collect();
+        let unit = g.iter().find(|n| n.id == "unit").unwrap();
+        assert_eq!(unit.run.len(), 2);
+        assert_eq!(unit.run[0], vec!["node", "tools/unit-check.mjs"]);
+        assert_eq!(unit.run[1], vec![ENGINE_SELF, "__gate", "unit"]);
+        // The go-test inputs (pipeline/*.go, pipeline/internal/**) are gone;
+        // the product side stays.
+        let inputs = unit.inputs.as_ref().unwrap();
+        assert!(!inputs.iter().any(|p| p.starts_with("pipeline/")));
+        assert!(inputs.contains(&"tools/unit-check.mjs".to_string()));
+        assert!(inputs.contains(&"src/**".to_string()));
+    }
 }

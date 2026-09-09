@@ -528,8 +528,11 @@ pub fn gate_script_refs(root: &Path) -> Result<(usize, usize), String> {
         .map_err(|e| format!("FAIL  script-refs (Makefile unreadable: {})", e))?;
     check(&makefile, "Makefile", &mut fail);
 
-    // the graph itself: nodes.go's -run patterns reference Go tests
-    let nodes = crate::nodes::all();
+    // the graph itself: nodes.go's -run patterns reference Go tests.
+    // Deliberately the GO-VERBATIM table: the -run refs live in the authored
+    // table (and in Makefile/package.json), not in the self-hosted shape,
+    // where every node runs this engine and the check would be vacuous.
+    let nodes = crate::nodes::all_go();
     let mut node_runs = 0usize;
     for n in &nodes {
         for argv in &n.run {
