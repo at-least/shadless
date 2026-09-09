@@ -39,10 +39,11 @@
 - [x] M1 scaffold + graph/key/CLI
 - [x] M2 runner + verify + run/adopt
 - [x] M3 internal/twmerge + internal/tsx(twmerge 555 snapshot 案例一致;tsx 562 檔 babel conformance 一致;regex \w\d\s\b 已 ASCII 化)
-- [ ] M3.5 api.Build probe gate(移植 oracle_lib/example_fixture 之前)
+- [x] M3.5 api.Build probe gate(2026-09-08 以替代路徑結案:probe gate 未單獨建,oracle 鏈直接以端到端驗收——example-oracle --check 227 頁 PASS、example-golden 296==snapshot、contract 29 契約雙邊一致;見下方 Oracle 鏈條目)
 - [x] M4 convert.go → IR(**61/61 byte-identical**,2026-09-07;全部 4 個 drift gates PASS、tier dist/conditionals 與 Go 一致)
-- [x] M5(部分)jsbuild + emit 鏈完整移植並驗證：**build-js 268/268 dist byte-identical**（含 esbuild CLI minify）、**emit 268/268 dist byte-identical + build/emit globals.css 63,815B byte-identical**、emit 三 gates PASS（23 檔/96 slots/15 anchors）。demo.go/rtl/product_css/oracle/docs 鏈與 M6 gates 仍待移植
-- [ ] M6 gates 24 個 → #[test]
+- [x] M5(完成)jsbuild + emit 鏈(2026-09-07);demo/rtl/product_css/oracle/docs 鏈 2026-09-08 全數移植並雙邊驗證(見下方「剩餘 18 指令全部移植」等條目)
+- [x] M6 gates 24 個(2026-09-08 完成:11 個真樹 gates 為 #[test]+CLI、全部 gate 函式移植並雙邊 verdict 驗證;2026-09-09 gate_parity 24 gates 雙引擎 verdict 對照)
+- [x] M7 自我接管(2026-09-09:預設圖零 spawn Go;`SHADLESS_GRAPH=go-mirror` 保留 Go 對照模式;gate_parity 抓出並修復 4 缺陷;詳見下方「自我接管」與 PLAN.md 同名節)
 
 ## M3 筆記(2026-09-07)
 
