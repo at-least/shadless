@@ -480,3 +480,16 @@ docs-fidelity/interactivity-sweep 轉綠。
    git checkout 的循環到此為止)。
 3. **style-parity(24 格 dialog/dialog-close presence)——S3 已結案**
    (狀態相依,完整圖中轉綠,見上方 S3 總結;非產品 bug)。
+
+### out.css 重生的影響面(gate 證據)
+
+顧問要求的 gate 證據(grep 之外):全庫僅 dist-complete gate 對樹內 out.css
+有內容斷言(slot 選擇器);css_direction/coverage 的 out.css 引用是註釋、
+consumer-sim 用 tempdir 自建檔、audit/mutations 是清單與突变定義,無任何
+哈希釘住。提交後乾淨樹上的 cargo test 已跑全部 10 個真樹 gate 測試
+(117 過 0 略),含 gate_dist_complete/css_direction_baseline/consumer_sim
+——即重生的 out.css 已過所有會讀它的快 gate。demo-parity/example-fixture/
+contract-fixture 雖以 out.css 為 input,但頁面無人使用 `.invisible`
+(grep 證據見上),不匹配任何元素的規則不可能改變計算樣式,渲染 gate 結構上
+不受影響。本輪 .rs 修改使引擎指紋變化,**全部 stamps 已 STALE——下次
+`run all` 會整圖重跑,屬預期行為(已知偏差 4),非退化**。
