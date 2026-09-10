@@ -661,3 +661,20 @@ contract-fixture 雖以 out.css 為 input,但頁面無人使用 `.invisible`
 (grep 證據見上),不匹配任何元素的規則不可能改變計算樣式,渲染 gate 結構上
 不受影響。本輪 .rs 修改使引擎指紋變化,**全部 stamps 已 STALE——下次
 `run all` 會整圖重跑,屬預期行為(已知偏差 4),非退化**。
+
+## 全套自證重認證 + README 收尾(2026-09-10,晚)
+
+上一輪(3a0cf31)收尾後的認證輪,零程式碼變更:
+
+- `run all` 收斂:ran 1 / skipped 68 / 2.5s / exit 0;status 68 fresh +
+  reproducible NEVER-FRESH(設計如此)。
+- gen_golden(自證模式):**104 passed / 0 failed / exit 0**;go stub 調用
+  28 筆全為預期 gate 形狀;重錄 goldens 與已提交版本**位元組零漂移**
+  (git diff 空 = 引擎確定性回歸證據)。
+- cargo test:124 lib + 3 integration 全綠。
+- README「現況」段 bundler 預設句修正(5703974):rolldown 為預設
+  (62be6a5 之後;`SHADLESS_ORACLE_BUNDLER=esbuild` 逐次退回、
+  `--no-default-features` 純 esbuild binary),原句描述的是採納前狀態。
+  PLAN.md:89 / PROGRESS.md:542 / probe/oxc/REPORT.md:86 的同款句子為
+  歷史敘述、緊跟翻轉段落,刻意保留。勘誤:5703974 提交體內誤寫
+  `62be5a5`,正確 hash 為 `62be6a5`(已上 main 不 amend,以此為準)。
