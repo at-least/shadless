@@ -719,7 +719,9 @@ contract-fixture 雖以 out.css 為 input,但頁面無人使用 `.invisible`
 - emit 群組其餘 panic/expect 掃描:全為內部不變量(常數 regex unwrap =
   Go MustCompile 同語意、前置檢查護欄、IR 驅動的查找)——Go 對應形狀
   本來就是 panic/零值,非 stderr+exit 路徑,無同類偏差。
-- 回歸(兩輪 fp 變更後的最終碼):gen_golden 104/104、goldens 零漂移;
+- 回歸(最終碼 = 三輪 fp 變更後:修復本體、errno 表擴充、go_err 註解
+  修字——末輪行為等價,顧問建議可帶 stale 提交,本輪選擇再付一次收斂
+  讓提交源與 stamps 一致):gen_golden 104/104、goldens 零漂移;
   cargo test 124 lib + 4 整合測試檔全綠(error_paths 為新檔);status
   前置檢查 stale 集 = 預期(66 = emit 閉包經 GROUP_DEPS 級聯
   gates/oracle/convert;非引擎相關的 build-js/typecheck/reproducible
