@@ -731,3 +731,57 @@ contract-fixture 雖以 out.css 為 input,但頁面無人使用 `.invisible`
 - 教訓:`cargo build -q | head` 會被 SIGPIPE 殺於連結前,binary 停在舊版
   而 pipe 的 exit code 是 head 的 0——「修了還紅」時先核 binary 的
   panic 行號是否仍存在於現源碼。
+
+## 完全取代 Go 引擎(2026-09-11,本輪)
+
+上級決定:shadless-rs 成為上游唯一引擎——單一 repo、徹底去 Go、.dagger 移除。
+上游 tag `go-engine-final` 封存替換前狀態;本 crate 以 subtree merge 併入
+(go-parity-final 仍是雙引擎位元組對照的歷史證據)。
+
+三段式,每段獨立驗證後提交:
+
+- **S1(shadless-rs 71f467a,搬遷前全部 crate 編輯)**:oracle invariant 剔除
+  resolve_skins.go/oracle_lib.go 並折入 oracle 群組指紋(暖 bundle 不再跨
+  oracle 源碼編輯存活;key 一次全冷);ledger 預算改數
+  `SWEEP_KNOWN_DEAD`(值同為 1,committed ledger.json 不變);overlay 波斯
+  字典稽核改枚舉 `emit::build_rtl::persian()`;KEEP_PIPELINE_INPUTS 15→2;
+  根標記 `pipeline/nodes.go` → `package.json`+`pipeline/` 目錄(三份);
+  新 `crate_adjacent_tree_root()` 令測試根在搬遷前後皆正確(修掉一個
+  run-all unit gate 失敗:cargo-from-crate cwd 且無 SHADLESS_ROOT 時單候選
+  fallback 指錯);GROUP_DEPS gates+=tools(真實新依賴,審計自己抓的);
+  HULL_ROOT_ITEMS 允許清單(assert 釘在 lib.rs);gate_parity.rs 刪除
+  (最後的 Go 執行路徑)。reviewer 三個實質發現全修:指紋折入、allowlist
+  斷言、殘留引用。雙上下文(有/無 SHADLESS_ROOT)124 綠、gen_golden 104
+  零漂移、收斂 68 fresh。
+- **S2a(上游 7c66ef7 + e34c4e1)**:刪 Go binary 的 README(subtree 衝突)
+  → `git subtree merge`(read-tree --prefix=pipeline + -s ours --no-commit,
+  真合併,shadless-rs 歷史成為 parent)——雙樹共存、全綠。
+- **S2a'(上游 a4e89e9,swap)**:git rm 全部 Go(pipeline/*.go、go.mod/sum、
+  committed 的 19.8MB 二進位、JS harness 與 testdata——逐一核實 crate 內
+  有對應物)+ .dagger + PORT.md;Makefile 建置規則改 cargo、三個 go-test
+  target 改 `__meta`/`__gate`;package.json 五條腳本改接,18 條
+  `./build/pipeline` 逐字不動;script-refs v2(對 `nodes::VERBS` 驗證 +
+  執法無 Go 契約:`go test|build|run|generate`/go.mod 出現在 Makefile 或
+  package.json 即 FAIL);VERBS 常數與 main.rs 分發臂雙向測試釘住;
+  harness 根預設改 `$RS_ROOT/..`;goldens 於收斂後重錄——diff 逐行審計:
+  全部是 pipeline/*.go 輸入行消失或對應鍵重摺,無一不可解釋。
+  驗證:make pipeline/build/fast/list 綠、cargo test 125 lib + 整合
+  (SHADLESS_ROOT 未設,從新家自證)、run all 收斂。
+- **S2b(本提交)**:CONTRIBUTING(Rust 章節、rustup setup、新路徑)、
+  PORT.md 重寫為 Rust 引擎章程、本記錄。
+
+### 發現的既有結構性競態(記錄,不在本輪修)
+
+reproducible gate 是 NEVER-FRESH、無 needs 的圖節點,協議是
+`git status --porcelain`。Go 時代它由 `make reproducible`(go test)獨佔
+執行,競態從未暴露;在 -j16 的圖內、當 dist 寫入節點(minify)同輪重跑時,
+gate 會逮到寫入中的暫態。swap 輪全鍵變更使 minify 與 reproducible 同輪
+重跑,恰好觸發一次(standalone 重跑 PASS,68 fresh)。Go 圖形狀相同
+(同樣無 needs),屬移植忠實繼承的既有結構;若要修,方向是 self_host
+變換給 reproducible 加 needs(自我表可改、mirror 表不動),留待日後。
+
+### 已接受的成本(記錄)
+
+- oracle 快取一次全冷(指紋折入鍵);19.8MB Go 二進位留在 git 歷史
+  (刪除不縮小 clone,未重寫歷史);與 Go 未來漂移無人追蹤
+  (2026-09-10 已接受的決定,go-engine-final 之後引擎是唯一真源)。

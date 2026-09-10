@@ -3,7 +3,8 @@
 shadless is a mechanical conversion of the pinned shadcn-ui registry. The
 rule that shapes every change: **nothing is verified by a list that lives
 in two places, and nothing is trusted because it was green once.** Every
-check is a node in `pipeline/nodes.go`, every gate is proven able to fail
+check is a node of the graph the Rust engine at `pipeline/` defines, every
+gate is proven able to fail
 by `make meta`, and every accepted difference from upstream is a
 ledger entry with a reason.
 
@@ -12,6 +13,7 @@ ledger entry with a reason.
 ```sh
 npm ci
 npx playwright install --with-deps chromium   # the full tier renders in chromium
+rustup install                                # pins itself via pipeline/rust-toolchain.toml
 npm run pin                                   # auto-clones the pinned upstream into .upstream/ on first run
 ```
 
@@ -35,7 +37,7 @@ demo pages; only the full demo build restores them).
 
 ## Where changes go
 
-- **Conversion rules** — `pipeline/convert.go`, `src/emitter`: mechanical, driven
+- **Conversion rules** — `pipeline/src/convert/`, `src/emitter`: mechanical, driven
   by the IR in `generated/ir/`. A manual intervention on top of the
   conversion is an *overlay* (`overlays/`, audited by `make overlay`), never
   a hand edit of `dist/`.
@@ -50,11 +52,13 @@ demo pages; only the full demo build restores them).
   runtime protocol text comes from `tools/fixture-families.mjs` (the same
   tables that generate the fixtures). Hand-authored demos live in
   `docs/demos/`.
-The Go/JS split in this repo is deliberate and documented in
-[pipeline/PORT.md](pipeline/PORT.md); a tool moves to Go when Go can produce
-the same bytes, and the four toolchains that cannot are listed there.
+The Rust/JS split in this repo is deliberate and documented in
+[pipeline/PORT.md](pipeline/PORT.md): a step moves into the Rust engine when
+it can produce the same bytes, and the toolchains that stay external (the
+pinned esbuild binary, the tailwind CLI, playwright's chromium, zola) are
+listed there.
 
-- **A new gate** — a node in `pipeline/nodes.go` with a `Why`, at least one
+- **A new gate** — a node in `pipeline/src/nodes.rs` with a `Why`, at least one
   mutation under `gates/mutations/` that makes it fail, and a tier. `make
   meta` rejects anything less.
 - **An accepted difference from upstream** — `gates/ledger.json` (never a
