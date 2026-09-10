@@ -453,6 +453,46 @@ docs-fidelity/interactivity-sweep 轉綠。
 - 環境註記:goldens 的 status 案例與真樹 stamps 狀態耦合——在真樹上跑過引擎後
   先重跑 gen_golden 再跑 cargo test(與既有 dist 陷阱同類)。
 
+## Oxc 採用 + tools 檔案級指紋(2026-09-10,第二日)
+
+兩項使用者拍板的收尾:
+
+### 1. rolldown 為預設 oracle bundler(62be6a5)
+
+cargo `default = ["oxc"]`:純預設建置的 oracle bundle 走 rolldown
+(全新快取下 `example-oracle --check` 227/227 PASS 實證);
+`SHADLESS_ORACLE_BUNDLER=esbuild` 逐次退回、未知值報錯列出合法值、
+`--no-default-features` 建置純 esbuild 精簡 binary(=oxc 乾淨報錯)。
+四種組合逐一驗證。gate 函式改為 match 語意(`oracle_bundler_use_oxc()`),
+預設值由 feature 決定。
+
+### 2. tools/ 檔案級指紋
+
+build.rs 對 src/tools/*.rs **每檔**雜湊(`tools:<stem>` entries;
+tools/mod.rs 為 `tools:mod` 折入所有 tools fp);nodes.rs 新增
+TOOLS_FILE_DEPS(檔案→跨群組依賴)與 TOOLS_FILE_INTRA(檔案→tools 兄弟
+檔,node_fp 做傳遞閉包),NODE_ENTRIES 的 tools 群組 token 改為
+`tools:<stem>`;convert 節點的 resolve-skins 動詞只折 tools:resolve_skins。
+執法審計同步重構:tools 檔案逐一審計(dirs ⊆ TOOLS_FILE_DEPS、
+`super::<sibling>` ⊆ TOOLS_FILE_INTRA),其餘群組維持目錄級。
+
+- **表格資料的教訓**:初版表格來自我的一次性 python 掃描,審計立即
+  抓出三處錯(docs_build/docs_consistency 漏 emit、docs_smoke 漏
+  emit+oracle——`crate::oracle::browser_shell` 真實存在於 docs_smoke:63)
+  與一處誤判(upstream 不是圖節點,是 CLI drill 動詞 → 豁免;
+  css_direction_update/ir_diff/oxc_probe 同類豁免)。最終表格以
+  **審計自身的正則**重算,審計是唯一權威。
+- **可證偽驗證**(結構:改→重建→status→還原→重建):
+  - 改 docs_smoke.rs → 僅 docs-smoke + unit(global) STALE;其餘 67 fresh。
+  - 改 docs_transforms.rs → 五個 importers
+    (docs-build/catalog/consistency/fidelity/overlay)+ unit + needs 級聯
+    (docs-site/docs-smoke/interactivity-sweep/example-gate)stale,共 10;
+    docs-smoke 因 cascade 也 stale(它 needs docs-site),但 58 fresh 中
+    含 style/path-parity(它們 import 的是 parity_baseline)。
+  - 改 runner.rs(hull)→ 全引擎節點 stale。
+- cargo test 124 lib(新增 every_tools_file_is_covered_by_a_node_fp:
+  每個 tools 檔必須被某節點閉包涵蓋或列於 CLI-only 豁免)。
+
 ## Oxc 實驗第二輪:oracle bundle 的 rolldown 替換(2026-09-10,通過)
 
 PLAN.md 掛帳的「無位元組負擔點先行」完成:`src/oracle/oxc_bundle.rs` 以

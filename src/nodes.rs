@@ -624,15 +624,64 @@ const HULL_FILES: &[&str] = &[
 /// written and enforced by the raw-text grep test below — any `crate::<dir>`
 /// / `super::super::<dir>` reference found in a group's sources must be
 /// declared here (hull modules need no declaration; they are in every fp).
+/// `tools` is absent: its files are hashed and audited per-file (see
+/// TOOLS_FILE_DEPS).
 const GROUP_DEPS: &[(&str, &[&str])] = &[
     ("convert", &["tsx"]),
     ("emit", &["convert", "twmerge", "tsx"]),
     ("oracle", &["convert", "emit"]),
     ("gates", &["convert", "emit"]),
-    ("tools", &["convert", "emit", "gates", "oracle", "twmerge", "tsx"]),
     ("twmerge", &[]),
     ("tsx", &[]),
     ("jsbuild", &[]),
+];
+
+/// Per-file dependency table for src/tools/*.rs — the tools are independent
+/// commands, so their fingerprints fold only the file's own hash, its
+/// intra-tools imports, and the groups it references. Hand written and
+/// enforced by the same raw-text grep audit (file granularity): every
+/// `crate::<group>` / `super::super::<group>` head in a tools file must be
+/// declared here, and every `crate::tools::<sibling>` / `super::<sibling>`
+/// import must be declared in TOOLS_FILE_INTRA. `docs_transforms` and
+/// `parity_baseline` are shared helpers; importers must list them so their
+/// edits propagate.
+const TOOLS_FILE_DEPS: &[(&str, &[&str])] = &[
+    ("css_direction_update", &["gates"]),
+    ("demo_parity", &["oracle"]),
+    ("demo_smoke", &["emit", "oracle"]),
+    ("docs_build", &["emit"]),
+    ("docs_catalog", &[]),
+    ("docs_consistency", &["emit"]),
+    ("docs_fidelity", &["emit"]),
+    ("docs_smoke", &["emit", "oracle"]),
+    ("docs_transforms", &["emit"]),
+    ("docs_upstream_mirror", &[]),
+    ("interactivity_sweep", &["oracle"]),
+    ("ir_diff", &["emit"]),
+    ("mod", &[]),
+    ("oracle_css", &["emit"]),
+    ("overlay", &["convert", "emit", "gates", "oracle"]),
+    ("oxc_probe", &["convert"]),
+    ("parity_baseline", &[]),
+    ("path_parity", &["emit", "oracle", "twmerge"]),
+    ("resolve_skins", &["emit", "tsx", "twmerge"]),
+    ("rtl_dict", &["convert", "tsx"]),
+    ("style_parity", &["emit", "oracle"]),
+    ("upstream", &["gates"]),
+    ("upstream_snapshot", &[]),
+];
+
+/// Intra-tools imports: `use super::<sibling>` / `use crate::tools::<sibling>`
+/// heads per file, same grep enforcement. Transitively closed by node_fp.
+const TOOLS_FILE_INTRA: &[(&str, &[&str])] = &[
+    ("demo_parity", &["parity_baseline"]),
+    ("docs_build", &["docs_transforms"]),
+    ("docs_catalog", &["docs_transforms"]),
+    ("docs_consistency", &["docs_transforms"]),
+    ("docs_fidelity", &["docs_transforms"]),
+    ("overlay", &["docs_transforms"]),
+    ("path_parity", &["parity_baseline"]),
+    ("style_parity", &["parity_baseline"]),
 ];
 
 /// Which implementation groups each node executes — the mirror of main.rs's
@@ -653,32 +702,32 @@ const NODE_ENTRIES: &[(&str, &[&str])] = &[
     ("consumer-sim", &["gates"]),
     ("css-direction", &["gates"]),
     ("reproducible", &["gates"]),
-    ("overlay", &["tools"]),
-    ("convert", &["convert", "tools"]), // resolve-skins verb + convert verb
+    ("overlay", &["tools:overlay"]),
+    ("convert", &["convert", "tools:resolve_skins"]), // resolve-skins + convert verbs
     ("emit", &["emit"]),
     ("build-js", &["jsbuild"]),
     ("contract-fixture", &["oracle"]),
     ("example-oracle", &["oracle"]),
     ("example-fixture", &["oracle"]),
-    ("rtl-dict", &["tools"]),
+    ("rtl-dict", &["tools:rtl_dict"]),
     ("demo-rtl", &["emit"]), // build-rtl verb
     ("demo", &["emit"]),
     ("product-css", &["emit"]),
     ("demo-css", &["emit"]),      // tw verb → emit/tw.rs
     ("product-build", &["emit"]), // tw + tw --minify
-    ("path-parity", &["tools"]),
-    ("demo-parity", &["tools"]),
+    ("path-parity", &["tools:path_parity"]),
+    ("demo-parity", &["tools:demo_parity"]),
     ("contracts", &["oracle"]),
-    ("oracle-css", &["tools"]),
-    ("style-parity", &["tools"]),
-    ("demo-smoke", &["tools"]),
-    ("docs-catalog", &["tools"]),
-    ("docs-upstream-mirror", &["tools"]),
-    ("docs-build", &["tools"]),
-    ("docs-consistency", &["tools"]),
-    ("docs-fidelity", &["tools"]),
-    ("docs-smoke", &["tools"]),
-    ("interactivity-sweep", &["tools"]),
+    ("oracle-css", &["tools:oracle_css"]),
+    ("style-parity", &["tools:style_parity"]),
+    ("demo-smoke", &["tools:demo_smoke"]),
+    ("docs-catalog", &["tools:docs_catalog"]),
+    ("docs-upstream-mirror", &["tools:docs_upstream_mirror"]),
+    ("docs-build", &["tools:docs_build"]),
+    ("docs-consistency", &["tools:docs_consistency"]),
+    ("docs-fidelity", &["tools:docs_fidelity"]),
+    ("docs-smoke", &["tools:docs_smoke"]),
+    ("interactivity-sweep", &["tools:interactivity_sweep"]),
     ("golden-gate", &["oracle"]),  // example-golden verb
     ("example-gate", &["oracle"]), // example-oracle --check
 ];
@@ -710,17 +759,52 @@ fn node_entries(id: &str) -> Option<&'static [&'static str]> {
         .or_else(|| id.starts_with("contracts:").then_some(&["oracle"][..]))
 }
 
-/// Per-node engine fingerprint: the hull hash plus the node's entry groups
-/// and their transitive GROUP_DEPS closure, each folded by name+hash in
-/// sorted order. Deterministic across runs; changes iff hull or an involved
-/// group's sources change.
+/// Per-node engine fingerprint: the hull hash plus, per entry token — a
+/// group: its hash and the transitive GROUP_DEPS closure of groups; a
+/// `tools:<stem>` file: its hash, its TOOLS_FILE_INTRA closure's hashes,
+/// `tools:mod` (the shared module root), and the transitive group closure
+/// of every covered file's TOOLS_FILE_DEPS. All folded by name+hash in
+/// sorted order. Deterministic across runs; changes iff the hull or an
+/// involved piece changes.
 pub fn node_fp(id: &str) -> String {
     use sha2::{Digest, Sha256};
     let entries = node_entries(id).unwrap_or_else(|| {
         panic!("node {id} has no NODE_ENTRIES but is engine-run (argv __self__/__gate)")
     });
     let fps = engine_fps();
-    let mut groups: Vec<&str> = entries.to_vec();
+    let mut groups: Vec<&str> = Vec::new();
+    let mut tool_files: Vec<&str> = Vec::new();
+    for e in entries {
+        if let Some(stem) = e.strip_prefix("tools:") {
+            if !tool_files.contains(&stem) {
+                tool_files.push(stem);
+            }
+        } else if !groups.contains(&e) {
+            groups.push(e);
+        }
+    }
+    // intra-tools closure; each covered file contributes its declared groups
+    let mut i = 0;
+    while i < tool_files.len() {
+        let stem = tool_files[i];
+        if let Some((_, dirs)) = TOOLS_FILE_DEPS.iter().find(|(n, _)| *n == stem) {
+            for d in *dirs {
+                if !groups.contains(&d) {
+                    groups.push(d);
+                }
+            }
+        } else {
+            panic!("TOOLS_FILE_DEPS: no entry for tools file {stem}");
+        }
+        if let Some((_, sibs)) = TOOLS_FILE_INTRA.iter().find(|(n, _)| *n == stem) {
+            for s in *sibs {
+                if !tool_files.contains(s) {
+                    tool_files.push(s);
+                }
+            }
+        }
+        i += 1;
+    }
     let mut i = 0;
     while i < groups.len() {
         let g = groups[i];
@@ -734,11 +818,22 @@ pub fn node_fp(id: &str) -> String {
         i += 1;
     }
     groups.sort();
+    tool_files.sort();
+    if !tool_files.is_empty() && !tool_files.contains(&"mod") {
+        tool_files.push("mod");
+    }
     let mut h = Sha256::new();
     h.update(format!("hull={}", fps["hull"]));
     for g in &groups {
         let hash = fps.get(*g).unwrap_or_else(|| panic!("ENGINE_FPS: no hash for group {g}"));
         h.update(format!(";{g}={hash}"));
+    }
+    for t in &tool_files {
+        let key = format!("tools:{t}");
+        let hash = fps
+            .get(&key)
+            .unwrap_or_else(|| panic!("ENGINE_FPS: no hash for {key}"));
+        h.update(format!(";{key}={hash}"));
     }
     hex::encode(h.finalize())
 }
@@ -1072,11 +1167,79 @@ mod self_host_tests {
         }
     }
 
+    /// Every src/tools/*.rs file must be covered by some node's fingerprint
+    /// closure (entry file or transitively imported sibling), or be an
+    /// explicitly exempted CLI-only verb dispatched from the hull (its code
+    /// never executes under any graph node).
+    #[test]
+    fn every_tools_file_is_covered_by_a_node_fp() {
+        // CLI-only verbs: main.rs (hull) dispatches them, no node runs them.
+        // `mod` is the tools module root, folded into every tools fp.
+        let exempt: Vec<&str> = vec![
+            "mod",                   // tools module root, always folded
+            "css_direction_update",  // verb css-direction --update
+            "ir_diff",               // verb ir-diff
+            "oxc_probe",             // verb __oxc-probe
+            "upstream",              // verb upstream (the re-pin drill)
+            "upstream_snapshot",     // verb upstream-snapshot
+        ];
+        let mut covered: Vec<&str> = Vec::new();
+        for (_, entries) in NODE_ENTRIES {
+            let mut files: Vec<&str> = entries
+                .iter()
+                .filter_map(|e| e.strip_prefix("tools:"))
+                .collect();
+            let mut i = 0;
+            while i < files.len() {
+                if let Some((_, sibs)) =
+                    TOOLS_FILE_INTRA.iter().find(|(n, _)| *n == files[i])
+                {
+                    for s in *sibs {
+                        if !files.contains(&s) {
+                            files.push(s);
+                        }
+                    }
+                }
+                i += 1;
+            }
+            for f in files {
+                if !covered.contains(&f) {
+                    covered.push(f);
+                }
+            }
+        }
+        let tools_dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src/tools");
+        let mut stems: Vec<String> = std::fs::read_dir(&tools_dir)
+            .unwrap()
+            .filter_map(|e| e.ok())
+            .map(|e| e.file_name().to_string_lossy().to_string())
+            .filter(|n| n.ends_with(".rs"))
+            .map(|n| n.trim_end_matches(".rs").to_string())
+            .collect();
+        stems.sort();
+        for stem in &stems {
+            assert!(
+                covered.contains(&stem.as_str()) || exempt.contains(&stem.as_str()),
+                "src/tools/{stem}.rs is claimed by no node fp and is not in the \
+                 CLI-only exemption list — it would never stale anything. Add a \
+                 NODE_ENTRIES tools:{stem} entry or exempt it here."
+            );
+        }
+        for stem in &exempt {
+            assert!(
+                !covered.contains(stem),
+                "exempt tools file {stem} is also claimed by a node entry — drop it \
+                 from the exemption list"
+            );
+        }
+    }
+
     /// Every engine-run node needs fp entries, and every entry is a known
     /// group; the set of nodes carrying `__self__` after self_host must be
     /// exactly NODE_ENTRIES.
     #[test]
     fn node_entries_cover_exactly_the_engine_run_nodes() {
+        let src = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src");
         let go = all_go();
         let self_hosted: Vec<String> = go
             .iter()
@@ -1103,9 +1266,18 @@ mod self_host_tests {
             assert!(!entries.is_empty(), "{id}: empty entries");
             for e in entries.iter() {
                 assert!(
-                    *e == "global" || *e == "jsbuild" || ENGINE_GROUPS.contains(e),
+                    *e == "global"
+                        || *e == "jsbuild"
+                        || e.starts_with("tools:")
+                        || ENGINE_GROUPS.contains(e),
                     "{id}: unknown entry group {e}"
                 );
+                if let Some(stem) = e.strip_prefix("tools:") {
+                    assert!(
+                        src.join("tools").join(format!("{stem}.rs")).exists(),
+                        "{id}: entry {e} names a nonexistent tools file"
+                    );
+                }
             }
         }
         // fanout shards resolve through the contracts prefix
@@ -1131,17 +1303,38 @@ mod self_host_tests {
 
         let mut targets: Vec<(String, std::path::PathBuf)> = Vec::new();
         for g in ENGINE_GROUPS {
+            if *g == "tools" {
+                // audited per FILE below (TOOLS_FILE_DEPS granularity)
+                continue;
+            }
             targets.push((g.to_string(), src.join(g)));
         }
         targets.push(("jsbuild".to_string(), src.join("jsbuild.rs")));
+        let tools_dir = src.join("tools");
+        let mut tools_stems: Vec<String> = std::fs::read_dir(&tools_dir)
+            .unwrap()
+            .filter_map(|e| e.ok())
+            .map(|e| e.file_name().to_string_lossy().to_string())
+            .filter(|n| n.ends_with(".rs"))
+            .map(|n| n.trim_end_matches(".rs").to_string())
+            .collect();
+        tools_stems.sort();
+        for stem in &tools_stems {
+            targets.push((
+                format!("tools:{stem}"),
+                tools_dir.join(format!("{stem}.rs")),
+            ));
+        }
 
         let head_re = regex::Regex::new(r"\b(?:crate|pipeline)::([a-z_][a-z0-9_]*)").unwrap();
         let supersuper_re = regex::Regex::new(r"\bsuper::super::([a-z_][a-z0-9_]*)").unwrap();
         let super_mod_rs_re = regex::Regex::new(r"\bsuper::([a-z_][a-z0-9_]*)").unwrap();
+        let crate_tools_re = regex::Regex::new(r"\bcrate::tools::([a-z_][a-z0-9_]*)").unwrap();
         let banned_brace = regex::Regex::new(r"crate::\{").unwrap();
         let banned_alias = regex::Regex::new(r"use (?:crate|pipeline)::[a-z_][a-z0-9_]* as ").unwrap();
 
         for (group, path) in &targets {
+            let is_tools_file = group.starts_with("tools:");
             let files: Vec<std::path::PathBuf> = if path.is_dir() {
                 walkdir::WalkDir::new(path)
                     .into_iter()
@@ -1153,6 +1346,7 @@ mod self_host_tests {
                 vec![path.clone()]
             };
             let mut found: Vec<String> = Vec::new();
+            let mut siblings: Vec<String> = Vec::new();
             for f in &files {
                 let text = std::fs::read_to_string(f)
                     .unwrap_or_else(|e| panic!("{}: {}", f.display(), e));
@@ -1185,25 +1379,71 @@ mod self_host_tests {
                         found.push(caps[1].to_string());
                     }
                 }
+                if is_tools_file {
+                    // `super::x` / `crate::tools::x` in a tools file: a
+                    // sibling FILE (needs TOOLS_FILE_INTRA) or an item of
+                    // tools/mod.rs (covered by tools:mod, folded into every
+                    // tools fp)
+                    for caps in super_mod_rs_re.captures_iter(&text).chain(
+                        crate_tools_re.captures_iter(&text),
+                    ) {
+                        let head = &caps[1];
+                        if head == "super" {
+                            continue; // super::super, handled above
+                        }
+                        if tools_dir.join(format!("{head}.rs")).exists() {
+                            siblings.push(head.to_string());
+                        }
+                    }
+                }
             }
-            let declared: &[&str] = GROUP_DEPS
-                .iter()
-                .find(|(name, _)| name == group)
-                .map(|(_, deps)| *deps)
-                .unwrap_or_else(|| panic!("GROUP_DEPS: no entry for group {group}"));
+            let declared: &[&str] = if is_tools_file {
+                let stem = group.strip_prefix("tools:").expect("tools: prefix");
+                TOOLS_FILE_DEPS
+                    .iter()
+                    .find(|(name, _)| *name == stem)
+                    .map(|(_, deps)| *deps)
+                    .unwrap_or_else(|| panic!("TOOLS_FILE_DEPS: no entry for {group}"))
+            } else {
+                GROUP_DEPS
+                    .iter()
+                    .find(|(name, _)| name == group)
+                    .map(|(_, deps)| *deps)
+                    .unwrap_or_else(|| panic!("GROUP_DEPS: no entry for group {group}"))
+            };
+            let stem = group.strip_prefix("tools:");
+            let declared_siblings: &[&str] = stem
+                .and_then(|s| {
+                    TOOLS_FILE_INTRA
+                        .iter()
+                        .find(|(n, _)| *n == s)
+                        .map(|(_, deps)| *deps)
+                })
+                .unwrap_or(&[]);
             for head in &found {
-                if head == group || hull_modules.contains(head) || head == "global" {
+                if head == group
+                    || hull_modules.contains(head)
+                    || head == "global"
+                    || Some(head.as_str()) == stem
+                {
                     continue; // intra-group or hull (in every fp already)
                 }
                 assert!(
                     ENGINE_GROUPS.contains(&head.as_str()) || head == "jsbuild",
-                    "group {group}: reference to `{head}` is neither a group nor a hull \
+                    "{group}: reference to `{head}` is neither a group nor a hull \
                      module — extend the audit's module table"
                 );
                 assert!(
                     declared.contains(&head.as_str()),
-                    "group {group}: reference to group `{head}` missing from GROUP_DEPS — \
+                    "{group}: reference to group `{head}` missing from declared deps — \
                      either declare it or the fp scheme goes falsely fresh"
+                );
+            }
+            for sib in &siblings {
+                assert!(
+                    declared_siblings.contains(&sib.as_str()),
+                    "{group}: import of sibling tools file `{sib}` missing from \
+                     TOOLS_FILE_INTRA — its edits would go unseen by this fp"
                 );
             }
         }
@@ -1298,7 +1538,12 @@ mod self_host_tests {
     /// by file-touch checks).
     #[test]
     fn node_fp_granularity() {
-        assert_eq!(node_fp("docs-smoke"), node_fp("demo-smoke"), "tools peers");
+        // tools files are hashed individually: peers differ, and the shared
+        // helpers propagate (docs-smoke folds docs_transforms via its own
+        // imports? no — docs-smoke imports nothing; it differs from
+        // docs-fidelity which folds the helper)
+        assert_ne!(node_fp("docs-smoke"), node_fp("demo-smoke"), "per-file tools fps");
+        assert_ne!(node_fp("docs-smoke"), node_fp("docs-fidelity"));
         assert_ne!(node_fp("docs-smoke"), node_fp("contracts:tooltip"));
         assert_ne!(node_fp("pin"), node_fp("unit"));
         // engine-run nodes always carry a nonempty tag; fp is stable

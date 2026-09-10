@@ -8,15 +8,19 @@
 //!   Cargo.toml/lock, build.rs and rust-toolchain.toml. This is the engine
 //!   every node executes through (dispatch, key folding, stamp semantics),
 //!   so a hull edit invalidates every fp: coarser is never falsely fresh.
-//! - GROUPS — the tier directories (convert/emit/gates/oracle/tools/twmerge/
-//!   tsx) and the lone jsbuild.rs, hashed per directory. A node's fp covers
-//!   its entry group plus the groups its group depends on (the hand-written
-//!   DAG in nodes.rs GROUP_DEPS, enforced by a raw-text grep test).
+//! - GROUPS — the tier directories (convert/emit/gates/oracle/twmerge/tsx)
+//!   and the lone jsbuild.rs, hashed per directory. A node's fp covers its
+//!   entry group plus the groups its group depends on (the hand-written DAG
+//!   in nodes.rs GROUP_DEPS, enforced by a raw-text grep test).
+//! - tools/ — hashed per FILE (`tools:<stem>`; plus `tools:mod` for the
+//!   module root, folded into every tools node). The 20 tools are
+//!   independent commands: editing docs_smoke.rs must not stale demo-parity.
+//!   Per-file deps live in nodes.rs TOOLS_FILE_DEPS/TOOLS_FILE_INTRA,
+//!   enforced by the same raw-text grep test.
 //!
 //! build.rs deliberately does NO parsing (no import extraction): soundness
 //! lives in the enforcement test, which over-approximates (comments and
-//! string literals count as references). Per-file granularity inside tools/
-//! would need real parsing and is future work.
+//! string literals count as references).
 
 use sha2::{Digest, Sha256};
 use std::path::PathBuf;
@@ -84,6 +88,27 @@ fn main() {
             ";{}={}",
             g,
             hash_files(&mut walk_files(&format!("src/{g}")))
+        ));
+    }
+    // tools/ hashes per FILE (plus its module root): the 20 tools are
+    // independent commands, so editing docs_smoke.rs must not stale
+    // demo-parity. The dir-level `tools` hash stays emitted but unused —
+    // nodes.rs composes tools nodes from the per-file entries. Stems must be
+    // unique: a subdir with a colliding stem would silently alias an
+    // existing file's hash (walk is recursive, coverage test is not).
+    let mut tool_stems: Vec<String> = Vec::new();
+    for f in walk_files("src/tools") {
+        let stem = f.file_stem().unwrap().to_string_lossy().into_owned();
+        assert!(
+            !tool_stems.contains(&stem),
+            "duplicate tools file stem {stem:?} — per-file fingerprints key on \
+             stems and would alias two files into one hash"
+        );
+        tool_stems.push(stem.clone());
+        out.push_str(&format!(
+            ";tools:{}={}",
+            stem,
+            hash_files(&mut vec![f])
         ));
     }
     out.push_str(&format!(
