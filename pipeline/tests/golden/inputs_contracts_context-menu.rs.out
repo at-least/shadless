@@ -268,10 +268,6 @@ dist/shadless.min.js
 dist/shadless.product.css
 gates/ledger.json
 package-lock.json
-pipeline/browser_shell.go
-pipeline/contract.go
-pipeline/oracle_lib.go
-pipeline/resolve_skins.go
 src/kernel/alert-dialog.html
 src/kernel/context-menu.html
 src/kernel/dialog.html

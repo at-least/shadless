@@ -566,8 +566,5 @@ docs/demos/tooltip-rtl-en.html
 docs/demos/tooltip-rtl-he.html
 docs/demos/tooltip-rtl.html
 docs/demos/tooltip-sides.html
-pipeline/docs_catalog.go
-pipeline/jsonorder.go
-pipeline/main.go
 src/registry/pin.json
 src/registry/tiers.json

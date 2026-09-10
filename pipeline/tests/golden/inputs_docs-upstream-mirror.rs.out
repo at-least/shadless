@@ -325,5 +325,4 @@
 .upstream/shadcn-ui/apps/v4/content/docs/utils/meta.json
 .upstream/shadcn-ui/apps/v4/content/docs/utils/scroll-fade.mdx
 .upstream/shadcn-ui/apps/v4/content/docs/utils/shimmer.mdx
-pipeline/docs_upstream_mirror.go
 src/registry/pin.json

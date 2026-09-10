@@ -49,7 +49,7 @@
     "dist/shadless.min.js"
   ],
   "scripts": {
-    "pipeline": "cd pipeline && go build -o ../build/pipeline .",
+    "pipeline": "cd pipeline && cargo build --release && cp target/release/pipeline ../build/pipeline",
     "pin": "npm run pipeline && ./build/pipeline pin",
     "unit": "node tools/unit-check.mjs",
     "typecheck": "tsc -p tsconfig.json",
@@ -59,7 +59,7 @@
     "demo": "npm run emit && ./build/pipeline example-oracle && ./build/pipeline example-fixture && ./build/pipeline build-rtl && ./build/pipeline demo && ./build/pipeline product-css && ./build/pipeline tw dist/globals.css dist/out.css --cwd . && ./build/pipeline tw dist/shadless.product.css dist/shadless.full.css && ./build/pipeline tw dist/shadless.product.css dist/shadless.full.min.css --minify",
     "demo:smoke": "npm run pipeline && ./build/pipeline demo-smoke",
     "verify": "npm run typecheck && npm run pipeline && ./build/pipeline run all",
-    "gate:direction": "go test -C pipeline -count=1 -v -run '^TestCssDirection$' .",
+    "gate:direction": "./build/pipeline __gate css-direction",
     "docs": "npm run pipeline && ./build/pipeline build-rtl && ./build/pipeline docs-catalog && ./build/pipeline docs-build && zola --root docs/site build",
     "docs:dev": "./build/pipeline docs-build && zola --root docs/site serve -u http://127.0.0.1/",
     "docs:preview": "zola --root docs/site serve -u http://127.0.0.1/",
@@ -77,12 +77,12 @@
     "probe:t3": "node probes/t3/mk.mjs && npx @tailwindcss/cli -i probes/t3/globals-a.css -o probes/t3/out-a.css && npx @tailwindcss/cli -i probes/t3/globals-b.css -o probes/t3/out-b.css && node probes/t3/shoot.mjs",
     "verify:fast": "npm run pipeline && ./build/pipeline run fast",
     "gates": "npm run pipeline && ./build/pipeline list all",
-    "meta": "SHADLESS_META=1 go test -C pipeline -count=1 -v -timeout 2h -run '^TestMeta$' .",
+    "meta": "./build/pipeline __meta",
     "overlay": "npm run pipeline && ./build/pipeline overlay",
-    "ledger": "go test -C pipeline -count=1 -v -run '^TestLedger$' .",
+    "ledger": "./build/pipeline __gate ledger",
     "gate:path": "npm run pipeline && ./build/pipeline path-parity",
     "test": "npm run pipeline && ./build/pipeline run fast",
-    "gate:pack": "go test -C pipeline -count=1 -v -run '^TestPack$' ."
+    "gate:pack": "./build/pipeline __gate pack"
   },
   "keywords": [
     "shadcn",

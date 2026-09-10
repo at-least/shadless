@@ -2,10 +2,6 @@ gates/demo-parity-baseline.json
 gates/ledger.json
 gates/path-parity-baseline.json
 gates/style-parity-baseline.json
-pipeline/gates_test.go
-pipeline/interactivity_sweep.go
-pipeline/jssource.go
-pipeline/ledger.go
 src/docs/theme-prepaint.mjs
 src/docs/transforms.mjs
 src/emitter/css.mjs

@@ -59,12 +59,5 @@ generated/ir/textarea.json
 generated/ir/toggle-group.json
 generated/ir/toggle.json
 generated/ir/tooltip.json
-pipeline/default_content.go
-pipeline/emit.go
-pipeline/emitter_css.go
-pipeline/emitter_html.go
-pipeline/prepaint.go
-pipeline/resolve_skins.go
-pipeline/tags.go
 probes/h4/globals.css
 src/registry/tiers.json

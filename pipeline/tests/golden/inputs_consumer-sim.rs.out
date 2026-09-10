@@ -49,6 +49,3 @@ dist/css/tooltip.css
 dist/shadless-core.css
 node_modules/.bin/tailwindcss
 package.json
-pipeline/gate_consumer_sim.go
-pipeline/gates_test.go
-pipeline/tw.go

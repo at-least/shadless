@@ -833,13 +833,5 @@ generated/ir/toggle.json
 generated/ir/tooltip.json
 package-lock.json
 package.json
-pipeline/docs_build.go
-pipeline/docs_families.go
-pipeline/docs_fidelity.go
-pipeline/docs_frontmatter.go
-pipeline/docs_guides.go
-pipeline/docs_overrides.go
-pipeline/docs_scripts.go
-pipeline/docs_transforms.go
 src/registry/pin.json
 tools/prettier-batch.mjs

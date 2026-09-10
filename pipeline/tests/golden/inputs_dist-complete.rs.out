@@ -47,5 +47,3 @@ dist/css/toggle-group.css
 dist/css/toggle.css
 dist/css/tooltip.css
 dist/out.css
-pipeline/gate_dist_complete.go
-pipeline/gates_test.go

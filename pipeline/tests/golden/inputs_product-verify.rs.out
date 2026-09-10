@@ -266,5 +266,3 @@ dist/shadless.full.min.css
 dist/shadless.js
 dist/shadless.min.js
 dist/shadless.product.css
-pipeline/gates_test.go
-pipeline/product_css.go

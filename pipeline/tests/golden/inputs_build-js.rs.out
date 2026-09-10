@@ -1,4 +1,3 @@
-pipeline/jsbuild.go
 src/runtime/components/accordion.js
 src/runtime/components/alert-dialog.js
 src/runtime/components/avatar.js

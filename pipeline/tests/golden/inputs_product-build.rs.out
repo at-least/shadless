@@ -1,4 +1,2 @@
 dist/shadless.product.css
 package.json
-pipeline/main.go
-pipeline/tw.go

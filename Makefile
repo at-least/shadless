@@ -1,7 +1,9 @@
 # shadless — pipeline orchestration
 #
-# Every build step and gate is a node in pipeline/nodes.go; the Go runner
-# executes the topologically sorted closure of what you ask for. This file
+# Every build step and gate is a node of the graph the Rust engine at
+# pipeline/ defines; the engine executes the topologically sorted closure of
+# what you ask for. This file only names the common entry points — it holds
+# no ordering of its own, so it cannot drift from what CI runs.
 # only names the common entry points — it holds no ordering of its own, so
 # it cannot drift from what CI runs.
 #
@@ -13,7 +15,7 @@
 #   make list         the graph
 #   make all          the same graph, every node, no freshness skip
 #
-# build/fast/only go through the Go runner (pipeline/): a node whose
+# build/fast/only go through the engine (pipeline/): a node whose
 # declared inputs and dependencies are unchanged since its last green run is
 # skipped, and independent nodes run in parallel. PIPELINE_PARALLEL caps
 # concurrency — playwright nodes each own a chromium. The freshness record is
@@ -41,9 +43,11 @@ PIPELINE := build/pipeline
         audit-boundary ir-diff serve clean help
 
 # ----- the pipeline -------------------------------------------------------
-$(PIPELINE): $(wildcard pipeline/*.go) pipeline/go.mod
+CRATE_SRC := $(shell find pipeline/src -name '*.rs')
+$(PIPELINE): $(CRATE_SRC) pipeline/Cargo.toml pipeline/Cargo.lock pipeline/build.rs pipeline/rust-toolchain.toml
 	@mkdir -p build
-	cd pipeline && go build -o ../$(PIPELINE) .
+	cd pipeline && cargo build --release -q
+	cp pipeline/target/release/pipeline $(PIPELINE)
 
 pipeline: $(PIPELINE)
 
@@ -62,12 +66,10 @@ all: $(PIPELINE)
 	./$(PIPELINE) run all --force
 
 # Mutation testing: prove every gate can fail. Needs a built tree, runs the
-# real gates, so it is opt-in rather than part of `go test ./...`.
-#   make meta TIER=fast   only mutations whose gate is browser-free
-#   make meta ONLY=<id>   one mutation
-meta:
-	SHADLESS_META=1 META_TIER=$(TIER) META_ONLY=$(ONLY) \
-	  go test -C pipeline -count=1 -v -timeout 2h -run '^TestMeta$$' .
+# real gates, so it is opt-in rather than part of the default tier.
+#   make meta ONLY=<id>   one gate's mutations
+meta: $(PIPELINE)
+	./$(PIPELINE) __meta $(ONLY)
 
 only: $(PIPELINE)
 	@test -n "$(ID)" || { echo "usage: make only ID=<node-id>   (make list)"; exit 2; }
@@ -82,8 +84,8 @@ list: $(PIPELINE)
 pin:
 	$(NPM) run pin
 
-ledger:
-	go test -C pipeline -count=1 -v -run '^TestLedger$$' .
+ledger: $(PIPELINE)
+	./$(PIPELINE) __gate ledger
 
 ledger-render: $(PIPELINE)
 	./$(PIPELINE) ledger --render
@@ -110,8 +112,8 @@ upstream-snapshot: $(PIPELINE)
 
 # Committed generated trees must equal a clean rebuild. CI's only authority
 # on hand-edits to dist/ — the pre-commit hook no longer guesses.
-reproducible:
-	go test -C pipeline -count=1 -v -run '^TestReproducible$$' .
+reproducible: $(PIPELINE)
+	./$(PIPELINE) __gate reproducible
 
 # ----- housekeeping --------------------------------------------------------
 audit-boundary: $(PIPELINE)

@@ -2347,15 +2347,6 @@ generated/ir/toggle.json
 generated/ir/tooltip.json
 overlays/manifest.json
 overlays/upstream/README.md
-pipeline/browser_shell.go
-pipeline/build_rtl.go
-pipeline/default_content.go
-pipeline/docs_transforms.go
-pipeline/emitter_css.go
-pipeline/jssource.go
-pipeline/main.go
-pipeline/overlay.go
-pipeline/resolve_skins.go
 src/emitter/skin.mjs
 src/registry/pin.json
 src/registry/rtl-translations.json

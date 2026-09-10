@@ -429,56 +429,29 @@ fn script_refs_res() -> &'static ScriptRefsRes {
     R.get_or_init(|| ScriptRefsRes {
         re_node_call: Regex::new(r#"\bnode\s+([^\s&|;"']+.mjs)"#).unwrap(),
         re_pipeline_cmd: Regex::new(r"\./(?:build/pipeline|\$\(PIPELINE\))\s+([a-zA-Z][a-zA-Z0-9_-]*)").unwrap(),
-        re_go_test_run: Regex::new(r"-run\s+'\^(Test[A-Za-z0-9_]*)\$*'").unwrap(),
-        re_main_verb: Regex::new(r#"cmd == "([a-zA-Z0-9_-]+)""#).unwrap(),
-        re_func_test: Regex::new(r"(?m)^func\s+(Test[A-Za-z0-9_]*)\s*\(").unwrap(),
+        re_go_invocation: Regex::new(r"\bgo\s+(test|build|run|generate)\b").unwrap(),
+        re_go_mod: Regex::new(r"\bgo\.mod\b").unwrap(),
     })
 }
 
 struct ScriptRefsRes {
     re_node_call: Regex,
     re_pipeline_cmd: Regex,
-    re_go_test_run: Regex,
-    re_main_verb: Regex,
-    re_func_test: Regex,
-}
-
-fn top_level_verbs() -> HashSet<&'static str> {
-    HashSet::from(["plan", "list", "adopt", "status", "run"])
+    re_go_invocation: Regex,
+    re_go_mod: Regex,
 }
 
 /// script-refs: every pipeline invocation named in Makefile and package.json
-/// must resolve to something real.
+/// must resolve to a verb this engine dispatches — and the build files must
+/// stay Go-free. v1 checked references against pipeline/main.go verbs and
+/// pipeline/*_test.go test names; the Go engine's removal (its files are
+/// gone) turned the gate into the enforcement side of that contract: a
+/// `go test -C pipeline` line returning to the Makefile or package.json is
+/// itself a failure.
 pub fn gate_script_refs(root: &Path) -> Result<(usize, usize), String> {
     let r = script_refs_res();
     let mut fail: Vec<String> = Vec::new();
-
-    let main_src = std::fs::read_to_string(root.join("pipeline/main.go"))
-        .map_err(|e| format!("FAIL  script-refs (pipeline/main.go unreadable: {})", e))?;
-    let mut verbs: HashSet<String> = top_level_verbs().into_iter().map(|s| s.to_string()).collect();
-    for m in r.re_main_verb.captures_iter(&main_src) {
-        verbs.insert(m[1].to_string());
-    }
-
-    let mut test_names: HashSet<String> = HashSet::new();
-    let mut entries: Vec<String> = Vec::new();
-    for e in std::fs::read_dir(root.join("pipeline"))
-        .map_err(|e| format!("FAIL  script-refs (pipeline/ unreadable: {})", e))?
-    {
-        let e = e.map_err(|e| e.to_string())?;
-        let name = e.file_name().to_string_lossy().into_owned();
-        if e.file_type().map(|t| t.is_dir()).unwrap_or(false) || !name.ends_with("_test.go") {
-            continue;
-        }
-        entries.push(name);
-    }
-    for name in &entries {
-        if let Ok(src) = std::fs::read_to_string(root.join("pipeline").join(name)) {
-            for m in r.re_func_test.captures_iter(&src) {
-                test_names.insert(m[1].to_string());
-            }
-        }
-    }
+    let verbs: std::collections::HashSet<&str> = crate::nodes::VERBS.iter().copied().collect();
 
     let check = |source: &str, label: &str, fail: &mut Vec<String>| {
         for m in r.re_node_call.captures_iter(source) {
@@ -491,21 +464,22 @@ pub fn gate_script_refs(root: &Path) -> Result<(usize, usize), String> {
             let v = &m[1];
             if !verbs.contains(v) {
                 fail.push(format!(
-                    "{}: `pipeline {}` — not a subcommand in pipeline/main.go",
+                    "{}: `pipeline {}` — not a verb this engine dispatches",
                     label, v
                 ));
             }
         }
-        for m in r.re_go_test_run.captures_iter(source) {
-            let name = &m[1];
-            if !test_names.contains(name) {
-                fail.push(format!(
-                    "{}: `-run '^{}'` — no func Test{}* under pipeline/*_test.go",
-                    label,
-                    name,
-                    name.trim_start_matches("Test")
-                ));
-            }
+        for m in r.re_go_invocation.captures_iter(source) {
+            fail.push(format!(
+                "{}: `go {}` — the Go engine was removed; build files must not invoke it",
+                label, &m[0]
+            ));
+        }
+        if r.re_go_mod.is_match(source) {
+            fail.push(format!(
+                "{}: go.mod referenced — the Go engine was removed; build files must not depend on it",
+                label
+            ));
         }
     };
 
@@ -532,41 +506,6 @@ pub fn gate_script_refs(root: &Path) -> Result<(usize, usize), String> {
         .map_err(|e| format!("FAIL  script-refs (Makefile unreadable: {})", e))?;
     check(&makefile, "Makefile", &mut fail);
 
-    // the graph itself: nodes.go's -run patterns reference Go tests.
-    // Deliberately the GO-VERBATIM table: the -run refs live in the authored
-    // table (and in Makefile/package.json), not in the self-hosted shape,
-    // where every node runs this engine and the check would be vacuous.
-    let nodes = crate::nodes::all_go();
-    let mut node_runs = 0usize;
-    for n in &nodes {
-        for argv in &n.run {
-            for i in 0..argv.len().saturating_sub(1) {
-                if argv[i] != "-run" {
-                    continue;
-                }
-                node_runs += 1;
-                let pat = argv[i + 1].trim_start_matches('^');
-                let label = format!("nodes.go {:?}", n.id);
-                if let Some(name) = pat.strip_suffix('$') {
-                    if !test_names.contains(name) {
-                        fail.push(format!(
-                            "{}: `-run {}` — no func {} under pipeline/*_test.go",
-                            label, argv[i + 1], name
-                        ));
-                    }
-                    continue;
-                }
-                let matched = test_names.iter().any(|name| name.starts_with(pat));
-                if !matched {
-                    fail.push(format!(
-                        "{}: `-run {}` — no test under pipeline/*_test.go starts with {}",
-                        label, argv[i + 1], pat
-                    ));
-                }
-            }
-        }
-    }
-
     if !fail.is_empty() {
         fail.sort();
         return Err(format!(
@@ -576,11 +515,10 @@ pub fn gate_script_refs(root: &Path) -> Result<(usize, usize), String> {
         ));
     }
     println!(
-        "PASS  script-refs ({} package.json scripts + Makefile + {} nodes.go -run patterns — every node/pipeline/go-test call resolves)",
-        script_names.len(),
-        node_runs
+        "PASS  script-refs ({} package.json scripts + Makefile — every node/pipeline call resolves; no Go references)",
+        script_names.len()
     );
-    Ok((script_names.len(), node_runs))
+    Ok((script_names.len(), 0))
 }
 
 #[cfg(test)]
@@ -597,7 +535,7 @@ mod script_refs_tests {
                 m
             }
         };
-        if !root.join("pipeline/main.go").exists() {
+        if !root.join("Makefile").exists() {
             eprintln!("skip: no shadless tree");
             return;
         }

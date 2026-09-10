@@ -1528,12 +1528,6 @@
 .upstream/shadcn-ui/apps/v4/examples/radix/typography-table.tsx
 docs/catalog.json
 package-lock.json
-pipeline/browser_shell.go
-pipeline/example_oracle.go
-pipeline/oracle_canon.js
-pipeline/oracle_lib.go
-pipeline/prepaint.go
-pipeline/resolve_skins.go
 src/emitter/skin.mjs
 src/registry/pin.json
 src/registry/tiers.json

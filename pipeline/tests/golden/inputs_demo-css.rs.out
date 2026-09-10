@@ -656,8 +656,6 @@ generated/ir/toggle-group.json
 generated/ir/toggle.json
 generated/ir/tooltip.json
 package.json
-pipeline/main.go
-pipeline/tw.go
 probes/t7/accordion-multiple.html
 probes/t7/accordion.html
 probes/t7/aspect-ratio.html

@@ -129,7 +129,4 @@ build/resolved-ui/ui/toggle-group.tsx
 build/resolved-ui/ui/toggle.tsx
 build/resolved-ui/ui/tooltip.tsx
 package.json
-pipeline/main.go
-pipeline/oracle_css.go
-pipeline/tw.go
 src/registry/pin.json

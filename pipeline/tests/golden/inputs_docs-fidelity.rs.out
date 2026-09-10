@@ -614,10 +614,4 @@ generated/docs-upstream/components/radix/typography.mdx
 generated/docs-upstream/rtl/index.mdx
 generated/docs-upstream/utils/scroll-fade.mdx
 generated/docs-upstream/utils/shimmer.mdx
-pipeline/docs_fidelity.go
-pipeline/docs_fidelity_driver.go
-pipeline/docs_frontmatter.go
-pipeline/docs_guides.go
-pipeline/docs_overrides.go
-pipeline/docs_transforms.go
 src/registry/pin.json

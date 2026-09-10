@@ -868,20 +868,21 @@ const GO_TEST_GATES: &[&str] = &[
     "reproducible",
 ];
 
-/// pipeline/ inputs that SURVIVE self-hosting: files this engine reads as
-/// data, not as the implementation being run. Everything else under
-/// `pipeline/` was an input because Go executed it; that role is now covered
-/// by the engine fingerprint in argv[0].
-/// Go-source reads retained after the engine's Go-data decoupling. The oracle
-/// invariant, ledger and overlay consumers stopped reading Go sources (the
-/// oracle invariant folds only lockfile+skin.mjs+stubs; the ledger budget
-/// counts tools::interactivity_sweep::SWEEP_KNOWN_DEAD; the overlay
-/// persian-dict rule enumerates emit::build_rtl::persian). script-refs keeps
-/// its two until its v2 (no-Go) rewrite lands with the Makefile/package.json
-/// re-pointing.
-const KEEP_PIPELINE_INPUTS: &[(&str, &str)] = &[
-    ("script-refs", "pipeline/main.go"),
-    ("script-refs", "pipeline/*_test.go"),
+/// Every top-level verb this binary dispatches (main.rs `run`'s public
+/// match arms; the hidden __gate/__meta/__oxc-probe are not on this list).
+/// The Makefile and package.json drive the binary through
+/// `./build/pipeline <verb>`, and the script-refs gate validates those
+/// references against this table — main.rs carries a two-way test pinning
+/// its dispatch arms to it.
+pub const VERBS: &[&str] = &[
+    "plan", "list", "status", "inputs", "run", "adopt", "build-js", "build-rtl",
+    "product-css", "tw", "example-oracle", "demo", "emit", "convert", "pin",
+    "coverage", "ledger", "audit-boundary", "oracle-css", "docs-catalog",
+    "docs-upstream-mirror", "ir-diff", "css-direction", "upstream",
+    "resolve-skins", "rtl-dict", "docs-consistency", "docs-build",
+    "docs-fidelity", "example-fixture", "example-golden", "contract",
+    "contracts", "upstream-snapshot", "demo-smoke", "docs-smoke", "overlay",
+    "interactivity-sweep", "demo-parity", "style-parity", "path-parity",
 ];
 
 /// Rewrite one Go-verbatim node into the self-hosted shape.
@@ -912,11 +913,11 @@ fn self_host(n: Node) -> Node {
             }
         }
     }
+    // The Go engine is gone: every pipeline/* input was either a data read
+    // (all decoupled by 71f467a) or executed implementation (covered by the
+    // per-node engine fingerprint). None survive the transform.
     if let Some(inputs) = n.inputs.as_mut() {
-        inputs.retain(|p| {
-            !p.starts_with("pipeline/")
-                || KEEP_PIPELINE_INPUTS.contains(&(id, p.as_str()))
-        });
+        inputs.retain(|p| !p.starts_with("pipeline/"));
     }
     n
 }
@@ -1037,15 +1038,9 @@ mod self_host_tests {
                 }
             }
         }
-        surviving.sort();
-        let mut keep: Vec<(String, String)> = KEEP_PIPELINE_INPUTS
-            .iter()
-            .map(|(a, b)| (a.to_string(), b.to_string()))
-            .collect();
-        keep.sort();
-        assert_eq!(
-            surviving, keep,
-            "every surviving pipeline/ input must be a documented data-read"
+        assert!(
+            surviving.is_empty(),
+            "no node may keep a pipeline/ input any more — the Go files are gone"
         );
     }
 
@@ -1065,6 +1060,28 @@ mod self_host_tests {
         assert!(!inputs.iter().any(|p| p.starts_with("pipeline/")));
         assert!(inputs.contains(&"tools/unit-check.mjs".to_string()));
         assert!(inputs.contains(&"src/**".to_string()));
+    }
+
+    #[test]
+    fn node_verbs_are_engine_verbs() {
+        // The self-hosted graph drives this binary as `__self__@fp <verb>`;
+        // every verb it can name must be in VERBS (the table script-refs
+        // validates Makefile/package.json against).
+        for n in all() {
+            for cmd in &n.run {
+                if cmd.first().map_or(false, |c| c.starts_with("__self__")) {
+                    let verb = cmd.get(1).expect("engine command carries a verb");
+                    if verb == "__gate" {
+                        continue; // the hidden gate dispatcher: id, not a verb
+                    }
+                    assert!(
+                        VERBS.contains(&verb.as_str()),
+                        "{}: verb `{verb}` is not in VERBS",
+                        n.id
+                    );
+                }
+            }
+        }
     }
 
     // ---- fingerprint table enforcement ---------------------------------

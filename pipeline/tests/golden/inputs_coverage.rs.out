@@ -490,9 +490,6 @@ generated/ir/textarea.json
 generated/ir/toggle-group.json
 generated/ir/toggle.json
 generated/ir/tooltip.json
-pipeline/gate_coverage.go
-pipeline/gate_coverage_budget.go
-pipeline/gates_test.go
 src/registry/tiers.json
 tools/contracts/components/accordion-multiple.mjs
 tools/contracts/components/accordion.mjs

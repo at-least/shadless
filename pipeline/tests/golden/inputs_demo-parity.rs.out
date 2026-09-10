@@ -432,8 +432,4 @@ docs/demos/tooltip-sides.html
 docs/example-oracle.json
 gates/demo-parity-baseline.json
 gates/ledger.json
-pipeline/browser_shell.go
-pipeline/demo_parity.go
-pipeline/demo_parity_collect.js
-pipeline/parity_baseline.go
 tools/browser-shell.mjs

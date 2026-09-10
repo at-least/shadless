@@ -59,12 +59,6 @@ generated/ir/textarea.json
 generated/ir/toggle-group.json
 generated/ir/toggle.json
 generated/ir/tooltip.json
-pipeline/default_content.go
-pipeline/demo.go
-pipeline/emitter_css.go
-pipeline/prepaint.go
-pipeline/resolve_skins.go
-pipeline/tags.go
 probes/h4/globals.css
 probes/t7/accordion-multiple.html
 probes/t7/accordion.html

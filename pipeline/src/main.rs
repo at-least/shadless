@@ -692,3 +692,32 @@ fn run_hidden_gate(rest: &[String]) -> i32 {
         }
     }
 }
+
+#[cfg(test)]
+mod verb_surface {
+    /// The public dispatch arms of run()'s match — kept adjacent so a new
+    /// arm must update it. Two-way-checked against nodes::VERBS, the table
+    /// the script-refs gate validates Makefile/package.json against: a verb
+    /// reachable from the build files but not dispatchable (or vice versa)
+    /// fails here.
+    const ARMS: &[&str] = &[
+        "plan", "list", "status", "inputs", "run", "adopt", "build-js",
+        "build-rtl", "product-css", "tw", "example-oracle", "demo", "emit",
+        "convert", "pin", "coverage", "ledger", "audit-boundary", "oracle-css",
+        "docs-catalog", "docs-upstream-mirror", "ir-diff", "css-direction",
+        "upstream", "resolve-skins", "rtl-dict", "docs-consistency",
+        "docs-build", "docs-fidelity", "example-fixture", "example-golden",
+        "contract", "contracts", "upstream-snapshot", "demo-smoke", "docs-smoke",
+        "overlay", "interactivity-sweep", "demo-parity", "style-parity",
+        "path-parity",
+    ];
+
+    #[test]
+    fn dispatch_arms_match_public_verbs() {
+        let mut a: Vec<&str> = ARMS.to_vec();
+        a.sort();
+        let mut v: Vec<&str> = pipeline::nodes::VERBS.to_vec();
+        v.sort();
+        assert_eq!(a, v, "main.rs dispatch arms and nodes::VERBS drifted apart");
+    }
+}

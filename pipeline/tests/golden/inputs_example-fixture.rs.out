@@ -1552,17 +1552,6 @@ dist/js/tooltip.js
 dist/out.css
 docs/example-fixture-targets.json
 package-lock.json
-pipeline/browser_shell.go
-pipeline/docs_families.go
-pipeline/ef_api.js
-pipeline/ef_harvest_layer.js
-pipeline/ef_menu_ids.js
-pipeline/ef_nav_ids.js
-pipeline/ef_tabs.js
-pipeline/example_fixture.go
-pipeline/oracle_lib.go
-pipeline/prepaint.go
-pipeline/resolve_skins.go
 src/emitter/skin.mjs
 src/registry/pin.json
 tools/browser-shell.mjs

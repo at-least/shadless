@@ -1,3 +1,1 @@
-pipeline/build_rtl.go
-pipeline/rtl_dict.go
 src/registry/tiers.json

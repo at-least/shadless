@@ -327,7 +327,5 @@ generated/ir/textarea.json
 generated/ir/toggle-group.json
 generated/ir/toggle.json
 generated/ir/tooltip.json
-pipeline/browser_shell.go
-pipeline/demo_smoke.go
 src/registry/tiers.json
 tools/browser-shell.mjs

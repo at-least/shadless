@@ -111,12 +111,6 @@ generated/ir/textarea.json
 generated/ir/toggle-group.json
 generated/ir/toggle.json
 generated/ir/tooltip.json
-pipeline/browser_shell.go
-pipeline/emitter_css.go
-pipeline/parity_baseline.go
-pipeline/path_parity.go
-pipeline/pp_readall.js
-pipeline/tags.go
 src/emitter/skin.mjs
 src/registry/pin.json
 tools/browser-shell.mjs

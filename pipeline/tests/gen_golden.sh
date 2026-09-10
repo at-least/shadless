@@ -40,7 +40,7 @@
 set -u
 HERE="$(cd "$(dirname "$0")" && pwd)"
 RS_ROOT="$(cd "$HERE/.." && pwd)"
-SHADLESS_ROOT="${SHADLESS_ROOT:-$RS_ROOT/../shadless}"
+SHADLESS_ROOT="${SHADLESS_ROOT:-$RS_ROOT/..}"
 export SHADLESS_GRAPH=go-mirror
 RS_BIN="$RS_ROOT/target/release/pipeline"
 GOLDEN="$RS_ROOT/tests/golden"

@@ -480,7 +480,5 @@ docs/site/static/demos/tooltip-rtl.html
 docs/site/static/demos/tooltip-sides.html
 docs/site/static/demos/tooltip.html
 gates/ledger.json
-pipeline/browser_shell.go
-pipeline/interactivity_sweep.go
 src/registry/tiers.json
 tools/browser-shell.mjs

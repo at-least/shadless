@@ -268,5 +268,3 @@ dist/shadless.js
 dist/shadless.min.js
 dist/shadless.product.css
 package.json
-pipeline/gate_pack.go
-pipeline/gates_test.go

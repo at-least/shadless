@@ -676,5 +676,3 @@ docs/site/content/guides/scroll-fade.md
 docs/site/content/guides/shimmer.md
 docs/site/content/guides/typography.md
 package.json
-pipeline/docs_consistency.go
-pipeline/resolve_skins.go

@@ -1,9 +1,6 @@
 build/gates/oracle.css
 gates/ledger.json
 gates/style-parity-baseline.json
-pipeline/browser_shell.go
-pipeline/parity_baseline.go
-pipeline/style_parity.go
 src/registry/pin.json
 tools/browser-shell.mjs
 tools/contracts/components/accordion-multiple.mjs

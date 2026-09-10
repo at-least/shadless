@@ -11,7 +11,7 @@
 # a failing file localizes itself in seconds.
 set -u
 RS_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-SHADLESS_ROOT="${SHADLESS_ROOT:-$RS_ROOT/../shadless}"
+SHADLESS_ROOT="${SHADLESS_ROOT:-$RS_ROOT/..}"
 RS_BIN="$RS_ROOT/target/release/pipeline"
 
 cd "$SHADLESS_ROOT" || exit 2

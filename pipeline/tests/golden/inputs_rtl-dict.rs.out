@@ -499,5 +499,4 @@
 .upstream/shadcn-ui/apps/v4/examples/aria/typography-rtl.tsx
 .upstream/shadcn-ui/apps/v4/examples/aria/typography-small.tsx
 .upstream/shadcn-ui/apps/v4/examples/aria/typography-table.tsx
-pipeline/rtl_dict.go
 src/registry/tiers.json
