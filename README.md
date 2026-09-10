@@ -20,9 +20,10 @@ Rust 移植實驗:把 [`shadless`](../shadless) 上游 repo 的 `pipeline/`(Go,~
   群組原始碼只 stale 執行它的節點與其 needs 下游。soundness 不靠解析,靠
   raw-grep 執法測試(含「include 不得伸出 src」審計)。
 - **Oxc 實驗(已結案,見 probe/oxc/REPORT.md)**:transform 替換測死
-  (0/61 位元組一致,印表機層分歧不可配置);oracle bundle 點已以 rolldown 1.2.8
-  證明可換(`SHADLESS_ORACLE_BUNDLER=oxc`,227 頁 oracle 驗收 PASS,預設仍
-  esbuild);minify 受位元組契約封閉。
+  (0/61 位元組一致,印表機層分歧不可配置);oracle bundle 點(無位元組契約)
+  已採用 rolldown 1.2.8 並成為預設(default features 含 `oxc`,
+  `SHADLESS_ORACLE_BUNDLER=esbuild` 逐次退回、`--no-default-features` 建置
+  純 esbuild 精簡 binary;227 頁 oracle 驗收雙路徑 PASS);minify 受位元組契約封閉。
 
 ## 怎麼驗證
 
