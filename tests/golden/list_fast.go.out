@@ -1,8 +1,0 @@
-GATE  pin          [fast]
-build build-js     [fast]
-GATE  unit         [fast]  needs: build-js
-GATE  typecheck    [fast]
-GATE  ledger       [fast]
-GATE  script-refs  [fast]
-
-6 nodes (5 gates)

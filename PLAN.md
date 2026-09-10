@@ -213,6 +213,28 @@ Go 對照改為 **go-mirror 模式下執行**(gen_golden 四層 469 案零重錄
 啟用):24 gates 乾淨樹雙引擎皆綠 + 雙邊各自的突變 harness 皆紅(Go: SHADLESS_META+
 META_ONLY;RS: `__meta <gate>`)。
 
+**驗收轉為完全自證(2026-09-10,使用者決定)**:移植完成後,與 Go 的對照
+從「日常驗收」降為「歷史宣告 + 可選交叉檢查」——
+- `gen_golden.sh` 改為**自證模式**:錄製本引擎自己的行為(rs.* goldens +
+  keys.rs.txt),無 go build、無 goprobe、無 Go binary;仍以 go-mirror
+  「表」呈現(純 authored 資料、無指紋,錄製物跨引擎編輯穩定,且這些
+  動詞永不 spawn)。L3/L4 的判別 fixture 與 runner 語意斷言全部改為
+  對 RS 的結構性自證;L4 以 go stub(127)遮蔽 PATH——鏡像表 pin 節點的
+  `go test` 必須確定性失敗於 stub,stub 日誌即零真 Go 的證據。
+  實證:PATH 上完全移除 go 後 422 passed / 0 failed。
+- `golden.rs` 重播 rs.* 自證 goldens + keys.rs.txt(鍵摺疊漂移的捕捉層)。
+- 歷史宣告:與 Go 的位元組同值是**已證明的歷史事實**,最後一個雙引擎
+  驗收狀態在 git tag `go-parity-final`;gate_parity.rs 保持為 opt-in 的
+  Go 交叉檢查(需要 Go 工具鏈)。此後與 Go 的漂移不再被追蹤——這是
+  本次決定接受的成本,換取驗收路徑去 Go 化。
+- Go 原始碼作為**資料輸入**(KEEP_PIPELINE_INPUTS、oracle invariant 的
+  resolve_skins.go/oracle_lib.go 等)維持不變:它們是被雜湊的樹內檔案,
+  不是 Go 執行。
+- 已接受的覆蓋損失:舊 L3 的 fixture 行為是 live 雙引擎對比,自證模式
+  只斷言蓋章往返(>=39 fresh / 0 stale / 兩次一致)——閾值為 >=,fixture
+  若靜默縮小不會被發現;fixture 行為重播未保留。雙引擎對照需要時從
+  go-parity-final 歷史取回。
+
 **已知偏差(自我接管模式)**:
 1. `__self__` 子行程無 go-testlogfile 等讀檔證據 → undeclared-read 審計(-j1)對
    gate 的覆蓋變弱(build 鏈的 node 子行程仍有 fs-record);寫入審計同理只餘 fs-record。

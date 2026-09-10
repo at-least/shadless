@@ -1,8 +1,0 @@
-GATE  pin             [fast]
-build build-js        [fast]
-build convert         [full]  needs: pin, build-js
-build emit            [full]  needs: convert, build-js
-build example-oracle  [full]  needs: emit, build-js
-GATE  golden-gate     [full]  needs: example-oracle, build-js
-
-6 nodes (2 gates)

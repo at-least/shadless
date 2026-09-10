@@ -1,6 +1,0 @@
-GATE  pin               [fast]
-build build-js          [fast]
-build convert           [full]  needs: pin, build-js
-build contract-fixture  [full]  needs: convert, build-js
-
-4 nodes (1 gates)

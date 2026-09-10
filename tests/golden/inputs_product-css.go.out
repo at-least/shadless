@@ -1,5 +1,0 @@
-package-lock.json
-pipeline/main.go
-pipeline/product_css.go
-probes/h4/globals.css
-src/docs/theme-prepaint.mjs

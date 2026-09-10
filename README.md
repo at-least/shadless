@@ -27,6 +27,8 @@ Rust 移植實驗:把 [`shadless`](../shadless) 上游 repo 的 `pipeline/`(Go,~
 ## 怎麼驗證
 
 需要 sibling checkout:`../shadless`(上游樹 + 其 node_modules 與 module cache)。
+**驗收完全自證,不需要 Go 工具鏈**(2026-09-10 起;歷史上的雙引擎位元組對照
+見 git tag `go-parity-final` 與 opt-in 的 gate_parity):
 
 ```sh
 cargo build --release
@@ -34,9 +36,10 @@ cd ../shadless
 ../shadless-rs/target/release/pipeline run all     # 全圖執行 + gates,期待 exit 0
 ../shadless-rs/target/release/pipeline status all  # 期待 68 fresh + 1 NEVER-FRESH
 cd ../shadless-rs
-./tests/gen_golden.sh    # 四層驗收台(go-mirror 模式,469 案例),重錄後再跑下一行
-cargo test               # 123 lib 測試(含真樹 gates)+ 整合測試
-SHADLESS_GATE_PARITY=1 cargo test --test gate_parity  # 24 gates 雙引擎 verdict 對照(貴,~80 分鐘;GATE_ONLY=id 切片)
+./tests/gen_golden.sh    # 四層自證驗收台(錄製 + 結構斷言;PATH 上有沒有 go 都通過)
+cargo test               # 124 lib 測試(含真樹 gates + golden 重播)+ 整合測試
+# 可選:與 Go 的雙引擎 verdict 對照(需要 Go 工具鏈與重建的 Go binary)
+SHADLESS_GATE_PARITY=1 cargo test --test gate_parity  # 貴,~80 分鐘;GATE_ONLY=id 切片
 ```
 
 陷阱備忘:重連結 binary 或跑 cargo 期間不要並行 `run`(fork/exec ENOENT);

@@ -1,6 +1,0 @@
-pin                    fresh
-build-js               fresh
-unit                   fresh
-typecheck              fresh
-ledger                 fresh
-script-refs            fresh

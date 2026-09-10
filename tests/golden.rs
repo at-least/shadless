@@ -1,15 +1,19 @@
-//! Replay of the recorded golden matrix through the Rust binary.
+//! Replay of the recorded self-golden matrix through the Rust binary.
 //!
-//! tests/gen_golden.sh records the GO binary's stdout/stderr/exit code for
-//! every plan/list/status/inputs case (and asserts the Rust port matches
-//! live); this test re-runs each recorded case through the Rust binary so
-//! `cargo test` covers the surface too. The goldens are snapshots of the
-//! real tree: after changing the graph or the tree itself, re-run
-//! tests/gen_golden.sh to refresh them.
+//! tests/gen_golden.sh (self-verification mode — no Go anywhere) records
+//! this engine's own stdout/stderr/exit code for every plan/list/status/
+//! inputs case; this test re-runs each recorded case and compares, so
+//! `cargo test` covers the CLI surface too. The goldens are snapshots of
+//! the real tree: after changing the graph or the tree itself, re-run
+//! tests/gen_golden.sh to refresh them. Keyer drift is covered by the
+//! keys golden; the pre-port Go-parity evidence lives at the
+//! `go-parity-final` tag (and gate_parity.rs remains the opt-in Go
+//! cross-check for gate verdicts).
 //!
 //! Layout (flat, one slug per case — see gen_golden.sh):
 //!   <slug>.cmd        the argv, one line, space-separated
-//!   <slug>.go.out / .go.err / .go.code   the recorded Go verdict
+//!   <slug>.rs.out / .rs.err / .rs.code   the recorded verdict
+//!   keys.rs.txt       the __keys dump over the real tree
 
 use std::path::PathBuf;
 use std::process::Command;
@@ -30,8 +34,8 @@ fn shadless_root() -> Option<PathBuf> {
 
 #[test]
 fn golden_matrix_replays() {
-    // The goldens record the Go-verbatim graph (see gen_golden.sh); the
-    // engine's default table is self-hosted and intentionally diverges.
+    // The goldens record the go-mirror TABLE presentation (authored data in
+    // nodes.rs; fingerprint-free, so they are stable across engine edits).
     // Single test fn and no other test in this binary reads the variable,
     // so there is no concurrent access to race with (edition-2024 unsafe).
     unsafe { std::env::set_var("SHADLESS_GRAPH", "go-mirror") };
@@ -42,7 +46,7 @@ fn golden_matrix_replays() {
     // The recorded goldens were captured on a BUILT tree: several `inputs`
     // cases glob build/ artifacts (build/rtl-langs.json, build/resolved-ui).
     // On a fresh checkout those files are absent and the replay diverges for
-    // an environmental reason, not a porting one — say so instead of failing
+    // an environmental reason, not a logic one — say so instead of failing
     // green-looking red.
     if !root.join("build/rtl-langs.json").exists() {
         eprintln!(
@@ -78,26 +82,44 @@ fn golden_matrix_replays() {
         } else {
             line.split(' ').collect()
         };
-        let go_code: i32 = std::fs::read_to_string(golden.join(format!("{}.go.code", slug)))
-            .expect("go.code")
+        let rs_code: i32 = std::fs::read_to_string(golden.join(format!("{}.rs.code", slug)))
+            .expect("rs.code")
             .trim()
             .parse()
-            .expect("go.code is a number");
-        let go_out = std::fs::read(golden.join(format!("{}.go.out", slug))).unwrap_or_default();
-        let go_err = std::fs::read(golden.join(format!("{}.go.err", slug))).unwrap_or_default();
+            .expect("rs.code is a number");
+        let rs_out = std::fs::read(golden.join(format!("{}.rs.out", slug))).unwrap_or_default();
+        let rs_err = std::fs::read(golden.join(format!("{}.rs.err", slug))).unwrap_or_default();
         let out = Command::new(env!("CARGO_BIN_EXE_pipeline"))
             .args(&args)
             .current_dir(&root)
             .output()
             .expect("rust binary runs");
-        if out.stdout != go_out || out.stderr != go_err || out.status.code() != Some(go_code) {
+        if out.stdout != rs_out || out.stderr != rs_err || out.status.code() != Some(rs_code) {
             fails.push(format!("pipeline {}", args.join(" ")));
         }
     }
     assert!(
         fails.is_empty(),
-        "{} golden case(s) diverge from the recorded Go verdicts:\n{}",
+        "{} golden case(s) diverge from the recorded verdicts:\n{}",
         fails.len(),
         fails.join("\n")
+    );
+
+    // key folding: the recorded __keys dump must replay byte-for-byte (this
+    // is the layer that catches key-folding drift now)
+    let keys_golden = std::fs::read(golden.join("keys.rs.txt")).expect("keys.rs.txt golden");
+    assert!(
+        keys_golden.len() > 1000,
+        "keys golden suspiciously small ({} bytes) — re-record with tests/gen_golden.sh",
+        keys_golden.len()
+    );
+    let keys_now = Command::new(env!("CARGO_BIN_EXE_pipeline"))
+        .arg("__keys")
+        .current_dir(&root)
+        .output()
+        .expect("rust binary runs");
+    assert!(
+        keys_now.stdout == keys_golden && keys_now.status.success(),
+        "__keys output diverges from the recorded keys golden — key folding drifted"
     );
 }

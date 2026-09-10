@@ -453,6 +453,28 @@ docs-fidelity/interactivity-sweep 轉綠。
 - 環境註記:goldens 的 status 案例與真樹 stamps 狀態耦合——在真樹上跑過引擎後
   先重跑 gen_golden 再跑 cargo test(與既有 dist 陷阱同類)。
 
+## 驗收轉為完全自證(2026-09-10,使用者決定)
+
+gen_golden.sh 改為自證模式:錄製本引擎行為(rs.* goldens、keys.rs.txt),
+零 go build/goprobe/Go binary;仍以 go-mirror「表」呈現(純 authored
+資料、無指紋 → 錄製物穩定;plan/list/status/inputs/__keys 在此模式下
+永不 spawn)。L3 判別 fixture 改用 RS 鏡像鍵蓋章(蓋章/辨識往返的自證,
+鍵摺疊漂移由 L2 的 keys.rs.txt golden 捕捉);L4 runner 語意改為對 RS
+的結構性斷言,並以 go stub(127)遮蔽 PATH——鏡像表 pin 節點的
+`go test` 必須死在 stub 上,stub 日誌 28 筆全部為預期 gate 形狀
+= 零真 Go 的證據。**鐵證:PATH 完全移除 go(私有 bin 目錄,3168 個
+symlink 無 go)重跑 = 422 passed / 0 failed / EXIT 0。**
+
+- golden.rs 重播 rs.* 自證 goldens + keys golden(不再是 go.*)。
+- tests/golden 的 1002 個 go.* 檔與 tests/golden-fixture/(42 檔)為
+  **刻意刪除**:雙引擎對照的產物,歷史在 git tag `go-parity-final`
+  (= b3d0977,最後一個雙引擎驗收狀態);gate_parity.rs 保持 opt-in
+  Go 交叉檢查(需 Go 工具鏈)。
+- 語意成本(已在 PLAN 記錄):與 Go 的漂移此後不再被追蹤;回歸防護由
+  自證 goldens + gates 承擔。Go 原始碼作為資料輸入(oracle invariant、
+  KEEP_PIPELINE_INPUTS)維持不變——被雜湊,不被執行。
+- cargo test 124 lib + 整合全綠(含新的 rs.* 重播 + keys 重播)。
+
 ## Oxc 採用 + tools 檔案級指紋(2026-09-10,第二日)
 
 兩項使用者拍板的收尾:
