@@ -1,0 +1,71 @@
+//! Port of the stamp store in shadless/pipeline/main.go: one file per node
+//! under pipeline/stamps/, holding the stamp value that produced the current
+//! outputs. Node ids carry ":" after a fan-out (contracts:dialog); it is
+//! legal in a POSIX filename but not on Windows, so it is escaped in the path.
+
+use std::collections::HashMap;
+use std::fs;
+use std::path::Path;
+
+pub const STAMP_DIR: &str = "pipeline/stamps";
+
+pub fn stamp_file(id: &str) -> String {
+    id.replace(':', "__")
+}
+
+fn stamp_id(name: &str) -> String {
+    name.replace("__", ":")
+}
+
+pub fn load_stamps(root: &Path) -> HashMap<String, String> {
+    let mut s = HashMap::new();
+    let Ok(entries) = fs::read_dir(root.join(STAMP_DIR)) else {
+        return s;
+    };
+    for e in entries.flatten() {
+        if e.file_type().map(|t| t.is_dir()).unwrap_or(true) {
+            continue;
+        }
+        let name = e.file_name().to_string_lossy().into_owned();
+        if let Ok(b) = fs::read(e.path()) {
+            s.insert(stamp_id(&name), String::from_utf8_lossy(&b).trim().to_string());
+        }
+    }
+    s
+}
+
+pub fn write_stamp(root: &Path, id: &str, key: &str) -> std::io::Result<()> {
+    fs::create_dir_all(root.join(STAMP_DIR))?;
+    fs::write(root.join(STAMP_DIR).join(stamp_file(id)), format!("{}\n", key))
+}
+
+pub fn remove_stamp(root: &Path, id: &str) {
+    let _ = fs::remove_file(root.join(STAMP_DIR).join(stamp_file(id)));
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn stamp_filename_escapes_colons() {
+        assert_eq!(stamp_file("contracts:dialog"), "contracts__dialog");
+        assert_eq!(stamp_id("contracts__dialog"), "contracts:dialog");
+        assert_eq!(stamp_file("pin"), "pin");
+    }
+
+    #[test]
+    fn load_missing_dir_is_empty_and_roundtrip_works() {
+        let tmp = std::env::temp_dir().join(format!("shadless-rs-stamps-{}", std::process::id()));
+        let _ = fs::remove_dir_all(&tmp);
+        assert!(load_stamps(&tmp).is_empty());
+        write_stamp(&tmp, "pin", "abc").unwrap();
+        write_stamp(&tmp, "contracts:dialog", "def").unwrap();
+        let stamps = load_stamps(&tmp);
+        assert_eq!(stamps.get("pin").map(String::as_str), Some("abc"));
+        assert_eq!(stamps.get("contracts:dialog").map(String::as_str), Some("def"));
+        remove_stamp(&tmp, "pin");
+        assert!(!load_stamps(&tmp).contains_key("pin"));
+        let _ = fs::remove_dir_all(&tmp);
+    }
+}

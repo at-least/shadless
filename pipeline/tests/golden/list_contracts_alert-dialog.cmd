@@ -1,0 +1,1 @@
+list contracts:alert-dialog

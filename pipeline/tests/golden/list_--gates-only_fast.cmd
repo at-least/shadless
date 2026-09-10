@@ -1,0 +1,1 @@
+list --gates-only fast

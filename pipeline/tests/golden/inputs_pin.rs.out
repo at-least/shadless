@@ -1,0 +1,6 @@
+.upstream/shadcn-ui/.git/HEAD
+pipeline/gate_pin.go
+pipeline/gates_test.go
+src/registry/pin.json
+vendor/embla-carousel.iife.js
+vendor/radix-kernel.iife.js

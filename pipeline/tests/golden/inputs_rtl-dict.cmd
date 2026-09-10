@@ -1,0 +1,1 @@
+inputs rtl-dict

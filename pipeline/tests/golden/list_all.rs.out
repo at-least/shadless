@@ -1,0 +1,71 @@
+GATE  pin                              [fast]
+build build-js                         [fast]
+GATE  unit                             [fast]  needs: build-js
+GATE  typecheck                        [fast]
+GATE  ledger                           [fast]
+GATE  script-refs                      [fast]
+build convert                          [full]  needs: pin, build-js
+build emit                             [full]  needs: convert, build-js
+build example-oracle                   [full]  needs: emit, build-js
+build example-fixture                  [full]  needs: example-oracle
+build rtl-dict                         [fast]  needs: pin, build-js
+build demo-rtl                         [full]  needs: example-oracle, example-fixture, rtl-dict, build-js
+build contract-fixture                 [full]  needs: convert, build-js
+build demo                             [full]  needs: demo-rtl, example-fixture, contract-fixture, build-js
+build demo-css                         [full]  needs: demo
+build product-css                      [full]  needs: demo
+GATE  dist-complete                    [full (self fast)]  needs: demo-css, product-css
+build product-build                    [full]  needs: product-css
+GATE  pack                             [full (self fast)]  needs: build-js, product-build
+GATE  coverage                         [full (self fast)]  needs: convert, example-oracle
+GATE  overlay                          [full (self fast)]  needs: convert, example-oracle
+GATE  product-verify                   [full]  needs: product-build, demo-css
+GATE  consumer-sim                     [full]  needs: product-css
+build oracle-css                       [full]  needs: convert
+GATE  path-parity                      [full]  needs: product-build, oracle-css, build-js
+GATE  demo-parity                      [full]  needs: demo-css, oracle-css, example-oracle, build-js
+GATE  css-direction                    [full (self fast)]  needs: demo-css
+GATE  contracts:accordion              [full]  needs: demo-css
+GATE  contracts:accordion-multiple     [full]  needs: demo-css
+GATE  contracts:alert-dialog           [full]  needs: demo-css
+GATE  contracts:aspect-ratio           [full]  needs: demo-css
+GATE  contracts:avatar                 [full]  needs: demo-css
+GATE  contracts:carousel               [full]  needs: demo-css
+GATE  contracts:checkbox               [full]  needs: demo-css
+GATE  contracts:collapsible            [full]  needs: demo-css
+GATE  contracts:context-menu           [full]  needs: demo-css
+GATE  contracts:dialog                 [full]  needs: demo-css
+GATE  contracts:dropdown-menu          [full]  needs: demo-css
+GATE  contracts:hover-card             [full]  needs: demo-css
+GATE  contracts:label                  [full]  needs: demo-css
+GATE  contracts:menubar                [full]  needs: demo-css
+GATE  contracts:navigation-menu        [full]  needs: demo-css
+GATE  contracts:popover                [full]  needs: demo-css
+GATE  contracts:progress               [full]  needs: demo-css
+GATE  contracts:radio-group            [full]  needs: demo-css
+GATE  contracts:scroll-area            [full]  needs: demo-css
+GATE  contracts:select                 [full]  needs: demo-css
+GATE  contracts:separator              [full]  needs: demo-css
+GATE  contracts:sheet                  [full]  needs: demo-css
+GATE  contracts:slider                 [full]  needs: demo-css
+GATE  contracts:switch                 [full]  needs: demo-css
+GATE  contracts:tabs                   [full]  needs: demo-css
+GATE  contracts:toggle                 [full]  needs: demo-css
+GATE  contracts:toggle-group           [full]  needs: demo-css
+GATE  contracts:toggle-group-multiple  [full]  needs: demo-css
+GATE  contracts:tooltip                [full]  needs: demo-css
+GATE  style-parity                     [full]  needs: contracts:accordion, contracts:accordion-multiple, contracts:alert-dialog, contracts:aspect-ratio, contracts:avatar, contracts:carousel, contracts:checkbox, contracts:collapsible, contracts:context-menu, contracts:dialog, contracts:dropdown-menu, contracts:hover-card, contracts:label, contracts:menubar, contracts:navigation-menu, contracts:popover, contracts:progress, contracts:radio-group, contracts:scroll-area, contracts:select, contracts:separator, contracts:sheet, contracts:slider, contracts:switch, contracts:tabs, contracts:toggle, contracts:toggle-group, contracts:toggle-group-multiple, contracts:tooltip, oracle-css, build-js
+GATE  demo-smoke                       [full]  needs: demo-css, build-js
+build docs-catalog                     [full]  needs: demo
+build docs-upstream-mirror             [fast]  needs: pin
+build docs-build                       [full]  needs: docs-catalog, docs-upstream-mirror, demo-css, build-js
+build docs-site                        [full]  needs: docs-build
+GATE  docs-consistency                 [full (self fast)]  needs: docs-build, build-js
+GATE  docs-fidelity                    [full (self fast)]  needs: docs-build, build-js
+GATE  docs-smoke                       [full]  needs: docs-site, build-js
+GATE  interactivity-sweep              [full]  needs: docs-build, build-js
+GATE  reproducible                     [full]  needs: docs-build, product-build, demo-rtl, example-fixture
+GATE  golden-gate                      [full]  needs: example-oracle, build-js
+GATE  example-gate                     [full]  needs: docs-build, build-js
+
+69 nodes (52 gates)

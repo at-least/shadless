@@ -1,0 +1,1 @@
+inputs consumer-sim

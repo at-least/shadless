@@ -1,0 +1,1 @@
+inputs contracts:navigation-menu

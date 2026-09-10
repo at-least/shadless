@@ -1,0 +1,1 @@
+inputs contracts:aspect-ratio

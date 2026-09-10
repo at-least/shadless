@@ -1,0 +1,16 @@
+usage: pipeline <plan|list|status|run|adopt> <fast|full|builds|all|node…>
+       pipeline pin [--check-only]
+       pipeline tw <in> <out> [--minify] [--cwd DIR]
+       pipeline oracle-css
+       pipeline product-css
+       pipeline docs-catalog
+       pipeline ir-diff <git-ref>|<dirA> <dirB> [--json]
+       pipeline css-direction --update
+       pipeline ledger --record|--render|--dissolve
+       pipeline audit-boundary [--strict|discover]
+       pipeline upstream --to=shadcn@X.Y.Z [--fetch] [--no-build]
+       pipeline build-js
+       pipeline resolve-skins [--fixtures]
+       pipeline inputs <node> [--produces]
+
+The gates are Go tests: go test -C pipeline -count=1 -v [-run '^TestPack$']

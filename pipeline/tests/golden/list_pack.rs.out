@@ -1,0 +1,15 @@
+build build-js          [fast]
+GATE  pin               [fast]
+build convert           [full]  needs: pin, build-js
+build emit              [full]  needs: convert, build-js
+build example-oracle    [full]  needs: emit, build-js
+build example-fixture   [full]  needs: example-oracle
+build rtl-dict          [fast]  needs: pin, build-js
+build demo-rtl          [full]  needs: example-oracle, example-fixture, rtl-dict, build-js
+build contract-fixture  [full]  needs: convert, build-js
+build demo              [full]  needs: demo-rtl, example-fixture, contract-fixture, build-js
+build product-css       [full]  needs: demo
+build product-build     [full]  needs: product-css
+GATE  pack              [full (self fast)]  needs: build-js, product-build
+
+13 nodes (2 gates)
