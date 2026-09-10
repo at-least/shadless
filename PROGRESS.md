@@ -86,6 +86,7 @@
 - default_content.rs 是**生成檔**（生成器在本 session 對話中，必要時重寫；
   96 entries/23 components，attrs/children/quote 邊界都已對齊）。
 - emit 已知錯誤路徑差異：skin 檔缺失時 Rust panic（Go 印 stderr + exit 1）——僅影響壞樹。
+  （2026-09-10 已收口，見文末「錯誤路徑偏差收口」節。）
 
 ## M5 延伸完成筆記(2026-09-07)
 
@@ -100,6 +101,7 @@
   (空 cwd = 零內容掃描)。**A/B:out.css 564KB / full.css 345,892B / full.min.css
   290,235B 全部 byte-identical**。
 - 已知錯誤路徑差異:skin 檔缺失時 load_skin panic(101)vs Go exit 1——僅壞樹。
+  (2026-09-10 已收口,見文末「錯誤路徑偏差收口」節。)
 - 暫態陷阱:dist 被工具直跑弄髒時 golden 重播會誤報——先 git checkout dist/ 再跑。
 
 ## Oracle 鏈進度(2026-09-07,本輪)
@@ -678,3 +680,52 @@ contract-fixture 雖以 out.css 為 input,但頁面無人使用 `.invisible`
   PLAN.md:89 / PROGRESS.md:542 / probe/oxc/REPORT.md:86 的同款句子為
   歷史敘述、緊跟翻轉段落,刻意保留。勘誤:5703974 提交體內誤寫
   `62be5a5`,正確 hash 為 `62be6a5`(已上 main 不 amend,以此為準)。
+
+## 錯誤路徑偏差收口:skin 讀檔錯誤(2026-09-10,深夜)
+
+把 M5/M5 延伸記錄的「skin 檔缺失時 load_skin panic(101) vs Go stderr+exit 1」
+收口——這是最後一條記錄在案的 CLI 位元組級錯誤路徑偏差(parse_skin_map 的
+三條解析錯誤當時就已是 eprintln+exit(1) 的正確形狀,只有讀檔分支漏了)。
+
+- 修法:load_skin() 讀檔失敗改 eprintln + exit(1),錯誤字串走 Go *PathError
+  形狀(`open <path>: <strerror>`,Go 小寫 strerror 表)——emit/mod.rs 本地
+  go_err 第四份拷貝(共用條目與 tools/ 的三份——oracle_css/
+  docs_upstream_mirror/upstream_snapshot——逐字同表;三份 sibling 的表外
+  fallback 仍是舊形狀,但它們包在內部 copy 迴圈、非使用者可達的 CLI
+  錯誤面,且無任何對照宣告掛在其上,不為此再付 tools 群組級聯),
+  不統一 refactor,指紋爆炸半徑限 emit 群組。
+- EISDIR 細節:Go os.ReadFile 對目錄開檔成功、read 才 EISDIR,PathError 的
+  op 是 `read` 不是 `open`——errno 21 映射為 read。op 由 errno 推得而非
+  相位:表內僅 EISDIR 會在 Go 的 read 相位出現;若 EIO 發生在 read,
+  RS 印 `open` 而 Go 印 `read`(壞樹限定的化妝品級差異,記錄)。
+- reviewer 抓的表外漏洞:共用 go_err 對表外 errno 的 fallback 會丟掉
+  `op <path>:` 前綴(ELOOP 實測:Go `open …: too many levels of symbolic
+  links`,舊碼只剩 Rust Display 文本)。本份 go_err 以 Go 工具鏈
+  syscall/zerrors_linux_amd64.go 為權威補齊常用檔案 errno
+  (5/6/12/22/24/26/28/30/36/40/75),fallback 也保留前綴形狀(表外
+  errno 的措辭仍是 Rust 的 `Capitalized msg (os error N)`——結構同
+  Go、字不同;現實可達集合已全數入表)。
+- 驗證(四案例雙邊實測,非只 ENOENT):空 cwd 跑 `emit`,ENOENT/EISDIR/
+  EACCES/ELOOP 的 Go vs RS stdout/stderr/exit 全部 byte-identical(cmp)。
+- 新測試 tests/error_paths.rs(2 案:ENOENT/EISDIR;以 CARGO_BIN_EXE_
+  pipeline 在 tempdir 跑 emit,釘 exit 1 + 空 stdout + 逐字 stderr)。
+  EACCES 不入測試——root 下跑 cargo test 會讀穿 chmod 000。
+  注意:tests/ 不在指紋範圍(build.rs 只收 src/** 與 hull)——此測試
+  由 cargo test 防護、不被圖守護,與 golden.rs 等整合測試同待遇。
+- 理論殘餘(記錄不修):read_to_string 對無效 UTF-8 內容回 InvalidData
+  (Rust Display 文本),Go 不在讀檔解碼、會帶著無效位元組進解析——
+  好樹不可達(pinned 皮膚檔是有效 UTF-8 且到處被當資料雜湊),壞檔
+  案例雙方行為不同,接受。
+- emit 群組其餘 panic/expect 掃描:全為內部不變量(常數 regex unwrap =
+  Go MustCompile 同語意、前置檢查護欄、IR 驅動的查找)——Go 對應形狀
+  本來就是 panic/零值,非 stderr+exit 路徑,無同類偏差。
+- 回歸(兩輪 fp 變更後的最終碼):gen_golden 104/104、goldens 零漂移;
+  cargo test 124 lib + 4 整合測試檔全綠(error_paths 為新檔);status
+  前置檢查 stale 集 = 預期(66 = emit 閉包經 GROUP_DEPS 級聯
+  gates/oracle/convert;非引擎相關的 build-js/typecheck/reproducible
+  不受影響);run all 收斂 ran 67 / skipped 2 / 1012.4s / exit 0,事後
+  68 fresh + 1 NEVER-FRESH,真樹零漂移(級聯良性、好樹輸出不變的證據;
+  收斂後重跑 gen_golden 104/104 零漂移 + cargo test 全綠)。
+- 教訓:`cargo build -q | head` 會被 SIGPIPE 殺於連結前,binary 停在舊版
+  而 pipe 的 exit code 是 head 的 0——「修了還紅」時先核 binary 的
+  panic 行號是否仍存在於現源碼。
