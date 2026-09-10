@@ -750,8 +750,9 @@ mod tests {
         match std::env::var("SHADLESS_ROOT") {
             Ok(r) => std::path::PathBuf::from(r),
             Err(_) => {
-                let m = Path::new(env!("CARGO_MANIFEST_DIR")).join("../shadless");
-                m.canonicalize().unwrap_or(m)
+                let m = crate::crate_adjacent_tree_root()
+                    .unwrap_or(Path::new(env!("CARGO_MANIFEST_DIR")).join(".."));
+                m
             }
         }
     }

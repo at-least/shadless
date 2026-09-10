@@ -8,28 +8,33 @@
 
 use std::path::{Path, PathBuf};
 
-/// SHADLESS_ROOT wins when set; else walk up to the tree holding
-/// pipeline/nodes.go.
+/// SHADLESS_ROOT wins when set; else walk up to the product tree: the dir
+/// holding package.json with a pipeline/ directory (the engine lives at
+/// pipeline/ in the same repo).
 pub fn find_repo_root(dir: &Path) -> Result<PathBuf, String> {
     if let Ok(r) = std::env::var("SHADLESS_ROOT") {
         return Ok(PathBuf::from(r));
     }
     let mut dir = dir.to_path_buf();
     loop {
-        if dir.join("pipeline").join("nodes.go").exists() {
+        if is_repo_root(&dir) {
             return Ok(dir);
         }
         let parent = match dir.parent() {
             Some(p) => p.to_path_buf(),
             None => {
-                return Err("repo root (the tree holding pipeline/nodes.go) not found above the working directory; set SHADLESS_ROOT to say where it is".to_string())
+                return Err("repo root (the tree holding package.json + pipeline/) not found above the working directory; set SHADLESS_ROOT to say where it is".to_string())
             }
         };
         if parent == dir {
-            return Err("repo root (the tree holding pipeline/nodes.go) not found above the working directory; set SHADLESS_ROOT to say where it is".to_string());
+            return Err("repo root (the tree holding package.json + pipeline/) not found above the working directory; set SHADLESS_ROOT to say where it is".to_string());
         }
         dir = parent;
     }
+}
+
+fn is_repo_root(dir: &Path) -> bool {
+    dir.join("package.json").exists() && dir.join("pipeline").is_dir()
 }
 
 /// `in` and `out` are resolved against the repo root, never against the

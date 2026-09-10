@@ -1360,8 +1360,9 @@ mod tests {
         let root = match std::env::var("SHADLESS_ROOT") {
             Ok(r) => PathBuf::from(r),
             Err(_) => {
-                let m = Path::new(env!("CARGO_MANIFEST_DIR")).join("../shadless");
-                m.canonicalize().unwrap_or(m)
+                let m = crate::crate_adjacent_tree_root()
+                    .unwrap_or(Path::new(env!("CARGO_MANIFEST_DIR")).join(".."));
+                m
             }
         };
         let _ = &root; // tier selection reads the authored graph, not the tree
@@ -1437,8 +1438,9 @@ mod tests {
         let root = match std::env::var("SHADLESS_ROOT") {
             Ok(r) => PathBuf::from(r),
             Err(_) => {
-                let m = Path::new(env!("CARGO_MANIFEST_DIR")).join("../shadless");
-                m.canonicalize().unwrap_or(m)
+                let m = crate::crate_adjacent_tree_root()
+                    .unwrap_or(Path::new(env!("CARGO_MANIFEST_DIR")).join(".."));
+                m
             }
         };
         let g = match crate::graph::Graph::new(crate::nodes::all()) {

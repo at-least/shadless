@@ -486,19 +486,11 @@ fn ov_rule_units(
 
     // Persian dictionary — keys must exist in upstream's Arabic dictionary
     {
-        let src = std::fs::read_to_string(root.join("pipeline/build_rtl.go"))
-            .map_err(|e| e.to_string())?;
-        let re = Regex::new(r#"(?m)^[ \t]*"([0-9A-Za-z_]+)":[ \t]+"[^"]*",?$"#).unwrap();
-        let mut keys: Vec<String> = Vec::new();
-        for m in re.captures_iter(&src) {
-            if &m[1] != "dir" {
-                keys.push(m[1].to_string());
-            }
-        }
+        let keys: Vec<String> = crate::emit::build_rtl::persian().into_keys().collect();
         units.push(OvUnit {
             id: "rtl:persian-dictionary".to_string(),
             kind: "rule".to_string(),
-            home: "pipeline/build_rtl.go persian".to_string(),
+            home: "engine persian dictionary".to_string(),
             file: String::new(),
             inputs: Vec::new(),
             extra: Vec::new(),

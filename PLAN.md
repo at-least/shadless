@@ -224,9 +224,9 @@ META_ONLY;RS: `__meta <gate>`)。
   實證:PATH 上完全移除 go 後 422 passed / 0 failed。
 - `golden.rs` 重播 rs.* 自證 goldens + keys.rs.txt(鍵摺疊漂移的捕捉層)。
 - 歷史宣告:與 Go 的位元組同值是**已證明的歷史事實**,最後一個雙引擎
-  驗收狀態在 git tag `go-parity-final`;gate_parity.rs 保持為 opt-in 的
-  Go 交叉檢查(需要 Go 工具鏈)。此後與 Go 的漂移不再被追蹤——這是
-  本次決定接受的成本,換取驗收路徑去 Go 化。
+  驗收狀態在 git tag `go-parity-final`;gate_parity.rs(opt-in Go 交叉
+  檢查)已於 2026-09-11 去 Go 移除,內容見 go-parity-final 歷史。此後
+  與 Go 的漂移不再被追蹤——這是本次決定接受的成本,換取驗收路徑去 Go 化。
 - Go 原始碼作為**資料輸入**(KEEP_PIPELINE_INPUTS、oracle invariant 的
   resolve_skins.go/oracle_lib.go 等)維持不變:它們是被雜湊的樹內檔案,
   不是 Go 執行。

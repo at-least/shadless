@@ -5,10 +5,14 @@
 //! holes: flushSync propagates render exceptions into __err, and an empty
 //! #root is itself an error.
 //!
-//! Bundle cache: node_modules/.cache/shadless/oracle. The key hashes the same
-//! inputs as the Go side (pin commit, lockfile, resolve_skins.go, skin.mjs,
-//! oracle_lib.go, every stub) plus the per-example tsx — so Go and Rust share
-//! one cache without ever reusing a bundle the other side would reject.
+//! Bundle cache: node_modules/.cache/shadless/oracle. The key hashes the
+//! process-invariant inputs (pin commit, lockfile, skin.mjs, every stub)
+//! plus the per-example tsx. Until the Go engine's removal (2026-09) the two
+//! .go implementation files were hashed too, byte-identically to Go's key so
+//! both engines could share one cache; the Rust implementation files are now
+//! covered by the engine fingerprint instead, so the invariant no longer
+//! reads any Go source (the key changed once at that cut-over — every warm
+//! oracle bundle re-bundled exactly once).
 
 use super::browser_shell::BPage;
 use regex::Regex;
@@ -41,12 +45,17 @@ fn oracle_invariant_once() -> &'static Result<Vec<u8>, String> {
             .as_str()
             .ok_or("pin.json: missing shadcn_ui.commit")?;
         h.update((commit.to_string() + "\n").as_bytes());
-        for f in [
-            "package-lock.json",
-            "pipeline/resolve_skins.go",
-            "src/emitter/skin.mjs",
-            "pipeline/oracle_lib.go",
-        ] {
+        // The oracle group's engine fingerprint: with the Go implementation
+        // files gone from this hash, this is what invalidates warm bundles
+        // built by older oracle code when the alias table, entry template or
+        // bundler glue changes. (The esbuild/rolldown choice is separately
+        // isolated by per-bundler key files below.)
+        let oracle_fp = env!("ENGINE_FPS")
+            .split(';')
+            .find_map(|p| p.strip_prefix("oracle="))
+            .ok_or("ENGINE_FPS: no oracle entry")?;
+        h.update(oracle_fp.as_bytes());
+        for f in ["package-lock.json", "src/emitter/skin.mjs"] {
             let b = std::fs::read(f).map_err(|e| e.to_string())?;
             h.update(&b);
         }

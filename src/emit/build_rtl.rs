@@ -116,7 +116,9 @@ pub fn substitute_and_patch(
     out
 }
 
-fn persian() -> HashMap<String, String> {
+/// The engine's own Persian dictionary (the Go source this used to live in
+/// is gone); overlay's rtl:persian-dictionary audit enumerates these keys.
+pub fn persian() -> HashMap<String, String> {
     [
         ("paymentTitle", "پرداخت موفق"),
         (

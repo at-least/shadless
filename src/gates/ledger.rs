@@ -22,7 +22,6 @@ pub const GOLDEN_EX_PATH: &str = "src/registry/upstream-snapshot/exemptions.json
 pub const CONTRACTS_DIR: &str = "tools/contracts/components";
 pub const EMITTER_CSS: &str = "src/emitter/css.mjs";
 pub const EMITTER_SKIN: &str = "src/emitter/skin.mjs";
-pub const SWEEP_PATH: &str = "pipeline/interactivity_sweep.go";
 const TODO_REASON_PFX: &str = "TODO";
 
 fn ledger_classes() -> &'static [&'static str] {
@@ -186,56 +185,6 @@ pub fn js_attr_map(body: &str) -> Vec<JsAttrEntry> {
             values: js_strings_in(&m[2]),
         })
         .collect()
-}
-
-/// Counts the quoted keys of a Go map[string]bool literal.
-pub fn go_map_key_count(src: &str, name: &str) -> i64 {
-    let re = Regex::new(&format!(
-        r"var[\t\n\f\r ]+{}[\t\n\f\r ]*=[\t\n\f\r ]*map\[string\]bool\{{",
-        regex::escape(name)
-    ))
-    .unwrap();
-    let m = match re.find(src) {
-        Some(m) => m,
-        None => return -1,
-    };
-    let body = match go_balanced(&src[m.end() - 1..], b'{', b'}') {
-        Ok(b) => b,
-        Err(_) => return -1,
-    };
-    body.matches(": true").count() as i64
-}
-
-fn go_balanced(src: &str, oc: u8, cc: u8) -> Result<&str, String> {
-    let b = src.as_bytes();
-    let mut depth = 0i64;
-    let mut in_str = false;
-    let mut i = 0;
-    while i < b.len() {
-        let c = b[i];
-        if in_str {
-            if c == b'\\' {
-                i += 1;
-            } else if c == b'"' {
-                in_str = false;
-            }
-            i += 1;
-            continue;
-        }
-        match c {
-            b'"' => in_str = true,
-            x if x == oc => depth += 1,
-            x if x == cc => {
-                depth -= 1;
-                if depth == 0 {
-                    return Ok(&src[1..i]);
-                }
-            }
-            _ => {}
-        }
-        i += 1;
-    }
-    Err("unbalanced region".to_string())
 }
 
 // ---------------------------------------------------------------- the file
@@ -522,11 +471,12 @@ pub fn collect_budget_values(root: &Path) -> Result<HashMap<String, i64>, String
     let g = read_golden_exemptions(root)?;
     v.insert("golden.exempt-demos".to_string(), g.order.len() as i64);
 
-    let sweep = std::fs::read_to_string(root.join(SWEEP_PATH))
-        .map_err(|e| format!("{}: {}", SWEEP_PATH, e))?;
-    // sweepKnownDead is a Go map literal now; count its keys
-    let n = go_map_key_count(&sweep, "sweepKnownDead");
-    v.insert("interactivity.dead-families".to_string(), n);
+    // The sweep's own dead-family list is the single definition (the Go
+    // source it used to be counted from is gone with the Go engine).
+    v.insert(
+        "interactivity.dead-families".to_string(),
+        crate::tools::interactivity_sweep::SWEEP_KNOWN_DEAD.len() as i64,
+    );
 
     for (name, path) in [
         ("demo-parity.dirty-cells", "gates/demo-parity-baseline.json"),
@@ -1257,19 +1207,15 @@ mod tests {
     /// Go TestUnitGoMapKeyCount behavior: count `": true"` in a Go map
     /// literal; a missing literal is -1.
     #[test]
-    fn unit_go_map_key_count() {
-        let src = "var sweepKnownDead = map[string]bool{\n\t\"message-scroller\": true, // hand-authored\n}";
-        assert_eq!(go_map_key_count(src, "sweepKnownDead"), 1);
-        assert_eq!(go_map_key_count("var other = 1", "sweepKnownDead"), -1);
-    }
 
     #[test]
     fn unit_collect_budget_values_reads_golden_and_sweep() {
         let root = match std::env::var("SHADLESS_ROOT") {
             Ok(r) => PathBuf::from(r),
             Err(_) => {
-                let m = Path::new(env!("CARGO_MANIFEST_DIR")).join("../shadless");
-                m.canonicalize().unwrap_or(m)
+                let m = crate::crate_adjacent_tree_root()
+                    .unwrap_or(Path::new(env!("CARGO_MANIFEST_DIR")).join(".."));
+                m
             }
         };
         if !root.join(GOLDEN_EX_PATH).exists() {
@@ -1295,8 +1241,9 @@ mod tests {
         let root = match std::env::var("SHADLESS_ROOT") {
             Ok(r) => PathBuf::from(r),
             Err(_) => {
-                let m = Path::new(env!("CARGO_MANIFEST_DIR")).join("../shadless");
-                m.canonicalize().unwrap_or(m)
+                let m = crate::crate_adjacent_tree_root()
+                    .unwrap_or(Path::new(env!("CARGO_MANIFEST_DIR")).join(".."));
+                m
             }
         };
         if !root.join(GOLDEN_EX_PATH).exists() {

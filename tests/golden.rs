@@ -7,8 +7,8 @@
 //! the real tree: after changing the graph or the tree itself, re-run
 //! tests/gen_golden.sh to refresh them. Keyer drift is covered by the
 //! keys golden; the pre-port Go-parity evidence lives at the
-//! `go-parity-final` tag (and gate_parity.rs remains the opt-in Go
-//! cross-check for gate verdicts).
+//! `go-parity-final` tag (gate_parity.rs, the old opt-in Go cross-check,
+//! was deleted when the Go engine was removed).
 //!
 //! Layout (flat, one slug per case — see gen_golden.sh):
 //!   <slug>.cmd        the argv, one line, space-separated
@@ -26,10 +26,7 @@ fn shadless_root() -> Option<PathBuf> {
         }
         return None;
     }
-    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("../shadless")
-        .canonicalize()
-        .ok()
+    pipeline::crate_adjacent_tree_root()
 }
 
 #[test]

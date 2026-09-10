@@ -630,7 +630,7 @@ const GROUP_DEPS: &[(&str, &[&str])] = &[
     ("convert", &["tsx"]),
     ("emit", &["convert", "twmerge", "tsx"]),
     ("oracle", &["convert", "emit"]),
-    ("gates", &["convert", "emit"]),
+    ("gates", &["convert", "emit", "tools"]),
     ("twmerge", &[]),
     ("tsx", &[]),
     ("jsbuild", &[]),
@@ -872,29 +872,16 @@ const GO_TEST_GATES: &[&str] = &[
 /// data, not as the implementation being run. Everything else under
 /// `pipeline/` was an input because Go executed it; that role is now covered
 /// by the engine fingerprint in argv[0].
-/// Evidence per rule:
-/// - ledger: gates/ledger.rs SWEEP_PATH parses interactivity_sweep.go
-/// - script-refs: gates/mod.rs parses main.go verbs + *_test.go test names
-/// - overlay: tools/overlay.rs reads build_rtl.go for the Persian-dict rule
-/// - oracle chain (contract-fixture/example-fixture/example-oracle/contracts/
-///   example-golden/example-gate): oracle_lib.rs folds resolve_skins.go +
-///   oracle_lib.go contents into the oracle invariant cache key
+/// Go-source reads retained after the engine's Go-data decoupling. The oracle
+/// invariant, ledger and overlay consumers stopped reading Go sources (the
+/// oracle invariant folds only lockfile+skin.mjs+stubs; the ledger budget
+/// counts tools::interactivity_sweep::SWEEP_KNOWN_DEAD; the overlay
+/// persian-dict rule enumerates emit::build_rtl::persian). script-refs keeps
+/// its two until its v2 (no-Go) rewrite lands with the Makefile/package.json
+/// re-pointing.
 const KEEP_PIPELINE_INPUTS: &[(&str, &str)] = &[
-    ("ledger", "pipeline/interactivity_sweep.go"),
     ("script-refs", "pipeline/main.go"),
     ("script-refs", "pipeline/*_test.go"),
-    ("overlay", "pipeline/build_rtl.go"),
-    ("contract-fixture", "pipeline/oracle_lib.go"),
-    ("contract-fixture", "pipeline/resolve_skins.go"),
-    ("example-fixture", "pipeline/oracle_lib.go"),
-    ("example-fixture", "pipeline/resolve_skins.go"),
-    ("example-oracle", "pipeline/oracle_lib.go"),
-    ("example-oracle", "pipeline/resolve_skins.go"),
-    ("contracts", "pipeline/oracle_lib.go"),
-    ("contracts", "pipeline/resolve_skins.go"),
-    ("example-gate", "pipeline/oracle_lib.go"),
-    ("golden-gate", "pipeline/oracle_lib.go"),
-    ("golden-gate", "pipeline/resolve_skins.go"),
 ];
 
 /// Rewrite one Go-verbatim node into the self-hosted shape.
@@ -1300,6 +1287,20 @@ mod self_host_tests {
             .filter(|f| f.starts_with("src/") && f.ends_with(".rs"))
             .map(|f| f.trim_start_matches("src/").trim_end_matches(".rs").to_string())
             .collect();
+        // Crate-root FUNCTIONS in lib.rs: lib.rs is a hull file, so its bytes
+        // are folded into every group's fp — a reference to one of these can
+        // never go falsely fresh. (The head regex only sees module-shaped
+        // paths, so crate-root items need this explicit list.)
+        const HULL_ROOT_ITEMS: &[&str] = &["crate_adjacent_tree_root"];
+        let lib_src = std::fs::read_to_string(src.join("lib.rs")).expect("src/lib.rs readable");
+        for item in HULL_ROOT_ITEMS {
+            assert!(
+                lib_src.contains(&format!("fn {item}")),
+                "HULL_ROOT_ITEMS: `{item}` is not defined in src/lib.rs — the \
+                 allowlist is only sound for crate-root functions (lib.rs is \
+                 hull); move the item or update the list"
+            );
+        }
 
         let mut targets: Vec<(String, std::path::PathBuf)> = Vec::new();
         for g in ENGINE_GROUPS {
@@ -1423,6 +1424,7 @@ mod self_host_tests {
             for head in &found {
                 if head == group
                     || hull_modules.contains(head)
+                    || HULL_ROOT_ITEMS.contains(&head.as_str())
                     || head == "global"
                     || Some(head.as_str()) == stem
                 {

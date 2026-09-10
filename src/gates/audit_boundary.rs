@@ -1224,12 +1224,14 @@ fn in_manifest(
 }
 
 fn find_repo_root_from(dir: &Path) -> Option<std::path::PathBuf> {
-    // walk up from the cwd first (Go's findRepoRoot); in this workspace the
-    // Go repo may instead be located via SHADLESS_ROOT or sit next to the
-    // Rust crate — cargo test runs with the crate as cwd.
+    // walk up from the cwd first; the tree may instead be located via
+    // SHADLESS_ROOT or sit next to the crate — cargo test runs with the
+    // crate as cwd. Root = the dir holding package.json with a pipeline/
+    // directory (the engine lives at pipeline/ in the same repo).
+    let is_root = |d: &Path| d.join("package.json").exists() && d.join("pipeline").is_dir();
     let mut d = dir.to_path_buf();
     loop {
-        if d.join("pipeline/nodes.go").exists() {
+        if is_root(&d) {
             return Some(d);
         }
         match d.parent() {
@@ -1239,16 +1241,16 @@ fn find_repo_root_from(dir: &Path) -> Option<std::path::PathBuf> {
     }
     if let Ok(r) = std::env::var("SHADLESS_ROOT") {
         let p = std::path::PathBuf::from(r);
-        if p.join("pipeline/nodes.go").exists() {
+        if is_root(&p) {
             return Some(p);
         }
     }
-    // test-only: cargo test runs with the crate as cwd, one level beside the
-    // Go repo. Never consulted in production (the cwd-walk above wins there).
+    // test-only: resolve the real tree via the shared crate-adjacent
+    // candidates (crate parent post-move, sibling checkout pre-move). Never
+    // consulted in production (the cwd-walk and SHADLESS_ROOT win there).
     #[cfg(test)]
     {
-        let alt = Path::new(env!("CARGO_MANIFEST_DIR")).join("../shadless");
-        if alt.join("pipeline/nodes.go").exists() {
+        if let Some(alt) = crate::crate_adjacent_tree_root() {
             return Some(alt);
         }
     }

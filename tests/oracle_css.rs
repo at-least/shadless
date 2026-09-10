@@ -13,10 +13,7 @@ fn shadless_root() -> Option<PathBuf> {
         }
         return None;
     }
-    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("../shadless")
-        .canonicalize()
-        .ok()
+    pipeline::crate_adjacent_tree_root()
 }
 
 fn strip_timing(s: &str) -> String {

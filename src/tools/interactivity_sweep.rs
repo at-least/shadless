@@ -36,7 +36,7 @@ fn re_sweep_rtl_fam() -> &'static Regex {
 }
 
 // static oracle snapshots pending family migration — keyed by family
-const SWEEP_KNOWN_DEAD: [&str; 1] = ["message-scroller"];
+pub const SWEEP_KNOWN_DEAD: [&str; 1] = ["message-scroller"];
 
 const SWEEP_CANDIDATES_SEL: &str = r#"[data-slot$="-trigger"], [aria-expanded], [role="switch"], [role="checkbox"], [role="tab"], [data-slot="carousel-next"], [data-slot="carousel-prev"]"#;
 

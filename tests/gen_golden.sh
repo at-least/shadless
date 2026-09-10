@@ -6,8 +6,8 @@
 # in git history): that harness ran every case under BOTH engines and
 # live-compared — the byte-parity oracle that governed the port. The port is
 # complete and its parity vs Go is a proven historical claim (the go-parity-final
-# tag holds the last dual-engine state; tests/gate_parity.rs remains the
-# opt-in Go cross-check for verdicts). From here on the acceptance is:
+# tag holds the last dual-engine state; gate_parity.rs, the opt-in Go
+# cross-check, was deleted when the Go engine was removed). From here on the acceptance is:
 #   - this script records the engine's behavior,
 #   - tests/golden.rs replays it under `cargo test`,
 #   - the gates themselves (run all / cargo test true-tree tests) stay the
