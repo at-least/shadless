@@ -148,11 +148,31 @@ pub fn oracle_aliases() -> Result<HashMap<String, String>, String> {
     Ok(a)
 }
 
-/// The experiment-only bundler switch: `SHADLESS_ORACLE_BUNDLER=oxc`. Lives
-/// inside the oracle group on purpose — a Cargo feature would sit in the
-/// hull and stale the whole graph on every toggle.
-fn oxc_bundler_requested() -> bool {
-    std::env::var("SHADLESS_ORACLE_BUNDLER").as_deref() == Ok("oxc")
+/// The oracle-bundle bundler choice. Default: rolldown when the binary was
+/// built with the `oxc` feature (the no-byte-contract point runs the pure
+/// Rust toolchain), esbuild otherwise. `SHADLESS_ORACLE_BUNDLER=esbuild|oxc`
+/// overrides either way. The gate lives inside the oracle group on purpose —
+/// a cargo feature folds into the hull fingerprint and would stale the whole
+/// graph on every toggle.
+fn oracle_bundler_use_oxc() -> Result<bool, String> {
+    match std::env::var("SHADLESS_ORACLE_BUNDLER").as_deref() {
+        Ok("oxc") => {
+            if cfg!(feature = "oxc") {
+                Ok(true)
+            } else {
+                Err(
+                    "SHADLESS_ORACLE_BUNDLER=oxc needs a binary built with --features oxc"
+                        .to_string(),
+                )
+            }
+        }
+        Ok("esbuild") => Ok(false),
+        Ok(other) => Err(format!(
+            "SHADLESS_ORACLE_BUNDLER: unknown value {other:?} (expected esbuild|oxc)"
+        )),
+        Err(std::env::VarError::NotPresent) => Ok(cfg!(feature = "oxc")),
+        Err(e) => Err(format!("SHADLESS_ORACLE_BUNDLER: {e}")),
+    }
 }
 
 /// Bundles the pinned example and writes the oracle page. Returns the
@@ -206,14 +226,7 @@ try {{
     // rolldown path therefore keeps its OWN outfile and key file (prefixed
     // `oxc-`, so no `bundle-*.js` glob can ever sweep them up) and never
     // touches the shared ones.
-    let use_oxc = oxc_bundler_requested();
-    if use_oxc && !cfg!(feature = "oxc") {
-        // gate before any cache lookup: a warm oxc cache must not make a
-        // feature-less binary silently serve rolldown bundles
-        return Err(
-            "SHADLESS_ORACLE_BUNDLER=oxc needs a binary built with --features oxc".to_string(),
-        );
-    }
+    let use_oxc = oracle_bundler_use_oxc()?;
     let (outfile, key_file) = if use_oxc {
         (
             cache.join(format!("oxc-bundle-{}.js", name)),

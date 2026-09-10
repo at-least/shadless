@@ -36,6 +36,10 @@ rolldown = { version = "1.2.8", optional = true }
 tokio = { version = "1", features = ["rt"], optional = true }
 
 [features]
+# oxc on by default: the oracle bundle point (no byte contract) runs the pure
+# Rust toolchain; `SHADLESS_ORACLE_BUNDLER=esbuild` opts back out per run.
+# --no-default-features builds the lean esbuild-only binary.
+default = ["oxc"]
 oxc = ["dep:oxc_allocator", "dep:oxc_ast", "dep:oxc_parser", "dep:oxc_span", "dep:oxc_syntax", "dep:oxc_transformer", "dep:oxc_codegen", "dep:oxc_semantic", "dep:rolldown", "dep:tokio"]
 
 [build-dependencies]
