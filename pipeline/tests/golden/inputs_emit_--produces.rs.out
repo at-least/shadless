@@ -1,6 +1,5 @@
 build/emit/demo-index.html
 build/emit/globals.css
-build/emit/out.css
 dist/components/alert.html
 dist/components/attachment.html
 dist/components/badge.html
