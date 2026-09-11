@@ -45,7 +45,10 @@ fn golden_matrix_replays() {
     // On a fresh checkout those files are absent and the replay diverges for
     // an environmental reason, not a logic one — say so instead of failing
     // green-looking red.
-    if !root.join("build/rtl-langs.json").exists() {
+    // build/emit is produced, not committed: like build/rtl-langs.json, a
+    // fresh checkout without it would red the produces-goldens on runtime
+    // state the tree legitimately does not have yet.
+    if !root.join("build/rtl-langs.json").exists() || !root.join("build/emit").exists() {
         eprintln!(
             "skip: build/rtl-langs.json missing under {} — the golden matrix was recorded on a built tree; run the build chain (or tests/gen_golden.sh) first",
             root.display()

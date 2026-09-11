@@ -630,9 +630,31 @@ fn run_hidden_meta(rest: &[String]) -> i32 {
 
 /// `__gate <id>`: run the ported gate implementation in this engine, mapping
 /// Go's per-gate `go test -run '^TestX..'` semantics to an exit code.
+/// The ids the `__gate` match below dispatches, kept adjacent so a new arm
+/// must update it (the ARMS pattern from the verb surface). Two-way-tested
+/// against nodes::GATE_IDS — the set script-refs validates build-file
+/// references against — and the usage line is rendered from it, so there is
+/// exactly one place a gate id can be added or forgotten.
+const DISPATCHED_GATES: &[&str] = &[
+    "pin",
+    "unit",
+    "ledger",
+    "script-refs",
+    "dist-complete",
+    "pack",
+    "coverage",
+    "product-verify",
+    "consumer-sim",
+    "css-direction",
+    "reproducible",
+];
+
 fn run_hidden_gate(rest: &[String]) -> i32 {
     let Some(gate) = rest.first() else {
-        eprintln!("usage: pipeline __gate <pin|unit|ledger|script-refs|dist-complete|pack|coverage|product-verify|consumer-sim|css-direction|reproducible>");
+        eprintln!(
+            "usage: pipeline __gate <{}>",
+            DISPATCHED_GATES.join("|")
+        );
         return 2;
     };
     let root = std::env::current_dir().unwrap_or_default();
@@ -719,5 +741,14 @@ mod verb_surface {
         let mut v: Vec<&str> = pipeline::nodes::VERBS.to_vec();
         v.sort();
         assert_eq!(a, v, "main.rs dispatch arms and nodes::VERBS drifted apart");
+    }
+
+    #[test]
+    fn dispatched_gates_match_gate_ids() {
+        let mut d: Vec<&str> = super::DISPATCHED_GATES.to_vec();
+        d.sort();
+        let mut g: Vec<&str> = pipeline::nodes::GATE_IDS.to_vec();
+        g.sort();
+        assert_eq!(d, g, "the __gate match and nodes::GATE_IDS drifted apart");
     }
 }

@@ -789,9 +789,29 @@ gate 會逮到寫入中的暫態。swap 輪全鍵變更使 minify 與 reproducib
 ### 取代輪補記(同日)
 
 - tests/oracle_css.rs 刪除:它以 build/pipeline 為「Go binary」做雙邊位元組
-  對照——swap 後那是 Rust binary,測試退化成 RS-vs-RS 自比(0.00s 假綠)。
-  歷史形狀在 go-engine-final / go-parity-final。
+  對照——swap 後 Go binary 不復存在,測試退化為條件早退(silent skip,
+  0.00s 非真跑)。歷史形狀在 go-engine-final / go-parity-final。
 - nodes::GATE_IDS(=__gate 可分發集)加入,script-refs 對 Makefile/
   package.json 的 `__gate <id>`/`__meta` 引用執法;單源測試釘住
   GATE_IDS == GO_TEST_GATES + unit。
-- 訤測總數:126 lib + ARMS(bin)1 + error_paths 2 + golden 重播 1 = 130。
+- 測試總數:126 lib + ARMS/DISPATCHED_GATES(bin)2 + error_paths 2 +
+  golden 重播 1。
+
+### 收尾審查輪補記(同日,tag 重貼於最終提交)
+
+reviewer 對 cca443b/a189767/0f1a5bf 的四項發現全數落地:
+
+1. resolve-skins 的 RemoveAll 語意補全:Go 對「路徑上是檔案」也會移除
+   (NotADirectory),guard 擴為 NotFound 容忍 + NotADirectory 時
+   remove_file——以 go-engine-final 恢復的 Go 二進位實測兩種形狀
+   (檔案佔位/目錄缺失)雙邊輸出位元組一致。
+2. GATE_IDS 單源補完:main.rs 新增 DISPATCHED_GATES(與 __gate match
+   相鄰、usage 行由它渲染),與 nodes::GATE_IDS 雙向測試釘住——原測試只比
+   兩個常數表、沒有觸及分發器,reviewer 指出的「加進兩表但 match 沒有」
+   情境現在被抓。usage 逐字驗證不變。
+3. golden.rs 的建樹護欄加 build/emit(produces golden 對真實檔案系統
+   展開,缺它會在 fresh clone 上紅)。
+4. 本檔(chain 測試數、oracle_css 死因)更新;tag rust-engine-initial
+   重貼於最終提交。
+
+main.rs 為 hull——本輪編輯使全圖一次 STALE,收斂與 goldens 重錄照流程完成。

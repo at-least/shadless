@@ -341,10 +341,20 @@ pub fn resolve_fixture_html(html: &str) -> String {
 /// runResolveSkins is the `pipeline resolve-skins [--fixtures]` entry.
 pub fn run_resolve_skins(root: &Path, args: &[String]) -> i32 {
     crate::emit::load_skin();
-    // Go os.RemoveAll tolerates a missing target; this copy errored until
-    // the npm-build-path proof (rm -rf build) surfaced it.
-    if let Err(e) = std::fs::remove_dir_all(root.join(RESOLVE_OUT)) {
-        if e.kind() != std::io::ErrorKind::NotFound {
+    // Go os.RemoveAll tolerates a missing target AND unlinks a regular
+    // file/symlink sitting at the path; Rust's remove_dir_all errors on
+    // both (NotFound / NotADirectory — the file case surfaced by the same
+    // probe). Match the Go semantics exactly.
+    match std::fs::remove_dir_all(root.join(RESOLVE_OUT)) {
+        Ok(()) => {}
+        Err(e) if e.kind() == std::io::ErrorKind::NotFound => {}
+        Err(e) if e.kind() == std::io::ErrorKind::NotADirectory => {
+            if let Err(e2) = std::fs::remove_file(root.join(RESOLVE_OUT)) {
+                eprintln!("resolve-skins: {}", e2);
+                return 1;
+            }
+        }
+        Err(e) => {
             eprintln!("resolve-skins: {}", e);
             return 1;
         }
