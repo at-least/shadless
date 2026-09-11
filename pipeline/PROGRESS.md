@@ -815,3 +815,18 @@ reviewer 對 cca443b/a189767/0f1a5bf 的四項發現全數落地:
    重貼於最終提交。
 
 main.rs 為 hull——本輪編輯使全圖一次 STALE,收斂與 goldens 重錄照流程完成。
+
+### 顧問突變檢驗後的結構修復(同日,最終)
+
+顧問拒絕「常數清單 + 相鄰測試」的說法,突變實測證實:刪掉 match 的
+reproducible 臂,兩個雙向測試照綠——字串 match 無法由常數驅動,清單只是
+第四份拷貝。修法:__gate 分發改**表驅動**(DISPATCHED_GATES: [(id, check)];
+pin/unit 保留特殊臂),usage 行由表渲染;雙向測試契約 = 表 ∪ {pin, unit}
+== GATE_IDS。同突變重測:刪表項 → 測試紅(結構性抓住)。全套 131 綠。
+
+已知(繼承自 Go 圖):unit 的 JS 讀 .upstream 皮膚檔,fresh clone 上
+unit 不依賴 pin——Setup 的「先 npm run pin」是承重順序,CONTRIBUTING 已載。
+
+一個未解的一次性觀察:表驅動改寫中途的一次 cargo test,golden 重播報
+67 個 inputs 案例分歧;其後兩輪全綠(66s 實跑),樹與碼在兩次之間無相關
+變更,歸檔為中途態噪聲,不影響交付。
