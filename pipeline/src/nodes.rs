@@ -919,6 +919,35 @@ fn self_host(n: Node) -> Node {
     if let Some(inputs) = n.inputs.as_mut() {
         inputs.retain(|p| !p.starts_with("pipeline/"));
     }
+    // The Go-authored needs for reproducible name only four producers, but
+    // the gate reads the WHOLE generated tree (`git status` over
+    // GENERATED_ROOTS) while its tailwind-driven producers scan that tree as
+    // an undeclared input — a concurrent dist/docs writer can skew a
+    // verdict. Order it after every producer of a generated root. This is a
+    // self-hosted-shape decision: the go-mirror table is Go-verbatim
+    // history and stays untouched.
+    if id == "reproducible" {
+        let mut producers: Vec<String> = all_go()
+            .iter()
+            .filter(|o| {
+                o.id != "reproducible"
+                    && o.produces.iter().flatten().any(|p| {
+                        p.starts_with("dist/")
+                            || p.starts_with("generated/")
+                            || p.starts_with("docs/")
+                            || p.starts_with("src/kernel")
+                    })
+            })
+            .map(|o| o.id.clone())
+            .collect();
+        producers.sort();
+        producers.dedup();
+        let mut needs = std::mem::take(&mut n.needs);
+        needs.extend(producers);
+        needs.sort();
+        needs.dedup();
+        n.needs = needs;
+    }
     n
 }
 
@@ -1015,13 +1044,35 @@ mod self_host_tests {
                     );
                 }
             }
-            // Structural fields must survive the transform untouched.
+            // Structural fields must survive the transform untouched —
+            // except reproducible's needs, which self_host deliberately
+            // widens to every producer of a generated root (the gate reads
+            // the whole generated tree while tailwind-driven producers scan
+            // it as an undeclared input).
             let go_n = go.iter().find(|m| m.id == n.id).unwrap();
             assert_eq!(n.kind, go_n.kind, "{}", n.id);
             assert_eq!(n.tier, go_n.tier, "{}", n.id);
-            assert_eq!(n.needs, go_n.needs, "{}", n.id);
             assert_eq!(n.produces, go_n.produces, "{}", n.id);
             assert_eq!(n.mutations, go_n.mutations, "{}", n.id);
+            if n.id == "reproducible" {
+                for o in &go {
+                    let produced_root = o.produces.iter().flatten().any(|p| {
+                        p.starts_with("dist/")
+                            || p.starts_with("generated/")
+                            || p.starts_with("docs/")
+                            || p.starts_with("src/kernel")
+                    });
+                    if o.id != "reproducible" && produced_root {
+                        assert!(
+                            n.needs.contains(&o.id),
+                            "reproducible must need the generated-root producer {}",
+                            o.id
+                        );
+                    }
+                }
+            } else {
+                assert_eq!(n.needs, go_n.needs, "{}", n.id);
+            }
         }
     }
 

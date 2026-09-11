@@ -2,7 +2,7 @@
 // undeclared-access check. Loaded via NODE_OPTIONS=--import by the runner;
 // no tool imports it and no tool knows it exists.
 //
-// Why this exists: `inputs` in pipeline/nodes.go is hand-maintained, and a
+// Why this exists: `inputs` in pipeline/src/nodes.rs is hand-maintained, and a
 // glob that misses a file the node actually reads is a stale GREEN — the file
 // is not in the node's key, so changing it leaves the node fresh over a tree
 // it would now build differently. The Go gates get this checked for free from
