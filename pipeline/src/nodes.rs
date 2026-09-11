@@ -1144,6 +1144,20 @@ mod self_host_tests {
         }
     }
 
+    #[test]
+    fn gate_ids_are_exactly_the_dispatched_gates() {
+        // GATE_IDS is what script-refs validates build-file references
+        // against; the __gate dispatcher must accept precisely the same set
+        // (an id here but not dispatchable would pass the gate and die at
+        // runtime, and vice versa).
+        let mut expected: Vec<&str> = GO_TEST_GATES.to_vec();
+        expected.push("unit");
+        expected.sort();
+        let mut ids: Vec<&str> = GATE_IDS.to_vec();
+        ids.sort();
+        assert_eq!(ids, expected);
+    }
+
     // ---- fingerprint table enforcement ---------------------------------
     //
     // The fp scheme's soundness lives here, not in build.rs (which only

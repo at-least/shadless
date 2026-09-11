@@ -785,3 +785,13 @@ gate 會逮到寫入中的暫態。swap 輪全鍵變更使 minify 與 reproducib
 - oracle 快取一次全冷(指紋折入鍵);19.8MB Go 二進位留在 git 歷史
   (刪除不縮小 clone,未重寫歷史);與 Go 未來漂移無人追蹤
   (2026-09-10 已接受的決定,go-engine-final 之後引擎是唯一真源)。
+
+### 取代輪補記(同日)
+
+- tests/oracle_css.rs 刪除:它以 build/pipeline 為「Go binary」做雙邊位元組
+  對照——swap 後那是 Rust binary,測試退化成 RS-vs-RS 自比(0.00s 假綠)。
+  歷史形狀在 go-engine-final / go-parity-final。
+- nodes::GATE_IDS(=__gate 可分發集)加入,script-refs 對 Makefile/
+  package.json 的 `__gate <id>`/`__meta` 引用執法;單源測試釘住
+  GATE_IDS == GO_TEST_GATES + unit。
+- 訤測總數:126 lib + ARMS(bin)1 + error_paths 2 + golden 重播 1 = 130。
