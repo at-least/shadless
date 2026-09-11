@@ -4,8 +4,6 @@
 # pipeline/ defines; the engine executes the topologically sorted closure of
 # what you ask for. This file only names the common entry points — it holds
 # no ordering of its own, so it cannot drift from what CI runs.
-# only names the common entry points — it holds no ordering of its own, so
-# it cannot drift from what CI runs.
 #
 #   make              full pipeline + every gate
 #   make verify       every gate, assuming artifacts are fresh

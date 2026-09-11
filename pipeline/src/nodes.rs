@@ -868,6 +868,15 @@ const GO_TEST_GATES: &[&str] = &[
     "reproducible",
 ];
 
+/// The ids `__gate <id>` dispatches: the ten go-test-gate ports plus unit.
+/// The script-refs gate validates Makefile/package.json `__gate <id>`
+/// references against this table.
+pub const GATE_IDS: &[&str] = &[
+    "pin", "unit", "ledger", "script-refs", "dist-complete", "pack",
+    "coverage", "product-verify", "consumer-sim", "css-direction",
+    "reproducible",
+];
+
 /// Every top-level verb this binary dispatches (main.rs `run`'s public
 /// match arms; the hidden __gate/__meta/__oxc-probe are not on this list).
 /// The Makefile and package.json drive the binary through

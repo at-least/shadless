@@ -428,7 +428,7 @@ fn script_refs_res() -> &'static ScriptRefsRes {
     static R: OnceLock<ScriptRefsRes> = OnceLock::new();
     R.get_or_init(|| ScriptRefsRes {
         re_node_call: Regex::new(r#"\bnode\s+([^\s&|;"']+.mjs)"#).unwrap(),
-        re_pipeline_cmd: Regex::new(r"\./(?:build/pipeline|\$\(PIPELINE\))\s+([a-zA-Z][a-zA-Z0-9_-]*)").unwrap(),
+        re_pipeline_cmd: Regex::new(r"\./(?:build/pipeline|\$\(PIPELINE\))\s+([a-zA-Z_][a-zA-Z0-9_-]*)(?:\s+([a-zA-Z_][a-zA-Z0-9_-]*))?").unwrap(),
         re_go_invocation: Regex::new(r"\bgo\s+(test|build|run|generate)\b").unwrap(),
         re_go_mod: Regex::new(r"\bgo\.mod\b").unwrap(),
     })
@@ -462,6 +462,33 @@ pub fn gate_script_refs(root: &Path) -> Result<(usize, usize), String> {
         }
         for m in r.re_pipeline_cmd.captures_iter(source) {
             let v = &m[1];
+            if v == "__gate" {
+                match m.get(2).map(|g| g.as_str()) {
+                    Some(g) if !crate::nodes::GATE_IDS.contains(&g) => {
+                        fail.push(format!(
+                            "{}: `pipeline __gate {g}` — not a gate id this engine dispatches",
+                            label
+                        ));
+                    }
+                    Some(_) => {}
+                    None => fail.push(format!(
+                        "{}: `pipeline __gate` without an id — name the gate",
+                        label
+                    )),
+                }
+                continue;
+            }
+            if v == "__meta" {
+                if let Some(g) = m.get(2) {
+                    if !crate::nodes::GATE_IDS.contains(&g.as_str()) {
+                        fail.push(format!(
+                            "{}: `pipeline __meta {}` — not a gate id this engine dispatches",
+                            label, g.as_str()
+                        ));
+                    }
+                }
+                continue;
+            }
             if !verbs.contains(v) {
                 fail.push(format!(
                     "{}: `pipeline {}` — not a verb this engine dispatches",

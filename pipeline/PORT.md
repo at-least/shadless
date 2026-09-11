@@ -29,7 +29,7 @@ builds the lean esbuild-only binary).
 This engine is a byte-for-byte port of the Go pipeline that used to live in
 this directory (29k lines, 41 nodes / 24 gates). The last dual-engine state
 — every artifact, CLI verdict, and gate verdict byte-compared green — is
-tagged `go-parity-final`; the Go module's removal is tagged
-`go-engine-final`. The port's design notes and the record of every bug the
+tagged `go-parity-final`; the Go module's last state is tagged
+`go-engine-final` (check that tag out to regenerate Go-era fixtures). The port's design notes and the record of every bug the
 byte-parity process caught are in [PROGRESS.md](PROGRESS.md) and
 [PLAN.md](PLAN.md).

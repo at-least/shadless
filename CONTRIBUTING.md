@@ -13,7 +13,7 @@ ledger entry with a reason.
 ```sh
 npm ci
 npx playwright install --with-deps chromium   # the full tier renders in chromium
-rustup install                                # pins itself via pipeline/rust-toolchain.toml
+rustup                                        # https://rustup.rs; cargo commands inside pipeline/ pin the exact toolchain via rust-toolchain.toml
 npm run pin                                   # auto-clones the pinned upstream into .upstream/ on first run
 ```
 
@@ -31,8 +31,7 @@ npm run pin                                   # auto-clones the pinned upstream 
 `generated/ir/`, `docs/catalog.json`, `docs/demos/`, …) with what the
 pipeline just produced, so **commit regenerated outputs with the source
 change that caused them**.
-After touching `src/runtime/**`: `node tools/build-js.mjs` → `npm run
-demo` → `npm run docs`, in that order (the emitter wipes the interactive
+After touching `src/runtime/**`: `npm run pipeline` (`./build/pipeline build-js`) → `npm run demo` → `npm run docs`, in that order (the emitter wipes the interactive
 demo pages; only the full demo build restores them).
 
 ## Where changes go
