@@ -646,10 +646,13 @@ window.__esm = { default: shadless, get, theme, init, named: Object.keys(ns).sor
     const doc = dom.window.document
     const winErrs = []
     dom.window.addEventListener("error", (e) => winErrs.push(e.message))
+    const errs = []
+    dom.window.console.error = (...a) => errs.push(a.join(" "))
     dom.window.shadless.init(doc.getElementById("a"))
     click(dom, doc.getElementById("d9-trigger"))
     t.ok("dialog: template without a content slot does not throw on open", winErrs.length === 0, winErrs.join(" | "))
     t.ok("dialog: nothing mounts without a content slot", !doc.querySelector("[data-slot=dialog-portal]"))
+    t.ok("dialog: the broken template is reported", errs.some((m) => /d9-portal/.test(m)), errs.join(" | "))
     t.ok("dialog: trigger stays closed", doc.getElementById("d9-trigger").getAttribute("data-state") !== "open")
   }
   // menu family: an EMPTY -tpl must not throw in mountLayer (kernel treats null as no-op)

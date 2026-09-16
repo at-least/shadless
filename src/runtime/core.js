@@ -454,7 +454,9 @@
             // the template is the component's contract: without a content
             // slot there is nothing to wire — come down and stay closed
             // instead of a TypeError mid-mount
+            console.error("shadless: dialog template \"" + tpl.id + "\" carries no " + component + "-content slot — staying closed");
             portal.remove();
+            portal = null;
             return;
           }
           // pointer-events restored on the portal chain, overlay aria-hidden,
