@@ -38,6 +38,24 @@ export function run(t) {
     t.eq("buildTree: icon child → svg", tree.kids[0].tag, "svg")
     t.eq("buildTree: native child slot binds", tree.kids[1].slot, "sr")
   }
+  {
+    // the rust emit (pipeline/src/emit/mod.rs) is the dist authority; the JS
+    // emitter must agree with it on the unresolvable-sketch branch: a sketch
+    // that RESOLVES through tagHints but matches no element contributes
+    // nothing, only a native raw tag survives as a bare node
+    const ir = {
+      name: "x", tagHints: { GhostIcon: "svg" },
+      components: [{ fn: "F", export: true, elements: [
+        { tag: "div", slot: "root", classes: [], spread: false,
+          children: ["<GhostIcon>", "<span>"] },
+      ] }],
+    }
+    const fn = ir.components[0]
+    const tree = buildTree(ir, fn)
+    // rust parity: the unresolvable-sketch fallback contributes NOTHING —
+    // a resolved sketch is discarded and a native raw tag always resolves
+    t.eq("buildTree: unclaimed sketches contribute nothing (rust parity)", tree.kids.length, 0)
+  }
   t.throws("buildTree: unresolvable root throws", () => {
     buildTree({ name: "x", tagHints: {}, components: [{ fn: "F", export: true,
       elements: [{ tag: "Mystery", slot: null, classes: [], spread: false, children: [] }] }] },

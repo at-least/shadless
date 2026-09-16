@@ -83,7 +83,7 @@ fn tool_source_patterns() -> &'static [BoundaryPattern] {
                 matches: Box::new(|p: &str| re_cache(r"^src/emitter/.*\.mjs$").is_match(p)),
                 tool: "",
                 source: "",
-                note: "src/emitter/*.mjs — IR JSON → dist/components/*.html + slot CSS",
+                note: "src/emitter/*.mjs — the aligned JS twin of the rust emit (the emit node, this engine, builds dist); unit-tested via tools/unit/emitter.mjs",
                 owner: "",
             },
             BoundaryPattern {
@@ -138,7 +138,7 @@ fn programmatic_patterns() -> &'static [BoundaryPattern] {
                         && !rtl_variant(p)
                         && !p.ends_with("-demo.html")
                 }),
-                tool: "src/emitter/index.mjs OR pipeline/demo.go (per-tier fixture)",
+                tool: "./build/pipeline example-fixture (per-tier fixture)",
                 source: "generated/ir/*.json + probes/t{6,7,8,9}/* (per tier)",
                 note: "",
                 owner: "",
@@ -640,7 +640,7 @@ fn heuristic_hints() -> &'static [HeuristicHint] {
             HeuristicHint {
                 re: r"^dist/.+\.html$",
                 kind: "programmatic",
-                tool: "src/emitter/index.mjs OR pipeline/demo.go (per-tier fixture)",
+                tool: "./build/pipeline example-fixture (per-tier fixture)",
                 source: "generated/ir/*.json + probes/t{6,7,8,9}/*",
                 note: "",
                 owner: "",
@@ -1272,7 +1272,7 @@ mod tests {
             ("dist/components/alert-demo.html", "programmatic", "pipeline/example_oracle.go"),
             // a plain component page belongs to the emitter/demo rule
             ("dist/components/accordion.html", "programmatic",
-             "src/emitter/index.mjs OR pipeline/demo.go (per-tier fixture)"),
+             "./build/pipeline example-fixture (per-tier fixture)"),
             // docs/demos RTL variants are build-rtl output, not hand-authored —
             // programmatic patterns are consulted before hand-authored ones
             ("docs/demos/alert-rtl-he.html", "programmatic", "pipeline/build_rtl.go"),
@@ -1347,7 +1347,7 @@ mod tests {
             // only the catch-all matches this one
             (
                 "dist/widgets/new.html",
-                "src/emitter/index.mjs OR pipeline/demo.go (per-tier fixture)",
+                "./build/pipeline example-fixture (per-tier fixture)",
             ),
         ];
         for (path, want_tool) in cases {

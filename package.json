@@ -55,7 +55,7 @@
     "typecheck": "tsc -p tsconfig.json",
     "contracts": "npm run pipeline && ./build/pipeline contracts",
     "convert": "npm run pipeline && ./build/pipeline resolve-skins && ./build/pipeline convert",
-    "emit": "node src/emitter/index.mjs",
+    "emit": "npm run pipeline && ./build/pipeline emit",
     "demo": "npm run emit && ./build/pipeline example-oracle && ./build/pipeline example-fixture && ./build/pipeline build-rtl && ./build/pipeline demo && ./build/pipeline product-css && ./build/pipeline tw dist/globals.css dist/out.css --cwd . && ./build/pipeline tw dist/shadless.product.css dist/shadless.full.css && ./build/pipeline tw dist/shadless.product.css dist/shadless.full.min.css --minify",
     "demo:smoke": "npm run pipeline && ./build/pipeline demo-smoke",
     "verify": "npm run typecheck && npm run pipeline && ./build/pipeline run all",

@@ -1,4 +1,9 @@
 // T5 emitter: IR (tier=static) → semantic usage HTML + slot-keyed CSS.
+//
+// The DIST producer is the rust emit node (`./build/pipeline emit`,
+// pipeline/src/emit/mod.rs) — this file is its aligned JS twin, kept for
+// `tools/unit/emitter.mjs` and ad-hoc inspection; the tree must stay
+// byte-identical after running it.
 // Gates: static file count, no non-anchor class= in HTML, jsdom slot-tree vs
 // IR (exact tags + nesting edges), no literal PascalCase tags, no escaped
 // markup artifacts.
@@ -50,9 +55,10 @@ export function buildTree(ir, fn, claimed = new Set(), anchors = new Map(), anch
         const hit = byKey.find((o) => !claimed.has(o.i) &&
           (m[2] ? o.e.slot === m[2] && o.e.tag === m[1] : o.e.tag === m[1]))
         if (hit) { claimed.add(hit.i); kids.push(resolve(hit.e, hit.i)); continue }
-        // unresolvable sketch: icon → svg; native → bare; else skip
-        const tag = normalizeTag(/** @type {string} */ (m[1]), ir.tagHints) ?? /** @type {string} */ (m[1])
-        if (NAT.has(tag)) kids.push({ tag, slot: m[2] || null, anchor: null, anchorM: null, kids: [] })
+        // unresolvable sketch: nothing structural is pushed — matching the
+        // rust emit (pipeline/src/emit/mod.rs) verbatim, where a sketch that
+        // resolves is discarded and the native-raw fallback is unreachable
+        // (a native tag always resolves).
       }
       // text/{children}/OPT?/expr → nothing structural
     }

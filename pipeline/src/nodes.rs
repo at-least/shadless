@@ -71,9 +71,12 @@ fn node(
 }
 
 /// The Go-verbatim graph, in declaration order (nodes.go `var Nodes`).
-/// Authored data — do not edit except to track upstream nodes.go changes;
-/// the acceptance harness byte-compares keys derived from this table
-/// against the real Go keyer (probe/keys-go).
+/// Authored parity data — do not edit except to track upstream nodes.go
+/// changes: `self_host` transforms this table into the engine-run graph and
+/// the byte-compare acceptance harness against the real Go keyer lives at
+/// the go-engine-final tag (pipeline/probe/keys-go), not in this tree. The
+/// pipeline/* inputs and `go test` commands below are load-bearing parity
+/// history — the transform strips the former and rewrites the latter.
 pub fn all_go() -> Vec<Node> {
     vec![
         node(
