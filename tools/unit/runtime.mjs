@@ -623,4 +623,54 @@ window.__esm = { default: shadless, get, theme, init, named: Object.keys(ns).sor
     t.eq("theme: toggle persists", dom.window.localStorage.getItem("shadless-theme"), "light")
     t.eq("theme: toggle event", events, ["dark", "light"])
   }
+
+  // ---- review fixes: malformed-markup guards + honest handles ----
+  // select handle: a selector matching nothing is a no-op, not a silent clear
+  {
+    const dom = bootKernel(`
+<button type="button" data-slot="select-trigger" id="s9-trigger"><span data-slot="select-value">a</span></button>
+<template id="s9-tpl"><div data-slot="select-content"><div data-slot="select-viewport"><div role="option" aria-selected="true" data-value="A">a</div><div role="option" aria-selected="false" data-value="B">b</div></div></div></template>`, ["select"])
+    dom.window.shadless.initAll()
+    const sel = dom.window.shadless.get("#s9-trigger")
+    t.eq("select handle: initial value", sel.value(), "A")
+    let threw = null
+    try { sel.select("[role=option][data-value=NOPE]") } catch (e) { threw = e }
+    t.ok("select handle: unmatched selector does not throw", !threw, threw && threw.message)
+    t.eq("select handle: unmatched selector is a no-op, not a silent clear", sel.value(), "A")
+  }
+  // dialog family: a template missing the content slot degrades to closed, no TypeError
+  {
+    const dom = bootKernel(`
+<div id="a"><button data-slot="dialog-trigger" id="d9-trigger">open</button></div>
+<template id="d9-portal"><div data-slot="dialog-overlay"></div></template>`, ["dialog"])
+    const doc = dom.window.document
+    const winErrs = []
+    dom.window.addEventListener("error", (e) => winErrs.push(e.message))
+    dom.window.shadless.init(doc.getElementById("a"))
+    click(dom, doc.getElementById("d9-trigger"))
+    t.ok("dialog: template without a content slot does not throw on open", winErrs.length === 0, winErrs.join(" | "))
+    t.ok("dialog: nothing mounts without a content slot", !doc.querySelector("[data-slot=dialog-portal]"))
+    t.ok("dialog: trigger stays closed", doc.getElementById("d9-trigger").getAttribute("data-state") !== "open")
+  }
+  // menu family: an EMPTY -tpl must not throw in mountLayer (kernel treats null as no-op)
+  {
+    const dom = bootKernel(`
+<button data-radixuigo-menu-trigger="m9" id="m9-trigger">menu</button>
+<template id="m9-tpl"></template>`, ["menubar"])
+    const doc = dom.window.document
+    const winErrs = []
+    dom.window.addEventListener("error", (e) => winErrs.push(e.message))
+    dom.window.shadless.initAll()
+    click(dom, doc.getElementById("m9-trigger"))
+    t.ok("menubar: empty -tpl template does not throw on open", winErrs.length === 0, winErrs.join(" | "))
+  }
+  // register: two components claiming the same data-slot must be reported, not silently overwritten
+  {
+    const dom = boot(`<div data-slot="zslot" id="z"></div>`)
+    const errs = []
+    dom.window.console.error = (...a) => errs.push(a.join(" "))
+    dom.window.eval(`shadless.register("za", { slots: { zslot: { onClick() {} } } })`)
+    dom.window.eval(`shadless.register("zb", { slots: { zslot: { onClick() {} } } })`)
+    t.ok("register: a colliding slot claim is reported", errs.some((m) => /zslot/.test(m)), errs.join(" | "))
+  }
 }

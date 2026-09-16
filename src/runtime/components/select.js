@@ -67,7 +67,11 @@
         close: function () { if (handles.isOpen()) handles.close(true) },
         toggle: function () { handles.isOpen() ? handles.close(true) : open() },
         isOpen: function () { return handles.isOpen() },
-        select: function (item) { handles.select(typeof item === "string" ? content.querySelector(item) : item) },
+        select: function (item) {
+          var el = typeof item === "string" ? content.querySelector(item) : item
+          if (!el) return // a selector matching nothing is a no-op, not a silent clear
+          handles.select(el)
+        },
         value: function () { return valueOf(selected) },
         label: function () { return valueNode ? valueNode.textContent : labelOf(selected) },
         selected: function () { return selected },

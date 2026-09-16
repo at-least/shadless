@@ -348,7 +348,8 @@
       mountLayer: function (id) {
         var tpl = document.getElementById(id + "-tpl");
         if (!tpl) return null;
-        var content = tpl.content.firstElementChild.cloneNode(true);
+        var content = cloneTemplate(tpl);
+        if (!content) return null; // empty template: the kernel treats a null layer as a no-op
         var wrapper = document.createElement("div");
         wrapper.setAttribute("data-radix-popper-content-wrapper", "");
         wrapper.appendChild(content);
@@ -449,6 +450,13 @@
           document.body.appendChild(portal);
           var overlay = portal.querySelector("[data-slot=" + component + "-overlay]");
           var content = portal.querySelector("[data-slot=" + component + "-content]");
+          if (!content) {
+            // the template is the component's contract: without a content
+            // slot there is nothing to wire — come down and stay closed
+            // instead of a TypeError mid-mount
+            portal.remove();
+            return;
+          }
           // pointer-events restored on the portal chain, overlay aria-hidden,
           // trigger<->content wiring (the h3b contract)
           if (overlay) {
@@ -496,11 +504,18 @@
     }
   }
 
+  // Strong refs on purpose: register() must find every live root to run a
+  // newly-registered component on it. A root the consumer init()ed and then
+  // dropped without destroy() stays referenced until then — destroy(root)
+  // is the release API (framework cache-restore paths call it via force).
   var LIVE_ROOTS = []
   function register(name, def) {
     if (COMPONENTS[name]) return
     COMPONENTS[name] = def
-    if (def.slots) for (var s in def.slots) BEHAVIORS[s] = def.slots[s]
+    if (def.slots) for (var s in def.slots) {
+      if (BEHAVIORS[s]) console.error("shadless: data-slot \"" + s + "\" is claimed by both " + name + " and an earlier component — the earlier behavior is overwritten")
+      BEHAVIORS[s] = def.slots[s]
+    }
     LIVE_ROOTS.forEach(function (root) {
       if (def.slots) runInitBehaviors(root, false)
       if (def.init) safeInit(name, def, root)
