@@ -146,6 +146,10 @@ struct RunState<'a> {
     ready: VecDeque<String>,
     inflight: usize,
     stop: bool,
+    /// dispatch-time key computations that failed. They are failures —
+    /// the run verdict must not go green over a plan that did nothing —
+    /// but unlike command failures they have no output tail to show.
+    key_errors: usize,
     tx: std::sync::mpsc::Sender<Result_>,
     sem: Arc<Sem>,
     browser_sem: Arc<Sem>,
@@ -334,6 +338,18 @@ impl Runner {
             Ok(v) => v,
             Err(e) => {
                 eprintln!("pipeline: {}", e);
+                // a node that cannot be keyed is a failed node: it goes in
+                // the report (so the blocked list does not absorb it) and
+                // the run verdict counts it, instead of stopping with every
+                // count at zero and exit 0
+                self.report.lock().unwrap().failed.insert(
+                    id.to_string(),
+                    FailedNode {
+                        cmd: "(key)".to_string(),
+                        tail: e,
+                    },
+                );
+                st.key_errors += 1;
                 st.stop = true;
                 return;
             }
@@ -425,6 +441,7 @@ impl Runner {
             ready,
             inflight: 0,
             stop: false,
+            key_errors: 0,
             tx,
             sem: Sem::new(self.jobs),
             browser_sem: Sem::new(self.browser_jobs.max(1)),
@@ -526,7 +543,7 @@ impl Runner {
         Counts {
             ran,
             skipped: st.skipped,
-            failed,
+            failed: failed + st.key_errors,
             violations,
             bad_reads,
         }
@@ -619,6 +636,48 @@ mod tests {
         let counts = runner.run(&[a, b]);
         assert_eq!(counts.ran, 2, "both browser nodes must succeed");
         assert_eq!(counts.failed, 0);
+        let _ = fs::remove_dir_all(&t);
+    }
+
+    #[test]
+    fn key_computation_failure_is_a_reported_failure_not_a_silent_stop() {
+        // A key error (here: a non-ASCII byte in a glob pattern, which
+        // quote_meta_byte rejects) used to stop the run with every count at
+        // zero — "ran 0, skipped 0" and exit 0, a green verdict over a run
+        // that did nothing. It must count as a failure and land in the
+        // run report.
+        let t = std::env::temp_dir().join(format!("shadless-rs-keyerr-{}", std::process::id()));
+        fs::create_dir_all(&t).unwrap();
+        let a = N {
+            id: "a".to_string(),
+            kind: "build".to_string(),
+            tier: "fast".to_string(),
+            needs: vec![],
+            run: vec![vec!["true".to_string()]],
+            inputs: Some(vec!["\u{e9}*".to_string()]), // é*: non-ASCII pattern byte
+            produces: None,
+            why: String::new(),
+            mutations: vec![],
+        };
+        let g = Arc::new(Graph::new(vec![a.clone()]).unwrap());
+        let runner = Arc::new(Runner::new(
+            t.clone(),
+            Arc::clone(&g),
+            1,
+            1,
+            false,
+            false,
+            HashMap::new(),
+        ));
+        let counts = runner.run(&[a]);
+        assert_eq!(counts.failed, 1, "a key computation failure is a failure");
+        let report = runner.report.lock().unwrap();
+        let f = report
+            .failed
+            .get("a")
+            .expect("key failure reported as a failed node");
+        assert_eq!(f.cmd, "(key)");
+        assert!(!f.tail.is_empty());
         let _ = fs::remove_dir_all(&t);
     }
 
