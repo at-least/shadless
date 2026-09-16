@@ -61,17 +61,23 @@ pub fn tw_compile(
         argv.push("--minify".to_string());
     }
 
-    let dir: PathBuf = if !compile_cwd.is_empty() {
-        abs(compile_cwd)
+    // an empty compile cwd means a scratch dir: zero content scanning. Hold
+    // the TempDir to the end of the function so the compile runs inside it
+    // and the drop deletes it — scratch.keep() here consumed the guard
+    // without ever deleting, leaking one empty /tmp dir per call.
+    let scratch = if compile_cwd.is_empty() {
+        Some(
+            tempfile::Builder::new()
+                .prefix("shadless-tw-")
+                .tempdir()
+                .map_err(|e| e.to_string())?,
+        )
     } else {
-        let scratch = tempfile::Builder::new()
-            .prefix("shadless-tw-")
-            .tempdir()
-            .map_err(|e| e.to_string())?;
-        // keep the scratch alive for the duration of the compile
-        let path = scratch.path().to_path_buf();
-        let _guard = scratch.keep();
-        path
+        None
+    };
+    let dir: PathBuf = match &scratch {
+        Some(s) => s.path().to_path_buf(),
+        None => abs(compile_cwd),
     };
 
     let mut cmd = std::process::Command::new(root.join("node_modules/.bin/tailwindcss"));
