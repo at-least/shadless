@@ -200,19 +200,46 @@ impl Runner {
     /// Runs one node's commands, capturing output so parallel logs stay
     /// readable: a node's output is printed as one block when it finishes.
     ///
-    /// Every `go test` command additionally gets -test.testlogfile (absolute —
-    /// these commands carry `-C pipeline`, and a relative one would land inside
-    /// the package directory); every command runs with the NODE_OPTIONS JS
-    /// recorder injected. Cosmetics note: Go interleaves both streams into one
+    /// Every command runs with the NODE_OPTIONS JS recorder injected, and the
+    /// js.log it writes is collected alongside any go-test testlogs — the Go
+    /// exec appended it at both return points (go-engine-final run.go), and
+    /// dropping that push had left the recorder writing into a directory
+    /// nobody read, so bad_reads was structurally always zero. fs-record.mjs
+    /// touches the log on load, so an absent file means "no node child ran"
+    /// (normal for engine-run commands) while a present one always parses.
+    ///
+    /// Known gap, documented rather than fixed: engine-run nodes execute in
+    /// this process (`__self__@fp __gate <id>`) — no child, no recorder, so a
+    /// gate's own data reads are unchecked by the read half. The undeclared
+    /// WRITE half covers them at -j1.
+    ///
+    /// Cosmetics note: Go interleaves both streams into one
     /// buffer; Rust appends stdout-then-stderr per command.
-    fn exec(&self, n: &Node) -> (Vec<u8>, Vec<PathBuf>, Option<String>) {
+    fn exec(&self, n: &Node) -> (Vec<u8>, Vec<PathBuf>, Option<String>, Option<tempfile::TempDir>) {
         let mut buf: Vec<u8> = Vec::new();
         let mut logs: Vec<PathBuf> = Vec::new();
-        // only hold the scratch dir while there is evidence to collect
+        // the scratch dir holding the access logs is returned to the caller:
+        // reads_from must read the logs BEFORE it drops (the Go code read
+        // first and RemoveAll'd after — dropping in exec deleted the logs
+        // unread)
         let dir = tempfile::Builder::new()
             .prefix("pipeline-access-")
             .tempdir()
             .ok();
+        if dir.is_none() {
+            eprintln!(
+                "  ⚠ {}: no scratch dir for the access recorder — this node runs unaudited for undeclared reads",
+                n.id
+            );
+        }
+        // collected with the logs at every return, mirroring the Go exec
+        let with_js_log =
+            |mut logs: Vec<PathBuf>, js_log: &Option<PathBuf>| -> Vec<PathBuf> {
+                if let Some(jl) = js_log {
+                    logs.push(jl.clone());
+                }
+                logs
+            };
         let js_log = dir.as_ref().map(|d| d.path().join("js.log"));
         for (i, argv) in n.run.iter().enumerate() {
             let mut cmd = argv.clone();
@@ -227,7 +254,7 @@ impl Runner {
                 Ok(p) => p,
                 Err(e) => {
                     let msg = format!("fork/exec {}: {}", cmd[0], e);
-                    return (buf, logs, Some(msg));
+                    return (buf, with_js_log(logs, &js_log), Some(msg), dir);
                 }
             };
             let mut c = Command::new(exe);
@@ -251,7 +278,7 @@ impl Runner {
                             Some(code) => format!("exit status {}", code),
                             None => "signal: killed".to_string(),
                         };
-                        return (buf, logs, Some(e));
+                        return (buf, with_js_log(logs, &js_log), Some(e), dir);
                     }
                 }
                 Err(e) => {
@@ -260,11 +287,11 @@ impl Runner {
                     } else {
                         e.to_string()
                     };
-                    return (buf, logs, Some(msg));
+                    return (buf, with_js_log(logs, &js_log), Some(msg), dir);
                 }
             }
         }
-        (buf, logs, None)
+        (buf, with_js_log(logs, &js_log), None, dir)
     }
 
     /// Collects the undeclared reads across a node's testlogs, then removes the
@@ -284,10 +311,11 @@ impl Runner {
         } else {
             None
         };
-        let (out, logs, err) = self.exec(n);
+        let (out, logs, err, dir) = self.exec(n);
         // computed even for a failed node: a gate that went red still read what
         // it read, and the declaration is wrong either way
         let reads = self.reads_from(n, &logs);
+        drop(dir); // evidence collected; the scratch dir can go
         if let Some(e) = err {
             self.forget(&n.id); // a failed node stays stale; it claims nothing
             return Result_ {
@@ -678,6 +706,59 @@ mod tests {
             .expect("key failure reported as a failed node");
         assert_eq!(f.cmd, "(key)");
         assert!(!f.tail.is_empty());
+        let _ = fs::remove_dir_all(&t);
+    }
+
+    #[test]
+    fn js_read_evidence_reaches_the_undeclared_read_check() {
+        // The Go exec appended js.log to the collected logs at BOTH return
+        // points (go-engine-final:pipeline/run.go, exec); the Rust port
+        // dropped the push, so the recorder was injected into every command
+        // while its output was never read — bad_reads was structurally
+        // always zero. A node whose node child reads an undeclared file
+        // must surface that read.
+        let t = std::env::temp_dir().join(format!("shadless-rs-jsreads-{}", std::process::id()));
+        fs::create_dir_all(t.join("tools")).unwrap();
+        // the runner injects <root>/tools/fs-record.mjs; give the temp root
+        // the real recorder
+        let recorder = Path::new(env!("CARGO_MANIFEST_DIR"))
+            .parent()
+            .unwrap()
+            .join("tools/fs-record.mjs");
+        fs::copy(&recorder, t.join("tools/fs-record.mjs")).unwrap();
+        let secret = t.join("secret.txt");
+        fs::write(&secret, "s").unwrap();
+        let a = N {
+            id: "a".to_string(),
+            kind: "build".to_string(),
+            tier: "fast".to_string(),
+            needs: vec![],
+            run: vec![vec![
+                "node".to_string(),
+                "-e".to_string(),
+                format!("require('fs').readFileSync({:?})", secret),
+            ]],
+            inputs: Some(vec!["declared.txt".to_string()]), // does not exist, covers nothing
+            produces: None,
+            why: String::new(),
+            mutations: vec![],
+        };
+        let g = Arc::new(Graph::new(vec![a.clone()]).unwrap());
+        let runner = Arc::new(Runner::new(
+            t.clone(),
+            Arc::clone(&g),
+            1,
+            1,
+            false,
+            false,
+            HashMap::new(),
+        ));
+        let counts = runner.run(&[a]);
+        assert_eq!(counts.ran, 1, "the node itself succeeds");
+        assert_eq!(
+            counts.bad_reads, 1,
+            "the undeclared read must reach the check"
+        );
         let _ = fs::remove_dir_all(&t);
     }
 

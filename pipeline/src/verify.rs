@@ -213,8 +213,22 @@ pub fn opens_from_logs(root: &Path, logs: &[std::path::PathBuf]) -> Vec<String> 
         } else {
             testlog_opens(root, log)
         };
-        let Ok(opens) = opens else {
-            continue; // a missing log means no evidence, not a violation
+        let opens = match opens {
+            Ok(o) => o,
+            Err(e) => {
+                // An absent log is "no node child ran" — no evidence, not a
+                // violation (fs-record.mjs touches the log on load, so a
+                // node child that ran leaves it present). One that exists
+                // but cannot be read is lost evidence and must say so.
+                if log.exists() {
+                    eprintln!(
+                        "pipeline: access log {} unreadable ({}); its read evidence is lost",
+                        log.display(),
+                        e
+                    );
+                }
+                continue;
+            }
         };
         for p in opens {
             if seen.insert(p.clone()) {

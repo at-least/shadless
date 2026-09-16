@@ -30,11 +30,17 @@ const fs = require("fs")
 const log = process.env.SHADLESS_FSLOG
 
 if (log) {
+  // Touch the log at load: a present-but-empty file means a node child ran
+  // and read nothing in-repo; an absent one means no node child ran at all.
+  // The runner collects the path unconditionally, and this is what keeps
+  // "no evidence" distinguishable from "evidence lost" on the reader side.
+  //
   // Buffered, flushed once at exit: docs-build opens thousands of files and an
   // appendFileSync per call would show up in the build time. A Set also means
   // the report is not 3000 copies of the same path.
   const seen = new Set()
   const real = { appendFileSync: fs.appendFileSync }
+  try { real.appendFileSync.call(fs, log, "") } catch {}
 
   const note = (p) => {
     // p may be a file descriptor (number), a Buffer, or a URL; only string
