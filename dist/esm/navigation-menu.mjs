@@ -64,7 +64,7 @@ import "./shadless.mjs"
       return vp
     }
 
-    function close(silent) {
+    function close() {
       if (!openId) return
       var trig = root.querySelector('[data-radixuigo-nav-trigger="' + openId + '"]')
       var content = viewport() && viewport().querySelector('[data-slot=navigation-menu-content]')
@@ -86,7 +86,7 @@ import "./shadless.mjs"
 
     function open(id, trig) {
       clearTimeout(exitTimer)
-      if (openId && openId !== id) close(true)
+      if (openId && openId !== id) close()
       var tpl = document.getElementById(id + "-content-tpl")
       if (!tpl) return
       var vp = ensureViewport()

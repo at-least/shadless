@@ -52,7 +52,8 @@ import "./shadless.mjs"
       mountLayer: function (id) {
         var tpl = document.getElementById(id + "-tpl");
         if (!tpl) return null;
-        var content = tpl.content.firstElementChild.cloneNode(true);
+        var content = shadless.h.cloneTemplate(tpl);
+        if (!content) return null; // empty template: the kernel treats a null layer as a no-op
         var wrapper = document.createElement("div");
         wrapper.setAttribute("data-radix-popper-content-wrapper", "");
         wrapper.appendChild(content);

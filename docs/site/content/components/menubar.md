@@ -846,7 +846,8 @@ A visually persistent menu common in desktop applications that provides quick ac
       mountLayer: function (id) {
         var tpl = document.getElementById(id + "-tpl");
         if (!tpl) return null;
-        var content = tpl.content.firstElementChild.cloneNode(true);
+        var content = shadless.h.cloneTemplate(tpl);
+        if (!content) return null; // empty template: the kernel treats a null layer as a no-op
         var wrapper = document.createElement("div");
         wrapper.setAttribute("data-radix-popper-content-wrapper", "");
         wrapper.appendChild(content);
@@ -1376,7 +1377,8 @@ Use `MenubarCheckboxItem` for toggleable options.
       mountLayer: function (id) {
         var tpl = document.getElementById(id + "-tpl");
         if (!tpl) return null;
-        var content = tpl.content.firstElementChild.cloneNode(true);
+        var content = shadless.h.cloneTemplate(tpl);
+        if (!content) return null; // empty template: the kernel treats a null layer as a no-op
         var wrapper = document.createElement("div");
         wrapper.setAttribute("data-radix-popper-content-wrapper", "");
         wrapper.appendChild(content);
@@ -1830,7 +1832,8 @@ Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
       mountLayer: function (id) {
         var tpl = document.getElementById(id + "-tpl");
         if (!tpl) return null;
-        var content = tpl.content.firstElementChild.cloneNode(true);
+        var content = shadless.h.cloneTemplate(tpl);
+        if (!content) return null; // empty template: the kernel treats a null layer as a no-op
         var wrapper = document.createElement("div");
         wrapper.setAttribute("data-radix-popper-content-wrapper", "");
         wrapper.appendChild(content);
@@ -2413,7 +2416,8 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
       mountLayer: function (id) {
         var tpl = document.getElementById(id + "-tpl");
         if (!tpl) return null;
-        var content = tpl.content.firstElementChild.cloneNode(true);
+        var content = shadless.h.cloneTemplate(tpl);
+        if (!content) return null; // empty template: the kernel treats a null layer as a no-op
         var wrapper = document.createElement("div");
         wrapper.setAttribute("data-radix-popper-content-wrapper", "");
         wrapper.appendChild(content);
@@ -2897,7 +2901,8 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
       mountLayer: function (id) {
         var tpl = document.getElementById(id + "-tpl");
         if (!tpl) return null;
-        var content = tpl.content.firstElementChild.cloneNode(true);
+        var content = shadless.h.cloneTemplate(tpl);
+        if (!content) return null; // empty template: the kernel treats a null layer as a no-op
         var wrapper = document.createElement("div");
         wrapper.setAttribute("data-radix-popper-content-wrapper", "");
         wrapper.appendChild(content);
@@ -3885,7 +3890,8 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       mountLayer: function (id) {
         var tpl = document.getElementById(id + "-tpl");
         if (!tpl) return null;
-        var content = tpl.content.firstElementChild.cloneNode(true);
+        var content = shadless.h.cloneTemplate(tpl);
+        if (!content) return null; // empty template: the kernel treats a null layer as a no-op
         var wrapper = document.createElement("div");
         wrapper.setAttribute("data-radix-popper-content-wrapper", "");
         wrapper.appendChild(content);
