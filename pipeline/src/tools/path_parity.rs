@@ -677,19 +677,19 @@ pub fn run_path_parity(root: &Path, record: bool, details: bool) -> i32 {
             Err(_) => continue,
         };
         let _ = p_a.set_content(&doc(&consumer_css, &slot_body.join("\n"), ""));
-        p_a.wait_for_timeout(50);
+        let _ = p_a.wait_for_timeout(50);
         let p_b = match shell.new_page(false) {
             Ok(p) => p,
             Err(_) => continue,
         };
         let _ = p_b.set_content(&doc(&full_css, &slot_body.join("\n"), ""));
-        p_b.wait_for_timeout(50);
+        let _ = p_b.wait_for_timeout(50);
         let p_o = match shell.new_page(false) {
             Ok(p) => p,
             Err(_) => continue,
         };
         let _ = p_o.set_content(&doc(&oracle_css, &inline_body.join("\n"), "style-nova"));
-        p_o.wait_for_timeout(50);
+        let _ = p_o.wait_for_timeout(50);
         let a = read_all(&p_a, &ids);
         let b = read_all(&p_b, &ids);
         let o = read_all(&p_o, &in_ids);

@@ -124,7 +124,7 @@ pub fn run_style_parity(root: &Path, strict: bool, record: bool) -> i32 {
       }"#,
                 serde_json::json!({"dark": v.1, "dir": v.2}),
             );
-            page.wait_for_timeout(60);
+            let _ = page.wait_for_timeout(60);
             let Ok(res) = page.evaluate_fn_arg(STYLE_PARITY_COLLECT, serde_json::json!(STYLE_PARITY_PROPS.to_vec())) else {
                 return out;
             };
@@ -146,7 +146,7 @@ pub fn run_style_parity(root: &Path, strict: bool, record: bool) -> i32 {
         let _ = page.evaluate(
             r#"(function(){ document.getAnimations?.().forEach((a) => a.finish()) })()"#,
         );
-        page.wait_for_timeout(120);
+        let _ = page.wait_for_timeout(120);
     };
 
     for name in &names {
@@ -196,10 +196,10 @@ pub fn run_style_parity(root: &Path, strict: bool, record: bool) -> i32 {
             // oracle side (styled by upstream's own oracle.css)
             let abs_o = dir.join("oracle.html");
             page.goto_url(&format!("file://{}", abs_o.to_string_lossy()))?;
-            page.wait_for_timeout(400);
+            let _ = page.wait_for_timeout(400);
             if !def.open.is_empty() {
                 page.driver(&def.open)?;
-                page.wait_for_timeout(400);
+                let _ = page.wait_for_timeout(400);
             }
             page.add_style_tag_path(&root.join("build/gates/oracle.css").to_string_lossy())?;
             let _ = page.evaluate(r#"document.documentElement.classList.add("style-nova")"#);
@@ -210,14 +210,14 @@ pub fn run_style_parity(root: &Path, strict: bool, record: bool) -> i32 {
             let abs_s = dir.join("shadless.html");
             page.goto_url(&format!("file://{}", abs_s.to_string_lossy()))?;
             page.add_style_tag_path(&root.join("dist/out.css").to_string_lossy())?;
-            page.wait_for_timeout(400);
+            let _ = page.wait_for_timeout(400);
             let mut open = def.open_shadless.clone();
             if open.is_empty() {
                 open = def.open.clone();
             }
             if !open.is_empty() {
                 page.driver(&open)?;
-                page.wait_for_timeout(400);
+                let _ = page.wait_for_timeout(400);
             }
             freeze();
             let shadless_sides = collect_matrix();

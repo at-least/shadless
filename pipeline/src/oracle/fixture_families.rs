@@ -42,7 +42,7 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
     match action {
         SelfTestAction::Dialog { comp } => {
             page.loc_click("", "#d1-trigger", 0, "left")?;
-            page.wait_for_timeout(1500);
+            let _ = page.wait_for_timeout(1500);
             let mine = format!("[data-slot=\"{}-content\"]", comp);
             wait_true(page, &format!("!!document.querySelector('{}')", mine))?;
             let _ = page.evaluate_fn(
@@ -53,7 +53,7 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
               else document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }))
             }"#,
             );
-            page.wait_for_timeout(500);
+            let _ = page.wait_for_timeout(500);
             let closed_v = page
                 .evaluate_fn_arg(r#"(sel) => !document.querySelector(sel)"#, json!(mine))
                 .unwrap_or(serde_json::Value::Null);
@@ -69,12 +69,12 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
                     return Err("no trigger box".to_string());
                 };
                 page.mouse_move(b.x + b.width / 2.0, b.y + b.height + 60.0, 1).map_err(|e| e.to_string())?;
-                page.wait_for_timeout(300);
+                let _ = page.wait_for_timeout(300);
                 page.mouse_move(b.x + b.width / 2.0, b.y + b.height / 2.0, 6).map_err(|e| e.to_string())?;
-                page.wait_for_timeout(1100);
+                let _ = page.wait_for_timeout(1100);
             } else {
                 page.loc_click("", &sel, 0, "left").map_err(|e| e.to_string())?;
-                page.wait_for_timeout(1500);
+                let _ = page.wait_for_timeout(1500);
             }
             wait_true(
                 page,
@@ -82,7 +82,7 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
             )?;
             page.key_press("Escape").map_err(|e| e.to_string())?;
             page.mouse_move(0.0, 0.0, 1).map_err(|e| e.to_string())?;
-            page.wait_for_timeout(700);
+            let _ = page.wait_for_timeout(700);
             wait_true(
                 page,
                 &format!("!document.querySelector(\"[data-slot='{}-content']\")", comp),
@@ -104,7 +104,7 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
             } else {
                 page.loc_click("", &sel, 0, "left").map_err(|e| e.to_string())?;
             }
-            page.wait_for_timeout(500);
+            let _ = page.wait_for_timeout(500);
             let content_sel = format!("[data-slot=\"{}-content\"]", comp);
             wait_true(
                 page,
@@ -117,7 +117,7 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
                 {
                     page.mouse_move(b.x + 4.0, b.y + b.height / 2.0, 3).map_err(|e| e.to_string())?;
                     page.mouse_move(b.x + b.width / 2.0, b.y + b.height / 2.0, 6).map_err(|e| e.to_string())?;
-                    page.wait_for_timeout(600);
+                    let _ = page.wait_for_timeout(600);
                     if std::env::var("EF_DEBUG").is_ok() {
                         let v = page.evaluate(&format!(
                             "(() => {{ const el = document.querySelector('[data-slot=\"{}-sub-content\"]'); const fp = document.elementFromPoint({}, {}); return JSON.stringify({{ subMounted: !!el, onTop: fp ? fp.tagName + '[' + (fp.getAttribute('data-slot') || fp.id || '') + ']' : 'none' }}) }})()",
@@ -135,11 +135,11 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
                     )
                     .map_err(|_| "sub menu did not open".to_string())?;
                     page.key_press("Escape").map_err(|e| e.to_string())?;
-                    page.wait_for_timeout(300);
+                    let _ = page.wait_for_timeout(300);
                 }
             }
             page.key_press("Escape").map_err(|e| e.to_string())?;
-            page.wait_for_timeout(500);
+            let _ = page.wait_for_timeout(500);
             wait_true(
                 page,
                 &format!("!document.querySelector('{}[data-state=open]')", content_sel),
@@ -173,10 +173,10 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
             }
             page.mouse_click(coords.0, coords.1)
                 .map_err(|e| e.to_string())?;
-            page.wait_for_timeout(500);
+            let _ = page.wait_for_timeout(500);
             wait_true(page, &format!("!!document.querySelector('{}')", content))?;
             page.key_press("Escape").map_err(|e| e.to_string())?;
-            page.wait_for_timeout(500);
+            let _ = page.wait_for_timeout(500);
             wait_true(
                 page,
                 &format!("!document.querySelector('{}[data-state=open]')", content),
@@ -196,7 +196,7 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
             }
             page.loc_click("", "[data-slot=tabs-trigger]", idx, "left")
                 .map_err(|e| e.to_string())?;
-            page.wait_for_timeout(300);
+            let _ = page.wait_for_timeout(300);
             let ok_v = page
                 .evaluate_fn_arg(
                     r#"(i) => {
@@ -228,7 +228,7 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
                     )
                     .unwrap_or(serde_json::Value::Null);
                 page.key_press("ArrowRight").map_err(|e| e.to_string())?;
-                page.wait_for_timeout(200);
+                let _ = page.wait_for_timeout(200);
                 let (after, _) = page
                     .loc_attr("", "[data-slot=slider-thumb]", "aria-valuenow")
                     .unwrap_or((String::new(), false));
@@ -257,7 +257,7 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
                     .unwrap_or(serde_json::Value::Null);
                 page.loc_click("", "[data-slot=carousel-next]:not([disabled])", 0, "left")
                     .map_err(|e| e.to_string())?;
-                page.wait_for_timeout(500);
+                let _ = page.wait_for_timeout(500);
                 let after_v = page
                     .evaluate_fn(
                         r#"() => [...document.querySelectorAll("[data-slot=carousel-previous]")].map((b) => b.disabled).join()"#,
@@ -399,7 +399,7 @@ fn portal(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
         let act = |page: &BPage| -> Result<(), String> {
             if ctx.fam.open == "hover" {
                 page.mouse_move(2.0, 2.0, 1).map_err(|e| e.to_string())?;
-                page.wait_for_timeout(400);
+                let _ = page.wait_for_timeout(400);
                 let Some(b) = page
                     .loc_box("", &format!("#root {}", trigger_sel), i as i64)
                     .map_err(|e| e.to_string())?
@@ -408,15 +408,15 @@ fn portal(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
                 };
                 page.mouse_move(b.x + b.width / 2.0, b.y + b.height + 60.0, 1)
                     .map_err(|e| e.to_string())?;
-                page.wait_for_timeout(300);
+                let _ = page.wait_for_timeout(300);
                 page.mouse_move(b.x + b.width / 2.0, b.y + b.height / 2.0, 6)
                     .map_err(|e| e.to_string())?;
-                page.wait_for_timeout(1100); // radix open delays
+                let _ = page.wait_for_timeout(1100); // radix open delays
                 return Ok(());
             }
             page.loc_click("", &format!("#root {}", trigger_sel), i as i64, "left")
                 .map_err(|e| e.to_string())?;
-            page.wait_for_timeout(500);
+            let _ = page.wait_for_timeout(500);
             Ok(())
         };
         act(ctx.page)?;
@@ -452,7 +452,7 @@ fn portal(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
         parts.push(ef_re_harvest_mark().replace_all(&portal_html, "").into_owned());
         ctx.page.key_press("Escape").map_err(|e| e.to_string())?;
         ctx.page.mouse_move(0.0, 0.0, 1).map_err(|e| e.to_string())?;
-        ctx.page.wait_for_timeout(700);
+        let _ = ctx.page.wait_for_timeout(700);
     }
     let ids: Vec<String> = (0..count).map(|i| format!("{}-trigger", prefix_of(i))).collect();
     let prefixes: Vec<String> = (0..count).map(prefix_of).collect();
@@ -567,7 +567,7 @@ fn menu_select(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
             // radix opens a sub menu on pointer movement over its trigger
             page.mouse_move(b.x + 4.0, b.y + b.height / 2.0, 3).map_err(|e| e.to_string())?;
             page.mouse_move(b.x + b.width / 2.0, b.y + b.height / 2.0, 6).map_err(|e| e.to_string())?;
-            page.wait_for_timeout(600);
+            let _ = page.wait_for_timeout(600);
             let sub_sel = format!("[data-slot=\"{}-sub-content\"]", comp);
             if !mounted_content(page, &sub_sel) {
                 let _ = page.evaluate_fn_arg(
@@ -575,7 +575,7 @@ fn menu_select(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
                     json!(st),
                 );
                 page.key_press("ArrowRight").map_err(|e| e.to_string())?;
-                page.wait_for_timeout(500);
+                let _ = page.wait_for_timeout(500);
             }
             harvest_layer(
                 page,
@@ -588,7 +588,7 @@ fn menu_select(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
             )?;
             // back to the parent layer: point away
             page.mouse_move(b.x + b.width / 2.0, b.y - 40.0, 4).map_err(|e| e.to_string())?;
-            page.wait_for_timeout(300);
+            let _ = page.wait_for_timeout(300);
         }
         Ok(())
     }
@@ -654,7 +654,7 @@ fn menu_select(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
                 .loc_click("", &format!("#root {}", trigger_sel), i as i64, "left")
                 .map_err(|e| e.to_string())?;
         }
-        ctx.page.wait_for_timeout(500);
+        let _ = ctx.page.wait_for_timeout(500);
         harvest_layer(
             ctx.page,
             &comp,
@@ -667,9 +667,9 @@ fn menu_select(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
         // close everything (Escape per open layer)
         for _ in 0..4 {
             ctx.page.key_press("Escape").map_err(|e| e.to_string())?;
-            ctx.page.wait_for_timeout(150);
+            let _ = ctx.page.wait_for_timeout(150);
         }
-        ctx.page.wait_for_timeout(400);
+        let _ = ctx.page.wait_for_timeout(400);
     }
     let ids: Vec<String> = (0..count).map(id_of).collect();
     ctx.page
@@ -749,7 +749,7 @@ fn nav(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
         ctx.page
             .loc_click("", &format!("#root {}", trigger_sel), i as i64, "left")
             .map_err(|e| e.to_string())?;
-        ctx.page.wait_for_timeout(500);
+        let _ = ctx.page.wait_for_timeout(500);
         let v = ctx
             .page
             .evaluate_fn_arg(
@@ -778,7 +778,7 @@ fn nav(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
         }
         parts.push(ef_re_harvest_mark().replace_all(&html, "").into_owned());
         ctx.page.key_press("Escape").map_err(|e| e.to_string())?;
-        ctx.page.wait_for_timeout(400);
+        let _ = ctx.page.wait_for_timeout(400);
     }
     ctx.page
         .evaluate_fn_arg(EF_NAV_IDS, json!(trigger_sel))
@@ -826,7 +826,7 @@ fn none(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
         if let Some(def) = ctx.def {
             if !def.open.is_empty() {
                 ctx.page.driver(&def.open).map_err(|e| e.to_string())?;
-                ctx.page.wait_for_timeout(500);
+                let _ = ctx.page.wait_for_timeout(500);
             }
         }
     }

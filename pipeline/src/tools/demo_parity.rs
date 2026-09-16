@@ -119,13 +119,13 @@ pub fn run_demo_parity(root: &Path, record: bool, details: bool) -> i32 {
             r#"(html) => { document.open(); document.write(html); document.close(); return true }"#,
             serde_json::json!(doc(&out_css, "")),
         );
-        page.wait_for_timeout(30);
+        let _ = page.wait_for_timeout(30);
         let ours = collect_once();
         let _ = page.evaluate_fn_arg(
             r#"(html) => { document.open(); document.write(html); document.close(); return true }"#,
             serde_json::json!(doc(&oracle_css, "style-nova")),
         );
-        page.wait_for_timeout(30);
+        let _ = page.wait_for_timeout(30);
         let theirs = collect_once();
         pages += 1;
         for (k, ref_) in &theirs {

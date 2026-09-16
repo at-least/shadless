@@ -107,7 +107,7 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
     }
     // let every lazy iframe settle first — recomputing the trigger box
     // mid-layout-shift made the real-mouse click land outside the trigger
-    page.wait_for_load_state("networkidle", 10000);
+    let _ = page.wait_for_load_state("networkidle", 10000);
 
     let dialog_frame = r#"iframe.demo[title="dialog-demo"]"#;
     let trigger_sel = r#"[data-slot="dialog-trigger"]"#;
@@ -117,8 +117,8 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
         let _ = server.wait();
         return 1;
     }
-    page.loc_scroll(dialog_frame, trigger_sel, 0);
-    page.wait_for_timeout(300);
+    let _ = page.loc_scroll(dialog_frame, trigger_sel, 0);
+    let _ = page.wait_for_timeout(300);
     let tbox = match page.loc_box(dialog_frame, trigger_sel, 0) {
         Ok(Some(b)) => b,
         Ok(None) => {
@@ -134,7 +134,7 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
             return 1;
         }
     };
-    page.mouse_click(tbox.x + tbox.width / 2.0, tbox.y + tbox.height / 2.0);
+    let _ = page.mouse_click(tbox.x + tbox.width / 2.0, tbox.y + tbox.height / 2.0);
 
     if page
         .loc_wait(
@@ -169,9 +169,9 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
     // focus stays inside the frame: real-mouse click on the content card
     // padding, then Escape
     if let Ok(Some(cbox)) = page.loc_box(dialog_frame, r#"[data-slot="dialog-content"]"#, 0) {
-        page.mouse_click(cbox.x + 12.0, cbox.y + 12.0);
+        let _ = page.mouse_click(cbox.x + 12.0, cbox.y + 12.0);
     }
-    page.key_press("Escape");
+    let _ = page.key_press("Escape");
 
     let _ = page.loc_wait(dialog_frame, r#"[data-slot="dialog-content"]"#, "detached", 3000);
     let live_portal_nodes = page
@@ -210,7 +210,7 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
     let _ = av_page.goto_url(&format!("{}/components/avatar/", base));
     let _ = av_page.loc_wait(av_frame, r#"[data-slot="avatar"]"#, "visible", 5000);
     if let Ok(Some(av_box)) = av_page.loc_box(av_frame, r#"[data-slot="avatar"]"#, 0) {
-        av_page.mouse_click(av_box.x + 2.0, av_box.y + 2.0);
+        let _ = av_page.mouse_click(av_box.x + 2.0, av_box.y + 2.0);
     }
     let mut settled: Vec<bool> = Vec::new();
     let mut all_settled = false;
@@ -229,7 +229,7 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
         if all_settled {
             break;
         }
-        av_page.wait_for_timeout(250);
+        let _ = av_page.wait_for_timeout(250);
     }
     let av_errors = av_page.events().unwrap_or_default();
     // Go %v on []bool: "[true true true true true]" — space-separated
@@ -290,10 +290,10 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
             let _ = p.goto_url(&format!("{}/{}/", base, trimmed));
             let n = p.loc_count("", "iframe.demo").unwrap_or(0);
             for i in 0..n {
-                p.loc_scroll("", "iframe.demo", i);
+                let _ = p.loc_scroll("", "iframe.demo", i);
                 iframes_loaded += 1;
             }
-            p.wait_for_load_state("networkidle", 2000);
+            let _ = p.wait_for_load_state("networkidle", 2000);
             let res = p.evaluate_fn(
                 r#"() => {
         const article = document.querySelector('.vp-doc')

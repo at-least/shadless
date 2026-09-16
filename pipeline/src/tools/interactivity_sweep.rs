@@ -148,7 +148,7 @@ pub fn run_interactivity_sweep(root: &Path) -> i32 {
             failures.push(format!("{}: {}", name, first_line(&e)));
             continue;
         }
-        page.wait_for_timeout(350);
+        let _ = page.wait_for_timeout(350);
         // evaluate candidates in one pass: usable flags via per-element fn
         let mut n_cand = 0usize;
         if let Ok(v) = page.evaluate(&format!(
@@ -233,9 +233,9 @@ pub fn run_interactivity_sweep(root: &Path) -> i32 {
             // hover families open after radix's delay (tooltip/hover-card
             // 700ms provider default) — wait past it
             if hover_families.contains(&fam.as_str()) || hover_el {
-                page.wait_for_timeout(1100);
+                let _ = page.wait_for_timeout(1100);
             } else {
-                page.wait_for_timeout(600);
+                let _ = page.wait_for_timeout(600);
             }
             let after_v = page.evaluate(SWEEP_FINGERPRINT).unwrap_or(serde_json::Value::Null);
             let after = after_v.as_str().unwrap_or("").to_string();

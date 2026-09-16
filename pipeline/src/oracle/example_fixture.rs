@@ -559,12 +559,12 @@ fn build_one_page(
                 abs_or_die(root, format!("{}/oracle.html", out.display()).as_str()).to_string_lossy()
             ))
             .map_err(|e| e.to_string())?;
-        page.wait_for_timeout(600);
+        let _ = page.wait_for_timeout(600);
         // controlled-open trees mount their content at first render — close
         let _ = page.evaluate_fn(
             r##"() => { if (typeof window.__setOpen === "function" && window.__open) window.__setOpen(false) }"##,
         );
-        page.wait_for_timeout(400);
+        let _ = page.wait_for_timeout(400);
     } else {
         let html_file = build_oracle(root, name, Path::new(EF_TMP))?;
         super::oracle_lib::await_oracle(page, &html_file)?;
@@ -597,7 +597,7 @@ fn build_one_page(
                 let before = before_v.as_i64().unwrap_or(0);
                 page.loc_click("", "[data-slot$=\"-trigger\"]", 0, "left")
                     .map_err(|e| e.to_string())?;
-                page.wait_for_timeout(600);
+                let _ = page.wait_for_timeout(600);
                 let portal_html = harvest_added(page, before)?;
                 if portal_html.is_empty() {
                     return Err("no mounted overlay/content after trigger click".to_string());
@@ -708,10 +708,10 @@ fn build_one_page(
         abs_or_die(root, scratch_path.to_string_lossy().as_ref()).to_string_lossy()
     ))
     .map_err(|e| e.to_string())?;
-    page.wait_for_timeout(400);
+    let _ = page.wait_for_timeout(400);
     if std::env::var("EF_DEBUG").is_ok() && name == "navigation-menu-demo" {
         for ms in [0usize, 500, 1500, 3000] {
-            page.wait_for_timeout((ms / 3) as i64);
+            let _ = page.wait_for_timeout((ms / 3) as i64);
             let v = page.evaluate("JSON.stringify({ t: Math.round(performance.now()), n0: !!document.getElementById('n0-trigger'), n1: !!document.getElementById('n1-trigger'), trigs: document.querySelectorAll('[data-slot=navigation-menu-trigger]').length })").unwrap_or(serde_json::Value::Null);
             eprintln!("[dbg] {} t~{}ms: {}", name, ms, v);
         }
