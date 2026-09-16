@@ -155,8 +155,30 @@ var RadixKernel = (() => {
     }
     return false;
   }
+  var claimedEscapes = /* @__PURE__ */ new WeakSet();
+  function claimEscapeEvent(event) {
+    if (claimedEscapes.has(event)) return false;
+    claimedEscapes.add(event);
+    return true;
+  }
+  var escapelessClaimSeq = 0;
+  var escapelessClaimSeen = 0;
+  var boundaryScheduled = false;
+  function noteEscapeClaim() {
+    escapelessClaimSeq++;
+    if (boundaryScheduled) return;
+    boundaryScheduled = true;
+    setTimeout(() => {
+      escapelessClaimSeen = escapelessClaimSeq;
+      boundaryScheduled = false;
+    }, 0);
+  }
+  function escapeClaimedThisTask() {
+    return escapelessClaimSeq !== escapelessClaimSeen;
+  }
 
   // src/core/dialog.ts
+  var pendingExits = /* @__PURE__ */ new WeakMap();
   function wireDialog(options) {
     const {
       content,
@@ -174,6 +196,7 @@ var RadixKernel = (() => {
     } = options;
     const body = content.ownerDocument.body;
     const doc = content.ownerDocument;
+    pendingExits.get(portal)?.();
     const lockScroll = () => {
       if (scrollLock === "overflow") {
         body.style.overflow = "hidden";
@@ -211,7 +234,7 @@ var RadixKernel = (() => {
     if (trigger) {
       trigger.setAttribute("data-state", "open");
       trigger.setAttribute("aria-expanded", "true");
-      trigger.setAttribute("aria-controls", content.id);
+      if (content.id) trigger.setAttribute("aria-controls", content.id);
     }
     if (contentStateFlip) {
       setStateAttr(portal, "open");
@@ -223,6 +246,8 @@ var RadixKernel = (() => {
     const onKeyDown = (event) => {
       if (event.key === "Escape") {
         if (!isHighestDismissLayer(layer)) return;
+        if (!claimEscapeEvent(event)) return;
+        if (escapeClaimedThisTask()) return;
         if (preventDefaultOnKeys) event.preventDefault();
         close(true);
         return;
@@ -283,13 +308,17 @@ var RadixKernel = (() => {
         trigger.setAttribute("aria-expanded", "false");
         trigger.removeAttribute("aria-controls");
       }
-      const finish = () => {
-        portal.remove();
+      const restoreAfterClose = () => {
         if (hide3 !== null) hiding.restoreBackground(hide3);
         for (const el of hiddenOutside) {
           el.removeAttribute("aria-hidden");
           el.removeAttribute("data-aria-hidden");
         }
+      };
+      const finish = () => {
+        portal.remove();
+        pendingExits.delete(portal);
+        restoreAfterClose();
         if (restoreFocus && trigger) {
           if (closeFocus === "parametrized") {
             setTimeout(() => trigger.focus(), 0);
@@ -300,7 +329,7 @@ var RadixKernel = (() => {
       };
       onClosed?.();
       if (unmount === "exit-window") {
-        presenceExit(
+        const contentExit = presenceExit(
           content,
           contentExitDuration,
           () => {
@@ -308,7 +337,14 @@ var RadixKernel = (() => {
           },
           true
         );
-        presenceExit(portal, exitDuration, finish);
+        const portalExit = presenceExit(portal, exitDuration, finish);
+        pendingExits.set(portal, () => {
+          contentExit.cancel();
+          portalExit.cancel();
+          pendingExits.delete(portal);
+          if (!content.isConnected) portal.appendChild(content);
+          restoreAfterClose();
+        });
       } else {
         finish();
       }
@@ -1934,7 +1970,7 @@ var RadixKernel = (() => {
   }
   var OPPOSITE_SIDE = { top: "bottom", right: "left", bottom: "top", left: "right" };
   function roundByDPR(element, value) {
-    const dpr = Math.max(1, window.devicePixelRatio || 1);
+    const dpr = Math.max(1, element.ownerDocument.defaultView?.devicePixelRatio || 1);
     return Math.round(value * dpr) / dpr;
   }
   function transformOriginMiddleware(options) {
@@ -2022,7 +2058,7 @@ var RadixKernel = (() => {
         ],
         ["visibility", arrowData?.centerOffset !== void 0 && arrowData.centerOffset !== 0 ? "hidden" : void 0]
       ];
-      return entries.filter(([k, v]) => v !== void 0 || k === "left" || k === "top" || k === "visibility");
+      return entries.filter(([, v]) => v !== void 0);
     };
     const applyArrowStyles = (placedSide, arrowData) => {
       if (!arrow3) return;
@@ -2123,6 +2159,7 @@ var RadixKernel = (() => {
   }
 
   // src/features/popover.ts
+  var pendingExits2 = /* @__PURE__ */ new WeakMap();
   function wirePopover(options) {
     const { content, trigger, onClosed } = options;
     const anchor = options.anchor ?? trigger;
@@ -2134,6 +2171,7 @@ var RadixKernel = (() => {
       return w;
     })();
     if (!wrapper.contains(content)) wrapper.appendChild(content);
+    pendingExits2.get(content)?.(wrapper);
     const externalGuards = options.guards;
     const guardStart = externalGuards?.start ?? makeGuard2(doc);
     const guardEnd = externalGuards?.end ?? makeGuard2(doc);
@@ -2171,6 +2209,8 @@ var RadixKernel = (() => {
       if (event.key === "Escape") {
         if (options.escapeClose === false) return;
         if (!isHighestDismissLayer(layer)) return;
+        if (!claimEscapeEvent(event)) return;
+        if (escapeClaimedThisTask()) return;
         if (options.escapePreventDefault) event.preventDefault();
         close();
         return;
@@ -2208,15 +2248,25 @@ var RadixKernel = (() => {
       }
       anchor?.removeAttribute("data-radix-popper-side");
       anchor?.removeAttribute("data-radix-popper-align");
-      const removeDom = () => {
-        wrapper.remove();
+      const removeOwnGuards = () => {
         if (!externalGuards) {
           guardStart.remove();
           guardEnd.remove();
         }
       };
+      const removeDom = () => {
+        wrapper.remove();
+        removeOwnGuards();
+        pendingExits2.delete(content);
+      };
       if (options.unmount === "exit-window") {
-        presenceExit(content, options.exitDuration ?? 100, removeDom);
+        const exit = presenceExit(content, options.exitDuration ?? 100, removeDom);
+        pendingExits2.set(content, (newWrapper) => {
+          exit.cancel();
+          pendingExits2.delete(content);
+          removeOwnGuards();
+          if (newWrapper !== wrapper) wrapper.remove();
+        });
       } else {
         removeDom();
       }
@@ -2361,7 +2411,12 @@ var RadixKernel = (() => {
         close();
       };
       const onKeyDown = (event) => {
-        if (event.key === "Escape") close();
+        if (event.key === "Escape") {
+          if (!isHighestDismissLayer(layer)) return;
+          if (!claimEscapeEvent(event)) return;
+          if (escapeClaimedThisTask()) return;
+          close();
+        }
       };
       const onScroll = (event) => {
         const target = event.target;
@@ -2375,13 +2430,16 @@ var RadixKernel = (() => {
         { capture: true }
       );
       listeners.push([doc, "pointerdown", onPointerDown], [doc, "keydown", onKeyDown], [view, "scroll", onScroll]);
+      const layer = registerDismissLayer([wrapper], () => close());
       mounted = {
         wrapper,
         popper,
+        layer,
         cleanup: () => {
           for (const [target, type, fn] of listeners) target.removeEventListener(type, fn);
           if (trackGrace) doc.removeEventListener("pointermove", trackGrace);
           removeGrace();
+          unregisterDismissLayer(layer);
         }
       };
       openTooltips.add(instance);
@@ -2589,12 +2647,10 @@ var RadixKernel = (() => {
   var clamp2 = (value, [min2, max2]) => Math.min(Math.max(value, min2), max2);
   var px = (n) => `${n}px`;
   function positionItemAligned(el) {
-    const { trigger, content, viewport, wrapper, selectedItem, doc } = el;
+    const { trigger, content, viewport, wrapper, selectedItem, valueNode, doc } = el;
+    const itemText = el.itemText ?? selectedItem;
     const view = doc.defaultView;
-    if (!view || !selectedItem) return;
-    const valueNode = trigger.querySelector(".rt-SelectTriggerInner > span");
-    const itemText = selectedItem.querySelector("span[id]") ?? selectedItem;
-    if (!valueNode || !itemText) return;
+    if (!view || !selectedItem || !valueNode || !itemText) return;
     const triggerRect = trigger.getBoundingClientRect();
     const contentRect = content.getBoundingClientRect();
     const valueNodeRect = valueNode.getBoundingClientRect();
@@ -2729,7 +2785,9 @@ var RadixKernel = (() => {
       content.setAttribute("data-state", "open");
       const sel = selected();
       setHighlighted(sel);
-      positionFn({ trigger, content, viewport, wrapper, selectedItem: sel, doc });
+      const valueNode = options.valueNode ?? trigger.querySelector(".rt-SelectTriggerInner > span") ?? void 0;
+      const itemText = sel?.querySelector("span[id]") ?? sel ?? void 0;
+      positionFn({ trigger, content, viewport, wrapper, selectedItem: sel, valueNode, itemText, doc });
       sel?.scrollIntoView?.({ block: "nearest" });
       const optionEls = Array.from(viewport.querySelectorAll('[role="option"]'));
       if (sel === optionEls[0]) viewport.scrollTop = 0;
@@ -2762,6 +2820,9 @@ var RadixKernel = (() => {
             return;
           case "Escape":
             event.preventDefault();
+            if (!isHighestDismissLayer(layer)) return;
+            if (!claimEscapeEvent(event)) return;
+            if (escapeClaimedThisTask()) return;
             handles.close(true);
             return;
           case "Tab":
@@ -2787,19 +2848,22 @@ var RadixKernel = (() => {
         }
       };
       const onPointerDown = (event) => {
+        if (!isHighestDismissLayer(layer)) return;
         const target = event.target;
-        if (target instanceof Node && (content.contains(target) || trigger.contains(target))) return;
+        if (isNode5(target) && (content.contains(target) || trigger.contains(target))) return;
         handles.close(false);
       };
       doc.addEventListener("keydown", onKeyDown);
       doc.addEventListener("pointerdown", onPointerDown);
-      mounted = { wrapper, guards: [guardStart, guardEnd], hidden, onKeyDown, onPointerDown };
+      const layer = registerDismissLayer([wrapper], () => handles.close(false));
+      mounted = { wrapper, guards: [guardStart, guardEnd], hidden, layer, onKeyDown, onPointerDown };
     };
     const closeSelect = (restoreFocus = true) => {
       if (!open) return;
       open = false;
       w.clearTimeout(typeaheadTimer);
       typeahead = "";
+      if (mounted) unregisterDismissLayer(mounted.layer);
       doc.removeEventListener("keydown", mounted?.onKeyDown);
       doc.removeEventListener("pointerdown", mounted?.onPointerDown);
       for (const el of mounted?.hidden ?? []) {
@@ -2842,6 +2906,9 @@ var RadixKernel = (() => {
     };
     return handles;
   }
+  function isNode5(v) {
+    return typeof v?.nodeType === "number";
+  }
 
   // src/features/tabs.ts
   function adoptBody(panel) {
@@ -2863,7 +2930,6 @@ var RadixKernel = (() => {
   }
   function wireTabs(options) {
     const { list, triggers, panels } = options;
-    const doc = list.ownerDocument;
     let current = options.initial;
     const activate = (index, interactive = false) => {
       const clamped = Math.max(0, Math.min(index, triggers.length - 1));
@@ -2919,7 +2985,6 @@ var RadixKernel = (() => {
       });
     });
     activate(current);
-    doc;
     return { activate, active: () => current };
   }
 
@@ -2985,8 +3050,8 @@ var RadixKernel = (() => {
         handleClose();
       };
       const onContentPointerDown = (event) => {
-        const current = event.currentTarget;
-        if (current instanceof Element && current.contains(event.target)) {
+        const target = event.target;
+        if (isNode6(target) && content.contains(target)) {
           hasSelection = false;
           isPointerDownOnContent = true;
         }
@@ -3052,6 +3117,9 @@ var RadixKernel = (() => {
       dismiss: closeHoverCard,
       openNow: openHoverCard
     };
+  }
+  function isNode6(v) {
+    return typeof v?.nodeType === "number";
   }
 
   // src/features/slider.ts
@@ -3619,7 +3687,6 @@ var RadixKernel = (() => {
       contextTrigger: options.protocol?.contextTrigger ?? "data-radixuigo-context-trigger"
     };
     const collisionPadding = options.collisionPadding ?? 10;
-    let documentRef = null;
     const layers2 = [];
     const exiting = [];
     let guards = null;
@@ -3752,13 +3819,13 @@ var RadixKernel = (() => {
         rec2.popper = makePopper(rec2.layer, trigger, positioning);
         setState(rec2.layer.content, "open");
         setTriggerOpen(trigger, rec2.layer.content, positioning.side);
+        rec2.dismissLayer = registerDismissLayer([rec2.layer.wrapper, trigger], () => closeAll());
         layers2.push(rec2);
         focusLayerIn(rec2.layer, positioning);
         return;
       }
       const layer = options.mountLayer(id);
       if (!layer) return;
-      documentRef = layer.wrapper.ownerDocument;
       const rec = {
         layer,
         sub: layers2.length > 0,
@@ -3772,6 +3839,7 @@ var RadixKernel = (() => {
         guardsAdd(layer.wrapper.ownerDocument.body);
         rec.hidden = hiding.hideBackground(layer.wrapper);
       }
+      rec.dismissLayer = registerDismissLayer([layer.wrapper, layer.trigger], () => closeAll());
       layers2.push(rec);
       focusLayerIn(layer, positioning);
     };
@@ -3779,6 +3847,10 @@ var RadixKernel = (() => {
       const idx = layers2.indexOf(rec);
       if (idx === -1) return;
       layers2.splice(idx, 1);
+      if (rec.dismissLayer) {
+        unregisterDismissLayer(rec.dismissLayer);
+        rec.dismissLayer = void 0;
+      }
       rec.popper?.destroy();
       rec.popper = null;
       setState(rec.layer.content, "closed");
@@ -3866,11 +3938,15 @@ var RadixKernel = (() => {
           closeAll(true);
         }
       },
-      onKeydown(target, key, preventDefault) {
+      onKeydown(target, key, preventDefault, event) {
         if (layers2.length) {
           const top = activeLayer();
           if (key === "Escape") {
             preventDefault();
+            const topDismiss = top.dismissLayer;
+            if (!topDismiss || !isHighestDismissLayer(topDismiss)) return;
+            if (event ? !claimEscapeEvent(event) : escapeClaimedThisTask()) return;
+            if (!event) noteEscapeClaim();
             closeAll();
             return;
           }
@@ -3949,14 +4025,17 @@ var RadixKernel = (() => {
           rec.popper?.destroy();
           rec.layer.wrapper.remove();
           setTriggerClosed(rec.layer.trigger);
+          if (rec.dismissLayer) unregisterDismissLayer(rec.dismissLayer);
+          if (rec.hidden) hiding.restoreBackground(rec.hidden);
         }
         for (const rec of exiting.splice(0)) {
           rec.exit?.cancel();
           rec.exit = null;
           rec.layer.wrapper.remove();
+          if (rec.dismissLayer) unregisterDismissLayer(rec.dismissLayer);
+          if (rec.hidden) hiding.restoreBackground(rec.hidden);
         }
         layers2.length = 0;
-        hiding.reset();
         guardsRemove();
       }
     };
