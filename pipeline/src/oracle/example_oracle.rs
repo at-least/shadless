@@ -214,7 +214,8 @@ fn run_with_shell(
     no_oracle: &HashSet<String>,
 ) -> Result<(), String> {
     shell.launch().map_err(|e| format!("example-oracle: {}", e))?;
-    let page = shell.new_page(false).ok();
+    let page =
+        shell.new_page(false).map_err(|e| format!("example-oracle: new page: {}", e))?;
 
     let (targets, skipped) = ora_load_targets();
     if !skipped.is_empty() {
@@ -246,17 +247,13 @@ fn run_with_shell(
                     continue;
                 }
             };
-            let Some(page) = &page else {
-                drift += 1;
-                continue;
-            };
-            if let Err(e) = await_oracle(page, &html_file) {
+            if let Err(e) = await_oracle(&page, &html_file) {
                 eprintln!("DRIFT [{}]: oracle render failed ({})", t.name, first_line(&e));
                 drift += 1;
                 let _ = std::fs::remove_file(&html_file);
                 continue;
             }
-            let dom = match oracle_root_html(page) {
+            let dom = match oracle_root_html(&page) {
                 Ok(d) => d,
                 Err(e) => {
                     eprintln!("DRIFT [{}]: {}", t.name, e);
@@ -350,10 +347,7 @@ fn run_with_shell(
                 continue;
             }
         };
-        let Some(page) = &page else {
-            continue;
-        };
-        if let Err(e) = await_oracle(page, &html_file) {
+        if let Err(e) = await_oracle(&page, &html_file) {
             let _ = std::fs::remove_file(&html_file);
             if no_oracle.contains(&t.name) {
                 exempt.push(t.name.clone());
@@ -362,7 +356,7 @@ fn run_with_shell(
             failures.push(format!("{}: oracle render failed ({})", t.name, first_line(&e)));
             continue;
         }
-        let mut dom = match oracle_root_html(page) {
+        let mut dom = match oracle_root_html(&page) {
             Ok(d) => d,
             Err(e) => {
                 let _ = std::fs::remove_file(&html_file);

@@ -82,6 +82,19 @@ fn run_inner(args: &[String]) -> Result<i32, String> {
     result
 }
 
+/// Loads one golden snapshot file into its previews map. A damaged file is
+/// corpus damage, not a per-example diff: the caller fails the gate rather
+/// than silently comparing less.
+fn load_snapshot(dir: &str, pf: &str) -> Result<serde_json::Map<String, serde_json::Value>, String> {
+    let b = std::fs::read_to_string(Path::new(dir).join(pf))
+        .map_err(|e| format!("{}: {}", pf, e))?;
+    let snap: serde_json::Value = serde_json::from_str(&b).map_err(|e| format!("{}: {}", pf, e))?;
+    snap.get("previews")
+        .and_then(|p| p.as_object())
+        .cloned()
+        .ok_or_else(|| format!("{}: no previews object", pf))
+}
+
 fn run_inner_shell(
     shell: &BrowserShell,
     _args: &[String],
@@ -166,6 +179,7 @@ fn run_inner_shell(
     let mut pass = 0;
     let mut fail = 0;
     let mut exempt = 0;
+    let mut corrupt = 0usize;
     let mut stale_exemptions: Vec<String> = Vec::new();
     let mut buckets: BTreeMap<String, Vec<String>> = BTreeMap::new();
     struct FailureRec {
@@ -194,22 +208,24 @@ fn run_inner_shell(
     }
     pages.sort();
     for pf in &pages {
-        let snap_b = match std::fs::read_to_string(Path::new(snapshot_dir).join(pf)) {
-            Ok(b) => b,
-            Err(_) => continue,
+        let previews = match load_snapshot(snapshot_dir, pf) {
+            Ok(p) => p,
+            Err(e) => {
+                eprintln!(
+                    "FAIL example-golden: unreadable snapshot ({}); the golden corpus is damaged — failing instead of shrinking coverage",
+                    e
+                );
+                corrupt += 1;
+                continue;
+            }
         };
-        let snap: serde_json::Value = match serde_json::from_str(&snap_b) {
-            Ok(v) => v,
-            Err(_) => continue,
-        };
-        // insertion order for stable output: preserve_order Map keys
-        let empty = serde_json::Map::new();
-        let previews = snap
-            .get("previews")
-            .and_then(|p| p.as_object())
-            .unwrap_or(&empty);
-        for (name, preview) in previews {
+        for (name, preview) in &previews {
             let Some(upstream_html) = preview.as_str() else {
+                eprintln!(
+                    "FAIL example-golden: snapshot {} preview {} is not a string — the golden corpus is damaged",
+                    pf, name
+                );
+                corrupt += 1;
                 continue;
             };
             let ex = exemptions.examples.get(name).cloned().unwrap_or_default();
@@ -282,6 +298,13 @@ fn run_inner_shell(
         }
     }
     let mut exit = 0;
+    if corrupt > 0 {
+        eprintln!(
+            "FAIL  example-golden: {} snapshot file(s) unreadable — the golden gate compared less than the corpus promises",
+            corrupt
+        );
+        exit = 1;
+    }
     if !stale_exemptions.is_empty() {
         eprintln!(
             "FAIL  example-golden: stale exemptions (rendered fine, remove them): {}",
@@ -345,4 +368,33 @@ fn run_inner_shell(
         );
     }
     Ok(exit)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs;
+
+    #[test]
+    fn load_snapshot_rejects_a_damaged_corpus_file() {
+        // A truncated/invalid snapshot used to be skipped with a bare
+        // `continue` — the gate compared less and still printed PASS. The
+        // loader must surface the damage so the gate can fail loudly.
+        let t = std::env::temp_dir().join(format!("shadless-golden-{}", std::process::id()));
+        fs::create_dir_all(&t).unwrap();
+        fs::write(t.join("ok.json"), r#"{"previews": {"a": "<div></div>"}}"#).unwrap();
+        fs::write(t.join("truncated.json"), r#"{"previews": {"a""#).unwrap();
+        fs::write(t.join("wrongshape.json"), r#"{"pages": []}"#).unwrap();
+
+        let ok = load_snapshot(t.to_str().unwrap(), "ok.json").unwrap();
+        assert_eq!(ok.get("a").and_then(|v| v.as_str()), Some("<div></div>"));
+
+        let err = load_snapshot(t.to_str().unwrap(), "truncated.json").unwrap_err();
+        assert!(err.contains("truncated.json"), "{}", err);
+        let err = load_snapshot(t.to_str().unwrap(), "wrongshape.json").unwrap_err();
+        assert!(err.contains("no previews object"), "{}", err);
+        let err = load_snapshot(t.to_str().unwrap(), "missing.json").unwrap_err();
+        assert!(err.contains("missing.json"), "{}", err);
+        let _ = fs::remove_dir_all(&t);
+    }
 }

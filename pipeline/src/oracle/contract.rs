@@ -761,8 +761,22 @@ fn run_contract_inner(name: &str) -> Result<(), ContractError> {
         let mut o = c_oracle_run(&shell, &def, &out, step).map_err(ContractError::Msg)?;
         let (mut c, errs) =
             c_shadless_run(&shell, &def, &out, step, &recorder).map_err(ContractError::Msg)?;
-        for e in &errs {
-            println!("  [shadless pageerror] {}", e);
+        // example-fixture pins itself to uncaught page errors; the contract
+        // gate only printed them — and the runner hides a passing node's
+        // output, so the one diagnostic proving the shipped page is broken
+        // was invisible exactly when it mattered. A pageerror is a failure,
+        // same contract as example-fixture.
+        if !errs.is_empty() {
+            let mut msg = format!(
+                "shadless page threw {} uncaught error(s)",
+                errs.len()
+            );
+            if let Some(first) = errs.first() {
+                let line = first.lines().next().unwrap_or("");
+                msg.push_str(": ");
+                msg.push_str(line);
+            }
+            return Err(ContractError::Msg(msg));
         }
         if step.is_empty() {
             oracle_open_raw = o.fact_raw.clone();

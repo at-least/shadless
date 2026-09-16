@@ -13,6 +13,7 @@ use super::oracle_lib::build_oracle;
 use regex::Regex;
 use serde::Deserialize;
 use serde_json::json;
+use sha2::{Digest, Sha256};
 use std::collections::{HashMap, HashSet};
 use std::path::{Path, PathBuf};
 use std::sync::OnceLock;
@@ -813,8 +814,9 @@ pub fn build_contract_oracle(
         std::fs::create_dir_all(d).map_err(|e| e.to_string())?;
     }
     let base_name = out.file_name().map(|s| s.to_string_lossy().into_owned()).unwrap_or_default();
-    let entry_file = cache.join(format!(".contract-entry-{}.mjs", base_name));
-    let bundle = cache.join(format!("contract-{}.js", base_name));
+    let (entry_name, bundle_name) = contract_cache_names(&base_name, recorder);
+    let entry_file = cache.join(entry_name);
+    let bundle = cache.join(bundle_name);
     std::fs::write(&entry_file, &entry).map_err(|e| e.to_string())?;
     let aliases = super::oracle_lib::oracle_aliases()?;
     let mut argv: Vec<String> = vec![
@@ -854,7 +856,61 @@ pub fn build_contract_oracle(
     std::fs::write(out.join("oracle.html"), html).map_err(|e| e.to_string())
 }
 
+/// The oracle-cache filenames for one contract-oracle build, discriminated by
+/// the recorder the entry embeds: the `contracts:<name>` shards embed the
+/// contract def's recorder while `contract-fixture` embeds none, the graph
+/// orders neither node against the other, and both used to write the SAME
+/// entry/bundle paths — under -j a shard could bundle from the recorder-less
+/// entry or load a torn bundle mid-overwrite.
+pub fn contract_cache_names(base_name: &str, recorder: &str) -> (String, String) {
+    if recorder.is_empty() {
+        return (
+            format!(".contract-entry-{}.mjs", base_name),
+            format!("contract-{}.js", base_name),
+        );
+    }
+    let mut h = Sha256::new();
+    h.update(recorder.as_bytes());
+    let tag = hex::encode(&h.finalize()[..4]);
+    (
+        format!(".contract-entry-{}-{}.mjs", base_name, tag),
+        format!("contract-{}-{}.js", base_name, tag),
+    )
+}
+
 /// `foo-trigger` → `foo` (efReWordTrigger's Go use).
 pub fn word_trigger_prefix(id: &str) -> Option<String> {
     re_word_trigger().captures(id).map(|m| m[1].to_string())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn contract_cache_names_discriminate_by_recorder() {
+        // The `contracts:<name>` shards embed the contract def's recorder;
+        // the contract-fixture node embeds none. Same base_name, different
+        // recorder ⇒ different cache files — otherwise the two node
+        // families write the same entry/bundle non-atomically with no graph
+        // ordering, and a shard under -j can bundle from the recorder-less
+        // entry or load a torn bundle mid-overwrite.
+        let (e0, b0) = contract_cache_names("accordion", "");
+        assert_eq!(e0, ".contract-entry-accordion.mjs");
+        assert_eq!(b0, "contract-accordion.js");
+        let (e1, b1) = contract_cache_names("accordion", "window.__facts = () => {}");
+        let (e2, b2) = contract_cache_names("accordion", "window.__other = () => {}");
+        assert_ne!(
+            (e1.as_str(), b1.as_str()),
+            (e0.as_str(), b0.as_str()),
+            "a recorded entry must not share cache files with the recorder-less fixture build"
+        );
+        assert_ne!(
+            (e1.as_str(), b1.as_str()),
+            (e2.as_str(), b2.as_str()),
+            "different recorders must not share cache files either"
+        );
+        assert_eq!(contract_cache_names("accordion", "window.__facts = () => {}"), (e1, b1),
+            "names are deterministic so a rebuild hits the same files");
+    }
 }
