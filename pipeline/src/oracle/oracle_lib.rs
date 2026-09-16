@@ -163,6 +163,14 @@ pub fn oracle_aliases() -> Result<HashMap<String, String>, String> {
 /// overrides either way. The gate lives inside the oracle group on purpose —
 /// a cargo feature folds into the hull fingerprint and would stale the whole
 /// graph on every toggle.
+///
+/// KNOWN BROKEN ON THE OXC PATH (2026-09-17, pre-dating the engine fixes on
+/// main — reproduced identically at bd022bf): the rolldown oracle bundle
+/// carries two React copies, every hook-using example dies with "Invalid
+/// hook call" and 332/343 example-oracle renders fail with "empty #root
+/// after render". Until that is fixed, run the oracle nodes with
+/// `SHADLESS_ORACLE_BUNDLER=esbuild`; a default-env `pipeline run
+/// example-oracle` is expected to be red with exactly those failures.
 fn oracle_bundler_use_oxc() -> Result<bool, String> {
     match std::env::var("SHADLESS_ORACLE_BUNDLER").as_deref() {
         Ok("oxc") => {
