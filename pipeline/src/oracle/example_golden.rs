@@ -7,7 +7,7 @@ use super::browser_shell::BrowserShell;
 use super::oracle_lib::{await_oracle, build_oracle, canon_of, oracle_root_html};
 use regex::Regex;
 use serde::Deserialize;
-use std::collections::{BTreeMap, HashMap, HashSet};
+use std::collections::{BTreeMap, HashMap};
 use std::path::Path;
 use std::sync::OnceLock;
 

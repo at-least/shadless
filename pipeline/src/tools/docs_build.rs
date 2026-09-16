@@ -12,20 +12,22 @@ use std::path::Path;
 use std::sync::OnceLock;
 
 use super::docs_transforms::{
-    api_reference_mdx, apply_jsx_overrides, apply_text_adjustments, attr_of, cva_axis_rows,
+    api_reference_mdx, apply_jsx_overrides, apply_text_adjustments, cva_axis_rows,
     drop_react_import_fences, extract_demo_scripts, fence_shadow, fm_string, grey_components,
     guides, locate_api_reference_span, locate_changelog_span, locate_code_tabs_spans,
     locate_composition_span, locate_install_section, locate_message_scroller_js_span,
     locate_rtl_framework_span, locate_rtl_migrate_span, locate_usage_span, message_scroller_js_note,
     parse_frontmatter, protocol_mdx, read_demo_scripts, replace_span, resolve_docs_route,
     rewrite_inline_jsx_mentions, rewrite_leaked_jsx_fences, rewrite_utility_jsx_fences,
-    rtl_framework_note, scan_guide_previews, strip_fences, strip_imports, strip_imports_from_mixed_fences,
+    rtl_framework_note, scan_guide_previews, strip_imports, strip_imports_from_mixed_fences,
     trivial_mdx, Guide,
 };
 use crate::jsonorder::{json_string, Json, JsonObj};
 
 const DOCS_RADIX_DIR: &str = "generated/docs-upstream/components/radix";
+#[allow(dead_code)] // ported path constants; kept for parity with the Go docs build
 const DOCS_ROOT: &str = "docs";
+#[allow(dead_code)]
 const SITE_ROOT: &str = "docs/site";
 const CONTENT_ROOT: &str = "docs/site/content";
 const STATIC_ROOT: &str = "docs/site/static";
@@ -989,6 +991,7 @@ fn set_mirror_set_cache(v: Vec<String>) {
 // ---- the build --------------------------------------------------------------------
 
 #[derive(Deserialize, Default)]
+#[allow(dead_code)] // parsed shape of rtl-langs.json; only part is consumed today
 struct RtlLangsFile(HashMap<String, Vec<String>>);
 
 pub fn run_docs_build(root: &Path) -> i32 {
@@ -1248,7 +1251,7 @@ pub fn run_docs_build(root: &Path) -> i32 {
                 name,
                 source,
                 *weight,
-                |ctx, root, raw| guide_transform(root, g, raw),
+                |_ctx, root, raw| guide_transform(root, g, raw),
                 *skip_jsx_check,
             )
         } else {

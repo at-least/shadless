@@ -81,7 +81,7 @@ pub fn run_docs_consistency(root: &Path) -> i32 {
     }
 
     let mut problems: Vec<Problem> = Vec::new();
-    let mut add_problem = |kind: &str, file: &str, detail: String, problems: &mut Vec<Problem>| {
+    let add_problem = |kind: &str, file: &str, detail: String, problems: &mut Vec<Problem>| {
         problems.push(Problem {
             kind: kind.to_string(),
             file: file.to_string(),

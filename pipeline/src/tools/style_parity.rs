@@ -7,7 +7,7 @@ use serde::Deserialize;
 use std::path::Path;
 
 use super::parity_baseline::{
-    cell_map, diff_parity_baseline, load_parity_baseline, parity_cell, parity_norm_value,
+    cell_map, diff_parity_baseline, load_parity_baseline, ParityCell, parity_norm_value,
     show_cell, show_change, write_parity_baseline,
 };
 
@@ -347,9 +347,9 @@ pub fn run_style_parity(root: &Path, strict: bool, record: bool) -> i32 {
         }
     }
     let flaky_cells = cells.len() - ratcheted.len();
-    let mut actual_cells: Vec<parity_cell> = Vec::new();
+    let mut actual_cells: Vec<ParityCell> = Vec::new();
     for c in &ratcheted {
-        actual_cells.push(parity_cell {
+        actual_cells.push(ParityCell {
             id: format!("{}/{}/{}", c.component, c.key, c.prop),
             oracle: c.oracle.clone(),
             shadless: c.shadless.clone(),

@@ -17,6 +17,7 @@ use std::collections::{HashMap, HashSet};
 use std::sync::OnceLock;
 
 const CONFIG_JSON: &str = include_str!("config.json");
+#[cfg(test)]
 const SNAPSHOT_JSON: &str = include_str!("snapshot.json");
 
 // ------------------------------------------------------------------ regexes

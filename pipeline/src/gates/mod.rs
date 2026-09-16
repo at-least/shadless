@@ -203,9 +203,8 @@ mod tests {
         let root = match std::env::var("SHADLESS_ROOT") {
             Ok(r) => std::path::PathBuf::from(r),
             Err(_) => {
-                let m = crate::crate_adjacent_tree_root()
-                    .unwrap_or(Path::new(env!("CARGO_MANIFEST_DIR")).join(".."));
-                m
+                crate::crate_adjacent_tree_root()
+                    .unwrap_or_else(|| Path::new(env!("CARGO_MANIFEST_DIR")).join(".."))
             }
         };
         for p in ["dist/shadless.full.css", "dist/out.css", "dist/shadless.product.css"] {
@@ -222,9 +221,8 @@ mod tests {
         let root = match std::env::var("SHADLESS_ROOT") {
             Ok(r) => std::path::PathBuf::from(r),
             Err(_) => {
-                let m = crate::crate_adjacent_tree_root()
-                    .unwrap_or(Path::new(env!("CARGO_MANIFEST_DIR")).join(".."));
-                m
+                crate::crate_adjacent_tree_root()
+                    .unwrap_or_else(|| Path::new(env!("CARGO_MANIFEST_DIR")).join(".."))
             }
         };
         if !root.join("generated/ir").exists() {
@@ -239,9 +237,8 @@ mod tests {
         let root = match std::env::var("SHADLESS_ROOT") {
             Ok(r) => std::path::PathBuf::from(r),
             Err(_) => {
-                let m = crate::crate_adjacent_tree_root()
-                    .unwrap_or(Path::new(env!("CARGO_MANIFEST_DIR")).join(".."));
-                m
+                crate::crate_adjacent_tree_root()
+                    .unwrap_or_else(|| Path::new(env!("CARGO_MANIFEST_DIR")).join(".."))
             }
         };
         let root = root.canonicalize().unwrap_or(root);
@@ -397,9 +394,8 @@ mod css_direction_tests {
         let root = match std::env::var("SHADLESS_ROOT") {
             Ok(r) => std::path::PathBuf::from(r),
             Err(_) => {
-                let m = crate::crate_adjacent_tree_root()
-                    .unwrap_or(Path::new(env!("CARGO_MANIFEST_DIR")).join(".."));
-                m
+                crate::crate_adjacent_tree_root()
+                    .unwrap_or_else(|| Path::new(env!("CARGO_MANIFEST_DIR")).join(".."))
             }
         };
         if !root.join("dist/shadless.css").exists() {
@@ -523,7 +519,7 @@ pub fn gate_script_refs(root: &Path) -> Result<(usize, usize), String> {
     script_names.sort();
     for n in &script_names {
         check(
-            &pkg.scripts[n.clone()],
+            &pkg.scripts[n.as_str()],
             &format!("package.json script {:?}", n),
             &mut fail,
         );
@@ -557,9 +553,8 @@ mod script_refs_tests {
         let root = match std::env::var("SHADLESS_ROOT") {
             Ok(r) => std::path::PathBuf::from(r),
             Err(_) => {
-                let m = crate::crate_adjacent_tree_root()
-                    .unwrap_or(Path::new(env!("CARGO_MANIFEST_DIR")).join(".."));
-                m
+                crate::crate_adjacent_tree_root()
+                    .unwrap_or_else(|| Path::new(env!("CARGO_MANIFEST_DIR")).join(".."))
             }
         };
         if !root.join("Makefile").exists() {

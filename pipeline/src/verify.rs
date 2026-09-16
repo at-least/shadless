@@ -254,7 +254,7 @@ pub fn undeclared_reads(
         return Ok(Vec::new()); // it can never be skipped, so nothing can go stale-green
     }
     let mut covered: HashSet<String> = HashSet::new();
-    let mut add =
+    let add =
         |patterns: &[String], covered: &mut HashSet<String>| -> Result<(), String> {
             for f in files(root, patterns)? {
                 covered.insert(f);

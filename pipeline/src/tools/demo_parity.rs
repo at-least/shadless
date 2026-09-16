@@ -9,7 +9,7 @@ use std::path::Path;
 use std::sync::OnceLock;
 
 use super::parity_baseline::{
-    cell_map, diff_parity_baseline, load_parity_baseline, parity_cell, parity_norm_value,
+    cell_map, diff_parity_baseline, load_parity_baseline, ParityCell, parity_norm_value,
     show_cell, show_change, write_parity_baseline,
 };
 
@@ -76,7 +76,7 @@ pub fn run_demo_parity(root: &Path, record: bool, details: bool) -> i32 {
     };
     let _ = page.route_abort_external();
 
-    let mut cells: Vec<parity_cell> = Vec::new();
+    let mut cells: Vec<ParityCell> = Vec::new();
     let (mut pages, mut compared) = (0usize, 0usize);
     for t in &owned {
         if !t.out.starts_with("docs/demos/") {
@@ -137,7 +137,7 @@ pub fn run_demo_parity(root: &Path, record: bool, details: bool) -> i32 {
                 let a = parity_norm_value(ref_.get(p).map(String::as_str).unwrap_or(""), false);
                 let b = parity_norm_value(got.get(p).map(String::as_str).unwrap_or(""), false);
                 if a != b {
-                    cells.push(parity_cell {
+                    cells.push(ParityCell {
                         id: format!("{}/{}/{}@{}@{}", t.name, slot_key, p, theme, dir),
                         oracle: a,
                         shadless: b,

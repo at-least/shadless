@@ -554,6 +554,7 @@ fn c_mounted_diff(
 
 struct CRunResult {
     result: String,
+    #[allow(dead_code)] // mirrored from the oracle-side record; the gate reads `result`
     has_result: bool,
     fact_raw: Value,
     mounted: Vec<String>,

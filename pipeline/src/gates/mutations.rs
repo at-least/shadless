@@ -8,7 +8,7 @@
 //! parse/re-serialize round trips).
 
 use super::pin::truncate;
-use regex::{Captures, Regex};
+use regex::Regex;
 use std::path::Path;
 use std::sync::{Mutex, OnceLock};
 
@@ -81,7 +81,7 @@ pub fn mut_find_file(
     pred: impl Fn(&str) -> bool,
     exts: &[&str],
 ) -> Result<String, String> {
-    let extsOwned: Vec<String> = if exts.is_empty() {
+    let exts_owned: Vec<String> = if exts.is_empty() {
         vec![".html".to_string()]
     } else {
         exts.iter().map(|s| s.to_string()).collect()
@@ -94,7 +94,7 @@ pub fn mut_find_file(
             continue;
         }
         let name = e.file_name().to_string_lossy();
-        if extsOwned.iter().any(|x| name.ends_with(x.as_str())) {
+        if exts_owned.iter().any(|x| name.ends_with(x.as_str())) {
             candidates.push(e.path().to_path_buf());
         }
     }

@@ -261,7 +261,7 @@ fn key_order(top: &Value, field: &str) -> Result<Vec<String>, String> {
 /// port does not reformat a committed file on its first run.
 impl LedgerFile {
     pub fn write(&self, root: &Path) -> Result<(), String> {
-        use crate::jsonorder::{json_string, marshal_js, Json, JsonObj};
+        use crate::jsonorder::{marshal_js, Json, JsonObj};
         let mut entries = JsonObj::new();
         for id in &self.entry_order {
             let e = &self.entries[id];
@@ -321,7 +321,7 @@ pub struct SourceId {
 pub fn collect_source_ids(root: &Path) -> Result<Vec<SourceId>, String> {
     let mut out: Vec<SourceId> = Vec::new();
     let mut seen: HashSet<String> = HashSet::new();
-    let mut add = |id: String, src: &str, out: &mut Vec<SourceId>, seen: &mut HashSet<String>| {
+    let add = |id: String, src: &str, out: &mut Vec<SourceId>, seen: &mut HashSet<String>| {
         if seen.insert(id.clone()) {
             out.push(SourceId {
                 id,
@@ -423,7 +423,7 @@ impl GoldenExemptions {
     /// Emits JSON.stringify(golden, null, 1) + "\n" — indent 1, as the JS
     /// wrote it, so dissolving does not reformat the whole file.
     pub fn write(&self, root: &Path) -> Result<(), String> {
-        use crate::jsonorder::{json_string, marshal_js_step, Json, JsonObj};
+        use crate::jsonorder::{marshal_js_step, Json, JsonObj};
         let mut examples = JsonObj::new();
         for demo in &self.order {
             examples = examples.add(

@@ -10,8 +10,6 @@ use super::{load_skin, skin_data};
 use regex::Regex;
 use serde::Deserialize;
 use std::collections::HashMap;
-use std::io::Write as _;
-use std::path::Path;
 use std::sync::OnceLock;
 
 /// rewritePaths — ported from tools/demo-lib.mjs. The bare `out.css` form is

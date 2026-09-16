@@ -9,9 +9,10 @@
 //! Everything is byte-indexed; the only UTF-16 arithmetic is at the snapshot
 //! boundary ([`map_utf16`]).
 
+#[cfg(test)]
 use serde::Deserialize;
+#[cfg(test)]
 use serde_json::Value;
-use std::collections::BTreeMap;
 
 /// A string literal's byte range, EXCLUSIVE of the quotes:
 /// src[start..end] is the raw (escaped) literal text.
@@ -435,13 +436,18 @@ pub fn map_utf16(s: &str, start: usize, end: usize) -> (usize, usize) {
 
 // ------------------------------------------------------------------ tests
 
+#[cfg(test)]
+use std::collections::BTreeMap;
+
 #[derive(Deserialize)]
+#[cfg(test)]
 struct SpanRecord {
     src: String,
     /// entries are [start, end] or [start, end, "T"] (template marker)
     spans: Vec<Vec<Value>>,
 }
 
+#[cfg(test)]
 const SPANS_SNAPSHOT: &str = include_str!("spans-snapshot.json");
 
 /// Conformance over the frozen corpus: 562 files (61 registry ui/*.tsx + 501
@@ -517,6 +523,7 @@ fn spans_snapshot_conformance() {
 }
 
 /// byte-index helper kept trivial on purpose
+#[cfg(test)]
 fn char_indices(s: &str) -> impl Iterator<Item = (usize, char)> + '_ {
     s.char_indices().map(|(i, c)| (i, c))
 }

@@ -169,7 +169,7 @@ pub struct CvElCtx {
 }
 
 #[derive(Clone)]
-struct CvCallOcc {
+pub struct CvCallOcc {
     pos: usize,
     args: Vec<String>,
     arg_pos: Vec<usize>,  // absolute position of each arg's first non-space byte
@@ -235,7 +235,6 @@ fn cv_parse_call(js: &str, i: usize) -> Result<CvCallOcc, String> {
         tag: String::new(),
         tag_ok: false,
     };
-    let b = js.as_bytes();
     let open = i + "React.createElement".len();
     let close = cv_match_bracket(js, open, b'(', b')')
         .ok_or_else(|| format!("createElement: unbalanced call at {}", open))?;
@@ -281,7 +280,7 @@ fn cv_parse_call(js: &str, i: usize) -> Result<CvCallOcc, String> {
 }
 
 fn convert_file(
-    root: &Path,
+    _root: &Path,
     name: &str,
     src: &str,
     js: &str,
@@ -416,7 +415,6 @@ fn cv_process_element(
 ) -> Result<(Vec<(String, Json)>, Vec<Vec<(String, Json)>>), String> {
     let occ = pairs[k].call.clone();
     let rec = pairs[k].rec.clone();
-    let el = CvElCtx { props: Vec::new() };
     let mut props: Vec<CvProp> = Vec::new();
     let props_text = &occ.args[1];
     if props_text != "null" {
@@ -621,6 +619,7 @@ pub fn cv_identity_attr() -> &'static Regex {
 }
 
 /// lookupCva: (table, cross, ok)
+#[allow(dead_code)] // Go-port surface; the rust converter resolves cva through lookup_cva_named
 fn lookup_cva(c: &CvCtx<'_>, local: &str) -> Option<(CvTable, bool)> {
     if let Some(imp) = c.file.meta_import.get(local) {
         if let Some(e) = c.reg.cva_by_export.get(imp) {
@@ -913,7 +912,6 @@ fn cv_scan_fn_data_attr(js: &str, start: usize, end: usize, test: &str) -> Strin
 }
 
 fn cv_pos_unmasked(js: &str, base: usize, pos: usize) -> bool {
-    let b = js.as_bytes();
     let mut i = base;
     while i < pos {
         let e = cv_mask_end(js, i);
@@ -1660,6 +1658,7 @@ fn cv_parse_tiers(raw: &str) -> Result<(Vec<String>, HashMap<String, String>), S
     Ok((order, out))
 }
 
+#[allow(dead_code)] // summary fields only some of which the rust path reads
 struct CvSummary {
     name: String,
     tier: String,

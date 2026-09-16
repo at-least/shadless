@@ -44,6 +44,7 @@ impl JsonObj {
         }
         -1
     }
+    #[allow(dead_code)] // Go-port accessor; kept for parity
     fn pairs(&self) -> &[(String, Json)] {
         &self.pairs
     }

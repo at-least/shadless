@@ -8,11 +8,10 @@
 //! example reported. --check regenerates and byte-compares.
 
 use super::browser_shell::BrowserShell;
-use super::families::family;
 use super::oracle_lib::build_oracle;
 use regex::Regex;
-use serde::Deserialize;
 use serde_json::json;
+use serde::Deserialize;
 use sha2::{Digest, Sha256};
 use std::collections::{HashMap, HashSet};
 use std::path::{Path, PathBuf};
@@ -297,8 +296,7 @@ fn run_with_shell(
     contracts: bool,
     check: bool,
 ) -> Result<(), String> {
-    use serde_json::json;
-
+    
     shell.launch().map_err(|e| format!("example-fixture: {}", e))?;
     let page = shell
         .new_page_errors_only()
@@ -516,8 +514,7 @@ fn build_one_page(
     scratch_path: &Path,
     check: bool,
 ) -> Result<(), String> {
-    use serde_json::json;
-
+    
     // contracts mode needs the def: re-load it (the Go code carried it via
     // the target; re-loading keeps one code path for the fixture build)
     let contract_def: Option<EfDef> = if contracts {
@@ -580,7 +577,7 @@ fn build_one_page(
     // several families on one page: each contributes templates and its glue
     for comp in &target.families {
         let fam = super::families::family(comp).expect("families filtered up front");
-        let mut templates = String::new();
+        let templates;
         let id_map_ref = &mut id_map;
         // every family contributes its glue script (Go: family[f].js)
         if !fam.js.is_empty() && !seen_js.contains(fam.js) {

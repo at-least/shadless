@@ -13,7 +13,6 @@ use pipeline::key::{outputs_present, stamp_value, Keyer};
 use pipeline::nodes::Node;
 use pipeline::runner::Runner;
 use pipeline::stamps::{load_stamps, write_stamp};
-use std::collections::HashMap;
 use std::io::Write;
 use std::path::Path;
 use std::sync::Arc;

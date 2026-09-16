@@ -19,7 +19,6 @@ use regex::Regex;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::path::Path;
-use std::sync::OnceLock;
 
 use super::docs_transforms::{fence_shadow, text_adjustments};
 use crate::gates::ledger::js_set_literal;
@@ -36,6 +35,7 @@ const OV_TASKS_DIR: &str = "build/gates/tasks";
 #[derive(Clone)]
 struct OvUnit {
     id: String,
+    #[allow(dead_code)] // recorded in the manifest JSON even though the rust gate reads the other fields
     kind: String,
     home: String,
     file: String,
@@ -501,6 +501,7 @@ fn ov_rule_units(
                     #[serde(default)]
                     ar: DictLang,
                     #[serde(default)]
+                    #[allow(dead_code)] // parsed for the shape; unused by the rust audit
                     fa: Option<DictLang>,
                 }
                 #[derive(Deserialize, Default)]

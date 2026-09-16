@@ -243,18 +243,22 @@ fn re_fence() -> &'static Regex {
     static R: OnceLock<Regex> = OnceLock::new();
     R.get_or_init(|| Regex::new(r"(?s)```.*?```").unwrap())
 }
+#[allow(dead_code)] // ported from the Go docs transforms; kept for parity
 fn re_docs_tag() -> &'static Regex {
     static R: OnceLock<Regex> = OnceLock::new();
     R.get_or_init(|| Regex::new(r"<(ComponentPreview|ComponentSource)\b([^>]*)>").unwrap())
 }
+#[allow(dead_code)] // ported from the Go docs transforms; kept for parity
 fn re_preview_tag() -> &'static Regex {
     static R: OnceLock<Regex> = OnceLock::new();
     R.get_or_init(|| Regex::new(r"<ComponentPreview\b([^>]*)>").unwrap())
 }
+#[allow(dead_code)] // ported from the Go docs transforms; kept for parity
 fn re_primary() -> &'static Regex {
     static R: OnceLock<Regex> = OnceLock::new();
     R.get_or_init(|| Regex::new(r"^([a-z0-9-]+)-demo$").unwrap())
 }
+#[allow(dead_code)] // ported from the Go docs transforms; kept for parity
 fn re_hooks() -> &'static Regex {
     static R: OnceLock<Regex> = OnceLock::new();
     R.get_or_init(|| {
@@ -1752,7 +1756,7 @@ pub fn react_props_in_markup(fence: &str) -> Vec<String> {
 }
 
 /// rawHeading is one <hN>…</hN> hit (JS used a \1 backreference RE2 lacks).
-struct RawHeading {
+pub struct RawHeading {
     at: usize,
     depth: usize,
     text: String,
@@ -2073,6 +2077,7 @@ pub fn protocol_mdx(comp: &str) -> String {
         }
         _ => {}
     }
+    #[allow(unused_assignments)] // the String::new() init is the fallback branch's value
     let mut api = String::new();
     if f.kind == "inline" {
         api = "`shadless.get(rootEl)` → `activate(i)`, `active()`; the root dispatches `shadless:change` (`detail: { index, trigger }`)".to_string();

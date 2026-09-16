@@ -287,6 +287,7 @@ pub fn resolve_source(src: &str, rtl: bool) -> (String, usize) {
             continue; // only plain strings; templates with interpolation are code
         }
         let content = sp.content(src);
+        #[allow(unused_assignments)] // the String::new() init is the no-mapping path's value
         let mut next = String::new();
         if cn_token_re().is_match(&content) {
             next = expand_class_string(&content);

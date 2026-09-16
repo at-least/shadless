@@ -84,7 +84,7 @@ fn add_target(
                     None => ("", trimmed),
                 };
                 let mut files: Vec<String> = Vec::new();
-                if let Ok(mut ents) = std::fs::read_dir(root.join(dir)) {
+                if let Ok(ents) = std::fs::read_dir(root.join(dir)) {
                     let mut names: Vec<String> = ents
                         .filter_map(|e| e.ok())
                         .map(|e| e.file_name().to_string_lossy().into_owned())

@@ -11,7 +11,7 @@ use std::path::Path;
 use std::sync::OnceLock;
 
 #[derive(Clone, Debug)]
-pub struct parity_cell {
+pub struct ParityCell {
     pub id: String,
     pub oracle: String,
     pub shadless: String,
@@ -144,8 +144,8 @@ pub fn parity_norm_value(v: &str, canonicalize_calc: bool) -> String {
 }
 
 /// cellMap: duplicate ids would silently drop a difference — rejected.
-pub fn cell_map(cells: &[parity_cell]) -> (HashMap<String, parity_cell>, Vec<String>) {
-    let mut m: HashMap<String, parity_cell> = HashMap::new();
+pub fn cell_map(cells: &[ParityCell]) -> (HashMap<String, ParityCell>, Vec<String>) {
+    let mut m: HashMap<String, ParityCell> = HashMap::new();
     let mut order: Vec<String> = Vec::new();
     for c in cells {
         if m.contains_key(&c.id) {
@@ -174,7 +174,7 @@ pub struct RawBaseline {
 pub fn load_parity_baseline(
     root: &Path,
     path: &str,
-) -> Result<Option<(RawBaseline, HashMap<String, parity_cell>)>, String> {
+) -> Result<Option<(RawBaseline, HashMap<String, ParityCell>)>, String> {
     let b = match std::fs::read(root.join(path)) {
         Ok(b) => b,
         Err(_) => return Ok(None), // absent → None, caller records
@@ -199,11 +199,11 @@ pub fn load_parity_baseline(
         shadless: String,
     }
     let raw: Raw = serde_json::from_slice(&b).map_err(|e| e.to_string())?;
-    let mut cells: HashMap<String, parity_cell> = HashMap::new();
+    let mut cells: HashMap<String, ParityCell> = HashMap::new();
     for c in &raw.cells {
         cells.insert(
             c.id.clone(),
-            parity_cell {
+            ParityCell {
                 id: c.id.clone(),
                 oracle: c.oracle.clone(),
                 shadless: c.shadless.clone(),
@@ -247,7 +247,7 @@ pub fn write_parity_baseline(
     path: &str,
     note: &str,
     flaky: &[String],
-    cells: &HashMap<String, parity_cell>,
+    cells: &HashMap<String, ParityCell>,
 ) -> Result<(), String> {
     let pin_b = std::fs::read(root.join("src/registry/pin.json")).unwrap_or_default();
     #[derive(serde::Deserialize)]
@@ -309,33 +309,33 @@ pub fn write_parity_baseline(
 }
 
 #[derive(Clone, Debug)]
-pub struct parity_change {
+pub struct ParityChange {
     pub id: String,
-    pub was: parity_cell,
-    pub now: parity_cell,
+    pub was: ParityCell,
+    pub now: ParityCell,
 }
 
 #[derive(Default)]
-pub struct parity_diff {
+pub struct ParityDiff {
     pub appeared: Vec<String>,
     pub fixed: Vec<String>,
-    pub changed: Vec<parity_change>,
+    pub changed: Vec<ParityChange>,
 }
 
 /// diffParityBaseline: appeared / fixed / changed are all failures.
 pub fn diff_parity_baseline(
-    recorded: &HashMap<String, parity_cell>,
-    actual: &HashMap<String, parity_cell>,
+    recorded: &HashMap<String, ParityCell>,
+    actual: &HashMap<String, ParityCell>,
     actual_order: &[String],
-) -> parity_diff {
-    let mut d = parity_diff::default();
+) -> ParityDiff {
+    let mut d = ParityDiff::default();
     for id in actual_order {
         let v = &actual[id];
         match recorded.get(id) {
             None => d.appeared.push(id.clone()),
             Some(was) => {
                 if was.oracle != v.oracle || was.shadless != v.shadless {
-                    d.changed.push(parity_change {
+                    d.changed.push(ParityChange {
                         id: id.clone(),
                         was: was.clone(),
                         now: v.clone(),
@@ -363,11 +363,11 @@ fn trunc60(s: &str) -> String {
     s.to_string()
 }
 
-pub fn show_cell(v: &parity_cell) -> String {
+pub fn show_cell(v: &ParityCell) -> String {
     format!("oracle={} shadless={}", trunc60(&v.oracle), trunc60(&v.shadless))
 }
 
-pub fn show_change(c: &parity_change) -> String {
+pub fn show_change(c: &ParityChange) -> String {
     format!(
         "{}\n      recorded: {}\n      now:      {}",
         c.id,
@@ -385,12 +385,12 @@ mod tests {
     fn unit_cell_map_rejects_duplicate_id() {
         let result = std::panic::catch_unwind(|| {
             cell_map(&[
-                parity_cell {
+                ParityCell {
                     id: "x".to_string(),
                     oracle: "1".to_string(),
                     shadless: String::new(),
                 },
-                parity_cell {
+                ParityCell {
                     id: "x".to_string(),
                     oracle: "2".to_string(),
                     shadless: String::new(),
@@ -404,12 +404,12 @@ mod tests {
     #[test]
     fn unit_cell_map_preserves_insertion_order() {
         let (m, order) = cell_map(&[
-            parity_cell {
+            ParityCell {
                 id: "b/comp".to_string(),
                 oracle: "1".to_string(),
                 shadless: "2".to_string(),
             },
-            parity_cell {
+            ParityCell {
                 id: "a/comp".to_string(),
                 oracle: "3".to_string(),
                 shadless: "4".to_string(),
@@ -485,10 +485,10 @@ mod tests {
     /// Mirrors pipeline/parity_baseline_test.go TestUnitDiffParityBaseline.
     #[test]
     fn unit_diff_parity_baseline() {
-        let mut recorded: HashMap<String, parity_cell> = HashMap::new();
+        let mut recorded: HashMap<String, ParityCell> = HashMap::new();
         recorded.insert(
             "m".to_string(),
-            parity_cell {
+            ParityCell {
                 id: "m".to_string(),
                 oracle: "1".to_string(),
                 shadless: "1".to_string(),
@@ -496,7 +496,7 @@ mod tests {
         );
         recorded.insert(
             "z".to_string(),
-            parity_cell {
+            ParityCell {
                 id: "z".to_string(),
                 oracle: "9".to_string(),
                 shadless: "9".to_string(),
@@ -504,7 +504,7 @@ mod tests {
         );
         recorded.insert(
             "y".to_string(),
-            parity_cell {
+            ParityCell {
                 id: "y".to_string(),
                 oracle: "8".to_string(),
                 shadless: "8".to_string(),
@@ -512,10 +512,10 @@ mod tests {
         );
         // actualOrder is deliberately NOT alphabetical, to prove appeared/fixed
         // come back SORTED rather than dependent on iteration/insertion order.
-        let mut actual: HashMap<String, parity_cell> = HashMap::new();
+        let mut actual: HashMap<String, ParityCell> = HashMap::new();
         actual.insert(
             "m".to_string(),
-            parity_cell {
+            ParityCell {
                 id: "m".to_string(),
                 oracle: "1".to_string(),
                 shadless: "1".to_string(),
@@ -523,7 +523,7 @@ mod tests {
         );
         actual.insert(
             "z".to_string(),
-            parity_cell {
+            ParityCell {
                 id: "z".to_string(),
                 oracle: "9".to_string(),
                 shadless: "CHANGED".to_string(),
@@ -531,7 +531,7 @@ mod tests {
         );
         actual.insert(
             "w".to_string(),
-            parity_cell {
+            ParityCell {
                 id: "w".to_string(),
                 oracle: "new".to_string(),
                 shadless: "new".to_string(),
@@ -539,7 +539,7 @@ mod tests {
         );
         actual.insert(
             "a".to_string(),
-            parity_cell {
+            ParityCell {
                 id: "a".to_string(),
                 oracle: "new2".to_string(),
                 shadless: "new2".to_string(),

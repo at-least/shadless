@@ -5,12 +5,11 @@
 //! already ported.
 
 use regex::Regex;
-use serde::Deserialize;
 use std::path::Path;
 use std::sync::OnceLock;
 
 use super::parity_baseline::{
-    cell_map, diff_parity_baseline, load_parity_baseline, parity_cell, parity_norm_value,
+    cell_map, diff_parity_baseline, load_parity_baseline, ParityCell, parity_norm_value,
     show_cell, show_change, write_parity_baseline,
 };
 
@@ -223,7 +222,7 @@ pub fn run_path_parity(root: &Path, record: bool, details: bool) -> i32 {
         return 1;
     }
 
-    let mut cells: Vec<parity_cell> = Vec::new();
+    let mut cells: Vec<ParityCell> = Vec::new();
     let (mut compared, mut components, mut state_renders, mut variant_renders) =
         (0usize, 0usize, 0usize, 0usize);
     let pp_shell = "body{margin:0;padding:0;color:var(--foreground);background:var(--background)} *{transition:none!important;animation:none!important}";
@@ -728,7 +727,7 @@ pub fn run_path_parity(root: &Path, record: bool, details: bool) -> i32 {
                             let va = parity_norm_value(ref_.get(p).map(String::as_str).unwrap_or(""), false);
                             let vb = parity_norm_value(got.get(p).map(String::as_str).unwrap_or(""), false);
                             if va != vb {
-                                cells.push(parity_cell {
+                                cells.push(ParityCell {
                                     id: format!(
                                         "{}/{}/{}@{}@{}@{}",
                                         name, nd.1, p, path, theme.0, theme.1

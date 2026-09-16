@@ -416,7 +416,6 @@ fn parse_skin_map(css: &str, map: &mut HashMap<String, String>) {
 
 pub fn run_emit() -> Result<(), String> {
     let root = std::env::current_dir().map_err(|e| e.to_string())?;
-    let root_s = root.to_string_lossy().into_owned();
     load_skin();
     std::fs::create_dir_all(root.join("dist/components")).map_err(|e| format!("emit: {}", e))?;
     std::fs::create_dir_all(root.join("build/emit")).map_err(|e| format!("emit: {}", e))?;
