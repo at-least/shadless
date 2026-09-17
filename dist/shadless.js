@@ -3360,6 +3360,9 @@ var RadixKernel = (() => {
   }
 
   // src/features/scroll-area.ts
+  function isNode7(v) {
+    return typeof v?.nodeType === "number";
+  }
   var MACHINE = {
     hidden: { SCROLL: "scrolling" },
     scrolling: { SCROLL_END: "idle", POINTER_ENTER: "interacting" },
@@ -3388,6 +3391,18 @@ var RadixKernel = (() => {
       const ratio = (output[1] - output[0]) / (input[1] - input[0]);
       return output[0] + ratio * (value - input[0]);
     };
+  }
+  function getScrollPositionFromPointer(pointerPos, pointerOffset, sizes, dir) {
+    const thumbSizePx = getThumbSize(sizes);
+    const thumbCenter = thumbSizePx / 2;
+    const offset3 = pointerOffset || thumbCenter;
+    const thumbOffsetFromEnd = thumbSizePx - offset3;
+    const minPointerPos = sizes.paddingStart + offset3;
+    const maxPointerPos = sizes.scrollbar - sizes.paddingEnd - thumbOffsetFromEnd;
+    const maxScrollPos = sizes.content - sizes.viewport;
+    const scrollRange = dir === "ltr" ? [0, maxScrollPos] : [maxScrollPos * -1, 0];
+    const interpolate = linearScale([minPointerPos, maxPointerPos], scrollRange);
+    return interpolate(pointerPos);
   }
   function getThumbOffsetFromScroll(scrollPos, sizes, dir) {
     const thumbSizePx = getThumbSize(sizes);
@@ -3633,6 +3648,59 @@ var RadixKernel = (() => {
         },
         { passive: false }
       );
+      let dragRect = null;
+      let thumbOffset = 0;
+      let prevUserSelect = "";
+      const dragScroll = (pointerPos) => {
+        const stNow = axes[axis];
+        if (axis === "vertical") viewport.scrollTop = getScrollPositionFromPointer(pointerPos, thumbOffset, stNow.sizes, "ltr");
+        else viewport.scrollLeft = getScrollPositionFromPointer(pointerPos, thumbOffset, stNow.sizes, dir);
+        handleScroll();
+      };
+      on(sb, "pointerdown", (event) => {
+        const e = event;
+        if (e.button !== 0) return;
+        if (dragRect) return;
+        if (e.pointerType === "mouse" && e.button !== 0) return;
+        const target = e.target;
+        const thumb = thumbEl(axis);
+        const sbRect = sb.getBoundingClientRect();
+        let onThumb = false;
+        if (isNode7(target)) {
+          target.setPointerCapture?.(e.pointerId);
+          onThumb = !!thumb && thumb.contains(target);
+          if (onThumb) {
+            const tRect = thumb.getBoundingClientRect();
+            thumbOffset = axis === "vertical" ? e.clientY - tRect.top : e.clientX - tRect.left;
+          }
+        }
+        if (!onThumb) thumbOffset = 0;
+        dragRect = sbRect;
+        prevUserSelect = doc.body.style.webkitUserSelect;
+        doc.body.style.webkitUserSelect = "none";
+        viewport.style.scrollBehavior = "auto";
+        dragScroll(axis === "vertical" ? e.clientY - sbRect.top : e.clientX - sbRect.left);
+      });
+      on(sb, "pointermove", (event) => {
+        if (!dragRect) return;
+        const e = event;
+        dragScroll(axis === "vertical" ? e.clientY - dragRect.top : e.clientX - dragRect.left);
+      });
+      const endDrag = (event) => {
+        const e = event;
+        const target = e.target;
+        if (isNode7(target)) {
+          const el = target;
+          if (el.hasPointerCapture?.(e.pointerId)) el.releasePointerCapture?.(e.pointerId);
+        }
+        doc.body.style.webkitUserSelect = prevUserSelect;
+        viewport.style.scrollBehavior = "";
+        dragRect = null;
+        thumbOffset = 0;
+      };
+      on(sb, "pointerup", endDrag);
+      on(sb, "pointercancel", endDrag);
+      on(sb, "lostpointercapture", endDrag);
     }
     const roFactory = options.createResizeObserver !== void 0 ? options.createResizeObserver : win && typeof win.ResizeObserver === "function" ? (callback) => new win.ResizeObserver(callback) : null;
     let resizeTimer = 0;
