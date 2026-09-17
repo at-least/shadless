@@ -3642,6 +3642,7 @@ var RadixKernel = (() => {
           const e = event;
           if (axis === "vertical") viewport.scrollTop = viewport.scrollTop + e.deltaY;
           else viewport.scrollLeft = viewport.scrollLeft + e.deltaX;
+          handleScroll();
           const maxScrollPos = st.sizes.content - st.sizes.viewport;
           const pos = scrollPos(axis);
           if (pos > 0 && pos < maxScrollPos) e.preventDefault();

@@ -7,7 +7,7 @@
   },
   "kernel": {
     "file": "vendor/radix-kernel.iife.js",
-    "sha256": "0603b5d90d5fa7ca87dfdf359276e76706080ed2dff73b48528b9f18936cff42"
+    "sha256": "3898be9c6bf93e176b5269930ae03f46c40b63f1b48af41ea24f220c724017ec"
   },
   "recorded": "2026-09-17"
 }
