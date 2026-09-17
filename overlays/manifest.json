@@ -8,7 +8,7 @@
         "apps/v4/registry/bases/radix/ui/accordion.tsx"
       ],
       "extra": [],
-      "hash": "c5e1290c43bc90dd84687b62c7ba796504d7f13ce835de1399cb616e4969a6e1",
+      "hash": "23d3f8fe7e743ccd13030470f101e40ff7655a996c0ce95cde960821954d0c0b",
       "pin": "shadcn@4.19.0"
     },
     "behavior:alert-dialog": {
@@ -17,7 +17,7 @@
         "apps/v4/registry/bases/radix/ui/alert-dialog.tsx"
       ],
       "extra": [],
-      "hash": "c5f072cf2075d7d64aef45cd1dd16fa0c10c839fb7c8971b43e6b5732a07a387",
+      "hash": "3f4d9c9941570101da63f39101749f744f416ab8b5ed1ae6a1d5f11443bbdb48",
       "pin": "shadcn@4.19.0"
     },
     "behavior:avatar": {
@@ -26,7 +26,7 @@
         "apps/v4/registry/bases/radix/ui/avatar.tsx"
       ],
       "extra": [],
-      "hash": "13bcc0750b054fc59d5bd9a0bb9e1d5972bf17b38c197cbfe3740abe91463fc6",
+      "hash": "af26666b1c5c063817608d1d022bb2c471c36fb4ad25fa7dad2e6efec85fee4c",
       "pin": "shadcn@4.19.0"
     },
     "behavior:carousel": {
@@ -35,7 +35,7 @@
         "apps/v4/registry/bases/radix/ui/carousel.tsx"
       ],
       "extra": [],
-      "hash": "de9e444edc6b8f49c94e2c8bd51432f81f8c738764efbdc3ca6f02005a961c6b",
+      "hash": "b39bcfa9d292735405e476fdfbd987dd541046a0adc09b151ee8a2a5a7c8f57c",
       "pin": "shadcn@4.19.0"
     },
     "behavior:checkbox": {
@@ -44,7 +44,7 @@
         "apps/v4/registry/bases/radix/ui/checkbox.tsx"
       ],
       "extra": [],
-      "hash": "30864f46e3970cd0d069a300f9bc19659fc37f173b069d2a668c85df86b1bdc0",
+      "hash": "bbf7657321ba6032edfcc147f8aa26d5d45b4a8ed0023837d9ab62d98f7f9db9",
       "pin": "shadcn@4.19.0"
     },
     "behavior:collapsible": {
@@ -53,7 +53,7 @@
         "apps/v4/registry/bases/radix/ui/collapsible.tsx"
       ],
       "extra": [],
-      "hash": "fdde930d6417de57d91251cfd41b44a92ce63daf029d9a7fcbc7199c758037d6",
+      "hash": "bc18ae42d590262f51da94ec38e929f429c0acd73d89c64c06fe4b86fc80840f",
       "pin": "shadcn@4.19.0"
     },
     "behavior:context-menu": {
@@ -62,7 +62,7 @@
         "apps/v4/registry/bases/radix/ui/context-menu.tsx"
       ],
       "extra": [],
-      "hash": "c187d53965338fae587f78fa07ba47766fe755124d3ff6fa2bcb557e0d1eea35",
+      "hash": "8566062d1b3f548ded52ff66915b3fc0791e73ae1098097d759b69a2dbafa31c",
       "pin": "shadcn@4.19.0"
     },
     "behavior:dialog": {
@@ -71,7 +71,7 @@
         "apps/v4/registry/bases/radix/ui/dialog.tsx"
       ],
       "extra": [],
-      "hash": "5d5b8fb538905443c3694e5760774a909d7e2c998b6d69acac76ad4e653c463a",
+      "hash": "504dc0989565c5afa4250e000c31bb0a9ea1bfc09ed1ddfe9c9348cb453ed00a",
       "pin": "shadcn@4.19.0"
     },
     "behavior:dropdown-menu": {
@@ -80,7 +80,7 @@
         "apps/v4/registry/bases/radix/ui/dropdown-menu.tsx"
       ],
       "extra": [],
-      "hash": "b3aaa6884896842bf2edc99cbf7178a551afb3721044844482cf54fb26c73988",
+      "hash": "49eee1bd1cfbe9f824ae2d058b56eaf75261c4a170d4e206b720f41bacff3cd2",
       "pin": "shadcn@4.19.0"
     },
     "behavior:hover-card": {
@@ -89,7 +89,7 @@
         "apps/v4/registry/bases/radix/ui/hover-card.tsx"
       ],
       "extra": [],
-      "hash": "81c0da560af0fd41e846b060f7b088bd5ff578a0f2cb204a6913238360929856",
+      "hash": "5ccc26073ea7394e1bf56b34787a0637ae26e822f9ed7c756d969e5c29eb8e7d",
       "pin": "shadcn@4.19.0"
     },
     "behavior:menubar": {
@@ -98,7 +98,7 @@
         "apps/v4/registry/bases/radix/ui/menubar.tsx"
       ],
       "extra": [],
-      "hash": "49b94ca8c98850f2d062922cef7248468740c353aa22c48322618b6d2215136f",
+      "hash": "1c1ff2820b35df48f7aef6713f0156cfab9cb4229649a037be3c68461d703e7e",
       "pin": "shadcn@4.19.0"
     },
     "behavior:navigation-menu": {
@@ -107,7 +107,7 @@
         "apps/v4/registry/bases/radix/ui/navigation-menu.tsx"
       ],
       "extra": [],
-      "hash": "6869f3537e52da551e48ec5afa973b2914c17553695470a84c966218931f7859",
+      "hash": "631cae87083e95be979264aa635230332c79f75574d513db74469630964e78c4",
       "pin": "shadcn@4.19.0"
     },
     "behavior:popover": {
@@ -116,7 +116,7 @@
         "apps/v4/registry/bases/radix/ui/popover.tsx"
       ],
       "extra": [],
-      "hash": "2a2cd59599d551098e20f402c631cca6506e280ae0a713408070fec5f851d005",
+      "hash": "eaf14860f6069347c21311dcb3a8250cfe97c53d5ee5fec22e07403129750740",
       "pin": "shadcn@4.19.0"
     },
     "behavior:radio-group": {
@@ -125,7 +125,7 @@
         "apps/v4/registry/bases/radix/ui/radio-group.tsx"
       ],
       "extra": [],
-      "hash": "9f0e905909a70221f0f90a27f1e237e1012c13fc7b2ab527546eaafa090f96c8",
+      "hash": "6ae80b66978d1451637f58ff04bd33b864336c4409b0181c6e6f7b221e00f6da",
       "pin": "shadcn@4.19.0"
     },
     "behavior:scroll-area": {
@@ -134,7 +134,7 @@
         "apps/v4/registry/bases/radix/ui/scroll-area.tsx"
       ],
       "extra": [],
-      "hash": "2a9a37e129cf4baa534be773f2dcba75a198c199cd97937082da4545f7dce8b2",
+      "hash": "8326238f3152a1716959fb63cf6bd2eefb8dcf660f978db5992a7e7e128b5d8a",
       "pin": "shadcn@4.19.0"
     },
     "behavior:select": {
@@ -143,7 +143,7 @@
         "apps/v4/registry/bases/radix/ui/select.tsx"
       ],
       "extra": [],
-      "hash": "9b956c1c9bdf3094600e52edf116bf7872e4d2230b3b5307bcd52779bed6b50f",
+      "hash": "dca3996b9c602ffe919019b854331d112feb671cd28b878c2610f9042d0f3a43",
       "pin": "shadcn@4.19.0"
     },
     "behavior:sheet": {
@@ -152,7 +152,7 @@
         "apps/v4/registry/bases/radix/ui/sheet.tsx"
       ],
       "extra": [],
-      "hash": "58ae2b93b276025c1b1db5af94b81842455f3d4a59439fe3ed5699d1abca47f8",
+      "hash": "f49cc7b1f3a14043780e86a55bcf60c22151a1ea588b5725cc5cc5bb4af415ec",
       "pin": "shadcn@4.19.0"
     },
     "behavior:slider": {
@@ -161,7 +161,7 @@
         "apps/v4/registry/bases/radix/ui/slider.tsx"
       ],
       "extra": [],
-      "hash": "ea1ab8639eace580efdb9583add8f0b7f676e3a12f9c0d8b75c75c1214ea9d5f",
+      "hash": "fe4342e1346e8aab331d42df9749d679800b140a6ca67bca2595043d85e1addc",
       "pin": "shadcn@4.19.0"
     },
     "behavior:switch": {
@@ -170,7 +170,7 @@
         "apps/v4/registry/bases/radix/ui/switch.tsx"
       ],
       "extra": [],
-      "hash": "e5eb1fe11771f9a86726430352afa4384899f49f6950ee7d9198310f6d2d25ae",
+      "hash": "1a727530f3dacb6328b6908c6fde663a9d3341f900bd0af6c48981337ef46017",
       "pin": "shadcn@4.19.0"
     },
     "behavior:tabs": {
@@ -179,7 +179,7 @@
         "apps/v4/registry/bases/radix/ui/tabs.tsx"
       ],
       "extra": [],
-      "hash": "c3fe128342af68914e56603ef7ae4f460e48974e9ed8ae42ca76ad5a551caab8",
+      "hash": "cf2772e9c2914b7a9703a55b936500c41f6884933e86af332434d46cf969201f",
       "pin": "shadcn@4.19.0"
     },
     "behavior:toggle": {
@@ -188,7 +188,7 @@
         "apps/v4/registry/bases/radix/ui/toggle.tsx"
       ],
       "extra": [],
-      "hash": "fc84b7b232c8e6da2e887a40f9d96107cd007c964f0e056cf3b49a9da0b13863",
+      "hash": "8c098c2c055299db085fd802faf6baab59b7c72fa82f12b425f2e3c7d75b967f",
       "pin": "shadcn@4.19.0"
     },
     "behavior:toggle-group": {
@@ -197,7 +197,7 @@
         "apps/v4/registry/bases/radix/ui/toggle-group.tsx"
       ],
       "extra": [],
-      "hash": "1c19043699f0bf452594a1e48c385767b0bd067f6a5014d424c1f92e4d364f77",
+      "hash": "cd7318d081a8d455804e5607728fd91d8a2f823eec42e3ad2eb6892448e5307b",
       "pin": "shadcn@4.19.0"
     },
     "behavior:tooltip": {
@@ -206,7 +206,7 @@
         "apps/v4/registry/bases/radix/ui/tooltip.tsx"
       ],
       "extra": [],
-      "hash": "2f150fada6d331ced4b22726a6ad3548a9b78fe3f5021e136d6a67113733399f",
+      "hash": "2529655eebf31e30f8228e2d3469eee86c3334fc3ca1587f6d9bfefa9df577e3",
       "pin": "shadcn@4.19.0"
     },
     "demo:message-scroller-anchoring": {
