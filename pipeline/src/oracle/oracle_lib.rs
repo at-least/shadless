@@ -164,13 +164,14 @@ pub fn oracle_aliases() -> Result<HashMap<String, String>, String> {
 /// a cargo feature folds into the hull fingerprint and would stale the whole
 /// graph on every toggle.
 ///
-/// KNOWN BROKEN ON THE OXC PATH (2026-09-17, pre-dating the engine fixes on
-/// main — reproduced identically at bd022bf): the rolldown oracle bundle
-/// carries two React copies, every hook-using example dies with "Invalid
-/// hook call" and 332/343 example-oracle renders fail with "empty #root
-/// after render". Until that is fixed, run the oracle nodes with
-/// `SHADLESS_ORACLE_BUNDLER=esbuild`; a default-env `pipeline run
-/// example-oracle` is expected to be red with exactly those failures.
+/// History (2026-09-17): the rolldown path shipped bundling TWO react
+/// instances — example_oracle passes root = Path::new("."), the entry
+/// reached rolldown relative ("./node_modules/…"), and react imported from
+/// that relative graph resolved as a second instance beside the one the
+/// absolutely-aliased .upstream imports see; 332/343 oracle renders failed
+/// with "Invalid hook call" → empty #root. bundle_oracle_oxc canonicalizes
+/// the entry now; regression-tested by
+/// oxc_bundle::tests::build_oracle_via_relative_root_bundles_one_react.
 fn oracle_bundler_use_oxc() -> Result<bool, String> {
     match std::env::var("SHADLESS_ORACLE_BUNDLER").as_deref() {
         Ok("oxc") => {

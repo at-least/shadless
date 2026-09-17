@@ -33,6 +33,15 @@ async fn bundle_async(
 ) -> Result<(), String> {
     use rolldown::{BundlerBuilder, BundlerOptions, InputItem, OutputFormat, ResolveOptions, TsConfig};
 
+    // Canonicalize the entry. A relative entry (example_oracle passes root =
+    // ".") reached rolldown as "./node_modules/…": react imported from that
+    // relative graph resolved as a second instance next to the one the
+    // absolutely-aliased .upstream imports see, and every hook-using oracle
+    // render died with "Invalid hook call" → empty #root. esbuild never hits
+    // this because it realpaths the entry before resolving.
+    let entry = std::fs::canonicalize(entry)
+        .map_err(|e| format!("{}: canonicalize: {e}", entry.display()))?;
+
     // esbuild --alias:k=v: exact match or `k/…` prefix, and the LONGEST
     // matching key wins. oxc_resolver (webpack semantics) takes the FIRST
     // matching key in list order, so feed the keys most-specific-first —
@@ -108,3 +117,44 @@ async fn bundle_async(
     Ok(())
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::path::PathBuf;
+
+    /// REGRESSION GUARD for the rolldown double-react failure: example-oracle
+    /// calls build_oracle with root = Path::new(".") (the engine cwd); with a
+    /// relative root the entry reached rolldown as "./node_modules/…", the
+    /// react imported from that relative module graph resolved as a SECOND
+    /// instance next to the one the absolutely-aliased .upstream imports see,
+    /// and every oracle render died with "Invalid hook call" → empty #root.
+    /// The bundler must canonicalize the entry so one react instance exists.
+    ///
+    /// The probe count: a healthy bundle registers `react.forward_ref` 3×
+    /// (react + jsx-runtime + react-dom-client); a doubled react shows 5.
+    #[test]
+    fn build_oracle_via_relative_root_bundles_one_react() {
+        let root = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .parent()
+            .unwrap()
+            .to_path_buf();
+        std::env::set_current_dir(&root).unwrap();
+        let html = crate::oracle::oracle_lib::build_oracle(
+            Path::new("."),
+            "alert-dialog-basic",
+            Path::new("build/zz-bundler-probe"),
+        )
+        .unwrap();
+        let bundle = root
+            .join("node_modules/.cache/shadless/oracle")
+            .join("oxc-bundle-alert-dialog-basic.js");
+        let text = String::from_utf8(std::fs::read(&bundle).unwrap()).unwrap();
+        let fwd = text.matches("Symbol.for(\"react.forward_ref\")").count();
+        assert_eq!(
+            fwd, 3,
+            "alert-dialog-basic bundle must contain exactly one react instance"
+        );
+        let _ = html;
+        let _ = std::fs::remove_dir_all(root.join("build/zz-bundler-probe"));
+    }
+}
