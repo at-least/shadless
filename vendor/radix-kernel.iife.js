@@ -159,6 +159,7 @@ var RadixKernel = (() => {
   function claimEscapeEvent(event) {
     if (claimedEscapes.has(event)) return false;
     claimedEscapes.add(event);
+    noteEscapeClaim();
     return true;
   }
   var escapelessClaimSeq = 0;
@@ -245,9 +246,19 @@ var RadixKernel = (() => {
     const layer = registerDismissLayer(trigger ? [portal, trigger] : [portal], () => close(true));
     const onKeyDown = (event) => {
       if (event.key === "Escape") {
-        if (!isHighestDismissLayer(layer)) return;
-        if (!claimEscapeEvent(event)) return;
-        if (escapeClaimedThisTask()) return;
+        if (!isHighestDismissLayer(layer)) {
+          console.error("[TRACE] ESC standdown:not-highest");
+          return;
+        }
+        if (escapeClaimedThisTask()) {
+          console.error("[TRACE] ESC standdown:task-flag");
+          return;
+        }
+        if (!claimEscapeEvent(event)) {
+          console.error("[TRACE] ESC standdown:claimed");
+          return;
+        }
+        console.error("[TRACE] ESC act:close");
         if (preventDefaultOnKeys) event.preventDefault();
         close(true);
         return;
@@ -2171,7 +2182,8 @@ var RadixKernel = (() => {
       return w;
     })();
     if (!wrapper.contains(content)) wrapper.appendChild(content);
-    pendingExits2.get(content)?.(wrapper);
+    const settleAdoption = pendingExits2.get(content) ?? (options.wrapper ? pendingExits2.get(options.wrapper) : void 0);
+    settleAdoption?.(wrapper);
     const externalGuards = options.guards;
     const guardStart = externalGuards?.start ?? makeGuard2(doc);
     const guardEnd = externalGuards?.end ?? makeGuard2(doc);
@@ -2209,8 +2221,8 @@ var RadixKernel = (() => {
       if (event.key === "Escape") {
         if (options.escapeClose === false) return;
         if (!isHighestDismissLayer(layer)) return;
-        if (!claimEscapeEvent(event)) return;
         if (escapeClaimedThisTask()) return;
+        if (!claimEscapeEvent(event)) return;
         if (options.escapePreventDefault) event.preventDefault();
         close();
         return;
@@ -2258,15 +2270,19 @@ var RadixKernel = (() => {
         wrapper.remove();
         removeOwnGuards();
         pendingExits2.delete(content);
+        pendingExits2.delete(wrapper);
       };
       if (options.unmount === "exit-window") {
         const exit = presenceExit(content, options.exitDuration ?? 100, removeDom);
-        pendingExits2.set(content, (newWrapper) => {
+        const settle = (newWrapper) => {
           exit.cancel();
           pendingExits2.delete(content);
+          pendingExits2.delete(wrapper);
           removeOwnGuards();
           if (newWrapper !== wrapper) wrapper.remove();
-        });
+        };
+        pendingExits2.set(content, settle);
+        if (wrapper !== content) pendingExits2.set(wrapper, settle);
       } else {
         removeDom();
       }
@@ -2413,8 +2429,8 @@ var RadixKernel = (() => {
       const onKeyDown = (event) => {
         if (event.key === "Escape") {
           if (!isHighestDismissLayer(layer)) return;
-          if (!claimEscapeEvent(event)) return;
           if (escapeClaimedThisTask()) return;
+          if (!claimEscapeEvent(event)) return;
           close();
         }
       };
@@ -2819,10 +2835,10 @@ var RadixKernel = (() => {
             if (cur) handles.select(cur);
             return;
           case "Escape":
-            event.preventDefault();
             if (!isHighestDismissLayer(layer)) return;
-            if (!claimEscapeEvent(event)) return;
             if (escapeClaimedThisTask()) return;
+            if (!claimEscapeEvent(event)) return;
+            event.preventDefault();
             handles.close(true);
             return;
           case "Tab":
@@ -3662,7 +3678,6 @@ var RadixKernel = (() => {
         const e = event;
         if (e.button !== 0) return;
         if (dragRect) return;
-        if (e.pointerType === "mouse" && e.button !== 0) return;
         const target = e.target;
         const thumb = thumbEl(axis);
         const sbRect = sb.getBoundingClientRect();
@@ -4011,11 +4026,12 @@ var RadixKernel = (() => {
         if (layers2.length) {
           const top = activeLayer();
           if (key === "Escape") {
-            preventDefault();
             const topDismiss = top.dismissLayer;
             if (!topDismiss || !isHighestDismissLayer(topDismiss)) return;
-            if (event ? !claimEscapeEvent(event) : escapeClaimedThisTask()) return;
+            if (escapeClaimedThisTask()) return;
+            if (event && !claimEscapeEvent(event)) return;
             if (!event) noteEscapeClaim();
+            preventDefault();
             closeAll();
             return;
           }
