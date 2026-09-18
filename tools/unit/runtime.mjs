@@ -45,6 +45,16 @@ const click = (dom, el) => el.dispatchEvent(new dom.window.MouseEvent("click", {
 const key = (dom, el, k) =>
   el.dispatchEvent(new dom.window.KeyboardEvent("keydown", { key: k, bubbles: true }))
 const tick = () => new Promise((r) => setTimeout(r, 0))
+// jsdom never propagates a listener exception to the dispatch caller, so
+// `try { click() } catch {}` can never see a throw — a throwing listener
+// surfaces as a window "error" event instead. The R2 guards ride that.
+const windowErrors = (dom, fn) => {
+  const errs = []
+  const onErr = (e) => errs.push(e.error ?? e.message)
+  dom.window.addEventListener("error", onErr)
+  try { fn() } finally { dom.window.removeEventListener("error", onErr) }
+  return errs
+}
 // fire the avatar settle path for every image currently listening
 const settleAll = (dom, scope) =>
   [...scope.querySelectorAll("[data-slot=avatar-image]")].forEach((img) =>
@@ -57,6 +67,19 @@ const freshImg = (doc, src) => {
 }
 
 export async function run(t) {
+  // ---- R2 guards' teeth: the error-event mechanism itself ----
+  {
+    // a throwing slot handler must surface as a window error event; the
+    // replaced try/catch form could never have failed (jsdom swallows it)
+    const dom = boot(`<div data-slot="boom"></div>`)
+    dom.window.shadless.initAll()
+    dom.window.shadless.register("boom", { slots: { boom: { onClick() { throw new Error("boom") } } } })
+    const b = dom.window.document.querySelector("[data-slot=boom]")
+    const errs = windowErrors(dom, () => click(dom, b))
+    t.eq("R2 mechanism: a throwing handler surfaces as a window error",
+      errs.map((e) => String(e?.message ?? e)), ["boom"])
+  }
+
   // ---- checkbox: state + indicator via SIBLING template (R1 regression) ----
   {
     const dom = boot(`
@@ -81,9 +104,8 @@ export async function run(t) {
 <template data-for="checkbox-indicator"></template>`)
     dom.window.shadless.initAll()
     const box = dom.window.document.querySelector("[data-slot=checkbox]")
-    let threw = false
-    try { click(dom, box) } catch { threw = true }
-    t.ok("checkbox: empty template doesn't throw (R2)", !threw)
+    const errs = windowErrors(dom, () => click(dom, box))
+    t.ok("checkbox: empty template doesn't throw (R2)", errs.length === 0, errs.join(" | "))
     t.eq("checkbox: state still toggles", box.getAttribute("aria-checked"), "true")
   }
 
@@ -170,9 +192,8 @@ export async function run(t) {
     t.eq("tg: arrow wraps to first", doc.activeElement, toolbar[0])
     // R2: orphan item (no group) must not throw
     const orphan = doc.querySelector("button:last-of-type")
-    let threw = false
-    try { click(dom, orphan) } catch { threw = true }
-    t.ok("tg: orphan item doesn't throw (R2)", !threw)
+    const errs = windowErrors(dom, () => click(dom, orphan))
+    t.ok("tg: orphan item doesn't throw (R2)", errs.length === 0, errs.join(" | "))
   }
 
   // ---- accordion: single closes siblings; multiple independent ----
@@ -202,9 +223,8 @@ export async function run(t) {
 </div>`)
     dom.window.shadless.initAll()
     const triggers = [...dom.window.document.querySelectorAll("[data-slot=accordion-trigger]")]
-    let threw = false
-    try { click(dom, triggers[2]) } catch { threw = true }
-    t.ok("accordion: malformed sibling doesn't throw (R2)", !threw)
+    const errs = windowErrors(dom, () => click(dom, triggers[2]))
+    t.ok("accordion: malformed sibling doesn't throw (R2)", errs.length === 0, errs.join(" | "))
     t.eq("accordion: clicked still opens", triggers[2].getAttribute("data-state"), "open")
     t.eq("accordion: well-formed sibling closed", triggers[0].getAttribute("data-state"), "closed")
   }
@@ -216,9 +236,8 @@ export async function run(t) {
 </div>`)
     dom.window.shadless.initAll()
     const tr = dom.window.document.querySelector("[data-slot=accordion-trigger]")
-    let threw = false
-    try { click(dom, tr) } catch { threw = true }
-    t.ok("accordion: missing content doesn't throw (R2)", !threw)
+    const errs = windowErrors(dom, () => click(dom, tr))
+    t.ok("accordion: missing content doesn't throw (R2)", errs.length === 0, errs.join(" | "))
     t.eq("accordion: trigger state syncs without content", tr.getAttribute("data-state"), "open")
   }
 
@@ -622,6 +641,46 @@ window.__esm = { default: shadless, get, theme, init, named: Object.keys(ns).sor
     t.ok("theme: toggle clears dark", !doc.documentElement.classList.contains("dark"))
     t.eq("theme: toggle persists", dom.window.localStorage.getItem("shadless-theme"), "light")
     t.eq("theme: toggle event", events, ["dark", "light"])
+  }
+
+  // ---- review fixes: contract drift + teardown ----
+  {
+    // README: "detail.component always set" — themechange bypasses emit()
+    // and used to be the one event without it
+    const dom = boot(`<div data-slot="toggle"></div>`)
+    const detail = []
+    dom.window.document.addEventListener("shadless:themechange", (e) => detail.push(e.detail))
+    dom.window.shadless.theme.set("dark")
+    t.eq("themechange: detail.component always set", detail.map((d) => d.component), ["theme"])
+  }
+  {
+    // destroy(root) must release the form-reset mirror: a form reset after
+    // destroy used to still drive the destroyed control's mirror
+    const dom = boot(`<form id="f"><span data-slot="checkbox" id="c1" name="tos" value="yes"></span></form>`)
+    const doc = dom.window.document
+    const box = doc.getElementById("c1")
+    dom.window.shadless.initAll() // initial: unchecked
+    click(dom, box) // checked now; the mirror's hidden input exists
+    dom.window.shadless.destroy(doc.body)
+    box.setAttribute("aria-checked", "true")
+    doc.getElementById("f").reset()
+    await tick()
+    t.eq("teardown: reset after destroy leaves the control alone",
+      box.getAttribute("aria-checked"), "true")
+  }
+  {
+    // init() must say WHY it refused: a live descendant used to silently
+    // disable the whole new root (delegation there covers only itself)
+    const dom = boot(`<div id="outer"><div id="inner"><span data-slot="toggle"></span></div><span data-slot="toggle"></span></div>`)
+    const doc = dom.window.document
+    dom.window.shadless.init(doc.getElementById("inner"))
+    const errs = []
+    const orig = dom.window.console.error
+    dom.window.console.error = (...a) => errs.push(a.join(" "))
+    dom.window.shadless.init(doc.getElementById("outer"))
+    dom.window.console.error = orig
+    t.ok("init: a live descendant is reported, not swallowed",
+      errs.some((m) => String(m).includes("already-live")), errs.join(" | "))
   }
 
   // ---- review fixes: malformed-markup guards + honest handles ----

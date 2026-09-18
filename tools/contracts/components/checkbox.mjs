@@ -11,8 +11,10 @@ import { Checkbox } from "@/registry/bases/radix/ui/checkbox";
 
   slots: ["checkbox", "checkbox-indicator"],
 
-  // NB: radix Checkbox ignores Enter (Space only) — measured 2026-08-22
-  scenarios: ["click:#c1", "focus:#c1+key:Space", "click:#c1+click:#c1"],
+  // NB: radix Checkbox ignores Enter (Space only) — measured 2026-08-22 and
+  // PINNED by the key:Enter scenario below: if shadless ever starts
+  // honoring Enter here, that is a real radix divergence and the gate reds
+  scenarios: ["click:#c1", "focus:#c1+key:Space", "focus:#c1+key:Enter", "click:#c1+click:#c1"],
 
   stateProbe: `
 var c = document.getElementById("c1");
