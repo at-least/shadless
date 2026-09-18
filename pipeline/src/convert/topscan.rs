@@ -184,8 +184,10 @@ impl<'a> CvTopScan<'a> {
             // SLICE (js[i+kwlen..] is what cv_split_top_indexed scanned):
             // both offsets must be rebased to js before combining, or every
             // arrow span comes out shifted (and destructured param defaults
-            // were silently unextractable)
-            let trim_left = dcl.text.len() - text.len();
+            // were silently unextractable). Rebase on trim_START only — a
+            // trailing whitespace tail (ASI newline, `… , B = 2;`) would
+            // otherwise shift the spans right.
+            let trim_left = dcl.text.len() - dcl.text.trim_start().len();
             let init_base = i + kwlen + dcl.off + trim_left + eq as usize + 1; // absolute position of initText[0]
             let decl_idx = self.decls.len();
             self.decls.push(CvDecl {
@@ -538,5 +540,18 @@ mod tests {
         assert!(params.contains("size = \"md\""), "params span must carry the default, got {params:?}");
         let body = &js[d.body[0]..d.body[1] + 1];
         assert!(body.contains("render"), "body span must quote the real body, got {body:?}");
+    }
+
+    /// ASI tail: `cv_skip_stmt` stops at the newline, so dcl.text keeps its
+    /// trailing `\n` — the rebase must count trim_START only or the spans
+    /// shift right by the tail length.
+    #[test]
+    fn unit_arrow_spans_survive_a_trailing_newline_tail() {
+        let js = "var Chart = ({ size = \"md\" }) => ({ render: 1 })\nvar Other = 2;";
+        let t = scan_top_js(js).unwrap();
+        let d = t.decls.iter().find(|d| d.name == "Chart").unwrap();
+        assert!(d.is_arrow);
+        let params = &js[d.params[0]..d.params[1] + 1];
+        assert_eq!(params, "({ size = \"md\" })", "params exact span, got {params:?}");
     }
 }

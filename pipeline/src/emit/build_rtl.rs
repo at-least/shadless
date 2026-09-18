@@ -293,7 +293,8 @@ pub fn run_build_rtl() -> i32 {
     let mut langs: Vec<String> = Vec::new();
     for ls in manifest.values() {
         for l in ls {
-            if !langs.contains(l) {
+            // "ar" is the SOURCE language — no *-rtl-ar file is ever written
+            if l != "ar" && !langs.contains(l) {
                 langs.push(l.clone());
             }
         }

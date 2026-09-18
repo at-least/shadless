@@ -350,10 +350,10 @@ pub fn cv_find_ternary_colon(s: &str, q: usize) -> isize {
             b'(' | b'[' | b'{' => depth += 1,
             b')' | b']' | b'}' => depth -= 1,
             b'?' => {
-                // optional chaining (`user?.slug`) is not a ternary `?`:
-                // counting it nested made the colon search skip the REAL
-                // colon and the whole expression degraded to "other"
-                if b.get(i + 1) == Some(&b'.') {
+                // optional chaining (`user?.slug`) and the nullish op (`a ?? b`)
+                // are not ternary `?`: counting either made the colon search
+                // skip the REAL colon and the expression degrade to "other"
+                if b.get(i + 1) == Some(&b'.') || b.get(i + 1) == Some(&b'?') {
                     i += 1;
                 } else {
                     nest += 1;
@@ -930,6 +930,18 @@ mod tests {
     #[test]
     fn unit_ternary_colon_ignores_optional_chaining() {
         let s = "cond ? user?.slug : \"x\"";
+        let q = s.find('?').unwrap();
+        let colon = cv_find_ternary_colon(s, q);
+        assert!(colon >= 0, "the real colon must be found");
+        assert_eq!(&s[colon as usize..colon as usize + 2], ": ");
+    }
+
+    /// `??` is the nullish op — both of its chars counted as nested
+    /// ternaries, so `cond ? a ?? b : "x"` returned -1 (chart.tsx carries
+    /// one live).
+    #[test]
+    fn unit_ternary_colon_ignores_nullish_coalescing() {
+        let s = "cond ? a ?? b : \"x\"";
         let q = s.find('?').unwrap();
         let colon = cv_find_ternary_colon(s, q);
         assert!(colon >= 0, "the real colon must be found");
