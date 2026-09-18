@@ -337,11 +337,23 @@ impl Runner {
             }
         }
         if let Some(key) = key {
-            // recompute after the run: a node whose own output feeds its key
-            // would otherwise be stamped with a key it no longer has
-            match Keyer::new(&self.root, &self.graph).key(&n.id) {
-                Ok(Some(after)) => self.record(&n.id, stamp_value(&self.root, n, &after)),
-                _ => self.record(&n.id, stamp_value(&self.root, n, key)),
+            // A node that produces nothing cannot feed its own key: its
+            // verdict corresponds to the tree as it stood at dispatch, so
+            // THAT is what the stamp must claim. Recomputing after the run
+            // (the branch below, for self-feeding producers) would re-hash
+            // whatever a concurrent node wrote during the run and stamp a
+            // verdict over content the node never tested — the next run
+            // then skips it. Stamping the pre-run key turns that
+            // interleaving into a spurious rerun at worst.
+            if n.produces.is_none() {
+                self.record(&n.id, stamp_value(&self.root, n, key));
+            } else {
+                // recompute after the run: a node whose own output feeds its
+                // key would otherwise be stamped with a key it no longer has
+                match Keyer::new(&self.root, &self.graph).key(&n.id) {
+                    Ok(Some(after)) => self.record(&n.id, stamp_value(&self.root, n, &after)),
+                    _ => self.record(&n.id, stamp_value(&self.root, n, key)),
+                }
             }
         }
         Result_ {
@@ -664,6 +676,60 @@ mod tests {
         let counts = runner.run(&[a, b]);
         assert_eq!(counts.ran, 2, "both browser nodes must succeed");
         assert_eq!(counts.failed, 0);
+        let _ = fs::remove_dir_all(&t);
+    }
+
+    #[test]
+    fn a_gate_stamps_the_key_it_actually_tested() {
+        // A gate produces nothing, so its key can only move while it runs if
+        // a concurrent node rewrites an input mid-run (unit racing convert's
+        // IR rewrite at -j4 was the live case). The stamp must say what the
+        // verdict actually tested — the pre-run key — so that interleaving
+        // costs a spurious rerun, never a stale-green skip.
+        let t = std::env::temp_dir().join(format!("shadless-rs-prestamp-{}", std::process::id()));
+        fs::create_dir_all(&t).unwrap();
+        fs::write(t.join("data.txt"), b"old").unwrap();
+        let gate = N {
+            id: "g".to_string(),
+            kind: "gate".to_string(),
+            tier: "fast".to_string(),
+            needs: vec![],
+            // the command stands in for the concurrent writer landing
+            // mid-run: by the time a post-run recompute would hash, the
+            // input has moved
+            run: vec![vec![
+                "sh".to_string(),
+                "-c".to_string(),
+                "printf new > data.txt".to_string(),
+            ]],
+            inputs: Some(vec!["data.txt".to_string()]),
+            produces: None,
+            why: String::new(),
+            mutations: vec![],
+        };
+        let g = Arc::new(Graph::new(vec![gate.clone()]).unwrap());
+        let key_before = Keyer::new(&t, &g).key("g").unwrap().unwrap();
+        let runner = Arc::new(Runner::new(
+            t.clone(),
+            Arc::clone(&g),
+            2, // above -j1 so the write check stays out of the way
+            1,
+            false,
+            false,
+            HashMap::new(),
+        ));
+        let counts = runner.run(&[gate.clone()]);
+        assert_eq!(counts.failed, 0);
+        let key_after = Keyer::new(&t, &g).key("g").unwrap().unwrap();
+        assert_ne!(
+            key_before, key_after,
+            "setup: the input must have moved during the run"
+        );
+        assert_eq!(
+            crate::stamps::load_stamps(&t).get("g").map(String::as_str),
+            Some(stamp_value(&t, &gate, &key_before).as_str()),
+            "a gate's stamp must carry the pre-run key — the content its verdict tested"
+        );
         let _ = fs::remove_dir_all(&t);
     }
 
