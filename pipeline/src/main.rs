@@ -686,7 +686,7 @@ fn run_hidden_gate(rest: &[String]) -> i32 {
             // nested cargo test must not inherit that (or its own node
             // children would write into the gate's scratch js.log).
             let out = std::process::Command::new("cargo")
-                .args(["test", "--release", "--lib", "--", "unit_"])
+                .args(["test", "--release", "--lib", "--bins", "--", "unit_"])
                 .current_dir(env!("CARGO_MANIFEST_DIR"))
                 .env_remove("NODE_OPTIONS")
                 .env_remove("SHADLESS_FSLOG")
@@ -749,8 +749,12 @@ mod verb_surface {
         "path-parity",
     ];
 
+    // unit_-prefixed and --bins-covered: these are bin-target tests, and
+    // the unit gate runs `cargo test --lib --bins -- unit_` — a plain name
+    // here silently never executed anywhere (found 2026-09-18: both tests
+    // below had never run in any gate).
     #[test]
-    fn dispatch_arms_match_public_verbs() {
+    fn unit_dispatch_arms_match_public_verbs() {
         let mut a: Vec<&str> = ARMS.to_vec();
         a.sort();
         let mut v: Vec<&str> = pipeline::nodes::VERBS.to_vec();
@@ -759,7 +763,7 @@ mod verb_surface {
     }
 
     #[test]
-    fn dispatched_gates_match_gate_ids() {
+    fn unit_dispatched_gates_match_gate_ids() {
         let mut d: Vec<&str> = super::DISPATCHED_GATES.to_vec();
         d.sort();
         let mut g: Vec<&str> = pipeline::nodes::GATE_IDS.to_vec();
