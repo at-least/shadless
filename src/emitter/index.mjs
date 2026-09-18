@@ -30,14 +30,17 @@ import { THEME_PREPAINT_SCRIPT, SHADLESS_CSS_FIXES } from "../docs/theme-prepain
  */
 export function cssIncludesToken(hay, tok) {
   if (!tok) return false
-  const bad = (c) => /[A-Za-z0-9_-]/.test(c)
+  const bad = (/** @type {string | undefined} */ c) =>
+    /[A-Za-z0-9_-]/.test(c ?? "\u0000")
   let from = 0
   for (;;) {
     const pos = hay.indexOf(tok, from)
     if (pos < 0) return false
     const end = pos + tok.length
     const beforeOk = pos === 0 || !bad(hay[pos - 1])
-    const afterOk = end >= hay.length || (!bad(hay[end]) && hay[end] !== '.')
+    // a trailing backslash is Tailwind's escaped-decimal continuation
+    // (compiled selectors write p-2\.5) — not the token's end
+    const afterOk = end >= hay.length || (!bad(hay[end]) && hay[end] !== '.' && hay[end] !== '\\')
     if (beforeOk && afterOk) return true
     from = pos + 1
   }

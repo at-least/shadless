@@ -165,6 +165,7 @@ export function run(t) {
     t.ok("cssIncludesToken: substring inside longer token rejected",
       !cssIncludesToken("only gap-2 here", "p-2"))
     t.ok("cssIncludesToken: decimal continuation rejected", !cssIncludesToken(".p-2.5 { }", "p-2"))
+    t.ok("cssIncludesToken: escaped-decimal selector rejected", !cssIncludesToken(".p-2\\.5 { }", "p-2"))
     t.ok("cssIncludesToken: variant prefix accepted", cssIncludesToken(".hover\\:p-2 { }", "p-2"))
     t.ok("cssIncludesToken: empty token rejected", !cssIncludesToken(".p-2 { }", ""))
   }

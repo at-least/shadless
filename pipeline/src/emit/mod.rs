@@ -836,7 +836,8 @@ pub fn run_emit() -> Result<(), String> {
 /// Token-boundary containment for CSS class tokens: `p-2` must not match
 /// inside `gap-2` or `p-2.5`. A class token is `[\w-]+`, so an occurrence
 /// is a real token only when neither neighbour is `[\w-]` and the follower
-/// is not `.`; a variant prefix (`hover:p-2`) still counts — the variant
+/// is neither `.` nor `\` (compiled CSS writes the escaped decimal
+/// `.p-2\.5`); a variant prefix (`hover:p-2`) still counts — the variant
 /// colon is not a word character. The completeness gates on both emit twins
 /// check every `@apply` token this way: a substring check let a dropped
 /// rule pass because some longer token elsewhere happened to contain it.
@@ -851,7 +852,8 @@ pub(crate) fn css_contains_token(hay: &str, tok: &str) -> bool {
         let start = from + pos;
         let end = start + tok.len();
         let before_ok = start == 0 || !bad(b[start - 1]);
-        let after_ok = end >= b.len() || (!bad(b[end]) && b[end] != b'.');
+        let after_ok =
+            end >= b.len() || (!bad(b[end]) && b[end] != b'.' && b[end] != b'\\');
         if before_ok && after_ok {
             return true;
         }
@@ -881,6 +883,8 @@ mod tests {
         assert!(css_contains_token(hay, "gap-2"));
         assert!(!css_contains_token("only gap-2 here", "p-2"));
         assert!(!css_contains_token(".p-2.5 { }", "p-2"));
+        // compiled selectors escape the decimal dot: p-2\.5
+        assert!(!css_contains_token(".p-2\\.5 { }", "p-2"));
         assert!(!css_contains_token(".sp-2 { }", "p-2"));
         assert!(css_contains_token(".hover\\:p-2 { }", "p-2"));
         assert!(!css_contains_token("", "p-2"));

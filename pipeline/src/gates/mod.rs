@@ -107,6 +107,27 @@ pub fn gate_dist_complete(root: &Path) -> Result<usize, String> {
 /// The parity baselines are covered deliberately: a deleted baseline
 /// re-records itself green on the next run, so the committed file is what
 /// pins the ratchet.
+
+/// Does this libtest output show at least one passing test? libtest exits 0
+/// for a zero-match filter, so the unit gate parses the count — a substring
+/// check for "0 passed" went red whenever the count merely ENDED in 0
+/// ("120 passed" contains "0 passed"). Lives in the lib (not main.rs) so
+/// `cargo test --lib -- unit_` — the very gate that uses it — covers it.
+pub fn libtest_has_passing_tests(stdout: &str) -> bool {
+    for line in stdout.lines() {
+        let Some(rest) = line.strip_prefix("test result: ") else {
+            continue;
+        };
+        // "ok. 173 passed; 0 failed; ..." — the count is field 1
+        if let Some(count) = rest.split_whitespace().nth(1) {
+            if count.parse::<usize>().map(|n| n > 0).unwrap_or(false) {
+                return true;
+            }
+        }
+    }
+    false
+}
+
 fn reproducible_roots() -> &'static [&'static str] {
     &[
         "dist", "docs/catalog.json", "docs/demos", "docs/example-oracle.json",
@@ -207,6 +228,23 @@ pub fn gate_product_verify(root: &Path) -> Result<(), String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+
+    /// "120 passed" CONTAINS "0 passed" — a substring check for "0 passed"
+    /// went red whenever the passing count merely ended in 0.
+    #[test]
+    fn unit_libtest_count_parse_is_not_a_substring_check() {
+        assert!(libtest_has_passing_tests(
+            "test result: ok. 120 passed; 0 failed; 0 ignored"
+        ));
+        assert!(libtest_has_passing_tests(
+            "test result: ok. 173 passed; 0 failed; 2 filtered out"
+        ));
+        assert!(!libtest_has_passing_tests(
+            "test result: ok. 0 passed; 0 failed; 2 filtered out"
+        ));
+        assert!(!libtest_has_passing_tests("no summary at all"));
+    }
 
     /// A deleted parity baseline re-records itself green — reproducible is
     /// what pins the committed file, so the roots must cover all three.

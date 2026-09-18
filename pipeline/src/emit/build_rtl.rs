@@ -288,6 +288,17 @@ pub fn run_build_rtl() -> i32 {
     // -rtl- shaped that this run did not produce is stale by construction.
     let produced: std::collections::HashSet<std::path::PathBuf> =
         pending_writes.iter().map(|p| p.path.clone()).collect();
+    // only this run's languages may name a deletable file: a bare `-rtl-`
+    // match is wider than what build_rtl writes (-rtl-<lang>)
+    let mut langs: Vec<String> = Vec::new();
+    for ls in manifest.values() {
+        for l in ls {
+            if !langs.contains(l) {
+                langs.push(l.clone());
+            }
+        }
+    }
+    langs.sort();
     for dir in ["docs/demos", "dist/components"] {
         let Ok(ents) = std::fs::read_dir(root.join(dir)) else {
             continue;
@@ -295,7 +306,12 @@ pub fn run_build_rtl() -> i32 {
         for e in ents.flatten() {
             let p = e.path();
             let name = e.file_name().to_string_lossy().into_owned();
-            if !name.ends_with(".html") || !name.contains("-rtl-") || produced.contains(&p) {
+            let this_run_lang = langs.iter().any(|l| name.ends_with(&format!("-{}.html", l)));
+            if !name.ends_with(".html")
+                || !name.contains("-rtl-")
+                || !this_run_lang
+                || produced.contains(&p)
+            {
                 continue;
             }
             if let Err(e) = std::fs::remove_file(&p) {

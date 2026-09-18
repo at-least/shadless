@@ -703,10 +703,7 @@ fn run_hidden_gate(rest: &[String]) -> i32 {
                     // it meta_wiring, the only enforcement that every gate
                     // has a mutation. A vacuous green is a failure.
                     let stdout = String::from_utf8_lossy(&o.stdout);
-                    let any_passed = stdout
-                        .lines()
-                        .any(|l| l.starts_with("test result: ") && !l.contains("0 passed"));
-                    if any_passed {
+                    if pipeline::gates::libtest_has_passing_tests(&stdout) {
                         0
                     } else {
                         eprintln!(
@@ -730,6 +727,8 @@ fn run_hidden_gate(rest: &[String]) -> i32 {
         }
     }
 }
+
+
 
 #[cfg(test)]
 mod verb_surface {
