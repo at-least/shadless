@@ -71,6 +71,29 @@ fn oracle_invariant_once() -> &'static Result<Vec<u8>, String> {
             h.update(n.as_bytes());
             h.update(&b);
         }
+        // The bundles inline the RESOLVED registry tree (alias
+        // @/registry/bases/radix/ui → build/resolved-ui): hashing the pin
+        // commit string alone let a warm bundle outlive the sources it
+        // inlined whenever the resolved bytes moved without a re-pin (a
+        // tiers.json reclassification, a skins or kernel-page change that
+        // convert folds in). Content-hash the tree, sorted for determinism.
+        let mut resolved: Vec<PathBuf> = walkdir::WalkDir::new("build/resolved-ui")
+            .into_iter()
+            .filter_map(|e| e.ok())
+            .filter(|e| e.file_type().is_file())
+            .map(|e| e.path().to_path_buf())
+            .collect();
+        resolved.sort();
+        if resolved.is_empty() {
+            return Err("build/resolved-ui is empty or missing — run the convert node first".to_string());
+        }
+        for f in &resolved {
+            let b = std::fs::read(f).map_err(|e| format!("{}: {}", f.display(), e))?;
+            h.update(f.to_string_lossy().as_bytes());
+            h.update([0u8]);
+            h.update(&b);
+            h.update([0u8]);
+        }
         Ok(h.finalize().to_vec())
     })
 }

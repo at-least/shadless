@@ -939,6 +939,34 @@ fn self_host(n: Node) -> Node {
     // verdict. Order it after every producer of a generated root. This is a
     // self-hosted-shape decision: the go-mirror table is Go-verbatim
     // history and stays untouched.
+    // A node that executes a repo toolchain binary must declare it (see the
+    // unit_toolchain_executors_declare_their_binary test): the Go table
+    // predates node_modules toolchains and only consumer-sim declared its
+    // tailwind path. Keep in sync with the Command::new sites in jsbuild.rs,
+    // convert/mod.rs, emit/tw.rs, tools/oracle_css.rs, oracle/oracle_lib.rs
+    // and the npx tsc invocation in the typecheck node.
+    const TOOLCHAIN_INPUTS: &[(&str, &str)] = &[
+        ("build-js", "node_modules/.bin/esbuild"),
+        ("convert", "node_modules/.bin/esbuild"),
+        ("typecheck", "node_modules/.bin/tsc"),
+        ("demo", "node_modules/.bin/tailwindcss"),
+        ("product-build", "node_modules/.bin/tailwindcss"),
+        ("oracle-css", "node_modules/.bin/tailwindcss"),
+        ("example-oracle", "node_modules/.bin/esbuild"),
+        ("example-fixture", "node_modules/.bin/esbuild"),
+        ("contract-fixture", "node_modules/.bin/esbuild"),
+        ("golden-gate", "node_modules/.bin/esbuild"),
+    ];
+    if let Some((_, bin)) = TOOLCHAIN_INPUTS.iter().find(|(nid, _)| *nid == id) {
+        match n.inputs.as_mut() {
+            Some(inputs) => {
+                inputs.push(bin.to_string());
+                inputs.sort();
+                inputs.dedup();
+            }
+            None => n.inputs = Some(vec![bin.to_string()]),
+        }
+    }
     if id == "reproducible" {
         let mut producers: Vec<String> = all_go()
             .iter()
@@ -984,6 +1012,36 @@ pub fn mirror_mode() -> bool {
 #[cfg(test)]
 mod self_host_tests {
     use super::*;
+
+    /// A node that executes a repo toolchain binary must declare it: an
+    /// upgraded or deleted esbuild/tailwind/tsc would otherwise leave every
+    /// consumer falsely fresh (Rust-side read evidence cannot see it, and
+    /// node_modules is excluded from the JS read log by design).
+    /// consumer-sim already declared its tailwind path in the Go table; the
+    /// self_host table is the policy for the rest.
+    #[test]
+    fn unit_toolchain_executors_declare_their_binary() {
+        let g: Vec<Node> = all_go().into_iter().map(self_host).collect();
+        for (id, bin) in [
+            ("build-js", "node_modules/.bin/esbuild"),
+            ("convert", "node_modules/.bin/esbuild"),
+            ("typecheck", "node_modules/.bin/tsc"),
+            ("demo", "node_modules/.bin/tailwindcss"),
+            ("product-build", "node_modules/.bin/tailwindcss"),
+            ("oracle-css", "node_modules/.bin/tailwindcss"),
+            ("example-oracle", "node_modules/.bin/esbuild"),
+            ("example-fixture", "node_modules/.bin/esbuild"),
+            ("contract-fixture", "node_modules/.bin/esbuild"),
+            ("golden-gate", "node_modules/.bin/esbuild"),
+        ] {
+            let n = g.iter().find(|n| n.id == id).unwrap_or_else(|| panic!("node {id} missing"));
+            let inputs = n.inputs.as_deref().unwrap_or(&[]);
+            assert!(
+                inputs.iter().any(|p| p == bin),
+                "{id} executes {bin} but does not declare it — upgrading the binary stays falsely fresh"
+            );
+        }
+    }
 
     #[test]
     fn all_go_is_the_go_verbatim_shape() {
