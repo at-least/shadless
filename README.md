@@ -72,7 +72,6 @@ delegate on `document` instead of polling:
 | | tabs root | `{ index, trigger }` |
 | | slider root | `{ values }` (live, every step of a drag) |
 | `shadless:commit` | slider root | `{ values }` once per gesture (radix `onValueCommit`) — the value to persist |
-| | select trigger | `{ value, label, item }` (`value` is the option's `value` / `data-value` attr or id, else its label) |
 | `shadless:themechange` | `document` | `{ mode }` |
 
 Forms work the way they do with radix: give a checkbox, switch, radio-group

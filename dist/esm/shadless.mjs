@@ -159,6 +159,7 @@ var RadixKernel = (() => {
   function claimEscapeEvent(event) {
     if (claimedEscapes.has(event)) return false;
     claimedEscapes.add(event);
+    noteEscapeClaim();
     return true;
   }
   var escapelessClaimSeq = 0;
@@ -245,9 +246,19 @@ var RadixKernel = (() => {
     const layer = registerDismissLayer(trigger ? [portal, trigger] : [portal], () => close(true));
     const onKeyDown = (event) => {
       if (event.key === "Escape") {
-        if (!isHighestDismissLayer(layer)) return;
-        if (!claimEscapeEvent(event)) return;
-        if (escapeClaimedThisTask()) return;
+        if (!isHighestDismissLayer(layer)) {
+          console.error("[TRACE] ESC standdown:not-highest");
+          return;
+        }
+        if (escapeClaimedThisTask()) {
+          console.error("[TRACE] ESC standdown:task-flag");
+          return;
+        }
+        if (!claimEscapeEvent(event)) {
+          console.error("[TRACE] ESC standdown:claimed");
+          return;
+        }
+        console.error("[TRACE] ESC act:close");
         if (preventDefaultOnKeys) event.preventDefault();
         close(true);
         return;
@@ -2171,7 +2182,8 @@ var RadixKernel = (() => {
       return w;
     })();
     if (!wrapper.contains(content)) wrapper.appendChild(content);
-    pendingExits2.get(content)?.(wrapper);
+    const settleAdoption = pendingExits2.get(content) ?? (options.wrapper ? pendingExits2.get(options.wrapper) : void 0);
+    settleAdoption?.(wrapper);
     const externalGuards = options.guards;
     const guardStart = externalGuards?.start ?? makeGuard2(doc);
     const guardEnd = externalGuards?.end ?? makeGuard2(doc);
@@ -2209,8 +2221,8 @@ var RadixKernel = (() => {
       if (event.key === "Escape") {
         if (options.escapeClose === false) return;
         if (!isHighestDismissLayer(layer)) return;
-        if (!claimEscapeEvent(event)) return;
         if (escapeClaimedThisTask()) return;
+        if (!claimEscapeEvent(event)) return;
         if (options.escapePreventDefault) event.preventDefault();
         close();
         return;
@@ -2258,15 +2270,19 @@ var RadixKernel = (() => {
         wrapper.remove();
         removeOwnGuards();
         pendingExits2.delete(content);
+        pendingExits2.delete(wrapper);
       };
       if (options.unmount === "exit-window") {
         const exit = presenceExit(content, options.exitDuration ?? 100, removeDom);
-        pendingExits2.set(content, (newWrapper) => {
+        const settle = (newWrapper) => {
           exit.cancel();
           pendingExits2.delete(content);
+          pendingExits2.delete(wrapper);
           removeOwnGuards();
           if (newWrapper !== wrapper) wrapper.remove();
-        });
+        };
+        pendingExits2.set(content, settle);
+        if (wrapper !== content) pendingExits2.set(wrapper, settle);
       } else {
         removeDom();
       }
@@ -2413,8 +2429,8 @@ var RadixKernel = (() => {
       const onKeyDown = (event) => {
         if (event.key === "Escape") {
           if (!isHighestDismissLayer(layer)) return;
-          if (!claimEscapeEvent(event)) return;
           if (escapeClaimedThisTask()) return;
+          if (!claimEscapeEvent(event)) return;
           close();
         }
       };
@@ -2819,10 +2835,10 @@ var RadixKernel = (() => {
             if (cur) handles.select(cur);
             return;
           case "Escape":
-            event.preventDefault();
             if (!isHighestDismissLayer(layer)) return;
-            if (!claimEscapeEvent(event)) return;
             if (escapeClaimedThisTask()) return;
+            if (!claimEscapeEvent(event)) return;
+            event.preventDefault();
             handles.close(true);
             return;
           case "Tab":
@@ -3662,7 +3678,6 @@ var RadixKernel = (() => {
         const e = event;
         if (e.button !== 0) return;
         if (dragRect) return;
-        if (e.pointerType === "mouse" && e.button !== 0) return;
         const target = e.target;
         const thumb = thumbEl(axis);
         const sbRect = sb.getBoundingClientRect();
@@ -4011,11 +4026,12 @@ var RadixKernel = (() => {
         if (layers2.length) {
           const top = activeLayer();
           if (key === "Escape") {
-            preventDefault();
             const topDismiss = top.dismissLayer;
             if (!topDismiss || !isHighestDismissLayer(topDismiss)) return;
-            if (event ? !claimEscapeEvent(event) : escapeClaimedThisTask()) return;
+            if (escapeClaimedThisTask()) return;
+            if (event && !claimEscapeEvent(event)) return;
             if (!event) noteEscapeClaim();
+            preventDefault();
             closeAll();
             return;
           }
@@ -4304,13 +4320,17 @@ globalThis.RadixKernel = RadixKernel;
   function formMirror(root, def) {
     if (MIRRORS.has(root)) return MIRRORS.get(root)
     if (!root.getAttribute("name")) return null
-    var m = { def: def, initial: def.read(), inputs: [] }
+    var ctl = typeof AbortController === "function" ? new AbortController() : null
+    var m = { def: def, initial: def.read(), inputs: [], ctl: ctl }
     MIRRORS.set(root, m)
     var form = root.closest("form")
-    // native controls reset after the event; restore in the same turn order
+    // native controls reset after the event; restore in the same turn order.
+    // The listener rides the mirror's AbortController: destroy(root) aborts
+    // it, so a form reset after teardown leaves the control alone instead of
+    // a dead mirror restoring stale values.
     if (form) form.addEventListener("reset", function () {
       setTimeout(function () { def.write(m.initial); syncForm(root) }, 0)
-    })
+    }, { signal: ctl ? ctl.signal : undefined })
     syncForm(root)
     return m
   }
@@ -4414,6 +4434,13 @@ globalThis.RadixKernel = RadixKernel;
     })
     if (kept.length) ROOT_WIRED.set(live, kept)
     else ROOT_WIRED.delete(live)
+    // form mirrors hang off controls this loop never sees (trivial-tier
+    // slots carry no wire record) — sweep the subtree so destroy() releases
+    // every form-reset listener init created inside it
+    if (live.nodeType === 1) live.querySelectorAll("*").forEach(function (el) {
+      var m = MIRRORS.get(el)
+      if (m && m.ctl) m.ctl.abort()
+    })
   }
 
   // ---- shared kernel-family wiring -----------------------------------------
@@ -4443,7 +4470,9 @@ globalThis.RadixKernel = RadixKernel;
     // trigger (sub menus do not emit) and dispatches the edges
     var openTrigger = null;
     var sync = function () {
-      var l = handles.rootLayer();
+      // handles is assigned by wireMenu BELOW; a synchronous onAllClosed
+      // during wiring must not trip over the undefined binding
+      var l = handles ? handles.rootLayer() : null;
       var t = l ? l.trigger : null;
       if (t === openTrigger) return;
       var prev = openTrigger;
@@ -4676,7 +4705,13 @@ globalThis.RadixKernel = RadixKernel;
     for (var a = root.parentElement; a; a = a.parentElement)
       if (LIVE.has(a)) return
     for (const d of root.querySelectorAll("*"))
-      if (LIVE.has(d)) return
+      if (LIVE.has(d)) {
+        // silent refusal left the REST of root unwired with no diagnostic —
+        // the live descendant delegates only itself
+        console.error("shadless: init refused — root contains an already-live root; " +
+          "delegation there covers only itself, init a root that contains no live descendant")
+        return
+      }
     // behaviors with init-time work (e.g. avatar image settle)
     runInitBehaviors(root, false)
     var ctx = { root: root }
@@ -4719,8 +4754,11 @@ globalThis.RadixKernel = RadixKernel;
     var dark = mode === "dark"
     document.documentElement.classList.toggle("dark", dark)
     try { localStorage.setItem(THEME_KEY, dark ? "dark" : "light") } catch (e) { /* private mode etc. */ }
+    // component rides along like every other shadless event (README:
+    // "detail.component always set") — "theme" is not a component slot but
+    // the event's subject, and consumers narrow on it uniformly
     document.dispatchEvent(new CustomEvent("shadless:themechange",
-      { detail: { mode: dark ? "dark" : "light" } }))
+      { detail: { component: "theme", mode: dark ? "dark" : "light" } }))
   }
 
   // ---- opt-in observer (J3) ------------------------------------------------

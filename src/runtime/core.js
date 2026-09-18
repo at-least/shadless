@@ -187,13 +187,17 @@
   function formMirror(root, def) {
     if (MIRRORS.has(root)) return MIRRORS.get(root)
     if (!root.getAttribute("name")) return null
-    var m = { def: def, initial: def.read(), inputs: [] }
+    var ctl = typeof AbortController === "function" ? new AbortController() : null
+    var m = { def: def, initial: def.read(), inputs: [], ctl: ctl }
     MIRRORS.set(root, m)
     var form = root.closest("form")
-    // native controls reset after the event; restore in the same turn order
+    // native controls reset after the event; restore in the same turn order.
+    // The listener rides the mirror's AbortController: destroy(root) aborts
+    // it, so a form reset after teardown leaves the control alone instead of
+    // a dead mirror restoring stale values.
     if (form) form.addEventListener("reset", function () {
       setTimeout(function () { def.write(m.initial); syncForm(root) }, 0)
-    })
+    }, { signal: ctl ? ctl.signal : undefined })
     syncForm(root)
     return m
   }
@@ -297,6 +301,13 @@
     })
     if (kept.length) ROOT_WIRED.set(live, kept)
     else ROOT_WIRED.delete(live)
+    // form mirrors hang off controls this loop never sees (trivial-tier
+    // slots carry no wire record) — sweep the subtree so destroy() releases
+    // every form-reset listener init created inside it
+    if (live.nodeType === 1) live.querySelectorAll("*").forEach(function (el) {
+      var m = MIRRORS.get(el)
+      if (m && m.ctl) m.ctl.abort()
+    })
   }
 
   // ---- shared kernel-family wiring -----------------------------------------
@@ -326,7 +337,9 @@
     // trigger (sub menus do not emit) and dispatches the edges
     var openTrigger = null;
     var sync = function () {
-      var l = handles.rootLayer();
+      // handles is assigned by wireMenu BELOW; a synchronous onAllClosed
+      // during wiring must not trip over the undefined binding
+      var l = handles ? handles.rootLayer() : null;
       var t = l ? l.trigger : null;
       if (t === openTrigger) return;
       var prev = openTrigger;
@@ -559,7 +572,13 @@
     for (var a = root.parentElement; a; a = a.parentElement)
       if (LIVE.has(a)) return
     for (const d of root.querySelectorAll("*"))
-      if (LIVE.has(d)) return
+      if (LIVE.has(d)) {
+        // silent refusal left the REST of root unwired with no diagnostic —
+        // the live descendant delegates only itself
+        console.error("shadless: init refused — root contains an already-live root; " +
+          "delegation there covers only itself, init a root that contains no live descendant")
+        return
+      }
     // behaviors with init-time work (e.g. avatar image settle)
     runInitBehaviors(root, false)
     var ctx = { root: root }
@@ -602,8 +621,11 @@
     var dark = mode === "dark"
     document.documentElement.classList.toggle("dark", dark)
     try { localStorage.setItem(THEME_KEY, dark ? "dark" : "light") } catch (e) { /* private mode etc. */ }
+    // component rides along like every other shadless event (README:
+    // "detail.component always set") — "theme" is not a component slot but
+    // the event's subject, and consumers narrow on it uniformly
     document.dispatchEvent(new CustomEvent("shadless:themechange",
-      { detail: { mode: dark ? "dark" : "light" } }))
+      { detail: { component: "theme", mode: dark ? "dark" : "light" } }))
   }
 
   // ---- opt-in observer (J3) ------------------------------------------------

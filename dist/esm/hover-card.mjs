@@ -25,10 +25,11 @@ import "./shadless.mjs"
         onClosed: function () { open = false; current = null; shadless.h.emit(trigger, "close", "hover-card"); },
       });
       shadless.h.bindHandlers(trigger, wired.handlers, w.signal);
+      var openFn = function () { if (!open) trigger.dispatchEvent(new PointerEvent("pointerenter", { pointerType: "mouse" })) }
       shadless.instances.set(trigger, { component: "hover-card",
-        open: function () { if (!open) trigger.dispatchEvent(new PointerEvent("pointerenter", { pointerType: "mouse" })) },
+        open: openFn,
         close: function () { if (open) wired.dismiss() },
-        toggle: function () { open ? wired.dismiss() : this.open() },
+        toggle: function () { open ? wired.dismiss() : openFn() },
         isOpen: function () { return open },
       })
       // radix HoverCardContent is a DismissableLayer (Escape + outside

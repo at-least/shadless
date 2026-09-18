@@ -3,6 +3,7 @@
 (function () {
   var h = shadless.h
   shadless.register("toggle", { slots: {
+    // toggle: aria-pressed + data-state on/off (radix Toggle).,
     toggle: {
       onClick: function (root) {
         var on = root.getAttribute("aria-pressed") !== "true"
@@ -11,6 +12,5 @@
         h.emit(root, "change", "toggle", { pressed: on })
       },
     },
-    // radio-group: click checks exclusively; checked item cannot be unchecked,
   } })
 })()

@@ -35,7 +35,9 @@ import "./shadless.mjs"
     // trigger (sub menus do not emit) and dispatches the edges
     var openTrigger = null;
     var sync = function () {
-      var l = handles.rootLayer();
+      // handles is assigned by wireMenu below; a synchronous onAllClosed
+      // during wiring must not trip over the undefined binding
+      var l = handles ? handles.rootLayer() : null;
       var t = l ? l.trigger : null;
       if (t === openTrigger) return;
       var prev = openTrigger;

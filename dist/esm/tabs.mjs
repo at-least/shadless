@@ -23,6 +23,10 @@ import "./shadless.mjs"
       // kernel's wireTabs needs panels, so activation is wired here — click
       // and arrow keys flip data-state / aria-selected / roving tabindex
       if (panels.some(function (p) { return !p; })) {
+        // all-null is a designed trigger-only list; mixed nulls mean a
+        // broken aria-controls id silently degraded the WHOLE list
+        if (panels.some(function (p) { return p; }))
+          console.error('shadless: tabs "' + (root.id || "?") + '" has a trigger whose aria-controls matches no panel — wiring trigger-only activation for the whole list')
         var current = -1;
         var activate = function (i) {
           triggers.forEach(function (t, k) {

@@ -62,7 +62,7 @@ export interface ShadlessEventMap {
   "shadless:change": CustomEvent<ChangeDetail>
   /** slider only: once per gesture (radix onValueCommit) — the value to persist */
   "shadless:commit": CustomEvent<EventDetail & { values: number[] }>
-  "shadless:themechange": CustomEvent<{ mode: "light" | "dark" }>
+  "shadless:themechange": CustomEvent<{ component: string; mode: "light" | "dark" }>
 }
 declare global {
   interface GlobalEventHandlersEventMap extends ShadlessEventMap {}

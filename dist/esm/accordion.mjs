@@ -5,6 +5,9 @@ import "./shadless.mjs"
 (function () {
   var h = shadless.h
   shadless.register("accordion", { slots: {
+    // accordion trigger: type=single (default) closes siblings; data-type=
+    // multiple toggles items independently. Siblings without an item/content
+    // ancestor are skipped, not crashed on.,
     "accordion-trigger": {
       init: function (trigger) {
         var item = trigger.closest("[data-slot=accordion-item]")
@@ -46,10 +49,5 @@ import "./shadless.mjs"
         if (next) next.focus()
       },
     },
-    // toggle-group: single (items role=radio) selects exclusively with click-
-    // again deselecting; multiple (items as plain buttons) toggles items independently.
-    // Root is role=group in BOTH modes (radix current semantics — radiogroup
-    // was the old single-mode root role).
-    // Roving tabindex tracks the active item in both modes.,
   } })
 })()

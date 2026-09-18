@@ -607,6 +607,10 @@ pub fn component_css(ir: &CssIrComponent) -> Result<ComponentCssOut, String> {
         let items = &by_slot[slot];
         struct SigInfo {
             tags: HashSet<String>,
+            // the JS twin emits the FIRST tag the signature saw; a HashSet
+            // pick would be per-process random here (RandomState), and the
+            // multi-tag-signature shape would flip bytes run to run
+            first_tag: String,
             markers: Vec<String>,
         }
         let mut sigs: HashMap<String, SigInfo> = HashMap::new();
@@ -616,12 +620,16 @@ pub fn component_css(ir: &CssIrComponent) -> Result<ComponentCssOut, String> {
             if !sigs.contains_key(&s.apply) {
                 sigs.insert(s.apply.clone(), SigInfo {
                     tags: HashSet::new(),
+                    first_tag: String::new(),
                     markers: Vec::new(),
                 });
                 sig_order.push(s.apply.clone());
             }
             let info = sigs.get_mut(&s.apply).unwrap();
             let tag = normalize_tag(&item.0.tag, &ir.tag_hints).unwrap_or_else(|| "?".to_string());
+            if info.first_tag.is_empty() {
+                info.first_tag = tag.clone();
+            }
             info.tags.insert(tag);
             info.markers.extend(s.markers.iter().cloned());
         }
@@ -665,7 +673,7 @@ pub fn component_css(ir: &CssIrComponent) -> Result<ComponentCssOut, String> {
         if !tag_overlap {
             for apply in &sig_order {
                 let info = &sigs[apply];
-                let tag = info.tags.iter().next().cloned().unwrap_or_default();
+                let tag = info.first_tag.clone();
                 if !apply.is_empty() {
                     rules.push(format!(
                         "  [data-slot=\"{}\"]:is({}) {{ @apply {}; }}",

@@ -5,6 +5,7 @@ import "./shadless.mjs"
 (function () {
   var h = shadless.h
   shadless.register("collapsible", { slots: {
+    // collapsible trigger: toggle root/trigger/content states,
     "collapsible-trigger": {
       init: function (trigger) {
         var root = trigger.closest("[data-slot=collapsible]")
@@ -20,8 +21,5 @@ import "./shadless.mjs"
         h.emit(trigger, open ? "open" : "close", "collapsible")
       },
     },
-    // accordion trigger: type=single (default) closes siblings; data-type=
-    // multiple toggles items independently. Siblings without an item/content
-    // ancestor are skipped, not crashed on.,
   } })
 })()

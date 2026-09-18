@@ -5,6 +5,7 @@ import "./shadless.mjs"
 (function () {
   var h = shadless.h
   shadless.register("radio-group", { slots: {
+    // radio-group: click checks exclusively; checked item cannot be unchecked,
     "radio-group-item": {
       onClick: function (item, ctx) {
         var group = item.closest("[data-slot=radio-group]")
@@ -48,6 +49,5 @@ import "./shadless.mjs"
         next.focus()
       },
     },
-    // avatar: settle image vs fallback from load state (radix Presence),
   } })
 })()

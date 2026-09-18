@@ -25,6 +25,5 @@
         h.emit(root, "change", "checkbox", { checked: checked })
       },
     },
-    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
   } })
 })()

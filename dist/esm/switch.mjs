@@ -11,6 +11,7 @@ import "./shadless.mjs"
     h.syncForm(root)
   }
   shadless.register("switch", { slots: {
+    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
     switch: {
       init: function (root) {
         h.formMirror(root, {
@@ -24,6 +25,5 @@ import "./shadless.mjs"
         h.emit(root, "change", "switch", { checked: checked })
       },
     },
-    // toggle: aria-pressed + data-state on/off (radix Toggle).,
   } })
 })()

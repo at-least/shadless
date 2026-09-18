@@ -5,6 +5,7 @@ import "./shadless.mjs"
 (function () {
   var h = shadless.h
   shadless.register("avatar", { slots: {
+    // avatar: settle image vs fallback from load state (radix Presence),
     avatar: {
       init: function (av) {
         var img = av.querySelector("[data-slot=avatar-image]")
@@ -20,6 +21,5 @@ import "./shadless.mjs"
         }
       },
     },
-    // collapsible trigger: toggle root/trigger/content states,
   } })
 })()
