@@ -123,6 +123,11 @@ A set of two-state buttons that can be toggled on or off.
 (function () {
   var h = shadless.h
   shadless.register("toggle-group", { slots: {
+    // toggle-group: single (items role=radio) selects exclusively with click-
+    // again deselecting; multiple (items as plain buttons) toggles items independently.
+    // Root is role=group in BOTH modes (radix current semantics — radiogroup
+    // was the old single-mode root role).
+    // Roving tabindex tracks the active item in both modes.,
     "toggle-group-item": {
       onClick: function (item) {
         var group = item.closest("[data-slot=toggle-group]")
@@ -278,6 +283,11 @@ Use `variant="outline"` for an outline style.
 (function () {
   var h = shadless.h
   shadless.register("toggle-group", { slots: {
+    // toggle-group: single (items role=radio) selects exclusively with click-
+    // again deselecting; multiple (items as plain buttons) toggles items independently.
+    // Root is role=group in BOTH modes (radix current semantics — radiogroup
+    // was the old single-mode root role).
+    // Roving tabindex tracks the active item in both modes.,
     "toggle-group-item": {
       onClick: function (item) {
         var group = item.closest("[data-slot=toggle-group]")
@@ -494,6 +504,11 @@ Use the `size` prop to change the size of the toggle group.
 (function () {
   var h = shadless.h
   shadless.register("toggle-group", { slots: {
+    // toggle-group: single (items role=radio) selects exclusively with click-
+    // again deselecting; multiple (items as plain buttons) toggles items independently.
+    // Root is role=group in BOTH modes (radix current semantics — radiogroup
+    // was the old single-mode root role).
+    // Roving tabindex tracks the active item in both modes.,
     "toggle-group-item": {
       onClick: function (item) {
         var group = item.closest("[data-slot=toggle-group]")
@@ -635,6 +650,11 @@ Use `spacing` to add spacing between toggle group items.
 (function () {
   var h = shadless.h
   shadless.register("toggle-group", { slots: {
+    // toggle-group: single (items role=radio) selects exclusively with click-
+    // again deselecting; multiple (items as plain buttons) toggles items independently.
+    // Root is role=group in BOTH modes (radix current semantics — radiogroup
+    // was the old single-mode root role).
+    // Roving tabindex tracks the active item in both modes.,
     "toggle-group-item": {
       onClick: function (item) {
         var group = item.closest("[data-slot=toggle-group]")
@@ -798,6 +818,11 @@ Use `orientation="vertical"` for vertical toggle groups.
 (function () {
   var h = shadless.h
   shadless.register("toggle-group", { slots: {
+    // toggle-group: single (items role=radio) selects exclusively with click-
+    // again deselecting; multiple (items as plain buttons) toggles items independently.
+    // Root is role=group in BOTH modes (radix current semantics — radiogroup
+    // was the old single-mode root role).
+    // Roving tabindex tracks the active item in both modes.,
     "toggle-group-item": {
       onClick: function (item) {
         var group = item.closest("[data-slot=toggle-group]")
@@ -965,6 +990,11 @@ Use `orientation="vertical"` for vertical toggle groups.
 (function () {
   var h = shadless.h
   shadless.register("toggle-group", { slots: {
+    // toggle-group: single (items role=radio) selects exclusively with click-
+    // again deselecting; multiple (items as plain buttons) toggles items independently.
+    // Root is role=group in BOTH modes (radix current semantics — radiogroup
+    // was the old single-mode root role).
+    // Roving tabindex tracks the active item in both modes.,
     "toggle-group-item": {
       onClick: function (item) {
         var group = item.closest("[data-slot=toggle-group]")
@@ -1129,6 +1159,11 @@ A custom toggle group example.
 (function () {
   var h = shadless.h
   shadless.register("toggle-group", { slots: {
+    // toggle-group: single (items role=radio) selects exclusively with click-
+    // again deselecting; multiple (items as plain buttons) toggles items independently.
+    // Root is role=group in BOTH modes (radix current semantics — radiogroup
+    // was the old single-mode root role).
+    // Roving tabindex tracks the active item in both modes.,
     "toggle-group-item": {
       onClick: function (item) {
         var group = item.closest("[data-slot=toggle-group]")
@@ -1254,6 +1289,11 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 (function () {
   var h = shadless.h
   shadless.register("toggle-group", { slots: {
+    // toggle-group: single (items role=radio) selects exclusively with click-
+    // again deselecting; multiple (items as plain buttons) toggles items independently.
+    // Root is role=group in BOTH modes (radix current semantics — radiogroup
+    // was the old single-mode root role).
+    // Roving tabindex tracks the active item in both modes.,
     "toggle-group-item": {
       onClick: function (item) {
         var group = item.closest("[data-slot=toggle-group]")

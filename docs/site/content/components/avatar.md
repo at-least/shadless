@@ -89,6 +89,7 @@ An image element with a fallback for representing the user.
 (function () {
   var h = shadless.h
   shadless.register("avatar", { slots: {
+    // avatar: settle image vs fallback from load state (radix Presence),
     avatar: {
       init: function (av) {
         var img = av.querySelector("[data-slot=avatar-image]")
@@ -104,7 +105,6 @@ An image element with a fallback for representing the user.
         }
       },
     },
-    // collapsible trigger: toggle root/trigger/content states,
   } })
 })()
 ```
@@ -188,6 +188,7 @@ A basic avatar component with an image and a fallback.
 (function () {
   var h = shadless.h
   shadless.register("avatar", { slots: {
+    // avatar: settle image vs fallback from load state (radix Presence),
     avatar: {
       init: function (av) {
         var img = av.querySelector("[data-slot=avatar-image]")
@@ -203,7 +204,6 @@ A basic avatar component with an image and a fallback.
         }
       },
     },
-    // collapsible trigger: toggle root/trigger/content states,
   } })
 })()
 ```
@@ -246,6 +246,7 @@ Use the `AvatarBadge` component to add a badge to the avatar. The badge is posit
 (function () {
   var h = shadless.h
   shadless.register("avatar", { slots: {
+    // avatar: settle image vs fallback from load state (radix Presence),
     avatar: {
       init: function (av) {
         var img = av.querySelector("[data-slot=avatar-image]")
@@ -261,7 +262,6 @@ Use the `AvatarBadge` component to add a badge to the avatar. The badge is posit
         }
       },
     },
-    // collapsible trigger: toggle root/trigger/content states,
   } })
 })()
 ```
@@ -327,6 +327,7 @@ You can also use an icon inside `data-slot="avatar-badge"`.
 (function () {
   var h = shadless.h
   shadless.register("avatar", { slots: {
+    // avatar: settle image vs fallback from load state (radix Presence),
     avatar: {
       init: function (av) {
         var img = av.querySelector("[data-slot=avatar-image]")
@@ -342,7 +343,6 @@ You can also use an icon inside `data-slot="avatar-badge"`.
         }
       },
     },
-    // collapsible trigger: toggle root/trigger/content states,
   } })
 })()
 ```
@@ -405,6 +405,7 @@ Use the `AvatarGroup` component to add a group of avatars.
 (function () {
   var h = shadless.h
   shadless.register("avatar", { slots: {
+    // avatar: settle image vs fallback from load state (radix Presence),
     avatar: {
       init: function (av) {
         var img = av.querySelector("[data-slot=avatar-image]")
@@ -420,7 +421,6 @@ Use the `AvatarGroup` component to add a group of avatars.
         }
       },
     },
-    // collapsible trigger: toggle root/trigger/content states,
   } })
 })()
 ```
@@ -489,6 +489,7 @@ Use `data-slot="avatar-group-count"` to add a count to the group.
 (function () {
   var h = shadless.h
   shadless.register("avatar", { slots: {
+    // avatar: settle image vs fallback from load state (radix Presence),
     avatar: {
       init: function (av) {
         var img = av.querySelector("[data-slot=avatar-image]")
@@ -504,7 +505,6 @@ Use `data-slot="avatar-group-count"` to add a count to the group.
         }
       },
     },
-    // collapsible trigger: toggle root/trigger/content states,
   } })
 })()
 ```
@@ -587,6 +587,7 @@ You can also use an icon inside `data-slot="avatar-group-count"`.
 (function () {
   var h = shadless.h
   shadless.register("avatar", { slots: {
+    // avatar: settle image vs fallback from load state (radix Presence),
     avatar: {
       init: function (av) {
         var img = av.querySelector("[data-slot=avatar-image]")
@@ -602,7 +603,6 @@ You can also use an icon inside `data-slot="avatar-group-count"`.
         }
       },
     },
-    // collapsible trigger: toggle root/trigger/content states,
   } })
 })()
 ```
@@ -662,6 +662,7 @@ Use the `size` prop to change the size of the avatar.
 (function () {
   var h = shadless.h
   shadless.register("avatar", { slots: {
+    // avatar: settle image vs fallback from load state (radix Presence),
     avatar: {
       init: function (av) {
         var img = av.querySelector("[data-slot=avatar-image]")
@@ -677,7 +678,6 @@ Use the `size` prop to change the size of the avatar.
         }
       },
     },
-    // collapsible trigger: toggle root/trigger/content states,
   } })
 })()
 ```
@@ -820,6 +820,7 @@ You can use the `Avatar` component as a trigger for a dropdown menu.
 (function () {
   var h = shadless.h
   shadless.register("avatar", { slots: {
+    // avatar: settle image vs fallback from load state (radix Presence),
     avatar: {
       init: function (av) {
         var img = av.querySelector("[data-slot=avatar-image]")
@@ -835,7 +836,6 @@ You can use the `Avatar` component as a trigger for a dropdown menu.
         }
       },
     },
-    // collapsible trigger: toggle root/trigger/content states,
   } })
 })()
 ```
@@ -928,6 +928,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 (function () {
   var h = shadless.h
   shadless.register("avatar", { slots: {
+    // avatar: settle image vs fallback from load state (radix Presence),
     avatar: {
       init: function (av) {
         var img = av.querySelector("[data-slot=avatar-image]")
@@ -943,7 +944,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
         }
       },
     },
-    // collapsible trigger: toggle root/trigger/content states,
   } })
 })()
 ```

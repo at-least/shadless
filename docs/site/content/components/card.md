@@ -391,6 +391,11 @@ In addition to the `size` prop, you can use the `--card-spacing` CSS variable to
 (function () {
   var h = shadless.h
   shadless.register("toggle-group", { slots: {
+    // toggle-group: single (items role=radio) selects exclusively with click-
+    // again deselecting; multiple (items as plain buttons) toggles items independently.
+    // Root is role=group in BOTH modes (radix current semantics — radiogroup
+    // was the old single-mode root role).
+    // Roving tabindex tracks the active item in both modes.,
     "toggle-group-item": {
       onClick: function (item) {
         var group = item.closest("[data-slot=toggle-group]")

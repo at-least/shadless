@@ -68,6 +68,7 @@ An interactive component which expands/collapses a panel.
 (function () {
   var h = shadless.h
   shadless.register("collapsible", { slots: {
+    // collapsible trigger: toggle root/trigger/content states,
     "collapsible-trigger": {
       init: function (trigger) {
         var root = trigger.closest("[data-slot=collapsible]")
@@ -83,9 +84,6 @@ An interactive component which expands/collapses a panel.
         h.emit(trigger, open ? "open" : "close", "collapsible")
       },
     },
-    // accordion trigger: type=single (default) closes siblings; data-type=
-    // multiple toggles items independently. Siblings without an item/content
-    // ancestor are skipped, not crashed on.,
   } })
 })()
 ```
@@ -205,6 +203,7 @@ Use the `open` and `onOpenChange` props to control the state.
 (function () {
   var h = shadless.h
   shadless.register("collapsible", { slots: {
+    // collapsible trigger: toggle root/trigger/content states,
     "collapsible-trigger": {
       init: function (trigger) {
         var root = trigger.closest("[data-slot=collapsible]")
@@ -220,9 +219,6 @@ Use the `open` and `onOpenChange` props to control the state.
         h.emit(trigger, open ? "open" : "close", "collapsible")
       },
     },
-    // accordion trigger: type=single (default) closes siblings; data-type=
-    // multiple toggles items independently. Siblings without an item/content
-    // ancestor are skipped, not crashed on.,
   } })
 })()
 ```
@@ -355,6 +351,7 @@ Use a trigger button to reveal additional settings.
 (function () {
   var h = shadless.h
   shadless.register("collapsible", { slots: {
+    // collapsible trigger: toggle root/trigger/content states,
     "collapsible-trigger": {
       init: function (trigger) {
         var root = trigger.closest("[data-slot=collapsible]")
@@ -370,9 +367,6 @@ Use a trigger button to reveal additional settings.
         h.emit(trigger, open ? "open" : "close", "collapsible")
       },
     },
-    // accordion trigger: type=single (default) closes siblings; data-type=
-    // multiple toggles items independently. Siblings without an item/content
-    // ancestor are skipped, not crashed on.,
   } })
 })()
 ```
@@ -878,6 +872,10 @@ Use nested collapsibles to build a file tree.
       // kernel's wireTabs needs panels, so activation is wired here — click
       // and arrow keys flip data-state / aria-selected / roving tabindex
       if (panels.some(function (p) { return !p; })) {
+        // all-null is a designed trigger-only list; mixed nulls mean a
+        // broken aria-controls id silently degraded the WHOLE list
+        if (panels.some(function (p) { return p; }))
+          console.error('shadless: tabs "' + (root.id || "?") + '" has a trigger whose aria-controls matches no panel — wiring trigger-only activation for the whole list')
         var current = -1;
         var activate = function (i) {
           triggers.forEach(function (t, k) {
@@ -949,6 +947,7 @@ Use nested collapsibles to build a file tree.
 (function () {
   var h = shadless.h
   shadless.register("collapsible", { slots: {
+    // collapsible trigger: toggle root/trigger/content states,
     "collapsible-trigger": {
       init: function (trigger) {
         var root = trigger.closest("[data-slot=collapsible]")
@@ -964,9 +963,6 @@ Use nested collapsibles to build a file tree.
         h.emit(trigger, open ? "open" : "close", "collapsible")
       },
     },
-    // accordion trigger: type=single (default) closes siblings; data-type=
-    // multiple toggles items independently. Siblings without an item/content
-    // ancestor are skipped, not crashed on.,
   } })
 })()
 ```
@@ -1038,6 +1034,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 (function () {
   var h = shadless.h
   shadless.register("collapsible", { slots: {
+    // collapsible trigger: toggle root/trigger/content states,
     "collapsible-trigger": {
       init: function (trigger) {
         var root = trigger.closest("[data-slot=collapsible]")
@@ -1053,9 +1050,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
         h.emit(trigger, open ? "open" : "close", "collapsible")
       },
     },
-    // accordion trigger: type=single (default) closes siblings; data-type=
-    // multiple toggles items independently. Siblings without an item/content
-    // ancestor are skipped, not crashed on.,
   } })
 })()
 ```

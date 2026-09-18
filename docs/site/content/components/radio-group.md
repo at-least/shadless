@@ -104,6 +104,7 @@ A set of checkable buttons—known as radio buttons—where no more than one of 
 (function () {
   var h = shadless.h
   shadless.register("radio-group", { slots: {
+    // radio-group: click checks exclusively; checked item cannot be unchecked,
     "radio-group-item": {
       onClick: function (item, ctx) {
         var group = item.closest("[data-slot=radio-group]")
@@ -147,7 +148,6 @@ A set of checkable buttons—known as radio buttons—where no more than one of 
         next.focus()
       },
     },
-    // avatar: settle image vs fallback from load state (radix Presence),
   } })
 })()
 ```
@@ -351,6 +351,7 @@ Radio group items with a description using the `Field` component.
 (function () {
   var h = shadless.h
   shadless.register("radio-group", { slots: {
+    // radio-group: click checks exclusively; checked item cannot be unchecked,
     "radio-group-item": {
       onClick: function (item, ctx) {
         var group = item.closest("[data-slot=radio-group]")
@@ -394,7 +395,6 @@ Radio group items with a description using the `Field` component.
         next.focus()
       },
     },
-    // avatar: settle image vs fallback from load state (radix Presence),
   } })
 })()
 ```
@@ -561,6 +561,7 @@ Use `FieldLabel` to wrap the entire `Field` for a clickable card-style selection
 (function () {
   var h = shadless.h
   shadless.register("radio-group", { slots: {
+    // radio-group: click checks exclusively; checked item cannot be unchecked,
     "radio-group-item": {
       onClick: function (item, ctx) {
         var group = item.closest("[data-slot=radio-group]")
@@ -604,7 +605,6 @@ Use `FieldLabel` to wrap the entire `Field` for a clickable card-style selection
         next.focus()
       },
     },
-    // avatar: settle image vs fallback from load state (radix Presence),
   } })
 })()
 ```
@@ -745,6 +745,7 @@ Use `FieldSet` and `FieldLegend` to group radio items with a label and descripti
 (function () {
   var h = shadless.h
   shadless.register("radio-group", { slots: {
+    // radio-group: click checks exclusively; checked item cannot be unchecked,
     "radio-group-item": {
       onClick: function (item, ctx) {
         var group = item.closest("[data-slot=radio-group]")
@@ -788,7 +789,6 @@ Use `FieldSet` and `FieldLegend` to group radio items with a label and descripti
         next.focus()
       },
     },
-    // avatar: settle image vs fallback from load state (radix Presence),
   } })
 })()
 ```
@@ -914,6 +914,7 @@ Use the `disabled` prop on `RadioGroupItem` to disable individual items.
 (function () {
   var h = shadless.h
   shadless.register("radio-group", { slots: {
+    // radio-group: click checks exclusively; checked item cannot be unchecked,
     "radio-group-item": {
       onClick: function (item, ctx) {
         var group = item.closest("[data-slot=radio-group]")
@@ -957,7 +958,6 @@ Use the `disabled` prop on `RadioGroupItem` to disable individual items.
         next.focus()
       },
     },
-    // avatar: settle image vs fallback from load state (radix Presence),
   } })
 })()
 ```
@@ -1104,6 +1104,7 @@ Use `aria-invalid` on `RadioGroupItem` and `data-invalid` on `Field` to show val
 (function () {
   var h = shadless.h
   shadless.register("radio-group", { slots: {
+    // radio-group: click checks exclusively; checked item cannot be unchecked,
     "radio-group-item": {
       onClick: function (item, ctx) {
         var group = item.closest("[data-slot=radio-group]")
@@ -1147,7 +1148,6 @@ Use `aria-invalid` on `RadioGroupItem` and `data-invalid` on `Field` to show val
         next.focus()
       },
     },
-    // avatar: settle image vs fallback from load state (radix Presence),
   } })
 })()
 ```
@@ -1313,6 +1313,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 (function () {
   var h = shadless.h
   shadless.register("radio-group", { slots: {
+    // radio-group: click checks exclusively; checked item cannot be unchecked,
     "radio-group-item": {
       onClick: function (item, ctx) {
         var group = item.closest("[data-slot=radio-group]")
@@ -1356,7 +1357,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
         next.focus()
       },
     },
-    // avatar: settle image vs fallback from load state (radix Presence),
   } })
 })()
 ```

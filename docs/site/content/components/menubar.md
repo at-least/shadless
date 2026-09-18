@@ -829,7 +829,9 @@ A visually persistent menu common in desktop applications that provides quick ac
     // trigger (sub menus do not emit) and dispatches the edges
     var openTrigger = null;
     var sync = function () {
-      var l = handles.rootLayer();
+      // handles is assigned by wireMenu below; a synchronous onAllClosed
+      // during wiring must not trip over the undefined binding
+      var l = handles ? handles.rootLayer() : null;
       var t = l ? l.trigger : null;
       if (t === openTrigger) return;
       var prev = openTrigger;
@@ -1360,7 +1362,9 @@ Use `MenubarCheckboxItem` for toggleable options.
     // trigger (sub menus do not emit) and dispatches the edges
     var openTrigger = null;
     var sync = function () {
-      var l = handles.rootLayer();
+      // handles is assigned by wireMenu below; a synchronous onAllClosed
+      // during wiring must not trip over the undefined binding
+      var l = handles ? handles.rootLayer() : null;
       var t = l ? l.trigger : null;
       if (t === openTrigger) return;
       var prev = openTrigger;
@@ -1815,7 +1819,9 @@ Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
     // trigger (sub menus do not emit) and dispatches the edges
     var openTrigger = null;
     var sync = function () {
-      var l = handles.rootLayer();
+      // handles is assigned by wireMenu below; a synchronous onAllClosed
+      // during wiring must not trip over the undefined binding
+      var l = handles ? handles.rootLayer() : null;
       var t = l ? l.trigger : null;
       if (t === openTrigger) return;
       var prev = openTrigger;
@@ -2399,7 +2405,9 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
     // trigger (sub menus do not emit) and dispatches the edges
     var openTrigger = null;
     var sync = function () {
-      var l = handles.rootLayer();
+      // handles is assigned by wireMenu below; a synchronous onAllClosed
+      // during wiring must not trip over the undefined binding
+      var l = handles ? handles.rootLayer() : null;
       var t = l ? l.trigger : null;
       if (t === openTrigger) return;
       var prev = openTrigger;
@@ -2884,7 +2892,9 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
     // trigger (sub menus do not emit) and dispatches the edges
     var openTrigger = null;
     var sync = function () {
-      var l = handles.rootLayer();
+      // handles is assigned by wireMenu below; a synchronous onAllClosed
+      // during wiring must not trip over the undefined binding
+      var l = handles ? handles.rootLayer() : null;
       var t = l ? l.trigger : null;
       if (t === openTrigger) return;
       var prev = openTrigger;
@@ -3873,7 +3883,9 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
     // trigger (sub menus do not emit) and dispatches the edges
     var openTrigger = null;
     var sync = function () {
-      var l = handles.rootLayer();
+      // handles is assigned by wireMenu below; a synchronous onAllClosed
+      // during wiring must not trip over the undefined binding
+      var l = handles ? handles.rootLayer() : null;
       var t = l ? l.trigger : null;
       if (t === openTrigger) return;
       var prev = openTrigger;

@@ -394,10 +394,11 @@ You can use the `Kbd` component inside a `Tooltip` component to display a toolti
         },
       });
       shadless.h.bindHandlers(trigger, wired.handlers, w.signal);
+      var openFn = function () { if (wired.state() === "closed") trigger.dispatchEvent(new FocusEvent("focus")) }
       shadless.instances.set(trigger, { component: "tooltip",
-        open: function () { if (wired.state() === "closed") trigger.dispatchEvent(new FocusEvent("focus")) },
+        open: openFn,
         close: function () { wired.close() },
-        toggle: function () { wired.state() === "closed" ? this.open() : wired.close() },
+        toggle: function () { wired.state() === "closed" ? openFn() : wired.close() },
         isOpen: function () { return wired.state() !== "closed" },
       })
     });

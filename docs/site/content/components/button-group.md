@@ -945,10 +945,11 @@ Nest `data-slot="button-group"` components to create button groups with spacing.
         },
       });
       shadless.h.bindHandlers(trigger, wired.handlers, w.signal);
+      var openFn = function () { if (wired.state() === "closed") trigger.dispatchEvent(new FocusEvent("focus")) }
       shadless.instances.set(trigger, { component: "tooltip",
-        open: function () { if (wired.state() === "closed") trigger.dispatchEvent(new FocusEvent("focus")) },
+        open: openFn,
         close: function () { wired.close() },
-        toggle: function () { wired.state() === "closed" ? this.open() : wired.close() },
+        toggle: function () { wired.state() === "closed" ? openFn() : wired.close() },
         isOpen: function () { return wired.state() !== "closed" },
       })
     });
@@ -1314,10 +1315,11 @@ Wrap an `InputGroup` component to create complex input layouts.
         },
       });
       shadless.h.bindHandlers(trigger, wired.handlers, w.signal);
+      var openFn = function () { if (wired.state() === "closed") trigger.dispatchEvent(new FocusEvent("focus")) }
       shadless.instances.set(trigger, { component: "tooltip",
-        open: function () { if (wired.state() === "closed") trigger.dispatchEvent(new FocusEvent("focus")) },
+        open: openFn,
         close: function () { wired.close() },
-        toggle: function () { wired.state() === "closed" ? this.open() : wired.close() },
+        toggle: function () { wired.state() === "closed" ? openFn() : wired.close() },
         isOpen: function () { return wired.state() !== "closed" },
       })
     });

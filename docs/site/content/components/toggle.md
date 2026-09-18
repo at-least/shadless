@@ -49,6 +49,7 @@ A two-state button that can be either on or off.
 (function () {
   var h = shadless.h
   shadless.register("toggle", { slots: {
+    // toggle: aria-pressed + data-state on/off (radix Toggle).,
     toggle: {
       onClick: function (root) {
         var on = root.getAttribute("aria-pressed") !== "true"
@@ -57,7 +58,6 @@ A two-state button that can be either on or off.
         h.emit(root, "change", "toggle", { pressed: on })
       },
     },
-    // radio-group: click checks exclusively; checked item cannot be unchecked,
   } })
 })()
 ```
@@ -171,6 +171,7 @@ Use `variant="outline"` for an outline style.
 (function () {
   var h = shadless.h
   shadless.register("toggle", { slots: {
+    // toggle: aria-pressed + data-state on/off (radix Toggle).,
     toggle: {
       onClick: function (root) {
         var on = root.getAttribute("aria-pressed") !== "true"
@@ -179,7 +180,6 @@ Use `variant="outline"` for an outline style.
         h.emit(root, "change", "toggle", { pressed: on })
       },
     },
-    // radio-group: click checks exclusively; checked item cannot be unchecked,
   } })
 })()
 ```
@@ -232,6 +232,7 @@ Use `variant="outline"` for an outline style.
 (function () {
   var h = shadless.h
   shadless.register("toggle", { slots: {
+    // toggle: aria-pressed + data-state on/off (radix Toggle).,
     toggle: {
       onClick: function (root) {
         var on = root.getAttribute("aria-pressed") !== "true"
@@ -240,7 +241,6 @@ Use `variant="outline"` for an outline style.
         h.emit(root, "change", "toggle", { pressed: on })
       },
     },
-    // radio-group: click checks exclusively; checked item cannot be unchecked,
   } })
 })()
 ```
@@ -300,6 +300,7 @@ Use the `size` prop to change the size of the toggle.
 (function () {
   var h = shadless.h
   shadless.register("toggle", { slots: {
+    // toggle: aria-pressed + data-state on/off (radix Toggle).,
     toggle: {
       onClick: function (root) {
         var on = root.getAttribute("aria-pressed") !== "true"
@@ -308,7 +309,6 @@ Use the `size` prop to change the size of the toggle.
         h.emit(root, "change", "toggle", { pressed: on })
       },
     },
-    // radio-group: click checks exclusively; checked item cannot be unchecked,
   } })
 })()
 ```
@@ -361,6 +361,7 @@ Use the `size` prop to change the size of the toggle.
 (function () {
   var h = shadless.h
   shadless.register("toggle", { slots: {
+    // toggle: aria-pressed + data-state on/off (radix Toggle).,
     toggle: {
       onClick: function (root) {
         var on = root.getAttribute("aria-pressed") !== "true"
@@ -369,7 +370,6 @@ Use the `size` prop to change the size of the toggle.
         h.emit(root, "change", "toggle", { pressed: on })
       },
     },
-    // radio-group: click checks exclusively; checked item cannot be unchecked,
   } })
 })()
 ```
@@ -423,6 +423,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 (function () {
   var h = shadless.h
   shadless.register("toggle", { slots: {
+    // toggle: aria-pressed + data-state on/off (radix Toggle).,
     toggle: {
       onClick: function (root) {
         var on = root.getAttribute("aria-pressed") !== "true"
@@ -431,7 +432,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
         h.emit(root, "change", "toggle", { pressed: on })
       },
     },
-    // radio-group: click checks exclusively; checked item cannot be unchecked,
   } })
 })()
 ```

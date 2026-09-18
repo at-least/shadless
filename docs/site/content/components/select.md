@@ -647,6 +647,7 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
     h.syncForm(root)
   }
   shadless.register("switch", { slots: {
+    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
     switch: {
       init: function (root) {
         h.formMirror(root, {
@@ -660,7 +661,6 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
         h.emit(root, "change", "switch", { checked: checked })
       },
     },
-    // toggle: aria-pressed + data-state on/off (radix Toggle).,
   } })
 })()
 ```

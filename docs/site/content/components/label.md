@@ -60,13 +60,19 @@ Renders an accessible label associated with controls.
           write: function (v) { set(root, v, null) },
         })
       },
+      onKeydown: function (root, ctx, ev) {
+        // radix Checkbox ignores Enter: its click handler preventDefaults the
+        // native button's Enter-synthesized click (Space stays native) —
+        // measured 2026-08-22, pinned by the contract's key:Enter scenario,
+        // which this page failed until the quirk was ported
+        if (ev.key === "Enter") ev.preventDefault()
+      },
       onClick: function (root, ctx) {
         var checked = root.getAttribute("aria-checked") !== "true"
         set(root, checked, ctx)
         h.emit(root, "change", "checkbox", { checked: checked })
       },
     },
-    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
   } })
 })()
 ```
@@ -990,13 +996,19 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
           write: function (v) { set(root, v, null) },
         })
       },
+      onKeydown: function (root, ctx, ev) {
+        // radix Checkbox ignores Enter: its click handler preventDefaults the
+        // native button's Enter-synthesized click (Space stays native) —
+        // measured 2026-08-22, pinned by the contract's key:Enter scenario,
+        // which this page failed until the quirk was ported
+        if (ev.key === "Enter") ev.preventDefault()
+      },
       onClick: function (root, ctx) {
         var checked = root.getAttribute("aria-checked") !== "true"
         set(root, checked, ctx)
         h.emit(root, "change", "checkbox", { checked: checked })
       },
     },
-    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
   } })
 })()
 ```
@@ -1062,13 +1074,19 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
           write: function (v) { set(root, v, null) },
         })
       },
+      onKeydown: function (root, ctx, ev) {
+        // radix Checkbox ignores Enter: its click handler preventDefaults the
+        // native button's Enter-synthesized click (Space stays native) —
+        // measured 2026-08-22, pinned by the contract's key:Enter scenario,
+        // which this page failed until the quirk was ported
+        if (ev.key === "Enter") ev.preventDefault()
+      },
       onClick: function (root, ctx) {
         var checked = root.getAttribute("aria-checked") !== "true"
         set(root, checked, ctx)
         h.emit(root, "change", "checkbox", { checked: checked })
       },
     },
-    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
   } })
 })()
 ```

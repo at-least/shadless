@@ -721,6 +721,7 @@ Long bubble content can be composed with [`Collapsible`](/components/collapsible
 (function () {
   var h = shadless.h
   shadless.register("collapsible", { slots: {
+    // collapsible trigger: toggle root/trigger/content states,
     "collapsible-trigger": {
       init: function (trigger) {
         var root = trigger.closest("[data-slot=collapsible]")
@@ -736,9 +737,6 @@ Long bubble content can be composed with [`Collapsible`](/components/collapsible
         h.emit(trigger, open ? "open" : "close", "collapsible")
       },
     },
-    // accordion trigger: type=single (default) closes siblings; data-type=
-    // multiple toggles items independently. Siblings without an item/content
-    // ancestor are skipped, not crashed on.,
   } })
 })()
 ```
@@ -917,10 +915,11 @@ Wrap a bubble in a [`Tooltip`](/components/tooltip) to reveal metadata on hover,
         },
       });
       shadless.h.bindHandlers(trigger, wired.handlers, w.signal);
+      var openFn = function () { if (wired.state() === "closed") trigger.dispatchEvent(new FocusEvent("focus")) }
       shadless.instances.set(trigger, { component: "tooltip",
-        open: function () { if (wired.state() === "closed") trigger.dispatchEvent(new FocusEvent("focus")) },
+        open: openFn,
         close: function () { wired.close() },
-        toggle: function () { wired.state() === "closed" ? this.open() : wired.close() },
+        toggle: function () { wired.state() === "closed" ? openFn() : wired.close() },
         isOpen: function () { return wired.state() !== "closed" },
       })
     });

@@ -351,6 +351,7 @@ Use the `EmptyMedia` component to display an avatar in the empty state.
 (function () {
   var h = shadless.h
   shadless.register("avatar", { slots: {
+    // avatar: settle image vs fallback from load state (radix Presence),
     avatar: {
       init: function (av) {
         var img = av.querySelector("[data-slot=avatar-image]")
@@ -366,7 +367,6 @@ Use the `EmptyMedia` component to display an avatar in the empty state.
         }
       },
     },
-    // collapsible trigger: toggle root/trigger/content states,
   } })
 })()
 ```
@@ -477,6 +477,7 @@ Use the `EmptyMedia` component to display an avatar group in the empty state.
 (function () {
   var h = shadless.h
   shadless.register("avatar", { slots: {
+    // avatar: settle image vs fallback from load state (radix Presence),
     avatar: {
       init: function (av) {
         var img = av.querySelector("[data-slot=avatar-image]")
@@ -492,7 +493,6 @@ Use the `EmptyMedia` component to display an avatar group in the empty state.
         }
       },
     },
-    // collapsible trigger: toggle root/trigger/content states,
   } })
 })()
 ```

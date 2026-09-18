@@ -120,6 +120,10 @@ A set of layered sections of content—known as tab panels—that are displayed 
       // kernel's wireTabs needs panels, so activation is wired here — click
       // and arrow keys flip data-state / aria-selected / roving tabindex
       if (panels.some(function (p) { return !p; })) {
+        // all-null is a designed trigger-only list; mixed nulls mean a
+        // broken aria-controls id silently degraded the WHOLE list
+        if (panels.some(function (p) { return p; }))
+          console.error('shadless: tabs "' + (root.id || "?") + '" has a trigger whose aria-controls matches no panel — wiring trigger-only activation for the whole list')
         var current = -1;
         var activate = function (i) {
           triggers.forEach(function (t, k) {
@@ -339,6 +343,10 @@ Use the `variant="line"` prop on `TabsList` for a line style.
       // kernel's wireTabs needs panels, so activation is wired here — click
       // and arrow keys flip data-state / aria-selected / roving tabindex
       if (panels.some(function (p) { return !p; })) {
+        // all-null is a designed trigger-only list; mixed nulls mean a
+        // broken aria-controls id silently degraded the WHOLE list
+        if (panels.some(function (p) { return p; }))
+          console.error('shadless: tabs "' + (root.id || "?") + '" has a trigger whose aria-controls matches no panel — wiring trigger-only activation for the whole list')
         var current = -1;
         var activate = function (i) {
           triggers.forEach(function (t, k) {
@@ -506,6 +514,10 @@ Use `orientation="vertical"` for vertical tabs.
       // kernel's wireTabs needs panels, so activation is wired here — click
       // and arrow keys flip data-state / aria-selected / roving tabindex
       if (panels.some(function (p) { return !p; })) {
+        // all-null is a designed trigger-only list; mixed nulls mean a
+        // broken aria-controls id silently degraded the WHOLE list
+        if (panels.some(function (p) { return p; }))
+          console.error('shadless: tabs "' + (root.id || "?") + '" has a trigger whose aria-controls matches no panel — wiring trigger-only activation for the whole list')
         var current = -1;
         var activate = function (i) {
           triggers.forEach(function (t, k) {
@@ -660,6 +672,10 @@ Use `orientation="vertical"` for vertical tabs.
       // kernel's wireTabs needs panels, so activation is wired here — click
       // and arrow keys flip data-state / aria-selected / roving tabindex
       if (panels.some(function (p) { return !p; })) {
+        // all-null is a designed trigger-only list; mixed nulls mean a
+        // broken aria-controls id silently degraded the WHOLE list
+        if (panels.some(function (p) { return p; }))
+          console.error('shadless: tabs "' + (root.id || "?") + '" has a trigger whose aria-controls matches no panel — wiring trigger-only activation for the whole list')
         var current = -1;
         var activate = function (i) {
           triggers.forEach(function (t, k) {
@@ -842,6 +858,10 @@ Use `orientation="vertical"` for vertical tabs.
       // kernel's wireTabs needs panels, so activation is wired here — click
       // and arrow keys flip data-state / aria-selected / roving tabindex
       if (panels.some(function (p) { return !p; })) {
+        // all-null is a designed trigger-only list; mixed nulls mean a
+        // broken aria-controls id silently degraded the WHOLE list
+        if (panels.some(function (p) { return p; }))
+          console.error('shadless: tabs "' + (root.id || "?") + '" has a trigger whose aria-controls matches no panel — wiring trigger-only activation for the whole list')
         var current = -1;
         var activate = function (i) {
           triggers.forEach(function (t, k) {
@@ -1174,6 +1194,10 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       // kernel's wireTabs needs panels, so activation is wired here — click
       // and arrow keys flip data-state / aria-selected / roving tabindex
       if (panels.some(function (p) { return !p; })) {
+        // all-null is a designed trigger-only list; mixed nulls mean a
+        // broken aria-controls id silently degraded the WHOLE list
+        if (panels.some(function (p) { return p; }))
+          console.error('shadless: tabs "' + (root.id || "?") + '" has a trigger whose aria-controls matches no panel — wiring trigger-only activation for the whole list')
         var current = -1;
         var activate = function (i) {
           triggers.forEach(function (t, k) {

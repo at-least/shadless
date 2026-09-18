@@ -226,6 +226,7 @@ Displays a message in a conversation, with optional avatar, header, footer, and 
 (function () {
   var h = shadless.h
   shadless.register("avatar", { slots: {
+    // avatar: settle image vs fallback from load state (radix Presence),
     avatar: {
       init: function (av) {
         var img = av.querySelector("[data-slot=avatar-image]")
@@ -241,7 +242,6 @@ Displays a message in a conversation, with optional avatar, header, footer, and 
         }
       },
     },
-    // collapsible trigger: toggle root/trigger/content states,
   } })
 })()
 ```
@@ -453,6 +453,7 @@ Use `MessageAvatar` to render an avatar next to the message. Set `align="end"` o
 (function () {
   var h = shadless.h
   shadless.register("avatar", { slots: {
+    // avatar: settle image vs fallback from load state (radix Presence),
     avatar: {
       init: function (av) {
         var img = av.querySelector("[data-slot=avatar-image]")
@@ -468,7 +469,6 @@ Use `MessageAvatar` to render an avatar next to the message. Set `align="end"` o
         }
       },
     },
-    // collapsible trigger: toggle root/trigger/content states,
   } })
 })()
 ```
@@ -574,6 +574,7 @@ Use `MessageGroup` to stack consecutive messages from the same sender. Render an
 (function () {
   var h = shadless.h
   shadless.register("avatar", { slots: {
+    // avatar: settle image vs fallback from load state (radix Presence),
     avatar: {
       init: function (av) {
         var img = av.querySelector("[data-slot=avatar-image]")
@@ -589,7 +590,6 @@ Use `MessageGroup` to stack consecutive messages from the same sender. Render an
         }
       },
     },
-    // collapsible trigger: toggle root/trigger/content states,
   } })
 })()
 ```

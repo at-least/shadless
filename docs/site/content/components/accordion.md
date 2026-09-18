@@ -230,6 +230,9 @@ A vertically stacked set of interactive headings that each reveal a section of c
 (function () {
   var h = shadless.h
   shadless.register("accordion", { slots: {
+    // accordion trigger: type=single (default) closes siblings; data-type=
+    // multiple toggles items independently. Siblings without an item/content
+    // ancestor are skipped, not crashed on.,
     "accordion-trigger": {
       init: function (trigger) {
         var item = trigger.closest("[data-slot=accordion-item]")
@@ -271,11 +274,6 @@ A vertically stacked set of interactive headings that each reveal a section of c
         if (next) next.focus()
       },
     },
-    // toggle-group: single (items role=radio) selects exclusively with click-
-    // again deselecting; multiple (items as plain buttons) toggles items independently.
-    // Root is role=group in BOTH modes (radix current semantics — radiogroup
-    // was the old single-mode root role).
-    // Roving tabindex tracks the active item in both modes.,
   } })
 })()
 ```
@@ -558,6 +556,9 @@ A basic accordion that shows one item at a time. The first item is open by defau
 (function () {
   var h = shadless.h
   shadless.register("accordion", { slots: {
+    // accordion trigger: type=single (default) closes siblings; data-type=
+    // multiple toggles items independently. Siblings without an item/content
+    // ancestor are skipped, not crashed on.,
     "accordion-trigger": {
       init: function (trigger) {
         var item = trigger.closest("[data-slot=accordion-item]")
@@ -599,11 +600,6 @@ A basic accordion that shows one item at a time. The first item is open by defau
         if (next) next.focus()
       },
     },
-    // toggle-group: single (items role=radio) selects exclusively with click-
-    // again deselecting; multiple (items as plain buttons) toggles items independently.
-    // Root is role=group in BOTH modes (radix current semantics — radiogroup
-    // was the old single-mode root role).
-    // Roving tabindex tracks the active item in both modes.,
   } })
 })()
 ```
@@ -842,6 +838,9 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
 (function () {
   var h = shadless.h
   shadless.register("accordion", { slots: {
+    // accordion trigger: type=single (default) closes siblings; data-type=
+    // multiple toggles items independently. Siblings without an item/content
+    // ancestor are skipped, not crashed on.,
     "accordion-trigger": {
       init: function (trigger) {
         var item = trigger.closest("[data-slot=accordion-item]")
@@ -883,11 +882,6 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
         if (next) next.focus()
       },
     },
-    // toggle-group: single (items role=radio) selects exclusively with click-
-    // again deselecting; multiple (items as plain buttons) toggles items independently.
-    // Root is role=group in BOTH modes (radix current semantics — radiogroup
-    // was the old single-mode root role).
-    // Roving tabindex tracks the active item in both modes.,
   } })
 })()
 ```
@@ -1115,6 +1109,9 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
 (function () {
   var h = shadless.h
   shadless.register("accordion", { slots: {
+    // accordion trigger: type=single (default) closes siblings; data-type=
+    // multiple toggles items independently. Siblings without an item/content
+    // ancestor are skipped, not crashed on.,
     "accordion-trigger": {
       init: function (trigger) {
         var item = trigger.closest("[data-slot=accordion-item]")
@@ -1156,11 +1153,6 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
         if (next) next.focus()
       },
     },
-    // toggle-group: single (items role=radio) selects exclusively with click-
-    // again deselecting; multiple (items as plain buttons) toggles items independently.
-    // Root is role=group in BOTH modes (radix current semantics — radiogroup
-    // was the old single-mode root role).
-    // Roving tabindex tracks the active item in both modes.,
   } })
 })()
 ```
@@ -1399,6 +1391,9 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
 (function () {
   var h = shadless.h
   shadless.register("accordion", { slots: {
+    // accordion trigger: type=single (default) closes siblings; data-type=
+    // multiple toggles items independently. Siblings without an item/content
+    // ancestor are skipped, not crashed on.,
     "accordion-trigger": {
       init: function (trigger) {
         var item = trigger.closest("[data-slot=accordion-item]")
@@ -1440,11 +1435,6 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
         if (next) next.focus()
       },
     },
-    // toggle-group: single (items role=radio) selects exclusively with click-
-    // again deselecting; multiple (items as plain buttons) toggles items independently.
-    // Root is role=group in BOTH modes (radix current semantics — radiogroup
-    // was the old single-mode root role).
-    // Roving tabindex tracks the active item in both modes.,
   } })
 })()
 ```
@@ -1701,6 +1691,9 @@ Wrap the `Accordion` in a `Card` component.
 (function () {
   var h = shadless.h
   shadless.register("accordion", { slots: {
+    // accordion trigger: type=single (default) closes siblings; data-type=
+    // multiple toggles items independently. Siblings without an item/content
+    // ancestor are skipped, not crashed on.,
     "accordion-trigger": {
       init: function (trigger) {
         var item = trigger.closest("[data-slot=accordion-item]")
@@ -1742,11 +1735,6 @@ Wrap the `Accordion` in a `Card` component.
         if (next) next.focus()
       },
     },
-    // toggle-group: single (items role=radio) selects exclusively with click-
-    // again deselecting; multiple (items as plain buttons) toggles items independently.
-    // Root is role=group in BOTH modes (radix current semantics — radiogroup
-    // was the old single-mode root role).
-    // Roving tabindex tracks the active item in both modes.,
   } })
 })()
 ```
@@ -1980,6 +1968,9 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 (function () {
   var h = shadless.h
   shadless.register("accordion", { slots: {
+    // accordion trigger: type=single (default) closes siblings; data-type=
+    // multiple toggles items independently. Siblings without an item/content
+    // ancestor are skipped, not crashed on.,
     "accordion-trigger": {
       init: function (trigger) {
         var item = trigger.closest("[data-slot=accordion-item]")
@@ -2021,11 +2012,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
         if (next) next.focus()
       },
     },
-    // toggle-group: single (items role=radio) selects exclusively with click-
-    // again deselecting; multiple (items as plain buttons) toggles items independently.
-    // Root is role=group in BOTH modes (radix current semantics — radiogroup
-    // was the old single-mode root role).
-    // Roving tabindex tracks the active item in both modes.,
   } })
 })()
 ```

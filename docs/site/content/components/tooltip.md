@@ -126,10 +126,11 @@ A popup that displays information related to an element when the element receive
         },
       });
       shadless.h.bindHandlers(trigger, wired.handlers, w.signal);
+      var openFn = function () { if (wired.state() === "closed") trigger.dispatchEvent(new FocusEvent("focus")) }
       shadless.instances.set(trigger, { component: "tooltip",
-        open: function () { if (wired.state() === "closed") trigger.dispatchEvent(new FocusEvent("focus")) },
+        open: openFn,
         close: function () { wired.close() },
-        toggle: function () { wired.state() === "closed" ? this.open() : wired.close() },
+        toggle: function () { wired.state() === "closed" ? openFn() : wired.close() },
         isOpen: function () { return wired.state() !== "closed" },
       })
     });
@@ -561,10 +562,11 @@ Use the `side` prop to change the position of the tooltip.
         },
       });
       shadless.h.bindHandlers(trigger, wired.handlers, w.signal);
+      var openFn = function () { if (wired.state() === "closed") trigger.dispatchEvent(new FocusEvent("focus")) }
       shadless.instances.set(trigger, { component: "tooltip",
-        open: function () { if (wired.state() === "closed") trigger.dispatchEvent(new FocusEvent("focus")) },
+        open: openFn,
         close: function () { wired.close() },
-        toggle: function () { wired.state() === "closed" ? this.open() : wired.close() },
+        toggle: function () { wired.state() === "closed" ? openFn() : wired.close() },
         isOpen: function () { return wired.state() !== "closed" },
       })
     });
@@ -729,10 +731,11 @@ Use the `side` prop to change the position of the tooltip.
         },
       });
       shadless.h.bindHandlers(trigger, wired.handlers, w.signal);
+      var openFn = function () { if (wired.state() === "closed") trigger.dispatchEvent(new FocusEvent("focus")) }
       shadless.instances.set(trigger, { component: "tooltip",
-        open: function () { if (wired.state() === "closed") trigger.dispatchEvent(new FocusEvent("focus")) },
+        open: openFn,
         close: function () { wired.close() },
-        toggle: function () { wired.state() === "closed" ? this.open() : wired.close() },
+        toggle: function () { wired.state() === "closed" ? openFn() : wired.close() },
         isOpen: function () { return wired.state() !== "closed" },
       })
     });
@@ -874,10 +877,11 @@ Show a tooltip on a disabled button by wrapping it with a span.
         },
       });
       shadless.h.bindHandlers(trigger, wired.handlers, w.signal);
+      var openFn = function () { if (wired.state() === "closed") trigger.dispatchEvent(new FocusEvent("focus")) }
       shadless.instances.set(trigger, { component: "tooltip",
-        open: function () { if (wired.state() === "closed") trigger.dispatchEvent(new FocusEvent("focus")) },
+        open: openFn,
         close: function () { wired.close() },
-        toggle: function () { wired.state() === "closed" ? this.open() : wired.close() },
+        toggle: function () { wired.state() === "closed" ? openFn() : wired.close() },
         isOpen: function () { return wired.state() !== "closed" },
       })
     });
@@ -1253,10 +1257,11 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
         },
       });
       shadless.h.bindHandlers(trigger, wired.handlers, w.signal);
+      var openFn = function () { if (wired.state() === "closed") trigger.dispatchEvent(new FocusEvent("focus")) }
       shadless.instances.set(trigger, { component: "tooltip",
-        open: function () { if (wired.state() === "closed") trigger.dispatchEvent(new FocusEvent("focus")) },
+        open: openFn,
         close: function () { wired.close() },
-        toggle: function () { wired.state() === "closed" ? this.open() : wired.close() },
+        toggle: function () { wired.state() === "closed" ? openFn() : wired.close() },
         isOpen: function () { return wired.state() !== "closed" },
       })
     });

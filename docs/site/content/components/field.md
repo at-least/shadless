@@ -880,13 +880,19 @@ Combine labels, controls, and help text to compose accessible form fields and gr
           write: function (v) { set(root, v, null) },
         })
       },
+      onKeydown: function (root, ctx, ev) {
+        // radix Checkbox ignores Enter: its click handler preventDefaults the
+        // native button's Enter-synthesized click (Space stays native) —
+        // measured 2026-08-22, pinned by the contract's key:Enter scenario,
+        // which this page failed until the quirk was ported
+        if (ev.key === "Enter") ev.preventDefault()
+      },
       onClick: function (root, ctx) {
         var checked = root.getAttribute("aria-checked") !== "true"
         set(root, checked, ctx)
         h.emit(root, "change", "checkbox", { checked: checked })
       },
     },
-    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
   } })
 })()
 ```
@@ -1857,13 +1863,19 @@ See the Form documentation for building forms with the `Field` component and Rea
           write: function (v) { set(root, v, null) },
         })
       },
+      onKeydown: function (root, ctx, ev) {
+        // radix Checkbox ignores Enter: its click handler preventDefaults the
+        // native button's Enter-synthesized click (Space stays native) —
+        // measured 2026-08-22, pinned by the contract's key:Enter scenario,
+        // which this page failed until the quirk was ported
+        if (ev.key === "Enter") ev.preventDefault()
+      },
       onClick: function (root, ctx) {
         var checked = root.getAttribute("aria-checked") !== "true"
         set(root, checked, ctx)
         h.emit(root, "change", "checkbox", { checked: checked })
       },
     },
-    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
   } })
 })()
 ```
@@ -2002,6 +2014,7 @@ See the Form documentation for building forms with the `Field` component and Rea
 (function () {
   var h = shadless.h
   shadless.register("radio-group", { slots: {
+    // radio-group: click checks exclusively; checked item cannot be unchecked,
     "radio-group-item": {
       onClick: function (item, ctx) {
         var group = item.closest("[data-slot=radio-group]")
@@ -2045,7 +2058,6 @@ See the Form documentation for building forms with the `Field` component and Rea
         next.focus()
       },
     },
-    // avatar: settle image vs fallback from load state (radix Presence),
   } })
 })()
 ```
@@ -2108,6 +2120,7 @@ See the Form documentation for building forms with the `Field` component and Rea
     h.syncForm(root)
   }
   shadless.register("switch", { slots: {
+    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
     switch: {
       init: function (root) {
         h.formMirror(root, {
@@ -2121,7 +2134,6 @@ See the Form documentation for building forms with the `Field` component and Rea
         h.emit(root, "change", "switch", { checked: checked })
       },
     },
-    // toggle: aria-pressed + data-state on/off (radix Toggle).,
   } })
 })()
 ```
@@ -2272,6 +2284,7 @@ Wrap `Field` components inside `FieldLabel` to create selectable field groups. T
 (function () {
   var h = shadless.h
   shadless.register("radio-group", { slots: {
+    // radio-group: click checks exclusively; checked item cannot be unchecked,
     "radio-group-item": {
       onClick: function (item, ctx) {
         var group = item.closest("[data-slot=radio-group]")
@@ -2315,7 +2328,6 @@ Wrap `Field` components inside `FieldLabel` to create selectable field groups. T
         next.focus()
       },
     },
-    // avatar: settle image vs fallback from load state (radix Presence),
   } })
 })()
 ```
@@ -2512,13 +2524,19 @@ Stack `Field` components with `FieldGroup`. Add `FieldSeparator` to divide them.
           write: function (v) { set(root, v, null) },
         })
       },
+      onKeydown: function (root, ctx, ev) {
+        // radix Checkbox ignores Enter: its click handler preventDefaults the
+        // native button's Enter-synthesized click (Space stays native) —
+        // measured 2026-08-22, pinned by the contract's key:Enter scenario,
+        // which this page failed until the quirk was ported
+        if (ev.key === "Enter") ev.preventDefault()
+      },
       onClick: function (root, ctx) {
         var checked = root.getAttribute("aria-checked") !== "true"
         set(root, checked, ctx)
         h.emit(root, "change", "checkbox", { checked: checked })
       },
     },
-    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
   } })
 })()
 ```
@@ -3436,13 +3454,19 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
           write: function (v) { set(root, v, null) },
         })
       },
+      onKeydown: function (root, ctx, ev) {
+        // radix Checkbox ignores Enter: its click handler preventDefaults the
+        // native button's Enter-synthesized click (Space stays native) —
+        // measured 2026-08-22, pinned by the contract's key:Enter scenario,
+        // which this page failed until the quirk was ported
+        if (ev.key === "Enter") ev.preventDefault()
+      },
       onClick: function (root, ctx) {
         var checked = root.getAttribute("aria-checked") !== "true"
         set(root, checked, ctx)
         h.emit(root, "change", "checkbox", { checked: checked })
       },
     },
-    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
   } })
 })()
 ```

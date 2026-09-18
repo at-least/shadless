@@ -188,13 +188,19 @@ A control that allows the user to toggle between checked and not checked.
           write: function (v) { set(root, v, null) },
         })
       },
+      onKeydown: function (root, ctx, ev) {
+        // radix Checkbox ignores Enter: its click handler preventDefaults the
+        // native button's Enter-synthesized click (Space stays native) —
+        // measured 2026-08-22, pinned by the contract's key:Enter scenario,
+        // which this page failed until the quirk was ported
+        if (ev.key === "Enter") ev.preventDefault()
+      },
       onClick: function (root, ctx) {
         var checked = root.getAttribute("aria-checked") !== "true"
         set(root, checked, ctx)
         h.emit(root, "change", "checkbox", { checked: checked })
       },
     },
-    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
   } })
 })()
 ```
@@ -313,13 +319,19 @@ show the invalid styles.
           write: function (v) { set(root, v, null) },
         })
       },
+      onKeydown: function (root, ctx, ev) {
+        // radix Checkbox ignores Enter: its click handler preventDefaults the
+        // native button's Enter-synthesized click (Space stays native) —
+        // measured 2026-08-22, pinned by the contract's key:Enter scenario,
+        // which this page failed until the quirk was ported
+        if (ev.key === "Enter") ev.preventDefault()
+      },
       onClick: function (root, ctx) {
         var checked = root.getAttribute("aria-checked") !== "true"
         set(root, checked, ctx)
         h.emit(root, "change", "checkbox", { checked: checked })
       },
     },
-    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
   } })
 })()
 ```
@@ -393,13 +405,19 @@ Pair the checkbox with `Field` and `FieldLabel` for proper layout and labeling.
           write: function (v) { set(root, v, null) },
         })
       },
+      onKeydown: function (root, ctx, ev) {
+        // radix Checkbox ignores Enter: its click handler preventDefaults the
+        // native button's Enter-synthesized click (Space stays native) —
+        // measured 2026-08-22, pinned by the contract's key:Enter scenario,
+        // which this page failed until the quirk was ported
+        if (ev.key === "Enter") ev.preventDefault()
+      },
       onClick: function (root, ctx) {
         var checked = root.getAttribute("aria-checked") !== "true"
         set(root, checked, ctx)
         h.emit(root, "change", "checkbox", { checked: checked })
       },
     },
-    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
   } })
 })()
 ```
@@ -504,13 +522,19 @@ Use `FieldContent` and `FieldDescription` for helper text.
           write: function (v) { set(root, v, null) },
         })
       },
+      onKeydown: function (root, ctx, ev) {
+        // radix Checkbox ignores Enter: its click handler preventDefaults the
+        // native button's Enter-synthesized click (Space stays native) —
+        // measured 2026-08-22, pinned by the contract's key:Enter scenario,
+        // which this page failed until the quirk was ported
+        if (ev.key === "Enter") ev.preventDefault()
+      },
       onClick: function (root, ctx) {
         var checked = root.getAttribute("aria-checked") !== "true"
         set(root, checked, ctx)
         h.emit(root, "change", "checkbox", { checked: checked })
       },
     },
-    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
   } })
 })()
 ```
@@ -587,13 +611,19 @@ Use the `disabled` prop to prevent interaction and add the `data-disabled` attri
           write: function (v) { set(root, v, null) },
         })
       },
+      onKeydown: function (root, ctx, ev) {
+        // radix Checkbox ignores Enter: its click handler preventDefaults the
+        // native button's Enter-synthesized click (Space stays native) —
+        // measured 2026-08-22, pinned by the contract's key:Enter scenario,
+        // which this page failed until the quirk was ported
+        if (ev.key === "Enter") ev.preventDefault()
+      },
       onClick: function (root, ctx) {
         var checked = root.getAttribute("aria-checked") !== "true"
         set(root, checked, ctx)
         h.emit(root, "change", "checkbox", { checked: checked })
       },
     },
-    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
   } })
 })()
 ```
@@ -792,13 +822,19 @@ Use multiple fields to create a checkbox list.
           write: function (v) { set(root, v, null) },
         })
       },
+      onKeydown: function (root, ctx, ev) {
+        // radix Checkbox ignores Enter: its click handler preventDefaults the
+        // native button's Enter-synthesized click (Space stays native) —
+        // measured 2026-08-22, pinned by the contract's key:Enter scenario,
+        // which this page failed until the quirk was ported
+        if (ev.key === "Enter") ev.preventDefault()
+      },
       onClick: function (root, ctx) {
         var checked = root.getAttribute("aria-checked") !== "true"
         set(root, checked, ctx)
         h.emit(root, "change", "checkbox", { checked: checked })
       },
     },
-    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
   } })
 })()
 ```
@@ -1061,13 +1097,19 @@ Use multiple fields to create a checkbox list.
           write: function (v) { set(root, v, null) },
         })
       },
+      onKeydown: function (root, ctx, ev) {
+        // radix Checkbox ignores Enter: its click handler preventDefaults the
+        // native button's Enter-synthesized click (Space stays native) —
+        // measured 2026-08-22, pinned by the contract's key:Enter scenario,
+        // which this page failed until the quirk was ported
+        if (ev.key === "Enter") ev.preventDefault()
+      },
       onClick: function (root, ctx) {
         var checked = root.getAttribute("aria-checked") !== "true"
         set(root, checked, ctx)
         h.emit(root, "change", "checkbox", { checked: checked })
       },
     },
-    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
   } })
 })()
 ```
@@ -1260,13 +1302,19 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
           write: function (v) { set(root, v, null) },
         })
       },
+      onKeydown: function (root, ctx, ev) {
+        // radix Checkbox ignores Enter: its click handler preventDefaults the
+        // native button's Enter-synthesized click (Space stays native) —
+        // measured 2026-08-22, pinned by the contract's key:Enter scenario,
+        // which this page failed until the quirk was ported
+        if (ev.key === "Enter") ev.preventDefault()
+      },
       onClick: function (root, ctx) {
         var checked = root.getAttribute("aria-checked") !== "true"
         set(root, checked, ctx)
         h.emit(root, "change", "checkbox", { checked: checked })
       },
     },
-    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
   } })
 })()
 ```

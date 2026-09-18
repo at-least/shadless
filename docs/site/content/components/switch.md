@@ -56,6 +56,7 @@ A control that allows the user to toggle between checked and not checked.
     h.syncForm(root)
   }
   shadless.register("switch", { slots: {
+    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
     switch: {
       init: function (root) {
         h.formMirror(root, {
@@ -69,7 +70,6 @@ A control that allows the user to toggle between checked and not checked.
         h.emit(root, "change", "switch", { checked: checked })
       },
     },
-    // toggle: aria-pressed + data-state on/off (radix Toggle).,
   } })
 })()
 ```
@@ -181,6 +181,7 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
     h.syncForm(root)
   }
   shadless.register("switch", { slots: {
+    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
     switch: {
       init: function (root) {
         h.formMirror(root, {
@@ -194,7 +195,6 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
         h.emit(root, "change", "switch", { checked: checked })
       },
     },
-    // toggle: aria-pressed + data-state on/off (radix Toggle).,
   } })
 })()
 ```
@@ -324,6 +324,7 @@ Card-style selection where `FieldLabel` wraps the entire `Field` for a clickable
     h.syncForm(root)
   }
   shadless.register("switch", { slots: {
+    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
     switch: {
       init: function (root) {
         h.formMirror(root, {
@@ -337,7 +338,6 @@ Card-style selection where `FieldLabel` wraps the entire `Field` for a clickable
         h.emit(root, "change", "switch", { checked: checked })
       },
     },
-    // toggle: aria-pressed + data-state on/off (radix Toggle).,
   } })
 })()
 ```
@@ -406,6 +406,7 @@ Add the `disabled` prop to the `Switch` component to disable the switch. Add the
     h.syncForm(root)
   }
   shadless.register("switch", { slots: {
+    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
     switch: {
       init: function (root) {
         h.formMirror(root, {
@@ -419,7 +420,6 @@ Add the `disabled` prop to the `Switch` component to disable the switch. Add the
         h.emit(root, "change", "switch", { checked: checked })
       },
     },
-    // toggle: aria-pressed + data-state on/off (radix Toggle).,
   } })
 })()
 ```
@@ -498,6 +498,7 @@ Add the `aria-invalid` prop to the `Switch` component to indicate an invalid sta
     h.syncForm(root)
   }
   shadless.register("switch", { slots: {
+    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
     switch: {
       init: function (root) {
         h.formMirror(root, {
@@ -511,7 +512,6 @@ Add the `aria-invalid` prop to the `Switch` component to indicate an invalid sta
         h.emit(root, "change", "switch", { checked: checked })
       },
     },
-    // toggle: aria-pressed + data-state on/off (radix Toggle).,
   } })
 })()
 ```
@@ -610,6 +610,7 @@ Use the `size` prop to change the size of the switch.
     h.syncForm(root)
   }
   shadless.register("switch", { slots: {
+    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
     switch: {
       init: function (root) {
         h.formMirror(root, {
@@ -623,7 +624,6 @@ Use the `size` prop to change the size of the switch.
         h.emit(root, "change", "switch", { checked: checked })
       },
     },
-    // toggle: aria-pressed + data-state on/off (radix Toggle).,
   } })
 })()
 ```
@@ -704,6 +704,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
     h.syncForm(root)
   }
   shadless.register("switch", { slots: {
+    // switch: thumb is always in DOM; root + thumb data-state stay in sync.,
     switch: {
       init: function (root) {
         h.formMirror(root, {
@@ -717,7 +718,6 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
         h.emit(root, "change", "switch", { checked: checked })
       },
     },
-    // toggle: aria-pressed + data-state on/off (radix Toggle).,
   } })
 })()
 ```
