@@ -796,7 +796,7 @@ pub fn build_contract_oracle(
     recorder: &str,
 ) -> Result<(), String> {
     let entry = format!(
-        "\nimport React from \"react\";\nimport {{ createRoot }} from \"react-dom/client\";\n{}\n{}\nwindow.__open = true;\nconst root = createRoot(document.getElementById(\"root\"));\nconst render = () => root.render(({}));\nwindow.__setOpen = (o) => {{ window.__open = o; render(); }};\nrender();\n",
+        "\nimport React from \"react\";\nimport {{ createRoot }} from \"react-dom/client\";\n{}\n{}\nwindow.__open = true;\ntry {{\nconst root = createRoot(document.getElementById(\"root\"));\nconst render = () => root.render(({}));\nwindow.__setOpen = (o) => {{ window.__open = o; render(); }};\nrender();\n}} catch (e) {{ window.__err = String(e?.message ?? e); }}\n",
         def.imports, recorder, def.usage
     );
     let cache = {

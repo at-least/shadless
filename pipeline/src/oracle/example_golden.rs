@@ -11,10 +11,11 @@ use std::collections::{BTreeMap, HashMap};
 use std::path::Path;
 use std::sync::OnceLock;
 
-/// Both spellings a normalised auto-id can have in a diff context.
+/// Both spellings a normalised auto-id can have in a diff context:
+/// oracle_norm emits radix-a<N>, oracle_canon.js emits radix-<id>.
 fn re_golden_auto_id() -> &'static Regex {
     static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"radix-(?:<auto>_?|a\\d+)").unwrap())
+    R.get_or_init(|| Regex::new(r"radix-(?:<id>|a\d+)").unwrap())
 }
 
 fn re_long_quoted() -> &'static Regex {
@@ -30,12 +31,41 @@ fn first_diff_window(a: &str, b: &str, before: usize, after: usize) -> (String, 
     while i < ab.len() && i < bb.len() && ab[i] == bb[i] {
         i += 1;
     }
+    // the first differing BYTE can sit mid-character (two encodings can
+    // share a prefix byte) — clamp every slice edge to a char boundary or
+    // the failure report itself panics instead of reporting the diff
+    let floor = |mut x: usize, s: &str| -> usize {
+        while x > 0 && !s.is_char_boundary(x) {
+            x -= 1;
+        }
+        x
+    };
+    let ceil = |mut x: usize, s: &str| -> usize {
+        while x < s.len() && !s.is_char_boundary(x) {
+            x += 1;
+        }
+        x
+    };
     let window = |s: &str| -> String {
-        let lo = i.saturating_sub(before);
-        let hi = (i + after).min(s.len());
+        let lo = floor(i.saturating_sub(before), s);
+        let hi = ceil((i + after).min(s.len()), s);
         s[lo..hi].to_string()
     };
     (window(a), window(b))
+}
+
+
+/// Truncates to `max` bytes; the report paths only, never worth a panic on
+/// multi-byte content.
+fn truncate_utf8(s: &mut String, max: usize) {
+    if s.len() <= max {
+        return;
+    }
+    let mut cut = max;
+    while !s.is_char_boundary(cut) {
+        cut -= 1;
+    }
+    s.truncate(cut);
 }
 
 fn file_exists(p: &str) -> bool {
@@ -170,9 +200,7 @@ fn run_inner_shell(
         let (wa, wb) = first_diff_window(a, b, 60, 60);
         let mut ctx = format!("{} ||| {}", wa, wb);
         ctx = re_golden_auto_id().replace_all(&ctx, "#").into_owned();
-        if ctx.len() > 200 {
-            ctx.truncate(200);
-        }
+        truncate_utf8(&mut ctx, 200);
         ctx
     };
 
@@ -192,9 +220,7 @@ fn run_inner_shell(
     let mut failures: Vec<FailureRec> = Vec::new();
     let bucket_of = |key: &str, name: &str, buckets: &mut BTreeMap<String, Vec<String>>| {
         let mut k = re_long_quoted().replace_all(key, "\"…\"").into_owned();
-        if k.len() > 110 {
-            k.truncate(110);
-        }
+        truncate_utf8(&mut k, 110);
         buckets.entry(k).or_default().push(name.to_string());
     };
 
@@ -396,5 +422,43 @@ mod tests {
         let err = load_snapshot(t.to_str().unwrap(), "missing.json").unwrap_err();
         assert!(err.contains("missing.json"), "{}", err);
         let _ = fs::remove_dir_all(&t);
+    }
+
+
+    /// The two spellings the canon actually produces: oracle_norm emits
+    /// radix-a<N> and oracle_canon.js emits radix-<id>. The old pattern
+    /// carried a double-escaped \\d that matched neither, so the id masker
+    /// was inert and classify-mode failures that differed only in id
+    /// spelling never bucketed together.
+    #[test]
+    fn unit_golden_auto_id_mask_matches_both_spellings() {
+        let re = re_golden_auto_id();
+        assert!(re.is_match("radix-a1"), "oracle_norm spelling");
+        assert!(re.is_match("radix-a12"), "oracle_norm multi-digit");
+        assert!(re.is_match("radix-<id>"), "canon.js spelling");
+        assert_eq!(
+            re.replace_all("x radix-a1 y radix-<id> z", "#"),
+            "x # y # z"
+        );
+    }
+
+    /// é = C3 A9 vs ê = C3 EA: the first differing BYTE sits mid-character
+    /// in both strings, and the old byte-index slicing panicked instead of
+    /// reporting the diff.
+    #[test]
+    fn unit_diff_window_survives_a_mid_character_divergence() {
+        let a = "\u{e9}".repeat(41);
+        let b = format!("{}\u{ea}", "\u{e9}".repeat(40));
+        let (wa, wb) = first_diff_window(&a, &b, 60, 60);
+        assert!(!wa.is_empty() && !wb.is_empty(), "window must not panic");
+        assert_ne!(wa, wb);
+    }
+
+    #[test]
+    fn unit_truncate_utf8_never_splits_a_character() {
+        let mut s = "\u{e9}".repeat(150); // 300 bytes; byte 201 is mid-character
+        truncate_utf8(&mut s, 201);
+        assert!(s.len() <= 200);
+        assert!(s.chars().all(|c| c == '\u{e9}'), "no split character");
     }
 }

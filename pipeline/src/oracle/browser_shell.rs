@@ -346,3 +346,25 @@ pub struct BBox {
     pub width: f64,
     pub height: f64,
 }
+
+impl Drop for BrowserShell {
+    fn drop(&mut self) {
+        // Best effort: closing stdin trips the driver's EOF handler, which
+        // closes chromium — an error path that never reached close() must
+        // not leak a browser. Never blocks long on a wedged child.
+        if let Some(si) = self.stdin.lock().unwrap().take() {
+            drop(si); // dropping the ChildStdin closes the pipe
+        }
+        let Ok(child) = self.child.get_mut() else {
+            return;
+        };
+        for _ in 0..10 {
+            match child.try_wait() {
+                Ok(Some(_)) => return,
+                Ok(None) => std::thread::sleep(std::time::Duration::from_millis(100)),
+                Err(_) => return,
+            }
+        }
+    }
+}
+

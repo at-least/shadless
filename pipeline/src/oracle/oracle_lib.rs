@@ -282,10 +282,17 @@ try {{
     let key = oracle_bundle_cache_key(name)?;
     let old_key = std::fs::read_to_string(&key_file).unwrap_or_default();
     if old_key != key {
+        // stage + rename: golden-gate, example-oracle and example-fixture
+        // have no graph edge between them and rebundle the same example
+        // names cold — esbuild writing the live outfile directly let a
+        // racing goto execute a torn bundle (or a torn bundle land under a
+        // matching key file, poisoning the cache). Rename is atomic on the
+        // cache filesystem: readers always see a whole file.
+        let staging = outfile.with_extension(format!("js.tmp-{}", std::process::id()));
         let aliases = oracle_aliases()?;
         if use_oxc {
             #[cfg(feature = "oxc")]
-            crate::oracle::oxc_bundle::bundle_oracle_oxc(root, &entry, &aliases, &outfile)?;
+            crate::oracle::oxc_bundle::bundle_oracle_oxc(root, &entry, &aliases, &staging)?;
             #[cfg(not(feature = "oxc"))]
             unreachable!("gated above");
         } else {
@@ -293,7 +300,7 @@ try {{
                 entry.to_string_lossy().into_owned(),
                 "--bundle".into(),
                 "--format=iife".into(),
-                format!("--outfile={}", outfile.to_string_lossy()),
+                format!("--outfile={}", staging.to_string_lossy()),
                 "--log-level=error".into(),
                 "--loader:.tsx=tsx".into(),
                 "--jsx=automatic".into(),
@@ -314,6 +321,7 @@ try {{
                 return Err(format!("esbuild: {}", first));
             }
         }
+        std::fs::rename(&staging, &outfile).map_err(|e| e.to_string())?;
         std::fs::write(&key_file, &key).map_err(|e| e.to_string())?;
     }
     let html_file = tmp_abs.join(format!("oracle-{}.html", name));

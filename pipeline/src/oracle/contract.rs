@@ -471,6 +471,13 @@ fn c_step_it(page: &BPage, def: &Cdef, step: &str) -> Result<String, String> {
         } else if let Some(key) = op.strip_prefix("key:") {
             page.key_press(key)?;
             page.wait_for_timeout(120)?;
+        } else {
+            // a typo'd op would otherwise silently no-op and both sides
+            // would agree that nothing happened — a scenario that proves
+            // nothing, green
+            return Err(format!(
+                "unknown scenario op {op:?} — the step would no-op and the scenario would pass vacuously"
+            ));
         }
     }
     page.wait_for_timeout(350)?;
@@ -586,6 +593,15 @@ fn c_oracle_run_page(
     let url = format!("file://{}", abs_or_die(out, "oracle.html").to_string_lossy());
     page.goto_url(&url)?;
     page.wait_for_timeout(500)?;
+    // the oracle entry guards its render and reports through __err: a
+    // crashing React def must fail the scenario outright, not surface as
+    // null-fact diffs that read like a behavioral difference
+    let err_v = page.evaluate("window.__err")?;
+    if let Some(s) = err_v.as_str() {
+        if !s.is_empty() {
+            return Err(format!("oracle page threw: {}", s));
+        }
+    }
     let mut mounted: Vec<String> = Vec::new();
     let mut mounted_ok = false;
     if !def.open.is_empty() && !c_closed_start(step) {
@@ -799,6 +815,15 @@ fn run_contract_inner(name: &str) -> Result<(), ContractError> {
                 .map_err(ContractError::Msg)?;
             for e in &errs2 {
                 println!("  [shadless pageerror] {}", e);
+            }
+            // the re-run owes the same hard-fail as the first pass: a
+            // pageerror's result is garbage, and swapping it in would record
+            // the agreed-on-garbage value as the passing one
+            if !errs2.is_empty() {
+                return Err(ContractError::Msg(format!(
+                    "shadless page threw {} uncaught error(s) on the re-run too",
+                    errs2.len()
+                )));
             }
             if o2.result == c2.result {
                 flaky.push(format!(

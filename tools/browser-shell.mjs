@@ -45,9 +45,14 @@ const toFn = (expr) => new Function("return (" + expr + ")")()
 
 async function frameOf(page, frameSel) {
   if (!frameSel) return null
-  const handle = await page.locator(frameSel).first().contentFrame({ timeout: 10_000 })
-  if (!handle) throw new Error(`iframe not found: ${frameSel}`)
-  return handle
+  // Locator.contentFrame() is SYNCHRONOUS and always returns a FrameLocator
+  // (playwright 1.62 types): the old `await …contentFrame({timeout})` never
+  // returned null, so the "iframe not found" throw was dead code and a
+  // missing iframe surfaced later as a timeout naming the INNER selector.
+  // Check existence explicitly.
+  const count = await page.locator(frameSel).count()
+  if (count === 0) throw new Error(`iframe not found: ${frameSel}`)
+  return page.locator(frameSel).first().contentFrame()
 }
 
 async function locatorIn(page, req) {
