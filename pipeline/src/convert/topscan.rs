@@ -180,7 +180,13 @@ impl<'a> CvTopScan<'a> {
                 continue;
             }
             let init_text = &text[eq as usize + 1..];
-            let init_base = dcl.off + eq as usize + 1; // absolute position of initText[0]
+            // eq indexes the TRIMMED text and dcl.off is relative to the
+            // SLICE (js[i+kwlen..] is what cv_split_top_indexed scanned):
+            // both offsets must be rebased to js before combining, or every
+            // arrow span comes out shifted (and destructured param defaults
+            // were silently unextractable)
+            let trim_left = dcl.text.len() - text.len();
+            let init_base = i + kwlen + dcl.off + trim_left + eq as usize + 1; // absolute position of initText[0]
             let decl_idx = self.decls.len();
             self.decls.push(CvDecl {
                 name: name.clone(),
@@ -319,7 +325,10 @@ pub fn cv_arrow_span(init: &str, base: usize) -> Option<CvArrowInfo> {
     }
     if t.starts_with('(') {
         let (po, pe, ok) = cv_paren_span(t, 0);
-        if !ok || !cv_is_arrow_at(t, pe) {
+        // cv_is_arrow_at starts from the char AFTER the span end — pe itself
+        // is the ')' and is not whitespace, so the check below never fired
+        // and a destructured arrow was never recognized at all
+        if !ok || !cv_is_arrow_at(t, pe + 1) {
             return None;
         }
         return Some(CvArrowInfo {
@@ -504,4 +513,30 @@ fn starts_at_word(s: &str, start: usize) -> bool {
     let b = s.as_bytes();
     let p = b[start - 1];
     !(p.is_ascii_alphanumeric() || p == b'_' || p == b'$')
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// A declarator whose raw text starts with whitespace (`var<sp>X = …`):
+    /// `eq` is an index into the TRIMMED text while `dcl.off` points at the
+    /// RAW segment — mixing them shifted every arrow span left by the trim
+    /// amount, and destructured param defaults became silently
+    /// unextractable (`( { size = "md" }` → the `{`-branch never fired).
+    #[test]
+    fn unit_arrow_spans_skip_declaration_leading_space() {
+        let js = "var Chart = ({ size = \"md\" }) => ({ render: 1 });";
+        let t = scan_top_js(js).unwrap();
+        assert!(t.decls[0].is_arrow, "the arrow must be recognized");
+        let d = &t.decls[0];
+        let params = &js[d.params[0]..d.params[1] + 1];
+        assert!(
+            params.starts_with('(') && params.ends_with(')'),
+            "params span must quote the real ( … ) in the source, got {params:?}"
+        );
+        assert!(params.contains("size = \"md\""), "params span must carry the default, got {params:?}");
+        let body = &js[d.body[0]..d.body[1] + 1];
+        assert!(body.contains("render"), "body span must quote the real body, got {body:?}");
+    }
 }

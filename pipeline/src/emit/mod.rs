@@ -316,7 +316,17 @@ const SKIN_PATH: &str = ".upstream/shadcn-ui/apps/v4/registry/styles/style-nova.
 pub fn load_skin() {
     static ONCE: OnceLock<()> = OnceLock::new();
     if ONCE.set(()).is_ok() {
-        let b = match std::fs::read_to_string(SKIN_PATH) {
+        // the pipeline runs from the repo root; tests run from the crate —
+        // fall back to the adjacent product tree so the pinned skin is
+        // reachable from both (same bytes either way; errors still report
+        // the Go-parity relative path)
+        let skin = match std::path::Path::new(SKIN_PATH).exists() {
+            true => std::path::PathBuf::from(SKIN_PATH),
+            false => crate::crate_adjacent_tree_root()
+                .map(|r| r.join(SKIN_PATH))
+                .unwrap_or_else(|| std::path::PathBuf::from(SKIN_PATH)),
+        };
+        let b = match std::fs::read_to_string(&skin) {
             Ok(b) => b,
             Err(e) => {
                 // Go os.ReadFile: open-phase errors report "open"; a directory

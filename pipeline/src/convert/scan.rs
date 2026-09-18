@@ -349,7 +349,16 @@ pub fn cv_find_ternary_colon(s: &str, q: usize) -> isize {
         match b[i] {
             b'(' | b'[' | b'{' => depth += 1,
             b')' | b']' | b'}' => depth -= 1,
-            b'?' => nest += 1,
+            b'?' => {
+                // optional chaining (`user?.slug`) is not a ternary `?`:
+                // counting it nested made the colon search skip the REAL
+                // colon and the whole expression degraded to "other"
+                if b.get(i + 1) == Some(&b'.') {
+                    i += 1;
+                } else {
+                    nest += 1;
+                }
+            }
             b':' => {
                 if depth == 0 && nest == 0 {
                     return i as isize;
@@ -909,4 +918,21 @@ pub fn cv_brace_span(s: &str, i: usize) -> (usize, usize, bool) {
         i += 1;
     }
     (0, 0, false)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// `cond ? user?.slug : "x"`: the `?` of `?.` counted as a nested
+    /// ternary, so the colon search skipped the REAL `:` and the ternary
+    /// degraded to kind "other" (cva axes silently empty).
+    #[test]
+    fn unit_ternary_colon_ignores_optional_chaining() {
+        let s = "cond ? user?.slug : \"x\"";
+        let q = s.find('?').unwrap();
+        let colon = cv_find_ternary_colon(s, q);
+        assert!(colon >= 0, "the real colon must be found");
+        assert_eq!(&s[colon as usize..colon as usize + 2], ": ");
+    }
 }

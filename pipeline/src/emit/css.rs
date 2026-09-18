@@ -990,3 +990,38 @@ fn shadows_of(tok: &str) -> Vec<String> {
 fn _dc() {
     let _ = default_content::default_content;
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// One apply-signature spanning two tags beside a disjoint one: the
+    /// `:is(tag)` selector used to come from a HashSet pick — per-process
+    /// random. The same IR must emit one stable selector, the way the JS
+    /// twin (first tag seen) does.
+    #[test]
+    fn unit_cva_sig_tag_pick_is_deterministic() {
+        let ir = CssIrComponent {
+            name: "t".into(),
+            tier: "static".into(),
+            components: vec![IrFn {
+                fn_: "T".into(),
+                export: true,
+                elements: vec![
+                    IrEl { tag: "button".into(), slot: "t".into(), classes: vec!["px-2".into()], ..Default::default() },
+                    IrEl { tag: "a".into(), slot: "t".into(), classes: vec!["px-2".into()], ..Default::default() },
+                    IrEl { tag: "span".into(), slot: "t".into(), classes: vec!["px-3".into()], ..Default::default() },
+                ],
+            }],
+            ..Default::default()
+        };
+        let mut seen = std::collections::HashSet::new();
+        for _ in 0..20 {
+            let out = component_css(&ir).unwrap();
+            let sel: Vec<&String> = out.rules.iter().filter(|r| r.contains("px-2")).collect();
+            assert_eq!(sel.len(), 1, "exactly one px-2 rule");
+            seen.insert(sel[0].clone());
+        }
+        assert_eq!(seen.len(), 1, "one stable selector, got {seen:?}");
+    }
+}
