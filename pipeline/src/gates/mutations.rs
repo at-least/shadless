@@ -838,15 +838,27 @@ pub fn restore_active_mutation() -> Result<(), String> {
 
 // ------------------------------------------------------------- harness
 
-/// Executes a gate's commands in order and reports whether it went red.
-pub fn run_gate(root: &Path, n: &crate::nodes::Node) -> (bool, String) {
+/// What a gate's commands said. CouldNotRun is distinct from Red on
+/// purpose: a gate that could not execute (missing binary, unresolvable
+/// target) is red for an environmental reason, and counting that as a
+/// caught mutation lets a broken environment prove every mutation without
+/// a single gate comparison running.
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub enum GateRun {
+    Red,
+    Green,
+    CouldNotRun,
+}
+
+/// Executes a gate's commands in order and reports what it said.
+pub fn run_gate(root: &Path, n: &crate::nodes::Node) -> (GateRun, String) {
     let mut buf = String::new();
     for argv in &n.run {
         let exe = match crate::engine::resolve_argv0(&argv[0]) {
             Ok(p) => p,
             Err(e) => {
                 buf.push_str(&format!("fork/exec {}: {}", argv[0], e));
-                return (true, buf);
+                return (GateRun::CouldNotRun, buf);
             }
         };
         let out = std::process::Command::new(exe)
@@ -858,16 +870,16 @@ pub fn run_gate(root: &Path, n: &crate::nodes::Node) -> (bool, String) {
                 buf.push_str(&String::from_utf8_lossy(&o.stdout));
                 buf.push_str(&String::from_utf8_lossy(&o.stderr));
                 if !o.status.success() {
-                    return (true, buf);
+                    return (GateRun::Red, buf);
                 }
             }
             Err(e) => {
-                buf.push_str(&e.to_string());
-                return (true, buf);
+                buf.push_str(&format!("could not run {}: {}", argv[0], e));
+                return (GateRun::CouldNotRun, buf);
             }
         }
     }
-    (false, buf)
+    (GateRun::Green, buf)
 }
 
 /// One row of the meta report.
@@ -919,8 +931,15 @@ pub fn run_mutation(
             res.note = format!("mutation itself errored: {}", first_line(&e));
             return Ok((res, None));
         }
-        let (red, _) = run_gate(root, n);
-        res.caught = red;
+        let (run, _) = run_gate(root, n);
+        res.caught = match run {
+            GateRun::Red => true,
+            GateRun::CouldNotRun => {
+                res.note = "gate could not run (environment) — this is not a caught mutation".to_string();
+                false
+            }
+            GateRun::Green => false,
+        };
         Ok((res, None))
     })();
     let restore_err = match restore_active_mutation() {
@@ -1404,13 +1423,17 @@ mod tests {
             why: String::new(),
             mutations: vec![],
         };
-        let (red, _) = run_gate(&root, &node(&[&["false"]]));
-        assert!(red, "a failing command was not reported as red");
-        let (red, _) = run_gate(&root, &node(&[&["true"]]));
-        assert!(!red, "a passing command was reported as red");
+        let (run, _) = run_gate(&root, &node(&[&["false"]]));
+        assert_eq!(run, GateRun::Red, "a failing command was not reported as red");
+        let (run, _) = run_gate(&root, &node(&[&["true"]]));
+        assert_eq!(run, GateRun::Green, "a passing command was reported as red");
         // commands run in order and the first failure stops the gate
-        let (red, _) = run_gate(&root, &node(&[&["true"], &["false"], &["true"]]));
-        assert!(red, "a failure in a later command was missed");
+        let (run, _) = run_gate(&root, &node(&[&["true"], &["false"], &["true"]]));
+        assert_eq!(run, GateRun::Red, "a failure in a later command was missed");
+        // a gate that cannot execute is NOT a caught mutation: a broken
+        // environment must never be able to prove a mutation
+        let (run, _) = run_gate(&root, &node(&[&["definitely-not-a-binary-xyz"]]));
+        assert_eq!(run, GateRun::CouldNotRun, "an unspawnable gate counted as caught");
     }
 
     /// Go TestUnitMutationRegexesCompile.

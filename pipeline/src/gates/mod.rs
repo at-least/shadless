@@ -103,17 +103,27 @@ pub fn gate_dist_complete(root: &Path) -> Result<usize, String> {
 
 /// gate_reproducible: the committed generated trees must equal what the
 /// pipeline just produced. `git status --porcelain` over the generated roots.
-pub fn gate_reproducible(root: &Path) -> Result<usize, String> {
-    const GENERATED_ROOTS: &[&str] = &[
+///
+/// The parity baselines are covered deliberately: a deleted baseline
+/// re-records itself green on the next run, so the committed file is what
+/// pins the ratchet.
+fn reproducible_roots() -> &'static [&'static str] {
+    &[
         "dist", "docs/catalog.json", "docs/demos", "docs/example-oracle.json",
         "docs/site/content/components", "docs/site/content/guides",
         "docs/site/content/_index.md", "docs/site/content/components/_index.md",
         "docs/site/content/guides/_index.md", "docs/content-map.json",
         "generated/ir", "generated/docs-upstream", "src/kernel/*.html",
-    ];
+        "gates/demo-parity-baseline.json",
+        "gates/path-parity-baseline.json",
+        "gates/style-parity-baseline.json",
+    ]
+}
+
+pub fn gate_reproducible(root: &Path) -> Result<usize, String> {
     let mut cmd = std::process::Command::new("git");
     cmd.arg("status").arg("--porcelain").arg("--untracked-files=all").arg("--");
-    for r in GENERATED_ROOTS {
+    for r in reproducible_roots() {
         cmd.arg(r);
     }
     cmd.current_dir(root);
@@ -145,7 +155,7 @@ pub fn gate_reproducible(root: &Path) -> Result<usize, String> {
             more
         ));
     }
-    println!("PASS  reproducible ({} generated roots match the committed tree)", GENERATED_ROOTS.len());
+    println!("PASS  reproducible ({} generated roots match the committed tree)", reproducible_roots().len());
     Ok(lines.len())
 }
 
@@ -197,6 +207,22 @@ pub fn gate_product_verify(root: &Path) -> Result<(), String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// A deleted parity baseline re-records itself green — reproducible is
+    /// what pins the committed file, so the roots must cover all three.
+    #[test]
+    fn unit_reproducible_covers_the_parity_baselines() {
+        for b in [
+            "gates/demo-parity-baseline.json",
+            "gates/path-parity-baseline.json",
+            "gates/style-parity-baseline.json",
+        ] {
+            assert!(
+                reproducible_roots().contains(&b),
+                "reproducible must cover {b} — the ratchet resets silently otherwise"
+            );
+        }
+    }
 
     #[test]
     fn gate_product_verify_on_real_tree() {

@@ -572,7 +572,7 @@ pub fn gate_ledger(root: &Path) -> Result<(), String> {
         let b = &l.budgets[name];
         let actual = match values.get(name) {
             None => {
-                if name.starts_with("coverage.") {
+                if budget_checked_by_coverage(name) {
                     continue; // checked by the coverage gate's test
                 }
                 problems.push(format!("budget {}: no live value known", name));
@@ -922,9 +922,28 @@ pub fn run_ledger(args: &[String]) -> i32 {
     0
 }
 
+
+/// The one budget the coverage gate checks itself (coverage.rs reads this
+/// ledger and ratchets its live uncovered-cell count). Exact name on
+/// purpose: any other `coverage.*` budget has no checker and must fail the
+/// gate like any other unknown budget, not ride the prefix past it.
+fn budget_checked_by_coverage(name: &str) -> bool {
+    name == super::coverage::COVERAGE_KEY
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// coverage.uncovered-cells is the only budget the coverage gate checks
+    /// itself; anything else named coverage.* has no checker and must fail
+    /// the ledger gate instead of riding the prefix past it.
+    #[test]
+    fn unit_coverage_budget_skip_is_exact_not_prefix() {
+        assert!(budget_checked_by_coverage(crate::gates::coverage::COVERAGE_KEY));
+        assert!(!budget_checked_by_coverage("coverage.other"));
+        assert!(!budget_checked_by_coverage("demo-parity.dirty-cells"));
+    }
     use std::path::PathBuf;
 
     fn tree(files: &[(&str, &str)]) -> PathBuf {
@@ -1203,10 +1222,6 @@ mod tests {
         assert_eq!(js_unescape("q\\\"x"), "q\"x");
         assert_eq!(js_unescape("back\\\\slash"), "back\\slash");
     }
-
-    /// Go TestUnitGoMapKeyCount behavior: count `": true"` in a Go map
-    /// literal; a missing literal is -1.
-    #[test]
 
     #[test]
     fn unit_collect_budget_values_reads_golden_and_sweep() {

@@ -685,18 +685,35 @@ fn run_hidden_gate(rest: &[String]) -> i32 {
             // The runner injects the JS fs-recorder into node children; the
             // nested cargo test must not inherit that (or its own node
             // children would write into the gate's scratch js.log).
-            let status = std::process::Command::new("cargo")
+            let out = std::process::Command::new("cargo")
                 .args(["test", "--release", "--lib", "--", "unit_"])
                 .current_dir(env!("CARGO_MANIFEST_DIR"))
                 .env_remove("NODE_OPTIONS")
                 .env_remove("SHADLESS_FSLOG")
-                .status();
-            return match status {
-                Ok(s) if s.success() => 0,
-                Ok(s) => s.code().unwrap_or(1),
+                .output();
+            return match out {
                 Err(e) => {
                     eprintln!("pipeline __gate unit: cargo test: {}", e);
                     1
+                }
+                Ok(o) if !o.status.success() => o.status.code().unwrap_or(1),
+                Ok(o) => {
+                    // libtest exits 0 for a zero-match filter: renaming the
+                    // unit_ tests would silently empty this gate — and with
+                    // it meta_wiring, the only enforcement that every gate
+                    // has a mutation. A vacuous green is a failure.
+                    let stdout = String::from_utf8_lossy(&o.stdout);
+                    let any_passed = stdout
+                        .lines()
+                        .any(|l| l.starts_with("test result: ") && !l.contains("0 passed"));
+                    if any_passed {
+                        0
+                    } else {
+                        eprintln!(
+                            "FAIL  __gate unit: the unit_ filter matched no tests — the gate proved nothing"
+                        );
+                        1
+                    }
                 }
             };
         }

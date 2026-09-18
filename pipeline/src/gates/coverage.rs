@@ -114,11 +114,14 @@ pub fn gate_coverage(root: &Path, argv: &[String]) -> Result<(), String> {
     }
     components.sort();
 
-    let ir_of = |n: &str| -> IrFile {
-        std::fs::read_to_string(root.join("generated/ir").join(format!("{}.json", n)))
-            .ok()
-            .and_then(|b| serde_json::from_str(&b).ok())
-            .unwrap_or_default()
+    // A missing or malformed IR file must fail the gate, not silently
+    // downgrade the component to "no css": the uncovered count would not
+    // move and the budget would stay green over a matrix that quietly lost
+    // real cells.
+    let ir_of = |n: &str| -> Result<IrFile, String> {
+        let path = root.join("generated/ir").join(format!("{}.json", n));
+        let b = std::fs::read_to_string(&path).map_err(|e| format!("{}: {}", path.display(), e))?;
+        serde_json::from_str(&b).map_err(|e| format!("{}: {}", path.display(), e))
     };
 
     let mut contract_defs: HashMap<String, bool> = HashMap::new();
@@ -157,7 +160,7 @@ pub fn gate_coverage(root: &Path, argv: &[String]) -> Result<(), String> {
     let mut state_tokens: HashMap<String, bool> = HashMap::new();
     let mut no_css: HashMap<String, bool> = HashMap::new();
     for n in &components {
-        let j = ir_of(n);
+        let j = ir_of(n).map_err(|e| format!("FAIL  coverage: {}", e))?;
         let mut parts: Vec<String> = Vec::new();
         for c in &j.components {
             for e in &c.elements {

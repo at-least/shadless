@@ -105,12 +105,12 @@ re-recording also fails, so slack cannot be silently re-spent.
 
 | Metric | Max | Target | Reason |
 |---|---|---|---|
+| `coverage.uncovered-cells` | 0 | 0 | cells of the product matrix (component x path x theme x dir x state) no gate makes a computed-style or behavioral assertion about; see pipeline/gate_coverage.go |
+| `demo-parity.dirty-cells` | 76 | 0 | (page/slot#n/property @ theme @ dir) cells where a shipped demo page under our css computes differently from the same DOM under upstream css; see gates/demo-parity.mjs |
 | `golden.exempt-demos` | 147 | 0 | demos exempt from the golden dual-hop: external-dep tombstones (permanent until a vanilla port exists) + deploy-lag families (dissolve on re-pin) |
 | `interactivity.dead-families` | 1 | 0 | example families still shipping as static oracle snapshots (dead buttons); each needs its glue protocol mapped into tools/example-fixture.mjs |
-| `style-parity.dirty-cells` | 210 | 0 | (component, slot#n, property) cells where the shipped fixture's computed style differs from the React oracle; fix fixtures toward oracle values, --record, shrink |
-| `coverage.uncovered-cells` | 46 | 0 | cells of the product matrix (component x path x theme x dir x state) no gate makes a computed-style or behavioral assertion about; see pipeline/gate_coverage.go |
 | `path-parity.dirty-cells` | 0 | 0 | (component/slot/property @ path @ theme @ dir) cells where slot-only markup via css-import or full.css computes differently from React under upstream css; zero at shadcn@4.19.0 |
-| `demo-parity.dirty-cells` | 76 | 0 | (page/slot#n/property @ theme @ dir) cells where a shipped demo page under our css computes differently from the same DOM under upstream css; see gates/demo-parity.mjs |
+| `style-parity.dirty-cells` | 210 | 0 | (component, slot#n, property) cells where the shipped fixture's computed style differs from the React oracle; fix fixtures toward oracle values, --record, shrink |
 
 ## Work items
 
