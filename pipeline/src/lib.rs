@@ -4,6 +4,7 @@
 pub mod convert;
 pub mod engine;
 pub mod fanout;
+pub mod fsutil;
 pub mod glob;
 pub mod emit;
 pub mod gates;

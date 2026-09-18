@@ -204,9 +204,7 @@ pub fn verify_product(full_css: &str, out_css: &str, parts_css: &str, product_so
 /// Lists dist/css/*.css minus the aggregate, sorted.
 fn part_files(root: &Path) -> Result<Vec<String>, String> {
     let mut out: Vec<String> = Vec::new();
-    for e in std::fs::read_dir(root.join("dist/css")).map_err(|e| e.to_string())? {
-        let e = e.map_err(|e| e.to_string())?;
-        let name = e.file_name().to_string_lossy().into_owned();
+    for name in crate::fsutil::sorted_read_dir(&root.join("dist/css"))? {
         if name.ends_with(".css") && name != "shadless.css" {
             out.push(name);
         }
@@ -395,4 +393,46 @@ pub fn run_product_css() -> i32 {
 /// gate_product_verify; exposed for M6 test wiring).
 pub fn run_product_verify(root: &Path) -> Result<(), String> {
     gate_product_verify(root)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// part_files order reaches committed bytes (dist/shadless.product.css is
+    /// the joined parts). readdir order is filesystem-dependent — btrfs
+    /// hashes, ext4 inserts, tmpfs inserts — so the list must be sorted
+    /// explicitly, never walked.
+    #[test]
+    fn unit_part_files_is_sorted_and_skips_the_aggregate() {
+        let dir = tempfile::Builder::new()
+            .prefix("shadless-part-files-")
+            .tempdir()
+            .unwrap();
+        let css = dir.path().join("dist/css");
+        std::fs::create_dir_all(&css).unwrap();
+        for n in [
+            "button.css",
+            "alert.css",
+            "alert-dialog.css",
+            "badge.css",
+            "card.css",
+            "input.css",
+            "separator.css",
+            "table.css",
+            "tooltip.css",
+            "avatar.css",
+        ] {
+            std::fs::write(css.join(n), "/* part */\n").unwrap();
+        }
+        std::fs::write(css.join("shadless.css"), "/* aggregate */\n").unwrap();
+        let names = part_files(dir.path()).unwrap();
+        let mut sorted = names.clone();
+        sorted.sort();
+        assert_eq!(
+            names, sorted,
+            "part_files must return sorted names (readdir order is filesystem-dependent)"
+        );
+        assert!(names.iter().all(|n| n != "shadless.css"));
+    }
 }

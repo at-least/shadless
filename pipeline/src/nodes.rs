@@ -612,6 +612,7 @@ const HULL_FILES: &[&str] = &[
     "src/main.rs",
     "src/engine.rs",
     "src/fanout.rs",
+    "src/fsutil.rs",
     "src/glob.rs",
     "src/graph.rs",
     "src/jsonorder.rs",
