@@ -1,7 +1,7 @@
 // emitter (src/emitter/index.mjs) + tags.mjs — Wave H: tree building, render
 // semantics (root-replace defaults, leaf fills, anchors), attr merging,
 // DEFAULT_CONTENT key validation.
-import { buildTree, renderTree, renderFn, escHtml, mergeRootAttrs, validateDefaultContent, resolveDefault, DEFAULT_CONTENT }
+import { buildTree, renderTree, renderFn, escHtml, mergeRootAttrs, validateDefaultContent, resolveDefault, DEFAULT_CONTENT, cssIncludesToken }
   from "../../src/emitter/index.mjs"
 import { normalizeTag, kebab, NAT, VOID, externalMemberTag } from "../../src/tags.mjs"
 
@@ -154,5 +154,18 @@ export function run(t) {
     t.ok("defaults: non-exported fn key flagged",
       errs.some((e) => e.includes("AlertDescription")), JSON.stringify(errs))
     t.ok("defaults: stale fn key count honest", errs.length >= 1)
+  }
+
+  // ---- cssIncludesToken: the completeness gate's token-boundary check ----
+  // the substring check this replaced matched p-2 inside gap-2, so a dropped
+  // rule passed whenever a longer token elsewhere contained it
+  {
+    const hay = ".gap-2 { @apply gap-2; }\n.p-2 { @apply p-2; }"
+    t.ok("cssIncludesToken: real token found", cssIncludesToken(hay, "p-2"))
+    t.ok("cssIncludesToken: substring inside longer token rejected",
+      !cssIncludesToken("only gap-2 here", "p-2"))
+    t.ok("cssIncludesToken: decimal continuation rejected", !cssIncludesToken(".p-2.5 { }", "p-2"))
+    t.ok("cssIncludesToken: variant prefix accepted", cssIncludesToken(".hover\\:p-2 { }", "p-2"))
+    t.ok("cssIncludesToken: empty token rejected", !cssIncludesToken(".p-2 { }", ""))
   }
 }

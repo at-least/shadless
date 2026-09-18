@@ -20,6 +20,31 @@ import { SKIN_ALLOWLIST } from "./skin.mjs"
 import { NAT, VOID, normalizeTag } from "../tags.mjs"
 import { THEME_PREPAINT_SCRIPT, SHADLESS_CSS_FIXES } from "../docs/theme-prepaint.mjs"
 
+/**
+ * Token-boundary containment for CSS class tokens: `p-2` must not match
+ * inside `gap-2` or `p-2.5`. The JS twin of pipeline emit/mod.rs's
+ * css_contains_token — the completeness gates must agree.
+ * @param {string} hay
+ * @param {string} tok
+ * @returns {boolean}
+ */
+export function cssIncludesToken(hay, tok) {
+  if (!tok) return false
+  const bad = (c) => /[A-Za-z0-9_-]/.test(c)
+  let from = 0
+  for (;;) {
+    const pos = hay.indexOf(tok, from)
+    if (pos < 0) return false
+    const end = pos + tok.length
+    const beforeOk = pos === 0 || !bad(hay[pos - 1])
+    const afterOk = end >= hay.length || (!bad(hay[end]) && hay[end] !== '.')
+    if (beforeOk && afterOk) return true
+    from = pos + 1
+  }
+}
+
+
+
 /** @typedef {import("../ir.d.ts").Ir} Ir */
 /** @typedef {import("../ir.d.ts").IrComponent} IrComponent */
 /** resolved element tree node (buildTree output) */
@@ -185,7 +210,7 @@ export const DEFAULT_CONTENT = {
     AttachmentGroup: null,
   },
   breadcrumb: {
-    Breadcrumb: { html: '<ol data-slot="breadcrumb-list"><li data-slot="breadcrumb-item"><a data-slot="breadcrumb-link" href="#" style="transition:color;hover:{color:var(--foreground)}">Home</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" style="display:inline-flex;align-items:center;color:var(--muted-foreground)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:0.875rem;height:0.875rem"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item"><a data-slot="breadcrumb-link" href="#">Components</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" style="display:inline-flex;align-items:center;color:var(--muted-foreground)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:0.875rem;height:0.875rem"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item"><span data-slot="breadcrumb-page" style="font-weight:normal;color:var(--foreground)">Breadcrumb</span></li></ol>' },
+    Breadcrumb: { html: '<ol data-slot="breadcrumb-list"><li data-slot="breadcrumb-item"><a data-slot="breadcrumb-link" href="#" style="transition:color">Home</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" style="display:inline-flex;align-items:center;color:var(--muted-foreground)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:0.875rem;height:0.875rem"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item"><a data-slot="breadcrumb-link" href="#">Components</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true" style="display:inline-flex;align-items:center;color:var(--muted-foreground)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:0.875rem;height:0.875rem"><path d="m9 18 6-6-6-6"></path></svg></li><li data-slot="breadcrumb-item"><span data-slot="breadcrumb-page" style="font-weight:normal;color:var(--foreground)">Breadcrumb</span></li></ol>' },
     BreadcrumbList: { html: '<li data-slot="breadcrumb-item"><a data-slot="breadcrumb-link" href="#">Home</a></li><li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true">/</li><li data-slot="breadcrumb-item"><span data-slot="breadcrumb-page">Current</span></li>' },
     BreadcrumbItem: { html: '<a data-slot="breadcrumb-link" href="#">Home</a>' },
     BreadcrumbLink: "Home",
@@ -453,7 +478,7 @@ ${body}
             // absent by design, exactly as in React's class attribute
             const kept = new Set(twMerge(el.classes.map((x) => splitMarkers(x).apply).join(" ")).split(/\s+/))
             const apply = splitMarkers(cs).apply
-            const missing = apply.split(/\s+/).filter((t) => t && kept.has(t) && !css.includes(t))
+            const missing = apply.split(/\s+/).filter((t) => t && kept.has(t) && !cssIncludesToken(css, t))
             if (missing.length) {
               console.error(`FAIL css[${ir.name}]: class tokens not in CSS: ${JSON.stringify(missing.slice(0, 6))}…`)
               fail = true

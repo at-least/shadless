@@ -56,7 +56,10 @@ pub fn substitute_and_patch(
     keys.sort_by(|a, b| {
         let la = from.get(*a).map(|s| s.len()).unwrap_or(0);
         let lb = from.get(*b).map(|s| s.len()).unwrap_or(0);
-        lb.cmp(&la)
+        // tiebreak on the key: equal-length duplicate ar values in
+        // insertion order are HashMap-order random per process, which made
+        // which twin "won" (and the unmatched-warning list) nondeterministic
+        lb.cmp(&la).then_with(|| a.cmp(b))
     });
     let mut unmatched: Vec<String> = Vec::new();
     let mut out = arabic_html.to_string();
@@ -174,7 +177,15 @@ pub fn run_build_rtl() -> i32 {
         #[serde(default)]
         emit: bool,
     }
-    let tiers: HashMap<String, TierEntry> = serde_json::from_str(&tiers_b).unwrap_or_default();
+    // fail loud: an unparsable tiers.json degrading to an empty map made
+    // every preview silently classify as skipped and the run exit 0
+    let tiers: HashMap<String, TierEntry> = match serde_json::from_str(&tiers_b) {
+        Ok(t) => t,
+        Err(e) => {
+            eprintln!("build-rtl: tiers.json: {}", e);
+            return 1;
+        }
+    };
     let shipped = |name: &str| -> bool {
         match tiers.get(name.trim_end_matches("-rtl")) {
             Some(t) => t.emit || t.tier == "static" || t.tier == "kernel" || t.tier == "trivial-js",
@@ -267,6 +278,31 @@ pub fn run_build_rtl() -> i32 {
         if let Err(e) = std::fs::write(&p.path, &p.html) {
             eprintln!("build-rtl: {}", e);
             return 1;
+        }
+    }
+    // stale RTL pages would otherwise survive silently: nothing else sweeps
+    // docs/demos (reproducible cannot see a COMMITTED file that stopped
+    // regenerating, and demo-smoke excludes the RTL variants from its
+    // count), while a dictionary typo turns a component into a "skipped"
+    // entry. Every dictionary component regenerates here, so anything
+    // -rtl- shaped that this run did not produce is stale by construction.
+    let produced: std::collections::HashSet<std::path::PathBuf> =
+        pending_writes.iter().map(|p| p.path.clone()).collect();
+    for dir in ["docs/demos", "dist/components"] {
+        let Ok(ents) = std::fs::read_dir(root.join(dir)) else {
+            continue;
+        };
+        for e in ents.flatten() {
+            let p = e.path();
+            let name = e.file_name().to_string_lossy().into_owned();
+            if !name.ends_with(".html") || !name.contains("-rtl-") || produced.contains(&p) {
+                continue;
+            }
+            if let Err(e) = std::fs::remove_file(&p) {
+                eprintln!("build-rtl: removing stale {}: {}", p.display(), e);
+                return 1;
+            }
+            println!("build-rtl: removed stale {}", p.display());
         }
     }
     let mb = match serde_json::to_string_pretty(&manifest) {

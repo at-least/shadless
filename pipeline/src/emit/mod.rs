@@ -564,7 +564,7 @@ pub fn run_emit() -> Result<(), String> {
                         let applied = split_markers(cs).apply;
                         let missing: Vec<&str> = applied
                             .split_whitespace()
-                            .filter(|t| !t.is_empty() && kept.contains(*t) && !all_css.contains(*t))
+                            .filter(|t| !t.is_empty() && kept.contains(*t) && !css_contains_token(&all_css, t))
                             .collect();
                         if !missing.is_empty() {
                             let n = missing.len().min(6);
@@ -832,9 +832,58 @@ pub fn run_emit() -> Result<(), String> {
     Ok(())
 }
 
+
+/// Token-boundary containment for CSS class tokens: `p-2` must not match
+/// inside `gap-2` or `p-2.5`. A class token is `[\w-]+`, so an occurrence
+/// is a real token only when neither neighbour is `[\w-]` and the follower
+/// is not `.`; a variant prefix (`hover:p-2`) still counts — the variant
+/// colon is not a word character. The completeness gates on both emit twins
+/// check every `@apply` token this way: a substring check let a dropped
+/// rule pass because some longer token elsewhere happened to contain it.
+pub(crate) fn css_contains_token(hay: &str, tok: &str) -> bool {
+    if tok.is_empty() {
+        return false;
+    }
+    let bad = |c: u8| c.is_ascii_alphanumeric() || c == b'_' || c == b'-';
+    let b = hay.as_bytes();
+    let mut from = 0;
+    while let Some(pos) = hay[from..].find(tok) {
+        let start = from + pos;
+        let end = start + tok.len();
+        let before_ok = start == 0 || !bad(b[start - 1]);
+        let after_ok = end >= b.len() || (!bad(b[end]) && b[end] != b'.');
+        if before_ok && after_ok {
+            return true;
+        }
+        from = start + 1;
+    }
+    false
+}
+
 fn node_name(e: &Handle) -> String {
     match &e.data {
         NodeData::Element { name, .. } => name.local.to_string(),
         _ => String::new(),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// The substring check this replaced matched `p-2` inside `gap-2`, so a
+    /// dropped rule passed whenever a longer token elsewhere contained it.
+    #[test]
+    fn unit_css_contains_token_is_boundary_aware() {
+        let hay = ".gap-2 { @apply gap-2; }\n.p-2 { @apply p-2; }";
+        assert!(hay.contains("p-2"), "documents the old false positive");
+        assert!(css_contains_token(hay, "p-2"));
+        assert!(css_contains_token(hay, "gap-2"));
+        assert!(!css_contains_token("only gap-2 here", "p-2"));
+        assert!(!css_contains_token(".p-2.5 { }", "p-2"));
+        assert!(!css_contains_token(".sp-2 { }", "p-2"));
+        assert!(css_contains_token(".hover\\:p-2 { }", "p-2"));
+        assert!(!css_contains_token("", "p-2"));
+        assert!(!css_contains_token(".p-2 { }", ""));
     }
 }

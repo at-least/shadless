@@ -188,7 +188,11 @@ pub fn verify_product(full_css: &str, out_css: &str, parts_css: &str, product_so
     for m in re_standalone().captures_iter(full_css) {
         let cls = re_css_escape_re().replace_all(&m[1], "$1").into_owned();
         let base = re_data_attr().replace_all(&cls, "").into_owned();
-        if !product_source.contains(&cls) && !product_source.contains(&base) {
+        // token-boundary: `focus` inside the legitimate `focus-visible`
+        // must not vouch for a leaked standalone class
+        if !super::css_contains_token(product_source, &cls)
+            && !super::css_contains_token(product_source, &base)
+        {
             stray.push(cls);
         }
     }
@@ -227,6 +231,11 @@ fn gate_product_verify(root: &Path) -> Result<(), String> {
     let parts_css = parts.join("\n");
     let product_source = read("dist/shadless.product.css").map_err(|e| fail(e))?;
 
+    if parts.is_empty() {
+        // the build half guards the same way: a wiped dist/css would
+        // otherwise pass with "0 slot rules in both chains"
+        return Err(fail("dist/css has no per-component files — run the demo chain first".to_string()));
+    }
     let r = verify_product(&full, &out, &parts_css, &product_source);
     let mut problems: Vec<String> = Vec::new();
     let mut add = |label: &str, xs: &[String]| {
