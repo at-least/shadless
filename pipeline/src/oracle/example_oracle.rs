@@ -455,6 +455,39 @@ fn run_with_shell(
         std::fs::write(&r.t.out, ora_page_html(&r.t.name, &r.dom, &r.trivial))
             .map_err(|e| format!("example-oracle: {}", e))?;
     }
+    // stale non-RTL pages would otherwise survive forever, and WORSE: the
+    // catalog derives "authored" from page EXISTENCE, so a page whose
+    // upstream example retired re-authorized itself every run and nothing
+    // downstream could tell. This node is the only writer of docs/demos
+    // non-RTL pages (example-fixture overwrites a subset after it), so the
+    // produced set plus the fixture's own targets plus the two known
+    // non-producer exceptions is the truth; anything else is stale by
+    // construction. RTL variants belong to build-rtl and are swept there.
+    let mut legit: HashSet<String> = rendered
+        .iter()
+        .filter_map(|r| r.t.out.strip_prefix("docs/demos/"))
+        .map(|n| n.trim_end_matches(".html").to_string())
+        .collect();
+    legit.extend(fixture_targets.iter().map(|f| f.name.clone()));
+    legit.insert("alert-demo".to_string());
+    // FT8 guide preview: host page dark-mode; its example lives in the
+    // guides tree, not examples/radix
+    legit.insert("mode-toggle".to_string());
+    let Ok(ents) = std::fs::read_dir("docs/demos") else {
+        return Err("example-oracle: docs/demos unreadable".to_string());
+    };
+    for e in ents.flatten() {
+        let name = e.file_name().to_string_lossy().into_owned();
+        let stem = name.strip_suffix(".html");
+        let Some(stem) = stem else { continue };
+        if name.contains("-rtl-") || legit.contains(stem) {
+            continue;
+        }
+        let path = e.path();
+        std::fs::remove_file(&path)
+            .map_err(|err| format!("example-oracle: removing stale {}: {}", path.display(), err))?;
+        println!("example-oracle: removed stale docs/demos/{}", name);
+    }
     let mut manifest_b = String::from("[");
     for (i, r) in rendered.iter().enumerate() {
         if i > 0 {
