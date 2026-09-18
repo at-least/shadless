@@ -27,9 +27,10 @@ pub fn input_universe(root: &Path, g: &Graph) -> Result<BTreeMap<String, String>
             if snap.contains_key(&f) {
                 continue;
             }
-            if let Ok(h) = hash_file(&root.join(&f)) {
-                snap.insert(f, h);
-            }
+            // fail closed: an input that exists but cannot be read would
+            // otherwise vanish from the universe and weaken the check
+            let h = hash_file(&root.join(&f)).map_err(|e| format!("{}: {}", f, e))?;
+            snap.insert(f, h);
         }
     }
     Ok(snap)

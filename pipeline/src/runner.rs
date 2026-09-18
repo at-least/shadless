@@ -222,16 +222,26 @@ impl Runner {
         // reads_from must read the logs BEFORE it drops (the Go code read
         // first and RemoveAll'd after — dropping in exec deleted the logs
         // unread)
-        let dir = tempfile::Builder::new()
+        // fail closed: a node whose reads cannot be recorded would run
+        // unaudited and still count green — that is the one direction the
+        // verification layer must never take
+        let dir = match tempfile::Builder::new()
             .prefix("pipeline-access-")
             .tempdir()
-            .ok();
-        if dir.is_none() {
-            eprintln!(
-                "  ⚠ {}: no scratch dir for the access recorder — this node runs unaudited for undeclared reads",
-                n.id
-            );
-        }
+        {
+            Ok(d) => Some(d),
+            Err(e) => {
+                return (
+                    buf,
+                    logs,
+                    Some(format!(
+                        "no scratch dir for the access recorder ({}): the node would run unaudited",
+                        e
+                    )),
+                    None,
+                );
+            }
+        };
         // collected with the logs at every return, mirroring the Go exec
         let with_js_log =
             |mut logs: Vec<PathBuf>, js_log: &Option<PathBuf>| -> Vec<PathBuf> {
@@ -296,25 +306,35 @@ impl Runner {
 
     /// Collects the undeclared reads across a node's testlogs, then removes the
     /// temp directory holding them (dropped TempDir does that).
-    fn reads_from(&self, n: &Node, logs: &[PathBuf]) -> Vec<String> {
+    fn reads_from(&self, n: &Node, logs: &[PathBuf]) -> Result<Vec<String>, String> {
         if logs.is_empty() {
-            return Vec::new();
+            return Ok(Vec::new());
         }
         let all = opens_from_logs(&self.root, logs);
-        undeclared_reads(&self.root, &self.graph, n, &all).unwrap_or_default()
+        undeclared_reads(&self.root, &self.graph, n, &all)
+            .map_err(|e| format!("undeclared-read check: {}", e))
     }
 
     fn run_one(&self, n: &Node, key: &Option<String>, jobs1: bool) -> Result_ {
         let start = Instant::now();
         let before = if jobs1 {
-            input_universe(&self.root, &self.graph).ok()
+            Some(input_universe(&self.root, &self.graph))
         } else {
             None
         };
         let (out, logs, err, dir) = self.exec(n);
+        let mut err = err;
         // computed even for a failed node: a gate that went red still read what
         // it read, and the declaration is wrong either way
-        let reads = self.reads_from(n, &logs);
+        let reads = match self.reads_from(n, &logs) {
+            Ok(r) => r,
+            Err(e) => {
+                if err.is_none() {
+                    err = Some(e);
+                }
+                Vec::new()
+            }
+        };
         drop(dir); // evidence collected; the scratch dir can go
         if let Some(e) = err {
             self.forget(&n.id); // a failed node stays stale; it claims nothing
@@ -329,12 +349,32 @@ impl Runner {
         }
         let mut violations = Vec::new();
         if jobs1 {
-            if let (Some(before), Ok(after)) =
-                (before, input_universe(&self.root, &self.graph))
-            {
-                violations = undeclared_writes(&self.root, &self.graph, n, &before, &after)
-                    .unwrap_or_default();
-            }
+            // both universe snapshots are load-bearing: one that cannot be
+            // taken must fail the node, not silently skip the write check
+            let verdict = match (before, input_universe(&self.root, &self.graph)) {
+                (Some(Ok(b)), Ok(a)) => {
+                    undeclared_writes(&self.root, &self.graph, n, &b, &a)
+                        .map_err(|e| format!("undeclared-write check: {}", e))
+                }
+                (_, Err(e)) => Err(format!("undeclared-write check: {}", e)),
+                (Some(Err(_)) | None, Ok(_)) => {
+                    Err("undeclared-write check: before-universe unavailable".to_string())
+                }
+            };
+            violations = match verdict {
+                Ok(v) => v,
+                Err(e) => {
+                    self.forget(&n.id); // the node claims nothing about this run
+                    return Result_ {
+                        node: n.clone(),
+                        err: Some(e),
+                        output: out,
+                        violations: Vec::new(),
+                        reads,
+                        elapsed: start.elapsed().as_secs_f64(),
+                    };
+                }
+            };
         }
         if let Some(key) = key {
             // A node that produces nothing cannot feed its own key: its
