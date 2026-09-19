@@ -133,4 +133,4 @@ clean:
 	@echo "cleaned: dist/ + build/ + the docs site's generated trees"
 
 help:
-	@sed -n '2,16p' Makefile | sed 's/^# \{0,1\}//'
+	@sed -n '2,15p' Makefile | sed 's/^# \{0,1\}//'

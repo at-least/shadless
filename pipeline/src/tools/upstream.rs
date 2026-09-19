@@ -286,6 +286,11 @@ pub fn run_upstream(root: &Path, args: &[String]) -> i32 {
 
 /// drillRepin is steps 1-3: checkout, re-pin, dissolve, apply the patch series.
 fn drill_repin(root: &Path, to: &str, args: &[String], from: &PinFile, rep: &mut DrillReport) -> i32 {
+    // a leading dash would ride into `git checkout` as an option
+    if to.starts_with('-') {
+        eprintln!("pipeline upstream: --to looks like an option, not a revision: {}", to);
+        return 2;
+    }
     upstream_step(&format!("checkout {}", to));
     if args.iter().any(|a| a == "--fetch") {
         if let Err(e) = up_git(root, &["fetch", "--tags", "--quiet"]) {

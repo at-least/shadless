@@ -898,6 +898,21 @@ pub fn run_gate(root: &Path, n: &crate::nodes::Node) -> (GateRun, String) {
                 buf.push_str(&String::from_utf8_lossy(&o.stdout));
                 buf.push_str(&String::from_utf8_lossy(&o.stderr));
                 if !o.status.success() {
+                    // a gate killed by a signal (chromium crash, OOM) never
+                    // ran its comparison — counting that as Red would let a
+                    // broken environment "prove" mutations without a single
+                    // real check
+                    #[cfg(unix)]
+                    {
+                        use std::os::unix::process::ExitStatusExt;
+                        if let Some(sig) = o.status.signal() {
+                            buf.push_str(&format!(
+                                "{} died on signal {} — environmental, not a caught mutation",
+                                argv[0], sig
+                            ));
+                            return (GateRun::CouldNotRun, buf);
+                        }
+                    }
                     return (GateRun::Red, buf);
                 }
             }

@@ -408,11 +408,16 @@ fn main() {
                 die(e);
             }
         }
-        "pin" => std::process::exit(pipeline::gates::pin::run_pin(
-            &std::env::current_dir().unwrap_or_default(),
-            has_flag(&rest, "--check-only"),
-            has_flag(&rest, "--force"),
-        )),
+        "pin" => {
+            let cwd = std::env::current_dir().unwrap_or_else(|e| {
+                die(format!("cannot determine the working directory: {}", e))
+            });
+            std::process::exit(pipeline::gates::pin::run_pin(
+                &cwd,
+                has_flag(&rest, "--check-only"),
+                has_flag(&rest, "--force"),
+            ))
+        }
         "coverage" => {
             if !has_flag(&rest, "--record") {
                 eprintln!(

@@ -19,18 +19,30 @@ shift 2>/dev/null || true
 rc=$?
 
 total=0; pass=0; fail=0
+# the union of both trees: walking only the post-run tree never sees a file
+# the run DELETED, and the harness's whole job is exactly that comparison
 while IFS= read -r rel; do
   total=$((total+1))
-  if [ -e "/tmp/dist-before/$rel" ] && cmp -s "/tmp/dist-before/$rel" "dist/$rel"; then
+  if [ -e "/tmp/dist-before/$rel" ] && [ -e "dist/$rel" ] && cmp -s "/tmp/dist-before/$rel" "dist/$rel"; then
     pass=$((pass+1))
   else
     fail=$((fail+1))
     if [ $fail -le 8 ]; then
-      echo "DIFF: dist/$rel"
-      [ -f "/tmp/dist-before/$rel" ] && cmp "/tmp/dist-before/$rel" "dist/$rel" 2>/dev/null | head -1
+      if [ -e "/tmp/dist-before/$rel" ] && [ ! -e "dist/$rel" ]; then
+        echo "DIFF: dist/$rel (deleted by the run)"
+      elif [ ! -e "/tmp/dist-before/$rel" ]; then
+        echo "DIFF: dist/$rel (not in the committed tree)"
+      else
+        echo "DIFF: dist/$rel"
+        cmp "/tmp/dist-before/$rel" "dist/$rel" 2>/dev/null | head -1
+      fi
     fi
   fi
-done < <(cd dist && find . -type f -printf '%P\n' | sort)
+done < <(
+  { (cd dist && find . -type f -printf '%P\n')
+    (cd /tmp/dist-before && find . -type f -printf '%P\n')
+  } | sort -u
+)
 
 echo "== dist: $pass/$total byte-identical, $fail differ ($CMD exit=$rc) =="
 rm -rf dist && cp -r /tmp/dist-before dist

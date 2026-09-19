@@ -6,13 +6,8 @@ node_modules/
 # left here), never tracked. esbuild bundles go to node_modules/.cache.
 build/
 probes/scratch/
-# contracts: the ~7 MB oracle bundle goes to node_modules/.cache; oracle.html
-# is a render harness. shadless.html + result.json stay (review surface).
-tools/contracts/out/*/oracle.js
-tools/contracts/out/*/.oracle-entry.mjs
-tools/contracts/out/*/oracle.html
 
-# Go pipeline runner (build artifact; pipeline/stamps.json IS tracked)
+# built engine binary (make pipeline)
 /build/pipeline
 
 # Freshness bookkeeping and oracle scratch: intermediate products, not source.

@@ -37,6 +37,11 @@ fn golden_matrix_replays() {
     // so there is no concurrent access to race with (edition-2024 unsafe).
     unsafe { std::env::set_var("SHADLESS_GRAPH", "go-mirror") };
     let Some(root) = shadless_root() else {
+        // a CI misconfiguration must not turn the whole golden matrix into a
+        // vacuous pass — the lib gates fail loudly on CI for the same reason
+        if std::env::var_os("CI").is_some() {
+            panic!("CI: required tree input missing (skip: no shadless tree)");
+        }
         eprintln!("skip: no shadless tree next to the crate (set SHADLESS_ROOT)");
         return;
     };

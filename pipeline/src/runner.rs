@@ -180,7 +180,12 @@ impl Runner {
 
     fn record(&self, id: &str, key: String) {
         self.stamps.lock().unwrap().insert(id.to_string(), key.clone());
-        let _ = write_stamp(&self.root, id, &key); // one file per node: parallel nodes do not contend
+        // one file per node: parallel nodes do not contend. A failed write
+        // must be visible — silent would be safe (the node just re-runs) but
+        // inexplicable.
+        if let Err(e) = write_stamp(&self.root, id, &key) {
+            eprintln!("pipeline: stamp write failed for {} (it will re-run next time): {}", id, e);
+        }
     }
 
     fn forget(&self, id: &str) {
@@ -270,8 +275,12 @@ impl Runner {
             let mut c = Command::new(exe);
             c.args(&cmd[1..]).current_dir(&self.root);
             if let Some(jl) = &js_log {
+                // quoted absolute path: NODE_OPTIONS is whitespace-split (an
+                // unquoted checkout path with a space broke the injection for
+                // every JS node), and the recorder must resolve from any cwd
+                // a node runs in, not just self.root
                 let node_opts = format!(
-                    "{} --import {}",
+                    "{} --import \"{}\"",
                     std::env::var("NODE_OPTIONS").unwrap_or_default().trim(),
                     self.root.join(FS_RECORDER).display()
                 );
@@ -468,19 +477,44 @@ impl Runner {
         let browser_sem = Arc::clone(&st.browser_sem);
         let jobs1 = self.jobs == 1;
         std::thread::spawn(move || {
-            if is_browser_node(&n) {
-                // the browser token comes BEFORE the main slot: a browser node
-                // waiting for its turn must not occupy a worker slot that a
-                // fast node could be running in
-                browser_sem.acquire();
-            }
-            sem.acquire();
-            let res = runner.run_one(&n, &key, jobs1);
+            let browser = is_browser_node(&n);
+            // a panic in run_one must not wedge the run: without the
+            // catch_unwind the tx.send and both semaphore releases below are
+            // skipped, and the main loop blocks on rx.recv() forever with
+            // inflight > 0. The panic is reported as a node failure instead.
+            let res = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+                if browser {
+                    // the browser token comes BEFORE the main slot: a browser node
+                    // waiting for its turn must not occupy a worker slot that a
+                    // fast node could be running in
+                    browser_sem.acquire();
+                }
+                sem.acquire();
+                runner.run_one(&n, &key, jobs1)
+            }));
+            let res = match res {
+                Ok(r) => r,
+                Err(payload) => {
+                    let why = payload
+                        .downcast_ref::<String>()
+                        .cloned()
+                        .or_else(|| payload.downcast_ref::<&str>().map(|s| s.to_string()))
+                        .unwrap_or_else(|| "unknown panic".to_string());
+                    Result_ {
+                        err: Some(format!("node panicked: {}", why)),
+                        node: n,
+                        output: Vec::new(),
+                        violations: Vec::new(),
+                        reads: Vec::new(),
+                        elapsed: 0.0,
+                    }
+                }
+            };
             let _ = tx.send(res);
             // Go's defers run LIFO: the job slot is handed back first, then the
             // browser token (which only a browser node ever took)
             sem.release();
-            if is_browser_node(&n) {
+            if browser {
                 browser_sem.release();
             }
         });

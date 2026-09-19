@@ -10,11 +10,15 @@ use std::path::Path;
 pub const STAMP_DIR: &str = "pipeline/stamps";
 
 pub fn stamp_file(id: &str) -> String {
-    id.replace(':', "__")
+    // percent-style escaping, '%' first so it is injective: the old
+    // ':'→"__" map was lossy — an id containing "__" loaded back as a
+    // different id and its stamp never matched. ':' stays out of the
+    // filename for Windows.
+    id.replace('%', "%25").replace(':', "%3A")
 }
 
 fn stamp_id(name: &str) -> String {
-    name.replace("__", ":")
+    name.replace("%3A", ":").replace("%25", "%")
 }
 
 pub fn load_stamps(root: &Path) -> HashMap<String, String> {
@@ -49,9 +53,21 @@ mod tests {
 
     #[test]
     fn stamp_filename_escapes_colons() {
-        assert_eq!(stamp_file("contracts:dialog"), "contracts__dialog");
-        assert_eq!(stamp_id("contracts__dialog"), "contracts:dialog");
+        assert_eq!(stamp_file("contracts:dialog"), "contracts%3Adialog");
+        assert_eq!(stamp_id("contracts%3Adialog"), "contracts:dialog");
         assert_eq!(stamp_file("pin"), "pin");
+    }
+
+    /// the escape must be injective: the old ':'→"__" map silently confused
+    /// a future id containing "__" with a fan-out id (stamp_id turned
+    /// "a__b" into "a:b", so the stamp never matched and the node rebuilt
+    /// forever), and '%' must be escaped too for the inverse to be exact
+    #[test]
+    fn stamp_filename_is_injective_and_round_trips() {
+        for id in ["pin", "contracts:dialog", "under_score", "a__b", "100%:weird"] {
+            assert_eq!(stamp_id(&stamp_file(id)), id, "round trip: {}", id);
+        }
+        assert_ne!(stamp_file("a:b"), stamp_file("a__b"), "the old map collided here");
     }
 
     #[test]

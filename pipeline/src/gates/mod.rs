@@ -46,9 +46,11 @@ pub fn gate_dist_complete(root: &Path) -> Result<usize, String> {
     let (mut selectors, mut files) = (0usize, 0usize);
     for name in &names {
         files += 1;
-        let Ok(src) = std::fs::read_to_string(root.join("dist/css").join(name)) else {
-            continue;
-        };
+        // an unreadable stylesheet must fail the gate, not shrink the count:
+        // a silently skipped file reports fewer slots than dist actually
+        // carries and the completeness check passes over a hole
+        let src = std::fs::read_to_string(root.join("dist/css").join(name))
+            .map_err(|e| format!("FAIL  dist-complete: reading dist/css/{}: {}", name, e))?;
         let mut seen: HashSet<String> = HashSet::new();
         for sel in slot_selector_re().find_iter(&src) {
             let sel = sel.as_str();

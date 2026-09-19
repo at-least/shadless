@@ -16,63 +16,85 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
         return 1;
     }
 
-    // ephemeral-port static server (python3 http.server, same as the JS gate)
-    let free_port = std::net::TcpListener::bind("127.0.0.1:0")
-        .and_then(|l| l.local_addr().map(|a| a.port()))
-        .unwrap_or(0);
-    let mut server: Child = match Command::new("python3")
-        .args([
-            "-m",
-            "http.server",
-            &free_port.to_string(),
-            "--bind",
-            "127.0.0.1",
-            "--directory",
-            site_dir.to_str().unwrap_or("."),
-        ])
-        .stdout(Stdio::null())
-        .stderr(Stdio::null())
-        .spawn()
-    {
-        Ok(c) => c,
-        Err(e) => {
-            eprintln!("FAIL  docs smoke: python3 http.server: {}", e);
-            return 1;
+    // ephemeral-port static server (python3 http.server, same as the JS gate).
+    // The listener is dropped before python binds the port (a TOCTOU window:
+    // a parallel gate can steal it), so a start that never comes up is
+    // retried on a fresh port. ServerGuard kills the server on every exit
+    // path — early returns and panics included; the old code orphaned it.
+    struct ServerGuard(Child);
+    impl Drop for ServerGuard {
+        fn drop(&mut self) {
+            let _ = self.0.kill();
+            let _ = self.0.wait();
+        }
+    }
+    // bound (not dropped) so the guard keeps the server alive for the whole
+    // smoke run; nothing calls methods on it — Drop does the cleanup
+    let (_server, base): (ServerGuard, String) = {
+        let mut attempt = 0;
+        loop {
+            attempt += 1;
+            let free_port = std::net::TcpListener::bind("127.0.0.1:0")
+                .and_then(|l| l.local_addr().map(|a| a.port()))
+                .unwrap_or(0);
+            let child = match Command::new("python3")
+                .args([
+                    "-m",
+                    "http.server",
+                    &free_port.to_string(),
+                    "--bind",
+                    "127.0.0.1",
+                    "--directory",
+                    site_dir.to_str().unwrap_or("."),
+                ])
+                .stdout(Stdio::null())
+                .stderr(Stdio::null())
+                .spawn()
+            {
+                Ok(c) => c,
+                Err(e) => {
+                    eprintln!("FAIL  docs smoke: python3 http.server: {}", e);
+                    return 1;
+                }
+            };
+            let guard = ServerGuard(child);
+            let base = format!("http://127.0.0.1:{}", free_port);
+            let mut server_up = false;
+            for _ in 0..100 {
+                if let Ok(resp) = ureq::get(&format!("{}/index.html", base))
+                    .timeout(std::time::Duration::from_secs(2))
+                    .call()
+                {
+                    let _ = resp.into_string();
+                    server_up = true;
+                    break;
+                }
+                std::thread::sleep(std::time::Duration::from_millis(50));
+            }
+            if server_up {
+                break (guard, base);
+            }
+            if attempt >= 3 {
+                eprintln!(
+                    "FAIL  docs smoke: static server did not come up after {} attempts (python3 http.server) — another process may be taking the ports",
+                    attempt
+                );
+                return 1;
+            }
         }
     };
-    let base = format!("http://127.0.0.1:{}", free_port);
-    let mut server_up = false;
-    for _ in 0..100 {
-        if let Ok(resp) = ureq::get(&format!("{}/index.html", base))
-            .timeout(std::time::Duration::from_secs(2))
-            .call()
-        {
-            let _ = resp.into_string();
-            server_up = true;
-            break;
-        }
-        std::thread::sleep(std::time::Duration::from_millis(50));
-    }
-    if !server_up {
-        let _ = server.kill();
-        let _ = server.wait();
-        eprintln!("FAIL  docs smoke: static server did not come up (python3 http.server)");
-        return 1;
-    }
 
     let shell = match crate::oracle::browser_shell::BrowserShell::start() {
         Ok(s) => s,
         Err(e) => {
             eprintln!("docs smoke: {}", e);
-            let _ = server.kill();
-            let _ = server.wait();
+
             return 1;
         }
     };
     if let Err(e) = shell.launch() {
         eprintln!("docs smoke: {}", e);
-        let _ = server.kill();
-        let _ = server.wait();
+
         return 1;
     }
 
@@ -94,15 +116,13 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
         Ok(p) => p,
         Err(e) => {
             eprintln!("docs smoke: {}", e);
-            let _ = server.kill();
-            let _ = server.wait();
+
             return 1;
         }
     };
     if let Err(e) = page.goto_url(&format!("{}/components/dialog/", base)) {
         eprintln!("docs smoke: {}", e);
-        let _ = server.kill();
-        let _ = server.wait();
+
         return 1;
     }
     // let every lazy iframe settle first — recomputing the trigger box
@@ -113,8 +133,7 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
     let trigger_sel = r#"[data-slot="dialog-trigger"]"#;
     if let Err(e) = page.loc_wait(dialog_frame, trigger_sel, "visible", 5000) {
         eprintln!("docs smoke: trigger wait: {}", e);
-        let _ = server.kill();
-        let _ = server.wait();
+
         return 1;
     }
     let _ = page.loc_scroll(dialog_frame, trigger_sel, 0);
@@ -123,14 +142,12 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
         Ok(Some(b)) => b,
         Ok(None) => {
             eprintln!("docs smoke: trigger box: element not visible");
-            let _ = server.kill();
-            let _ = server.wait();
+
             return 1;
         }
         Err(e) => {
             eprintln!("docs smoke: trigger box: {}", e);
-            let _ = server.kill();
-            let _ = server.wait();
+
             return 1;
         }
     };
@@ -201,8 +218,7 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
         Ok(p) => p,
         Err(e) => {
             eprintln!("docs smoke: {}", e);
-            let _ = server.kill();
-            let _ = server.wait();
+
             return 1;
         }
     };
@@ -385,8 +401,7 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
     }
 
     shell.close();
-    let _ = server.kill();
-    let _ = server.wait();
+    // the ServerGuard kills + reaps the static server on drop
 
     if !failures.is_empty() {
         if all {

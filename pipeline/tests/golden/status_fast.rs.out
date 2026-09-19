@@ -1,6 +1,6 @@
 pin                    STALE
 build-js               STALE
 unit                   STALE
-typecheck              fresh
+typecheck              STALE
 ledger                 STALE
 script-refs            STALE
