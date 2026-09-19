@@ -1,8 +1,9 @@
 # EXEMPTIONS — the recorded-difference ledger
 
 <!-- GENERATED from gates/ledger.json by `pipeline ledger --render`.
-     Do not edit by hand: the `ledger` gate checks the JSON, not
-     this file, and the next render will overwrite whatever you wrote. -->
+     Do not edit by hand: the `ledger` gate fails when this file and
+     the JSON disagree, and the next render will overwrite whatever
+     you wrote. -->
 
 Pin: `shadcn@4.19.0` · 66 exemptions · 6 budgets
 

@@ -567,6 +567,28 @@ pub fn gate_ledger(root: &Path) -> Result<(), String> {
         ));
     }
 
+    // The human render must match this ledger byte-for-byte — a ledger edit
+    // without `make ledger-render` used to ship an EXEMPTIONS.md documenting
+    // budgets and classes that no longer existed, green forever.
+    let rendered_path = root.join(RENDERED_PATH);
+    let committed = match std::fs::read(&rendered_path) {
+        Ok(b) => String::from_utf8_lossy(&b).into_owned(),
+        Err(e) if e.kind() == std::io::ErrorKind::NotFound => {
+            return Err(format!(
+                "FAIL  ledger\n  {} is missing — run `make ledger-render` and commit it",
+                RENDERED_PATH
+            ));
+        }
+        Err(e) => return Err(format!("FAIL  ledger\n  reading {}: {}", RENDERED_PATH, e)),
+    };
+    let rendered = render_ledger_markdown(root)?;
+    if committed.trim_end() != rendered.trim_end() {
+        problems.push(
+            "EXEMPTIONS.md is stale against gates/ledger.json — run `make ledger-render` and commit the result"
+                .to_string(),
+        );
+    }
+
     let values = collect_budget_values(root)?;
     for name in &l.budget_order {
         let b = &l.budgets[name];
@@ -790,7 +812,10 @@ pub fn ledger_dissolve(root: &Path) -> Result<(), String> {
 
 // ---------------------------------------------------------------- render
 
-pub fn ledger_render(root: &Path) -> Result<(), String> {
+/// The EXEMPTIONS.md body exactly as `ledger --render` writes it. The gate
+/// renders this and byte-compares it against the committed file, so the
+/// "cannot drift" promise in the module header is enforced, not assumed.
+pub fn render_ledger_markdown(root: &Path) -> Result<String, String> {
     let l = read_ledger(root)?;
     let mut groups: HashMap<String, Vec<String>> = HashMap::new();
     for id in &l.entry_order {
@@ -825,8 +850,9 @@ pub fn ledger_render(root: &Path) -> Result<(), String> {
         "# EXEMPTIONS — the recorded-difference ledger".to_string(),
         String::new(),
         "<!-- GENERATED from gates/ledger.json by `pipeline ledger --render`.".to_string(),
-        "     Do not edit by hand: the `ledger` gate checks the JSON, not".to_string(),
-        "     this file, and the next render will overwrite whatever you wrote. -->".to_string(),
+        "     Do not edit by hand: the `ledger` gate fails when this file and".to_string(),
+        "     the JSON disagree, and the next render will overwrite whatever".to_string(),
+        "     you wrote. -->".to_string(),
         String::new(),
         format!(
             "Pin: `{}` · {} exemptions · {} budgets",
@@ -884,7 +910,12 @@ nobody reviews this section by hand.",
         md.push(format!("- [ ] {}", n));
     }
     md.push(String::new());
-    std::fs::write(root.join(RENDERED_PATH), md.join("\n")).map_err(|e| e.to_string())?;
+    Ok(md.join("\n"))
+}
+
+pub fn ledger_render(root: &Path) -> Result<(), String> {
+    let md = render_ledger_markdown(root)?;
+    std::fs::write(root.join(RENDERED_PATH), md).map_err(|e| e.to_string())?;
     println!("rendered {} from {}", RENDERED_PATH, super::LEDGER_PATH);
     Ok(())
 }
@@ -934,6 +965,10 @@ fn budget_checked_by_coverage(name: &str) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// The real-tree ledger tests tamper the one committed EXEMPTIONS.md;
+    /// serialize them so they cannot see each other's tampered state.
+    static RENDER_TEST_LOCK: std::sync::Mutex<()> = std::sync::Mutex::new(());
 
     /// coverage.uncovered-cells is the only budget the coverage gate checks
     /// itself; anything else named coverage.* has no checker and must fail
@@ -1253,6 +1288,7 @@ mod tests {
     /// Go TestLedger: gate(t, gateLedger) on the real tree.
     #[test]
     fn ledger_on_real_tree() {
+        let _serial = RENDER_TEST_LOCK.lock().unwrap_or_else(|e| e.into_inner());
         let root = match std::env::var("SHADLESS_ROOT") {
             Ok(r) => PathBuf::from(r),
             Err(_) => {
@@ -1269,5 +1305,50 @@ mod tests {
             return;
         }
         gate_ledger(&root).expect("ledger gate must pass on the real tree");
+    }
+
+    /// EXEMPTIONS.md is the human render of gates/ledger.json, and its header
+    /// claims the two "cannot drift" — a claim nothing enforced: a ledger
+    /// edit without `make ledger-render` used to stay green forever. The
+    /// gate must fail while the render is stale, and pass again once the
+    /// original bytes are back.
+    #[test]
+    fn gate_ledger_fails_when_render_drifts() {
+        // both real-tree ledger tests touch the one committed EXEMPTIONS.md
+        let _serial = RENDER_TEST_LOCK.lock().unwrap_or_else(|e| e.into_inner());
+        let root = match std::env::var("SHADLESS_ROOT") {
+            Ok(r) => PathBuf::from(r),
+            Err(_) => {
+                let m = crate::crate_adjacent_tree_root()
+                    .unwrap_or(Path::new(env!("CARGO_MANIFEST_DIR")).join(".."));
+                m
+            }
+        };
+        if !root.join(GOLDEN_EX_PATH).exists() {
+            if std::env::var_os("CI").is_some() {
+                panic!("CI: required tree input missing (skip: no shadless tree)");
+            }
+            eprintln!("skip: no shadless tree");
+            return;
+        }
+        let rendered_path = root.join(RENDERED_PATH);
+        let original = std::fs::read_to_string(&rendered_path).expect("EXEMPTIONS.md exists");
+        std::fs::write(
+            &rendered_path,
+            format!("{}\n(unrelated hand edit that the ledger never rendered)\n", original),
+        )
+        .unwrap();
+        let out = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            gate_ledger(&root)
+        }));
+        std::fs::write(&rendered_path, original).expect("restore EXEMPTIONS.md");
+        let res = match out {
+            Ok(r) => r,
+            Err(_) => panic!("gate_ledger panicked under a drifted render"),
+        };
+        assert!(
+            res.is_err(),
+            "gate_ledger stayed green while EXEMPTIONS.md had drifted from gates/ledger.json"
+        );
     }
 }

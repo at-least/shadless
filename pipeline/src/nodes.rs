@@ -119,7 +119,7 @@ pub fn all_go() -> Vec<Node> {
                 "pipeline/ledger.go", "pipeline/jssource.go", "pipeline/interactivity_sweep.go",
                 "pipeline/gates_test.go", "gates/ledger.json", "gates/*-baseline.json",
                 "src/registry/pin.json", "src/registry/upstream-snapshot/exemptions.json",
-                "tools/contracts/components/**", "src/**",
+                "tools/contracts/components/**", "src/**", "EXEMPTIONS.md",
             ]),
             None,
             "every recorded exemption must be schema-valid, still present in its source, and inside its budget — scattered flags rot silently",
