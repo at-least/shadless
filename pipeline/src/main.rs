@@ -709,7 +709,14 @@ fn run_hidden_gate(rest: &[String]) -> i32 {
                         eprintln!("pipeline __gate unit: cargo test: {}", e);
                         1
                     }
-                    Ok(o) if !o.status.success() => o.status.code().unwrap_or(1),
+                    Ok(o) if !o.status.success() => {
+                        // the test output was captured here; without this the
+                        // gate fails silently — the runner can only show this
+                        // gate's own stdout/stderr, which would be empty
+                        eprintln!("{}", String::from_utf8_lossy(&o.stdout));
+                        eprintln!("{}", String::from_utf8_lossy(&o.stderr));
+                        o.status.code().unwrap_or(1)
+                    }
                     Ok(o) => {
                         // libtest exits 0 for a zero-match filter: renaming
                         // the unit_ tests would silently empty this gate —
