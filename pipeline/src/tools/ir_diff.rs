@@ -66,33 +66,47 @@ fn load_ir_from_dir(dir: &Path) -> IrSet {
     out
 }
 
-fn load_ir_from_git(root: &Path, ref_: &str) -> IrSet {
-    let mut out = IrSet::new();
-    let Ok(ls) = Command::new("git")
+fn load_ir_from_git(root: &Path, ref_: &str) -> Result<IrSet, String> {
+    // The ref is checked against git itself: a typo used to swallow every
+    // git failure into an empty IR set and diff "everything added" at exit 0.
+    let ls = Command::new("git")
         .args(["ls-tree", "--name-only", ref_, "generated/ir/"])
         .current_dir(root)
         .output()
-    else {
-        return out;
-    };
+        .map_err(|e| format!("git ls-tree {ref_}: {e}"))?;
+    if !ls.status.success() {
+        let why = String::from_utf8_lossy(&ls.stderr);
+        return Err(format!(
+            "{ref_} is not a usable git ref (git ls-tree: {})",
+            why.lines().next().unwrap_or_default().trim()
+        ));
+    }
+    let mut out = IrSet::new();
     let listing = String::from_utf8_lossy(&ls.stdout).into_owned();
     for f in listing.split('\n') {
         if !f.ends_with(".json") {
             continue;
         }
-        let Ok(show) = Command::new("git")
+        let show = Command::new("git")
             .args(["show", &format!("{}:{}", ref_, f)])
             .current_dir(root)
             .output()
-        else {
-            continue;
-        };
-        if let Ok(c) = serde_json::from_slice::<IrComponent>(&show.stdout) {
-            let name = f.rsplit('/').next().unwrap_or(f);
-            out.insert(name.trim_end_matches(".json").to_string(), c);
+            .map_err(|e| format!("git show {ref_}:{f}: {e}"))?;
+        if !show.status.success() {
+            let why = String::from_utf8_lossy(&show.stderr);
+            return Err(format!(
+                "{ref_}:{f} is not readable (git show: {})",
+                why.lines().next().unwrap_or_default().trim()
+            ));
         }
+        // a file that fails to parse shrinks the diff silently — the same
+        // wrong-report bug as the empty set above, so it is loud too
+        let c = serde_json::from_slice::<IrComponent>(&show.stdout)
+            .map_err(|e| format!("{ref_}:{f} is not valid IR json: {e}"))?;
+        let name = f.rsplit('/').next().unwrap_or(f);
+        out.insert(name.trim_end_matches(".json").to_string(), c);
     }
-    out
+    Ok(out)
 }
 
 /// orderedSet keeps insertion order, which is what the JS Set iteration gave
@@ -562,7 +576,13 @@ pub fn run_ir_diff(args: &[String]) -> i32 {
     let before = if pos.len() > 1 {
         load_ir_from_dir(&resolve(&pos[0]))
     } else {
-        load_ir_from_git(&root, &pos[0])
+        match load_ir_from_git(&root, &pos[0]) {
+            Ok(set) => set,
+            Err(e) => {
+                eprintln!("ir-diff: {}", e);
+                return 1;
+            }
+        }
     };
     let mut after = load_ir_from_dir(&resolve("generated/ir"));
     if pos.len() > 1 {
@@ -959,5 +979,18 @@ mod tests {
         for (x, want) in cases {
             assert_eq!(js_string(&serde_json::json!(x)), want, "js_string({:?})", x);
         }
+    }
+
+    /// A typo'd git ref used to diff against an EMPTY IR set — a confident
+    /// "everything added" report with exit 0 (probed: `ir-diff
+    /// no-such-ref-typo` printed all 61 components ADDED, exit 0). A bad ref
+    /// must fail loudly instead.
+    #[test]
+    fn unit_ir_diff_bad_ref_fails_loudly() {
+        let rc = run_ir_diff(&["no-such-ref-typo".to_string()]);
+        assert_eq!(
+            rc, 1,
+            "a bad git ref must exit 1, not diff against an empty IR set"
+        );
     }
 }
