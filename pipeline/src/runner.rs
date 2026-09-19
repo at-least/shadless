@@ -500,6 +500,9 @@ impl Runner {
                         .cloned()
                         .or_else(|| payload.downcast_ref::<&str>().map(|s| s.to_string()))
                         .unwrap_or_else(|| "unknown panic".to_string());
+                    // a panicked node claims nothing, exactly like the ordinary
+                    // failure paths: its stale stamp must not survive
+                    runner.forget(&n.id);
                     Result_ {
                         err: Some(format!("node panicked: {}", why)),
                         node: n,

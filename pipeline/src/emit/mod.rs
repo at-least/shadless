@@ -883,6 +883,25 @@ fn node_name(e: &Handle) -> String {
 mod tests {
     use super::*;
 
+    /// Characterization for the Go-shaped PathError text the error_paths
+    /// integration tests pin: they can only execute from an unpinned adjacent
+    /// tree (see their skip), so the contract lives here too, at the
+    /// formatting function itself.
+    #[test]
+    fn unit_go_err_shapes_go_path_errors() {
+        let skin = ".upstream/shadcn-ui/apps/v4/registry/styles/style-nova.css";
+        let enoent = std::io::Error::from_raw_os_error(2);
+        assert_eq!(
+            go_err("open", skin, &enoent),
+            format!("open {}: no such file or directory", skin)
+        );
+        let eisdir = std::io::Error::from_raw_os_error(21);
+        assert_eq!(
+            go_err("read", skin, &eisdir),
+            format!("read {}: is a directory", skin)
+        );
+    }
+
     /// The substring check this replaced matched `p-2` inside `gap-2`, so a
     /// dropped rule passed whenever a longer token elsewhere contained it.
     #[test]
