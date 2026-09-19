@@ -1649,6 +1649,7 @@ version = "0.1.0"
 dependencies = [
  "hex",
  "html5ever",
+ "libc",
  "markup5ever_rcdom",
  "oxc_allocator",
  "oxc_ast",

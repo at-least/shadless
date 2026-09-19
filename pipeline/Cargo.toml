@@ -11,6 +11,9 @@ sha2 = "0.10"
 hex = "0.4"
 regex = "1"
 walkdir = "2"
+# direct dep for the __meta interrupt watcher (sigwait); already in the tree
+# as a transitive dep, so the version stays on the locked line
+libc = "0.2"
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", features = ["preserve_order"] }
 tempfile = "3"

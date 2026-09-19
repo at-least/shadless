@@ -554,6 +554,8 @@ fn main() {
 /// `__meta [gate]`: apply each selected mutation, run its gate through the
 /// presented graph's own commands, restore — exit 0 iff every one is caught.
 fn run_hidden_meta(rest: &[String]) -> i32 {
+    // a Ctrl-C mid-mutation-window must still put the tree back
+    pipeline::gates::mutations::install_interrupt_restore();
     let root = std::env::current_dir().unwrap_or_default();
     let g = match pipeline::graph::authored() {
         Ok(g) => g,

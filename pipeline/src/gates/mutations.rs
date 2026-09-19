@@ -818,18 +818,27 @@ impl Snapshot {
     }
 }
 
-// activeRestore: the restore hook for the mutation currently applied, so an
-// interrupt between apply and restore can still put the tree back.
+/// activeRestore: the restore hook for the mutation currently applied, so an
+/// interrupt between apply and restore can still put the tree back (the
+/// __meta SIGINT/SIGTERM watcher below and run_mutation's unwind guard both
+/// drain it).
 static ACTIVE_RESTORE: Mutex<Option<Box<dyn FnOnce() -> Result<(), String> + Send>>> =
     Mutex::new(None);
 
 pub fn set_active_restore(f: impl FnOnce() -> Result<(), String> + Send + 'static) {
-    *ACTIVE_RESTORE.lock().unwrap() = Some(Box::new(f));
+    // poison-tolerant: an interrupted (panicking) mutation must not take the
+    // interrupt watcher down with it
+    *ACTIVE_RESTORE
+        .lock()
+        .unwrap_or_else(|e| e.into_inner()) = Some(Box::new(f));
 }
 
 /// Undoes whatever mutation is applied right now, if any. Safe to call twice.
 pub fn restore_active_mutation() -> Result<(), String> {
-    let f = ACTIVE_RESTORE.lock().unwrap().take();
+    let f = ACTIVE_RESTORE
+        .lock()
+        .unwrap_or_else(|e| e.into_inner())
+        .take();
     match f {
         None => Ok(()),
         Some(f) => f(),
@@ -852,6 +861,8 @@ pub enum GateRun {
 
 /// Executes a gate's commands in order and reports what it said.
 pub fn run_gate(root: &Path, n: &crate::nodes::Node) -> (GateRun, String) {
+    #[cfg(unix)]
+    use std::os::unix::process::CommandExt;
     let mut buf = String::new();
     for argv in &n.run {
         let exe = match crate::engine::resolve_argv0(&argv[0]) {
@@ -861,10 +872,27 @@ pub fn run_gate(root: &Path, n: &crate::nodes::Node) -> (GateRun, String) {
                 return (GateRun::CouldNotRun, buf);
             }
         };
-        let out = std::process::Command::new(exe)
-            .args(&argv[1..])
-            .current_dir(root)
-            .output();
+        let mut cmd = std::process::Command::new(exe);
+        cmd.args(&argv[1..]).current_dir(root);
+        #[cfg(unix)]
+        {
+            // __meta's interrupt watcher blocks SIGINT/SIGTERM in this
+            // process and the block crosses fork/exec; a gate subprocess
+            // must stay interruptible from the terminal exactly as it was
+            // before the watcher existed, so children start from the
+            // default mask.
+            unsafe {
+                cmd.pre_exec(|| {
+                    let mut mask: libc::sigset_t = std::mem::zeroed();
+                    libc::sigemptyset(&mut mask);
+                    libc::sigaddset(&mut mask, libc::SIGINT);
+                    libc::sigaddset(&mut mask, libc::SIGTERM);
+                    libc::pthread_sigmask(libc::SIG_UNBLOCK, &mask, std::ptr::null_mut());
+                    Ok(())
+                });
+            }
+        }
+        let out = cmd.output();
         match out {
             Ok(o) => {
                 buf.push_str(&String::from_utf8_lossy(&o.stdout));
@@ -890,9 +918,82 @@ pub struct MutationResult {
     pub note: String,
 }
 
+/// Restores the active mutation when dropped, so the unwind path of
+/// run_mutation (a panic in apply or in the gate run) puts the tree back
+/// even though the explicit restore after the closure is never reached. On
+/// the normal path the explicit restore consumes the hook first, which
+/// makes this drop a no-op.
+struct RestoreOnDrop;
+impl Drop for RestoreOnDrop {
+    fn drop(&mut self) {
+        if let Err(e) = restore_active_mutation() {
+            eprintln!("pipeline meta: restore failed: {}", e);
+        }
+    }
+}
+
+/// Installs the interrupt watcher `__meta` runs under: SIGINT/SIGTERM during
+/// a mutation window must still put the tree back before the process dies.
+/// The calling thread blocks the signals first (so the disposition cannot
+/// terminate us before the watcher is up, and the block is inherited by the
+/// watcher thread), and the watcher itself blocks in sigwait — never a
+/// signal handler, so no async-signal-unsafe code runs in signal context.
+/// run_gate's pre_exec unblocks the signals again in gate subprocesses, so a
+/// terminal Ctrl-C still interrupts a running gate exactly as before.
+/// Best-effort by nature: SIGKILL cannot be intercepted on any platform.
+#[cfg(unix)]
+pub fn install_interrupt_restore() {
+    use std::sync::atomic::{AtomicBool, Ordering};
+    static INSTALLED: AtomicBool = AtomicBool::new(false);
+    if INSTALLED.swap(true, Ordering::SeqCst) {
+        return;
+    }
+    unsafe {
+        let mut mask: libc::sigset_t = std::mem::zeroed();
+        libc::sigemptyset(&mut mask);
+        libc::sigaddset(&mut mask, libc::SIGINT);
+        libc::sigaddset(&mut mask, libc::SIGTERM);
+        if libc::pthread_sigmask(libc::SIG_BLOCK, &mask, std::ptr::null_mut()) != 0 {
+            // no watcher; run_mutation's explicit and unwind-path restores
+            // still cover everything but a mid-window kill
+            return;
+        }
+        std::thread::spawn(move || {
+            // written only through sigwait's raw pointer, so the compiler
+            // cannot see the mutation
+            #[allow(unused_mut)]
+            let mut got: libc::c_int = 0;
+            if libc::sigwait(&mask, &mut got) != 0 {
+                return;
+            }
+            // Hold the hook's mutex across restore + exit: the signal kills
+            // the gate child too, so the main thread can return from
+            // run_gate and start the NEXT mutation (set + apply) while this
+            // restore is still writing — exiting under the lock keeps it
+            // blocked until the process dies.
+            let hook = ACTIVE_RESTORE
+                .lock()
+                .unwrap_or_else(|e| e.into_inner())
+                .take();
+            if let Some(f) = hook {
+                let _ = f();
+            }
+            // 130 = SIGINT convention; 143 = SIGTERM
+            std::process::exit(if got == libc::SIGTERM { 143 } else { 130 });
+        });
+    }
+}
+
+/// No interrupt watcher off unix: mutation windows there keep the
+/// panic-path and normal-path guarantees only.
+#[cfg(not(unix))]
+pub fn install_interrupt_restore() {}
+
 /// Applies one mutation, runs its gate, and restores the tree — including
 /// when the mutation itself errors. The restore is the important part: it
-/// must happen on every path out of this function.
+/// runs on every path out of this function — explicitly on normal return
+/// and mutation error, via RestoreOnDrop on unwind, and via the SIGINT/
+/// SIGTERM watcher (installed by `__meta`) on interrupt.
 pub fn run_mutation(
     root: &Path,
     g: &crate::graph::Graph,
@@ -926,6 +1027,7 @@ pub fn run_mutation(
     };
     let root_c = root.to_path_buf();
     set_active_restore(move || snap.restore_at(&root_c));
+    let _restore_on_unwind = RestoreOnDrop;
     let out = (| | -> Result<(MutationResult, Option<String>), String> {
         if let Err(e) = (m.apply)(root, &files) {
             res.note = format!("mutation itself errored: {}", first_line(&e));
@@ -1358,8 +1460,13 @@ mod tests {
         assert!(!root2.join("new.txt").exists(), "restore left behind a file the snapshot never had");
     }
 
+    /// ACTIVE_RESTORE is process-global; the tests that exercise it serialize
+    /// so they cannot restore each other's snapshots.
+    static ACTIVE_TEST_LOCK: std::sync::Mutex<()> = std::sync::Mutex::new(());
+
     #[test]
     fn unit_active_restore_is_idempotent() {
+        let _serial = ACTIVE_TEST_LOCK.lock().unwrap_or_else(|e| e.into_inner());
         let root = tree(&[("a.txt", "original")]);
         let snap = take_snapshot(&root, &["a.txt".to_string()]).unwrap();
         let root_c = root.clone();
@@ -1371,6 +1478,40 @@ mod tests {
         std::fs::write(root.join("a.txt"), b"later").unwrap();
         restore_active_mutation().unwrap();
         assert_eq!(read(&root, "a.txt"), "later", "a second restore clobbered later work");
+    }
+
+    /// The restore must survive a panic inside apply: the explicit restore at
+    /// the end of run_mutation is never reached when the closure unwinds, so
+    /// restoring has to happen on the unwind path too. (The doc comments
+    /// claimed "including on crash"; this test is what enforces it.)
+    #[test]
+    fn unit_run_mutation_restores_on_panic() {
+        let _serial = ACTIVE_TEST_LOCK.lock().unwrap_or_else(|e| e.into_inner());
+        let root = tree(&[("t.txt", "original")]);
+        let g = crate::graph::authored().expect("authored graph");
+        let m = Mutation {
+            id: "unit-test-panic",
+            gate: "unit", // any real gate id; apply panics before run_gate
+            why: "test: apply mutates then panics",
+            files: &["t.txt"],
+            resolve: None,
+            apply: |root: &Path, files: &[String]| {
+                mut_replace_once(root, &files[0], "original", "mutated")?;
+                panic!("boom — run_gate is never reached");
+            },
+        };
+        let prev_hook = std::panic::take_hook();
+        std::panic::set_hook(Box::new(|_| {}));
+        let out = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            run_mutation(&root, &g, &m)
+        }));
+        std::panic::set_hook(prev_hook);
+        assert!(out.is_err(), "apply panicked — run_mutation must propagate the panic");
+        assert_eq!(
+            read(&root, "t.txt"),
+            "original",
+            "the panic left the mutated file behind — restore did not run on the unwind path"
+        );
     }
 
     /// Go TestUnitSelectMutations.
