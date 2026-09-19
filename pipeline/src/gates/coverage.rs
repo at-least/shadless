@@ -453,7 +453,7 @@ fn coverage_budget(
                 max: uncovered as i64,
                 target: 0,
                 class: "debt".to_string(),
-                reason: "cells of the product matrix (component x path x theme x dir x state) no gate makes a computed-style or behavioral assertion about; see pipeline/gate_coverage.go".to_string(),
+                reason: "cells of the product matrix (component x path x theme x dir x state) no gate makes a computed-style or behavioral assertion about; see `./build/pipeline coverage`".to_string(),
             },
         );
         l.write(root)?;

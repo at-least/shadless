@@ -69,14 +69,21 @@ fn tool_source_patterns() -> &'static [BoundaryPattern] {
                 matches: Box::new(|p: &str| re_cache(r"^pipeline/.*\.go$").is_match(p)),
                 tool: "",
                 source: "",
-                note: "pipeline/*.go — the Go runner + the ported builder tools (resolve-skins, rtl-dict, build-rtl, demo, docs-consistency, docs-catalog, product-css, build-js)",
+                note: "pipeline/*.go — Go-era sources; only the port-parity probes remain (pipeline/probe/json-go) — the engine itself is pipeline/src/**/*.rs",
+                owner: "",
+            },
+            BoundaryPattern {
+                matches: Box::new(|p: &str| re_cache(r"^pipeline/src/.*\.rs$").is_match(p)),
+                tool: "",
+                source: "",
+                note: "pipeline/src/** — the Rust engine (runner, converter, emitters, gates, tools)",
                 owner: "",
             },
             BoundaryPattern {
                 matches: Box::new(|p: &str| re_cache(r"^tools/.*\.mjs$").is_match(p)),
                 tool: "",
                 source: "",
-                note: "tools/*.mjs — remaining JS builder tools + gates (docs-build, example-*, oracle, style-parity, …)",
+                note: "tools/*.mjs — JS test harnesses + recorders (unit, contracts, browser-shell, fs-record, prettier-batch); the builder gates moved into the Rust engine",
                 owner: "",
             },
             BoundaryPattern {
@@ -118,14 +125,14 @@ fn programmatic_patterns() -> &'static [BoundaryPattern] {
             // IR (converter)
             BoundaryPattern {
                 matches: Box::new(|p: &str| p.starts_with("generated/ir/") && p.ends_with(".json")),
-                tool: "pipeline/convert.go",
+                tool: "pipeline/src/convert/mod.rs",
                 source: "apps/v4/registry/bases/radix/ui/*.tsx",
                 note: "",
                 owner: "",
             },
             BoundaryPattern {
                 matches: Box::new(|p: &str| p.starts_with("generated/docs-upstream/")),
-                tool: "pipeline/docs_upstream_mirror.go",
+                tool: "pipeline/src/tools/docs_upstream_mirror.rs",
                 source: "apps/v4/content/docs/components/radix/* + rtl/index.mdx + utils/{shimmer,scroll-fade}.mdx",
                 note: "",
                 owner: "",
@@ -139,14 +146,14 @@ fn programmatic_patterns() -> &'static [BoundaryPattern] {
                         && !p.ends_with("-demo.html")
                 }),
                 tool: "./build/pipeline example-fixture (per-tier fixture)",
-                source: "generated/ir/*.json + probes/t{6,7,8,9}/* (per tier)",
+                source: "generated/ir/*.json + the per-tier fixture families (oracle/example_fixture.rs)",
                 note: "",
                 owner: "",
             },
             BoundaryPattern {
                 matches: Box::new(|p: &str| p.starts_with("dist/components/") && rtl_variant(p)),
-                tool: "pipeline/build_rtl.go",
-                source: "src/registry/rtl-translations.json (lifted from examples/aria by pipeline/rtl_dict.go)",
+                tool: "pipeline/src/emit/build_rtl.rs",
+                source: "src/registry/rtl-translations.json (lifted from examples/aria by pipeline/src/tools/rtl_dict.rs)",
                 note: "",
                 owner: "",
             },
@@ -155,8 +162,8 @@ fn programmatic_patterns() -> &'static [BoundaryPattern] {
             // docs/site/).
             BoundaryPattern {
                 matches: Box::new(|p: &str| p.starts_with("docs/demos/") && rtl_variant(p)),
-                tool: "pipeline/build_rtl.go",
-                source: "src/registry/rtl-translations.json (lifted from examples/aria by pipeline/rtl_dict.go)",
+                tool: "pipeline/src/emit/build_rtl.rs",
+                source: "src/registry/rtl-translations.json (lifted from examples/aria by pipeline/src/tools/rtl_dict.rs)",
                 note: "",
                 owner: "",
             },
@@ -166,14 +173,14 @@ fn programmatic_patterns() -> &'static [BoundaryPattern] {
             // from those manifests rather than guessed from the path.
             BoundaryPattern {
                 matches: Box::new(in_manifest("docs/example-fixture-targets.json", "name")),
-                tool: "pipeline/example_fixture.go",
+                tool: "pipeline/src/oracle/example_fixture.rs",
                 source: "the React oracle render, with kernel-family JS wired in",
                 note: "",
                 owner: "",
             },
             BoundaryPattern {
                 matches: Box::new(in_manifest("docs/example-oracle.json", "out")),
-                tool: "pipeline/example_oracle.go",
+                tool: "pipeline/src/oracle/example_oracle.rs",
                 source: "examples/radix/<name>.tsx, rendered with real React",
                 note: "",
                 owner: "",
@@ -195,7 +202,7 @@ fn programmatic_patterns() -> &'static [BoundaryPattern] {
             // compiled
             BoundaryPattern {
                 matches: prefix_suffix("dist/css/", &[".css"]),
-                tool: "pipeline/demo.go (parts) + pipeline/product_css.go (tokens)",
+                tool: "pipeline/src/emit/demo.rs (parts) + pipeline/src/emit/product_css.rs (tokens)",
                 source: "generated/ir/*.json + probes/h4/globals.css",
                 note: "",
                 owner: "",
@@ -206,7 +213,7 @@ fn programmatic_patterns() -> &'static [BoundaryPattern] {
                     "dist/shadless.full.css",
                     "dist/shadless.full.min.css",
                 ]),
-                tool: "pipeline/product_css.go + pipeline/tw.go",
+                tool: "pipeline/src/emit/product_css.rs + pipeline/src/emit/tw.rs",
                 source: "dist/css/* (tokens + component parts + fixes)",
                 note: "",
                 owner: "",
@@ -214,7 +221,7 @@ fn programmatic_patterns() -> &'static [BoundaryPattern] {
             // J4: server-stack template macros — regenerated from IR
             BoundaryPattern {
                 matches: one_of(&["dist/shadless.js", "dist/shadless.min.js"]),
-                tool: "tools/build-js.mjs",
+                tool: "./build/pipeline build-js",
                 source: "vendor/radix-kernel.iife.js + src/runtime/core.js",
                 note: "",
                 owner: "",
@@ -224,14 +231,14 @@ fn programmatic_patterns() -> &'static [BoundaryPattern] {
                     (p.starts_with("dist/js/") || p.starts_with("dist/esm/"))
                         && re_cache(r"\.(m?js|d\.ts)$").is_match(p)
                 }),
-                tool: "tools/build-js.mjs",
+                tool: "./build/pipeline build-js",
                 source: "src/runtime/core.js + src/runtime/components/*.js + src/runtime/shadless.d.ts + vendor/*.iife.js",
                 note: "",
                 owner: "",
             },
             BoundaryPattern {
                 matches: one_of(&["dist/demo-index.html"]),
-                tool: "pipeline/demo.go",
+                tool: "pipeline/src/emit/demo.rs",
                 source: "per-tier IR list (built into demo.mjs)",
                 note: "",
                 owner: "",
@@ -243,7 +250,7 @@ fn programmatic_patterns() -> &'static [BoundaryPattern] {
                 matches: Box::new(|p: &str| {
                     p.starts_with("docs/site/content/") || p.starts_with("docs/site/static/")
                 }),
-                tool: "pipeline/docs_build.go (zola markdown + copied dist/demos)",
+                tool: "pipeline/src/tools/docs_build.rs (zola markdown + copied dist/demos)",
                 source: ".upstream mdx + docs/content/*.mdx + dist/** + docs/demos/**",
                 note: "",
                 owner: "",
@@ -264,15 +271,15 @@ fn programmatic_patterns() -> &'static [BoundaryPattern] {
             },
             BoundaryPattern {
                 matches: one_of(&["build/rtl-langs.json"]),
-                tool: "pipeline/build_rtl.go",
-                source: "src/registry/rtl-translations.json (lifted from examples/aria by pipeline/rtl_dict.go)",
+                tool: "pipeline/src/emit/build_rtl.rs",
+                source: "src/registry/rtl-translations.json (lifted from examples/aria by pipeline/src/tools/rtl_dict.rs)",
                 note: "",
                 owner: "",
             },
             // catalog + reports
             BoundaryPattern {
                 matches: one_of(&["docs/catalog.json"]),
-                tool: "pipeline/docs_catalog.go",
+                tool: "pipeline/src/tools/docs_catalog.rs",
                 source: ".upstream/.../components/*/*.mdx + dist/components state",
                 note: "",
                 owner: "",
@@ -373,7 +380,7 @@ fn hand_authored_patterns() -> &'static [BoundaryPattern] {
                 tool: "",
                 source: "",
                 note: "",
-                owner: "human (test fixtures; some consumed by pipeline/demo.go)",
+                owner: "human (test fixtures; some consumed by pipeline/src/emit/demo.rs)",
             },
         ]
     })
@@ -389,14 +396,14 @@ struct LlmPatchPoint {
 
 static LLM_PATCH_POINTS: &[LlmPatchPoint] = &[
     LlmPatchPoint {
-        file: "pipeline/build_rtl.go",
+        file: "pipeline/src/emit/build_rtl.rs",
         lines: "32-37",
         what: "PERSIAN translations dict — 4 keys × 2 alerts for alert-rtl only. Upstream ships en/ar/he; Persian isn't in upstream so hand-coded. When upstream adds a new language, add it here (or generalize to read from upstream).",
     },
     LlmPatchPoint {
-        file: "pipeline/demo.go",
+        file: "pipeline/src/emit/demo.rs",
         lines: "~127-230",
-        what: "Per-tier HTML fixtures (dialogDemoHtml, fieldDemoHtml, etc.) — kernel/trivial-js components get static HTML hand-written here; consumed by pipeline/demo.go.",
+                what: "Per-tier HTML fixtures (dialogDemoHtml, fieldDemoHtml, etc.) — kernel/trivial-js components get static HTML hand-written here; consumed by pipeline/src/emit/demo.rs.",
     },
     LlmPatchPoint {
         file: "docs/demos/",
@@ -605,23 +612,23 @@ fn heuristic_hints() -> &'static [HeuristicHint] {
             HeuristicHint {
                 re: r"^dist/components/[^/]+-rtl-(en|he|fa)\.html$",
                 kind: "programmatic",
-                tool: "pipeline/build_rtl.go",
-                source: "src/registry/rtl-translations.json (lifted from examples/aria by pipeline/rtl_dict.go)",
+                tool: "pipeline/src/emit/build_rtl.rs",
+                source: "src/registry/rtl-translations.json (lifted from examples/aria by pipeline/src/tools/rtl_dict.rs)",
                 note: "",
                 owner: "",
             },
             HeuristicHint {
                 re: r"^docs/demos/[^/]+-rtl-(en|he|fa)\.html$",
                 kind: "programmatic",
-                tool: "pipeline/build_rtl.go",
-                source: "src/registry/rtl-translations.json (lifted from examples/aria by pipeline/rtl_dict.go)",
+                tool: "pipeline/src/emit/build_rtl.rs",
+                source: "src/registry/rtl-translations.json (lifted from examples/aria by pipeline/src/tools/rtl_dict.rs)",
                 note: "",
                 owner: "",
             },
             HeuristicHint {
                 re: r"^(docs/demos|dist/components)/[^/]+-demo\.html$",
                 kind: "programmatic",
-                tool: "pipeline/example_oracle.go",
+                tool: "pipeline/src/oracle/example_oracle.rs",
                 source: "examples/radix/<name>-demo.tsx, rendered with real React",
                 note: "",
                 owner: "",
@@ -629,7 +636,7 @@ fn heuristic_hints() -> &'static [HeuristicHint] {
             HeuristicHint {
                 re: r"^dist/glue/",
                 kind: "programmatic",
-                tool: "pipeline/demo.go",
+                tool: "pipeline/src/emit/demo.rs",
                 source: "src/kernel/*-glue.js",
                 note: "",
                 owner: "",
@@ -641,14 +648,14 @@ fn heuristic_hints() -> &'static [HeuristicHint] {
                 re: r"^dist/.+\.html$",
                 kind: "programmatic",
                 tool: "./build/pipeline example-fixture (per-tier fixture)",
-                source: "generated/ir/*.json + probes/t{6,7,8,9}/*",
+                source: "generated/ir/*.json + the per-tier fixture families",
                 note: "",
                 owner: "",
             },
             HeuristicHint {
                 re: r"^docs/site/(content|static)/",
                 kind: "programmatic",
-                tool: "pipeline/docs_build.go",
+                tool: "pipeline/src/tools/docs_build.rs",
                 source: "upstream mdx + dist/** + docs/demos/**",
                 note: "",
                 owner: "",
@@ -656,7 +663,7 @@ fn heuristic_hints() -> &'static [HeuristicHint] {
             HeuristicHint {
                 re: r"^generated/ir/[^/]+\.json$",
                 kind: "programmatic",
-                tool: "pipeline/convert.go",
+                tool: "pipeline/src/convert/mod.rs",
                 source: "apps/v4/registry/bases/radix/ui/*.tsx",
                 note: "",
                 owner: "",
@@ -1265,31 +1272,31 @@ mod tests {
     fn unit_audit_classify_order() {
         let cases: Vec<(&str, &str, &str)> = vec![
             // RTL variants must reach build-rtl, NOT the broader dist/components rule
-            ("dist/components/alert-rtl-he.html", "programmatic", "pipeline/build_rtl.go"),
-            ("dist/components/alert-rtl-en.html", "programmatic", "pipeline/build_rtl.go"),
-            ("dist/components/alert-rtl-fa.html", "programmatic", "pipeline/build_rtl.go"),
+            ("dist/components/alert-rtl-he.html", "programmatic", "pipeline/src/emit/build_rtl.rs"),
+            ("dist/components/alert-rtl-en.html", "programmatic", "pipeline/src/emit/build_rtl.rs"),
+            ("dist/components/alert-rtl-fa.html", "programmatic", "pipeline/src/emit/build_rtl.rs"),
             // alert-demo is the oracle's, carved out of the same rule
-            ("dist/components/alert-demo.html", "programmatic", "pipeline/example_oracle.go"),
+            ("dist/components/alert-demo.html", "programmatic", "pipeline/src/oracle/example_oracle.rs"),
             // a plain component page belongs to the emitter/demo rule
             ("dist/components/accordion.html", "programmatic",
              "./build/pipeline example-fixture (per-tier fixture)"),
             // docs/demos RTL variants are build-rtl output, not hand-authored —
             // programmatic patterns are consulted before hand-authored ones
-            ("docs/demos/alert-rtl-he.html", "programmatic", "pipeline/build_rtl.go"),
+            ("docs/demos/alert-rtl-he.html", "programmatic", "pipeline/src/emit/build_rtl.rs"),
             // a bare -rtl.html read as hand-authored too, and is not: the
             // oracle manifest claims it
-            ("docs/demos/alert-rtl.html", "programmatic", "pipeline/example_oracle.go"),
+            ("docs/demos/alert-rtl.html", "programmatic", "pipeline/src/oracle/example_oracle.rs"),
             // written by example-oracle from the React render, which its manifest records
-            ("docs/demos/badge-demo.html", "programmatic", "pipeline/example_oracle.go"),
+            ("docs/demos/badge-demo.html", "programmatic", "pipeline/src/oracle/example_oracle.rs"),
             // IR json
-            ("generated/ir/badge.json", "programmatic", "pipeline/convert.go"),
+            ("generated/ir/badge.json", "programmatic", "pipeline/src/convert/mod.rs"),
             // tool source
-            ("pipeline/demo.go", "tool-source", ""),
+            ("pipeline/src/emit/demo.rs", "tool-source", ""),
             ("src/tags.mjs", "tool-source", ""),
             // pin.json is hand-authored even though it sits under src/registry
             ("src/registry/pin.json", "hand-authored",
              "pipeline upstream (re-pin) / human (vendor re-hash via ./build/pipeline pin --force)"),
-            ("pipeline/main.go", "tool-source", ""),
+            ("pipeline/src/main.rs", "tool-source", ""),
         ];
         for (path, kind, owner) in cases {
             let got = classify_path(path);
@@ -1341,9 +1348,9 @@ mod tests {
     #[test]
     fn unit_audit_heuristic_order() {
         let cases = [
-            ("dist/components/alert-rtl-he.html", "pipeline/build_rtl.go"),
-            ("docs/demos/thing-demo.html", "pipeline/example_oracle.go"),
-            ("dist/glue/dialog-glue.js", "pipeline/demo.go"),
+            ("dist/components/alert-rtl-he.html", "pipeline/src/emit/build_rtl.rs"),
+            ("docs/demos/thing-demo.html", "pipeline/src/oracle/example_oracle.rs"),
+            ("dist/glue/dialog-glue.js", "pipeline/src/emit/demo.rs"),
             // only the catch-all matches this one
             (
                 "dist/widgets/new.html",
@@ -1370,7 +1377,7 @@ mod tests {
         }
         for rel in [
             "dist/components/accordion.html",
-            "pipeline/demo.go",
+            "pipeline/src/emit/demo.rs",
             // the skip is a path prefix, not a substring: a sibling directory
             // whose name merely starts the same way must survive
             "tools/contracts/run.mjs",

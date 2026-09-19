@@ -3,14 +3,14 @@
     "coverage.uncovered-cells": {
       "class": "debt",
       "max": 0,
-      "reason": "cells of the product matrix (component x path x theme x dir x state) no gate makes a computed-style or behavioral assertion about; see pipeline/gate_coverage.go",
+      "reason": "cells of the product matrix (component x path x theme x dir x state) no gate makes a computed-style or behavioral assertion about; see `./build/pipeline coverage`",
       "target": 0
     },
     "demo-parity.dirty-cells": {
       "max": 76,
       "target": 0,
       "class": "debt",
-      "reason": "(page/slot#n/property @ theme @ dir) cells where a shipped demo page under our css computes differently from the same DOM under upstream css; see gates/demo-parity.mjs"
+      "reason": "(page/slot#n/property @ theme @ dir) cells where a shipped demo page under our css computes differently from the same DOM under upstream css; see `./build/pipeline demo-parity`"
     },
     "golden.exempt-demos": {
       "max": 147,
@@ -22,7 +22,7 @@
       "max": 1,
       "target": 0,
       "class": "debt",
-      "reason": "example families still shipping as static oracle snapshots (dead buttons); each needs its glue protocol mapped into tools/example-fixture.mjs"
+      "reason": "example families still shipping as static oracle snapshots (dead buttons); each needs its glue protocol mapped into `./build/pipeline example-fixture`"
     },
     "path-parity.dirty-cells": {
       "max": 0,
@@ -440,11 +440,11 @@
     "Fixture-content parity: kernel-tier -demo pages ARE the contract fixtures \u2014 their copy/items are simplified vs the real upstream examples (alert-dialog was stale-wrong and got fixed; these are simplified): context-menu, dropdown-menu, hover-card, menubar, navigation-menu, scroll-area, select, sheet, tabs, tooltip. Automation idea: render each example's closed state through the oracle and diff its text/content against the fixture (the audit script exists in git history \u2014 resurrect as a periodic gate once the fixtures are aligned).",
     "navigation-menu mounted structure: radix mounts sibling links; decide glue parity vs permanent record.",
     "JSX composition examples remain in feature sections (in React syntax, imports stripped): translating them to vanilla markup is the deeper completion of the docs de-Reactification.",
-    "Example pages that still ship as static oracle snapshots (dead buttons) are counted by tools/interactivity-sweep.mjs every run and budgeted as `interactivity.dead-families` (families in KNOWN_DEAD, currently message-scroller only \u2014 pages, not families, is the larger number; run the sweep for it). example-fixture.mjs covers the dialog family, tabs, slider, scroll-area, select, tooltip, popover, hover-card and the menus; each remaining family needs its glue protocol mapped there.",
+    "Example pages that still ship as static oracle snapshots (dead buttons) are counted by `./build/pipeline interactivity-sweep` every run and budgeted as `interactivity.dead-families` (families in KNOWN_DEAD, currently message-scroller only \u2014 pages, not families, is the larger number; run the sweep for it). the example-fixture covers the dialog family, tabs, slider, scroll-area, select, tooltip, popover, hover-card and the menus; each remaining family needs its glue protocol mapped there.",
     "Controlled-open oracles (dialog/alert-dialog/sheet/select): switch the usage to trigger-driven so the mounted-DOM check applies, then drop the mounted-check/mounted-classes exemptions.",
-    "Coverage matrix scope: gates/coverage.mjs enumerates tiers other than `external` and `logic`, so `carousel` (external, ported onto vendored embla \u2014 contract-tested and in the golden gate) and `field` (logic \u2014 ships CSS + a hand-authored demo in tools/demo.mjs, no contract, no oracle) sit outside the uncovered-cells count. field is the one shipped component with no oracle-backed assertion; adding it to the matrix (or a contract) is the work item.",
-    "Not gated at all (outside the CSS-parity surface): accessibility beyond attribute equality (no axe, no Tab / focus-trap / roving-focus scenario in contracts \u2014 16 of 30 defs press a key, mostly Escape), animations (every parity gate freezes them), browsers other than chromium, TypeScript (dist/esm/*.d.ts are concatenated, never type-checked), a bundle-size budget, a no-JS render. The npm surface is gated since gates/pack.mjs.",
-    "Big-ticket gaps, recorded so they are not rediscovered: (1) 15 grey components have no vanilla port (calendar/date-picker \u2192 react-day-picker, chart \u2192 recharts, command/combobox \u2192 cmdk/@base-ui, drawer \u2192 vaul, resizable \u2192 react-resizable-panels, input-otp, sonner/toast, form \u2192 react-hook-form, sidebar, questionnaire, data-table \u2192 tanstack, typography) \u2014 each is a dependency rewrite, not a conversion. (2) The JS base is not tree-shakeable: tools/build-js.mjs concatenates the whole 143 KB radix kernel into dist/shadless.js unconditionally and the ESM entry re-exports a runtime global; a checkbox-only page pays for the kernel. Splitting the kernel per feature needs the kernel's source, which this repo does not hold (vendor/radix-kernel.iife.js is a pinned blob, no source map). (3) No a11y gate (axe, Tab / focus-trap scenarios), chromium only, animations frozen in every parity gate, no no-JS render \u2014 see the previous note. (4) The dialog family's mounted-DOM check is off (controlled-open oracles) and navigation-menu carries a real structural difference \u2014 see the notes above.",
+    "Coverage matrix scope: `./build/pipeline coverage` enumerates tiers other than `external` and `logic`, so `carousel` (external, ported onto vendored embla \u2014 contract-tested and in the golden gate) and `field` (logic \u2014 ships CSS + a hand-authored demo, no contract, no oracle) sit outside the uncovered-cells count. field is the one shipped component with no oracle-backed assertion; adding it to the matrix (or a contract) is the work item.",
+    "Not gated at all (outside the CSS-parity surface): accessibility beyond attribute equality (no axe, no Tab / focus-trap / roving-focus scenario in contracts \u2014 16 of 30 defs press a key, mostly Escape), animations (every parity gate freezes them), browsers other than chromium, TypeScript (the shipped dist/esm/*.d.ts is compiled with tsc --strict by the unit gate, but no gate checks the emitted JS against those types), a bundle-size budget, a no-JS render. The npm surface is gated by the `pack` gate.",
+    "Big-ticket gaps, recorded so they are not rediscovered: (1) 15 grey components have no vanilla port (calendar/date-picker \u2192 react-day-picker, chart \u2192 recharts, command/combobox \u2192 cmdk/@base-ui, drawer \u2192 vaul, resizable \u2192 react-resizable-panels, input-otp, sonner/toast, form \u2192 react-hook-form, sidebar, questionnaire, data-table \u2192 tanstack, typography) \u2014 each is a dependency rewrite, not a conversion. (2) The JS base is not tree-shakeable: the build-js node concatenates the whole 143 KB radix kernel into dist/shadless.js unconditionally and the ESM entry re-exports a runtime global; a checkbox-only page pays for the kernel. Splitting the kernel per feature needs the kernel's source, which this repo does not hold (vendor/radix-kernel.iife.js is a pinned blob, no source map). (3) No a11y gate (axe, Tab / focus-trap scenarios), chromium only, animations frozen in every parity gate, no no-JS render \u2014 see the previous note. (4) The dialog family's mounted-DOM check is off (controlled-open oracles) and navigation-menu carries a real structural difference \u2014 see the notes above.",
     "Plain (non-cva) path @apply order: src/emitter/css.mjs joins a slot's class strings into ONE @apply, where Tailwind's internal utility order \u2014 not composition order \u2014 resolves same-group conflicts. Concrete case: attachment-action ships `rounded-lg \u2026 rounded-[min(var(--radius-md),10px)]` in one @apply and compiles to `var(--radius)` while React/twMerge keeps the later `rounded-[min(...)]`. The cva path was fixed with twin blocks (2026-08-28; regression-gated by path-parity); extending path-parity to plain-path slots with intra-list same-group conflicts would close the family."
   ],
   "pin": "shadcn@4.19.0"

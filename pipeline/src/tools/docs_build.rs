@@ -1493,7 +1493,7 @@ fn write_content_map(
 
     let root_obj = JsonObj::new()
         .add("version", Json::Int(1))
-        .add("generatedBy", Json::Str("tools/docs-guides.mjs (FT4)".to_string()))
+        .add("generatedBy", Json::Str("pipeline/src/tools/docs_build.rs".to_string()))
         .add("pages", Json::Obj(pages_kv))
         .add("pruned", Json::Obj(pruned_kv))
         .add("guidePreviews", Json::Obj(gp_kv));

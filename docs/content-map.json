@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedBy": "tools/docs-guides.mjs (FT4)",
+  "generatedBy": "pipeline/src/tools/docs_build.rs",
   "pages": {
     "accordion": {
       "source": "generated/docs-upstream/components/radix/accordion.mdx",
