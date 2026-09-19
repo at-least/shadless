@@ -21,12 +21,12 @@ workflow is gone, so it is invoked by hand until the Dagger port replaces it.
 
 | Step | Command | What it settles |
 |---|---|---|
-| 1 | `git -C .upstream checkout <tag>` + `tools/pin.mjs --force` | the pin |
+| 1 | `git -C .upstream checkout <tag>` + `./build/pipeline pin --force` | the pin |
 | 2 | `pipeline ledger --dissolve` | every **auto-dissolve** exemption is deleted. The rebuild must re-earn each one with evidence; nobody walks a list by hand |
 | 3 | `git apply --3way overlays/upstream/*.patch` | source-level patches rebase onto the new tag; a conflict is a conflict, not a silent no-apply |
 | 4 | `./build/pipeline run all --keep-going` | the whole picture — every failing gate, not the first |
 | 5 | `pipeline ir-diff` | slot-level semantic diff old pin → new pin: which components, slots, class lists, cva axes actually moved |
-| 6 | `gates/overlay.mjs --tasks` | every hand-written unit re-proves it still applies; the ones that don't become task packets |
+| 6 | `./build/pipeline overlay --tasks` | every hand-written unit re-proves it still applies; the ones that don't become task packets |
 | 7 | classification | each failed gate is **EXPECTED** (its components changed upstream per step 5) or **UNEXPECTED** (nothing moved upstream — our pipeline regressed) |
 
 ## Reading the report
@@ -42,13 +42,13 @@ Work it top-down:
 ## Where manual interventions live (and how they are carried forward)
 
 The conversion is mechanical but not complete. Every exception has a home
-that `gates/overlay.mjs` audits on every run — never a find/replace on
+that `./build/pipeline overlay` audits on every run — never a find/replace on
 generated output (the retired `patches/` mechanism).
 
 | Kind | Home | Anchor | On re-pin |
 |---|---|---|---|
 | **rule** | `DEFAULT_CONTENT`, `TEXT_ADJUSTMENTS`, `DEAD_UTILITIES`, `SKIN_ALLOWLIST`, `KNOWN_ICONS`, tier sets, the Persian dictionary, contract `ignoreAttrs` | a structural predicate on the IR / upstream tree | `orphaned` when the anchor is gone; `dissolved` when upstream no longer needs it |
-| **authored** | `src/runtime/core.js`, `src/runtime/components/*.js`, `tools/contracts/components/*.mjs`, hand-authored `docs/demos/*.html` | sha256 of the upstream inputs, in `overlays/manifest.json` | `stale` when an input changed → task packet with the diff; `gates/overlay.mjs --record` after re-authoring |
+| **authored** | `src/runtime/core.js`, `src/runtime/components/*.js`, `tools/contracts/components/*.mjs`, hand-authored `docs/demos/*.html` | sha256 of the upstream inputs, in `overlays/manifest.json` | `stale` when an input changed → task packet with the diff; `./build/pipeline overlay --record` after re-authoring |
 | **source** | `overlays/upstream/*.patch` | git blob ids | 3-way merge; `conflict` bucket |
 
 ## Exemptions
@@ -60,7 +60,9 @@ unrecorded improvement alike.
 
 ## Vendored engines
 
-`vendor/radix-kernel.iife.js` and `vendor/embla-carousel.iife.js` are
-sha-pinned in `src/registry/pin.json`. Re-vendoring is a separate, rare
+`vendor/radix-kernel.iife.js` is sha-pinned in `src/registry/pin.json` and
+the `pin` gate verifies it every run; `vendor/embla-carousel.iife.js` is
+the upstream release artifact of the `embla-carousel` version in
+`package-lock.json` (version-pinned, not hashed). Re-vendoring is a separate, rare
 event: replace the file, `npm run pin -- --force`, and every `behavior:*` unit in `overlays/manifest.json` goes stale by design (the
 kernel sha is part of their anchor) — the drill turns those into packets.

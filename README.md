@@ -96,11 +96,12 @@ localStorage-backed theme semantics.
 | interactive | 23 (one file each in `dist/js/`) | CSS + `shadless.js` + `js/<name>.js` |
 | CSS, no behavior | label, progress, separator, field | CSS only (radix renders them with no state) |
 
-48 components ship CSS, 23 ship behavior; `aspect-ratio` and `collapsible`
-carry no classes upstream, so they have JS (collapsible) or nothing to
-ship (aspect-ratio) but no stylesheet. `field` is the one shipped
-component outside the oracle-backed matrix (logic tier — its demo is
-hand-authored; see `pipeline/gate_coverage.go`).
+48 components ship CSS, 23 ship behavior; `aspect-ratio`, `direction` and
+`collapsible` carry no classes upstream, so they have JS (collapsible) or
+nothing to ship (aspect-ratio, direction) but no stylesheet. `field` is
+the one shipped component outside the oracle-backed matrix (logic tier —
+its demo is hand-authored; see the `coverage.uncovered-cells` budget in
+`gates/ledger.json`, or run `./build/pipeline coverage`).
 
 ## Not included (recorded, not silently dropped)
 
@@ -110,12 +111,13 @@ typography — these wrap React-only dependencies (react-day-picker,
 recharts, cmdk, vaul, react-hook-form, …) or React-only composition with
 no vanilla upstream; converting them would mean rewriting the dependency,
 which is outside mechanical-conversion scope. The docs site marks them
-"Not available in shadless" (the list is `GREY_COMPONENTS` in
-`tools/docs-build.mjs`, cross-checked against the catalog on every build).
+"Not available in shadless" (the list is `grey_components()` in
+`pipeline/src/tools/docs_transforms.rs`, cross-checked against the catalog
+on every build).
 
 ## Why it stays honest
 
-Every check is a node in one graph — `pipeline/nodes.go` — and every gate
+Every check is a node in one graph — `pipeline/src/nodes.rs` — and every gate
 in that graph is proven able to fail (`make meta` mutates a real
 artifact and requires the gate to go red). Nothing is verified by a list
 that lives in two places, and nothing is trusted because it happened to be
@@ -142,8 +144,8 @@ green once.
 - **Manual interventions are audited, not remembered.** Every rule table,
   hand-written behavior/runtime file and upstream patch re-proves on
   each run that it still applies to the pinned upstream
-  (`gates/overlay.mjs`); accepted differences live in `gates/ledger.json`
-  with a class and a budget that may only shrink.
+  (`./build/pipeline overlay`); accepted differences live in
+  `gates/ledger.json` with a class and a budget that may only shrink.
 
 ## Develop
 
@@ -156,8 +158,9 @@ make list       # the graph
 ```
 
 Upstream upgrades: `make upstream TO=shadcn@X.Y.Z` — see `UPGRADING.md`.
-A nightly workflow runs the same drill against the newest release and opens
-a PR. Vendored engine integrity is sha-pinned in `src/registry/pin.json`.
+The drill runs by hand until the Dagger port replaces the retired nightly
+workflow. The vendored radix kernel is sha-pinned in
+`src/registry/pin.json` (embla is version-pinned via package-lock).
 
 ## License
 

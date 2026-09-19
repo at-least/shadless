@@ -13,7 +13,7 @@ rebuild, so a step that cannot promise identical bytes must not move in.
 
 | Toolchain | Used by | Why it stays |
 |---|---|---|
-| the pinned `node_modules/.bin/esbuild` binary | `convert`, `rtl-dict` (Transform), `build-js` (minify) | The committed `dist/shadless.min.js` and the IR scanner are byte-pinned to esbuild's printer. Measured (probe/oxc REPORT): 0/61 inputs byte-identical from pure-Rust printers — the divergence is in codegen order/renaming, not configurable. |
+| the pinned `node_modules/.bin/esbuild` binary | `convert`, `rtl-dict` (Transform), `build-js` (minify) | The committed `dist/shadless.min.js` and the IR scanner are byte-pinned to esbuild's printer. Measured (probe/oxc REPORT — the probe dir did not survive into this repo): 0/61 inputs byte-identical from pure-Rust printers — the divergence is in codegen order/renaming, not configurable. |
 | tailwind CLI | `tw` steps | The committed `dist/*.css` are tailwind's bytes. |
 | playwright (chromium) | browser gates, contracts, fixture self-tests | The oracle IS React in a real browser; jsdom does not produce comparable bytes. |
 | node + `tools/*.mjs` | the JS runtime surface, unit/contract harnesses, prettier batching | The product ships JS; its tests run where the product runs. |
@@ -28,8 +28,10 @@ builds the lean esbuild-only binary).
 
 This engine is a byte-for-byte port of the Go pipeline that used to live in
 this directory (29k lines, 41 nodes / 24 gates). The last dual-engine state
-— every artifact, CLI verdict, and gate verdict byte-compared green — is
-tagged `go-parity-final`; the Go module's last state is tagged
-`go-engine-final` (check that tag out to regenerate Go-era fixtures). The port's design notes and the record of every bug the
+— every artifact, CLI verdict, and gate verdict byte-compared green — was
+tagged `go-parity-final`; that tag did not survive into this repo (it lives
+in the port's pre-merge history), so the surviving markers here are
+`go-engine-final` (the Go module's last state) and `rust-engine-initial`
+(the port's first state). The port's design notes and the record of every bug the
 byte-parity process caught are in [PROGRESS.md](PROGRESS.md) and
 [PLAN.md](PLAN.md).

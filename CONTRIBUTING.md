@@ -47,10 +47,11 @@ demo pages; only the full demo build restores them).
   --strict`. Behaviors are unit-tested in jsdom (`tools/unit/runtime.mjs`)
   and contract-tested against real React in chromium
   (`tools/contracts/components/`).
-- **Docs** — generated from the upstream mdx by `tools/docs-build.mjs`; the
-  runtime protocol text comes from `tools/fixture-families.mjs` (the same
-  tables that generate the fixtures). Hand-authored demos live in
-  `docs/demos/`.
+- **Docs** — generated from the upstream mdx by the engine
+  (`./build/pipeline docs-build`; `pipeline/src/tools/docs_build.rs`); the
+  runtime protocol text comes from the fixture-family tables in
+  `pipeline/src/oracle/fixture_families.rs` (the same tables that generate
+  the fixtures). Hand-authored demos live in `docs/demos/`.
 The Rust/JS split in this repo is deliberate and documented in
 [pipeline/PORT.md](pipeline/PORT.md): a step moves into the Rust engine when
 it can produce the same bytes, and the toolchains that stay external (the

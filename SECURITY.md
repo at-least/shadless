@@ -17,12 +17,12 @@ reproduces it.
 
 ## Supply chain
 
-- The package installs **no dependencies** (`TestPack` (pipeline/gate_pack.go) fails the
+- The package installs **no dependencies** (the `pack` gate fails the
   build if `dependencies` is ever non-empty); `tailwindcss` is an optional
   peer for the CSS-import path.
 - The vendored radix kernel (`vendor/radix-kernel.iife.js`) is pinned by
   sha256 in `src/registry/pin.json`; the `pin` gate verifies it on every
   run. `vendor/embla-carousel.iife.js` is the upstream release artifact of
   the `embla-carousel` version in `package-lock.json`.
-- The upstream registry is pinned to a tag + commit; the nightly drill
-  re-pins only through a reviewed pull request.
+- The upstream registry is pinned to a tag + commit; the re-pin drill runs
+  by hand and its report is reviewed before anything lands.

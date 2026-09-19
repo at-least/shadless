@@ -2,8 +2,9 @@
 
 This crate IS the engine of the repo it lives in. It began as a port of the
 Go pipeline that used to sit at this same path (the port's history is a
-parent of the repo's merge commit; the last dual-engine state is tag
-`go-parity-final`, the Go module's last state is `go-engine-final`), and
+parent of the repo's merge commit; the last dual-engine state was tag
+`go-parity-final` — that tag did not survive into this repo, the Go
+module's last state is `go-engine-final`), and
 the port charter survives in PORT.md:
 
 > **A step moves into the Rust engine when it can produce the same bytes.**
@@ -17,13 +18,14 @@ the port charter survives in PORT.md:
 - **移植完成並已取代 Go 引擎**(2026-09-11,tag `rust-engine-initial`):
   M0–M6 → 自我接管(M7)→ per-node 引擎指紋 → Oxc 實驗結案(oracle
   bundle 點採用 rolldown 為預設;transform/minify 受位元組契約封閉,
-  見 probe/oxc/REPORT.md)→ 完全取代(單一 repo,零 Go)。
+  見 probe/oxc REPORT — 該實驗目錄未隨移植併入本 repo)→ 完全取代(單一 repo,零 Go)。
 
 ## 怎麼驗證
 
-**驗收完全自證,不需要 Go 工具鏈**(歷史上的雙引擎位元組對照見
-git tag `go-parity-final`;opt-in 的 gate_parity 交叉檢查已於引擎取代
-Go 時刪除):
+**驗收完全自證,不需要 Go 工具鏈**(歷史上的雙引擎位元組對照記錄在
+git tag `go-parity-final` — 該 tag 未隨移植併入本 repo,本 repo 僅存
+`go-engine-final` 與 `rust-engine-initial`;opt-in 的 gate_parity 交叉檢查
+已於引擎取代 Go 時刪除):
 
 ```sh
 make pipeline           # cargo build --release → build/pipeline(或 npm run pipeline)
@@ -31,7 +33,7 @@ make pipeline           # cargo build --release → build/pipeline(或 npm run p
 ./build/pipeline status all  # 期待 68 fresh + 1 NEVER-FRESH
 cd pipeline
 ./tests/gen_golden.sh   # 四層自證驗收台(錄製 + 結構斷言;PATH 上有沒有 go 都通過)
-cargo test              # 126 lib 測試(含真樹 gates + golden 重播)+ 整合測試
+cargo test              # ~148 lib 測試(含真樹 gates + golden 重播)+ 整合測試
 ```
 
 陷阱備忘:重連結 binary 或跑 cargo 期間不要並行 `run`(fork/exec ENOENT);
