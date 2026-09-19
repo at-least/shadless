@@ -945,6 +945,17 @@ fn self_host(n: Node) -> Node {
     // tailwind path. Keep in sync with the Command::new sites in jsbuild.rs,
     // convert/mod.rs, emit/tw.rs, tools/oracle_css.rs, oracle/oracle_lib.rs
     // and the npx tsc invocation in the typecheck node.
+    const EXTRA_INPUTS: &[(&str, &str)] = &[("example-oracle", "overlays/**")];
+    if let Some((_, extra)) = EXTRA_INPUTS.iter().find(|(nid, _)| *nid == id) {
+        match n.inputs.as_mut() {
+            Some(inputs) => {
+                inputs.push(extra.to_string());
+                inputs.sort();
+                inputs.dedup();
+            }
+            None => n.inputs = Some(vec![extra.to_string()]),
+        }
+    }
     const TOOLCHAIN_INPUTS: &[(&str, &str)] = &[
         ("build-js", "node_modules/.bin/esbuild"),
         ("convert", "node_modules/.bin/esbuild"),

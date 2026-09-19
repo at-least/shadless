@@ -469,6 +469,25 @@ fn run_with_shell(
         .map(|n| n.trim_end_matches(".html").to_string())
         .collect();
     legit.extend(fixture_targets.iter().map(|f| f.name.clone()));
+    // overlay-authored demo pages (e.g. the message-scroller units) are
+    // written by `make overlay`, not by this node — they are legit
+    if let Ok(om) = std::fs::read_to_string("overlays/manifest.json") {
+        if let Ok(v) = serde_json::from_str::<serde_json::Value>(&om) {
+            if let Some(units) = v.get("units").and_then(|u| u.as_object()) {
+                for (uid, u) in units {
+                    if let Some(file) = u.get("file").and_then(|f| f.as_str()) {
+                        if let Some(stem) = file
+                            .strip_prefix("docs/demos/")
+                            .and_then(|f| f.strip_suffix(".html"))
+                        {
+                            legit.insert(stem.to_string());
+                        }
+                    }
+                    let _ = uid;
+                }
+            }
+        }
+    }
     legit.insert("alert-demo".to_string());
     // FT8 guide preview: host page dark-mode; its example lives in the
     // guides tree, not examples/radix
