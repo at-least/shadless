@@ -254,7 +254,12 @@
     return item.getAttribute("value") || item.getAttribute("data-value") || item.id || null
   }
   function get(target) {
-    var el = typeof target === "string" ? document.querySelector(target) : target
+    var el = null
+    if (typeof target === "string") {
+      try { el = document.querySelector(target) } catch (e) { return null }
+    } else {
+      el = target
+    }
     if (el && el.nodeType !== 1) el = el.parentElement // text node inside a trigger
     for (var n = el; n && n.nodeType === 1; n = n.parentElement) {
       var api = INSTANCES.get(n)
@@ -303,10 +308,17 @@
     else ROOT_WIRED.delete(live)
     // form mirrors hang off controls this loop never sees (trivial-tier
     // slots carry no wire record) — sweep the subtree so destroy() releases
-    // every form-reset listener init created inside it
+    // every form-reset listener init created inside it. The mirror record
+    // and its hidden inputs go too: a stale record would make the next init
+    // re-file nothing (formMirror early-returns) and form.reset() would
+    // silently stop restoring the control while its stale value kept
+    // submitting.
     if (live.nodeType === 1) live.querySelectorAll("*").forEach(function (el) {
       var m = MIRRORS.get(el)
-      if (m && m.ctl) m.ctl.abort()
+      if (!m) return
+      if (m.ctl) m.ctl.abort()
+      m.inputs.forEach(function (input) { input.remove() })
+      MIRRORS.delete(el)
     })
   }
 

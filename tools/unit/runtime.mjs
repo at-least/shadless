@@ -669,6 +669,68 @@ window.__esm = { default: shadless, get, theme, init, named: Object.keys(ns).sor
       box.getAttribute("aria-checked"), "true")
   }
   {
+    // destroy → init (framework cache-restored DOM): the form mirror must
+    // come back. destroy tears the mirror down; a re-init used to re-file
+    // nothing (formMirror early-returned the stale record), so form.reset()
+    // silently stopped restoring the control
+    const dom = boot(`<form id="f"><span data-slot="checkbox" id="c2" name="tos" value="yes"></span></form>`)
+    const doc = dom.window.document
+    const box = doc.getElementById("c2")
+    dom.window.shadless.initAll()
+    click(dom, box) // checked; this is the re-init's initial state
+    dom.window.shadless.destroy(doc.body)
+    dom.window.shadless.initAll()
+    click(dom, box) // unchecked after re-init
+    doc.getElementById("f").reset()
+    await tick()
+    t.eq("teardown: reset restores after re-init",
+      box.getAttribute("aria-checked"), "true")
+  }
+  {
+    // destroy() must take the mirror's hidden inputs with it — a destroyed
+    // control's stale values kept submitting until a reset cleared them
+    const dom = boot(`<form id="f"><span data-slot="checkbox" id="c3" name="tos" value="yes"></span></form>`)
+    const doc = dom.window.document
+    const box = doc.getElementById("c3")
+    dom.window.shadless.initAll()
+    click(dom, box)
+    t.eq("teardown: a checked named control mirrors one hidden input",
+      doc.querySelectorAll("[data-shadless-form]").length, 1)
+    dom.window.shadless.destroy(doc.body)
+    t.eq("teardown: destroy removes the hidden inputs",
+      doc.querySelectorAll("[data-shadless-form]").length, 0)
+  }
+  {
+    // slider: the kernel wiring is persistent, so after destroy the re-init
+    // wire() returns null and init's body used to be skipped entirely —
+    // the form mirror never came back and form.reset() stopped restoring
+    const dom = bootKernel(`
+<form id="f">
+<span data-slot="slider" id="sl2" name="vol"><span data-slot="slider-track"><span data-slot="slider-range"></span></span><span data-slot="slider-thumb" role="slider" aria-valuenow="20"></span></span>
+</form>`, ["slider"])
+    const doc = dom.window.document
+    const thumb = doc.querySelector("[data-slot=slider-thumb]")
+    dom.window.shadless.initAll()
+    dom.window.shadless.destroy(doc.body)
+    dom.window.shadless.initAll()
+    dom.window.shadless.get("#sl2").setValue(60)
+    t.eq("teardown: slider handle still drives after re-init",
+      thumb.getAttribute("aria-valuenow"), "60")
+    doc.getElementById("f").reset()
+    await tick()
+    t.eq("teardown: slider reset restores after re-init",
+      thumb.getAttribute("aria-valuenow"), "20")
+  }
+  {
+    // get(): an invalid selector is null, not a DOMException
+    const dom = boot(`<div data-slot="toggle"></div>`)
+    let threw = null
+    let got
+    try { got = dom.window.shadless.get("#unclosed[") } catch (e) { threw = e }
+    t.ok("get: invalid selector is null, not a throw", !threw && got === null,
+      threw && threw.message)
+  }
+  {
     // init() must say WHY it refused: a live descendant used to silently
     // disable the whole new root (delegation there covers only itself)
     const dom = boot(`<div id="outer"><div id="inner"><span data-slot="toggle"></span></div><span data-slot="toggle"></span></div>`)

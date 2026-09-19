@@ -68,7 +68,18 @@ An input where the user selects a value from within a given range.
     var roots = live.querySelectorAll("[data-slot=slider]");
     Array.prototype.forEach.call(roots, function (root) {
       var w = shadless.h.wire(root, live)
-      if (!w) return
+      if (!w) {
+        // the wiring is persistent — the kernel holds the root listeners and
+        // destroy keeps the record on purpose — but the form mirror did not
+        // survive destroy: re-file it against the still-live handle so
+        // form.reset() keeps restoring after a re-init
+        var api = shadless.instances.get(root)
+        if (api) shadless.h.formMirror(root, {
+          read: function () { return api.values() },
+          write: function (v) { v.forEach(function (x, i) { api.setValue(x, i) }) },
+        })
+        return
+      }
       w.persistent = true // kernel wireSlider holds root listeners with no unwire
       var thumbs = root.querySelectorAll("[data-slot=slider-thumb]");
       var values = Array.prototype.map.call(thumbs, function (t) { return Number(t.getAttribute("aria-valuenow") || 0); });
@@ -220,7 +231,18 @@ Use an array with two values for a range slider.
     var roots = live.querySelectorAll("[data-slot=slider]");
     Array.prototype.forEach.call(roots, function (root) {
       var w = shadless.h.wire(root, live)
-      if (!w) return
+      if (!w) {
+        // the wiring is persistent — the kernel holds the root listeners and
+        // destroy keeps the record on purpose — but the form mirror did not
+        // survive destroy: re-file it against the still-live handle so
+        // form.reset() keeps restoring after a re-init
+        var api = shadless.instances.get(root)
+        if (api) shadless.h.formMirror(root, {
+          read: function () { return api.values() },
+          write: function (v) { v.forEach(function (x, i) { api.setValue(x, i) }) },
+        })
+        return
+      }
       w.persistent = true // kernel wireSlider holds root listeners with no unwire
       var thumbs = root.querySelectorAll("[data-slot=slider-thumb]");
       var values = Array.prototype.map.call(thumbs, function (t) { return Number(t.getAttribute("aria-valuenow") || 0); });
@@ -353,7 +375,18 @@ Use an array with multiple values for multiple thumbs.
     var roots = live.querySelectorAll("[data-slot=slider]");
     Array.prototype.forEach.call(roots, function (root) {
       var w = shadless.h.wire(root, live)
-      if (!w) return
+      if (!w) {
+        // the wiring is persistent — the kernel holds the root listeners and
+        // destroy keeps the record on purpose — but the form mirror did not
+        // survive destroy: re-file it against the still-live handle so
+        // form.reset() keeps restoring after a re-init
+        var api = shadless.instances.get(root)
+        if (api) shadless.h.formMirror(root, {
+          read: function () { return api.values() },
+          write: function (v) { v.forEach(function (x, i) { api.setValue(x, i) }) },
+        })
+        return
+      }
       w.persistent = true // kernel wireSlider holds root listeners with no unwire
       var thumbs = root.querySelectorAll("[data-slot=slider-thumb]");
       var values = Array.prototype.map.call(thumbs, function (t) { return Number(t.getAttribute("aria-valuenow") || 0); });
@@ -481,7 +514,18 @@ Use `orientation="vertical"` for a vertical slider.
     var roots = live.querySelectorAll("[data-slot=slider]");
     Array.prototype.forEach.call(roots, function (root) {
       var w = shadless.h.wire(root, live)
-      if (!w) return
+      if (!w) {
+        // the wiring is persistent — the kernel holds the root listeners and
+        // destroy keeps the record on purpose — but the form mirror did not
+        // survive destroy: re-file it against the still-live handle so
+        // form.reset() keeps restoring after a re-init
+        var api = shadless.instances.get(root)
+        if (api) shadless.h.formMirror(root, {
+          read: function () { return api.values() },
+          write: function (v) { v.forEach(function (x, i) { api.setValue(x, i) }) },
+        })
+        return
+      }
       w.persistent = true // kernel wireSlider holds root listeners with no unwire
       var thumbs = root.querySelectorAll("[data-slot=slider-thumb]");
       var values = Array.prototype.map.call(thumbs, function (t) { return Number(t.getAttribute("aria-valuenow") || 0); });
@@ -603,7 +647,18 @@ Use `orientation="vertical"` for a vertical slider.
     var roots = live.querySelectorAll("[data-slot=slider]");
     Array.prototype.forEach.call(roots, function (root) {
       var w = shadless.h.wire(root, live)
-      if (!w) return
+      if (!w) {
+        // the wiring is persistent — the kernel holds the root listeners and
+        // destroy keeps the record on purpose — but the form mirror did not
+        // survive destroy: re-file it against the still-live handle so
+        // form.reset() keeps restoring after a re-init
+        var api = shadless.instances.get(root)
+        if (api) shadless.h.formMirror(root, {
+          read: function () { return api.values() },
+          write: function (v) { v.forEach(function (x, i) { api.setValue(x, i) }) },
+        })
+        return
+      }
       w.persistent = true // kernel wireSlider holds root listeners with no unwire
       var thumbs = root.querySelectorAll("[data-slot=slider-thumb]");
       var values = Array.prototype.map.call(thumbs, function (t) { return Number(t.getAttribute("aria-valuenow") || 0); });
@@ -698,7 +753,18 @@ Use the `disabled` prop to disable the slider.
     var roots = live.querySelectorAll("[data-slot=slider]");
     Array.prototype.forEach.call(roots, function (root) {
       var w = shadless.h.wire(root, live)
-      if (!w) return
+      if (!w) {
+        // the wiring is persistent — the kernel holds the root listeners and
+        // destroy keeps the record on purpose — but the form mirror did not
+        // survive destroy: re-file it against the still-live handle so
+        // form.reset() keeps restoring after a re-init
+        var api = shadless.instances.get(root)
+        if (api) shadless.h.formMirror(root, {
+          read: function () { return api.values() },
+          write: function (v) { v.forEach(function (x, i) { api.setValue(x, i) }) },
+        })
+        return
+      }
       w.persistent = true // kernel wireSlider holds root listeners with no unwire
       var thumbs = root.querySelectorAll("[data-slot=slider-thumb]");
       var values = Array.prototype.map.call(thumbs, function (t) { return Number(t.getAttribute("aria-valuenow") || 0); });
@@ -790,7 +856,18 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
     var roots = live.querySelectorAll("[data-slot=slider]");
     Array.prototype.forEach.call(roots, function (root) {
       var w = shadless.h.wire(root, live)
-      if (!w) return
+      if (!w) {
+        // the wiring is persistent — the kernel holds the root listeners and
+        // destroy keeps the record on purpose — but the form mirror did not
+        // survive destroy: re-file it against the still-live handle so
+        // form.reset() keeps restoring after a re-init
+        var api = shadless.instances.get(root)
+        if (api) shadless.h.formMirror(root, {
+          read: function () { return api.values() },
+          write: function (v) { v.forEach(function (x, i) { api.setValue(x, i) }) },
+        })
+        return
+      }
       w.persistent = true // kernel wireSlider holds root listeners with no unwire
       var thumbs = root.querySelectorAll("[data-slot=slider-thumb]");
       var values = Array.prototype.map.call(thumbs, function (t) { return Number(t.getAttribute("aria-valuenow") || 0); });
