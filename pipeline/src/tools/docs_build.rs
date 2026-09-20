@@ -17,7 +17,8 @@ use super::docs_transforms::{
     guides, locate_api_reference_span, locate_changelog_span, locate_code_tabs_spans,
     locate_composition_span, locate_install_section, locate_message_scroller_js_span,
     locate_rtl_framework_span, locate_rtl_migrate_span, locate_usage_span, message_scroller_js_note,
-    parse_frontmatter, protocol_mdx, read_demo_scripts, replace_span, resolve_docs_route,
+    parse_frontmatter, protocol_mdx, read_demo_scripts, re_data_slot_attr, re_data_slot_set,
+    replace_span, resolve_docs_route,
     rewrite_inline_jsx_mentions, rewrite_leaked_jsx_fences, rewrite_utility_jsx_fences,
     rtl_framework_note, scan_guide_previews, strip_imports, strip_imports_from_mixed_fences,
     trivial_mdx, Guide,
@@ -109,16 +110,6 @@ fn re_radix_legacy_path() -> &'static Regex {
 fn re_callout_start() -> &'static Regex {
     static R: OnceLock<Regex> = OnceLock::new();
     R.get_or_init(|| Regex::new(r"<Callout\b").unwrap())
-}
-fn re_data_slot_attr() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"data-slot="([a-z0-9-]+)""#).unwrap())
-}
-fn re_data_slot_set() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| {
-        Regex::new(r#"setAttribute\([ \t]*"data-slot"[ \t]*,[ \t]*"([a-z0-9-]+)""#).unwrap()
-    })
 }
 
 fn inline_code_shadow(text: &str) -> String {

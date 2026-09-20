@@ -730,12 +730,11 @@ fn ov_authored_units(root: &Path, pin: &OvPinFile, trivial: &[String]) -> Vec<Ov
                 }
             }
         }
-        let re_rtl = Regex::new(r"-rtl-(he|en|fa)\.html$").unwrap();
         let mut demos: Vec<String> = Vec::new();
         if let Ok(dents) = std::fs::read_dir(root.join("docs/demos")) {
             for e in dents.flatten() {
                 let n = e.file_name().to_string_lossy().into_owned();
-                if n.ends_with(".html") && !re_rtl.is_match(&n) {
+                if n.ends_with(".html") && crate::emit::build_rtl::rtl_page_lang(&n).is_none() {
                     demos.push(n);
                 }
             }

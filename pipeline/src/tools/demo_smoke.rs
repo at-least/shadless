@@ -10,10 +10,6 @@ fn re_slot_attr() -> &'static Regex {
     static R: OnceLock<Regex> = OnceLock::new();
     R.get_or_init(|| Regex::new(r#"data-slot="([0-9A-Za-z_-]+)""#).unwrap())
 }
-fn re_rtl_variant_page() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"-rtl-(en|he|fa)\.html$").unwrap())
-}
 
 #[derive(Deserialize, Default)]
 struct TierEntry {
@@ -63,7 +59,7 @@ pub fn run_demo_smoke(root: &Path) -> i32 {
     all_html.sort();
     let mut pages: Vec<String> = Vec::new();
     for f in &all_html {
-        if !re_rtl_variant_page().is_match(f) {
+        if crate::emit::build_rtl::rtl_page_lang(f).is_none() {
             pages.push(f.clone());
         }
     }

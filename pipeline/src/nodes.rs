@@ -624,14 +624,15 @@ const HULL_FILES: &[&str] = &[
     "src/verify.rs",
 ];
 
-/// The group dependency DAG: which groups a group's code references. Hand
-/// written and enforced by the raw-text grep test below — any `crate::<dir>`
-/// / `super::super::<dir>` reference found in a group's sources must be
-/// declared here (hull modules need no declaration; they are in every fp).
+/// Which groups a group's code references. Hand written and enforced by the
+/// raw-text grep test below — any `crate::<dir>` / `super::super::<dir>`
+/// reference found in a group's sources must be declared here (hull modules
+/// need no declaration; they are in every fp). The relation may be cyclic
+/// (convert→emit→convert); node_fp folds the closure as a set.
 /// `tools` is absent: its files are hashed and audited per-file (see
 /// TOOLS_FILE_DEPS).
 const GROUP_DEPS: &[(&str, &[&str])] = &[
-    ("convert", &["tsx"]),
+    ("convert", &["emit", "tsx"]),
     ("emit", &["convert", "twmerge", "tsx"]),
     ("oracle", &["convert", "emit"]),
     ("gates", &["convert", "emit", "tools"]),
@@ -660,7 +661,7 @@ const TOOLS_FILE_DEPS: &[(&str, &[&str])] = &[
     ("docs_smoke", &["emit", "oracle"]),
     ("docs_transforms", &["emit"]),
     ("docs_upstream_mirror", &[]),
-    ("interactivity_sweep", &["oracle"]),
+    ("interactivity_sweep", &["emit", "oracle"]),
     ("ir_diff", &["emit"]),
     ("mod", &[]),
     ("oracle_css", &["emit"]),
@@ -686,6 +687,7 @@ const TOOLS_FILE_INTRA: &[(&str, &[&str])] = &[
     ("overlay", &["docs_transforms"]),
     ("path_parity", &["parity_baseline"]),
     ("style_parity", &["parity_baseline"]),
+    ("upstream_snapshot", &["docs_transforms"]),
 ];
 
 /// Which implementation groups each node executes — the mirror of main.rs's

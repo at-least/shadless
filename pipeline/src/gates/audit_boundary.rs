@@ -58,7 +58,7 @@ fn prefix_suffix(
 }
 
 fn rtl_variant(p: &str) -> bool {
-    re_cache(r"-rtl-(en|he|fa)\.html$").is_match(p)
+    crate::emit::build_rtl::rtl_page_lang(p).is_some()
 }
 
 fn tool_source_patterns() -> &'static [BoundaryPattern] {

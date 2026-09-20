@@ -13,6 +13,7 @@ pub mod scan;
 pub mod topscan;
 
 use crate::jsonorder::{marshal_js_step, Json, JsonObj};
+use crate::emit::tags::{external_member_tag, native_tags, ternary_re};
 use crate::tsx;
 use cva::{CvReg, CvTable, CvTables};
 use scan::cv_prop_colon;
@@ -1081,7 +1082,7 @@ fn cv_cond_default_re(name: &str) -> Regex {
 }
 
 /// Go regexp.QuoteMeta
-fn regex_quote(s: &str) -> String {
+pub(crate) fn regex_quote(s: &str) -> String {
     let mut out = String::new();
     for c in s.chars() {
         if matches!(c, '\\' | '.' | '+' | '*' | '?' | '(' | ')' | '|' | '[' | ']' | '{' | '}' | '^' | '$') {
@@ -1354,29 +1355,6 @@ fn cv_same_file_wrap(f: &mut CvFile) {
 
 // ------------------------------------------------------------------ tagHints
 
-pub fn native_tags() -> &'static HashSet<&'static str> {
-    static S: OnceLock<HashSet<&'static str>> = OnceLock::new();
-    S.get_or_init(|| {
-        "div span p a button h1 h2 h3 h4 h5 h6
-ul ol li nav table thead tbody tfoot tr th td caption
-input select option optgroup textarea label form img svg path
-circle line rect polygon polyline ellipse g defs use
-section header footer main article aside small strong em kbd
-dl dt dd fieldset legend output datalist meter progress
-details summary picture time mark sub sup i b u s
-abbr address hgroup dialog search blockquote code pre
-template style script title head body html
-figure figcaption"
-            .split_whitespace()
-            .collect()
-    })
-}
-
-pub fn ternary_re() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^<ternary:([^/]+)/(.+)>$").unwrap())
-}
-
 fn is_icon_name(t: &str, icons: &[String]) -> bool {
     if icons.iter().any(|i| i == t) {
         return true;
@@ -1385,18 +1363,6 @@ fn is_icon_name(t: &str, icons: &[String]) -> bool {
         return true;
     }
     t.ends_with("Icon")
-}
-
-fn external_member_tag(tag: &str) -> String {
-    match tag {
-        "LabelPrimitive.Root" => return "label".to_string(),
-        _ => {}
-    }
-    let suffix = &tag[tag.rfind('.').map(|i| i + 1).unwrap_or(0)..];
-    match suffix {
-        "Button" | "Trigger" | "Link" => "button".to_string(),
-        _ => "div".to_string(),
-    }
 }
 
 /// Cross-file tag resolution (needs every IR); returns an error on

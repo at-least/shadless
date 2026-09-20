@@ -17,7 +17,7 @@ use serde_json::Value;
 use std::path::Path;
 use std::sync::OnceLock;
 
-use super::docs_transforms::fence_shadow;
+use super::docs_transforms::{fence_shadow, re_data_slot_attr, re_data_slot_set};
 
 fn re_cn() -> &'static Regex {
     static R: OnceLock<Regex> = OnceLock::new();
@@ -38,16 +38,6 @@ fn re_id_attr() -> &'static Regex {
 fn re_slot_table_row() -> &'static Regex {
     static R: OnceLock<Regex> = OnceLock::new();
     R.get_or_init(|| Regex::new(r#"^\| `data-slot="([a-z0-9-]+)"` \|$"#).unwrap())
-}
-fn re_data_slot_attr() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"data-slot="([a-z0-9-]+)""#).unwrap())
-}
-fn re_data_slot_set() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| {
-        Regex::new(r#"setAttribute\([ \t]*"data-slot"[ \t]*,[ \t]*"([a-z0-9-]+)""#).unwrap()
-    })
 }
 
 struct Problem {

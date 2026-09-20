@@ -8,10 +8,6 @@ use serde::Deserialize;
 use std::path::Path;
 use std::sync::OnceLock;
 
-fn re_sweep_rtl_page() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"-rtl-(en|he|fa)\.html$").unwrap())
-}
 fn re_sweep_cand() -> &'static Regex {
     static R: OnceLock<Regex> = OnceLock::new();
     R.get_or_init(|| {
@@ -93,7 +89,7 @@ pub fn run_interactivity_sweep(root: &Path) -> i32 {
     let mut candidates: Vec<String> = Vec::new();
     for e in ents.flatten() {
         let n = e.file_name().to_string_lossy().into_owned();
-        if !n.ends_with(".html") || re_sweep_rtl_page().is_match(&n) {
+        if !n.ends_with(".html") || crate::emit::build_rtl::rtl_page_lang(&n).is_some() {
             continue;
         }
         pages.push(n.clone());

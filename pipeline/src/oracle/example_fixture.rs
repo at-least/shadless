@@ -9,6 +9,7 @@
 
 use super::browser_shell::BrowserShell;
 use super::oracle_lib::build_oracle;
+use crate::convert::regex_quote;
 use regex::Regex;
 use serde_json::json;
 use serde::Deserialize;
@@ -166,17 +167,6 @@ pub fn ef_learn(html: &str, slot_to_stable: &[EfSlotStable], id_map: &mut HashMa
             id_map.insert(m[1].to_string(), trigger_stable.clone());
         }
     }
-}
-
-fn regex_quote(s: &str) -> String {
-    let mut out = String::new();
-    for c in s.chars() {
-        if matches!(c, '\\' | '.' | '+' | '*' | '?' | '(' | ')' | '|' | '[' | ']' | '{' | '}' | '^' | '$') {
-            out.push('\\');
-        }
-        out.push(c);
-    }
-    out
 }
 
 /// On the FIRST tag carrying the data-slot, insert id before ">" unless the

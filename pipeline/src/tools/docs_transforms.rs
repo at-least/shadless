@@ -20,6 +20,20 @@ fn re_leading_backticks() -> &'static Regex {
     static R: OnceLock<Regex> = OnceLock::new();
     R.get_or_init(|| Regex::new("^`+").unwrap())
 }
+
+/// The data-slot name grammar the docs builder writes and the docs gate
+/// re-checks — one pair so the two sides cannot disagree on what a slot
+/// name is.
+pub fn re_data_slot_attr() -> &'static Regex {
+    static R: OnceLock<Regex> = OnceLock::new();
+    R.get_or_init(|| Regex::new(r#"data-slot="([a-z0-9-]+)""#).unwrap())
+}
+pub fn re_data_slot_set() -> &'static Regex {
+    static R: OnceLock<Regex> = OnceLock::new();
+    R.get_or_init(|| {
+        Regex::new(r#"setAttribute\([ \t]*"data-slot"[ \t]*,[ \t]*"([a-z0-9-]+)""#).unwrap()
+    })
+}
 fn re_h2_installation() -> &'static Regex {
     static R: OnceLock<Regex> = OnceLock::new();
     R.get_or_init(|| Regex::new(r"(?m)^## Installation$").unwrap())
@@ -1412,11 +1426,18 @@ pub fn without_code_tabs(raw: &str) -> String {
     out
 }
 
-pub fn without_install_section(raw: &str) -> String {
-    let Some(s) = locate_install_section(&fence_shadow(raw)) else {
+/// The locate-on-shadow protocol the without_* section drops share: search
+/// the shadowed copy, splice the replacement into the raw text, raw
+/// unchanged when nothing matches.
+fn without_located(raw: &str, locate: &dyn Fn(&str) -> Option<Span>, replacement: &str) -> String {
+    let Some(s) = locate(&fence_shadow(raw)) else {
         return raw.to_string();
     };
-    replace_span(raw, s, "## Installation\n\n")
+    replace_span(raw, s, replacement)
+}
+
+pub fn without_install_section(raw: &str) -> String {
+    without_located(raw, &locate_install_section, "## Installation\n\n")
 }
 
 pub fn without_rtl_migrate(raw: &str) -> String {
@@ -1433,31 +1454,19 @@ pub fn without_rtl_migrate(raw: &str) -> String {
 }
 
 pub fn without_usage_section(raw: &str) -> String {
-    let Some(s) = locate_usage_span(&fence_shadow(raw)) else {
-        return raw.to_string();
-    };
-    replace_span(raw, s, "")
+    without_located(raw, &locate_usage_span, "")
 }
 
 pub fn without_composition_section(raw: &str) -> String {
-    let Some(s) = locate_composition_span(&fence_shadow(raw)) else {
-        return raw.to_string();
-    };
-    replace_span(raw, s, "## Composition\n")
+    without_located(raw, &locate_composition_span, "## Composition\n")
 }
 
 pub fn without_api_reference_section(comp: &str, raw: &str) -> String {
-    let Some(s) = locate_api_reference_span(comp, &fence_shadow(raw)) else {
-        return raw.to_string();
-    };
-    replace_span(raw, s, "## API Reference\n\n")
+    without_located(raw, &|s| locate_api_reference_span(comp, s), "## API Reference\n\n")
 }
 
 pub fn without_changelog_section(raw: &str) -> String {
-    let Some(s) = locate_changelog_span(&fence_shadow(raw)) else {
-        return raw.to_string();
-    };
-    replace_span(raw, s, "")
+    without_located(raw, &locate_changelog_span, "")
 }
 
 /// mdPageFacts reads the facts the CONTENT transform is responsible for out of

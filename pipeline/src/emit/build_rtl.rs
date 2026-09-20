@@ -119,6 +119,19 @@ pub fn substitute_and_patch(
     out
 }
 
+/// The RTL demo filename convention this module writes: `-rtl-<lang>.html`
+/// with lang in {"he", "en"} for every demo plus "fa" for alert. Gates and
+/// sweeps classify pages through here so the set lives in one place.
+pub fn rtl_page_lang(name: &str) -> Option<&'static str> {
+    static R: OnceLock<Regex> = OnceLock::new();
+    let re = R.get_or_init(|| Regex::new(r"-rtl-(en|he|fa)\.html$").unwrap());
+    re.captures(name).map(|c| match c.get(1).map(|m| m.as_str()) {
+        Some("he") => "he",
+        Some("fa") => "fa",
+        _ => "en",
+    })
+}
+
 /// The engine's own Persian dictionary (the Go source this used to live in
 /// is gone); overlay's rtl:persian-dictionary audit enumerates these keys.
 pub fn persian() -> HashMap<String, String> {

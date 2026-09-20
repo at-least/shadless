@@ -13,6 +13,8 @@ use std::path::Path;
 use std::sync::OnceLock;
 use std::time::Duration;
 
+use super::docs_transforms::fence_shadow;
+
 fn re_radix_csr1() -> &'static Regex {
     static R: OnceLock<Regex> = OnceLock::new();
     R.get_or_init(|| Regex::new(r"radix-:r[a-z0-9]*:?").unwrap())
@@ -40,14 +42,6 @@ fn re_name_attr() -> &'static Regex {
     static R: OnceLock<Regex> = OnceLock::new();
     R.get_or_init(|| Regex::new(r#"name="([^"]*)""#).unwrap())
 }
-fn re_fence_open() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new("^`{3,}").unwrap())
-}
-fn re_leading_backticks() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new("^`+").unwrap())
-}
 
 pub fn norm_snapshot(html: &str) -> String {
     let out = re_radix_csr1().replace_all(html, "radix-<auto>");
@@ -55,34 +49,6 @@ pub fn norm_snapshot(html: &str) -> String {
     // SSR react-useId ids share the CSR bucket — runtime-generated, not
     // part of the contract
     re_radix_ssr().replace_all(&out, "radix-<auto>").into_owned()
-}
-
-/// fenceShadow blanks fenced regions (newlines and offsets preserved) so span
-/// searches see only prose/markup. Line-based: 3+ backtick fences, info
-/// strings, unclosed fences blank to EOF (pipeline/docs_transforms.go:26-50).
-pub fn fence_shadow(text: &str) -> String {
-    let mut lines: Vec<String> = text.split('\n').map(|s| s.to_string()).collect();
-    let mut open: isize = -1;
-    for line in lines.iter_mut() {
-        if open < 0 {
-            if re_fence_open().is_match(line) {
-                open = re_leading_backticks().find(line).map(|m| m.end()).unwrap_or(0) as isize;
-                *line = blank_line(line);
-            }
-        } else {
-            if let Some(m) = re_leading_backticks().find(line) {
-                if m.end() as isize >= open {
-                    open = -1;
-                }
-            }
-            *line = blank_line(line);
-        }
-    }
-    lines.join("\n")
-}
-
-fn blank_line(s: &str) -> String {
-    " ".repeat(s.chars().count())
 }
 
 /// snapshotPreviewNames: preview names in mdx document order (fences shadowed
