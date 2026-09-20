@@ -1215,32 +1215,6 @@ pub fn meta_wiring(g: &crate::graph::Graph, muts: &[&'static Mutation]) -> Vec<S
     problems
 }
 
-/// Lists build nodes with no gate anywhere downstream: artifacts that ship
-/// without anything asserting they are correct. Reported, not fatal.
-pub fn ungated_builds(g: &crate::graph::Graph) -> Vec<String> {
-    let mut gated: HashSet<String> = HashSet::new();
-    for id in g.ids() {
-        let Some(n) = g.node(id) else { continue };
-        if n.kind != "gate" {
-            continue;
-        }
-        if let Ok(closure) = g.plan(&[id.clone()]) {
-            for d in closure {
-                gated.insert(d.id.clone());
-            }
-        }
-    }
-    let mut out: Vec<String> = Vec::new();
-    for id in g.ids() {
-        if let Some(n) = g.node(id) {
-            if n.kind == "build" && !gated.contains(id) {
-                out.push(id.clone());
-            }
-        }
-    }
-    out
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1532,15 +1506,6 @@ mod tests {
     /// Go TestUnitSelectMutations.
     #[test]
     fn unit_select_mutations() {
-        let root = match std::env::var("SHADLESS_ROOT") {
-            Ok(r) => PathBuf::from(r),
-            Err(_) => {
-                let m = crate::crate_adjacent_tree_root()
-                    .unwrap_or(Path::new(env!("CARGO_MANIFEST_DIR")).join(".."));
-                m
-            }
-        };
-        let _ = &root; // tier selection reads the authored graph, not the tree
         let g = match crate::graph::Graph::new(crate::nodes::all()) {
             Ok(g) => g,
             Err(e) => panic!("authored graph: {}", e),
@@ -1614,14 +1579,6 @@ mod tests {
     /// nothing.
     #[test]
     fn unit_meta_wiring() {
-        let root = match std::env::var("SHADLESS_ROOT") {
-            Ok(r) => PathBuf::from(r),
-            Err(_) => {
-                let m = crate::crate_adjacent_tree_root()
-                    .unwrap_or(Path::new(env!("CARGO_MANIFEST_DIR")).join(".."));
-                m
-            }
-        };
         let g = match crate::graph::Graph::new(crate::nodes::all()) {
             Ok(g) => g,
             Err(e) => panic!("authored graph: {}", e),

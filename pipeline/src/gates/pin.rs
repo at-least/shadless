@@ -5,7 +5,7 @@
 
 use regex::Regex;
 use serde::Deserialize;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::sync::OnceLock;
 
 pub const SHADCN_DIR: &str = ".upstream/shadcn-ui";
@@ -369,15 +369,6 @@ fn today() -> String {
         }
     }
     String::new()
-}
-
-pub fn abs_pin(root: &Path, p: &str) -> PathBuf {
-    let q = Path::new(p);
-    if q.is_absolute() {
-        q.to_path_buf()
-    } else {
-        root.join(q)
-    }
 }
 
 #[cfg(test)]

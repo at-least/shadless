@@ -408,13 +408,3 @@ pub fn rel_path(from_dir: &Path, to: &Path) -> Result<String, String> {
     }
     Ok(parts.join("/"))
 }
-
-/// absOrDie: absolute path against root, passthrough when already absolute.
-pub fn abs_or_die_path(root: &Path, p: &str) -> PathBuf {
-    let q = Path::new(p);
-    if q.is_absolute() {
-        q.to_path_buf()
-    } else {
-        root.join(q)
-    }
-}

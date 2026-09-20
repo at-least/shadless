@@ -1065,7 +1065,7 @@ mod tests {
 }
 "#,
         )]);
-        let mut l = read_ledger(&root).unwrap();
+        let l = read_ledger(&root).unwrap();
         l.write(&root).unwrap();
         let got = std::fs::read_to_string(root.join("gates/ledger.json")).unwrap();
         assert!(got.contains("café — em dash"), "non-ASCII escaped: {:?}", got);

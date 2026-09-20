@@ -522,12 +522,6 @@ fn spans_snapshot_conformance() {
     );
 }
 
-/// byte-index helper kept trivial on purpose
-#[cfg(test)]
-fn char_indices(s: &str) -> impl Iterator<Item = (usize, char)> + '_ {
-    s.char_indices().map(|(i, c)| (i, c))
-}
-
 #[test]
 fn hand_checked_scanner_cases() {
     // escapes keep the literal recording; content includes the escape raw

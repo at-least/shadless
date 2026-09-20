@@ -216,52 +216,6 @@ fn part_files(root: &Path) -> Result<Vec<String>, String> {
     Ok(out)
 }
 
-fn gate_product_verify(root: &Path) -> Result<(), String> {
-    let read = |p: &str| -> Result<String, String> {
-        std::fs::read_to_string(root.join(p)).map_err(|e| e.to_string())
-    };
-    let fail = |msg: String| -> String { format!("FAIL  product-css --verify: {}", msg) };
-    let full = read("dist/shadless.full.css").map_err(|e| fail(e))?;
-    let out = read("dist/out.css").map_err(|e| fail(e))?;
-    let names = part_files(root).map_err(|e| fail(e))?;
-    let mut parts: Vec<String> = Vec::new();
-    for n in &names {
-        parts.push(read(&format!("dist/css/{}", n)).map_err(|e| fail(e))?);
-    }
-    let parts_css = parts.join("\n");
-    let product_source = read("dist/shadless.product.css").map_err(|e| fail(e))?;
-
-    if parts.is_empty() {
-        // the build half guards the same way: a wiped dist/css would
-        // otherwise pass with "0 slot rules in both chains"
-        return Err(fail("dist/css has no per-component files — run the demo chain first".to_string()));
-    }
-    let r = verify_product(&full, &out, &parts_css, &product_source);
-    let mut problems: Vec<String> = Vec::new();
-    let mut add = |label: &str, xs: &[String]| {
-        if !xs.is_empty() {
-            problems.push(format!("{}{}", label, xs.join(", ")));
-        }
-    };
-    add("slot rules missing from product build: ", &r.missing);
-    add("slot rules missing from DEMO build (both chains disagree): ", &r.demo_dropped);
-    add("docs chrome leaked into product build: ", &r.chrome);
-    add("tokens missing from product build: ", &r.tokens);
-    add("standalone classes with no origin in product source (content-scan leak?): ", &r.stray);
-    if !problems.is_empty() {
-        return Err(fail(format!(
-            "FAIL  product-css --verify\n  {}",
-            problems.join("\n  ")
-        )));
-    }
-    let (slots, _) = slot_set(&parts_css);
-    println!(
-        "PASS  product-css --verify ({} slot rules in both chains, no docs chrome, no stray classes)",
-        slots.len()
-    );
-    Ok(())
-}
-
 /// tw.go findRepoRoot: SHADLESS_ROOT env, else walk up to the product tree
 /// (package.json + pipeline/ directory).
 pub fn find_repo_root(dir: &Path) -> Result<PathBuf, String> {
@@ -396,12 +350,6 @@ pub fn run_product_css() -> i32 {
         parts.len()
     );
     0
-}
-
-/// The --verify gate (product-verify node's Go test half lives in
-/// gate_product_verify; exposed for M6 test wiring).
-pub fn run_product_verify(root: &Path) -> Result<(), String> {
-    gate_product_verify(root)
 }
 
 #[cfg(test)]

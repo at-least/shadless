@@ -1398,7 +1398,7 @@ mod self_host_tests {
             .filter(|n| n.run.iter().any(|cmd| cmd.first().map_or(false, |a| a.starts_with("__self__@"))))
             .map(|n| n.id)
             .collect();
-        let mut listed: Vec<String> = NODE_ENTRIES
+        let listed: Vec<String> = NODE_ENTRIES
             .iter()
             .map(|(id, _)| id.to_string())
             .collect();

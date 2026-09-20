@@ -2494,10 +2494,6 @@ pub fn attr_or_absent(attrs: &str, name: &str) -> OptStr {
     }
 }
 
-pub fn line_count(s: &str) -> usize {
-    s.matches('\n').count() + 1
-}
-
 // ---------------------------------------------------------------- grey list
 
 /// FT5: canonical grey list — the radix meta.json entries with NO shadless

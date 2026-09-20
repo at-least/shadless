@@ -1,7 +1,6 @@
 //! Port of pipeline/emitter_css.go — the Go port of src/emitter/css.mjs.
 //! Faithful per branch; rule ORDER is observable in dist output.
 
-use super::default_content;
 use super::tags::{kebab, normalize_tag};
 use crate::twmerge;
 use regex::Regex;
@@ -983,12 +982,6 @@ fn shadows_of(tok: &str) -> Vec<String> {
         format!(":not([class^=\"{}\"])", prefix),
         format!(":not([class*=\" {}\"])", prefix),
     ]
-}
-
-// suppress unused for default_content re-export parity
-#[allow(unused)]
-fn _dc() {
-    let _ = default_content::default_content;
 }
 
 #[cfg(test)]
