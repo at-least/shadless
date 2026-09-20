@@ -84,12 +84,7 @@ fn add_target(
                     None => ("", trimmed),
                 };
                 let mut files: Vec<String> = Vec::new();
-                if let Ok(ents) = std::fs::read_dir(root.join(dir)) {
-                    let mut names: Vec<String> = ents
-                        .filter_map(|e| e.ok())
-                        .map(|e| e.file_name().to_string_lossy().into_owned())
-                        .collect();
-                    names.sort();
+                if let Ok(names) = crate::fsutil::sorted_read_dir(&root.join(dir)) {
                     for name in names {
                         if name.starts_with(stem) && name.ends_with(post) {
                             files.push(format!("{}/{}", dir, name));
@@ -192,21 +187,15 @@ pub fn gate_pack(root: &Path) -> Result<(), String> {
     // base module cannot be shared with them. Read off the artifacts — a base
     // is any dist/esm/*.mjs that does not import the base.
     let mut bases: Vec<String> = Vec::new();
-    if let Ok(ents) = std::fs::read_dir(root.join("dist/esm")) {
-        let mut names: Vec<String> = ents
-            .filter_map(|e| e.ok())
-            .filter(|e| e.file_type().map(|t| !t.is_dir()).unwrap_or(false))
-            .map(|e| e.file_name().to_string_lossy().into_owned())
-            .filter(|n| n.ends_with(".mjs"))
-            .collect();
-        names.sort();
-        for n in names {
-            let Ok(src) = std::fs::read_to_string(root.join("dist/esm").join(&n)) else {
-                continue;
-            };
-            if !src.contains("import \"./shadless.mjs\"") {
-                bases.push(format!("dist/esm/{}", n));
-            }
+    for n in crate::fsutil::sorted_read_dir(&root.join("dist/esm")).unwrap_or_default() {
+        if !n.ends_with(".mjs") {
+            continue;
+        }
+        let Ok(src) = std::fs::read_to_string(root.join("dist/esm").join(&n)) else {
+            continue;
+        };
+        if !src.contains("import \"./shadless.mjs\"") {
+            bases.push(format!("dist/esm/{}", n));
         }
     }
     if bases.len() > 1 {

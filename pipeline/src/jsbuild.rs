@@ -108,15 +108,10 @@ pub fn build_js(root: &Path) -> Result<Vec<String>, String> {
     write("esm/shadless.d.ts", &dts)?;
 
     let comps = root.join("src/runtime/components");
-    let mut files: Vec<String> = Vec::new();
-    for e in std::fs::read_dir(&comps).map_err(|e| e.to_string())? {
-        let e = e.map_err(|e| e.to_string())?;
-        let name = e.file_name().to_string_lossy().into_owned();
-        if name.ends_with(".js") {
-            files.push(name);
-        }
-    }
-    files.sort();
+    let files: Vec<String> = crate::fsutil::sorted_read_dir(&comps)?
+        .into_iter()
+        .filter(|n| n.ends_with(".js"))
+        .collect();
 
     let mut names: Vec<String> = Vec::new();
     for f in &files {

@@ -433,12 +433,8 @@ pub fn run_emit() -> Result<(), String> {
     // statics in sorted-filename order (os.ReadDir sorts)
     let mut statics: Vec<CssIrComponent> = Vec::new();
     let ir_dir = root.join("generated/ir");
-    let mut names: Vec<String> = Vec::new();
-    for e in std::fs::read_dir(&ir_dir).map_err(|e| format!("emit: {}", e))? {
-        let e = e.map_err(|e| e.to_string())?;
-        names.push(e.file_name().to_string_lossy().into_owned());
-    }
-    names.sort();
+    let names: Vec<String> = crate::fsutil::sorted_read_dir(&ir_dir)
+        .map_err(|e| format!("emit: {}", e))?;
     for n in &names {
         if !n.ends_with(".json") {
             continue;

@@ -30,17 +30,11 @@ fn slot_selector_re() -> &'static Regex {
 pub fn gate_dist_complete(root: &Path) -> Result<usize, String> {
     let out = std::fs::read_to_string(root.join("dist/out.css"))
         .map_err(|_| "FAIL  dist-complete: dist/out.css missing".to_string())?;
-    let mut names: Vec<String> = Vec::new();
-    for e in std::fs::read_dir(root.join("dist/css"))
+    let names: Vec<String> = crate::fsutil::sorted_read_dir(&root.join("dist/css"))
         .map_err(|e| format!("FAIL  dist-complete: dist/css unreadable: {}", e))?
-    {
-        let e = e.map_err(|e| e.to_string())?;
-        let name = e.file_name().to_string_lossy().into_owned();
-        if name.ends_with(".css") {
-            names.push(name);
-        }
-    }
-    names.sort();
+        .into_iter()
+        .filter(|n| n.ends_with(".css"))
+        .collect();
 
     let mut missing: Vec<String> = Vec::new();
     let (mut selectors, mut files) = (0usize, 0usize);
@@ -190,15 +184,10 @@ pub fn gate_product_verify(root: &Path) -> Result<(), String> {
     };
     let full = read("dist/shadless.full.css")?;
     let out = read("dist/out.css")?;
-    let mut names: Vec<String> = Vec::new();
-    for e in std::fs::read_dir(root.join("dist/css")).map_err(|e| e.to_string())? {
-        let e = e.map_err(|e| e.to_string())?;
-        let name = e.file_name().to_string_lossy().into_owned();
-        if name.ends_with(".css") && name != "shadless.css" {
-            names.push(name);
-        }
-    }
-    names.sort();
+    let names: Vec<String> = crate::fsutil::sorted_read_dir(&root.join("dist/css"))?
+        .into_iter()
+        .filter(|n| n.ends_with(".css") && n != "shadless.css")
+        .collect();
     let mut parts: Vec<String> = Vec::new();
     for n in &names {
         parts.push(read(&format!("dist/css/{}", n))?);

@@ -229,7 +229,8 @@ pub fn run_upstream(root: &Path, args: &[String]) -> i32 {
     // ----------------------------------------------------------- 6. overlay
     upstream_step("overlay audit + task packets");
     inherit(root, &pipeline_exe(), &["overlay", "--tasks"]);
-    let tasks = list_dir(&root.join(GATES_OUT).join("tasks"));
+    let tasks =
+        crate::fsutil::sorted_read_dir(&root.join(GATES_OUT).join("tasks")).unwrap_or_default();
     let conflicts = read_conflicts(root);
     rep.h("Manual work");
     if tasks.is_empty() {
@@ -541,22 +542,11 @@ fn read_conflicts(root: &Path) -> Vec<PatchConflict> {
 }
 
 fn patch_series(root: &Path) -> Vec<String> {
-    list_dir(&root.join("overlays/upstream"))
+    crate::fsutil::sorted_read_dir(&root.join("overlays/upstream"))
+        .unwrap_or_default()
         .into_iter()
         .filter(|n| n.ends_with(".patch"))
         .collect()
-}
-
-fn list_dir(dir: &Path) -> Vec<String> {
-    let Ok(entries) = std::fs::read_dir(dir) else {
-        return Vec::new();
-    };
-    let mut out: Vec<String> = entries
-        .flatten()
-        .map(|e| e.file_name().to_string_lossy().into_owned())
-        .collect();
-    out.sort();
-    out
 }
 
 fn non_empty_lines(s: &str) -> Vec<&str> {

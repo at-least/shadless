@@ -1275,13 +1275,11 @@ mod self_host_tests {
     #[test]
     fn every_root_file_is_in_the_hull() {
         let src = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src");
-        let mut rs_roots: Vec<String> = std::fs::read_dir(&src)
-            .unwrap()
-            .filter_map(|e| e.ok())
-            .map(|e| e.file_name().to_string_lossy().to_string())
+        let rs_roots: Vec<String> = crate::fsutil::sorted_read_dir(&src)
+            .expect("src readable")
+            .into_iter()
             .filter(|n| n.ends_with(".rs") && n != "jsbuild.rs")
             .collect();
-        rs_roots.sort();
         for f in &rs_roots {
             let rel = format!("src/{f}");
             assert!(

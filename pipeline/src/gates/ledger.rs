@@ -330,14 +330,11 @@ pub fn collect_source_ids(root: &Path) -> Result<Vec<SourceId>, String> {
         }
     };
 
-    let ents = std::fs::read_dir(root.join(CONTRACTS_DIR))
-        .map_err(|e| format!("{}: {}", CONTRACTS_DIR, e))?;
-    let mut names: Vec<String> = ents
-        .flatten()
-        .map(|e| e.file_name().to_string_lossy().into_owned())
+    let names: Vec<String> = crate::fsutil::sorted_read_dir(&root.join(CONTRACTS_DIR))
+        .map_err(|e| format!("{}: {}", CONTRACTS_DIR, e))?
+        .into_iter()
         .filter(|n| n.ends_with(".mjs"))
         .collect();
-    names.sort();
     for f in &names {
         let name = f.strip_suffix(".mjs").unwrap_or(f);
         let src = std::fs::read_to_string(root.join(CONTRACTS_DIR).join(f))
