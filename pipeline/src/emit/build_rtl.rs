@@ -128,26 +128,6 @@ pub fn rtl_page_lang(name: &str) -> Option<&'static str> {
         })
 }
 
-/// The engine's own Persian dictionary (the Go source this used to live in
-/// is gone); overlay's rtl:persian-dictionary audit enumerates these keys.
-pub fn persian() -> HashMap<String, String> {
-    [
-        ("paymentTitle", "پرداخت موفق"),
-        (
-            "paymentDescription",
-            "پرداخت حضرت به مبلغ ۲۹.۹۹ دلار با موفقیت انجام شد. رسید نیز به نشانی پست الکترونیکی شما ارسال گردید.",
-        ),
-        ("featureTitle", "ویژگی جدید موجود است"),
-        (
-            "featureDescription",
-            "ما پشتیبانی از حالت تیره را به سیستم افزوده‌ایم. می‌توانید این قابلیت را از بخش تنظیمات حساب کاربری خود فعال نمایید.",
-        ),
-    ]
-    .into_iter()
-    .map(|(k, v)| (k.to_string(), v.to_string()))
-    .collect()
-}
-
 pub fn run_build_rtl() -> i32 {
     let root = match std::env::current_dir() {
         Ok(r) => r,
@@ -267,7 +247,11 @@ pub fn run_build_rtl() -> i32 {
             }
         }
         if name == "alert-rtl" {
-            emit_lang("fa", &persian(), "rtl");
+            // fa is engine-authored (upstream ships none) — it rides in the
+            // registry like every other language, preserved by rtl_dict.
+            if let Some(entry) = ar.get("fa") {
+                emit_lang("fa", &entry.values, "rtl");
+            }
         }
         manifest.insert(name.clone(), langs);
     }

@@ -146,6 +146,43 @@ fn run_rtl_dict_at(root: &Path) -> i32 {
         dicts.insert(name, langs.expect("checked above"));
     }
 
+    // Hand-authored languages ride along: the extractor only knows the langs
+    // upstream ships (en/ar/he); engine-owned dictionaries (fa) live in the
+    // committed file and are preserved verbatim through regeneration. The
+    // parity test on the real tree proves the round-trip byte-stable.
+    if let Ok(committed) = std::fs::read_to_string(root.join(RTL_DICT_OUT)) {
+        if let Ok(prev) = serde_json::from_str::<
+            HashMap<String, serde_json::Map<String, serde_json::Value>>,
+        >(&committed) {
+            for (name, langs) in dicts.iter_mut() {
+                let Some(comp) = prev.get(name) else { continue };
+                for (lang, entry) in comp.iter() {
+                    if langs.names.iter().any(|l| l == lang) {
+                        continue;
+                    }
+                    let (Some(dir), Some(values)) = (
+                        entry.get("dir").and_then(|d| d.as_str()),
+                        entry.get("values").and_then(|v| v.as_object()),
+                    ) else {
+                        continue;
+                    };
+                    let mut rv = RtlValues {
+                        keys: Vec::new(),
+                        vals: HashMap::new(),
+                    };
+                    for (k, v) in values {
+                        let Some(vs) = v.as_str() else { continue };
+                        rv.keys.push(k.clone());
+                        rv.vals.insert(k.clone(), vs.to_string());
+                    }
+                    langs.names.push(lang.clone());
+                    langs.dir.insert(lang.clone(), dir.to_string());
+                    langs.values.insert(lang.clone(), rv);
+                }
+            }
+        }
+    }
+
     if !failures.is_empty() {
         for f in &failures {
             let i = f.find(": ").expect("failures are name: message");
