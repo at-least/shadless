@@ -85,8 +85,10 @@ const TRIVIAL_T7: &[&str] = &[
     "toggle-group",
 ];
 
-/// out.css's content scan is EXPLICIT (source(none)); this list == the
-/// `demo-css` inputs in pipeline/nodes.go — keep them in step.
+/// out.css's content scan is EXPLICIT (source(none)); this list mirrors the
+/// dist-facing inputs of the `demo-css` node in the authored nodes table
+/// (nodes.rs; the Go-verbatim table spells them `dist/**`) — keep them in
+/// step, the reproducible gate is what catches drift.
 const DEMO_SOURCES: &[&str] = &[
     "./components",
     "./js",
