@@ -17,7 +17,7 @@
 //! note, rather than silently reporting another node's writes.
 
 use crate::graph::Graph;
-use crate::key::{outputs_present, stamp_value, Keyer};
+use crate::key::{outputs_digest, outputs_present, stamp_value, Keyer};
 use crate::nodes::Node;
 use crate::stamps::{remove_stamp, stamp_file, write_stamp};
 use crate::verify::{
@@ -444,9 +444,19 @@ impl Runner {
             }
         };
         // the recorded stamp carries the output digest too: a node whose own
-        // output was edited under it is stale, however the edit got there
+        // output was edited under it is stale, however the edit got there.
+        // The key half decides first — hashing every produced file for a
+        // verdict the keys already settled (or --force discards) is wasted
+        // work on the dispatch path.
         let mut fresh = match &key {
-            Some(k) => self.recorded(id) == stamp_value(&self.root, &n, k) && !self.force,
+            Some(k) => match self.recorded(id).split_once(':') {
+                Some((recorded_key, recorded_digest)) => {
+                    !self.force
+                        && recorded_key == *k
+                        && recorded_digest == outputs_digest(&self.root, &n)
+                }
+                None => false,
+            },
             None => false,
         };
         if fresh {

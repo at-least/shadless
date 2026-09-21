@@ -23,7 +23,7 @@ use std::collections::{HashMap, HashSet};
 use std::io::Write as _;
 use std::path::Path;
 use serde_json::Value;
-use std::sync::OnceLock;
+use std::sync::{Mutex, OnceLock};
 
 const CV_UI: &str = "build/resolved-ui/ui";
 const CV_OUT: &str = "generated/ir";
@@ -1072,13 +1072,22 @@ fn cv_cond_test_re() -> &'static Regex {
 }
 
 fn cv_cond_default_re(name: &str) -> Regex {
+    // the distinct names are few and recur across all 61 files; compiling per
+    // ternary dominated the match itself
+    static CACHE: OnceLock<Mutex<HashMap<String, Regex>>> = OnceLock::new();
+    let cache = CACHE.get_or_init(|| Mutex::new(HashMap::new()));
+    if let Some(re) = cache.lock().unwrap().get(name) {
+        return re.clone();
+    }
     let quoted = regex_quote(name);
     // \b → ASCII word boundary emulation via (?-u:\b)
-    Regex::new(&format!(
+    let re = Regex::new(&format!(
         "(?-u:\\b){}\\s*=\\s*\"([^\"]+)\"",
         quoted
     ))
-    .expect("cond default re")
+    .expect("cond default re");
+    cache.lock().unwrap().insert(name.to_string(), re.clone());
+    re
 }
 
 /// Go regexp.QuoteMeta

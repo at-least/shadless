@@ -490,16 +490,25 @@ fn classify_failures(
     ids.sort();
     let mut expected: Vec<String> = Vec::new();
     let mut unexpected: Vec<String> = Vec::new();
+    if ids.is_empty() {
+        return (expected, unexpected);
+    }
+    // one compiled pattern per registry name — the name set is identical for
+    // every failed node, so compiling inside the loop re-compiles ~70
+    // regexes per red gate
+    let name_patterns: Vec<(&String, Regex)> = registry_names
+        .iter()
+        .map(|n| (n, Regex::new(&format!(r"\b{}\b", regex::escape(n))).unwrap()))
+        .collect();
     for id in ids {
         let f = &run.failed[id];
         let mut mentioned: Vec<String> = Vec::new();
         let mut hits: Vec<String> = Vec::new();
-        for n in registry_names {
-            let re = Regex::new(&format!(r"\b{}\b", regex::escape(n))).unwrap();
+        for (n, re) in &name_patterns {
             if re.is_match(&f.tail) {
-                mentioned.push(n.clone());
-                if changed.contains(n) {
-                    hits.push(n.clone());
+                mentioned.push((*n).clone());
+                if changed.contains(*n) {
+                    hits.push((*n).clone());
                 }
             }
         }
