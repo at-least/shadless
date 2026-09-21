@@ -55,7 +55,11 @@ fn oracle_invariant_once() -> &'static Result<Vec<u8>, String> {
             .find_map(|p| p.strip_prefix("oracle="))
             .ok_or("ENGINE_FPS: no oracle entry")?;
         h.update(oracle_fp.as_bytes());
-        for f in ["package-lock.json", "src/emitter/skin.mjs"] {
+        for f in [
+            "package-lock.json",
+            "src/emitter/skin.mjs",
+            "src/registry/emitter-exemptions.json",
+        ] {
             let b = std::fs::read(f).map_err(|e| e.to_string())?;
             h.update(&b);
         }

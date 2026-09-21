@@ -132,6 +132,7 @@ src/kernel/sheet.html
 src/kernel/slider.html
 src/kernel/tabs.html
 src/kernel/tooltip.html
+src/registry/emitter-exemptions.json
 src/registry/pin.json
 src/registry/rtl-translations.json
 src/registry/tiers.json

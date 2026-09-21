@@ -1,0 +1,9 @@
+{
+  "deadUtilities": ["origin-top-center"],
+  "skinAllowlist": [
+    "cn-menu-target",
+    "cn-menu-translucent",
+    "cn-rtl-flip",
+    "cn-font-heading"
+  ]
+}

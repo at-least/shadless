@@ -21,7 +21,6 @@ use std::collections::HashMap;
 use std::path::Path;
 
 use super::docs_transforms::{fence_shadow, text_adjustments};
-use crate::gates::ledger::js_set_literal;
 
 const OV_UP: &str = ".upstream/shadcn-ui";
 const OV_REG: &str = "apps/v4/registry/bases/radix/ui";
@@ -169,9 +168,15 @@ fn ov_load_tier_sets() -> (Vec<(String, Vec<String>)>, Vec<String>) {
 }
 
 fn ov_skin_allowlist(root: &Path) -> Result<Vec<String>, String> {
-    let src = std::fs::read_to_string(root.join("src/emitter/skin.mjs"))
-        .map_err(|e| e.to_string())?;
-    js_set_literal(&src, "SKIN_ALLOWLIST")
+    let p = "src/registry/emitter-exemptions.json";
+    let b = std::fs::read_to_string(root.join(p)).map_err(|e| e.to_string())?;
+    #[derive(serde::Deserialize)]
+    struct Ex {
+        #[serde(rename = "skinAllowlist")]
+        skin_allowlist: Vec<String>,
+    }
+    let ex: Ex = serde_json::from_str(&b).map_err(|e| e.to_string())?;
+    Ok(ex.skin_allowlist)
 }
 
 // ---- rule units ----

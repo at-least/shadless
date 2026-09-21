@@ -26,12 +26,9 @@ export const SKIN_MAP = {}
 // against the live site: only .cn-font-heading has a CSS rule there;
 // the rest are inert markers resolved when the CLI installs into a
 // user project.
-export const SKIN_ALLOWLIST = new Set([
-  "cn-menu-target",
-  "cn-menu-translucent",
-  "cn-rtl-flip",
-  "cn-font-heading",
-])
+import exemptions from "../registry/emitter-exemptions.json" with { type: "json" }
+
+export const SKIN_ALLOWLIST = new Set(exemptions.skinAllowlist)
 
 /** @param {string} css @returns {void} */
 export function parseSkinMap(css) {

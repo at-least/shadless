@@ -104,7 +104,9 @@ export const MARKER = /^(group|peer)(\/[\w-]+)?$/
 // unknown class silently produces no rule; our slot rules go through
 // @apply, where the same class hard-fails. Keep them in markup as inert —
 // byte-compatible with upstream's effective output (dead class, no rule).
-export const DEAD_UTILITIES = new Set(["origin-top-center"])
+import exemptions from "../registry/emitter-exemptions.json" with { type: "json" }
+
+export const DEAD_UTILITIES = new Set(exemptions.deadUtilities)
 
 // splitMarkers: partition a class string into @apply-able utilities vs
 // markup-only tokens. Markup-only = group/peer markers PLUS the upstream

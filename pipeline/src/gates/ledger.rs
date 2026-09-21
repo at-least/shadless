@@ -20,8 +20,6 @@ use std::sync::LazyLock;
 pub const RENDERED_PATH: &str = "EXEMPTIONS.md";
 pub const GOLDEN_EX_PATH: &str = "src/registry/upstream-snapshot/exemptions.json";
 pub const CONTRACTS_DIR: &str = "tools/contracts/components";
-pub const EMITTER_CSS: &str = "src/emitter/css.mjs";
-pub const EMITTER_SKIN: &str = "src/emitter/skin.mjs";
 const TODO_REASON_PFX: &str = "TODO";
 
 fn ledger_classes() -> &'static [&'static str] {
@@ -110,22 +108,6 @@ fn js_balanced(src: &str, open: usize, oc: u8, cc: u8) -> Result<&str, String> {
     let end = crate::convert::scan::cv_match_bracket(src, open, oc, cc)
         .ok_or_else(|| format!("unbalanced {:?} ... {:?}", oc as char, cc as char))?;
     Ok(&src[open + 1..end])
-}
-
-/// Extracts `export const NAME = new Set([ "a", "b" ])` — the shape every
-/// allowlist in this repo uses. The name is part of the anchor, so renaming
-/// the export in JS fails here instead of silently emptying the set.
-pub fn js_set_literal(src: &str, name: &str) -> Result<Vec<String>, String> {
-    let re = Regex::new(&format!(
-        r"(?:export[\t\n\f\r ]+)?const[\t\n\f\r ]+{}[\t\n\f\r ]*=[\t\n\f\r ]*new[\t\n\f\r ]+Set\([\t\n\f\r ]*\[",
-        regex::escape(name)
-    ))
-    .unwrap();
-    let m = re
-        .find(src)
-        .ok_or_else(|| format!("{}: `new Set([...])` declaration not found", name))?;
-    let body = js_balanced(src, m.end() - 1, b'[', b']').map_err(|e| format!("{}: {}", name, e))?;
-    Ok(js_strings_in(body))
 }
 
 /// Returns the text of `name: { ... }` within src, or None when the field is
@@ -366,11 +348,22 @@ pub fn collect_source_ids(root: &Path) -> Result<Vec<SourceId>, String> {
         add(format!("golden:{}", r), "golden", &mut out, &mut seen);
     }
 
-    let css_src = std::fs::read_to_string(root.join(EMITTER_CSS))
-        .map_err(|e| format!("{}: {}", EMITTER_CSS, e))?;
-    let dead = js_set_literal(&css_src, "DEAD_UTILITIES")
-        .map_err(|e| format!("{}: {}", EMITTER_CSS, e))?;
-    for t in dead {
+    // the emitter exemption sets live in the registry both sides read —
+    // src/emitter/css.mjs and skin.mjs build their exported Sets from it,
+    // so no JS-source scraping is needed here
+    let ex_path = "src/registry/emitter-exemptions.json";
+    let ex_b = std::fs::read_to_string(root.join(ex_path))
+        .map_err(|e| format!("{}: {}", ex_path, e))?;
+    #[derive(serde::Deserialize)]
+    struct EmitterExemptions {
+        #[serde(rename = "deadUtilities")]
+        dead_utilities: Vec<String>,
+        #[serde(rename = "skinAllowlist")]
+        skin_allowlist: Vec<String>,
+    }
+    let ex: EmitterExemptions =
+        serde_json::from_str(&ex_b).map_err(|e| format!("{}: {}", ex_path, e))?;
+    for t in ex.dead_utilities {
         add(
             format!("dead-utility:{}", t),
             "emitter",
@@ -378,12 +371,7 @@ pub fn collect_source_ids(root: &Path) -> Result<Vec<SourceId>, String> {
             &mut seen,
         );
     }
-
-    let skin_src = std::fs::read_to_string(root.join(EMITTER_SKIN))
-        .map_err(|e| format!("{}: {}", EMITTER_SKIN, e))?;
-    let skin = js_set_literal(&skin_src, "SKIN_ALLOWLIST")
-        .map_err(|e| format!("{}: {}", EMITTER_SKIN, e))?;
-    for t in skin {
+    for t in ex.skin_allowlist {
         add(
             format!("skin-allowlist:{}", t),
             "emitter",
@@ -1171,12 +1159,8 @@ mod tests {
             ("tools/contracts/components/dialog.mjs", body),
             (GOLDEN_EX_PATH, "{\"examples\":{}}"),
             (
-                EMITTER_CSS,
-                "export const DEAD_UTILITIES = new Set([\n  \"stale-dead\",\n])\n",
-            ),
-            (
-                EMITTER_SKIN,
-                "export const SKIN_ALLOWLIST = new Set([\n  \"keep-a\", \"keep-b\",\n])\n",
+                "src/registry/emitter-exemptions.json",
+                "{\n \"deadUtilities\": [\"stale-dead\"],\n \"skinAllowlist\": [\"keep-a\", \"keep-b\"]\n}\n",
             ),
         ]);
         let ids = collect_source_ids(&root).unwrap();
@@ -1233,18 +1217,10 @@ mod tests {
         assert_eq!(problems.len(), 3, "{:?}", problems);
     }
 
-    /// Go TestUnitJSSetLiteral + FailsLoudly + SkipsBracketsInStrings +
-    /// TestUnitJSFieldIsFalse + TestUnitJSObjectFieldAndAttrMap +
+    /// Go TestUnitJSFieldIsFalse + TestUnitJSObjectFieldAndAttrMap +
     /// TestUnitJSUnescape.
     #[test]
     fn unit_jssource_extractors() {
-        let set = "const X = new Set([\n  \"a\\\"q\", // comment \"ghost\"\n  \"b\",\n])";
-        assert_eq!(js_set_literal(set, "X").unwrap(), vec!["a\"q", "b"]);
-        assert!(js_set_literal("const Y = 3", "X").is_err());
-
-        let brackets = "const S = new Set([\"a[0]\"])";
-        assert_eq!(js_set_literal(brackets, "S").unwrap(), vec!["a[0]"]);
-
         assert!(js_field_is_false(
             "\n  mountedCheck: false,\n",
             "mountedCheck"
