@@ -56,34 +56,6 @@ fn ensure_link(html: &str) -> String {
     )
 }
 
-const KERNEL_T6: &[&str] = &[
-    "alert-dialog",
-    "context-menu",
-    "dropdown-menu",
-    "hover-card",
-    "popover",
-    "scroll-area",
-    "select",
-    "sheet",
-    "slider",
-    "tabs",
-    "tooltip",
-];
-
-const TRIVIAL_T7: &[&str] = &[
-    "accordion",
-    "aspect-ratio",
-    "avatar",
-    "checkbox",
-    "collapsible",
-    "label",
-    "progress",
-    "radio-group",
-    "separator",
-    "switch",
-    "toggle",
-    "toggle-group",
-];
 
 /// out.css's content scan is EXPLICIT (source(none)); this list mirrors the
 /// dist-facing inputs of the `demo-css` node in the authored nodes table
@@ -142,11 +114,12 @@ struct RegTier {
     tier: String,
     #[serde(default)]
     emit: bool,
+    /// The demo fixture file for non-static tiers — the registry is the one
+    /// place a component's tier and its fixture are declared together.
+    #[serde(default)]
+    fixture: Option<String>,
 }
 
-fn contains_tok(ss: &[&str], s: &str) -> bool {
-    ss.iter().any(|x| *x == s)
-}
 
 pub fn run_demo() -> Result<(), String> {
     let root = std::env::current_dir().map_err(|e| e.to_string())?;
@@ -267,76 +240,37 @@ pub fn run_demo() -> Result<(), String> {
     for name in &names {
         let ir = &ir_all[name];
         let html: String;
-        match ir.tier.as_str() {
-            "static" => {
-                if !root.join(format!("dist/components/{}.html", name)).exists() {
-                    eprintln!(
-                        "demo: static page missing: {} (run the emit step first)",
-                        name
-                    );
-                    return Err("static page missing".to_string());
-                }
-                emitted += 1;
-                continue;
+        if ir.tier == "static" {
+            if !root.join(format!("dist/components/{}.html", name)).exists() {
+                eprintln!(
+                    "demo: static page missing: {} (run the emit step first)",
+                    name
+                );
+                return Err("static page missing".to_string());
             }
-            "kernel" => {
-                if name == "dialog" || contains_tok(KERNEL_T6, name) {
-                    let Some(src) = read_fixture(&format!("src/kernel/{}.html", name)) else {
-                        eprintln!("demo: no kernel fixture for {}", name);
-                        return Err("no kernel fixture".to_string());
-                    };
-                    html = rewrite_paths(&src);
-                } else {
-                    eprintln!("demo: no kernel fixture for {}", name);
-                    return Err("no kernel fixture".to_string());
-                }
+            emitted += 1;
+            continue;
+        }
+        // the registry declares each component's fixture next to its tier;
+        // ensure_link is idempotent, so kernel fixtures that already carry
+        // the stylesheet link pass through unchanged
+        match reg_tiers.get(name).and_then(|t| t.fixture.as_deref()) {
+            Some("inline:field") if name == "field" => {
+                html = field_demo_html().to_string();
             }
-            "medium" => {
-                if name == "menubar" || name == "navigation-menu" {
-                    let Some(src) = read_fixture(&format!("src/kernel/{}.html", name)) else {
-                        eprintln!("demo: no medium fixture for {}", name);
-                        return Err("no medium fixture".to_string());
-                    };
-                    html = ensure_link(&rewrite_paths(&src));
-                } else {
-                    eprintln!("demo: no medium fixture for {}", name);
-                    return Err("no medium fixture".to_string());
-                }
-            }
-            "trivial-js" => {
-                if !contains_tok(TRIVIAL_T7, name) {
-                    eprintln!("demo: no trivial fixture for {}", name);
-                    return Err("no trivial fixture".to_string());
-                }
-                let Some(src) = read_fixture(&format!("probes/t7/{}.html", name)) else {
-                    eprintln!("demo: no trivial fixture for {}", name);
-                    return Err("no trivial fixture".to_string());
+            Some(path) => {
+                let Some(src) = read_fixture(path) else {
+                    eprintln!("demo: no fixture {} for {}", path, name);
+                    return Err(format!("no fixture: {}", path));
                 };
                 html = ensure_link(&rewrite_paths(&src));
             }
-            "logic" => {
-                if name == "field" {
-                    html = field_demo_html().to_string();
-                } else {
-                    eprintln!("demo: no presentational fixture for {}", name);
-                    return Err("no presentational fixture".to_string());
-                }
-            }
-            "external" => {
-                if name == "carousel" {
-                    let Some(src) = read_fixture("probes/t8/carousel.html") else {
-                        eprintln!("demo: no carousel fixture");
-                        return Err("no carousel fixture".to_string());
-                    };
-                    html = ensure_link(&rewrite_paths(&src));
-                } else {
-                    eprintln!("demo: no external fixture for {}", name);
-                    return Err("no external fixture".to_string());
-                }
-            }
-            other => {
-                eprintln!("demo: unhandled tier {}", other);
-                return Err("unhandled tier".to_string());
+            _ => {
+                eprintln!(
+                    "demo: no fixture configured for {} (tier {})",
+                    name, ir.tier
+                );
+                return Err("no fixture configured".to_string());
             }
         }
         std::fs::write(

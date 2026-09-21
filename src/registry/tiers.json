@@ -3,7 +3,8 @@
   "tier": "trivial-js",
   "radix": [
    "Accordion"
-  ]
+  ],
+  "fixture": "probes/t7/accordion.html"
  },
  "alert": {
   "tier": "static",
@@ -13,13 +14,15 @@
   "tier": "kernel",
   "radix": [
    "AlertDialog"
-  ]
+  ],
+  "fixture": "src/kernel/alert-dialog.html"
  },
  "aspect-ratio": {
   "tier": "trivial-js",
   "radix": [
    "AspectRatio"
-  ]
+  ],
+  "fixture": "probes/t7/aspect-ratio.html"
  },
  "attachment": {
   "tier": "static",
@@ -29,7 +32,8 @@
   "tier": "trivial-js",
   "radix": [
    "Avatar"
-  ]
+  ],
+  "fixture": "probes/t7/avatar.html"
  },
  "badge": {
   "tier": "static",
@@ -66,7 +70,8 @@
   "ext": [
    "embla-carousel-react"
   ],
-  "emit": true
+  "emit": true,
+  "fixture": "probes/t8/carousel.html"
  },
  "chart": {
   "tier": "external",
@@ -79,13 +84,15 @@
   "tier": "trivial-js",
   "radix": [
    "Checkbox"
-  ]
+  ],
+  "fixture": "probes/t7/checkbox.html"
  },
  "collapsible": {
   "tier": "trivial-js",
   "radix": [
    "Collapsible"
-  ]
+  ],
+  "fixture": "probes/t7/collapsible.html"
  },
  "combobox": {
   "tier": "logic"
@@ -100,13 +107,15 @@
   "tier": "kernel",
   "radix": [
    "ContextMenu"
-  ]
+  ],
+  "fixture": "src/kernel/context-menu.html"
  },
  "dialog": {
   "tier": "kernel",
   "radix": [
    "Dialog"
-  ]
+  ],
+  "fixture": "src/kernel/dialog.html"
  },
  "direction": {
   "tier": "static",
@@ -122,7 +131,8 @@
   "tier": "kernel",
   "radix": [
    "DropdownMenu"
-  ]
+  ],
+  "fixture": "src/kernel/dropdown-menu.html"
  },
  "empty": {
   "tier": "static",
@@ -133,13 +143,15 @@
   "hooks": [
    "useMemo"
   ],
-  "emit": true
+  "emit": true,
+  "fixture": "inline:field"
  },
  "hover-card": {
   "tier": "kernel",
   "radix": [
    "HoverCard"
-  ]
+  ],
+  "fixture": "src/kernel/hover-card.html"
  },
  "input": {
   "tier": "static",
@@ -167,7 +179,8 @@
   "tier": "trivial-js",
   "radix": [
    "Label"
-  ]
+  ],
+  "fixture": "probes/t7/label.html"
  },
  "marker": {
   "tier": "static",
@@ -178,7 +191,8 @@
   "radix": [
    "Menubar"
   ],
-  "emit": true
+  "emit": true,
+  "fixture": "src/kernel/menubar.html"
  },
  "message": {
   "tier": "static",
@@ -197,7 +211,8 @@
   "radix": [
    "NavigationMenu"
   ],
-  "emit": true
+  "emit": true,
+  "fixture": "src/kernel/navigation-menu.html"
  },
  "pagination": {
   "tier": "static",
@@ -207,13 +222,15 @@
   "tier": "kernel",
   "radix": [
    "Popover"
-  ]
+  ],
+  "fixture": "src/kernel/popover.html"
  },
  "progress": {
   "tier": "trivial-js",
   "radix": [
    "Progress"
-  ]
+  ],
+  "fixture": "probes/t7/progress.html"
  },
  "questionnaire": {
   "tier": "external",
@@ -225,7 +242,8 @@
   "tier": "trivial-js",
   "radix": [
    "RadioGroup"
-  ]
+  ],
+  "fixture": "probes/t7/radio-group.html"
  },
  "resizable": {
   "tier": "external",
@@ -237,25 +255,29 @@
   "tier": "kernel",
   "radix": [
    "ScrollArea"
-  ]
+  ],
+  "fixture": "src/kernel/scroll-area.html"
  },
  "select": {
   "tier": "kernel",
   "radix": [
    "Select"
-  ]
+  ],
+  "fixture": "src/kernel/select.html"
  },
  "separator": {
   "tier": "trivial-js",
   "radix": [
    "Separator"
-  ]
+  ],
+  "fixture": "probes/t7/separator.html"
  },
  "sheet": {
   "tier": "kernel",
   "radix": [
    "Sheet"
-  ]
+  ],
+  "fixture": "src/kernel/sheet.html"
  },
  "sidebar": {
   "tier": "logic"
@@ -268,7 +290,8 @@
   "tier": "kernel",
   "radix": [
    "Slider"
-  ]
+  ],
+  "fixture": "src/kernel/slider.html"
  },
  "sonner": {
   "tier": "external",
@@ -285,7 +308,8 @@
   "tier": "trivial-js",
   "radix": [
    "Switch"
-  ]
+  ],
+  "fixture": "probes/t7/switch.html"
  },
  "table": {
   "tier": "static",
@@ -295,7 +319,8 @@
   "tier": "kernel",
   "radix": [
    "Tabs"
-  ]
+  ],
+  "fixture": "src/kernel/tabs.html"
  },
  "textarea": {
   "tier": "static",
@@ -305,18 +330,21 @@
   "tier": "trivial-js",
   "radix": [
    "Toggle"
-  ]
+  ],
+  "fixture": "probes/t7/toggle.html"
  },
  "toggle-group": {
   "tier": "trivial-js",
   "radix": [
    "ToggleGroup"
-  ]
+  ],
+  "fixture": "probes/t7/toggle-group.html"
  },
  "tooltip": {
   "tier": "kernel",
   "radix": [
    "Tooltip"
-  ]
+  ],
+  "fixture": "src/kernel/tooltip.html"
  }
 }
