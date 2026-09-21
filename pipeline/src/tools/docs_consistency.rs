@@ -15,30 +15,18 @@
 use regex::Regex;
 use serde_json::Value;
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 
-use super::docs_transforms::{fence_shadow, re_data_slot_attr, re_data_slot_set};
+use super::docs_transforms::{RE_DATA_SLOT_ATTR, RE_DATA_SLOT_SET, fence_shadow};
 
-fn re_cn() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"\bcn-[a-z0-9-]+").unwrap())
-}
-fn re_import_teach() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"@import[ \t]+(?:"|&quot;)shadless[^"&]*"#).unwrap())
-}
-fn re_dist_path() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new("`(dist/[A-Za-z0-9._/-]+)`").unwrap())
-}
-fn re_id_attr() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"[ \t]id="([^"]+)""#).unwrap())
-}
-fn re_slot_table_row() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"^\| `data-slot="([a-z0-9-]+)"` \|$"#).unwrap())
-}
+static RE_CN: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\bcn-[a-z0-9-]+").unwrap());
+static RE_IMPORT_TEACH: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#"@import[ \t]+(?:"|&quot;)shadless[^"&]*"#).unwrap());
+static RE_DIST_PATH: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new("`(dist/[A-Za-z0-9._/-]+)`").unwrap());
+static RE_ID_ATTR: LazyLock<Regex> = LazyLock::new(|| Regex::new(r#"[ \t]id="([^"]+)""#).unwrap());
+static RE_SLOT_TABLE_ROW: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#"^\| `data-slot="([a-z0-9-]+)"` \|$"#).unwrap());
 
 struct Problem {
     kind: String,
@@ -96,7 +84,7 @@ pub fn run_docs_consistency(root: &Path) -> i32 {
             };
             let mut bad: Vec<String> = Vec::new();
             let mut seen: std::collections::HashSet<String> = std::collections::HashSet::new();
-            for m in re_cn().find_iter(&b) {
+            for m in RE_CN.find_iter(&b) {
                 let tok = m.as_str().to_string();
                 if !seen.insert(tok.clone()) {
                     continue;
@@ -135,7 +123,7 @@ pub fn run_docs_consistency(root: &Path) -> i32 {
         let Ok(b) = std::fs::read_to_string(root.join(f)) else {
             continue;
         };
-        for spec in re_import_teach().find_iter(&b) {
+        for spec in RE_IMPORT_TEACH.find_iter(&b) {
             let spec = spec.as_str();
             let key = Regex::new(r#"@import[ \t]+|"|&quot;"#)
                 .unwrap()
@@ -239,7 +227,7 @@ pub fn run_docs_consistency(root: &Path) -> i32 {
             if !line.trim_start().starts_with('|') {
                 continue;
             }
-            for m in re_dist_path().captures_iter(line) {
+            for m in RE_DIST_PATH.captures_iter(line) {
                 dist_refs += 1;
                 if !root.join(&m[1]).exists() {
                     add_problem(
@@ -269,7 +257,7 @@ pub fn run_docs_consistency(root: &Path) -> i32 {
                 let Ok(b) = std::fs::read_to_string(root.join(dir).join(&n)) else {
                     continue;
                 };
-                for m in re_data_slot_attr().captures_iter(&b) {
+                for m in RE_DATA_SLOT_ATTR.captures_iter(&b) {
                     real.insert(m[1].to_string());
                 }
             }
@@ -288,7 +276,7 @@ pub fn run_docs_consistency(root: &Path) -> i32 {
         let Ok(b) = std::fs::read_to_string(root.join(f)) else {
             continue;
         };
-        for m in re_data_slot_set().captures_iter(&b) {
+        for m in RE_DATA_SLOT_SET.captures_iter(&b) {
             real.insert(m[1].to_string());
         }
     }
@@ -298,7 +286,7 @@ pub fn run_docs_consistency(root: &Path) -> i32 {
             continue;
         };
         for (i, line) in b.split('\n').enumerate() {
-            let Some(m) = re_slot_table_row().captures(line) else {
+            let Some(m) = RE_SLOT_TABLE_ROW.captures(line) else {
                 continue;
             };
             slot_rows += 1;
@@ -318,14 +306,12 @@ pub fn run_docs_consistency(root: &Path) -> i32 {
     }
 
     // 8. no duplicate `id` inside a shipped demo page.
-    let dup_exempt: std::collections::HashMap<&str, std::collections::HashMap<&str, &str>> = [
-        (
-            "collapsible-settings",
-            [("radius", "upstream tsx repeats id=radius")]
-                .into_iter()
-                .collect::<std::collections::HashMap<_, _>>(),
-        ),
-    ]
+    let dup_exempt: std::collections::HashMap<&str, std::collections::HashMap<&str, &str>> = [(
+        "collapsible-settings",
+        [("radius", "upstream tsx repeats id=radius")]
+            .into_iter()
+            .collect::<std::collections::HashMap<_, _>>(),
+    )]
     .into_iter()
     .collect();
     let mut demo_id_pages = 0usize;
@@ -342,7 +328,7 @@ pub fn run_docs_consistency(root: &Path) -> i32 {
             let page = n.trim_end_matches(".html");
             let mut count: std::collections::HashMap<String, usize> =
                 std::collections::HashMap::new();
-            for m in re_id_attr().captures_iter(&b) {
+            for m in RE_ID_ATTR.captures_iter(&b) {
                 *count.entry(m[1].to_string()).or_insert(0) += 1;
             }
             let mut ids: Vec<&String> = count.keys().collect();

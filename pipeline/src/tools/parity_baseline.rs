@@ -8,7 +8,7 @@
 use regex::Regex;
 use std::collections::HashMap;
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 
 #[derive(Clone, Debug)]
 pub struct ParityCell {
@@ -17,18 +17,11 @@ pub struct ParityCell {
     pub shadless: String,
 }
 
-fn re_parity_calc() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"calc\([^)]*\)").unwrap())
-}
-fn re_parity_num() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"-?\d*\.?\d+(?:e[-+]?\d+)?").unwrap())
-}
-fn re_parity_oklab() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"oklab\((-?[\d.]+) 0 0\)").unwrap())
-}
+static RE_PARITY_CALC: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"calc\([^)]*\)").unwrap());
+static RE_PARITY_NUM: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"-?\d*\.?\d+(?:e[-+]?\d+)?").unwrap());
+static RE_PARITY_OKLAB: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"oklab\((-?[\d.]+) 0 0\)").unwrap());
 
 /// parseFloat2dp mirrors pipeline/demo_parity.go:189-206: JS
 /// Math.round(x*100)/100 || 0. The int64 truncation is Go's float64→int64
@@ -55,11 +48,7 @@ fn go_f64_to_i64(x: f64) -> i64 {
 }
 
 fn sign(f: f64) -> f64 {
-    if f < 0.0 {
-        -1.0
-    } else {
-        1.0
-    }
+    if f < 0.0 { -1.0 } else { 1.0 }
 }
 
 /// jsNumberString mirrors JS String(number): decimal notation with the
@@ -128,17 +117,17 @@ pub fn parity_norm_value(v: &str, canonicalize_calc: bool) -> String {
     if v.is_empty() {
         return v.to_string();
     }
-    let v = re_parity_num().replace_all(v, |caps: &regex::Captures| {
+    let v = RE_PARITY_NUM.replace_all(v, |caps: &regex::Captures| {
         let r = parse_float_2dp(&caps[0]);
         if r == 0.0 {
             return "0".to_string(); // Object.is(-0) guard
         }
         js_number_string(r)
     });
-    let v = re_parity_oklab().replace_all(&v, "oklch($1 0 0)");
+    let v = RE_PARITY_OKLAB.replace_all(&v, "oklch($1 0 0)");
     let mut v = v.into_owned();
     if canonicalize_calc {
-        v = re_parity_calc().replace_all(&v, "calc(…)").into_owned();
+        v = RE_PARITY_CALC.replace_all(&v, "calc(…)").into_owned();
     }
     v
 }
@@ -261,9 +250,7 @@ pub fn write_parity_baseline(
         tag: String,
     }
     let pin: Pin = serde_json::from_slice(&pin_b).unwrap_or(Pin {
-        shadcn_ui: PinShadcnUi {
-            tag: String::new(),
-        },
+        shadcn_ui: PinShadcnUi { tag: String::new() },
     });
 
     let mut ids: Vec<&String> = cells.keys().collect();
@@ -364,7 +351,11 @@ fn trunc60(s: &str) -> String {
 }
 
 pub fn show_cell(v: &ParityCell) -> String {
-    format!("oracle={} shadless={}", trunc60(&v.oracle), trunc60(&v.shadless))
+    format!(
+        "oracle={} shadless={}",
+        trunc60(&v.oracle),
+        trunc60(&v.shadless)
+    )
 }
 
 pub fn show_change(c: &ParityChange) -> String {
@@ -416,7 +407,11 @@ mod tests {
             },
         ]);
         assert_eq!(m.len(), 2, "map not built correctly: {:?}", m);
-        assert_eq!(m["a/comp"].shadless, "4", "map not built correctly: {:?}", m);
+        assert_eq!(
+            m["a/comp"].shadless, "4",
+            "map not built correctly: {:?}",
+            m
+        );
         assert_eq!(
             order.join(","),
             "b/comp,a/comp",
@@ -566,8 +561,17 @@ mod tests {
             "fixed = {:?}, want [y] (only the recorded id absent from actual)",
             d.fixed
         );
-        assert_eq!(d.changed.len(), 1, "changed = {:?}, want one entry for z", d.changed);
-        assert_eq!(d.changed[0].id, "z", "changed = {:?}, want one entry for z", d.changed);
+        assert_eq!(
+            d.changed.len(),
+            1,
+            "changed = {:?}, want one entry for z",
+            d.changed
+        );
+        assert_eq!(
+            d.changed[0].id, "z",
+            "changed = {:?}, want one entry for z",
+            d.changed
+        );
         assert_eq!(
             d.changed[0].now.shadless, "CHANGED",
             "changed = {:?}, want one entry for z",

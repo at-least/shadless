@@ -4,22 +4,37 @@
 //! (page, comp, prefix/ids, open-gesture) — all value-shaped.
 
 use super::browser_shell::BPage;
+use super::example_fixture::{EF_HARVEST_LAYER, EF_MENU_IDS, EF_NAV_IDS, EF_TABS_DRIVER};
 use super::example_fixture::{
-    ef_ensure_content_id, ef_learn, ef_re_harvest_mark, ef_re_orig_and_id, ef_re_orig_attr,
-    ef_remap, ef_strip_radix_ids, EfDef, EfSlotStable, EF_RETARGET_JS,
+    EF_RE_HARVEST_MARK, EF_RE_ORIG_AND_ID, EF_RE_ORIG_ATTR, EF_RETARGET_JS, EfDef, EfSlotStable,
+    ef_ensure_content_id, ef_learn, ef_remap, ef_strip_radix_ids,
 };
 use super::families::FamilyEnt;
-use super::example_fixture::{EF_HARVEST_LAYER, EF_MENU_IDS, EF_NAV_IDS, EF_TABS_DRIVER};
 use serde_json::json;
 use std::collections::HashMap;
 
 pub enum SelfTestAction {
-    Dialog { comp: String },
-    Portal { prefix: String, comp: String, hover: bool },
-    MenuOrSelect { trigger: String, comp: String, contextmenu: bool },
-    Nav { trigger: String, content: String },
+    Dialog {
+        comp: String,
+    },
+    Portal {
+        prefix: String,
+        comp: String,
+        hover: bool,
+    },
+    MenuOrSelect {
+        trigger: String,
+        comp: String,
+        contextmenu: bool,
+    },
+    Nav {
+        trigger: String,
+        content: String,
+    },
     Inline,
-    None { comp: String },
+    None {
+        comp: String,
+    },
 }
 
 pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), String> {
@@ -62,34 +77,51 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
             }
             Ok(())
         }
-        SelfTestAction::Portal { prefix, comp, hover } => {
+        SelfTestAction::Portal {
+            prefix,
+            comp,
+            hover,
+        } => {
             let sel = format!("#{}-trigger", prefix);
             if *hover {
                 let Some(b) = page.loc_box("", &sel, 0).map_err(|e| e.to_string())? else {
                     return Err("no trigger box".to_string());
                 };
-                page.mouse_move(b.x + b.width / 2.0, b.y + b.height + 60.0, 1).map_err(|e| e.to_string())?;
+                page.mouse_move(b.x + b.width / 2.0, b.y + b.height + 60.0, 1)
+                    .map_err(|e| e.to_string())?;
                 let _ = page.wait_for_timeout(300);
-                page.mouse_move(b.x + b.width / 2.0, b.y + b.height / 2.0, 6).map_err(|e| e.to_string())?;
+                page.mouse_move(b.x + b.width / 2.0, b.y + b.height / 2.0, 6)
+                    .map_err(|e| e.to_string())?;
                 let _ = page.wait_for_timeout(1100);
             } else {
-                page.loc_click("", &sel, 0, "left").map_err(|e| e.to_string())?;
+                page.loc_click("", &sel, 0, "left")
+                    .map_err(|e| e.to_string())?;
                 let _ = page.wait_for_timeout(1500);
             }
             wait_true(
                 page,
-                &format!("!!document.querySelector(\"[data-slot='{}-content']\")", comp),
+                &format!(
+                    "!!document.querySelector(\"[data-slot='{}-content']\")",
+                    comp
+                ),
             )?;
             page.key_press("Escape").map_err(|e| e.to_string())?;
             page.mouse_move(0.0, 0.0, 1).map_err(|e| e.to_string())?;
             let _ = page.wait_for_timeout(700);
             wait_true(
                 page,
-                &format!("!document.querySelector(\"[data-slot='{}-content']\")", comp),
+                &format!(
+                    "!document.querySelector(\"[data-slot='{}-content']\")",
+                    comp
+                ),
             )?;
             Ok(())
         }
-        SelfTestAction::MenuOrSelect { trigger, comp, contextmenu } => {
+        SelfTestAction::MenuOrSelect {
+            trigger,
+            comp,
+            contextmenu,
+        } => {
             if trigger.is_empty() {
                 // nothing openable by design (all instances disabled)
                 return Ok(());
@@ -102,21 +134,28 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
                 page.mouse_click_button(b.x + b.width / 2.0, b.y + b.height / 2.0, "right")
                     .map_err(|e| e.to_string())?;
             } else {
-                page.loc_click("", &sel, 0, "left").map_err(|e| e.to_string())?;
+                page.loc_click("", &sel, 0, "left")
+                    .map_err(|e| e.to_string())?;
             }
             let _ = page.wait_for_timeout(500);
             let content_sel = format!("[data-slot=\"{}-content\"]", comp);
             wait_true(
                 page,
-                &format!("!!document.querySelector('{}[data-state=open]')", content_sel),
+                &format!(
+                    "!!document.querySelector('{}[data-state=open]')",
+                    content_sel
+                ),
             )?;
             let n = page.loc_count("", &format!("[data-slot=\"{}-sub-trigger\"]", comp))?;
             if n > 0 {
-                if let Some(b) = page.loc_box("", &format!("[data-slot=\"{}-sub-trigger\"]", comp), 0)
+                if let Some(b) = page
+                    .loc_box("", &format!("[data-slot=\"{}-sub-trigger\"]", comp), 0)
                     .map_err(|e| e.to_string())?
                 {
-                    page.mouse_move(b.x + 4.0, b.y + b.height / 2.0, 3).map_err(|e| e.to_string())?;
-                    page.mouse_move(b.x + b.width / 2.0, b.y + b.height / 2.0, 6).map_err(|e| e.to_string())?;
+                    page.mouse_move(b.x + 4.0, b.y + b.height / 2.0, 3)
+                        .map_err(|e| e.to_string())?;
+                    page.mouse_move(b.x + b.width / 2.0, b.y + b.height / 2.0, 6)
+                        .map_err(|e| e.to_string())?;
                     let _ = page.wait_for_timeout(600);
                     if std::env::var("EF_DEBUG").is_ok() {
                         let v = page.evaluate(&format!(
@@ -142,7 +181,10 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
             let _ = page.wait_for_timeout(500);
             wait_true(
                 page,
-                &format!("!document.querySelector('{}[data-state=open]')", content_sel),
+                &format!(
+                    "!document.querySelector('{}[data-state=open]')",
+                    content_sel
+                ),
             )?;
             Ok(())
         }
@@ -264,7 +306,10 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
                     )
                     .unwrap_or(serde_json::Value::Null);
                 if before_v == after_v {
-                    return Err("carousel did not scroll on next (previous button state unchanged)".to_string());
+                    return Err(
+                        "carousel did not scroll on next (previous button state unchanged)"
+                            .to_string(),
+                    );
                 }
                 Ok(())
             }
@@ -426,7 +471,10 @@ fn portal(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
             portal_html = mounted(ctx.page, &content_sel)?;
         }
         if portal_html.is_empty() {
-            return Err(format!("instance {}: nothing mounted after {}", i, ctx.fam.open));
+            return Err(format!(
+                "instance {}: nothing mounted after {}",
+                i, ctx.fam.open
+            ));
         }
         ef_learn(
             &portal_html,
@@ -449,12 +497,20 @@ fn portal(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
             )
             .map_err(|e| e.to_string())?;
         refs[i] = ref_v == serde_json::Value::Bool(true);
-        parts.push(ef_re_harvest_mark().replace_all(&portal_html, "").into_owned());
+        parts.push(
+            EF_RE_HARVEST_MARK
+                .replace_all(&portal_html, "")
+                .into_owned(),
+        );
         ctx.page.key_press("Escape").map_err(|e| e.to_string())?;
-        ctx.page.mouse_move(0.0, 0.0, 1).map_err(|e| e.to_string())?;
+        ctx.page
+            .mouse_move(0.0, 0.0, 1)
+            .map_err(|e| e.to_string())?;
         let _ = ctx.page.wait_for_timeout(700);
     }
-    let ids: Vec<String> = (0..count).map(|i| format!("{}-trigger", prefix_of(i))).collect();
+    let ids: Vec<String> = (0..count)
+        .map(|i| format!("{}-trigger", prefix_of(i)))
+        .collect();
     let prefixes: Vec<String> = (0..count).map(prefix_of).collect();
     ctx.page
         .evaluate_fn_arg(
@@ -545,19 +601,29 @@ fn menu_select(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
         let Some(m) = v.as_object() else {
             return Err(format!("layer {}: harvest failed", layer_id));
         };
-        let html = m.get("html").and_then(|h| h.as_str()).unwrap_or("").to_string();
+        let html = m
+            .get("html")
+            .and_then(|h| h.as_str())
+            .unwrap_or("")
+            .to_string();
         let sub_count = m.get("subCount").and_then(|c| c.as_i64()).unwrap_or(0);
         ef_learn(
             &html,
             &[
-                EfSlotStable { slot: format!("{}-content", comp), stable: layer_id.to_string() },
-                EfSlotStable { slot: format!("{}-sub-content", comp), stable: layer_id.to_string() },
+                EfSlotStable {
+                    slot: format!("{}-content", comp),
+                    stable: layer_id.to_string(),
+                },
+                EfSlotStable {
+                    slot: format!("{}-sub-content", comp),
+                    stable: layer_id.to_string(),
+                },
             ],
             id_map,
         );
         templates_.push(Layer {
             layer_id: layer_id.to_string(),
-            html: ef_re_harvest_mark().replace_all(&html, "").into_owned(),
+            html: EF_RE_HARVEST_MARK.replace_all(&html, "").into_owned(),
         });
         for j in 0..sub_count {
             let st = format!("#{}s{}-trigger", layer_id, j);
@@ -565,8 +631,10 @@ fn menu_select(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
                 return Err(format!("layer {}: no sub-trigger box", layer_id));
             };
             // radix opens a sub menu on pointer movement over its trigger
-            page.mouse_move(b.x + 4.0, b.y + b.height / 2.0, 3).map_err(|e| e.to_string())?;
-            page.mouse_move(b.x + b.width / 2.0, b.y + b.height / 2.0, 6).map_err(|e| e.to_string())?;
+            page.mouse_move(b.x + 4.0, b.y + b.height / 2.0, 3)
+                .map_err(|e| e.to_string())?;
+            page.mouse_move(b.x + b.width / 2.0, b.y + b.height / 2.0, 6)
+                .map_err(|e| e.to_string())?;
             let _ = page.wait_for_timeout(600);
             let sub_sel = format!("[data-slot=\"{}-sub-content\"]", comp);
             if !mounted_content(page, &sub_sel) {
@@ -587,7 +655,8 @@ fn menu_select(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
                 &sub_sel,
             )?;
             // back to the parent layer: point away
-            page.mouse_move(b.x + b.width / 2.0, b.y - 40.0, 4).map_err(|e| e.to_string())?;
+            page.mouse_move(b.x + b.width / 2.0, b.y - 40.0, 4)
+                .map_err(|e| e.to_string())?;
             let _ = page.wait_for_timeout(300);
         }
         Ok(())
@@ -682,7 +751,7 @@ fn menu_select(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
     out.body_html = ef_strip_radix_ids(&ef_remap(&rh, ctx.id_map));
     // sub-trigger original ids map to their stable ids
     for t in &templates_ {
-        for m in ef_re_orig_and_id().captures_iter(&t.html) {
+        for m in EF_RE_ORIG_AND_ID.captures_iter(&t.html) {
             ctx.id_map.insert(m[1].to_string(), m[2].to_string());
         }
     }
@@ -691,7 +760,7 @@ fn menu_select(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
         tpls.push(format!(
             "<template id=\"{}-tpl\">\n{}\n</template>",
             t.layer_id,
-            ef_re_orig_attr()
+            EF_RE_ORIG_ATTR
                 .replace_all(&ef_strip_radix_ids(&ef_remap(&t.html, ctx.id_map)), "")
                 .into_owned()
         ));
@@ -774,9 +843,10 @@ fn nav(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
             ctx.id_map,
         );
         if nav_orig[i].starts_with("radix-") {
-            ctx.id_map.insert(nav_orig[i].clone(), format!("{}-trigger", nav_id_of(i)));
+            ctx.id_map
+                .insert(nav_orig[i].clone(), format!("{}-trigger", nav_id_of(i)));
         }
-        parts.push(ef_re_harvest_mark().replace_all(&html, "").into_owned());
+        parts.push(EF_RE_HARVEST_MARK.replace_all(&html, "").into_owned());
         ctx.page.key_press("Escape").map_err(|e| e.to_string())?;
         let _ = ctx.page.wait_for_timeout(400);
     }
@@ -815,7 +885,10 @@ fn nav(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
 }
 
 fn inline(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
-    let v = ctx.page.evaluate_fn(EF_TABS_DRIVER).map_err(|e| e.to_string())?;
+    let v = ctx
+        .page
+        .evaluate_fn(EF_TABS_DRIVER)
+        .map_err(|e| e.to_string())?;
     out.body_html = v.as_str().unwrap_or("").to_string();
     out.self_test = Some(SelfTestAction::Inline);
     Ok(())

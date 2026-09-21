@@ -14,38 +14,28 @@
 use regex::Regex;
 use serde::Deserialize;
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 
 use super::docs_transforms::{
-    attr_of, attr_or_absent, attr_or_null, grey_components, strip_fences, OptStr,
+    OptStr, attr_of, attr_or_absent, attr_or_null, grey_components, strip_fences,
 };
-use crate::jsonorder::{marshal_js, Json, JsonObj};
+use crate::jsonorder::{Json, JsonObj, marshal_js};
 
 const RADIX_DIR: &str = ".upstream/shadcn-ui/apps/v4/content/docs/components/radix";
 const DIST_COMPS: &str = "dist/components";
 const CATALOG_OUT: &str = "docs/catalog.json";
 
-fn re_docs_tag() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"<(ComponentPreview|ComponentSource)\b([^>]*)>").unwrap())
-}
-fn re_preview_tag() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"<ComponentPreview\b([^>]*)>").unwrap())
-}
-fn re_primary() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^([a-z0-9-]+)-demo$").unwrap())
-}
-fn re_hooks() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| {
-        Regex::new(
+static RE_DOCS_TAG: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"<(ComponentPreview|ComponentSource)\b([^>]*)>").unwrap());
+static RE_PREVIEW_TAG: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"<ComponentPreview\b([^>]*)>").unwrap());
+static RE_PRIMARY: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^([a-z0-9-]+)-demo$").unwrap());
+static RE_HOOKS: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
             r"\b(useState|useEffect|useRef|useContext|useMemo|useCallback|useReducer|useLayoutEffect|useImperativeHandle|useId|useTransition|useDeferredValue|useSyncExternalStore|useInsertionEffect)\b",
         )
         .unwrap()
-    })
-}
+});
 
 #[derive(Clone, Default)]
 struct PreviewRec {
@@ -106,7 +96,7 @@ fn scan_set(root: &Path, key: &str, dir: &str) -> Result<ScanResult, String> {
         let component = n.trim_end_matches(".mdx").to_string();
         let b = std::fs::read_to_string(root.join(dir).join(&n)).map_err(|e| e.to_string())?;
         let text = strip_fences(&b);
-        for caps in re_docs_tag().captures_iter(&text) {
+        for caps in RE_DOCS_TAG.captures_iter(&text) {
             let (tag, attrs) = (&caps[1], &caps[2]);
             if tag == "ComponentPreview" {
                 r.preview_tags += 1;
@@ -157,9 +147,18 @@ fn scan_set(root: &Path, key: &str, dir: &str) -> Result<ScanResult, String> {
 const GUIDE_SOURCES: [(&str, &str); 5] = [
     ("installation", "docs/content/installation.mdx"),
     ("dark-mode", "docs/content/dark-mode.mdx"),
-    ("rtl", ".upstream/shadcn-ui/apps/v4/content/docs/rtl/index.mdx"),
-    ("shimmer", ".upstream/shadcn-ui/apps/v4/content/docs/utils/shimmer.mdx"),
-    ("scroll-fade", ".upstream/shadcn-ui/apps/v4/content/docs/utils/scroll-fade.mdx"),
+    (
+        "rtl",
+        ".upstream/shadcn-ui/apps/v4/content/docs/rtl/index.mdx",
+    ),
+    (
+        "shimmer",
+        ".upstream/shadcn-ui/apps/v4/content/docs/utils/shimmer.mdx",
+    ),
+    (
+        "scroll-fade",
+        ".upstream/shadcn-ui/apps/v4/content/docs/utils/scroll-fade.mdx",
+    ),
 ];
 
 fn scan_guides(root: &Path) -> Result<ScanResult, String> {
@@ -174,7 +173,7 @@ fn scan_guides(root: &Path) -> Result<ScanResult, String> {
         };
         r.files += 1;
         let text = strip_fences(&b);
-        for caps in re_preview_tag().captures_iter(&text) {
+        for caps in RE_PREVIEW_TAG.captures_iter(&text) {
             let attrs = &caps[1];
             r.preview_tags += 1;
             if attrs.contains('\n') {
@@ -225,10 +224,7 @@ fn dedupe_previews(records: &[PreviewRec]) -> Vec<PreviewRec> {
             e.host_pages.push(r.component.clone());
         }
     }
-    order
-        .iter()
-        .map(|n| by_name[n].clone())
-        .collect()
+    order.iter().map(|n| by_name[n].clone()).collect()
 }
 
 fn dedupe_sources(records: &[SourceRec]) -> Vec<SourceRec> {
@@ -249,10 +245,7 @@ fn dedupe_sources(records: &[SourceRec]) -> Vec<SourceRec> {
             e.host_pages.push(r.component.clone());
         }
     }
-    order
-        .iter()
-        .map(|n| by_name[n].clone())
-        .collect()
+    order.iter().map(|n| by_name[n].clone()).collect()
 }
 
 fn is_tombstone_name(name: &str) -> bool {
@@ -312,11 +305,11 @@ pub fn run_docs_catalog(root: &Path) -> i32 {
         #[serde(default)]
         tier: String,
     }
-    let tiers: std::collections::HashMap<String, TierEntry> =
-        match serde_json::from_str(&tiers_raw) {
-            Ok(t) => t,
-            Err(e) => return fail(e.to_string()),
-        };
+    let tiers: std::collections::HashMap<String, TierEntry> = match serde_json::from_str(&tiers_raw)
+    {
+        Ok(t) => t,
+        Err(e) => return fail(e.to_string()),
+    };
 
     let radix = match scan_set(root, "components/radix", RADIX_DIR) {
         Ok(r) => r,
@@ -370,7 +363,7 @@ pub fn run_docs_catalog(root: &Path) -> i32 {
 
     // A -demo is kernel iff the underlying component is.
     let is_kernel = |name: &str| -> bool {
-        let key = re_primary()
+        let key = RE_PRIMARY
             .captures(name)
             .map(|m| m[1].to_string())
             .unwrap_or_else(|| name.to_string());
@@ -390,7 +383,7 @@ pub fn run_docs_catalog(root: &Path) -> i32 {
     let mut previews: Vec<PreviewRec> = Vec::new();
     for mut p in unique_previews {
         let mut d = String::new();
-        if let Some(m) = re_primary().captures(&p.name) {
+        if let Some(m) = RE_PRIMARY.captures(&p.name) {
             d = dist_path(&m[1]);
         }
         let direct = dist_path(&p.name);
@@ -400,9 +393,8 @@ pub fn run_docs_catalog(root: &Path) -> i32 {
                 is_guide_only = false;
             }
         }
-        let is_base_style = p.style_name.present
-            && !p.style_name.null
-            && p.style_name.val.starts_with("base-");
+        let is_base_style =
+            p.style_name.present && !p.style_name.null && p.style_name.val.starts_with("base-");
         let authored_file = format!("docs/demos/{}.html", p.name);
         let has_authored_file = exists(&authored_file);
 
@@ -535,8 +527,7 @@ pub fn run_docs_catalog(root: &Path) -> i32 {
     // "informational" — they were authored from React example-registry code in
     // FT7 batches, so their interactive semantics aren't validated against the
     // radix oracle the way primary demos are.
-    let mut file_has_hooks: std::collections::HashSet<String> =
-        std::collections::HashSet::new();
+    let mut file_has_hooks: std::collections::HashSet<String> = std::collections::HashSet::new();
     if let Ok(entries) = std::fs::read_dir(root.join(RADIX_DIR)) {
         for e in entries.flatten() {
             let n = e.file_name().to_string_lossy().into_owned();
@@ -546,7 +537,7 @@ pub fn run_docs_catalog(root: &Path) -> i32 {
             let Ok(b) = std::fs::read_to_string(root.join(RADIX_DIR).join(&n)) else {
                 continue;
             };
-            if re_hooks().is_match(&strip_fences(&b)) {
+            if RE_HOOKS.is_match(&strip_fences(&b)) {
                 file_has_hooks.insert(n.trim_end_matches(".mdx").to_string());
             }
         }

@@ -5,12 +5,9 @@
 
 use regex::Regex;
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 
-fn leading_word() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^([a-z]+)(.*)$").unwrap())
-}
+static LEADING_WORD: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^([a-z]+)(.*)$").unwrap());
 
 pub fn run_css_direction_update(root: &Path) -> i32 {
     let css = match std::fs::read_to_string(root.join("dist/shadless.css")) {
@@ -26,7 +23,7 @@ pub fn run_css_direction_update(root: &Path) -> i32 {
         entries.len()
     );
     for e in entries {
-        let m = leading_word().captures(&e.token).unwrap();
+        let m = LEADING_WORD.captures(&e.token).unwrap();
         println!("\t{:?} + {:?}: {},", &m[1], &m[2], e.n);
     }
     0

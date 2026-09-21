@@ -55,8 +55,12 @@ pub fn tw_compile(
             root.join(p)
         }
     };
-    let mut argv = vec!["-i".to_string(), abs(input).to_string_lossy().into_owned(),
-        "-o".to_string(), abs(out).to_string_lossy().into_owned()];
+    let mut argv = vec![
+        "-i".to_string(),
+        abs(input).to_string_lossy().into_owned(),
+        "-o".to_string(),
+        abs(out).to_string_lossy().into_owned(),
+    ];
     if minify {
         argv.push("--minify".to_string());
     }
@@ -134,7 +138,14 @@ pub fn run_tw(args: &[String]) -> i32 {
             return 1;
         }
     };
-    match tw_compile(&root, &positional[0], &positional[1], &compile_cwd, minify, false) {
+    match tw_compile(
+        &root,
+        &positional[0],
+        &positional[1],
+        &compile_cwd,
+        minify,
+        false,
+    ) {
         Ok(()) => 0,
         Err(e) => {
             eprintln!("tw: {}", e);

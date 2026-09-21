@@ -11,29 +11,21 @@ use regex::Regex;
 use serde_json::Value;
 use std::collections::BTreeMap;
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 
-fn re_export_stmt() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"\bexport[\t\n\f\r {]").unwrap())
-}
-fn re_spec_backtick() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new("`(shadless(?:/[^`\\s]*)?)`").unwrap())
-}
-fn re_spec_import() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new("(?:@import|from|import)[\\t\\n\\f\\r ]+\"(shadless(?:/[^\"]*)?)\"").unwrap())
-}
-fn re_allowed() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| {
-        Regex::new(
+static RE_EXPORT_STMT: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"\bexport[\t\n\f\r {]").unwrap());
+static RE_SPEC_BACKTICK: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new("`(shadless(?:/[^`\\s]*)?)`").unwrap());
+static RE_SPEC_IMPORT: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new("(?:@import|from|import)[\\t\\n\\f\\r ]+\"(shadless(?:/[^\"]*)?)\"").unwrap()
+});
+static RE_ALLOWED: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
             r"^(package\.json|README\.md|CHANGELOG\.md|LICENSE|dist/(css|js|esm)/[^/]+|dist/shadless(-core|\.full(\.min)?)?\.(css|js)|dist/shadless\.min\.js)$",
         )
         .unwrap()
-    })
-}
+});
 
 fn npm_pack_files(root: &Path) -> Result<BTreeMap<String, bool>, String> {
     let out = std::process::Command::new("npm")
@@ -174,7 +166,7 @@ pub fn gate_pack(root: &Path) -> Result<(), String> {
             continue;
         }
         let src = std::fs::read_to_string(root.join(imp)).unwrap_or_default();
-        if !re_export_stmt().is_match(&src) {
+        if !RE_EXPORT_STMT.is_match(&src) {
             fail.push(format!(
                 "export {} [import] → {} has no export statement (an IIFE under the import condition yields undefined)",
                 k, imp
@@ -206,8 +198,8 @@ pub fn gate_pack(root: &Path) -> Result<(), String> {
         ));
     }
 
-    let packed = npm_pack_files(root)
-        .map_err(|e| format!("FAIL  pack (npm pack failed: {})", e))?;
+    let packed =
+        npm_pack_files(root).map_err(|e| format!("FAIL  pack (npm pack failed: {})", e))?;
     for (label, files) in &targets {
         for f in files {
             if !root.join(f).exists() {
@@ -224,10 +216,10 @@ pub fn gate_pack(root: &Path) -> Result<(), String> {
     // 3. README specifiers resolve
     let readme = std::fs::read_to_string(root.join("README.md")).unwrap_or_default();
     let mut spec_set: BTreeMap<String, bool> = BTreeMap::new();
-    for m in re_spec_backtick().captures_iter(&readme) {
+    for m in RE_SPEC_BACKTICK.captures_iter(&readme) {
         spec_set.insert(m[1].to_string(), true);
     }
-    for m in re_spec_import().captures_iter(&readme) {
+    for m in RE_SPEC_IMPORT.captures_iter(&readme) {
         spec_set.insert(m[1].to_string(), true);
     }
     let specs: Vec<String> = spec_set.keys().cloned().collect();
@@ -237,7 +229,11 @@ pub fn gate_pack(root: &Path) -> Result<(), String> {
         } else {
             format!(".{}", spec.strip_prefix("shadless").unwrap_or(spec))
         };
-        if exports.as_object().map(|o| o.contains_key(&sub)).unwrap_or(false) {
+        if exports
+            .as_object()
+            .map(|o| o.contains_key(&sub))
+            .unwrap_or(false)
+        {
             return true;
         }
         for k in &export_keys {
@@ -265,8 +261,11 @@ pub fn gate_pack(root: &Path) -> Result<(), String> {
 
     // 4. nothing outside the product surface
     for f in packed.keys() {
-        if !re_allowed().is_match(f) {
-            fail.push(format!("tarball carries {} — outside the product surface", f));
+        if !RE_ALLOWED.is_match(f) {
+            fail.push(format!(
+                "tarball carries {} — outside the product surface",
+                f
+            ));
         }
     }
 

@@ -13,48 +13,26 @@
 use regex::Regex;
 use std::collections::HashMap;
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 
-fn re_import_line() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?m)^@import .+;$").unwrap())
-}
-fn re_dark_variant() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?m)^@custom-variant dark [^\n]+$").unwrap())
-}
-fn re_block_open() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"@theme[^{]*\{|(^|\n)[ \t]*(:root|\.dark)\s*\{").unwrap())
-}
-fn re_border_reset() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"\n[ \t]*\*[ \t]*\{[^}]*@apply border-border[^}]*\}").unwrap())
-}
-fn re_stray_import() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"(?m)^@import ("[^"]+"|url\([^)]*\));?$"#).unwrap())
-}
-fn re_slot_selector() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"\[data-slot="([^"]+)"\]"#).unwrap())
-}
-fn re_standalone() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?m)^  \.([^ \t\n\f\r]+) \{$").unwrap())
-}
-fn re_css_escape_re() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"\\(.)").unwrap())
-}
-fn re_data_attr() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"\[data-[^\]]*\]").unwrap())
-}
-fn re_css_fixes() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new("export const SHADLESS_CSS_FIXES = `([^`]*)`").unwrap())
-}
+static RE_IMPORT_LINE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?m)^@import .+;$").unwrap());
+static RE_DARK_VARIANT: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?m)^@custom-variant dark [^\n]+$").unwrap());
+static RE_BLOCK_OPEN: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"@theme[^{]*\{|(^|\n)[ \t]*(:root|\.dark)\s*\{").unwrap());
+static RE_BORDER_RESET: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"\n[ \t]*\*[ \t]*\{[^}]*@apply border-border[^}]*\}").unwrap());
+static RE_STRAY_IMPORT: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#"(?m)^@import ("[^"]+"|url\([^)]*\));?$"#).unwrap());
+static RE_SLOT_SELECTOR: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#"\[data-slot="([^"]+)"\]"#).unwrap());
+static RE_STANDALONE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?m)^  \.([^ \t\n\f\r]+) \{$").unwrap());
+static RE_CSS_ESCAPE_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\\(.)").unwrap());
+static RE_DATA_ATTR: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\[data-[^\]]*\]").unwrap());
+static RE_CSS_FIXES: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new("export const SHADLESS_CSS_FIXES = `([^`]*)`").unwrap());
 
 const SHADCN_MARKER_END: &str = "/* === end inlined shadcn/tailwind.css === */";
 
@@ -89,7 +67,11 @@ fn header_of(text: &str, brace_idx: usize) -> String {
 fn extract_tokens(globals: &str) -> Result<String, String> {
     let mut keep: Vec<String> = Vec::new();
     // 1. @import lines (tailwindcss + tw-animate-css)
-    keep.extend(re_import_line().find_iter(globals).map(|m| m.as_str().to_string()));
+    keep.extend(
+        RE_IMPORT_LINE
+            .find_iter(globals)
+            .map(|m| m.as_str().to_string()),
+    );
     // 2. the inlined shadcn library tailwind.css (marker-bounded)
     let begin = globals.find("/* === begin inlined shadcn/tailwind.css === */");
     let end = globals.find(SHADCN_MARKER_END);
@@ -98,12 +80,12 @@ fn extract_tokens(globals: &str) -> Result<String, String> {
     };
     keep.push(globals[begin..end + SHADCN_MARKER_END.len()].to_string());
     // 3. dark-mode custom variant (line-scoped exact grab)
-    if let Some(dark) = re_dark_variant().find(globals) {
+    if let Some(dark) = RE_DARK_VARIANT.find(globals) {
         keep.push(dark.as_str().to_string());
     }
     // 4. walk top-level-ish at-rule/selector blocks with balanced braces;
     //    keep only the product-relevant ones
-    for loc in re_block_open().find_iter(globals) {
+    for loc in RE_BLOCK_OPEN.find_iter(globals) {
         let brace_idx = loc.end() - 1;
         let header = header_of(globals, brace_idx);
         let body = take_block(globals, brace_idx)?;
@@ -114,7 +96,7 @@ fn extract_tokens(globals: &str) -> Result<String, String> {
         }
     }
     // 5. the base border/outline reset rule (indented inside @layer base)
-    if let Some(star) = re_border_reset().find(globals) {
+    if let Some(star) = RE_BORDER_RESET.find(globals) {
         keep.push(format!("@layer base {{{}\n}}", star.as_str().trim()));
     }
     Ok(format!("{}\n", keep.join("\n\n")))
@@ -129,7 +111,7 @@ fn build_product_entry(tokens_css: &str, fixes_css: &str, parts_css: &str) -> St
 fn slot_set(css: &str) -> (Vec<String>, HashMap<String, bool>) {
     let mut order: Vec<String> = Vec::new();
     let mut seen: HashMap<String, bool> = HashMap::new();
-    for m in re_slot_selector().captures_iter(css) {
+    for m in RE_SLOT_SELECTOR.captures_iter(css) {
         if !seen.contains_key(&m[1]) {
             seen.insert(m[1].to_string(), true);
             order.push(m[1].to_string());
@@ -150,7 +132,12 @@ pub struct ProductReport {
 /// compilation in BOTH chains. out.css legitimately carries extra docs-site
 /// slots — those must NOT appear in the product build (chrome check). The
 /// stray-class check enforces hermeticity: content scanning must not leak.
-pub fn verify_product(full_css: &str, out_css: &str, parts_css: &str, product_source: &str) -> ProductReport {
+pub fn verify_product(
+    full_css: &str,
+    out_css: &str,
+    parts_css: &str,
+    product_source: &str,
+) -> ProductReport {
     let (expected, _) = slot_set(parts_css);
     let (_, full_slots) = slot_set(full_css);
     let (_, out_slots) = slot_set(out_css);
@@ -166,8 +153,14 @@ pub fn verify_product(full_css: &str, out_css: &str, parts_css: &str, product_so
     }
     let mut chrome = Vec::new();
     for needle in [
-        "rehype", "typeset", "dialog-ring", "style-vega", "data-wrapper",
-        "[data-slot=\"docs\"]", "[data-slot=\"layout\"]", "[data-slot=\"copy-button\"]",
+        "rehype",
+        "typeset",
+        "dialog-ring",
+        "style-vega",
+        "data-wrapper",
+        "[data-slot=\"docs\"]",
+        "[data-slot=\"layout\"]",
+        "[data-slot=\"copy-button\"]",
     ] {
         if full_css.contains(needle) {
             chrome.push(needle.to_string());
@@ -185,9 +178,9 @@ pub fn verify_product(full_css: &str, out_css: &str, parts_css: &str, product_so
     // compiled @apply of VARIANT-qualified utilities emits the variant into
     // the selector — compare the base class too before calling it stray
     let mut stray = Vec::new();
-    for m in re_standalone().captures_iter(full_css) {
-        let cls = re_css_escape_re().replace_all(&m[1], "$1").into_owned();
-        let base = re_data_attr().replace_all(&cls, "").into_owned();
+    for m in RE_STANDALONE.captures_iter(full_css) {
+        let cls = RE_CSS_ESCAPE_RE.replace_all(&m[1], "$1").into_owned();
+        let base = RE_DATA_ATTR.replace_all(&cls, "").into_owned();
         // token-boundary: `focus` inside the legitimate `focus-visible`
         // must not vouch for a leaked standalone class
         if !super::css_contains_token(product_source, &cls)
@@ -271,7 +264,8 @@ pub fn run_product_css() -> i32 {
         Ok(t) => t,
         Err(e) => return fail(e),
     };
-    let inline = "/* === begin inlined tw-animate-css (self-contained product surface) === */\n".to_string()
+    let inline = "/* === begin inlined tw-animate-css (self-contained product surface) === */\n"
+        .to_string()
         + animate.trim()
         + "\n/* === end inlined tw-animate-css === */";
     tokens = tokens.replacen("@import \"tw-animate-css\";", &inline, 1);
@@ -279,7 +273,7 @@ pub fn run_product_css() -> i32 {
         return fail("tw-animate-css import not replaced".to_string());
     }
     let mut stray_imports: Vec<String> = Vec::new();
-    for m in re_stray_import().captures_iter(&tokens) {
+    for m in RE_STRAY_IMPORT.captures_iter(&tokens) {
         if &m[1] != "\"tailwindcss\"" {
             stray_imports.push(m[1].to_string());
         }
@@ -300,7 +294,7 @@ pub fn run_product_css() -> i32 {
         Ok(p) => p,
         Err(e) => return fail(e),
     };
-    let Some(m) = re_css_fixes().captures(&prepaint) else {
+    let Some(m) = RE_CSS_FIXES.captures(&prepaint) else {
         return fail("SHADLESS_CSS_FIXES not found in src/docs/theme-prepaint.mjs".to_string());
     };
     let names = match part_files(&root) {

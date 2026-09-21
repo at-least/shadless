@@ -9,14 +9,14 @@
 //! cBuildFact for the structured comparison.
 
 use super::browser_shell::{BPage, BrowserShell};
-use super::example_fixture::{build_contract_oracle, EfDef};
-use crate::jsonorder::{json_string, Json, JsonObj};
+use super::example_fixture::{EfDef, build_contract_oracle};
+use crate::jsonorder::{Json, JsonObj, json_string};
 use regex::Regex;
 use serde::Deserialize;
 use serde_json::Value;
 use std::collections::{HashMap, HashSet};
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 
 #[derive(Deserialize, Clone, Debug, Default)]
 pub struct Cdef {
@@ -131,13 +131,11 @@ window.__facts = function (tag) {{
 
 // ---------- shadless page (relative-path rewrite until emitter lands) -------
 
-fn re_contract_attr_path() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"(src|href)="([^"]+)""#).unwrap())
-}
+static RE_CONTRACT_ATTR_PATH: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#"(src|href)="([^"]+)""#).unwrap());
 
 pub fn c_rewrite_relative_paths(html: &str, dir: &str) -> String {
-    re_contract_attr_path()
+    RE_CONTRACT_ATTR_PATH
         .replace_all(html, |m: &regex::Captures| {
             let (k, v) = (&m[1], &m[2]);
             if v.starts_with("http:")
@@ -155,24 +153,13 @@ pub fn c_rewrite_relative_paths(html: &str, dir: &str) -> String {
 
 // ---------- normalization of recorded differences ---------------------------
 
-fn re_contract_auto() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    // Go \w \d are ASCII; Rust regex classes are Unicode — spell the ASCII
-    // sets out.
-    R.get_or_init(|| Regex::new(r"^(radix-[0-9A-Za-z_:-]*|[a-z]+[0-9][0-9A-Za-z_-]*)$").unwrap())
-}
-fn re_contract_outline_none() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^outline:[\t\n\f\r ]*none$").unwrap())
-}
-fn re_contract_pointer_auto() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^pointer-events:[\t\n\f\r ]*auto$").unwrap())
-}
-fn re_contract_ws() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"[\t\n\f\r ]+").unwrap())
-}
+static RE_CONTRACT_AUTO: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^(radix-[0-9A-Za-z_:-]*|[a-z]+[0-9][0-9A-Za-z_-]*)$").unwrap());
+static RE_CONTRACT_OUTLINE_NONE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^outline:[\t\n\f\r ]*none$").unwrap());
+static RE_CONTRACT_POINTER_AUTO: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^pointer-events:[\t\n\f\r ]*auto$").unwrap());
+static RE_CONTRACT_WS: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"[\t\n\f\r ]+").unwrap());
 
 /// normVal, ported from tools/contracts/run.mjs.
 pub fn c_norm_val(v: &str, key: &str) -> String {
@@ -182,8 +169,8 @@ pub fn c_norm_val(v: &str, key: &str) -> String {
             let s = s.trim();
             if s.is_empty()
                 || s.starts_with("--radix-")
-                || re_contract_outline_none().is_match(s)
-                || re_contract_pointer_auto().is_match(s)
+                || RE_CONTRACT_OUTLINE_NONE.is_match(s)
+                || RE_CONTRACT_POINTER_AUTO.is_match(s)
             {
                 continue;
             }
@@ -191,16 +178,16 @@ pub fn c_norm_val(v: &str, key: &str) -> String {
         }
         return kept.join("; ");
     }
-    if re_contract_auto().is_match(v) {
+    if RE_CONTRACT_AUTO.is_match(v) {
         return "<auto-id>".to_string();
     }
-    let parts: Vec<&str> = re_contract_ws().split(v).collect();
+    let parts: Vec<&str> = RE_CONTRACT_WS.split(v).collect();
     let mut all_auto = !v.is_empty();
     for p in &parts {
         if p.is_empty() {
             continue;
         }
-        if !re_contract_auto().is_match(p) {
+        if !RE_CONTRACT_AUTO.is_match(p) {
             all_auto = false;
             break;
         }
@@ -590,7 +577,10 @@ fn c_oracle_run_page(
     out: &Path,
     step: &str,
 ) -> Result<CRunResult, String> {
-    let url = format!("file://{}", abs_or_die(out, "oracle.html").to_string_lossy());
+    let url = format!(
+        "file://{}",
+        abs_or_die(out, "oracle.html").to_string_lossy()
+    );
     page.goto_url(&url)?;
     page.wait_for_timeout(500)?;
     // the oracle entry guards its render and reports through __err: a
@@ -649,11 +639,8 @@ fn c_shadless_run(
         let mut mounted_ok = false;
         if !def.open_shadless.is_empty() && !c_closed_start(step) {
             if step.is_empty() {
-                let m = c_mounted_diff(
-                    &page,
-                    bool_or_true(def.mounted_classes),
-                    &def.open_shadless,
-                )?;
+                let m =
+                    c_mounted_diff(&page, bool_or_true(def.mounted_classes), &def.open_shadless)?;
                 mounted = m;
                 mounted_ok = true;
             } else {
@@ -723,8 +710,7 @@ fn run_contract_inner(name: &str) -> Result<(), ContractError> {
     let root = std::env::current_dir().map_err(|e| ContractError::Msg(e.to_string()))?;
     let out = root.join(format!("tools/contracts/out/{}", name));
 
-    let shell =
-        BrowserShell::start().map_err(|e| ContractError::Msg(format!("{}", e)))?;
+    let shell = BrowserShell::start().map_err(|e| ContractError::Msg(format!("{}", e)))?;
 
     let def = c_load_def(&shell, &root, name)?;
     let recorder = c_recorder_src(&def.slots);
@@ -742,9 +728,8 @@ fn run_contract_inner(name: &str) -> Result<(), ContractError> {
     )
     .map_err(ContractError::Msg)?;
 
-    let shadless_html = std::fs::read_to_string(&def.shadless_page).map_err(|e| {
-        ContractError::Msg(format!("{}: {}", def.shadless_page, e))
-    })?;
+    let shadless_html = std::fs::read_to_string(&def.shadless_page)
+        .map_err(|e| ContractError::Msg(format!("{}: {}", def.shadless_page, e)))?;
     let dir = abs_or_die(
         &root,
         &match Path::new(&def.shadless_page).parent() {
@@ -784,10 +769,7 @@ fn run_contract_inner(name: &str) -> Result<(), ContractError> {
         // was invisible exactly when it mattered. A pageerror is a failure,
         // same contract as example-fixture.
         if !errs.is_empty() {
-            let mut msg = format!(
-                "shadless page threw {} uncaught error(s)",
-                errs.len()
-            );
+            let mut msg = format!("shadless page threw {} uncaught error(s)", errs.len());
             if let Some(first) = errs.first() {
                 let line = first.lines().next().unwrap_or("");
                 msg.push_str(": ");
@@ -809,10 +791,9 @@ fn run_contract_inner(name: &str) -> Result<(), ContractError> {
             // either browser page does not. Re-run BOTH sides once from a
             // fresh page. If they now agree, record the agreed value and
             // say so.
-            let mut o2 =
-                c_oracle_run(&shell, &def, &out, step).map_err(ContractError::Msg)?;
-            let (mut c2, errs2) = c_shadless_run(&shell, &def, &out, step, &recorder)
-                .map_err(ContractError::Msg)?;
+            let mut o2 = c_oracle_run(&shell, &def, &out, step).map_err(ContractError::Msg)?;
+            let (mut c2, errs2) =
+                c_shadless_run(&shell, &def, &out, step, &recorder).map_err(ContractError::Msg)?;
             for e in &errs2 {
                 println!("  [shadless pageerror] {}", e);
             }
@@ -848,8 +829,7 @@ fn run_contract_inner(name: &str) -> Result<(), ContractError> {
     }
 
     let oracle_open = c_build_fact(&oracle_open_raw, &def.slots).map_err(ContractError::Msg)?;
-    let shadless_open =
-        c_build_fact(&shadless_open_raw, &def.slots).map_err(ContractError::Msg)?;
+    let shadless_open = c_build_fact(&shadless_open_raw, &def.slots).map_err(ContractError::Msg)?;
 
     // ---------- diff ----------------------------------------------------------
     let mut pass = true;
@@ -979,10 +959,8 @@ fn run_contract_inner(name: &str) -> Result<(), ContractError> {
         }
     }
 
-    let oracle_open_json =
-        c_raw_to_jsonable(&oracle_open_raw).map_err(ContractError::Msg)?;
-    let shadless_open_json =
-        c_raw_to_jsonable(&shadless_open_raw).map_err(ContractError::Msg)?;
+    let oracle_open_json = c_raw_to_jsonable(&oracle_open_raw).map_err(ContractError::Msg)?;
+    let shadless_open_json = c_raw_to_jsonable(&shadless_open_raw).map_err(ContractError::Msg)?;
     let mut oracle_obj = JsonObj::new();
     let mut shadless_obj = JsonObj::new();
     for s in &def.scenarios {

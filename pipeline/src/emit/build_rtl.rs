@@ -7,24 +7,16 @@ use super::prepaint::inject_pre_paint;
 use regex::Regex;
 use serde::Deserialize;
 use std::collections::{BTreeMap, HashMap};
-use std::sync::OnceLock;
+use std::sync::{LazyLock, OnceLock};
 
-fn re_html_has_lang() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"<html[^>]*[\t\n\f\r ]lang=""#).unwrap())
-}
-fn re_html_lang_attr() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"(<html[^>]*[\t\n\f\r ]lang=")[^"]*(")"#).unwrap())
-}
-fn re_html_open_tag() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"<html(\s[^>]*)?>").unwrap())
-}
-fn re_dir_attr() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"([\s"'])dir="(rtl|ltr)""#).unwrap())
-}
+static RE_HTML_HAS_LANG: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#"<html[^>]*[\t\n\f\r ]lang=""#).unwrap());
+static RE_HTML_LANG_ATTR: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#"(<html[^>]*[\t\n\f\r ]lang=")[^"]*(")"#).unwrap());
+static RE_HTML_OPEN_TAG: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"<html(\s[^>]*)?>").unwrap());
+static RE_DIR_ATTR: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#"([\s"'])dir="(rtl|ltr)""#).unwrap());
 
 #[derive(Deserialize, Clone, Default)]
 pub struct Translation {
@@ -65,7 +57,10 @@ pub fn substitute_and_patch(
     let mut out = arabic_html.to_string();
     for key in keys {
         let from_val = from.get(key.as_str()).map(String::as_str).unwrap_or("");
-        let to_val = to_values.get(key.as_str()).map(String::as_str).unwrap_or("");
+        let to_val = to_values
+            .get(key.as_str())
+            .map(String::as_str)
+            .unwrap_or("");
         if !from_val.is_empty() && !to_val.is_empty() && from_val != to_val {
             if !out.contains(from_val) {
                 unmatched.push(key.clone());
@@ -95,12 +90,12 @@ pub fn substitute_and_patch(
         lang_dir = "ltr".to_string();
     }
     // <html lang>: replace or inject
-    if re_html_has_lang().is_match(&out) {
-        out = re_html_lang_attr()
+    if RE_HTML_HAS_LANG.is_match(&out) {
+        out = RE_HTML_LANG_ATTR
             .replace_all(&out, format!("${{1}}{}${{2}}", to_lang))
             .into_owned();
     } else {
-        out = re_html_open_tag()
+        out = RE_HTML_OPEN_TAG
             .replace_all(&out, |m: &regex::Captures| {
                 let m0 = m.get(0).unwrap().as_str();
                 if !m0.ends_with('>') {
@@ -113,7 +108,7 @@ pub fn substitute_and_patch(
     }
     // every dir attribute (attribute-boundary anchored: a bare global would
     // also rewrite data-dir="ltr")
-    out = re_dir_attr()
+    out = RE_DIR_ATTR
         .replace_all(&out, format!("${{1}}dir=\"{}\"", lang_dir))
         .into_owned();
     out
@@ -125,11 +120,12 @@ pub fn substitute_and_patch(
 pub fn rtl_page_lang(name: &str) -> Option<&'static str> {
     static R: OnceLock<Regex> = OnceLock::new();
     let re = R.get_or_init(|| Regex::new(r"-rtl-(en|he|fa)\.html$").unwrap());
-    re.captures(name).map(|c| match c.get(1).map(|m| m.as_str()) {
-        Some("he") => "he",
-        Some("fa") => "fa",
-        _ => "en",
-    })
+    re.captures(name)
+        .map(|c| match c.get(1).map(|m| m.as_str()) {
+            Some("he") => "he",
+            Some("fa") => "fa",
+            _ => "en",
+        })
 }
 
 /// The engine's own Persian dictionary (the Go source this used to live in
@@ -167,22 +163,20 @@ pub fn run_build_rtl() -> i32 {
             return 1;
         }
     };
-    let dict: HashMap<String, HashMap<String, Translation>> =
-        match serde_json::from_str(&dict_b) {
-            Ok(d) => d,
-            Err(e) => {
-                eprintln!("build-rtl: dict: {}", e);
-                return 1;
-            }
-        };
-    let tiers_b =
-        match std::fs::read_to_string(root.join("src/registry/tiers.json")) {
-            Ok(b) => b,
-            Err(e) => {
-                eprintln!("build-rtl: {}", e);
-                return 1;
-            }
-        };
+    let dict: HashMap<String, HashMap<String, Translation>> = match serde_json::from_str(&dict_b) {
+        Ok(d) => d,
+        Err(e) => {
+            eprintln!("build-rtl: dict: {}", e);
+            return 1;
+        }
+    };
+    let tiers_b = match std::fs::read_to_string(root.join("src/registry/tiers.json")) {
+        Ok(b) => b,
+        Err(e) => {
+            eprintln!("build-rtl: {}", e);
+            return 1;
+        }
+    };
     #[derive(Deserialize)]
     struct TierEntry {
         #[serde(default)]
@@ -259,7 +253,10 @@ pub fn run_build_rtl() -> i32 {
                 root.join(format!("docs/demos/{}-{}.html", name, lang)),
                 root.join(format!("dist/components/{}-{}.html", name, lang)),
             ] {
-                pending_writes.push(Pending { path: dst, html: html.clone() });
+                pending_writes.push(Pending {
+                    path: dst,
+                    html: html.clone(),
+                });
             }
             emitted += 1;
             langs.push(lang.to_string());
@@ -320,7 +317,9 @@ pub fn run_build_rtl() -> i32 {
         for e in ents.flatten() {
             let p = e.path();
             let name = e.file_name().to_string_lossy().into_owned();
-            let this_run_lang = langs.iter().any(|l| name.ends_with(&format!("-{}.html", l)));
+            let this_run_lang = langs
+                .iter()
+                .any(|l| name.ends_with(&format!("-{}.html", l)));
             if !name.ends_with(".html")
                 || !name.contains("-rtl-")
                 || !this_run_lang

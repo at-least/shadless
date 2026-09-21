@@ -10,7 +10,7 @@ use regex::Regex;
 use serde::Deserialize;
 use std::collections::HashMap;
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 
 const RTL_DICT_EXAMPLES: &str = ".upstream/shadcn-ui/apps/v4/examples/aria";
 const RTL_DICT_OUT: &str = "src/registry/rtl-translations.json";
@@ -252,14 +252,10 @@ fn write_langs_json(b: &mut String, l: &RtlLangs, depth: usize) {
 // `translationsRenamed` would still match). Values may be StringLiteral or a
 // single-quasi TemplateLiteral; both surface as strings.
 
-static TRANSLATIONS_ANCHOR: OnceLock<Regex> = OnceLock::new();
-
-fn translations_anchor() -> &'static Regex {
-    TRANSLATIONS_ANCHOR.get_or_init(|| {
-        // Go \b is an ASCII word boundary; (?-u:\b) is the Rust equivalent.
-        Regex::new(r"const translations(?-u:\b)").expect("static regex")
-    })
-}
+static TRANSLATIONS_ANCHOR: LazyLock<Regex> = LazyLock::new(|| {
+    // Go \b is an ASCII word boundary; (?-u:\b) is the Rust equivalent.
+    Regex::new(r"const translations(?-u:\b)").expect("static regex")
+});
 
 fn extract_translations(root: &Path, src: &str) -> Result<RtlLangs, String> {
     let js = match esbuild_tsx(root, src) {
@@ -272,7 +268,7 @@ fn extract_translations(root: &Path, src: &str) -> Result<RtlLangs, String> {
             return Err(format!("esbuild: {}", esbuild_error_text(stderr)));
         }
     };
-    let m = translations_anchor().find(&js);
+    let m = TRANSLATIONS_ANCHOR.find(&js);
     let Some(m) = m else {
         return Err("no translations object".to_string());
     };

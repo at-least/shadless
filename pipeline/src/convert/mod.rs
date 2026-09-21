@@ -12,18 +12,18 @@ pub mod jsx;
 pub mod scan;
 pub mod topscan;
 
-use crate::jsonorder::{marshal_js_step, Json, JsonObj};
-use crate::emit::tags::{external_member_tag, native_tags, ternary_re};
+use crate::emit::tags::{TERNARY_RE, external_member_tag, native_tags};
+use crate::jsonorder::{Json, JsonObj, marshal_js_step};
 use crate::tsx;
 use cva::{CvReg, CvTable, CvTables};
-use scan::cv_prop_colon;
 use regex::Regex;
+use scan::cv_prop_colon;
 use scan::*;
+use serde_json::Value;
 use std::collections::{HashMap, HashSet};
 use std::io::Write as _;
 use std::path::Path;
-use serde_json::Value;
-use std::sync::{Mutex, OnceLock};
+use std::sync::{LazyLock, Mutex, OnceLock};
 
 const CV_UI: &str = "build/resolved-ui/ui";
 const CV_OUT: &str = "generated/ir";
@@ -34,8 +34,40 @@ const CV_TIERS: &str = "src/registry/tiers.json";
 
 pub(crate) fn cv_tier_sets() -> &'static [(&'static str, &'static [&'static str])] {
     &[
-        ("kernel", &["alert-dialog", "context-menu", "dialog", "dropdown-menu", "hover-card", "popover", "select", "slider", "scroll-area", "sheet", "tabs", "tooltip"]),
-        ("trivial-js", &["accordion", "aspect-ratio", "avatar", "checkbox", "collapsible", "label", "progress", "radio-group", "separator", "switch", "toggle", "toggle-group"]),
+        (
+            "kernel",
+            &[
+                "alert-dialog",
+                "context-menu",
+                "dialog",
+                "dropdown-menu",
+                "hover-card",
+                "popover",
+                "select",
+                "slider",
+                "scroll-area",
+                "sheet",
+                "tabs",
+                "tooltip",
+            ],
+        ),
+        (
+            "trivial-js",
+            &[
+                "accordion",
+                "aspect-ratio",
+                "avatar",
+                "checkbox",
+                "collapsible",
+                "label",
+                "progress",
+                "radio-group",
+                "separator",
+                "switch",
+                "toggle",
+                "toggle-group",
+            ],
+        ),
         ("medium", &["menubar", "navigation-menu"]),
         ("logic", &["combobox", "field", "sidebar"]),
         // bases/radix addition: questionnaire is a foreign-runtime wrapper
@@ -44,7 +76,16 @@ pub(crate) fn cv_tier_sets() -> &'static [(&'static str, &'static [&'static str]
 }
 
 pub(crate) fn cv_known_icons() -> &'static [&'static str] {
-    &["ChevronRight", "ChevronDown", "MoreHorizontal", "Check", "X", "Plus", "Minus", "Search"]
+    &[
+        "ChevronRight",
+        "ChevronDown",
+        "MoreHorizontal",
+        "Check",
+        "X",
+        "Plus",
+        "Minus",
+        "Search",
+    ]
 }
 
 fn cv_tier_index() -> &'static HashMap<&'static str, &'static str> {
@@ -78,7 +119,15 @@ fn cv_foreign_import(i: &str) -> bool {
             return false;
         }
     }
-    if matches!(i, "react" | "react-dom" | "lucide-react" | "class-variance-authority" | "clsx" | "tailwind-merge") {
+    if matches!(
+        i,
+        "react"
+            | "react-dom"
+            | "lucide-react"
+            | "class-variance-authority"
+            | "clsx"
+            | "tailwind-merge"
+    ) {
         return false;
     }
     if i.starts_with('.') {
@@ -118,9 +167,14 @@ pub fn esbuild_tsx(root: &Path, src: &str) -> Result<String, String> {
         .expect("piped")
         .write_all(src.as_bytes())
         .map_err(|e| format!("esbuild: {}", e))?;
-    let out = child.wait_with_output().map_err(|e| format!("esbuild: {}", e))?;
+    let out = child
+        .wait_with_output()
+        .map_err(|e| format!("esbuild: {}", e))?;
     if !out.status.success() {
-        return Err(format!("esbuild: {}", String::from_utf8_lossy(&out.stderr).trim()));
+        return Err(format!(
+            "esbuild: {}",
+            String::from_utf8_lossy(&out.stderr).trim()
+        ));
     }
     Ok(String::from_utf8_lossy(&out.stdout).into_owned())
 }
@@ -173,7 +227,7 @@ pub struct CvElCtx {
 pub struct CvCallOcc {
     pos: usize,
     args: Vec<String>,
-    arg_pos: Vec<usize>,  // absolute position of each arg's first non-space byte
+    arg_pos: Vec<usize>,   // absolute position of each arg's first non-space byte
     child_arg: Vec<usize>, // arg indexes of direct element-call children
     child_pos: Vec<usize>, // absolute positions of those calls
     tag: String,
@@ -247,7 +301,11 @@ fn cv_parse_call(js: &str, i: usize) -> Result<CvCallOcc, String> {
         offset += a.len() + 1;
     }
     if occ.args.len() < 2 {
-        return Err(format!("createElement: {} args at {}", occ.args.len(), open));
+        return Err(format!(
+            "createElement: {} args at {}",
+            occ.args.len(),
+            open
+        ));
     }
     let tag = cv_parse_expr(&occ.args[0]);
     if tag.kind == "str" {
@@ -258,7 +316,7 @@ fn cv_parse_call(js: &str, i: usize) -> Result<CvCallOcc, String> {
     } else if tag.kind == "ident" {
         occ.tag = tag.ident.clone();
         occ.tag_ok = true;
-    } else if cv_member_re().is_match(&occ.args[0]) {
+    } else if CV_MEMBER_RE.is_match(&occ.args[0]) {
         occ.tag = occ.args[0].clone();
         occ.tag_ok = true;
     }
@@ -392,8 +450,7 @@ fn convert_file(
                 if pairs[k].fn_index != pi as isize {
                     continue;
                 }
-                let (el, conds) =
-                    cv_process_element(&mut ctx, &mut pairs, k, &call_pos_to_pair)?;
+                let (el, conds) = cv_process_element(&mut ctx, &mut pairs, k, &call_pos_to_pair)?;
                 comp.elements.push(el);
                 ctx.file.conditionals.extend(conds);
             }
@@ -424,7 +481,9 @@ fn cv_process_element(
             props = n.obj;
         }
     }
-    let el = CvElCtx { props: props.clone() };
+    let el = CvElCtx {
+        props: props.clone(),
+    };
     let mut slot: Option<String> = None;
     let mut classes: Vec<String> = Vec::new();
     let mut spread = false;
@@ -443,7 +502,7 @@ fn cv_process_element(
         if p.key == "className" {
             class_strings(ctx, &p.val, &mut classes, Some(&el));
         }
-        if cv_identity_attr().is_match(&p.key) {
+        if IDENTITY_ATTR.is_match(&p.key) {
             let n = cv_parse_expr(&p.val);
             if n.kind == "str" {
                 attrs = attrs.add(&p.key, Json::Str(n.str));
@@ -453,7 +512,7 @@ fn cv_process_element(
     // component-wrap: an imported component (e.g. Button) renders with the
     // wrapped table's classes. ORDER is React's: the wrapped component
     // composes cn(itsVariants(...), className) — its own classes FIRST.
-    if occ.tag_ok && cv_ident_re().is_match(&occ.tag) {
+    if occ.tag_ok && CV_IDENT_RE.is_match(&occ.tag) {
         if let Some(imp) = ctx.file.meta_import.get(&occ.tag).cloned() {
             if let Some(comp) = ctx.reg.comp_cva.get(&imp) {
                 let table = comp.table.clone();
@@ -607,17 +666,12 @@ fn cv_child_classes(occ: &CvCallOcc) -> Vec<String> {
 
 // -------------------------------------------------- class collection + cva
 
-fn identity_attr() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    // Go (?i) over an ASCII-only pattern; [\w-] → ASCII
-    R.get_or_init(|| {
-        Regex::new(r"(?i)^(role|type|aria-[0-9A-Za-z_-]+|dir|lang|scope|colspan|rowspan|target|rel|tabindex)$").unwrap()
-    })
-}
-
-pub fn cv_identity_attr() -> &'static Regex {
-    identity_attr()
-}
+static IDENTITY_ATTR: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
+        r"(?i)^(role|type|aria-[0-9A-Za-z_-]+|dir|lang|scope|colspan|rowspan|target|rel|tabindex)$",
+    )
+    .unwrap()
+});
 
 /// lookupCva: (table, cross, ok)
 #[allow(dead_code)] // Go-port surface; the rust converter resolves cva through lookup_cva_named
@@ -654,10 +708,7 @@ fn resolve_cva_args(
     let own_attr = |name: &str| -> bool {
         match el {
             None => false,
-            Some(el) => el
-                .props
-                .iter()
-                .any(|p| !p.spread && p.key == name),
+            Some(el) => el.props.iter().any(|p| !p.spread && p.key == name),
         }
     };
     // resolveCvaArgs may append to the table's defaults (fromParam && !defOk
@@ -682,7 +733,10 @@ fn resolve_cva_args(
                     // `context.size || size` with data-size={…} on the
                     // element: the value arrives through React CONTEXT —
                     // treat it as a dynamic axis keyed on data-<axis>
-                    if l.kind != "str" && own_attr(&format!("data-{}", axis.axis)) && !val.is_empty() {
+                    if l.kind != "str"
+                        && own_attr(&format!("data-{}", axis.axis))
+                        && !val.is_empty()
+                    {
                         dyn_axes.push(axis.axis.clone());
                         dyn_defaults = dyn_defaults.add(&axis.axis, Json::Str(val.clone()));
                         continue;
@@ -891,16 +945,15 @@ fn find_data_attr(c: &CvCtx<'_>, el: Option<&CvElCtx>, test: &str) -> String {
     cv_scan_fn_data_attr(c.js, c.body_start, c.body_end, test)
 }
 
-fn cv_data_attr_re() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#""(data-[0-9A-Za-z_-]+)"\s*:\s*([A-Za-z_$][A-Za-z0-9_$]*)"#).unwrap())
-}
+static CV_DATA_ATTR_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r#""(data-[0-9A-Za-z_-]+)"\s*:\s*([A-Za-z_$][A-Za-z0-9_$]*)"#).unwrap()
+});
 
 /// Finds the first `data-x: <ident>` JSX prop in the body span whose
 /// identifier equals test. Only unmasked matches count.
 fn cv_scan_fn_data_attr(js: &str, start: usize, end: usize, test: &str) -> String {
     let seg = &js[start..end];
-    for m in cv_data_attr_re().captures_iter(seg) {
+    for m in CV_DATA_ATTR_RE.captures_iter(seg) {
         let whole = m.get(0).unwrap();
         if !cv_pos_unmasked(js, start, start + whole.start()) {
             continue;
@@ -984,10 +1037,7 @@ fn record_cva_ref(
             .add("slot", Json::Str(slot))
             .add("ref", Json::Str(ref_name.to_string()))
             .add("table", table.json())
-            .add(
-                "dyn",
-                Json::Arr(dyn_.into_iter().map(Json::Obj).collect()),
-            )
+            .add("dyn", Json::Arr(dyn_.into_iter().map(Json::Obj).collect()))
             .add(
                 "dynAxes",
                 Json::Arr(dyn_axes.into_iter().map(Json::Str).collect()),
@@ -1007,7 +1057,7 @@ fn cv_detect_cond(ctx: &CvCtx<'_>, text: &str, slot: &Option<String>) -> Vec<Vec
         if n.kind == "cond" {
             // the predicate, when it is `ident === "literal"` / `!==`
             let mut test: Option<Vec<(String, Json)>> = None;
-            if let Some(m) = cv_cond_test_re().captures(n.test.trim()) {
+            if let Some(m) = CV_COND_TEST_RE.captures(n.test.trim()) {
                 let name = m[1].to_string();
                 let op = m[2].to_string();
                 let mut o = JsonObj::new()
@@ -1063,13 +1113,12 @@ fn cv_detect_cond(ctx: &CvCtx<'_>, text: &str, slot: &Option<String>) -> Vec<Vec
     out
 }
 
-fn cv_cond_test_re() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    // \w → ASCII; \s → ASCII
-    R.get_or_init(|| {
-        Regex::new(r#"^([A-Za-z_$][A-Za-z0-9_$]*)\s*(===|!==)\s*("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')$"#).unwrap()
-    })
-}
+static CV_COND_TEST_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
+        r#"^([A-Za-z_$][A-Za-z0-9_$]*)\s*(===|!==)\s*("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')$"#,
+    )
+    .unwrap()
+});
 
 fn cv_cond_default_re(name: &str) -> Regex {
     // the distinct names are few and recur across all 61 files; compiling per
@@ -1081,11 +1130,8 @@ fn cv_cond_default_re(name: &str) -> Regex {
     }
     let quoted = regex_quote(name);
     // \b → ASCII word boundary emulation via (?-u:\b)
-    let re = Regex::new(&format!(
-        "(?-u:\\b){}\\s*=\\s*\"([^\"]+)\"",
-        quoted
-    ))
-    .expect("cond default re");
+    let re =
+        Regex::new(&format!("(?-u:\\b){}\\s*=\\s*\"([^\"]+)\"", quoted)).expect("cond default re");
     cache.lock().unwrap().insert(name.to_string(), re.clone());
     re
 }
@@ -1094,7 +1140,10 @@ fn cv_cond_default_re(name: &str) -> Regex {
 pub(crate) fn regex_quote(s: &str) -> String {
     let mut out = String::new();
     for c in s.chars() {
-        if matches!(c, '\\' | '.' | '+' | '*' | '?' | '(' | ')' | '|' | '[' | ']' | '{' | '}' | '^' | '$') {
+        if matches!(
+            c,
+            '\\' | '.' | '+' | '*' | '?' | '(' | ')' | '|' | '[' | ']' | '{' | '}' | '^' | '$'
+        ) {
             out.push('\\');
         }
         out.push(c);
@@ -1267,7 +1316,7 @@ fn cv_assign_pattern_default(p: &str) -> Option<(String, String)> {
     }
     let eq = eq as usize;
     let name = p[..eq].trim().to_string();
-    if !cv_ident_re().is_match(&name) {
+    if !CV_IDENT_RE.is_match(&name) {
         return None;
     }
     let lit = cv_parse_expr(&p[eq + 1..]);
@@ -1304,8 +1353,15 @@ fn cv_same_file_wrap(f: &mut CvFile) {
             _ => None,
         }
     }
-    fn eff_root(components: &[CvComponent], by_fn: &HashMap<String, usize>, fn_name: &str, stack: &mut HashSet<String>) -> Vec<String> {
-        let Some(ci) = by_fn.get(fn_name) else { return Vec::new() };
+    fn eff_root(
+        components: &[CvComponent],
+        by_fn: &HashMap<String, usize>,
+        fn_name: &str,
+        stack: &mut HashSet<String>,
+    ) -> Vec<String> {
+        let Some(ci) = by_fn.get(fn_name) else {
+            return Vec::new();
+        };
         let c = &components[*ci];
         if c.elements.is_empty() || stack.contains(fn_name) {
             return Vec::new();
@@ -1346,11 +1402,20 @@ fn cv_same_file_wrap(f: &mut CvFile) {
             };
             (slot, tag)
         };
-        if slot.is_empty() && !tag.is_empty() && by_fn.contains_key(&tag) && tag != f.components[i].fn_name {
+        if slot.is_empty()
+            && !tag.is_empty()
+            && by_fn.contains_key(&tag)
+            && tag != f.components[i].fn_name
+        {
             // [...new Set(effRoot(c.fn))].filter(Boolean) — insertion-ordered
             let mut seen: HashSet<String> = HashSet::new();
             let mut out: Vec<Json> = Vec::new();
-            for s in eff_root(&snapshot, &by_fn, &f.components[i].fn_name, &mut HashSet::new()) {
+            for s in eff_root(
+                &snapshot,
+                &by_fn,
+                &f.components[i].fn_name,
+                &mut HashSet::new(),
+            ) {
                 if s.is_empty() || seen.contains(&s) {
                     continue;
                 }
@@ -1410,7 +1475,7 @@ fn build_tag_hints(irs: &mut [CvFile]) -> Result<(), String> {
         if native_tags().contains(raw.as_str()) {
             return raw;
         }
-        if let Some(m) = ternary_re().captures(&raw) {
+        if let Some(m) = TERNARY_RE.captures(&raw) {
             if native_tags().contains(&m[2]) {
                 return m[2].to_string();
             }
@@ -1441,7 +1506,7 @@ fn build_tag_hints(irs: &mut [CvFile]) -> Result<(), String> {
         if native_tags().contains(tag) {
             return tag.to_string();
         }
-        if let Some(m) = ternary_re().captures(tag) {
+        if let Some(m) = TERNARY_RE.captures(tag) {
             if native_tags().contains(&m[2]) {
                 return m[2].to_string();
             }
@@ -1545,20 +1610,14 @@ impl CvFile {
     pub fn json(&self) -> Vec<(String, Json)> {
         let mut comps: Vec<Json> = Vec::new();
         for c in &self.components {
-            let els: Vec<Json> = c
-                .elements
-                .iter()
-                .map(|e| Json::Obj(e.clone()))
-                .collect();
-            comps.push(
-                Json::Obj(
-                    JsonObj::new()
-                        .add("fn", Json::Str(c.fn_name.clone()))
-                        .add("export", Json::Bool(c.is_export))
-                        .add("elements", Json::Arr(els))
-                        .into_pairs(),
-                ),
-            );
+            let els: Vec<Json> = c.elements.iter().map(|e| Json::Obj(e.clone())).collect();
+            comps.push(Json::Obj(
+                JsonObj::new()
+                    .add("fn", Json::Str(c.fn_name.clone()))
+                    .add("export", Json::Bool(c.is_export))
+                    .add("elements", Json::Arr(els))
+                    .into_pairs(),
+            ));
         }
         let mut out = JsonObj::new();
         out = out.add("schema", Json::Int(2));
@@ -1590,7 +1649,12 @@ impl CvFile {
         out = out.add("components", Json::Arr(comps));
         out = out.add(
             "conditionals",
-            Json::Arr(self.conditionals.iter().map(|c| Json::Obj(c.clone())).collect()),
+            Json::Arr(
+                self.conditionals
+                    .iter()
+                    .map(|c| Json::Obj(c.clone()))
+                    .collect(),
+            ),
         );
         out = out.add(
             "cvaRefs",
@@ -1598,7 +1662,12 @@ impl CvFile {
         );
         out = out.add(
             "tagHints",
-            Json::Obj(self.tag_hints.iter().map(|(k, v)| (k.clone(), v.clone())).collect()),
+            Json::Obj(
+                self.tag_hints
+                    .iter()
+                    .map(|(k, v)| (k.clone(), v.clone()))
+                    .collect(),
+            ),
         );
         out.into_pairs()
     }
@@ -1807,8 +1876,7 @@ pub fn run_convert() -> Result<(), String> {
         for c in &all_classes {
             let mut ok = verbatim(c);
             if !ok {
-                ok = !c.is_empty()
-                    && c.split_whitespace().all(|tok| verbatim(tok));
+                ok = !c.is_empty() && c.split_whitespace().all(|tok| verbatim(tok));
             }
             if !ok {
                 eprintln!(
@@ -1828,7 +1896,8 @@ pub fn run_convert() -> Result<(), String> {
             for c in &all_classes {
                 ir_strings.insert(c.clone());
             }
-            let cmplit_re = CMPLIT_RE.get_or_init(|| Regex::new(r#"[=!]==?\s*"((?:[^"\\]|\\.)*)""#).unwrap());
+            let cmplit_re =
+                CMPLIT_RE.get_or_init(|| Regex::new(r#"[=!]==?\s*"((?:[^"\\]|\\.)*)""#).unwrap());
             let mut cmp_lits: HashSet<String> = HashSet::new();
             for m in cmplit_re.captures_iter(&stripped) {
                 cmp_lits.insert(m[1].to_string());

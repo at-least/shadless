@@ -13,7 +13,11 @@ pub fn inject_pre_paint(html: &str) -> String {
         return html.to_string();
     }
     if html.contains("</head>") {
-        return html.replacen("</head>", &format!("{}{}", THEME_PREPAINT_SCRIPT, "</head>"), 1);
+        return html.replacen(
+            "</head>",
+            &format!("{}{}", THEME_PREPAINT_SCRIPT, "</head>"),
+            1,
+        );
     }
     static HEAD_RE: std::sync::OnceLock<Regex> = std::sync::OnceLock::new();
     let head_re = HEAD_RE.get_or_init(|| Regex::new(r"(?i)<head[^>]*>").unwrap());

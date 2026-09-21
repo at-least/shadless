@@ -4,12 +4,10 @@
 use regex::Regex;
 use serde::Deserialize;
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 
-fn re_slot_attr() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"data-slot="([0-9A-Za-z_-]+)""#).unwrap())
-}
+static RE_SLOT_ATTR: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#"data-slot="([0-9A-Za-z_-]+)""#).unwrap());
 
 #[derive(Deserialize, Default)]
 struct TierEntry {
@@ -140,10 +138,10 @@ pub fn run_demo_smoke(root: &Path) -> i32 {
     let mut fail = false;
     for f in &pages {
         let name = f.trim_end_matches(".html");
-        let html = std::fs::read_to_string(root.join("dist/components").join(f))
-            .unwrap_or_default();
+        let html =
+            std::fs::read_to_string(root.join("dist/components").join(f)).unwrap_or_default();
         let mut phantom: Vec<String> = Vec::new();
-        for m in re_slot_attr().captures_iter(&html) {
+        for m in RE_SLOT_ATTR.captures_iter(&html) {
             let slot = m[1].to_string();
             if !all_slots.contains(&slot) && !phantom.contains(&slot) {
                 phantom.push(slot);

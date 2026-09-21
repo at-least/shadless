@@ -4,13 +4,13 @@
 //! src/kernel fixtures; trivial-js pages reuse probes/t7; carousel from
 //! probes/t8; menubar/navigation-menu from src/kernel; field is inlined.
 
-use super::css::{component_css, wrap_component_css, CssIrComponent};
-use super::prepaint::{inject_pre_paint, SHADLESS_CSS_FIXES};
+use super::css::{CssIrComponent, component_css, wrap_component_css};
+use super::prepaint::{SHADLESS_CSS_FIXES, inject_pre_paint};
 use super::{load_skin, skin_data};
 use regex::Regex;
 use serde::Deserialize;
 use std::collections::HashMap;
-use std::sync::OnceLock;
+use std::sync::{LazyLock, OnceLock};
 
 /// rewritePaths — ported from tools/demo-lib.mjs. The bare `out.css` form is
 /// a SEPARATE replace from the `[^"]*-out\.css` form: the dash is mandatory
@@ -21,11 +21,18 @@ fn rewrite_paths(html: &str) -> String {
     static LINK_DIST: OnceLock<Regex> = OnceLock::new();
     static SCRIPT_BASE: OnceLock<Regex> = OnceLock::new();
     static SCRIPT_COMP: OnceLock<Regex> = OnceLock::new();
-    let link_comp = LINK_COMP.get_or_init(|| Regex::new(r#"(<link[^>]*href=")[^"]*-out\.css(")"#).unwrap());
-    let link_bare = LINK_BARE.get_or_init(|| Regex::new(r#"(<link[^>]*href=")out\.css(")"#).unwrap());
-    let link_dist = LINK_DIST.get_or_init(|| Regex::new(r#"(<link[^>]*href=")\.\./\.\./dist/out\.css(")"#).unwrap());
-    let script_base = SCRIPT_BASE.get_or_init(|| Regex::new(r#"(<script[^>]*src=")\.\./\.\./dist/shadless\.js(")"#).unwrap());
-    let script_comp = SCRIPT_COMP.get_or_init(|| Regex::new(r#"(<script[^>]*src=")\.\./\.\./dist/js/([\w-]+\.js)(")"#).unwrap());
+    let link_comp =
+        LINK_COMP.get_or_init(|| Regex::new(r#"(<link[^>]*href=")[^"]*-out\.css(")"#).unwrap());
+    let link_bare =
+        LINK_BARE.get_or_init(|| Regex::new(r#"(<link[^>]*href=")out\.css(")"#).unwrap());
+    let link_dist = LINK_DIST
+        .get_or_init(|| Regex::new(r#"(<link[^>]*href=")\.\./\.\./dist/out\.css(")"#).unwrap());
+    let script_base = SCRIPT_BASE.get_or_init(|| {
+        Regex::new(r#"(<script[^>]*src=")\.\./\.\./dist/shadless\.js(")"#).unwrap()
+    });
+    let script_comp = SCRIPT_COMP.get_or_init(|| {
+        Regex::new(r#"(<script[^>]*src=")\.\./\.\./dist/js/([\w-]+\.js)(")"#).unwrap()
+    });
     let out = link_comp.replace_all(html, "${1}../out.css${2}");
     let out = link_bare.replace_all(&out, "${1}../out.css${2}");
     let out = link_dist.replace_all(&out, "${1}../out.css${2}");
@@ -34,14 +41,12 @@ fn rewrite_paths(html: &str) -> String {
     out.into_owned()
 }
 
-fn re_has_out_css() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"<link[^>]*out\.css"#).unwrap())
-}
+static RE_HAS_OUT_CSS: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#"<link[^>]*out\.css"#).unwrap());
 
 /// ensureLink: t7 fixtures ship without a stylesheet link.
 fn ensure_link(html: &str) -> String {
-    if re_has_out_css().is_match(html) {
+    if RE_HAS_OUT_CSS.is_match(html) {
         return html.to_string();
     }
     html.replacen(
@@ -51,16 +56,48 @@ fn ensure_link(html: &str) -> String {
     )
 }
 
-const KERNEL_T6: &[&str] = &["alert-dialog", "context-menu", "dropdown-menu", "hover-card",
-    "popover", "scroll-area", "select", "sheet", "slider", "tabs", "tooltip"];
+const KERNEL_T6: &[&str] = &[
+    "alert-dialog",
+    "context-menu",
+    "dropdown-menu",
+    "hover-card",
+    "popover",
+    "scroll-area",
+    "select",
+    "sheet",
+    "slider",
+    "tabs",
+    "tooltip",
+];
 
-const TRIVIAL_T7: &[&str] = &["accordion", "aspect-ratio", "avatar", "checkbox", "collapsible",
-    "label", "progress", "radio-group", "separator", "switch", "toggle", "toggle-group"];
+const TRIVIAL_T7: &[&str] = &[
+    "accordion",
+    "aspect-ratio",
+    "avatar",
+    "checkbox",
+    "collapsible",
+    "label",
+    "progress",
+    "radio-group",
+    "separator",
+    "switch",
+    "toggle",
+    "toggle-group",
+];
 
 /// out.css's content scan is EXPLICIT (source(none)); this list == the
 /// `demo-css` inputs in pipeline/nodes.go — keep them in step.
-const DEMO_SOURCES: &[&str] = &["./components", "./js", "../docs/demos", "../docs/content", "../src/kernel",
-    "../tools/contracts/out", "../generated/ir", "../probes/t7", "../probes/t8"];
+const DEMO_SOURCES: &[&str] = &[
+    "./components",
+    "./js",
+    "../docs/demos",
+    "../docs/content",
+    "../src/kernel",
+    "../tools/contracts/out",
+    "../generated/ir",
+    "../probes/t7",
+    "../probes/t8",
+];
 
 fn field_demo_html() -> &'static str {
     r##"<!doctype html>
@@ -141,8 +178,8 @@ pub fn run_demo() -> Result<(), String> {
         let mut v: serde_json::Value =
             serde_json::from_str(&b).map_err(|e| format!("demo: ir: {} {}", n, e))?;
         super::css::drop_nulls(&mut v);
-        let ir: CssIrComponent = serde_json::from_value(v)
-            .map_err(|e| format!("demo: ir: {} {}", n, e))?;
+        let ir: CssIrComponent =
+            serde_json::from_value(v).map_err(|e| format!("demo: ir: {} {}", n, e))?;
         if shipped_tier(&ir.tier) || reg_tiers.get(&ir.name).map(|t| t.emit).unwrap_or(false) {
             file_order.push(ir.name.clone());
             ir_all.insert(ir.name.clone(), ir);
@@ -183,8 +220,11 @@ pub fn run_demo() -> Result<(), String> {
             continue;
         }
         let part = wrap_component_css(name, &css);
-        std::fs::write(root.join(format!("dist/css/{}.css", name)), format!("{}\n", part))
-            .map_err(|e| format!("demo: {}", e))?;
+        std::fs::write(
+            root.join(format!("dist/css/{}.css", name)),
+            format!("{}\n", part),
+        )
+        .map_err(|e| format!("demo: {}", e))?;
         css_files.insert(format!("{}.css", name), true);
         css_parts.push(part);
     }
@@ -195,7 +235,10 @@ pub fn run_demo() -> Result<(), String> {
             let name = f.file_name().to_string_lossy().into_owned();
             if name.ends_with(".css") && !css_files.contains_key(&name) {
                 let _ = std::fs::remove_file(f.path());
-                println!("demo: removed orphaned dist/css/{} (no longer an emitted component)", name);
+                println!(
+                    "demo: removed orphaned dist/css/{} (no longer an emitted component)",
+                    name
+                );
             }
         }
     }
@@ -203,9 +246,11 @@ pub fn run_demo() -> Result<(), String> {
         .iter()
         .map(|d| format!("@source \"{}\";", d))
         .collect();
-    let globals = base
-        .replacen("@import \"tailwindcss\";", "@import \"tailwindcss\" source(none);", 1)
-        + "\n"
+    let globals = base.replacen(
+        "@import \"tailwindcss\";",
+        "@import \"tailwindcss\" source(none);",
+        1,
+    ) + "\n"
         + &srcs.join("\n")
         + "\n\n"
         + SHADLESS_CSS_FIXES

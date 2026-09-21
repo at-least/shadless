@@ -483,8 +483,11 @@ fn cv_parse_import(stmt: &str) -> (String, Vec<CvImpSpec>, String) {
     }
     static NS_RE: std::sync::OnceLock<Regex> = std::sync::OnceLock::new();
     static DEF_RE: std::sync::OnceLock<Regex> = std::sync::OnceLock::new();
-    let ns_re = NS_RE.get_or_init(|| Regex::new(r"import\s*\*\s*as\s+([A-Za-z_$][A-Za-z0-9_$]*)").unwrap());
-    let def_re = DEF_RE.get_or_init(|| Regex::new(r"import\s+([A-Za-z_$][A-Za-z0-9_$]*)\s*,?\s*(?:\{|from\b)").unwrap());
+    let ns_re =
+        NS_RE.get_or_init(|| Regex::new(r"import\s*\*\s*as\s+([A-Za-z_$][A-Za-z0-9_$]*)").unwrap());
+    let def_re = DEF_RE.get_or_init(|| {
+        Regex::new(r"import\s+([A-Za-z_$][A-Za-z0-9_$]*)\s*,?\s*(?:\{|from\b)").unwrap()
+    });
     // \b is ASCII in Go: pre-anchor the match by checking the preceding byte
     let ns_m = ns_re
         .captures_iter(head)
@@ -537,9 +540,15 @@ mod tests {
             params.starts_with('(') && params.ends_with(')'),
             "params span must quote the real ( … ) in the source, got {params:?}"
         );
-        assert!(params.contains("size = \"md\""), "params span must carry the default, got {params:?}");
+        assert!(
+            params.contains("size = \"md\""),
+            "params span must carry the default, got {params:?}"
+        );
         let body = &js[d.body[0]..d.body[1] + 1];
-        assert!(body.contains("render"), "body span must quote the real body, got {body:?}");
+        assert!(
+            body.contains("render"),
+            "body span must quote the real body, got {body:?}"
+        );
     }
 
     /// ASI tail: `cv_skip_stmt` stops at the newline, so dcl.text keeps its
@@ -552,6 +561,9 @@ mod tests {
         let d = t.decls.iter().find(|d| d.name == "Chart").unwrap();
         assert!(d.is_arrow);
         let params = &js[d.params[0]..d.params[1] + 1];
-        assert_eq!(params, "({ size = \"md\" })", "params exact span, got {params:?}");
+        assert_eq!(
+            params, "({ size = \"md\" })",
+            "params exact span, got {params:?}"
+        );
     }
 }

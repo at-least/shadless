@@ -6,34 +6,54 @@
 use regex::Regex;
 use serde::Deserialize;
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 
 use super::parity_baseline::{
-    cell_map, diff_parity_baseline, load_parity_baseline, ParityCell, parity_norm_value,
-    show_cell, show_change, write_parity_baseline,
+    ParityCell, cell_map, diff_parity_baseline, load_parity_baseline, parity_norm_value, show_cell,
+    show_change, write_parity_baseline,
 };
 
 const DEMO_PARITY_BASELINE: &str = "gates/demo-parity-baseline.json";
 const DEMO_PARITY_COLLECT: &str = include_str!("demo_parity_collect.js");
 
 const DEMO_PARITY_PROPS: [&str; 28] = [
-    "color", "background-color", "border-color", "border-top-width", "border-radius", "padding-top",
-    "padding-right", "padding-bottom", "padding-left", "margin-top", "margin-left", "width", "height",
-    "min-width", "max-width", "font-size", "font-weight", "line-height", "display", "flex-direction",
-    "align-items", "justify-content", "gap", "position", "opacity", "box-shadow", "text-align", "overflow",
+    "color",
+    "background-color",
+    "border-color",
+    "border-top-width",
+    "border-radius",
+    "padding-top",
+    "padding-right",
+    "padding-bottom",
+    "padding-left",
+    "margin-top",
+    "margin-left",
+    "width",
+    "height",
+    "min-width",
+    "max-width",
+    "font-size",
+    "font-weight",
+    "line-height",
+    "display",
+    "flex-direction",
+    "align-items",
+    "justify-content",
+    "gap",
+    "position",
+    "opacity",
+    "box-shadow",
+    "text-align",
+    "overflow",
 ];
 
 // harness shell pinned on both sides: neither body convention is the component
 const DEMO_PARITY_FREEZE: &str = "*,*::before,*::after{transition:none!important;animation:none!important} body{padding:0!important;margin:0;color:var(--foreground);background:var(--background)}";
 
-fn re_body() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?s)<body([^>]*)>(.*)</body>").unwrap())
-}
-fn re_script() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?s)<script.*?</script>").unwrap())
-}
+static RE_BODY: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?s)<body([^>]*)>(.*)</body>").unwrap());
+static RE_SCRIPT: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?s)<script.*?</script>").unwrap());
 
 #[derive(Deserialize)]
 struct Owned {
@@ -52,8 +72,8 @@ pub fn run_demo_parity(root: &Path, record: bool, details: bool) -> i32 {
         }
     };
     let owned: Vec<Owned> = serde_json::from_str(&ob).unwrap_or_default();
-    let oracle_css = std::fs::read_to_string(root.join("build/gates/oracle.css"))
-        .unwrap_or_default();
+    let oracle_css =
+        std::fs::read_to_string(root.join("build/gates/oracle.css")).unwrap_or_default();
     let out_css = std::fs::read_to_string(root.join("dist/out.css")).unwrap_or_default();
 
     let shell = match crate::oracle::browser_shell::BrowserShell::start() {
@@ -85,36 +105,39 @@ pub fn run_demo_parity(root: &Path, record: bool, details: bool) -> i32 {
         let Ok(html) = std::fs::read_to_string(root.join(&t.out)) else {
             continue;
         };
-        let Some(m) = re_body().captures(&html) else {
+        let Some(m) = RE_BODY.captures(&html) else {
             continue;
         };
-        let bare = re_script().replace_all(&m[2], "");
+        let bare = RE_SCRIPT.replace_all(&m[2], "");
         let doc = |css: &str, root_class: &str| -> String {
             format!(
                 "<!doctype html><html class=\"{}\"><head><style>{}</style><style>{}</style></head><body{}>{}</body></html>",
                 root_class, css, DEMO_PARITY_FREEZE, &m[1], bare
             )
         };
-        let collect_once = || -> std::collections::HashMap<String, std::collections::HashMap<String, String>> {
-            let Ok(v) = page.evaluate_fn_arg(DEMO_PARITY_COLLECT, serde_json::json!(DEMO_PARITY_PROPS)) else {
-                return Default::default();
-            };
-            let mut out = std::collections::HashMap::new();
-            if let Some(obj) = v.as_object() {
-                for (k, sv) in obj {
-                    if let Some(sm) = sv.as_object() {
-                        let mut cellm = std::collections::HashMap::new();
-                        for (p, val) in sm {
-                            if let Some(s) = val.as_str() {
-                                cellm.insert(p.clone(), s.to_string());
+        let collect_once =
+            || -> std::collections::HashMap<String, std::collections::HashMap<String, String>> {
+                let Ok(v) =
+                    page.evaluate_fn_arg(DEMO_PARITY_COLLECT, serde_json::json!(DEMO_PARITY_PROPS))
+                else {
+                    return Default::default();
+                };
+                let mut out = std::collections::HashMap::new();
+                if let Some(obj) = v.as_object() {
+                    for (k, sv) in obj {
+                        if let Some(sm) = sv.as_object() {
+                            let mut cellm = std::collections::HashMap::new();
+                            for (p, val) in sm {
+                                if let Some(s) = val.as_str() {
+                                    cellm.insert(p.clone(), s.to_string());
+                                }
                             }
+                            out.insert(k.clone(), cellm);
                         }
-                        out.insert(k.clone(), cellm);
                     }
                 }
-            }
-            out
-        };
+                out
+            };
         let _ = page.evaluate_fn_arg(
             r#"(html) => { document.open(); document.write(html); document.close(); return true }"#,
             serde_json::json!(doc(&out_css, "")),

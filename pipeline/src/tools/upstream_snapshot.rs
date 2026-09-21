@@ -10,53 +10,39 @@ use std::collections::HashMap;
 use std::fs;
 use std::io::Read;
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 use std::time::Duration;
 
 use super::docs_transforms::fence_shadow;
 
-fn re_radix_csr1() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"radix-:r[a-z0-9]*:?").unwrap())
-}
-fn re_radix_csr2() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"radix-_r_[a-z0-9-]*").unwrap())
-}
-fn re_radix_ssr() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?i)radix-_R_[a-z0-9-]*").unwrap())
-}
-fn re_preview_wr() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| {
-        Regex::new(r#"<div data-slot="preview"[^>]*><div data-align="[^"]*" data-chromeless="false" class="preview[^"]*">"#)
+static RE_RADIX_CSR1: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"radix-:r[a-z0-9]*:?").unwrap());
+static RE_RADIX_CSR2: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"radix-_r_[a-z0-9-]*").unwrap());
+static RE_RADIX_SSR: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?i)radix-_R_[a-z0-9-]*").unwrap());
+static RE_PREVIEW_WR: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r#"<div data-slot="preview"[^>]*><div data-align="[^"]*" data-chromeless="false" class="preview[^"]*">"#)
             .unwrap()
-    })
-}
-fn re_comp_prev() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"<ComponentPreview\b([^>]*)>").unwrap())
-}
-fn re_name_attr() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"name="([^"]*)""#).unwrap())
-}
+});
+static RE_COMP_PREV: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"<ComponentPreview\b([^>]*)>").unwrap());
+static RE_NAME_ATTR: LazyLock<Regex> = LazyLock::new(|| Regex::new(r#"name="([^"]*)""#).unwrap());
 
 pub fn norm_snapshot(html: &str) -> String {
-    let out = re_radix_csr1().replace_all(html, "radix-<auto>");
-    let out = re_radix_csr2().replace_all(&out, "radix-<auto>");
+    let out = RE_RADIX_CSR1.replace_all(html, "radix-<auto>");
+    let out = RE_RADIX_CSR2.replace_all(&out, "radix-<auto>");
     // SSR react-useId ids share the CSR bucket — runtime-generated, not
     // part of the contract
-    re_radix_ssr().replace_all(&out, "radix-<auto>").into_owned()
+    RE_RADIX_SSR.replace_all(&out, "radix-<auto>").into_owned()
 }
 
 /// snapshotPreviewNames: preview names in mdx document order (fences shadowed
 /// so fenced ComponentPreview text cannot reorder the mapping).
 pub fn snapshot_preview_names(mdx: &str) -> Vec<String> {
     let mut out = Vec::new();
-    for m in re_comp_prev().captures_iter(&fence_shadow(mdx)) {
-        if let Some(nm) = re_name_attr().captures(&m[1]) {
+    for m in RE_COMP_PREV.captures_iter(&fence_shadow(mdx)) {
+        if let Some(nm) = RE_NAME_ATTR.captures(&m[1]) {
             out.push(nm[1].to_string());
         }
     }
@@ -67,7 +53,7 @@ pub fn snapshot_preview_names(mdx: &str) -> Vec<String> {
 /// SSR HTML by stack-balancing <div>/</div>.
 pub fn snapshot_slice_previews(html: &str) -> Vec<String> {
     let mut out = Vec::new();
-    for loc in re_preview_wr().find_iter(html) {
+    for loc in RE_PREVIEW_WR.find_iter(html) {
         let start = loc.end();
         let mut depth: i64 = 1;
         let mut i = start;
@@ -222,12 +208,17 @@ pub fn run_upstream_snapshot(args: &[String]) -> i32 {
     {
         Some(m) => m,
         None => {
-            eprintln!("FAIL  upstream-snapshot: src/registry/pin.json has no `shadcn_ui.registry` of the form apps/v4/registry/bases/<base>/ui — cannot tell which base to crawl");
+            eprintln!(
+                "FAIL  upstream-snapshot: src/registry/pin.json has no `shadcn_ui.registry` of the form apps/v4/registry/bases/<base>/ui — cannot tell which base to crawl"
+            );
             return 1;
         }
     };
     let base = &m[1];
-    let docs_dir = format!(".upstream/shadcn-ui/apps/v4/content/docs/components/{}", base);
+    let docs_dir = format!(
+        ".upstream/shadcn-ui/apps/v4/content/docs/components/{}",
+        base
+    );
     let out_dir = "src/registry/upstream-snapshot";
     let origin = std::env::var("SHADLESS_SNAPSHOT_ORIGIN").unwrap_or_default();
     let origin = if origin.is_empty() {
@@ -342,9 +333,9 @@ pub fn run_upstream_snapshot(args: &[String]) -> i32 {
             b.push_str("\n  ");
             b.push_str(&crate::jsonorder::json_string(n));
             b.push_str(": ");
-            b.push_str(&crate::jsonorder::json_string(
-                &norm_snapshot(slices[i].trim()),
-            ));
+            b.push_str(&crate::jsonorder::json_string(&norm_snapshot(
+                slices[i].trim(),
+            )));
         }
         b.push_str("\n }\n}\n");
         if let Err(e) = fs::write(format!("{}/{}.json", out_dir, page), b.as_bytes()) {
@@ -378,15 +369,16 @@ mod tests {
     #[test]
     fn unit_norm_snapshot() {
         let cases = [
-            ("radix-:r1:", "radix-<auto>"),   // CSR useId, colon-delimited
-            ("radix-_r_ab", "radix-<auto>"),  // CSR useId, underscore-delimited
-            ("radix-_R_AB", "radix-<auto>"),  // SSR useId shares the CSR bucket
+            ("radix-:r1:", "radix-<auto>"),  // CSR useId, colon-delimited
+            ("radix-_r_ab", "radix-<auto>"), // CSR useId, underscore-delimited
+            ("radix-_R_AB", "radix-<auto>"), // SSR useId shares the CSR bucket
         ];
         for (input, want) in cases {
             assert_eq!(norm_snapshot(input), want, "norm_snapshot({:?})", input);
         }
         // all three shapes normalize inside a real attribute soup, not just bare
-        let mixed = r#"<div id="radix-:r1:" aria-labelledby="radix-_r_ab-trigger">radix-_R_AB</div>"#;
+        let mixed =
+            r#"<div id="radix-:r1:" aria-labelledby="radix-_r_ab-trigger">radix-_R_AB</div>"#;
         let want = r#"<div id="radix-<auto>" aria-labelledby="radix-<auto>">radix-<auto></div>"#;
         assert_eq!(norm_snapshot(mixed), want, "norm_snapshot(mixed)");
     }

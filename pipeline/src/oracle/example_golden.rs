@@ -9,19 +9,14 @@ use regex::Regex;
 use serde::Deserialize;
 use std::collections::{BTreeMap, HashMap};
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 
 /// Both spellings a normalised auto-id can have in a diff context:
 /// oracle_norm emits radix-a<N>, oracle_canon.js emits radix-<id>.
-fn re_golden_auto_id() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"radix-(?:<id>|a\d+)").unwrap())
-}
+static RE_GOLDEN_AUTO_ID: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"radix-(?:<id>|a\d+)").unwrap());
 
-fn re_long_quoted() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#""[^"]{20,}""#).unwrap())
-}
+static RE_LONG_QUOTED: LazyLock<Regex> = LazyLock::new(|| Regex::new(r#""[^"]{20,}""#).unwrap());
 
 /// First-difference window with clamped context on both sides.
 fn first_diff_window(a: &str, b: &str, before: usize, after: usize) -> (String, String) {
@@ -53,7 +48,6 @@ fn first_diff_window(a: &str, b: &str, before: usize, after: usize) -> (String, 
     };
     (window(a), window(b))
 }
-
 
 /// Truncates to `max` bytes; the report paths only, never worth a panic on
 /// multi-byte content.
@@ -107,7 +101,16 @@ fn run_inner(args: &[String]) -> Result<i32, String> {
     }
 
     let shell = BrowserShell::start()?;
-    let result = run_inner_shell(&shell, args, mode, &diff_name, &diff_page, EXAMPLES_DIR, SNAPSHOT_DIR, TMP);
+    let result = run_inner_shell(
+        &shell,
+        args,
+        mode,
+        &diff_name,
+        &diff_page,
+        EXAMPLES_DIR,
+        SNAPSHOT_DIR,
+        TMP,
+    );
     shell.close();
     result
 }
@@ -115,9 +118,12 @@ fn run_inner(args: &[String]) -> Result<i32, String> {
 /// Loads one golden snapshot file into its previews map. A damaged file is
 /// corpus damage, not a per-example diff: the caller fails the gate rather
 /// than silently comparing less.
-fn load_snapshot(dir: &str, pf: &str) -> Result<serde_json::Map<String, serde_json::Value>, String> {
-    let b = std::fs::read_to_string(Path::new(dir).join(pf))
-        .map_err(|e| format!("{}: {}", pf, e))?;
+fn load_snapshot(
+    dir: &str,
+    pf: &str,
+) -> Result<serde_json::Map<String, serde_json::Value>, String> {
+    let b =
+        std::fs::read_to_string(Path::new(dir).join(pf)).map_err(|e| format!("{}: {}", pf, e))?;
     let snap: serde_json::Value = serde_json::from_str(&b).map_err(|e| format!("{}: {}", pf, e))?;
     snap.get("previews")
         .and_then(|p| p.as_object())
@@ -160,12 +166,20 @@ fn run_inner_shell(
         if page_name.is_empty() {
             page_name = diff_name.splitn(2, '-').next().unwrap_or("").to_string();
         }
-        let snap_b = std::fs::read_to_string(Path::new(snapshot_dir).join(format!("{}.json", page_name)))
-            .map_err(|e| format!("example-golden: {}", e))?;
-        let snap: serde_json::Value = serde_json::from_str(&snap_b).unwrap_or(serde_json::Value::Null);
-        let upstream_html = snap["previews"][diff_name].as_str().unwrap_or("").to_string();
+        let snap_b =
+            std::fs::read_to_string(Path::new(snapshot_dir).join(format!("{}.json", page_name)))
+                .map_err(|e| format!("example-golden: {}", e))?;
+        let snap: serde_json::Value =
+            serde_json::from_str(&snap_b).unwrap_or(serde_json::Value::Null);
+        let upstream_html = snap["previews"][diff_name]
+            .as_str()
+            .unwrap_or("")
+            .to_string();
         if upstream_html.is_empty() {
-            return Err(format!("no snapshot preview {:?} in {}.json", diff_name, page_name));
+            return Err(format!(
+                "no snapshot preview {:?} in {}.json",
+                diff_name, page_name
+            ));
         }
         let a = oracle_canon(diff_name)?;
         let b = canon_of(page_ref.ok_or("no page")?, &upstream_html)?;
@@ -191,15 +205,16 @@ fn run_inner_shell(
         #[serde(default)]
         examples: HashMap<String, Exemption>,
     }
-    let exemptions: Exemptions = std::fs::read_to_string(format!("{}/exemptions.json", snapshot_dir))
-        .ok()
-        .and_then(|eb| serde_json::from_str(&eb).ok())
-        .unwrap_or_default();
+    let exemptions: Exemptions =
+        std::fs::read_to_string(format!("{}/exemptions.json", snapshot_dir))
+            .ok()
+            .and_then(|eb| serde_json::from_str(&eb).ok())
+            .unwrap_or_default();
 
     let sig = |a: &str, b: &str| -> String {
         let (wa, wb) = first_diff_window(a, b, 60, 60);
         let mut ctx = format!("{} ||| {}", wa, wb);
-        ctx = re_golden_auto_id().replace_all(&ctx, "#").into_owned();
+        ctx = RE_GOLDEN_AUTO_ID.replace_all(&ctx, "#").into_owned();
         truncate_utf8(&mut ctx, 200);
         ctx
     };
@@ -219,7 +234,7 @@ fn run_inner_shell(
     }
     let mut failures: Vec<FailureRec> = Vec::new();
     let bucket_of = |key: &str, name: &str, buckets: &mut BTreeMap<String, Vec<String>>| {
-        let mut k = re_long_quoted().replace_all(key, "\"…\"").into_owned();
+        let mut k = RE_LONG_QUOTED.replace_all(key, "\"…\"").into_owned();
         truncate_utf8(&mut k, 110);
         buckets.entry(k).or_default().push(name.to_string());
     };
@@ -352,7 +367,10 @@ fn run_inner_shell(
                 if f.signature.is_empty() {
                     String::new()
                 } else {
-                    format!("  \"signature\": {},", crate::jsonorder::json_string(&f.signature))
+                    format!(
+                        "  \"signature\": {},",
+                        crate::jsonorder::json_string(&f.signature)
+                    )
                 },
                 crate::jsonorder::json_string(&f.error)
             ));
@@ -424,7 +442,6 @@ mod tests {
         let _ = fs::remove_dir_all(&t);
     }
 
-
     /// The two spellings the canon actually produces: oracle_norm emits
     /// radix-a<N> and oracle_canon.js emits radix-<id>. The old pattern
     /// carried a double-escaped \\d that matched neither, so the id masker
@@ -432,7 +449,7 @@ mod tests {
     /// spelling never bucketed together.
     #[test]
     fn unit_golden_auto_id_mask_matches_both_spellings() {
-        let re = re_golden_auto_id();
+        let re = &RE_GOLDEN_AUTO_ID;
         assert!(re.is_match("radix-a1"), "oracle_norm spelling");
         assert!(re.is_match("radix-a12"), "oracle_norm multi-digit");
         assert!(re.is_match("radix-<id>"), "canon.js spelling");

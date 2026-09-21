@@ -15,7 +15,7 @@ use serde::Deserialize;
 use serde_json::Value;
 use std::collections::{HashMap, HashSet};
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 
 pub const RENDERED_PATH: &str = "EXEMPTIONS.md";
 pub const GOLDEN_EX_PATH: &str = "src/registry/upstream-snapshot/exemptions.json";
@@ -30,26 +30,19 @@ fn ledger_classes() -> &'static [&'static str] {
 
 // ---------------------------------------------------------------- jssource
 
-fn re_js_line_comment() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?m)//[^\n]*$").unwrap())
-}
-fn re_js_string() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#""((?:[^"\\]|\\.)*)""#).unwrap())
-}
-fn re_js_attr_list() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| {
-        Regex::new(r#""((?:[^"\\]|\\.)*)"[\t\n\f\r ]*:[\t\n\f\r ]*\[([^\]]*)\]"#).unwrap()
-    })
-}
+static RE_JS_LINE_COMMENT: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?m)//[^\n]*$").unwrap());
+static RE_JS_STRING: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#""((?:[^"\\]|\\.)*)""#).unwrap());
+static RE_JS_ATTR_LIST: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r#""((?:[^"\\]|\\.)*)"[\t\n\f\r ]*:[\t\n\f\r ]*\[([^\]]*)\]"#).unwrap()
+});
 
 /// Every double-quoted string in src, in order, with `//` comments removed
 /// first so a commented-out entry is not counted.
 pub fn js_strings_in(src: &str) -> Vec<String> {
-    let src = re_js_line_comment().replace_all(src, "");
-    re_js_string()
+    let src = RE_JS_LINE_COMMENT.replace_all(src, "");
+    RE_JS_STRING
         .captures_iter(&src)
         .map(|m| js_unescape(&m[1]))
         .collect()
@@ -107,8 +100,7 @@ pub fn js_unescape(s: &str) -> String {
             }
         }
     }
-    String::from_utf8(out)
-        .unwrap_or_else(|e| String::from_utf8_lossy(e.as_bytes()).into_owned())
+    String::from_utf8(out).unwrap_or_else(|e| String::from_utf8_lossy(e.as_bytes()).into_owned())
 }
 
 /// jsBalanced returns the text between the opening delimiter at src[open] and
@@ -132,8 +124,7 @@ pub fn js_set_literal(src: &str, name: &str) -> Result<Vec<String>, String> {
     let m = re
         .find(src)
         .ok_or_else(|| format!("{}: `new Set([...])` declaration not found", name))?;
-    let body = js_balanced(src, m.end() - 1, b'[', b']')
-        .map_err(|e| format!("{}: {}", name, e))?;
+    let body = js_balanced(src, m.end() - 1, b'[', b']').map_err(|e| format!("{}: {}", name, e))?;
     Ok(js_strings_in(body))
 }
 
@@ -150,8 +141,7 @@ pub fn js_object_field<'a>(src: &'a str, name: &str) -> Result<Option<&'a str>, 
         Some(m) => m,
         None => return Ok(None),
     };
-    let body =
-        js_balanced(src, m.end() - 1, b'{', b'}').map_err(|e| format!("{}: {}", name, e))?;
+    let body = js_balanced(src, m.end() - 1, b'{', b'}').map_err(|e| format!("{}: {}", name, e))?;
     Ok(Some(body))
 }
 
@@ -177,8 +167,8 @@ pub struct JsAttrEntry {
 /// pairs. Order is preserved because the ledger ids derived from it are
 /// written to a file whose diff should stay readable.
 pub fn js_attr_map(body: &str) -> Vec<JsAttrEntry> {
-    let body = re_js_line_comment().replace_all(body, "");
-    re_js_attr_list()
+    let body = RE_JS_LINE_COMMENT.replace_all(body, "");
+    RE_JS_ATTR_LIST
         .captures_iter(&body)
         .map(|m| JsAttrEntry {
             key: js_unescape(&m[1]),
@@ -236,10 +226,11 @@ pub struct LedgerFile {
 pub fn read_ledger(root: &Path) -> Result<LedgerFile, String> {
     let b = std::fs::read_to_string(root.join(super::LEDGER_PATH))
         .map_err(|e| format!("{}: {}", super::LEDGER_PATH, e))?;
-    let mut l: LedgerFile = serde_json::from_str(&b)
-        .map_err(|e| format!("{}: {}", super::LEDGER_PATH, e))?;
+    let mut l: LedgerFile =
+        serde_json::from_str(&b).map_err(|e| format!("{}: {}", super::LEDGER_PATH, e))?;
     // key order from the same bytes, via preserve_order maps
-    let top: Value = serde_json::from_str(&b).map_err(|e| format!("{}: {}", super::LEDGER_PATH, e))?;
+    let top: Value =
+        serde_json::from_str(&b).map_err(|e| format!("{}: {}", super::LEDGER_PATH, e))?;
     l.entry_order = key_order(&top, "entries")?;
     l.budget_order = key_order(&top, "budgets")?;
     Ok(l)
@@ -261,7 +252,7 @@ fn key_order(top: &Value, field: &str) -> Result<Vec<String>, String> {
 /// port does not reformat a committed file on its first run.
 impl LedgerFile {
     pub fn write(&self, root: &Path) -> Result<(), String> {
-        use crate::jsonorder::{marshal_js, Json, JsonObj};
+        use crate::jsonorder::{Json, JsonObj, marshal_js};
         let mut entries = JsonObj::new();
         for id in &self.entry_order {
             let e = &self.entries[id];
@@ -340,10 +331,20 @@ pub fn collect_source_ids(root: &Path) -> Result<Vec<SourceId>, String> {
         let src = std::fs::read_to_string(root.join(CONTRACTS_DIR).join(f))
             .map_err(|e| format!("{}/{}: {}", CONTRACTS_DIR, f, e))?;
         if js_field_is_false(&src, "mountedCheck") {
-            add(format!("mounted-check:{}", name), "contracts", &mut out, &mut seen);
+            add(
+                format!("mounted-check:{}", name),
+                "contracts",
+                &mut out,
+                &mut seen,
+            );
         }
         if js_field_is_false(&src, "mountedClasses") {
-            add(format!("mounted-classes:{}", name), "contracts", &mut out, &mut seen);
+            add(
+                format!("mounted-classes:{}", name),
+                "contracts",
+                &mut out,
+                &mut seen,
+            );
         }
         let attrs = js_object_field(&src, "ignoreAttrs")
             .map_err(|e| format!("{}/{}: {}", CONTRACTS_DIR, f, e))?;
@@ -370,7 +371,12 @@ pub fn collect_source_ids(root: &Path) -> Result<Vec<SourceId>, String> {
     let dead = js_set_literal(&css_src, "DEAD_UTILITIES")
         .map_err(|e| format!("{}: {}", EMITTER_CSS, e))?;
     for t in dead {
-        add(format!("dead-utility:{}", t), "emitter", &mut out, &mut seen);
+        add(
+            format!("dead-utility:{}", t),
+            "emitter",
+            &mut out,
+            &mut seen,
+        );
     }
 
     let skin_src = std::fs::read_to_string(root.join(EMITTER_SKIN))
@@ -378,7 +384,12 @@ pub fn collect_source_ids(root: &Path) -> Result<Vec<SourceId>, String> {
     let skin = js_set_literal(&skin_src, "SKIN_ALLOWLIST")
         .map_err(|e| format!("{}: {}", EMITTER_SKIN, e))?;
     for t in skin {
-        add(format!("skin-allowlist:{}", t), "emitter", &mut out, &mut seen);
+        add(
+            format!("skin-allowlist:{}", t),
+            "emitter",
+            &mut out,
+            &mut seen,
+        );
     }
     Ok(out)
 }
@@ -404,10 +415,8 @@ pub fn read_golden_exemptions(root: &Path) -> Result<GoldenExemptions, String> {
         #[serde(default)]
         examples: HashMap<String, Ex>,
     }
-    let raw: Raw =
-        serde_json::from_str(&b).map_err(|e| format!("{}: {}", GOLDEN_EX_PATH, e))?;
-    let top: Value =
-        serde_json::from_str(&b).map_err(|e| format!("{}: {}", GOLDEN_EX_PATH, e))?;
+    let raw: Raw = serde_json::from_str(&b).map_err(|e| format!("{}: {}", GOLDEN_EX_PATH, e))?;
+    let top: Value = serde_json::from_str(&b).map_err(|e| format!("{}: {}", GOLDEN_EX_PATH, e))?;
     let order = key_order(&top, "examples")?;
     let mut reasons = HashMap::new();
     for (k, v) in raw.examples {
@@ -420,7 +429,7 @@ impl GoldenExemptions {
     /// Emits JSON.stringify(golden, null, 1) + "\n" — indent 1, as the JS
     /// wrote it, so dissolving does not reformat the whole file.
     pub fn write(&self, root: &Path) -> Result<(), String> {
-        use crate::jsonorder::{marshal_js_step, Json, JsonObj};
+        use crate::jsonorder::{Json, JsonObj, marshal_js_step};
         let mut examples = JsonObj::new();
         for demo in &self.order {
             examples = examples.add(
@@ -478,7 +487,10 @@ pub fn collect_budget_values(root: &Path) -> Result<HashMap<String, i64>, String
     for (name, path) in [
         ("demo-parity.dirty-cells", "gates/demo-parity-baseline.json"),
         ("path-parity.dirty-cells", "gates/path-parity-baseline.json"),
-        ("style-parity.dirty-cells", "gates/style-parity-baseline.json"),
+        (
+            "style-parity.dirty-cells",
+            "gates/style-parity-baseline.json",
+        ),
     ] {
         v.insert(name.to_string(), baseline_cell_count(root, path));
     }
@@ -600,10 +612,7 @@ pub fn gate_ledger(root: &Path) -> Result<(), String> {
             Some(v) => *v,
         };
         if actual < 0 {
-            problems.push(format!(
-                "budget {}: could not read the live value",
-                name
-            ));
+            problems.push(format!("budget {}: could not read the live value", name));
             continue;
         }
         if actual > b.max {
@@ -858,7 +867,8 @@ pub fn render_ledger_markdown(root: &Path) -> Result<String, String> {
             l.budget_order.len()
         ),
         String::new(),
-        r#"Every "known difference, accepted for a reason" lives here, and every entry"#.to_string(),
+        r#"Every "known difference, accepted for a reason" lives here, and every entry"#
+            .to_string(),
         "declares **how it ends**. The `ledger` gate keeps this list in lockstep".to_string(),
         "with the sources in both directions: a new exemption with no entry fails,".to_string(),
         "an entry whose source flag vanished fails.".to_string(),
@@ -950,7 +960,6 @@ pub fn run_ledger(args: &[String]) -> i32 {
     0
 }
 
-
 /// The one budget the coverage gate checks itself (coverage.rs reads this
 /// ledger and ratchets its live uncovered-cell count). Exact name on
 /// purpose: any other `coverage.*` budget has no checker and must fail the
@@ -972,7 +981,9 @@ mod tests {
     /// the ledger gate instead of riding the prefix past it.
     #[test]
     fn unit_coverage_budget_skip_is_exact_not_prefix() {
-        assert!(budget_checked_by_coverage(crate::gates::coverage::COVERAGE_KEY));
+        assert!(budget_checked_by_coverage(
+            crate::gates::coverage::COVERAGE_KEY
+        ));
         assert!(!budget_checked_by_coverage("coverage.other"));
         assert!(!budget_checked_by_coverage("demo-parity.dirty-cells"));
     }
@@ -1057,7 +1068,11 @@ mod tests {
         let l = read_ledger(&root).unwrap();
         l.write(&root).unwrap();
         let got = std::fs::read_to_string(root.join("gates/ledger.json")).unwrap();
-        assert!(got.contains("café — em dash"), "non-ASCII escaped: {:?}", got);
+        assert!(
+            got.contains("café — em dash"),
+            "non-ASCII escaped: {:?}",
+            got
+        );
     }
 
     /// Go TestUnitGoldenExemptionsIndentIsOne: the exemptions file must keep
@@ -1080,9 +1095,15 @@ mod tests {
     /// Go TestUnitClassOfGoldenReason.
     #[test]
     fn unit_class_of_golden_reason() {
-        assert_eq!(class_of_golden_reason("re-check on re-pin"), "auto-dissolve");
+        assert_eq!(
+            class_of_golden_reason("re-check on re-pin"),
+            "auto-dissolve"
+        );
         assert_eq!(class_of_golden_reason("Deploy lag"), "auto-dissolve");
-        assert_eq!(class_of_golden_reason("iframe FRAME LAG on CI"), "auto-dissolve");
+        assert_eq!(
+            class_of_golden_reason("iframe FRAME LAG on CI"),
+            "auto-dissolve"
+        );
         assert_eq!(class_of_golden_reason("token drift vs live"), "permanent");
     }
 
@@ -1149,14 +1170,24 @@ mod tests {
         let root = tree(&[
             ("tools/contracts/components/dialog.mjs", body),
             (GOLDEN_EX_PATH, "{\"examples\":{}}"),
-            (EMITTER_CSS, "export const DEAD_UTILITIES = new Set([\n  \"stale-dead\",\n])\n"),
-            (EMITTER_SKIN, "export const SKIN_ALLOWLIST = new Set([\n  \"keep-a\", \"keep-b\",\n])\n"),
+            (
+                EMITTER_CSS,
+                "export const DEAD_UTILITIES = new Set([\n  \"stale-dead\",\n])\n",
+            ),
+            (
+                EMITTER_SKIN,
+                "export const SKIN_ALLOWLIST = new Set([\n  \"keep-a\", \"keep-b\",\n])\n",
+            ),
         ]);
         let ids = collect_source_ids(&root).unwrap();
         let got: Vec<&str> = ids.iter().map(|s| s.id.as_str()).collect();
         assert!(got.contains(&"mounted-classes:dialog"), "{:?}", got);
         assert!(got.contains(&"mounted-check:dialog"), "{:?}", got);
-        assert!(got.contains(&"ignore-attrs:dialog:dialog:style"), "{:?}", got);
+        assert!(
+            got.contains(&"ignore-attrs:dialog:dialog:style"),
+            "{:?}",
+            got
+        );
         assert!(
             got.contains(&"ignore-attrs:dialog:dialog-content:text"),
             "{:?}",
@@ -1214,8 +1245,14 @@ mod tests {
         let brackets = "const S = new Set([\"a[0]\"])";
         assert_eq!(js_set_literal(brackets, "S").unwrap(), vec!["a[0]"]);
 
-        assert!(js_field_is_false("\n  mountedCheck: false,\n", "mountedCheck"));
-        assert!(!js_field_is_false("// mountedCheck: false\n", "mountedCheck"));
+        assert!(js_field_is_false(
+            "\n  mountedCheck: false,\n",
+            "mountedCheck"
+        ));
+        assert!(!js_field_is_false(
+            "// mountedCheck: false\n",
+            "mountedCheck"
+        ));
         assert!(!js_field_is_false("xmountedCheck: false", "mountedCheck"));
         assert!(!js_field_is_false("mountedCheck: falsey", "mountedCheck"));
 
@@ -1259,7 +1296,10 @@ mod tests {
         }
         let v = collect_budget_values(&root).unwrap();
         let exempt = v.get("golden.exempt-demos").copied().unwrap();
-        assert!(exempt > 0, "golden.exempt-demos must count the committed exemptions");
+        assert!(
+            exempt > 0,
+            "golden.exempt-demos must count the committed exemptions"
+        );
         assert_eq!(
             v.get("interactivity.dead-families").copied().unwrap(),
             1,
@@ -1303,12 +1343,13 @@ mod tests {
         let original = std::fs::read_to_string(&rendered_path).expect("EXEMPTIONS.md exists");
         std::fs::write(
             &rendered_path,
-            format!("{}\n(unrelated hand edit that the ledger never rendered)\n", original),
+            format!(
+                "{}\n(unrelated hand edit that the ledger never rendered)\n",
+                original
+            ),
         )
         .unwrap();
-        let out = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-            gate_ledger(&root)
-        }));
+        let out = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| gate_ledger(&root)));
         std::fs::write(&rendered_path, original).expect("restore EXEMPTIONS.md");
         let res = match out {
             Ok(r) => r,

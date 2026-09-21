@@ -10,7 +10,7 @@
 use super::pin::truncate;
 use regex::Regex;
 use std::path::Path;
-use std::sync::{Mutex, OnceLock};
+use std::sync::{LazyLock, Mutex};
 
 pub const UPSTREAM_EXAMPLES: &str = ".upstream/shadcn-ui/apps/v4/examples/radix";
 
@@ -26,8 +26,8 @@ pub fn mut_edit(
     f: impl Fn(&str) -> Result<String, String>,
 ) -> Result<(), String> {
     let full = root.join(path);
-    let before =
-        std::fs::read_to_string(&full).map_err(|_| format!("mutation target missing: {} (build first)", path))?;
+    let before = std::fs::read_to_string(&full)
+        .map_err(|_| format!("mutation target missing: {} (build first)", path))?;
     let after = f(&before)?;
     if after == before {
         return Err(format!(
@@ -42,7 +42,11 @@ pub fn mut_edit(
 pub fn mut_replace_once(root: &Path, path: &str, find: &str, repl: &str) -> Result<(), String> {
     mut_edit(root, path, |s| {
         if !s.contains(find) {
-            return Err(format!("anchor not found in {}: {}", path, truncate(find, 60)));
+            return Err(format!(
+                "anchor not found in {}: {}",
+                path,
+                truncate(find, 60)
+            ));
         }
         Ok(s.replacen(find, repl, 1))
     })
@@ -52,7 +56,11 @@ pub fn mut_replace_once(root: &Path, path: &str, find: &str, repl: &str) -> Resu
 pub fn mut_replace_all(root: &Path, path: &str, find: &str, repl: &str) -> Result<(), String> {
     mut_edit(root, path, |s| {
         if !s.contains(find) {
-            return Err(format!("anchor not found in {}: {}", path, truncate(find, 60)));
+            return Err(format!(
+                "anchor not found in {}: {}",
+                path,
+                truncate(find, 60)
+            ));
         }
         Ok(s.replace(find, repl))
     })
@@ -137,38 +145,23 @@ pub fn insert_after(s: &str, anchor: &str, text: &str) -> (String, bool) {
 
 // ------------------------------------------------------------- regexes
 
-pub fn re_commit() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#""commit": "[0-9a-f]{40}""#).unwrap())
-}
-pub fn re_primary_token() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"--primary: oklch\([^)]*\);").unwrap())
-}
-pub fn re_padding() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r" px-[0-9.]+").unwrap())
-}
-pub fn re_dialog_script() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"<script src="[^"]*/js/dialog\.js"></script>"#).unwrap())
-}
-pub fn re_export_default_fn() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(export default function [0-9A-Za-z_]+\([^)]*\)[\t\n\f\r ]*\{)").unwrap())
-}
-pub fn re_first_reason() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#""reason": "((?:[^"\\]|\\.)*)""#).unwrap())
-}
-pub fn re_sheet_hash() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#""behavior:sheet"(?s:.){0,400}?"hash": "[0-9a-f]{64}""#).unwrap())
-}
-pub fn re_first_shadless_cell() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#""shadless": "((?:[^"\\]|\\.)*)""#).unwrap())
-}
+pub static RE_COMMIT: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#""commit": "[0-9a-f]{40}""#).unwrap());
+pub static RE_PRIMARY_TOKEN: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"--primary: oklch\([^)]*\);").unwrap());
+pub static RE_PADDING: LazyLock<Regex> = LazyLock::new(|| Regex::new(r" px-[0-9.]+").unwrap());
+pub static RE_DIALOG_SCRIPT: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#"<script src="[^"]*/js/dialog\.js"></script>"#).unwrap());
+pub static RE_EXPORT_DEFAULT_FN: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r"(export default function [0-9A-Za-z_]+\([^)]*\)[\t\n\f\r ]*\{)").unwrap()
+});
+pub static RE_FIRST_REASON: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#""reason": "((?:[^"\\]|\\.)*)""#).unwrap());
+pub static RE_SHEET_HASH: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r#""behavior:sheet"(?s:.){0,400}?"hash": "[0-9a-f]{64}""#).unwrap()
+});
+pub static RE_FIRST_SHADLESS_CELL: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#""shadless": "((?:[^"\\]|\\.)*)""#).unwrap());
 
 // ------------------------------------------------------------- the set
 
@@ -208,8 +201,8 @@ pub fn resolve_owned_example(root: &Path) -> Result<Vec<String>, String> {
         #[serde(default)]
         name: String,
     }
-    let owned: Vec<Owned> = serde_json::from_str(&b)
-        .map_err(|e| format!("docs/example-oracle.json: {}", e))?;
+    let owned: Vec<Owned> =
+        serde_json::from_str(&b).map_err(|e| format!("docs/example-oracle.json: {}", e))?;
     for o in owned {
         let rel = Path::new(UPSTREAM_EXAMPLES).join(format!("{}.tsx", o.name));
         if root.join(&rel).exists() {
@@ -223,7 +216,12 @@ pub fn resolve_owned_example(root: &Path) -> Result<Vec<String>, String> {
 }
 
 fn apply_consumer_sim_unknown_utility(root: &Path, f: &[String]) -> Result<(), String> {
-    mut_replace_once(root, &f[0], "@apply ", "@apply mutation-not-a-real-utility ")
+    mut_replace_once(
+        root,
+        &f[0],
+        "@apply ",
+        "@apply mutation-not-a-real-utility ",
+    )
 }
 
 fn apply_contracts_strip_glue(root: &Path, f: &[String]) -> Result<(), String> {
@@ -248,7 +246,12 @@ fn apply_css_direction_new_physical(root: &Path, f: &[String]) -> Result<(), Str
 }
 
 fn apply_demo_parity_token_drift(root: &Path, f: &[String]) -> Result<(), String> {
-    mut_replace_re(root, &f[0], re_primary_token(), "--primary: oklch(0.5 0.2 250);")
+    mut_replace_re(
+        root,
+        &f[0],
+        &RE_PRIMARY_TOKEN,
+        "--primary: oklch(0.5 0.2 250);",
+    )
 }
 
 fn apply_demo_smoke_console_error(root: &Path, f: &[String]) -> Result<(), String> {
@@ -292,7 +295,12 @@ fn apply_docs_smoke_broken_iframe(root: &Path, f: &[String]) -> Result<(), Strin
 }
 
 fn apply_pin_base_drift(root: &Path, f: &[String]) -> Result<(), String> {
-    mut_replace_once(root, &f[0], "registry/bases/radix/ui", "registry/bases/base/ui")
+    mut_replace_once(
+        root,
+        &f[0],
+        "registry/bases/radix/ui",
+        "registry/bases/base/ui",
+    )
 }
 
 fn apply_rtl_dict_missing_dictionary(root: &Path, f: &[String]) -> Result<(), String> {
@@ -308,7 +316,7 @@ fn apply_example_oracle_render_failure(root: &Path, f: &[String]) -> Result<(), 
     mut_replace_re(
         root,
         &f[0],
-        re_export_default_fn(),
+        &RE_EXPORT_DEFAULT_FN,
         "$1\n  throw new Error(\"example-oracle mutation: render failure\")",
     )
 }
@@ -332,18 +340,21 @@ fn apply_golden_perturb_oracle(root: &Path, f: &[String]) -> Result<(), String> 
 }
 
 fn apply_interactivity_strip_script(root: &Path, f: &[String]) -> Result<(), String> {
-    mut_replace_re(root, &f[0], re_dialog_script(), "")
+    mut_replace_re(root, &f[0], &RE_DIALOG_SCRIPT, "")
 }
 
 fn apply_ledger_budget_exceeded(root: &Path, f: &[String]) -> Result<(), String> {
     mut_edit(root, &f[0], |s| {
-        let m = re_first_reason()
+        let m = RE_FIRST_REASON
             .captures(s)
             .ok_or_else(|| format!("{} has no exemption to copy a reason from", f[0]))?;
         let (out, ok) = insert_after(
             s,
             "\"examples\": {",
-            &format!("\n  \"__mutation-extra-demo\": {{\n   \"reason\": \"{}\"\n  }},", &m[1]),
+            &format!(
+                "\n  \"__mutation-extra-demo\": {{\n   \"reason\": \"{}\"\n  }},",
+                &m[1]
+            ),
         );
         if !ok {
             return Err(format!("{} has no \"examples\" object", f[0]));
@@ -377,12 +388,14 @@ fn apply_overlay_orphaned_rule(root: &Path, f: &[String]) -> Result<(), String> 
 
 fn apply_overlay_stale_authored(root: &Path, f: &[String]) -> Result<(), String> {
     mut_edit(root, &f[0], |s| {
-        let loc = re_sheet_hash()
+        let loc = RE_SHEET_HASH
             .find(s)
             .ok_or_else(|| format!("{} has no \"behavior:sheet\" unit with a hash", f[0]))?;
         let zero_hash = format!("\"hash\": \"{}\"", "0".repeat(64));
         let re = Regex::new(r#""hash": "[0-9a-f]{64}""#).unwrap();
-        let zeroed = re.replace_all(&s[loc.start()..loc.end()], zero_hash.as_str()).into_owned();
+        let zeroed = re
+            .replace_all(&s[loc.start()..loc.end()], zero_hash.as_str())
+            .into_owned();
         let mut out = String::from(&s[..loc.start()]);
         out.push_str(&zeroed);
         out.push_str(&s[loc.end()..]);
@@ -409,14 +422,14 @@ fn apply_pack_broken_export(root: &Path, f: &[String]) -> Result<(), String> {
 }
 
 fn apply_path_parity_drop_utility(root: &Path, f: &[String]) -> Result<(), String> {
-    mut_replace_re(root, &f[0], re_padding(), "")
+    mut_replace_re(root, &f[0], &RE_PADDING, "")
 }
 
 fn apply_pin_commit_drift(root: &Path, f: &[String]) -> Result<(), String> {
     mut_replace_re(
         root,
         &f[0],
-        re_commit(),
+        &RE_COMMIT,
         &format!("\"commit\": \"{}\"", "0".repeat(40)),
     )
 }
@@ -448,7 +461,7 @@ fn apply_style_parity_recorded_value_drift(root: &Path, f: &[String]) -> Result<
         if !s.contains("\"cells\"") {
             return Err(format!("{} has no cells array", f[0]));
         }
-        let loc = re_first_shadless_cell()
+        let loc = RE_FIRST_SHADLESS_CELL
             .find(s)
             .ok_or_else(|| {
                 format!(
@@ -828,9 +841,7 @@ static ACTIVE_RESTORE: Mutex<Option<Box<dyn FnOnce() -> Result<(), String> + Sen
 pub fn set_active_restore(f: impl FnOnce() -> Result<(), String> + Send + 'static) {
     // poison-tolerant: an interrupted (panicking) mutation must not take the
     // interrupt watcher down with it
-    *ACTIVE_RESTORE
-        .lock()
-        .unwrap_or_else(|e| e.into_inner()) = Some(Box::new(f));
+    *ACTIVE_RESTORE.lock().unwrap_or_else(|e| e.into_inner()) = Some(Box::new(f));
 }
 
 /// Undoes whatever mutation is applied right now, if any. Safe to call twice.
@@ -1043,7 +1054,7 @@ pub fn run_mutation(
     let root_c = root.to_path_buf();
     set_active_restore(move || snap.restore_at(&root_c));
     let _restore_on_unwind = RestoreOnDrop;
-    let out = (| | -> Result<(MutationResult, Option<String>), String> {
+    let out = (|| -> Result<(MutationResult, Option<String>), String> {
         if let Err(e) = (m.apply)(root, &files) {
             res.note = format!("mutation itself errored: {}", first_line(&e));
             return Ok((res, None));
@@ -1052,7 +1063,8 @@ pub fn run_mutation(
         res.caught = match run {
             GateRun::Red => true,
             GateRun::CouldNotRun => {
-                res.note = "gate could not run (environment) — this is not a caught mutation".to_string();
+                res.note =
+                    "gate could not run (environment) — this is not a caught mutation".to_string();
                 false
             }
             GateRun::Green => false,
@@ -1117,7 +1129,11 @@ pub fn select_mutations(
             missing.sort();
             return Err(format!(
                 "unknown mutation(s): {}",
-                missing.iter().map(|s| s.as_str()).collect::<Vec<_>>().join(", ")
+                missing
+                    .iter()
+                    .map(|s| s.as_str())
+                    .collect::<Vec<_>>()
+                    .join(", ")
             ));
         }
         out
@@ -1126,8 +1142,7 @@ pub fn select_mutations(
         if max >= 2 {
             return Err(format!("unknown tier: {} (fast|full)", tier));
         }
-        muts
-            .iter()
+        muts.iter()
             .filter(|m| g.node(m.gate).is_some())
             .filter(|m| tier_rank(&g.effective_tier(m.gate)) <= max)
             .copied()
@@ -1285,7 +1300,7 @@ mod tests {
         mut_replace_re(
             &root,
             "e.tsx",
-            re_export_default_fn(),
+            &RE_EXPORT_DEFAULT_FN,
             "$1\n  throw new Error(\"x\")",
         )
         .unwrap();
@@ -1301,7 +1316,7 @@ mod tests {
     #[test]
     fn unit_mut_replace_re_rejects_missing_pattern() {
         let root = tree(&[("a.json", r#"{"commit": "nope"}"#)]);
-        assert!(mut_replace_re(&root, "a.json", re_commit(), "x").is_err());
+        assert!(mut_replace_re(&root, "a.json", &RE_COMMIT, "x").is_err());
     }
 
     /// Go TestUnitMutFindFileIsDeterministic.
@@ -1314,8 +1329,8 @@ mod tests {
         ]);
         let want = "d/a.html"; // sorted, so the choice cannot drift with readdir order
         for _ in 0..3 {
-            let got = mut_find_file(&root, "d", |s| s.contains("data-slot=\"badge\""), &[])
-                .unwrap();
+            let got =
+                mut_find_file(&root, "d", |s| s.contains("data-slot=\"badge\""), &[]).unwrap();
             assert_eq!(got, want);
         }
         assert!(mut_find_file(&root, "d", |_| false, &[]).is_err());
@@ -1357,12 +1372,18 @@ mod tests {
             (m.apply)(&root, &[m.files[0].to_string()]).unwrap();
             let got = read(&root, m.files[0]);
             assert!(
-                got.contains("\"attachment-demo\"") && got.contains("\"reason\": \"token drift vs live\""),
+                got.contains("\"attachment-demo\"")
+                    && got.contains("\"reason\": \"token drift vs live\""),
                 "{} reformatted or dropped the existing entry:\n{}",
                 id,
                 got
             );
-            assert!(got.contains("__mutation"), "{} did not add its entry:\n{}", id, got);
+            assert!(
+                got.contains("__mutation"),
+                "{} did not add its entry:\n{}",
+                id,
+                got
+            );
         }
         // budget-exceeded must REUSE an existing reason, or it is just the
         // undocumented-exemption mutation under another name
@@ -1372,7 +1393,11 @@ mod tests {
         let n = read(&root, m.files[0])
             .matches("\"reason\": \"token drift vs live\"")
             .count();
-        assert_eq!(n, 2, "budget mutation should reuse the existing reason (want 2 copies, got {})", n);
+        assert_eq!(
+            n, 2,
+            "budget mutation should reuse the existing reason (want 2 copies, got {})",
+            n
+        );
     }
 
     /// Go TestUnitOverlayStaleAuthoredZeroesOnlyItsUnit.
@@ -1393,7 +1418,10 @@ mod tests {
         let root = tree(&[(m.files[0], manifest)]);
         (m.apply)(&root, &[m.files[0].to_string()]).unwrap();
         let got = read(&root, m.files[0]);
-        assert!(got.contains(&"0".repeat(64)), "the sheet hash was not zeroed");
+        assert!(
+            got.contains(&"0".repeat(64)),
+            "the sheet hash was not zeroed"
+        );
         assert!(
             got.contains(&"a".repeat(64)),
             "it also changed behavior:dialog — the mutation must touch one unit"
@@ -1414,8 +1442,16 @@ mod tests {
         )]);
         (m.apply)(&root, &[m.files[0].to_string()]).unwrap();
         let got = read(&root, m.files[0]);
-        assert!(got.contains("999px"), "the recorded value was not perturbed: {}", got);
-        assert!(got.contains("\"oracle\": \"8px\""), "it changed more than the one cell value: {}", got);
+        assert!(
+            got.contains("999px"),
+            "the recorded value was not perturbed: {}",
+            got
+        );
+        assert!(
+            got.contains("\"oracle\": \"8px\""),
+            "it changed more than the one cell value: {}",
+            got
+        );
     }
 
     /// Go TestUnitSnapshotRestoresContent / RestoresDeletedFile /
@@ -1438,7 +1474,10 @@ mod tests {
         let snap2 = take_snapshot(&root2, &["new.txt".to_string()]).unwrap();
         std::fs::write(root2.join("new.txt"), b"x").unwrap();
         snap2.restore().unwrap();
-        assert!(!root2.join("new.txt").exists(), "restore left behind a file the snapshot never had");
+        assert!(
+            !root2.join("new.txt").exists(),
+            "restore left behind a file the snapshot never had"
+        );
     }
 
     /// ACTIVE_RESTORE is process-global; the tests that exercise it serialize
@@ -1458,7 +1497,11 @@ mod tests {
         // snapshot over later work
         std::fs::write(root.join("a.txt"), b"later").unwrap();
         restore_active_mutation().unwrap();
-        assert_eq!(read(&root, "a.txt"), "later", "a second restore clobbered later work");
+        assert_eq!(
+            read(&root, "a.txt"),
+            "later",
+            "a second restore clobbered later work"
+        );
     }
 
     /// The restore must survive a panic inside apply: the explicit restore at
@@ -1483,11 +1526,13 @@ mod tests {
         };
         let prev_hook = std::panic::take_hook();
         std::panic::set_hook(Box::new(|_| {}));
-        let out = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-            run_mutation(&root, &g, &m)
-        }));
+        let out =
+            std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| run_mutation(&root, &g, &m)));
         std::panic::set_hook(prev_hook);
-        assert!(out.is_err(), "apply panicked — run_mutation must propagate the panic");
+        assert!(
+            out.is_err(),
+            "apply panicked — run_mutation must propagate the panic"
+        );
         assert_eq!(
             read(&root, "t.txt"),
             "original",
@@ -1509,13 +1554,19 @@ mod tests {
         assert_eq!(one[0].id, "pin-commit-drift");
         assert!(select_mutations(&g, &all_muts(), "no-such-mutation", "").is_err());
         let fast = select_mutations(&g, &all_muts(), "", "fast").unwrap();
-        assert!(!fast.is_empty() && fast.len() < MUTATIONS.len(),
-            "tier=fast selected {} of {} — expected a proper subset", fast.len(), MUTATIONS.len());
+        assert!(
+            !fast.is_empty() && fast.len() < MUTATIONS.len(),
+            "tier=fast selected {} of {} — expected a proper subset",
+            fast.len(),
+            MUTATIONS.len()
+        );
         for m in &fast {
             assert!(
                 tier_rank(&g.effective_tier(m.gate)) <= tier_rank("fast"),
                 "{} targets {}, whose effective tier is {}",
-                m.id, m.gate, g.effective_tier(m.gate)
+                m.id,
+                m.gate,
+                g.effective_tier(m.gate)
             );
         }
         assert!(select_mutations(&g, &all_muts(), "", "nonsense").is_err());
@@ -1530,14 +1581,21 @@ mod tests {
             kind: "gate".into(),
             tier: "fast".into(),
             needs: vec![],
-            run: cmds.iter().map(|c| c.iter().map(|s| s.to_string()).collect()).collect(),
+            run: cmds
+                .iter()
+                .map(|c| c.iter().map(|s| s.to_string()).collect())
+                .collect(),
             inputs: None,
             produces: None,
             why: String::new(),
             mutations: vec![],
         };
         let (run, _) = run_gate(&root, &node(&[&["false"]]));
-        assert_eq!(run, GateRun::Red, "a failing command was not reported as red");
+        assert_eq!(
+            run,
+            GateRun::Red,
+            "a failing command was not reported as red"
+        );
         let (run, _) = run_gate(&root, &node(&[&["true"]]));
         assert_eq!(run, GateRun::Green, "a passing command was reported as red");
         // commands run in order and the first failure stops the gate
@@ -1546,22 +1604,48 @@ mod tests {
         // a gate that cannot execute is NOT a caught mutation: a broken
         // environment must never be able to prove a mutation
         let (run, _) = run_gate(&root, &node(&[&["definitely-not-a-binary-xyz"]]));
-        assert_eq!(run, GateRun::CouldNotRun, "an unspawnable gate counted as caught");
+        assert_eq!(
+            run,
+            GateRun::CouldNotRun,
+            "an unspawnable gate counted as caught"
+        );
     }
 
     /// Go TestUnitMutationRegexesCompile.
     #[test]
     fn unit_mutation_regexes_compile() {
         let cases: Vec<(&str, &Regex, String)> = vec![
-            ("commit", re_commit(), format!("\"commit\": \"{}\"", "a".repeat(40))),
-            ("primary", re_primary_token(), "--primary: oklch(0.2 0 0);".into()),
-            ("padding", re_padding(), "flex px-2.5 items-center".into()),
-            ("dialog script", re_dialog_script(), "<script src=\"../js/dialog.js\"></script>".into()),
-            ("reason", re_first_reason(), "\"reason\": \"because\"".into()),
-            ("shadless cell", re_first_shadless_cell(), "\"shadless\": \"4px\"".into()),
+            (
+                "commit",
+                &RE_COMMIT,
+                format!("\"commit\": \"{}\"", "a".repeat(40)),
+            ),
+            (
+                "primary",
+                &RE_PRIMARY_TOKEN,
+                "--primary: oklch(0.2 0 0);".into(),
+            ),
+            ("padding", &RE_PADDING, "flex px-2.5 items-center".into()),
+            (
+                "dialog script",
+                &RE_DIALOG_SCRIPT,
+                "<script src=\"../js/dialog.js\"></script>".into(),
+            ),
+            ("reason", &RE_FIRST_REASON, "\"reason\": \"because\"".into()),
+            (
+                "shadless cell",
+                &RE_FIRST_SHADLESS_CELL,
+                "\"shadless\": \"4px\"".into(),
+            ),
         ];
         for (name, re, input) in cases {
-            assert!(re.is_match(&input), "{}: {} does not match {:?}", name, re.as_str(), input);
+            assert!(
+                re.is_match(&input),
+                "{}: {} does not match {:?}",
+                name,
+                re.as_str(),
+                input
+            );
         }
     }
 
@@ -1581,7 +1665,15 @@ mod tests {
             "FAIL  meta (graph/mutation wiring)\n  {}",
             problems.join("\n  ")
         );
-        let gates = g.ids().iter().filter(|id| g.node(id).map(|n| n.kind == "gate").unwrap_or(false)).count();
-        eprintln!("PASS  meta-wiring ({} gates, {} mutations, every gate proven)", gates, MUTATIONS.len());
+        let gates = g
+            .ids()
+            .iter()
+            .filter(|id| g.node(id).map(|n| n.kind == "gate").unwrap_or(false))
+            .count();
+        eprintln!(
+            "PASS  meta-wiring ({} gates, {} mutations, every gate proven)",
+            gates,
+            MUTATIONS.len()
+        );
     }
 }

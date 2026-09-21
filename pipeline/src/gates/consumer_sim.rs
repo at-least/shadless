@@ -10,16 +10,11 @@
 
 use regex::Regex;
 use std::path::{Path, PathBuf};
-use std::sync::{Arc, Mutex, OnceLock};
+use std::sync::{Arc, LazyLock, Mutex};
 
-fn re_core_import() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"(?m)^@import[\t\n\f\r ]+("[^"]+"|url\([^)]*\));?$"#).unwrap())
-}
-fn re_font_medium() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"\.font-medium\b").unwrap())
-}
+static RE_CORE_IMPORT: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#"(?m)^@import[\t\n\f\r ]+("[^"]+"|url\([^)]*\));?$"#).unwrap());
+static RE_FONT_MEDIUM: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\.font-medium\b").unwrap());
 
 const SIM_IMPORTED: [&str; 2] = ["button", "alert"];
 const SIM_NOT_IMPORTED: [&str; 5] = ["dialog", "accordion", "select", "tooltip", "carousel"];
@@ -43,7 +38,7 @@ pub fn gate_consumer_sim(root: &Path) -> Result<(), String> {
     let core = std::fs::read_to_string(root.join("dist/shadless-core.css"))
         .map_err(|e| format!("FAIL  consumer-sim: {}", e))?;
     let mut stray: Vec<String> = Vec::new();
-    for m in re_core_import().captures_iter(&core) {
+    for m in RE_CORE_IMPORT.captures_iter(&core) {
         if &m[1] != "\"tailwindcss\"" {
             stray.push(m[1].to_string());
         }
@@ -62,10 +57,15 @@ pub fn gate_consumer_sim(root: &Path) -> Result<(), String> {
         .map_err(|e| format!("FAIL  consumer-sim: {}", e))?;
     #[cfg(unix)]
     {
-        std::os::unix::fs::symlink(root.canonicalize().unwrap_or(root.to_path_buf()), sim.join("node_modules/shadless"))
-            .map_err(|e| format!("FAIL  consumer-sim: {}", e))?;
         std::os::unix::fs::symlink(
-            root.join("node_modules/tailwindcss").canonicalize().unwrap_or_else(|_| root.join("node_modules/tailwindcss")),
+            root.canonicalize().unwrap_or(root.to_path_buf()),
+            sim.join("node_modules/shadless"),
+        )
+        .map_err(|e| format!("FAIL  consumer-sim: {}", e))?;
+        std::os::unix::fs::symlink(
+            root.join("node_modules/tailwindcss")
+                .canonicalize()
+                .unwrap_or_else(|_| root.join("node_modules/tailwindcss")),
             sim.join("node_modules/tailwindcss"),
         )
         .map_err(|e| format!("FAIL  consumer-sim: {}", e))?;
@@ -82,7 +82,8 @@ pub fn gate_consumer_sim(root: &Path) -> Result<(), String> {
     };
     write_entry(&entry, &SIM_IMPORTED).map_err(|e| format!("FAIL  consumer-sim: {}", e))?;
     // the consumer's page: shadless markup (data-slots + inline utilities)
-    std::fs::write(sim.join("page.html"), CONSUMER_PAGE).map_err(|e| format!("FAIL  consumer-sim: {}", e))?;
+    std::fs::write(sim.join("page.html"), CONSUMER_PAGE)
+        .map_err(|e| format!("FAIL  consumer-sim: {}", e))?;
 
     // 2. the consumer's own build
     crate::emit::tw::tw_compile(
@@ -93,9 +94,14 @@ pub fn gate_consumer_sim(root: &Path) -> Result<(), String> {
         false,
         false,
     )
-    .map_err(|e| format!("FAIL  consumer-sim: the consumer's build did not compile: {}", e))?;
-    let out = std::fs::read_to_string(&out_css)
-        .map_err(|e| format!("FAIL  consumer-sim: {}", e))?;
+    .map_err(|e| {
+        format!(
+            "FAIL  consumer-sim: the consumer's build did not compile: {}",
+            e
+        )
+    })?;
+    let out =
+        std::fs::read_to_string(&out_css).map_err(|e| format!("FAIL  consumer-sim: {}", e))?;
 
     let mut problems: Vec<String> = Vec::new();
     // 3. imported slot rules present
@@ -117,16 +123,14 @@ pub fn gate_consumer_sim(root: &Path) -> Result<(), String> {
         }
     }
     // 5. inline utilities from the consumer page
-    if !re_font_medium().is_match(&out) {
-        problems.push(
-            "inline utility from the consumer page (font-medium) not emitted".to_string(),
-        );
+    if !RE_FONT_MEDIUM.is_match(&out) {
+        problems
+            .push("inline utility from the consumer page (font-medium) not emitted".to_string());
     }
     // 6. theme variables
     if !out.contains("--background:") || !out.contains(".dark") {
-        problems.push(
-            "theme variables / .dark override missing from the consumer build".to_string(),
-        );
+        problems
+            .push("theme variables / .dark override missing from the consumer build".to_string());
     }
     // 7. size sanity — a full leak lands in the hundreds of KB
     let kb = (out.len() + 512) / 1024;
@@ -164,25 +168,29 @@ pub fn gate_consumer_sim(root: &Path) -> Result<(), String> {
         let ok_count = Arc::clone(&ok_count);
         let sim = sim.clone();
         let root = root.to_path_buf();
-        handles.push(std::thread::spawn(move || loop {
-            let n = queue.lock().unwrap().pop();
-            let Some(n) = n else { break };
-            let entry_n = sim.join(format!("entry-{}.css", n));
-            let out_n = sim.join(format!("out-{}.css", n));
-            let body = format!("@import \"shadless\";\n@import \"shadless/{}.css\";\n", n);
-            let r = std::fs::write(&entry_n, body).map_err(|e| e.to_string()).and_then(|_| {
-                crate::emit::tw::tw_compile(
-                    &root,
-                    &entry_n.to_string_lossy(),
-                    &out_n.to_string_lossy(),
-                    &sim.to_string_lossy(),
-                    false,
-                    true,
-                )
-            });
-            match r {
-                Ok(()) => *ok_count.lock().unwrap() += 1,
-                Err(_) => failures.lock().unwrap().push(n),
+        handles.push(std::thread::spawn(move || {
+            loop {
+                let n = queue.lock().unwrap().pop();
+                let Some(n) = n else { break };
+                let entry_n = sim.join(format!("entry-{}.css", n));
+                let out_n = sim.join(format!("out-{}.css", n));
+                let body = format!("@import \"shadless\";\n@import \"shadless/{}.css\";\n", n);
+                let r = std::fs::write(&entry_n, body)
+                    .map_err(|e| e.to_string())
+                    .and_then(|_| {
+                        crate::emit::tw::tw_compile(
+                            &root,
+                            &entry_n.to_string_lossy(),
+                            &out_n.to_string_lossy(),
+                            &sim.to_string_lossy(),
+                            false,
+                            true,
+                        )
+                    });
+                match r {
+                    Ok(()) => *ok_count.lock().unwrap() += 1,
+                    Err(_) => failures.lock().unwrap().push(n),
+                }
             }
         }));
     }

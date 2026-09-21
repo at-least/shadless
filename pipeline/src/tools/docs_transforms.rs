@@ -8,280 +8,141 @@ use regex::Regex;
 use serde::Deserialize;
 use std::collections::HashMap;
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::{LazyLock, OnceLock};
 
 // ---------------------------------------------------------------- regexes
 
-fn re_fence_open() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new("^`{3,}").unwrap())
-}
-fn re_leading_backticks() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new("^`+").unwrap())
-}
+static RE_FENCE_OPEN: LazyLock<Regex> = LazyLock::new(|| Regex::new("^`{3,}").unwrap());
+static RE_LEADING_BACKTICKS: LazyLock<Regex> = LazyLock::new(|| Regex::new("^`+").unwrap());
 
 /// The data-slot name grammar the docs builder writes and the docs gate
 /// re-checks — one pair so the two sides cannot disagree on what a slot
 /// name is.
-pub fn re_data_slot_attr() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"data-slot="([a-z0-9-]+)""#).unwrap())
-}
-pub fn re_data_slot_set() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| {
-        Regex::new(r#"setAttribute\([ \t]*"data-slot"[ \t]*,[ \t]*"([a-z0-9-]+)""#).unwrap()
-    })
-}
-fn re_h2_installation() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?m)^## Installation$").unwrap())
-}
-fn re_h2_usage() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?m)^## Usage$").unwrap())
-}
-fn re_h2_migrating() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?m)^## Migrating existing components$").unwrap())
-}
-fn re_h2_composition() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?m)^## Composition$").unwrap())
-}
-fn re_h2_changelog() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?m)^## Changelog$").unwrap())
-}
-fn re_api_ref_leak() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?m)^[ \t]*\|.*\||^### ").unwrap())
-}
-fn re_import_from() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"from\s+"[@/][^"]+"\s*;?\s*$"#).unwrap())
-}
-fn re_tsx_meta() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?s)```tsx([^\n]*)\n(.*?)```").unwrap())
-}
-fn re_highlight_list() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"\{([0-9,\s-]+)\}").unwrap())
-}
-fn re_tsx_fence_open() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?m)^```tsx\b.*$").unwrap())
-}
-fn re_class_name_attr() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"\bclassName=").unwrap())
-}
-fn re_jsx_comment() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"\{/\*\s*(.*?)\s*\*/\}").unwrap())
-}
-fn re_leaked_fence_open() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?m)^```(tsx|jsx|ts)\b.*$").unwrap())
-}
-fn re_jsx_tag() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"</?([A-Z][A-Za-z0-9]*)\b[^<>]*?(/?)>").unwrap())
-}
-fn re_icon_fn() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^[A-Z][A-Za-z0-9]*Icon$").unwrap())
-}
-fn re_camel_word() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"[A-Z][a-z0-9]*").unwrap())
-}
-fn re_data_slot() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"<([a-zA-Z][0-9A-Za-z_-]*)\b[^>]*\bdata-slot="([^"]+)""#).unwrap())
-}
-fn re_inline_jsx_mention() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new("`</?([A-Z][A-Za-z0-9]*)[^`]*`").unwrap())
-}
-fn re_jsx_tag_attr() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"([A-Za-z][0-9A-Za-z_:.-]*)(?:="([^"]*)")?"#).unwrap())
-}
-fn re_frontmatter() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?s)^---\r?\n(.*?)\r?\n---").unwrap())
-}
-fn re_top_key() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^([A-Za-z][0-9A-Za-z_-]*):[ \t]*(.*)$").unwrap())
-}
-fn re_sub_key() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^[ \t]+([A-Za-z][0-9A-Za-z_-]*):[ \t]*(.*)$").unwrap())
-}
-fn re_int_only() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^-?\d+$").unwrap())
-}
-fn re_import_named() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| {
-        Regex::new(
+pub static RE_DATA_SLOT_ATTR: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#"data-slot="([a-z0-9-]+)""#).unwrap());
+pub static RE_DATA_SLOT_SET: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r#"setAttribute\([ \t]*"data-slot"[ \t]*,[ \t]*"([a-z0-9-]+)""#).unwrap()
+});
+static RE_H2_INSTALLATION: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?m)^## Installation$").unwrap());
+static RE_H2_USAGE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(?m)^## Usage$").unwrap());
+static RE_H2_MIGRATING: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?m)^## Migrating existing components$").unwrap());
+static RE_H2_COMPOSITION: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?m)^## Composition$").unwrap());
+static RE_H2_CHANGELOG: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?m)^## Changelog$").unwrap());
+static RE_API_REF_LEAK: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?m)^[ \t]*\|.*\||^### ").unwrap());
+static RE_IMPORT_FROM: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#"from\s+"[@/][^"]+"\s*;?\s*$"#).unwrap());
+static RE_TSX_META: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?s)```tsx([^\n]*)\n(.*?)```").unwrap());
+static RE_HIGHLIGHT_LIST: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"\{([0-9,\s-]+)\}").unwrap());
+static RE_TSX_FENCE_OPEN: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?m)^```tsx\b.*$").unwrap());
+static RE_CLASS_NAME_ATTR: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\bclassName=").unwrap());
+static RE_JSX_COMMENT: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"\{/\*\s*(.*?)\s*\*/\}").unwrap());
+static RE_LEAKED_FENCE_OPEN: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?m)^```(tsx|jsx|ts)\b.*$").unwrap());
+static RE_JSX_TAG: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"</?([A-Z][A-Za-z0-9]*)\b[^<>]*?(/?)>").unwrap());
+static RE_ICON_FN: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^[A-Z][A-Za-z0-9]*Icon$").unwrap());
+static RE_CAMEL_WORD: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"[A-Z][a-z0-9]*").unwrap());
+static RE_DATA_SLOT: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r#"<([a-zA-Z][0-9A-Za-z_-]*)\b[^>]*\bdata-slot="([^"]+)""#).unwrap()
+});
+static RE_INLINE_JSX_MENTION: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new("`</?([A-Z][A-Za-z0-9]*)[^`]*`").unwrap());
+static RE_JSX_TAG_ATTR: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#"([A-Za-z][0-9A-Za-z_:.-]*)(?:="([^"]*)")?"#).unwrap());
+static RE_FRONTMATTER: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?s)^---\r?\n(.*?)\r?\n---").unwrap());
+static RE_TOP_KEY: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^([A-Za-z][0-9A-Za-z_-]*):[ \t]*(.*)$").unwrap());
+static RE_SUB_KEY: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^[ \t]+([A-Za-z][0-9A-Za-z_-]*):[ \t]*(.*)$").unwrap());
+static RE_INT_ONLY: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^-?\d+$").unwrap());
+static RE_IMPORT_NAMED: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
             r#"(?m)^[ \t]*import[ \t]*(?:\{[\s\S]*?\}[ \t]*|\*(?:[ \t]+as[ \t]+[0-9A-Za-z_$]+)[ \t]*|[0-9A-Za-z_$]+[ \t]*)from[ \t]*["'][^"']+["'];?[ \t]*$"#,
         )
         .unwrap()
-    })
-}
-fn re_import_bare_line() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"(?m)^[ \t]*import[ \t]*["'][^"']+["'];?[ \t]*$"#).unwrap())
-}
-fn re_fence_line() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new("^`{3,}([^`]*)$").unwrap())
-}
-fn re_entity() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"&(amp|lt|gt|quot);").unwrap())
-}
-fn re_any_tag() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"<[^>]*>").unwrap())
-}
-fn re_ws() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"[ \t\n\f\r]+").unwrap())
-}
-fn re_md_heading() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?m)^(#{2,4})[ \t]+(.+)$").unwrap())
-}
-fn re_h_open() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"<h([234])\b[^>]*>").unwrap())
-}
-fn re_inline_code() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new("`([^`\n]+)`").unwrap())
-}
-fn re_comp_preview() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"<ComponentPreview\b([^>]*)>").unwrap())
-}
-fn re_comp_source() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"<ComponentSource\b([^>]*)>").unwrap())
-}
-fn re_md_h1() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?m)^# (.+)$").unwrap())
-}
-fn re_frontmatter_block() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?s)^---\n.*?\n---\n").unwrap())
-}
-fn re_demo_iframe() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| {
-        Regex::new(r#"<iframe class="demo" src="([^"]*)" title="([^"]*)" data-status="([^"]*)""#).unwrap()
-    })
-}
-fn re_demo_missing() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| {
-        Regex::new(r#"<div class="demo-missing" data-demo="([^"]*)" data-status="([^"]*)""#).unwrap()
-    })
-}
-fn re_demo_in_order() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| {
-        Regex::new(r#"<iframe class="demo"[^>]*title="([^"]*)"|<div class="demo-missing" data-demo="([^"]*)""#)
-            .unwrap()
-    })
-}
-fn re_page_links_p() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"(?s)<p class="page-links">(.*?)</p>"#).unwrap())
-}
-fn re_anchor() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"<a href="([^"]*)"[^>]*>([^<]*)</a>"#).unwrap())
-}
-fn re_docs_href() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"\]\((/docs/[^)]*)\)").unwrap())
-}
-fn re_all_href() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"\]\(([^)]*)\)").unwrap())
-}
-fn re_react_prop_table() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?m)^\|[ \t]*`?Prop`?[ \t]*\|.*$").unwrap())
-}
-fn re_slot_open_tag() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| {
-        Regex::new(r#"<[a-z][0-9A-Za-z_-]*\b[^<>]*\bdata-slot="[^"]*"[^<>]*>"#).unwrap()
-    })
-}
-fn re_tag_attr_name() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| {
-        Regex::new(r#"[ \t]([A-Za-z][0-9A-Za-z_:.-]*)(?:=(?:"[^"]*"|'[^']*'|[^ \t>]*))?"#).unwrap()
-    })
-}
-fn re_comp_route() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^/docs/components/(?:radix/)?([a-z0-9-]+)$").unwrap())
-}
-fn re_guide_preview_tag() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"<ComponentPreview\b([^>]*)>").unwrap())
-}
-fn re_demo_src_script() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| {
-        Regex::new(r#"<script (?:defer )?src="\.\./(js/[0-9A-Za-z_.-]+\.js|shadless\.js)"></script>"#)
-            .unwrap()
-    })
-}
-fn re_inline_script() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?s)<script>(.*?)</script>").unwrap())
-}
-fn re_fence() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?s)```.*?```").unwrap())
-}
+});
+static RE_IMPORT_BARE_LINE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#"(?m)^[ \t]*import[ \t]*["'][^"']+["'];?[ \t]*$"#).unwrap());
+static RE_FENCE_LINE: LazyLock<Regex> = LazyLock::new(|| Regex::new("^`{3,}([^`]*)$").unwrap());
+static RE_ENTITY: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"&(amp|lt|gt|quot);").unwrap());
+static RE_ANY_TAG: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"<[^>]*>").unwrap());
+static RE_WS: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"[ \t\n\f\r]+").unwrap());
+static RE_MD_HEADING: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?m)^(#{2,4})[ \t]+(.+)$").unwrap());
+static RE_H_OPEN: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"<h([234])\b[^>]*>").unwrap());
+static RE_INLINE_CODE: LazyLock<Regex> = LazyLock::new(|| Regex::new("`([^`\n]+)`").unwrap());
+static RE_COMP_PREVIEW: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"<ComponentPreview\b([^>]*)>").unwrap());
+static RE_COMP_SOURCE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"<ComponentSource\b([^>]*)>").unwrap());
+static RE_MD_H1: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(?m)^# (.+)$").unwrap());
+static RE_FRONTMATTER_BLOCK: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?s)^---\n.*?\n---\n").unwrap());
+static RE_DEMO_IFRAME: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r#"<iframe class="demo" src="([^"]*)" title="([^"]*)" data-status="([^"]*)""#)
+        .unwrap()
+});
+static RE_DEMO_MISSING: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r#"<div class="demo-missing" data-demo="([^"]*)" data-status="([^"]*)""#).unwrap()
+});
+static RE_DEMO_IN_ORDER: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
+        r#"<iframe class="demo"[^>]*title="([^"]*)"|<div class="demo-missing" data-demo="([^"]*)""#,
+    )
+    .unwrap()
+});
+static RE_PAGE_LINKS_P: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#"(?s)<p class="page-links">(.*?)</p>"#).unwrap());
+static RE_ANCHOR: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#"<a href="([^"]*)"[^>]*>([^<]*)</a>"#).unwrap());
+static RE_DOCS_HREF: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"\]\((/docs/[^)]*)\)").unwrap());
+static RE_ALL_HREF: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\]\(([^)]*)\)").unwrap());
+static RE_REACT_PROP_TABLE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?m)^\|[ \t]*`?Prop`?[ \t]*\|.*$").unwrap());
+static RE_SLOT_OPEN_TAG: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r#"<[a-z][0-9A-Za-z_-]*\b[^<>]*\bdata-slot="[^"]*"[^<>]*>"#).unwrap()
+});
+static RE_TAG_ATTR_NAME: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r#"[ \t]([A-Za-z][0-9A-Za-z_:.-]*)(?:=(?:"[^"]*"|'[^']*'|[^ \t>]*))?"#).unwrap()
+});
+static RE_COMP_ROUTE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^/docs/components/(?:radix/)?([a-z0-9-]+)$").unwrap());
+static RE_GUIDE_PREVIEW_TAG: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"<ComponentPreview\b([^>]*)>").unwrap());
+static RE_DEMO_SRC_SCRIPT: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r#"<script (?:defer )?src="\.\./(js/[0-9A-Za-z_.-]+\.js|shadless\.js)"></script>"#)
+        .unwrap()
+});
+static RE_INLINE_SCRIPT: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?s)<script>(.*?)</script>").unwrap());
+static RE_FENCE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(?s)```.*?```").unwrap());
 #[allow(dead_code)] // ported from the Go docs transforms; kept for parity
-fn re_docs_tag() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"<(ComponentPreview|ComponentSource)\b([^>]*)>").unwrap())
-}
+static RE_DOCS_TAG: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"<(ComponentPreview|ComponentSource)\b([^>]*)>").unwrap());
 #[allow(dead_code)] // ported from the Go docs transforms; kept for parity
-fn re_preview_tag() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"<ComponentPreview\b([^>]*)>").unwrap())
-}
+static RE_PREVIEW_TAG: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"<ComponentPreview\b([^>]*)>").unwrap());
 #[allow(dead_code)] // ported from the Go docs transforms; kept for parity
-fn re_primary() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^([a-z0-9-]+)-demo$").unwrap())
-}
+static RE_PRIMARY: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^([a-z0-9-]+)-demo$").unwrap());
 #[allow(dead_code)] // ported from the Go docs transforms; kept for parity
-fn re_hooks() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| {
-        Regex::new(
+static RE_HOOKS: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
             r"\b(useState|useEffect|useRef|useContext|useMemo|useCallback|useReducer|useLayoutEffect|useImperativeHandle|useId|useTransition|useDeferredValue|useSyncExternalStore|useInsertionEffect)\b",
         )
         .unwrap()
-    })
-}
+});
 
 // ---------------------------------------------------------------- fence shadow
 
@@ -293,12 +154,18 @@ pub fn fence_shadow(text: &str) -> String {
     let mut open: isize = -1;
     for line in lines.iter_mut() {
         if open < 0 {
-            if re_fence_open().is_match(line) {
-                open = re_leading_backticks().find(line).map(|m| m.end()).unwrap_or(0) as isize;
+            if RE_FENCE_OPEN.is_match(line) {
+                open = RE_LEADING_BACKTICKS
+                    .find(line)
+                    .map(|m| m.end())
+                    .unwrap_or(0) as isize;
                 *line = blank_line(line);
             }
         } else {
-            let n = re_leading_backticks().find(line).map(|m| m.end()).unwrap_or(0);
+            let n = RE_LEADING_BACKTICKS
+                .find(line)
+                .map(|m| m.end())
+                .unwrap_or(0);
             if n as isize >= open {
                 open = -1;
             }
@@ -352,8 +219,8 @@ pub fn locate_code_tabs_spans(shadow: &str) -> Vec<Span> {
 /// locateInstallSection: the `## Installation` … `## Usage` span in utils
 /// guides; end = the '#' of "## Usage". None when absent/malformed.
 pub fn locate_install_section(shadow: &str) -> Option<Span> {
-    let open = re_h2_installation().find(shadow)?;
-    let next = re_h2_usage().find(shadow)?;
+    let open = RE_H2_INSTALLATION.find(shadow)?;
+    let next = RE_H2_USAGE.find(shadow)?;
     if next.start() <= open.start() {
         return None;
     }
@@ -365,7 +232,7 @@ pub fn locate_install_section(shadow: &str) -> Option<Span> {
 
 /// locateRtlMigrateSpan: `## Migrating existing components` … </Steps>.
 pub fn locate_rtl_migrate_span(shadow: &str) -> Option<Span> {
-    let open = re_h2_migrating().find(shadow)?;
+    let open = RE_H2_MIGRATING.find(shadow)?;
     let close = shadow[open.start()..].find("</Steps>")?;
     Some(Span {
         start: open.start(),
@@ -377,7 +244,7 @@ pub fn locate_rtl_migrate_span(shadow: &str) -> Option<Span> {
 /// Usage itself). The JS regex /^## (?!Usage$)/m needs a lookahead — scanned
 /// by line instead.
 pub fn locate_usage_span(shadow: &str) -> Option<Span> {
-    let open = re_h2_usage().find(shadow)?;
+    let open = RE_H2_USAGE.find(shadow)?;
     let after = &shadow[open.start() + "## Usage".len()..];
     let mut off = 0usize;
     for line in after.split('\n') {
@@ -394,7 +261,7 @@ pub fn locate_usage_span(shadow: &str) -> Option<Span> {
 
 /// locateCompositionSpan: `## Composition` … next non-Composition `## `.
 pub fn locate_composition_span(shadow: &str) -> Option<Span> {
-    let open = re_h2_composition().find(shadow)?;
+    let open = RE_H2_COMPOSITION.find(shadow)?;
     let after = &shadow[open.start() + "## Composition".len()..];
     let mut off = 0usize;
     for line in after.split('\n') {
@@ -411,7 +278,7 @@ pub fn locate_composition_span(shadow: &str) -> Option<Span> {
 
 /// locateChangelogSpan: `## Changelog` … EOF.
 pub fn locate_changelog_span(shadow: &str) -> Option<Span> {
-    let open = re_h2_changelog().find(shadow)?;
+    let open = RE_H2_CHANGELOG.find(shadow)?;
     Some(Span {
         start: open.start(),
         end: shadow.len(),
@@ -420,7 +287,11 @@ pub fn locate_changelog_span(shadow: &str) -> Option<Span> {
 
 /// locateHeadingRangeSpan: `## fromHeading` … `## toHeading` (exclusive of
 /// the closing heading).
-pub fn locate_heading_range_span(shadow: &str, from_heading: &str, to_heading: &str) -> Option<Span> {
+pub fn locate_heading_range_span(
+    shadow: &str,
+    from_heading: &str,
+    to_heading: &str,
+) -> Option<Span> {
     let open_re = Regex::new(&format!(r"(?m)^## {}$", regex::escape(from_heading))).unwrap();
     let close_re = Regex::new(&format!(r"(?m)^## {}$", regex::escape(to_heading))).unwrap();
     let open = open_re.find(shadow)?;
@@ -457,7 +328,9 @@ pub fn message_scroller_js_note() -> String {
 /// ONLY where the section actually contains leaked React content
 /// (reApiRefLeak).
 pub fn locate_api_reference_span(_comp: &str, shadow: &str) -> Option<Span> {
-    let open = Regex::new(r"(?m)^## API Reference[ \t]*\n").unwrap().find(shadow)?;
+    let open = Regex::new(r"(?m)^## API Reference[ \t]*\n")
+        .unwrap()
+        .find(shadow)?;
     let after = &shadow[open.end()..];
     let mut off = 0usize;
     let mut end = shadow.len();
@@ -468,7 +341,7 @@ pub fn locate_api_reference_span(_comp: &str, shadow: &str) -> Option<Span> {
         }
         off += line.len() + 1;
     }
-    if !re_api_ref_leak().is_match(&shadow[open.end()..end]) {
+    if !RE_API_REF_LEAK.is_match(&shadow[open.end()..end]) {
         return None;
     }
     Some(Span {
@@ -503,7 +376,7 @@ pub fn drop_react_import_fences(raw: &str) -> String {
             }
             statements += 1;
             // consume through the from-line, spanning multi-line imports
-            while j < lines.len() && !re_import_from().is_match(lines[j]) {
+            while j < lines.len() && !RE_IMPORT_FROM.is_match(lines[j]) {
                 if lines[j].contains("```") {
                     failed = true;
                     break 'stmt;
@@ -533,7 +406,7 @@ pub fn drop_react_import_fences(raw: &str) -> String {
 /// that MIX imports with a JSX example, and renumbers shiki {1,4-6} highlight
 /// refs past the removed lines. Imports-only fences drop entirely.
 pub fn strip_imports_from_mixed_fences(raw: &str) -> String {
-    re_tsx_meta()
+    RE_TSX_META
         .replace_all(raw, |caps: &regex::Captures| {
             let whole = caps.get(0).unwrap().as_str();
             let meta = caps.get(1).unwrap().as_str();
@@ -551,7 +424,7 @@ pub fn strip_imports_from_mixed_fences(raw: &str) -> String {
                     // until a from-line or EOF. That is load-bearing
                     // (bubble.mdx's mixed fence loses its whole body to it);
                     // do not "fix" it.
-                    while i < lines.len() && !re_import_from().is_match(lines[i]) {
+                    while i < lines.len() && !RE_IMPORT_FROM.is_match(lines[i]) {
                         removed += 1;
                         i += 1;
                     }
@@ -591,7 +464,7 @@ pub fn strip_imports_from_mixed_fences(raw: &str) -> String {
 /// shiftHighlightRefs maps {1,4-6} → refs with `removed` subtracted, dropping
 /// refs into the removed range (the JS callback's semantics).
 pub fn shift_highlight_refs(meta: &str, removed: usize) -> String {
-    re_highlight_list()
+    RE_HIGHLIGHT_LIST
         .replace_all(meta, |caps: &regex::Captures| {
             let list = caps.get(1).unwrap().as_str();
             let mut shifted: Vec<String> = Vec::new();
@@ -602,7 +475,11 @@ pub fn shift_highlight_refs(meta: &str, removed: usize) -> String {
                 }
                 let lohi: Vec<&str> = part.splitn(2, '-').collect();
                 let lo = atoi_safe(lohi[0]);
-                let hi = if lohi.len() == 2 { atoi_safe(lohi[1]) } else { None };
+                let hi = if lohi.len() == 2 {
+                    atoi_safe(lohi[1])
+                } else {
+                    None
+                };
                 // JS semantics: a NaN endpoint keeps the part verbatim; a part
                 // whose low end is inside the removed range drops; otherwise
                 // both endpoints shift by -removed.
@@ -666,7 +543,7 @@ pub fn rewrite_utility_jsx_fences(slug: &str, raw: &str) -> Result<String, Strin
     let mut in_fence = false;
     for line in lines.iter_mut() {
         if !in_fence {
-            if re_tsx_fence_open().is_match(line) {
+            if RE_TSX_FENCE_OPEN.is_match(line) {
                 *line = "```html".to_string();
                 in_fence = true;
             }
@@ -676,8 +553,8 @@ pub fn rewrite_utility_jsx_fences(slug: &str, raw: &str) -> Result<String, Strin
             in_fence = false;
             continue;
         }
-        *line = re_class_name_attr().replace_all(line, "class=").into_owned();
-        *line = re_jsx_comment()
+        *line = RE_CLASS_NAME_ATTR.replace_all(line, "class=").into_owned();
+        *line = RE_JSX_COMMENT
             .replace_all(line, |caps: &regex::Captures| {
                 format!("<!-- {} -->", caps.get(1).unwrap().as_str())
             })
@@ -694,12 +571,51 @@ pub fn html_attrs() -> &'static std::collections::HashSet<&'static str> {
     static S: OnceLock<std::collections::HashSet<&'static str>> = OnceLock::new();
     S.get_or_init(|| {
         [
-            "class", "id", "href", "src", "srcset", "alt", "title", "role", "type", "name",
-            "value", "placeholder", "disabled", "checked", "hidden", "target", "rel", "style",
-            "lang", "dir", "width", "height", "for", "tabindex", "colspan", "rowspan", "action",
-            "method", "autocomplete", "required", "readonly", "multiple", "selected", "min", "max",
-            "step", "rows", "cols", "loading", "open", "controls", "poster", "download",
-            "autofocus", "maxlength",
+            "class",
+            "id",
+            "href",
+            "src",
+            "srcset",
+            "alt",
+            "title",
+            "role",
+            "type",
+            "name",
+            "value",
+            "placeholder",
+            "disabled",
+            "checked",
+            "hidden",
+            "target",
+            "rel",
+            "style",
+            "lang",
+            "dir",
+            "width",
+            "height",
+            "for",
+            "tabindex",
+            "colspan",
+            "rowspan",
+            "action",
+            "method",
+            "autocomplete",
+            "required",
+            "readonly",
+            "multiple",
+            "selected",
+            "min",
+            "max",
+            "step",
+            "rows",
+            "cols",
+            "loading",
+            "open",
+            "controls",
+            "poster",
+            "download",
+            "autofocus",
+            "maxlength",
         ]
         .iter()
         .copied()
@@ -780,7 +696,7 @@ pub fn load_jsx_tag_index(root: &Path) -> Result<&'static HashMap<String, JsxTag
             let Ok(b) = std::fs::read_to_string(root.join("dist/components").join(&n)) else {
                 continue;
             };
-            for m in re_data_slot().captures_iter(&b) {
+            for m in RE_DATA_SLOT.captures_iter(&b) {
                 let (tag, slot) = (m[1].to_string(), m[2].to_string());
                 *slot_tag_count
                     .entry(slot)
@@ -824,7 +740,7 @@ pub fn load_jsx_tag_index(root: &Path) -> Result<&'static HashMap<String, JsxTag
 /// kebab-case icon ids, which is what dist markup's `lucide-<id>` class uses.
 pub fn kebab_icon_name(fn_: &str) -> String {
     let base = fn_.trim_end_matches("Icon");
-    let words: Vec<String> = re_camel_word()
+    let words: Vec<String> = RE_CAMEL_WORD
         .find_iter(base)
         .map(|m| m.as_str().to_lowercase())
         .collect();
@@ -838,7 +754,7 @@ pub fn rewrite_jsx_attrs(fn_: &str, attrs: &str, info: &JsxTagInfo) -> Result<St
         return Ok(String::new());
     }
     let mut out: Vec<String> = Vec::new();
-    for m in re_jsx_tag_attr().captures_iter(rest) {
+    for m in RE_JSX_TAG_ATTR.captures_iter(rest) {
         let name = m[1].to_string();
         let val = m.get(2).map(|v| v.as_str()).unwrap_or("").to_string();
         let has_val = m[0].contains('=');
@@ -889,7 +805,7 @@ pub fn rewrite_jsx_tags_in_line(
     idx: &HashMap<String, JsxTagInfo>,
 ) -> Result<String, String> {
     let mut out_err: Option<String> = None;
-    let out = re_jsx_tag()
+    let out = RE_JSX_TAG
         .replace_all(line, |caps: &regex::Captures| {
             if out_err.is_some() {
                 return caps.get(0).unwrap().as_str().to_string();
@@ -898,7 +814,7 @@ pub fn rewrite_jsx_tags_in_line(
             let fn_ = caps.get(1).unwrap().as_str();
             let self_close = caps.get(2).map(|v| v.as_str() == "/").unwrap_or(false);
             let closing = m.starts_with("</");
-            if re_icon_fn().is_match(fn_) {
+            if RE_ICON_FN.is_match(fn_) {
                 return format!("<!-- lucide \"{}\" icon -->", kebab_icon_name(fn_));
             }
             let Some(info) = idx.get(fn_) else {
@@ -917,10 +833,7 @@ pub fn rewrite_jsx_tags_in_line(
             attrs = attrs.trim_end_matches(' ').to_string();
             match rewrite_jsx_attrs(fn_, &attrs, info) {
                 Ok(a) => {
-                    let open = format!(
-                        "<{} data-slot=\"{}\"{}",
-                        info.tag, info.slot, a
-                    );
+                    let open = format!("<{} data-slot=\"{}\"{}", info.tag, info.slot, a);
                     if self_close {
                         format!("{} />", open)
                     } else {
@@ -951,7 +864,7 @@ pub fn rewrite_leaked_jsx_fences(page: &str, raw: &str, root: &Path) -> Result<S
     let mut fence_start = 0usize;
     for (i, line) in lines.iter().enumerate() {
         if !in_fence {
-            if re_leaked_fence_open().is_match(line) {
+            if RE_LEAKED_FENCE_OPEN.is_match(line) {
                 in_fence = true;
                 fence_start = i;
                 out.push("```html".to_string());
@@ -974,8 +887,8 @@ pub fn rewrite_leaked_jsx_fences(page: &str, raw: &str, root: &Path) -> Result<S
                 trimmed
             ));
         }
-        let mut line = re_class_name_attr().replace_all(line, "class=").into_owned();
-        line = re_jsx_comment()
+        let mut line = RE_CLASS_NAME_ATTR.replace_all(line, "class=").into_owned();
+        line = RE_JSX_COMMENT
             .replace_all(&line, |caps: &regex::Captures| {
                 format!("<!-- {} -->", caps.get(1).unwrap().as_str())
             })
@@ -1006,14 +919,14 @@ pub fn rewrite_leaked_jsx_fences(page: &str, raw: &str, root: &Path) -> Result<S
 pub fn rewrite_inline_jsx_mentions(page: &str, raw: &str, root: &Path) -> Result<String, String> {
     let idx = load_jsx_tag_index(root)?;
     let mut out_err: Option<String> = None;
-    let out = re_inline_jsx_mention()
+    let out = RE_INLINE_JSX_MENTION
         .replace_all(raw, |caps: &regex::Captures| {
             if out_err.is_some() {
                 return caps.get(0).unwrap().as_str().to_string();
             }
             let m = caps.get(0).unwrap().as_str();
             let fn_ = caps.get(1).unwrap().as_str();
-            if re_icon_fn().is_match(fn_) {
+            if RE_ICON_FN.is_match(fn_) {
                 return format!("`<!-- lucide \"{}\" icon -->`", kebab_icon_name(fn_));
             }
             let Some(info) = idx.get(fn_) else {
@@ -1078,7 +991,7 @@ pub fn text_adjustments() -> &'static [TextAdjustment] {
 
 /// docsHrefsOf: every /docs/… href outside fences.
 pub fn docs_hrefs_of(md: &str) -> Vec<String> {
-    re_docs_href()
+    RE_DOCS_HREF
         .captures_iter(&fence_shadow(md))
         .map(|m| m[1].to_string())
         .collect()
@@ -1086,7 +999,7 @@ pub fn docs_hrefs_of(md: &str) -> Vec<String> {
 
 /// allHrefsOf: every markdown link target outside fences.
 pub fn all_hrefs_of(md: &str) -> Vec<String> {
-    re_all_href()
+    RE_ALL_HREF
         .captures_iter(&fence_shadow(md))
         .map(|m| m[1].to_string())
         .collect()
@@ -1110,12 +1023,7 @@ pub fn apply_text_adjustments(basename: &str, raw: &str) -> Result<String, Strin
                         adj.id, basename
                     )
                 })?;
-            out = format!(
-                "{}{}{}",
-                &out[..i],
-                op.replace,
-                &out[i + op.find.len()..]
-            );
+            out = format!("{}{}{}", &out[..i], op.replace, &out[i + op.find.len()..]);
         }
     }
     Ok(out)
@@ -1154,7 +1062,7 @@ pub type Frontmatter = HashMap<String, serde_json::Value>;
 /// parseFrontmatter tolerates CRLF and coerces true/false/integers; quotes are
 /// stripped only as a matched pair (so `years'` keeps its apostrophe).
 pub fn parse_frontmatter(src: &str) -> Frontmatter {
-    let Some(m) = re_frontmatter().captures(src) else {
+    let Some(m) = RE_FRONTMATTER.captures(src) else {
         return Frontmatter::new();
     };
     let mut out: Frontmatter = Frontmatter::new();
@@ -1163,7 +1071,7 @@ pub fn parse_frontmatter(src: &str) -> Frontmatter {
         if line.trim().is_empty() || line.trim_start().starts_with('#') {
             continue;
         }
-        if let Some(top) = re_top_key().captures(line) {
+        if let Some(top) = RE_TOP_KEY.captures(line) {
             if !line.starts_with([' ', '\t']) {
                 if top[2].is_empty() {
                     let inner = HashMap::new();
@@ -1176,7 +1084,7 @@ pub fn parse_frontmatter(src: &str) -> Frontmatter {
                 continue;
             }
         }
-        if let Some(sub) = re_sub_key().captures(line) {
+        if let Some(sub) = RE_SUB_KEY.captures(line) {
             if let Some(cur) = cur.as_mut() {
                 cur.insert(sub[1].to_string(), coerce_scalar(&sub[2]));
             }
@@ -1192,7 +1100,7 @@ fn coerce_scalar(v: &str) -> serde_json::Value {
     if v == "false" {
         return serde_json::Value::Bool(false);
     }
-    if re_int_only().is_match(v) {
+    if RE_INT_ONLY.is_match(v) {
         let mut n: i64 = 0;
         let mut neg = false;
         for (i, c) in v.chars().enumerate() {
@@ -1222,8 +1130,8 @@ pub fn fm_string(fm: &Frontmatter, key: &str) -> String {
 /// stripImports removes ESM import statements outside fences — the
 /// fence-agnostic line-anchored strip.
 pub fn strip_imports(src: &str) -> String {
-    let out = re_import_named().replace_all(src, "");
-    re_import_bare_line().replace_all(&out, "").into_owned()
+    let out = RE_IMPORT_NAMED.replace_all(src, "");
+    RE_IMPORT_BARE_LINE.replace_all(&out, "").into_owned()
 }
 
 // ---------------------------------------------------------------- fidelity facts
@@ -1243,7 +1151,7 @@ pub fn scan_fences(src: &str) -> Vec<FenceInfo> {
     let mut content = String::new();
     for line in src.split('\n') {
         if open < 0 {
-            if let Some(m) = re_fence_line().captures(line) {
+            if let Some(m) = RE_FENCE_LINE.captures(line) {
                 if line.trim_start().starts_with("```") {
                     open = 3;
                     lang = m[1].splitn(2, ' ').next().unwrap_or("").to_string();
@@ -1271,7 +1179,7 @@ pub fn scan_fences(src: &str) -> Vec<FenceInfo> {
 }
 
 pub fn decode_entities(s: &str) -> String {
-    re_entity()
+    RE_ENTITY
         .replace_all(s, |caps: &regex::Captures| match &caps[1] {
             "amp" => "&",
             "lt" => "<",
@@ -1283,15 +1191,15 @@ pub fn decode_entities(s: &str) -> String {
 }
 
 pub fn html_text(s: &str) -> String {
-    decode_entities(&re_ws().replace_all(&re_any_tag().replace_all(s, ""), " "))
+    decode_entities(&RE_WS.replace_all(&RE_ANY_TAG.replace_all(s, ""), " "))
 }
 
 pub fn md_text(s: &str) -> String {
-    re_ws().replace_all(s, " ").into_owned()
+    RE_WS.replace_all(s, " ").into_owned()
 }
 
 pub fn strip_inline_code(s: &str) -> String {
-    re_inline_code().replace_all(s, "$1").into_owned()
+    RE_INLINE_CODE.replace_all(s, "$1").into_owned()
 }
 
 #[derive(Clone, Debug)]
@@ -1373,13 +1281,13 @@ pub fn mdx_page_facts(
         src = rewrite_inline_jsx_mentions(name, &src, root)?;
     }
     let body = fence_shadow(&src);
-    let no_inline_code = re_inline_code()
+    let no_inline_code = RE_INLINE_CODE
         .replace_all(&body, |caps: &regex::Captures| {
             " ".repeat(caps.get(0).unwrap().as_str().len())
         })
         .into_owned();
     let mut heads: Vec<(usize, usize, String)> = Vec::new();
-    for caps in re_md_heading().captures_iter(&body) {
+    for caps in RE_MD_HEADING.captures_iter(&body) {
         let m = caps.get(0).unwrap();
         let depth = caps.get(1).unwrap().as_str().len();
         let text = strip_inline_code(&md_text(caps.get(2).unwrap().as_str()));
@@ -1399,14 +1307,14 @@ pub fn mdx_page_facts(
             text: h.2,
         });
     }
-    for caps in re_comp_preview().captures_iter(&body) {
+    for caps in RE_COMP_PREVIEW.captures_iter(&body) {
         f.previews.push(PreviewEnt {
             name: attr_of_js(&caps[1], "name"),
             style_name: attr_of_js(&caps[1], "styleName"),
             direction: attr_of_js(&caps[1], "direction"),
         });
     }
-    for caps in re_comp_source().captures_iter(&body) {
+    for caps in RE_COMP_SOURCE.captures_iter(&body) {
         f.sources.push(SourceEnt {
             name: attr_of_js(&caps[1], "name"),
             src: attr_of_js(&caps[1], "src"),
@@ -1462,7 +1370,11 @@ pub fn without_composition_section(raw: &str) -> String {
 }
 
 pub fn without_api_reference_section(comp: &str, raw: &str) -> String {
-    without_located(raw, &|s| locate_api_reference_span(comp, s), "## API Reference\n\n")
+    without_located(
+        raw,
+        &|s| locate_api_reference_span(comp, s),
+        "## API Reference\n\n",
+    )
 }
 
 pub fn without_changelog_section(raw: &str) -> String {
@@ -1485,8 +1397,8 @@ pub struct MdFacts {
 
 pub fn md_page_facts(md: &str) -> MdFacts {
     let front = parse_frontmatter(md);
-    let body = re_frontmatter_block().replace_all(md, "");
-    let h1 = re_md_h1()
+    let body = RE_FRONTMATTER_BLOCK.replace_all(md, "");
+    let h1 = RE_MD_H1
         .captures(&body)
         .map(|m| m[1].to_string())
         .unwrap_or_default();
@@ -1495,13 +1407,13 @@ pub fn md_page_facts(md: &str) -> MdFacts {
         None => body.to_string(),
     };
     let shadow = fence_shadow(&after_h1);
-    let no_inline_code = re_inline_code()
+    let no_inline_code = RE_INLINE_CODE
         .replace_all(&shadow, |caps: &regex::Captures| {
             " ".repeat(caps.get(0).unwrap().as_str().len())
         })
         .into_owned();
     let mut heads: Vec<(usize, usize, String)> = Vec::new();
-    for caps in re_md_heading().captures_iter(&shadow) {
+    for caps in RE_MD_HEADING.captures_iter(&shadow) {
         let m = caps.get(0).unwrap();
         let depth = caps.get(1).unwrap().as_str().len();
         let text = strip_inline_code(&md_text(caps.get(2).unwrap().as_str()));
@@ -1524,19 +1436,23 @@ pub fn md_page_facts(md: &str) -> MdFacts {
         });
     }
     let mut by_name: HashMap<String, (String, String, String)> = HashMap::new();
-    for caps in re_demo_iframe().captures_iter(&after_h1) {
+    for caps in RE_DEMO_IFRAME.captures_iter(&after_h1) {
         by_name.insert(
             caps[2].to_string(),
-            (caps[2].to_string(), caps[3].to_string(), caps[1].to_string()),
+            (
+                caps[2].to_string(),
+                caps[3].to_string(),
+                caps[1].to_string(),
+            ),
         );
     }
-    for caps in re_demo_missing().captures_iter(&after_h1) {
+    for caps in RE_DEMO_MISSING.captures_iter(&after_h1) {
         by_name.insert(
             caps[1].to_string(),
             (caps[1].to_string(), caps[2].to_string(), String::new()),
         );
     }
-    for caps in re_demo_in_order().captures_iter(&after_h1) {
+    for caps in RE_DEMO_IN_ORDER.captures_iter(&after_h1) {
         let n = if !caps.get(1).map(|m| m.as_str()).unwrap_or("").is_empty() {
             caps[1].to_string()
         } else {
@@ -1547,12 +1463,12 @@ pub fn md_page_facts(md: &str) -> MdFacts {
         }
     }
     f.fences = scan_fences(&after_h1);
-    if let Some(m) = re_page_links_p().captures(&after_h1) {
-        for a in re_anchor().captures_iter(&m[1]) {
+    if let Some(m) = RE_PAGE_LINKS_P.captures(&after_h1) {
+        for a in RE_ANCHOR.captures_iter(&m[1]) {
             f.chips.push((a[2].to_string(), a[1].to_string()));
         }
     }
-    for caps in re_demo_iframe().captures_iter(&after_h1) {
+    for caps in RE_DEMO_IFRAME.captures_iter(&after_h1) {
         f.iframes.push(caps[1].to_string());
     }
     f
@@ -1593,13 +1509,20 @@ pub fn compare_page(
         want_title = page_name.to_string();
     }
     if h.h1 != md_text(&want_title) {
-        issue("h1", format!("built={:?} mdx={:?}", h.h1, md_text(&want_title)));
+        issue(
+            "h1",
+            format!("built={:?} mdx={:?}", h.h1, md_text(&want_title)),
+        );
     }
     let want_lead = fm_string(&m.frontmatter, "description");
     if h.lead != md_text(&want_lead) {
         issue(
             "lead",
-            format!("built={:?} mdx={:?}", trunc70(&h.lead), trunc70(&md_text(&want_lead))),
+            format!(
+                "built={:?} mdx={:?}",
+                trunc70(&h.lead),
+                trunc70(&md_text(&want_lead))
+            ),
         );
     }
     let want_heads = format!("{:?}", m.headings);
@@ -1607,7 +1530,11 @@ pub fn compare_page(
     if want_heads != got_heads {
         issue(
             "headings",
-            format!("mdx {:?} != built {:?}", trunc140(&want_heads), trunc140(&got_heads)),
+            format!(
+                "mdx {:?} != built {:?}",
+                trunc140(&want_heads),
+                trunc140(&got_heads)
+            ),
         );
     }
     let want_prev: Vec<String> = m.previews.iter().map(|p| p.name.clone()).collect();
@@ -1668,13 +1595,19 @@ pub fn compare_page(
         got.sort();
         issue(
             "chips",
-            format!("built page still carries page-links chips: {}", got.join(" | ")),
+            format!(
+                "built page still carries page-links chips: {}",
+                got.join(" | ")
+            ),
         );
     }
     if !expected_manual_ref.is_empty() && !h.text.contains(expected_manual_ref) {
         issue(
             "manual-tab",
-            format!("rewritten manual tab never mentions {}", expected_manual_ref),
+            format!(
+                "rewritten manual tab never mentions {}",
+                expected_manual_ref
+            ),
         );
     }
     // Two assertions that read ONLY the built page.
@@ -1693,7 +1626,7 @@ pub fn compare_page(
             );
         }
     }
-    if let Some(m) = re_react_prop_table().find(&h.text) {
+    if let Some(m) = RE_REACT_PROP_TABLE.find(&h.text) {
         issue(
             "react-prop-table",
             format!(
@@ -1739,14 +1672,14 @@ fn trunc140(s: &str) -> String {
 pub fn react_props_in_markup(fence: &str) -> Vec<String> {
     let mut out: Vec<String> = Vec::new();
     let mut seen: std::collections::HashSet<String> = std::collections::HashSet::new();
-    for tag in re_slot_open_tag().find_iter(fence) {
+    for tag in RE_SLOT_OPEN_TAG.find_iter(fence) {
         let tag = tag.as_str();
         let mut body = tag;
         if let Some(i) = body.find([' ', '\t']) {
             body = &body[i..];
         }
         body = body.trim().trim_end_matches('>').trim_end_matches('/');
-        for m in re_tag_attr_name().captures_iter(&format!(" {}", body)) {
+        for m in RE_TAG_ATTR_NAME.captures_iter(&format!(" {}", body)) {
             let name = m[1].to_string();
             let lower = name.to_lowercase();
             if lower.starts_with("data-")
@@ -1775,7 +1708,7 @@ pub fn find_all_raw_headings(s: &str) -> Vec<RawHeading> {
     let mut out: Vec<RawHeading> = Vec::new();
     let mut off = 0usize;
     loop {
-        let Some(i) = re_h_open().find(&s[off..]) else {
+        let Some(i) = RE_H_OPEN.find(&s[off..]) else {
             break;
         };
         let depth = (s.as_bytes()[off + i.start() + 2] - b'0') as usize;
@@ -1863,7 +1796,10 @@ pub struct RouteTarget {
     pub grey: bool,
 }
 
-pub fn resolve_docs_route(href: &str, members: &std::collections::HashSet<String>) -> Option<RouteTarget> {
+pub fn resolve_docs_route(
+    href: &str,
+    members: &std::collections::HashSet<String>,
+) -> Option<RouteTarget> {
     if !href.starts_with('/') || href.starts_with("//") {
         return None;
     }
@@ -1871,7 +1807,7 @@ pub fn resolve_docs_route(href: &str, members: &std::collections::HashSet<String
         Some(i) => (&href[..i], &href[i + 1..]),
         None => (href, ""),
     };
-    if let Some(m) = re_comp_route().captures(path) {
+    if let Some(m) = RE_COMP_ROUTE.captures(path) {
         if members.contains(&m[1]) {
             return Some(RouteTarget {
                 file: format!("{}.html", &m[1]),
@@ -1922,7 +1858,7 @@ pub fn scan_guide_previews(
             continue;
         };
         let text = strip_fences(&b);
-        for caps in re_guide_preview_tag().captures_iter(&text) {
+        for caps in RE_GUIDE_PREVIEW_TAG.captures_iter(&text) {
             let name = attr_of_js(&caps[1], "name");
             if name.is_empty() {
                 continue;
@@ -1943,7 +1879,10 @@ pub fn scan_guide_previews(
                     ),
                 )
             } else {
-                ("to-author".to_string(), "authored in an FT7 wave".to_string())
+                (
+                    "to-author".to_string(),
+                    "authored in an FT7 wave".to_string(),
+                )
             };
             out.insert(
                 name.clone(),
@@ -1978,21 +1917,96 @@ pub struct FamilyEnt {
 
 pub fn family(comp: &str) -> Option<FamilyEnt> {
     Some(match comp {
-        "alert-dialog" => FamilyEnt { kind: "dialog", open: "", attr: "", js: "alert-dialog" },
-        "dialog" => FamilyEnt { kind: "dialog", open: "", attr: "", js: "dialog" },
-        "sheet" => FamilyEnt { kind: "dialog", open: "", attr: "", js: "sheet" },
-        "popover" => FamilyEnt { kind: "portal", open: "click", attr: "", js: "popover" },
-        "tooltip" => FamilyEnt { kind: "portal", open: "hover", attr: "", js: "tooltip" },
-        "hover-card" => FamilyEnt { kind: "portal", open: "hover", attr: "", js: "hover-card" },
-        "tabs" => FamilyEnt { kind: "inline", open: "", attr: "", js: "tabs" },
-        "slider" => FamilyEnt { kind: "none", open: "", attr: "", js: "slider" },
-        "scroll-area" => FamilyEnt { kind: "none", open: "", attr: "", js: "scroll-area" },
-        "dropdown-menu" => FamilyEnt { kind: "menu", open: "click", attr: "data-radixuigo-menu-trigger", js: "dropdown-menu" },
-        "context-menu" => FamilyEnt { kind: "menu", open: "contextmenu", attr: "data-radixuigo-context-trigger", js: "context-menu" },
-        "menubar" => FamilyEnt { kind: "menu", open: "click", attr: "data-radixuigo-menu-trigger", js: "menubar" },
-        "select" => FamilyEnt { kind: "select", open: "", attr: "", js: "select" },
-        "carousel" => FamilyEnt { kind: "none", open: "", attr: "", js: "carousel" },
-        "navigation-menu" => FamilyEnt { kind: "nav", open: "", attr: "", js: "navigation-menu" },
+        "alert-dialog" => FamilyEnt {
+            kind: "dialog",
+            open: "",
+            attr: "",
+            js: "alert-dialog",
+        },
+        "dialog" => FamilyEnt {
+            kind: "dialog",
+            open: "",
+            attr: "",
+            js: "dialog",
+        },
+        "sheet" => FamilyEnt {
+            kind: "dialog",
+            open: "",
+            attr: "",
+            js: "sheet",
+        },
+        "popover" => FamilyEnt {
+            kind: "portal",
+            open: "click",
+            attr: "",
+            js: "popover",
+        },
+        "tooltip" => FamilyEnt {
+            kind: "portal",
+            open: "hover",
+            attr: "",
+            js: "tooltip",
+        },
+        "hover-card" => FamilyEnt {
+            kind: "portal",
+            open: "hover",
+            attr: "",
+            js: "hover-card",
+        },
+        "tabs" => FamilyEnt {
+            kind: "inline",
+            open: "",
+            attr: "",
+            js: "tabs",
+        },
+        "slider" => FamilyEnt {
+            kind: "none",
+            open: "",
+            attr: "",
+            js: "slider",
+        },
+        "scroll-area" => FamilyEnt {
+            kind: "none",
+            open: "",
+            attr: "",
+            js: "scroll-area",
+        },
+        "dropdown-menu" => FamilyEnt {
+            kind: "menu",
+            open: "click",
+            attr: "data-radixuigo-menu-trigger",
+            js: "dropdown-menu",
+        },
+        "context-menu" => FamilyEnt {
+            kind: "menu",
+            open: "contextmenu",
+            attr: "data-radixuigo-context-trigger",
+            js: "context-menu",
+        },
+        "menubar" => FamilyEnt {
+            kind: "menu",
+            open: "click",
+            attr: "data-radixuigo-menu-trigger",
+            js: "menubar",
+        },
+        "select" => FamilyEnt {
+            kind: "select",
+            open: "",
+            attr: "",
+            js: "select",
+        },
+        "carousel" => FamilyEnt {
+            kind: "none",
+            open: "",
+            attr: "",
+            js: "carousel",
+        },
+        "navigation-menu" => FamilyEnt {
+            kind: "nav",
+            open: "",
+            attr: "",
+            js: "navigation-menu",
+        },
         _ => return None,
     })
 }
@@ -2097,7 +2111,8 @@ pub fn protocol_mdx(comp: &str) -> String {
     } else if f.kind == "none" {
         api = String::new();
     } else {
-        api = "`shadless.get(\"#<k>-trigger\")` → `open()`, `close()`, `toggle()`, `isOpen()`".to_string();
+        api = "`shadless.get(\"#<k>-trigger\")` → `open()`, `close()`, `toggle()`, `isOpen()`"
+            .to_string();
         if f.kind == "select" {
             api += ", `select(optionEl)`, `value()`, `label()`, `selected()`; the trigger also dispatches `shadless:change` (`detail: { value, label, item }`). An option's value is its `value` / `data-value` attribute or id — React's value prop never reaches the DOM, so add `data-value` to options whose value differs from their label";
         }
@@ -2384,10 +2399,10 @@ pub struct DemoScripts {
 
 pub fn extract_demo_scripts(html: &str) -> DemoScripts {
     let mut out = DemoScripts::default();
-    for caps in re_demo_src_script().captures_iter(html) {
+    for caps in RE_DEMO_SRC_SCRIPT.captures_iter(html) {
         out.src_scripts.push(caps[1].to_string()); // JS pushed every match, no dedupe
     }
-    for caps in re_inline_script().captures_iter(html) {
+    for caps in RE_INLINE_SCRIPT.captures_iter(html) {
         let body = caps[1].trim();
         if body.is_empty() {
             continue;
@@ -2434,7 +2449,9 @@ pub fn dedent_script(body: &str) -> String {
     } else {
         out = lines.iter().map(|s| s.to_string()).collect();
     }
-    out.join("\n").trim_end_matches([' ', '\t', '\n']).to_string()
+    out.join("\n")
+        .trim_end_matches([' ', '\t', '\n'])
+        .to_string()
 }
 
 // ---------------------------------------------------------------- catalog helpers
@@ -2442,7 +2459,7 @@ pub fn dedent_script(body: &str) -> String {
 /// stripFences blanks code fences: they are prose, not rendered tags. Replaced
 /// with spaces (not removed) so offsets and line numbers stay stable.
 pub fn strip_fences(text: &str) -> String {
-    re_fence()
+    RE_FENCE
         .replace_all(text, |caps: &regex::Captures| {
             let m = caps.get(0).unwrap().as_str();
             m.chars()
@@ -2455,11 +2472,7 @@ pub fn strip_fences(text: &str) -> String {
 /// attrOf reads one attribute out of a tag's attribute text. The (^|\s) anchor
 /// is deliberate: a bare \b would let data-name= match name=.
 pub fn attr_of(attrs: &str, name: &str) -> (String, bool) {
-    let re = Regex::new(&format!(
-        "(?:^|[ \\t]){}=\"([^\"]*)\"",
-        regex::escape(name)
-    ))
-    .unwrap();
+    let re = Regex::new(&format!("(?:^|[ \\t]){}=\"([^\"]*)\"", regex::escape(name))).unwrap();
     match re.captures(attrs) {
         Some(m) => (m[1].to_string(), true),
         None => (String::new(), false),
@@ -2511,10 +2524,22 @@ pub fn grey_components() -> &'static [&'static str] {
     &[
         // 10 tombstones (Wave D/E externals; form has no mdx page; the medium
         // pair menubar/navigation-menu emitted since — contract-tested glue)
-        "calendar", "chart", "combobox", "command", "drawer", "form", "input-otp",
-        "resizable", "sidebar", "sonner",
+        "calendar",
+        "chart",
+        "combobox",
+        "command",
+        "drawer",
+        "form",
+        "input-otp",
+        "resizable",
+        "sidebar",
+        "sonner",
         // 5 FT6 grey dispositions (0 implement / 5 grey)
-        "data-table", "date-picker", "questionnaire", "toast", "typography",
+        "data-table",
+        "date-picker",
+        "questionnaire",
+        "toast",
+        "typography",
     ]
 }
 

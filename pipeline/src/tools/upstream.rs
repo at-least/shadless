@@ -9,17 +9,14 @@
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 
-use crate::gates::pin::{read_pin, truncate, PinFile};
+use crate::gates::pin::{PinFile, read_pin, truncate};
 
 const UPSTREAM_DIR: &str = ".upstream/shadcn-ui";
 const GATES_OUT: &str = "build/gates";
 
-fn re_src_ext() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"\.(tsx|mdx|css)$").unwrap())
-}
+static RE_SRC_EXT: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\.(tsx|mdx|css)$").unwrap());
 
 /// upGit runs git inside the pinned checkout and returns trimmed stdout.
 fn up_git(root: &Path, args: &[&str]) -> Result<String, String> {
@@ -33,10 +30,7 @@ fn up_git(root: &Path, args: &[&str]) -> Result<String, String> {
     if !out.status.success() {
         // Go cmd.Output() returns the *exec.ExitError, whose %v is
         // "exit status N" — the git stderr text never reaches the caller.
-        return Err(format!(
-            "exit status {}",
-            out.status.code().unwrap_or(-1)
-        ));
+        return Err(format!("exit status {}", out.status.code().unwrap_or(-1)));
     }
     Ok(String::from_utf8_lossy(&out.stdout).trim().to_string())
 }
@@ -163,8 +157,8 @@ pub fn run_upstream(root: &Path, args: &[String]) -> i32 {
     // --json shape is the interface.
     let ir_before = format!("{}/ir-before", GATES_OUT);
     let exe = pipeline_exe();
-    let ir_text = capture_output(root, &exe, &["ir-diff", &ir_before, "generated/ir"])
-        .unwrap_or_default();
+    let ir_text =
+        capture_output(root, &exe, &["ir-diff", &ir_before, "generated/ir"]).unwrap_or_default();
     let ir_json = capture_output(
         root,
         &exe,
@@ -245,7 +239,12 @@ pub fn run_upstream(root: &Path, args: &[String]) -> i32 {
     if !conflicts.is_empty() {
         let lines: Vec<String> = conflicts
             .iter()
-            .map(|c| format!("- CONFLICT `overlays/upstream/{}`\n```\n{}\n```", c.f, c.out))
+            .map(|c| {
+                format!(
+                    "- CONFLICT `overlays/upstream/{}`\n```\n{}\n```",
+                    c.f, c.out
+                )
+            })
             .collect();
         rep.p(&lines.join("\n"));
     }
@@ -278,18 +277,23 @@ pub fn run_upstream(root: &Path, args: &[String]) -> i32 {
         conflicts.len(),
         GATES_OUT
     );
-    if green {
-        0
-    } else {
-        1
-    }
+    if green { 0 } else { 1 }
 }
 
 /// drillRepin is steps 1-3: checkout, re-pin, dissolve, apply the patch series.
-fn drill_repin(root: &Path, to: &str, args: &[String], from: &PinFile, rep: &mut DrillReport) -> i32 {
+fn drill_repin(
+    root: &Path,
+    to: &str,
+    args: &[String],
+    from: &PinFile,
+    rep: &mut DrillReport,
+) -> i32 {
     // a leading dash would ride into `git checkout` as an option
     if to.starts_with('-') {
-        eprintln!("pipeline upstream: --to looks like an option, not a revision: {}", to);
+        eprintln!(
+            "pipeline upstream: --to looks like an option, not a revision: {}",
+            to
+        );
         return 2;
     }
     upstream_step(&format!("checkout {}", to));
@@ -335,7 +339,10 @@ fn drill_repin(root: &Path, to: &str, args: &[String], from: &PinFile, rep: &mut
             return 1;
         }
     };
-    rep.h(&format!("Re-pin {} → {}", from.shadcn_ui.tag, to_pin.shadcn_ui.tag));
+    rep.h(&format!(
+        "Re-pin {} → {}",
+        from.shadcn_ui.tag, to_pin.shadcn_ui.tag
+    ));
     rep.p(&format!(
         "- from: `{}` ({})\n- to:   `{}` ({})",
         from.shadcn_ui.tag,
@@ -373,9 +380,7 @@ fn drill_repin(root: &Path, to: &str, args: &[String], from: &PinFile, rep: &mut
             if !out.status.success() {
                 conflicts.push(PatchConflict {
                     f: f.clone(),
-                    out: String::from_utf8_lossy(&out.stdout)
-                        .trim()
-                        .to_string()
+                    out: String::from_utf8_lossy(&out.stdout).trim().to_string()
                         + &String::from_utf8_lossy(&out.stderr).trim(),
                 });
             }
@@ -443,7 +448,7 @@ fn changed_upstream_files(
 /// filepath.Base.
 fn component_of(p: &str) -> String {
     let base = p.rsplit('/').next().unwrap_or(p);
-    re_src_ext().replace_all(base, "").into_owned()
+    RE_SRC_EXT.replace_all(base, "").into_owned()
 }
 
 /// componentOfExample maps an example filename back to its component by the
@@ -498,7 +503,12 @@ fn classify_failures(
     // regexes per red gate
     let name_patterns: Vec<(&String, Regex)> = registry_names
         .iter()
-        .map(|n| (n, Regex::new(&format!(r"\b{}\b", regex::escape(n))).unwrap()))
+        .map(|n| {
+            (
+                n,
+                Regex::new(&format!(r"\b{}\b", regex::escape(n))).unwrap(),
+            )
+        })
         .collect();
     for id in ids {
         let f = &run.failed[id];
@@ -539,8 +549,8 @@ fn classify_failures(
 // ---------------------------------------------------------------- helpers
 
 fn read_run_report(root: &Path) -> crate::runner::RunReport {
-    let b = std::fs::read_to_string(root.join(GATES_OUT).join("run-report.json"))
-        .unwrap_or_default();
+    let b =
+        std::fs::read_to_string(root.join(GATES_OUT).join("run-report.json")).unwrap_or_default();
     serde_json::from_str(&b).unwrap_or_default()
 }
 
@@ -691,11 +701,7 @@ mod tests {
         };
         let mut changed = std::collections::HashSet::new();
         changed.insert("select".to_string());
-        let (_, unexpected) = classify_failures(
-            &run,
-            &["select".to_string()],
-            &changed,
-        );
+        let (_, unexpected) = classify_failures(&run, &["select".to_string()], &changed);
         assert_eq!(unexpected.len(), 1);
         assert!(
             unexpected[0].contains("no component attribution"),
@@ -763,7 +769,10 @@ mod tests {
     fn unit_component_of() {
         for (input, want) in [
             ("apps/v4/registry/bases/radix/ui/badge.tsx", "badge"),
-            ("apps/v4/examples/radix/accordion-demo.tsx", "accordion-demo"),
+            (
+                "apps/v4/examples/radix/accordion-demo.tsx",
+                "accordion-demo",
+            ),
             ("apps/v4/content/docs/components/radix/tabs.mdx", "tabs"),
             ("apps/v4/app/globals.css", "globals"),
             ("noslash.tsx", "noslash"),
@@ -795,7 +804,10 @@ mod tests {
             !dst.join("stale.json").exists(),
             "copyTree left a stale file behind"
         );
-        assert_eq!(std::fs::read_to_string(dst.join("sub/a.json")).unwrap(), "new");
+        assert_eq!(
+            std::fs::read_to_string(dst.join("sub/a.json")).unwrap(),
+            "new"
+        );
     }
 
     /// Go TestUnitFlagValue.

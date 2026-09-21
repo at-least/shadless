@@ -409,7 +409,10 @@ pub fn cv_build_reg(files: &[String], js_of: &HashMap<String, String>) -> (CvReg
             if !exported.contains(&cva_name) {
                 continue;
             }
-            let table = tables.get(&cva_name).expect("names come from tables").clone();
+            let table = tables
+                .get(&cva_name)
+                .expect("names come from tables")
+                .clone();
             reg.cva_by_export.insert(
                 cva_name.clone(),
                 CvaExportEntry {

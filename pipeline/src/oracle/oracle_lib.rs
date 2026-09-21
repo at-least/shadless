@@ -19,7 +19,7 @@ use regex::Regex;
 use sha2::{Digest, Sha256};
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
-use std::sync::OnceLock;
+use std::sync::{LazyLock, OnceLock};
 
 pub const ORACLE_CANON: &str = include_str!("oracle_canon.js");
 
@@ -85,7 +85,9 @@ fn oracle_invariant_once() -> &'static Result<Vec<u8>, String> {
             .collect();
         resolved.sort();
         if resolved.is_empty() {
-            return Err("build/resolved-ui is empty or missing — run the convert node first".to_string());
+            return Err(
+                "build/resolved-ui is empty or missing — run the convert node first".to_string(),
+            );
         }
         for f in &resolved {
             let b = std::fs::read(f).map_err(|e| format!("{}: {}", f.display(), e))?;
@@ -102,8 +104,10 @@ fn oracle_invariant_once() -> &'static Result<Vec<u8>, String> {
 /// varies with `name`.
 pub fn oracle_bundle_cache_key(name: &str) -> Result<String, String> {
     let inv = oracle_invariant_once().clone()?;
-    let tsx = std::fs::read(Path::new(".upstream/shadcn-ui/apps/v4/examples/radix").join(format!("{}.tsx", name)))
-        .map_err(|e| e.to_string())?;
+    let tsx = std::fs::read(
+        Path::new(".upstream/shadcn-ui/apps/v4/examples/radix").join(format!("{}.tsx", name)),
+    )
+    .map_err(|e| e.to_string())?;
     let mut h = Sha256::new();
     h.update(inv);
     h.update(&tsx);
@@ -113,7 +117,9 @@ pub fn oracle_bundle_cache_key(name: &str) -> Result<String, String> {
 /// Examples import GENERATED style dirs @/styles/<flavor>-<skin>/ui[-rtl]/*;
 /// the resolved tree is their tracked equivalent.
 pub fn oracle_aliases() -> Result<HashMap<String, String>, String> {
-    let skins = ["nova", "vega", "lyra", "maia", "mira", "luma", "sera", "rhea"];
+    let skins = [
+        "nova", "vega", "lyra", "maia", "mira", "luma", "sera", "rhea",
+    ];
     let abs = |p: &str| -> String {
         std::fs::canonicalize(p)
             .map(|p| p.to_string_lossy().into_owned())
@@ -133,9 +139,18 @@ pub fn oracle_aliases() -> Result<HashMap<String, String>, String> {
     let up = abs(".upstream/shadcn-ui/apps/v4");
     let mut a: HashMap<String, String> = HashMap::from([
         ("@".to_string(), up.clone()),
-        ("@/registry/bases/radix/ui".to_string(), format!("{}/ui", resolved)),
-        ("@/registry/bases/radix/lib".to_string(), format!("{}/lib", resolved)),
-        ("@/registry/bases/radix/hooks".to_string(), format!("{}/hooks", resolved)),
+        (
+            "@/registry/bases/radix/ui".to_string(),
+            format!("{}/ui", resolved),
+        ),
+        (
+            "@/registry/bases/radix/lib".to_string(),
+            format!("{}/lib", resolved),
+        ),
+        (
+            "@/registry/bases/radix/hooks".to_string(),
+            format!("{}/hooks", resolved),
+        ),
         (
             "@/components/language-selector".to_string(),
             abs("tools/contracts/stubs/app-components.jsx"),
@@ -155,10 +170,22 @@ pub fn oracle_aliases() -> Result<HashMap<String, String>, String> {
             "@/app/(create)/components/icon-placeholder".to_string(),
             abs("tools/contracts/stubs/icon-placeholder.jsx"),
         ),
-        ("next/image".to_string(), abs("tools/contracts/stubs/next-image.jsx")),
-        ("next/link".to_string(), abs("tools/contracts/stubs/next-link.jsx")),
-        ("date-fns".to_string(), abs("tools/contracts/stubs/date-fns.mjs")),
-        ("sonner".to_string(), abs("tools/contracts/stubs/sonner.jsx")),
+        (
+            "next/image".to_string(),
+            abs("tools/contracts/stubs/next-image.jsx"),
+        ),
+        (
+            "next/link".to_string(),
+            abs("tools/contracts/stubs/next-link.jsx"),
+        ),
+        (
+            "date-fns".to_string(),
+            abs("tools/contracts/stubs/date-fns.mjs"),
+        ),
+        (
+            "sonner".to_string(),
+            abs("tools/contracts/stubs/sonner.jsx"),
+        ),
         (
             "embla-carousel-autoplay".to_string(),
             abs("tools/contracts/stubs/embla-autoplay.mjs"),
@@ -170,7 +197,10 @@ pub fn oracle_aliases() -> Result<HashMap<String, String>, String> {
     ]);
     for flavor in ["radix", "base", "aria"] {
         for s in skins {
-            a.insert(format!("@/styles/{}-{}/ui", flavor, s), format!("{}/ui", resolved));
+            a.insert(
+                format!("@/styles/{}-{}/ui", flavor, s),
+                format!("{}/ui", resolved),
+            );
             a.insert(
                 format!("@/styles/{}-{}/ui-rtl", flavor, s),
                 format!("{}/ui-rtl", resolved),
@@ -351,18 +381,15 @@ pub fn await_oracle(p: &BPage<'_>, html_file: &Path) -> Result<(), String> {
 
 /// Every spelling React's useId has had, as radix prefixes it — React 18
 /// `:r1:`, 19.0 `«r1»`, 19.1+ CSR `_r_1_` and SSR `_R_1H2_`.
-fn re_radix_auto_id() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| {
-        Regex::new(r"radix-(?::r[a-z0-9]*:?|«r[a-z0-9]*»|_[rR]_[A-Za-z0-9-]*_?)").unwrap()
-    })
-}
+static RE_RADIX_AUTO_ID: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r"radix-(?::r[a-z0-9]*:?|«r[a-z0-9]*»|_[rR]_[A-Za-z0-9-]*_?)").unwrap()
+});
 
 /// Makes radix auto-ids STABLE without making them EQUAL: each distinct id
 /// becomes radix-a1, radix-a2, … in order of first appearance.
 pub fn oracle_norm(html: &str) -> String {
     let seen: std::sync::Mutex<HashMap<String, String>> = std::sync::Mutex::new(HashMap::new());
-    re_radix_auto_id()
+    RE_RADIX_AUTO_ID
         .replace_all(html, |m: &regex::Captures| {
             let id = m[0].to_string();
             let mut seen = seen.lock().unwrap();
@@ -396,7 +423,10 @@ pub fn rel_path(from_dir: &Path, to: &Path) -> Result<String, String> {
     let from_comps: Vec<_> = from_dir.components().collect();
     let to_comps: Vec<_> = to.components().collect();
     let mut common = 0;
-    while common < from_comps.len() && common < to_comps.len() && from_comps[common] == to_comps[common] {
+    while common < from_comps.len()
+        && common < to_comps.len()
+        && from_comps[common] == to_comps[common]
+    {
         common += 1;
     }
     let mut parts: Vec<String> = Vec::new();

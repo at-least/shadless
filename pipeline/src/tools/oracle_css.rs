@@ -8,15 +8,13 @@
 use regex::Regex;
 use std::fs;
 use std::path::{Path, PathBuf};
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 
 const UPSTREAM_DIR: &str = ".upstream/shadcn-ui";
 const ORACLE_OUT_DIR: &str = "build/gates";
 
-fn skin_rule() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"\.style-nova\s+\.cn-[0-9A-Za-z_-]+").unwrap())
-}
+static SKIN_RULE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"\.style-nova\s+\.cn-[0-9A-Za-z_-]+").unwrap());
 
 /// buildOracleEntryCSS applies the app's own globals.css line-by-line: the
 /// shadcn/tailwind.css import is inlined verbatim, the legacy-themes.css
@@ -37,9 +35,7 @@ pub fn build_oracle_entry_css(
     let mut lines: Vec<String> = Vec::new();
     for line in app_css.split('\n') {
         if line.contains("\"shadcn/tailwind.css\"") {
-            lines.push(
-                "/* shadcn/tailwind.css (inlined from packages/shadcn/src) */".to_string(),
-            );
+            lines.push("/* shadcn/tailwind.css (inlined from packages/shadcn/src) */".to_string());
             lines.push(shadcn_tailwind_css.to_string());
         } else if line.contains("\"./legacy-themes.css\"") {
             if has_legacy {
@@ -54,9 +50,7 @@ pub fn build_oracle_entry_css(
     for d in source_dirs {
         lines.push(format!("@source {:?};", d));
     }
-    lines.push(
-        "/* === style-nova.css (the pinned skin, verbatim) === */".to_string(),
-    );
+    lines.push("/* === style-nova.css (the pinned skin, verbatim) === */".to_string());
     lines.push(skin_css.to_string());
     lines.join("\n")
 }
@@ -107,14 +101,20 @@ pub fn run_oracle_css() -> i32 {
             return 1;
         }
     };
-    let shadcn_tw = match read(&format!("{}/packages/shadcn/src/tailwind.css", UPSTREAM_DIR)) {
+    let shadcn_tw = match read(&format!(
+        "{}/packages/shadcn/src/tailwind.css",
+        UPSTREAM_DIR
+    )) {
         Ok(s) => s,
         Err(e) => {
             eprintln!("oracle-css: {}", e);
             return 1;
         }
     };
-    let skin = match read(&format!("{}/apps/v4/registry/styles/style-nova.css", UPSTREAM_DIR)) {
+    let skin = match read(&format!(
+        "{}/apps/v4/registry/styles/style-nova.css",
+        UPSTREAM_DIR
+    )) {
         Ok(s) => s,
         Err(e) => {
             eprintln!("oracle-css: {}", e);
@@ -133,7 +133,9 @@ pub fn run_oracle_css() -> i32 {
         &[
             abs("build/resolved-ui").to_string_lossy().into_owned(),
             // usage trees carry example classes
-            abs("tools/contracts/components").to_string_lossy().into_owned(),
+            abs("tools/contracts/components")
+                .to_string_lossy()
+                .into_owned(),
             // the examples' own utilities (max-w-lg on an accordion demo, …): the
             // demo pages carry them inline, so the oracle stylesheet must define them
             abs(&format!("{}/apps/v4/examples", UPSTREAM_DIR))
@@ -172,7 +174,7 @@ pub fn run_oracle_css() -> i32 {
         "oracle-css: {} ({:.0}KB, {} skin rules, zero bytes from src/)",
         out,
         css.len() as f64 / 1024.0,
-        skin_rule().find_iter(&css).count()
+        SKIN_RULE.find_iter(&css).count()
     );
     0
 }
@@ -200,7 +202,14 @@ mod tests {
         ];
 
         // legacy present
-        let got = build_oracle_entry_css(&app, shadcn_tw, skin, "/abs/legacy-themes.css", true, &source_dirs);
+        let got = build_oracle_entry_css(
+            &app,
+            shadcn_tw,
+            skin,
+            "/abs/legacy-themes.css",
+            true,
+            &source_dirs,
+        );
         let want = [
             r#"@import "tailwindcss";"#,
             "/* shadcn/tailwind.css (inlined from packages/shadcn/src) */",
@@ -216,7 +225,14 @@ mod tests {
         assert_eq!(got, want, "legacy present");
 
         // legacy absent
-        let got = build_oracle_entry_css(&app, shadcn_tw, skin, "/abs/legacy-themes.css", false, &source_dirs);
+        let got = build_oracle_entry_css(
+            &app,
+            shadcn_tw,
+            skin,
+            "/abs/legacy-themes.css",
+            false,
+            &source_dirs,
+        );
         assert!(
             !got.contains("legacy-themes"),
             "legacy import present despite has_legacy=false: {}",
@@ -236,11 +252,29 @@ mod tests {
         assert_eq!(got, want, "legacy absent");
 
         // app @source lines dropped
-        let got = build_oracle_entry_css(&app, shadcn_tw, skin, "/abs/legacy-themes.css", true, &source_dirs);
-        assert!(!got.contains("own-dir"), "app's own @source line survived: {}", got);
+        let got = build_oracle_entry_css(
+            &app,
+            shadcn_tw,
+            skin,
+            "/abs/legacy-themes.css",
+            true,
+            &source_dirs,
+        );
+        assert!(
+            !got.contains("own-dir"),
+            "app's own @source line survived: {}",
+            got
+        );
 
         // passthrough line kept verbatim
-        let got = build_oracle_entry_css(&app, shadcn_tw, skin, "/abs/legacy-themes.css", true, &source_dirs);
+        let got = build_oracle_entry_css(
+            &app,
+            shadcn_tw,
+            skin,
+            "/abs/legacy-themes.css",
+            true,
+            &source_dirs,
+        );
         assert!(
             got.contains(".custom { color: red; }"),
             "passthrough line dropped: {}",

@@ -3,9 +3,9 @@
 //! walk and the downgraded createElement call order. Fragment elements
 //! (<>/React.Fragment) produce no record.
 
-use super::scan::{cv_first_top, cv_mask_end, cv_ops_qor_logical, cv_ident_re};
+use super::scan::{CV_IDENT_RE, cv_first_top, cv_mask_end, cv_ops_qor_logical};
 use regex::Regex;
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 
 #[derive(Clone, Debug, Default)]
 pub struct JsxKind {
@@ -18,16 +18,26 @@ pub struct CvJsxRec {
     pub kinds: Vec<JsxKind>,
 }
 
-pub fn cv_jsx_name_re() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^[A-Za-z_$][A-Za-z0-9_$-]*(?:\.[A-Za-z0-9_$-]+)*").unwrap())
-}
+pub static CV_JSX_NAME_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^[A-Za-z_$][A-Za-z0-9_$-]*(?:\.[A-Za-z0-9_$-]+)*").unwrap());
 
 fn cv_jsx_keywords(w: &str) -> bool {
     matches!(
         w,
-        "return" | "typeof" | "case" | "do" | "else" | "in" | "of" | "new" | "delete"
-            | "void" | "yield" | "await" | "instanceof" | "throw"
+        "return"
+            | "typeof"
+            | "case"
+            | "do"
+            | "else"
+            | "in"
+            | "of"
+            | "new"
+            | "delete"
+            | "void"
+            | "yield"
+            | "await"
+            | "instanceof"
+            | "throw"
     )
 }
 
@@ -68,7 +78,12 @@ impl<'a> JsxScanner<'a> {
             return false;
         }
         let c = b[i + 1];
-        if !(c.is_ascii_lowercase() || c.is_ascii_uppercase() || c == b'_' || c == b'$' || c == b'>') {
+        if !(c.is_ascii_lowercase()
+            || c.is_ascii_uppercase()
+            || c == b'_'
+            || c == b'$'
+            || c == b'>')
+        {
             return false;
         }
         let mut j = i as isize - 1;
@@ -84,7 +99,12 @@ impl<'a> JsxScanner<'a> {
             return true;
         }
         let p = b[j as usize];
-        if p.is_ascii_lowercase() || p.is_ascii_uppercase() || p.is_ascii_digit() || p == b'_' || p == b'$' {
+        if p.is_ascii_lowercase()
+            || p.is_ascii_uppercase()
+            || p.is_ascii_digit()
+            || p == b'_'
+            || p == b'$'
+        {
             let mut k = j;
             while k >= 0
                 && (b[k as usize].is_ascii_lowercase()
@@ -110,7 +130,7 @@ impl<'a> JsxScanner<'a> {
             let (_, n) = self.parse_children(i + 2, "")?;
             return Ok(n);
         }
-        let m = cv_jsx_name_re()
+        let m = CV_JSX_NAME_RE
             .find(&self.s[i + 1..])
             .map(|m| m.as_str().to_string())
             .unwrap_or_default();
@@ -188,7 +208,7 @@ impl<'a> JsxScanner<'a> {
                         }
                         return Ok((kinds, j + 1));
                     }
-                    let m = cv_jsx_name_re()
+                    let m = CV_JSX_NAME_RE
                         .find(&self.s[j..])
                         .map(|m| m.as_str().to_string())
                         .unwrap_or_default();
@@ -275,7 +295,7 @@ pub fn cv_classify_container(expr: &str) -> String {
     if t.is_empty() || t.starts_with("/*") || t.starts_with("//") {
         return "expr".to_string(); // JSXEmptyExpression (comment-only container)
     }
-    if cv_ident_re().is_match(t) && t != "true" && t != "false" && t != "null" {
+    if CV_IDENT_RE.is_match(t) && t != "true" && t != "false" && t != "null" {
         return format!("{{{}}}", t);
     }
     if cv_first_top(t, cv_ops_qor_logical) >= 0 {

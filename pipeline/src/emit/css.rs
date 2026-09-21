@@ -6,8 +6,7 @@ use crate::twmerge;
 use regex::Regex;
 use serde::Deserialize;
 use std::collections::{HashMap, HashSet};
-use std::sync::OnceLock;
-
+use std::sync::{LazyLock, OnceLock};
 
 /// Go's json.Unmarshal treats JSON null as "leave the field at its default";
 /// serde rejects null for String/Vec/Map. Normalize by dropping null-valued
@@ -208,26 +207,13 @@ pub fn css_escape(t: &str) -> String {
         .into_owned()
 }
 
-fn re_residue_text() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^text-(xs|sm|base|lg|xl|[0-9]xl)$").unwrap())
-}
-fn re_residue_size() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^size-").unwrap())
-}
-fn re_residue_text_leading() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^(leading-|text-(xs|sm|base|lg|xl|[0-9]xl)$)").unwrap())
-}
-fn re_residue_size_w() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^(w-|size-)").unwrap())
-}
-fn re_residue_size_h() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^(h-|size-)").unwrap())
-}
+static RE_RESIDUE_TEXT: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^text-(xs|sm|base|lg|xl|[0-9]xl)$").unwrap());
+static RE_RESIDUE_SIZE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^size-").unwrap());
+static RE_RESIDUE_TEXT_LEADING: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^(leading-|text-(xs|sm|base|lg|xl|[0-9]xl)$)").unwrap());
+static RE_RESIDUE_SIZE_W: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^(w-|size-)").unwrap());
+static RE_RESIDUE_SIZE_H: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^(h-|size-)").unwrap());
 
 /// When twMerge dropped a base token whose extra properties (line-height on
 /// text-sm, height on size-4) are not restated by the value, the value rule
@@ -243,15 +229,18 @@ pub fn residue_resets(base: &str, value: &str) -> Vec<String> {
         if merged.contains(tok) {
             continue;
         }
-        if re_residue_text().is_match(tok) {
-            if !value_toks.iter().any(|t| re_residue_text_leading().is_match(t)) {
+        if RE_RESIDUE_TEXT.is_match(tok) {
+            if !value_toks
+                .iter()
+                .any(|t| RE_RESIDUE_TEXT_LEADING.is_match(t))
+            {
                 out.push("leading-[inherit]".to_string());
             }
-        } else if re_residue_size().is_match(tok) {
-            if !value_toks.iter().any(|t| re_residue_size_w().is_match(t)) {
+        } else if RE_RESIDUE_SIZE.is_match(tok) {
+            if !value_toks.iter().any(|t| RE_RESIDUE_SIZE_W.is_match(t)) {
                 out.push("w-auto".to_string());
             }
-            if !value_toks.iter().any(|t| re_residue_size_h().is_match(t)) {
+            if !value_toks.iter().any(|t| RE_RESIDUE_SIZE_H.is_match(t)) {
                 out.push("h-auto".to_string());
             }
         }
@@ -319,10 +308,8 @@ pub fn dedup(ss: &[String]) -> Vec<String> {
     out
 }
 
-pub fn marker_re() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^(group|peer)(/[0-9A-Za-z_-]+)?$").unwrap())
-}
+pub static MARKER_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^(group|peer)(/[0-9A-Za-z_-]+)?$").unwrap());
 
 pub(crate) fn dead_utilities(t: &str) -> bool {
     t == "origin-top-center"
@@ -337,8 +324,7 @@ pub fn split_markers(s: &str) -> SplitMarkersOut {
     let mut apply_toks: Vec<String> = Vec::new();
     let mut markers: Vec<String> = Vec::new();
     for t in s.split_whitespace() {
-        if marker_re().is_match(t) || super::skin_data().allowlist.contains(t) || dead_utilities(t)
-        {
+        if MARKER_RE.is_match(t) || super::skin_data().allowlist.contains(t) || dead_utilities(t) {
             markers.push(t.to_string());
         } else {
             apply_toks.push(t.to_string());
@@ -387,13 +373,11 @@ pub fn cva_slot(ir: &CssIrComponent) -> HashMap<String, (CvaTable, String)> {
 }
 type CvTable_ = CvaTable;
 
-pub fn re_clean_tag_prefix() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^<ternary:[^/]+/").unwrap())
-}
+pub static RE_CLEAN_TAG_PREFIX: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^<ternary:[^/]+/").unwrap());
 
 pub fn clean_tag(t: &str) -> String {
-    let t2 = re_clean_tag_prefix().replace_all(t, "");
+    let t2 = RE_CLEAN_TAG_PREFIX.replace_all(t, "");
     kebab(t2.trim_end_matches('>'))
 }
 
@@ -453,10 +437,7 @@ pub fn component_css(ir: &CssIrComponent) -> Result<ComponentCssOut, String> {
                     .or_default()
                     .push((el.clone(), key));
             } else if el.slot.is_empty() {
-                let base = if !c.elements.is_empty()
-                    && c.elements[0].tag == el.tag
-                    && idx == 0
-                {
+                let base = if !c.elements.is_empty() && c.elements[0].tag == el.tag && idx == 0 {
                     kebab(&c.fn_)
                 } else {
                     format!("{}-{}", kebab(&c.fn_), clean_tag(&el.tag))
@@ -511,7 +492,11 @@ pub fn component_css(ir: &CssIrComponent) -> Result<ComponentCssOut, String> {
         let keep: Vec<String> = el
             .classes
             .iter()
-            .filter(|c| !branches.iter().any(|cd| c.as_str() == cd.then || c.as_str() == cd.r#else))
+            .filter(|c| {
+                !branches
+                    .iter()
+                    .any(|cd| c.as_str() == cd.then || c.as_str() == cd.r#else)
+            })
             .cloned()
             .collect();
         keep.join(" ")
@@ -533,9 +518,7 @@ pub fn component_css(ir: &CssIrComponent) -> Result<ComponentCssOut, String> {
             };
             let absent_is_true = match &t.default {
                 None => true,
-                Some(d) if d.is_string() => {
-                    (d.as_str() == Some(v.as_str())) == (t.op == "===")
-                }
+                Some(d) if d.is_string() => (d.as_str() == Some(v.as_str())) == (t.op == "==="),
                 Some(_) => true,
             };
             let (ctx, ctx_other) = if !root_slot.is_empty() {
@@ -617,11 +600,14 @@ pub fn component_css(ir: &CssIrComponent) -> Result<ComponentCssOut, String> {
         for item in items {
             let s = split_markers(&strip_branches(&item.0, &item.1));
             if !sigs.contains_key(&s.apply) {
-                sigs.insert(s.apply.clone(), SigInfo {
-                    tags: HashSet::new(),
-                    first_tag: String::new(),
-                    markers: Vec::new(),
-                });
+                sigs.insert(
+                    s.apply.clone(),
+                    SigInfo {
+                        tags: HashSet::new(),
+                        first_tag: String::new(),
+                        markers: Vec::new(),
+                    },
+                );
                 sig_order.push(s.apply.clone());
             }
             let info = sigs.get_mut(&s.apply).unwrap();
@@ -643,13 +629,13 @@ pub fn component_css(ir: &CssIrComponent) -> Result<ComponentCssOut, String> {
         if sig_order.len() == 1 {
             let apply = &sig_order[0];
             if !apply.is_empty() {
-                rules.push(format!("  [data-slot=\"{}\"] {{ @apply {}; }}", slot, apply));
+                rules.push(format!(
+                    "  [data-slot=\"{}\"] {{ @apply {}; }}",
+                    slot, apply
+                ));
             }
             for it in items {
-                rules.extend(branch_rules(
-                    &format!("[data-slot=\"{}\"]", slot),
-                    &it.1,
-                ));
+                rules.extend(branch_rules(&format!("[data-slot=\"{}\"]", slot), &it.1));
             }
             continue;
         }
@@ -753,19 +739,16 @@ pub fn component_css(ir: &CssIrComponent) -> Result<ComponentCssOut, String> {
                 }
                 let t = split_markers(&cls);
                 if !t.markers.is_empty() {
-                    markers.entry(cv_slot.clone()).or_default().extend(t.markers.iter().cloned());
+                    markers
+                        .entry(cv_slot.clone())
+                        .or_default()
+                        .extend(t.markers.iter().cloned());
                 }
                 if t.apply.is_empty() {
                     continue;
                 }
-                let (reset_rule, has_reset, main_rule) = residue_rule_parts(
-                    cv_slot,
-                    &axis,
-                    &val,
-                    def.as_deref(),
-                    &base_apply,
-                    &t.apply,
-                );
+                let (reset_rule, has_reset, main_rule) =
+                    residue_rule_parts(cv_slot, &axis, &val, def.as_deref(), &base_apply, &t.apply);
                 if has_reset {
                     rules.push(reset_rule);
                 }
@@ -804,14 +787,8 @@ pub fn component_css(ir: &CssIrComponent) -> Result<ComponentCssOut, String> {
                     ));
                     continue;
                 }
-                let (reset_rule, has_reset, main_rule) = residue_rule_parts(
-                    &r.slot,
-                    axis,
-                    &val,
-                    def.as_deref(),
-                    &base_apply,
-                    &t.apply,
-                );
+                let (reset_rule, has_reset, main_rule) =
+                    residue_rule_parts(&r.slot, axis, &val, def.as_deref(), &base_apply, &t.apply);
                 rules.push(main_rule);
                 if has_reset {
                     rules.push(reset_rule);
@@ -926,10 +903,7 @@ pub fn intersect_strings(lists: &[Vec<String>]) -> Vec<String> {
 /// already carries either branch inline (or its logical twin).
 pub fn branch_not_inline(t_apply: &str, f_apply: &str) -> String {
     let mut toks: Vec<String> = Vec::new();
-    let mut all: Vec<String> = t_apply
-        .split_whitespace()
-        .map(|s| s.to_string())
-        .collect();
+    let mut all: Vec<String> = t_apply.split_whitespace().map(|s| s.to_string()).collect();
     all.extend(f_apply.split_whitespace().map(|s| s.to_string()));
     for t in dedup(&all) {
         toks.extend(twins_of(&t));
@@ -952,7 +926,8 @@ pub fn branch_not_inline(t_apply: &str, f_apply: &str) -> String {
 /// Physical/logical spacing twins (pl-4 ↔ ps-4 in an RTL box).
 fn twins_of(tok: &str) -> Vec<String> {
     static RE_TWIN: OnceLock<Regex> = OnceLock::new();
-    let re = RE_TWIN.get_or_init(|| Regex::new(r"^(-?)(p|m|inset|scroll-p|scroll-m)(l|r|s|e)-(.+)$").unwrap());
+    let re = RE_TWIN
+        .get_or_init(|| Regex::new(r"^(-?)(p|m|inset|scroll-p|scroll-m)(l|r|s|e)-(.+)$").unwrap());
     let Some(m) = re.captures(tok) else {
         return vec![tok.to_string()];
     };
@@ -973,7 +948,9 @@ fn twins_of(tok: &str) -> Vec<String> {
 /// group is already inline, so the :not() uses group-prefix shape.
 fn shadows_of(tok: &str) -> Vec<String> {
     static RE_SHADOW: OnceLock<Regex> = OnceLock::new();
-    let re = RE_SHADOW.get_or_init(|| Regex::new(r"^(-?)(p|m|inset|top|right|bottom|left|start|end)([tblrsexy])?-").unwrap());
+    let re = RE_SHADOW.get_or_init(|| {
+        Regex::new(r"^(-?)(p|m|inset|top|right|bottom|left|start|end)([tblrsexy])?-").unwrap()
+    });
     let Some(m) = re.captures(tok) else {
         return vec![format!(":not(.{})", css_escape(tok))];
     };
@@ -1001,9 +978,24 @@ mod tests {
                 fn_: "T".into(),
                 export: true,
                 elements: vec![
-                    IrEl { tag: "button".into(), slot: "t".into(), classes: vec!["px-2".into()], ..Default::default() },
-                    IrEl { tag: "a".into(), slot: "t".into(), classes: vec!["px-2".into()], ..Default::default() },
-                    IrEl { tag: "span".into(), slot: "t".into(), classes: vec!["px-3".into()], ..Default::default() },
+                    IrEl {
+                        tag: "button".into(),
+                        slot: "t".into(),
+                        classes: vec!["px-2".into()],
+                        ..Default::default()
+                    },
+                    IrEl {
+                        tag: "a".into(),
+                        slot: "t".into(),
+                        classes: vec!["px-2".into()],
+                        ..Default::default()
+                    },
+                    IrEl {
+                        tag: "span".into(),
+                        slot: "t".into(),
+                        classes: vec!["px-3".into()],
+                        ..Default::default()
+                    },
                 ],
             }],
             ..Default::default()

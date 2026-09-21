@@ -35,7 +35,8 @@ impl BoundaryPattern {
 fn re_cache(pat: &'static str) -> &'static Regex {
     static CACHE: OnceLock<Mutex<HashMap<&'static str, &'static Regex>>> = OnceLock::new();
     let mut g = CACHE.get_or_init(Default::default).lock().unwrap();
-    *g.entry(pat).or_insert_with(|| Box::leak(Box::new(Regex::new(pat).unwrap())))
+    *g.entry(pat)
+        .or_insert_with(|| Box::leak(Box::new(Regex::new(pat).unwrap())))
 }
 
 fn one_of(paths: &'static [&'static str]) -> Box<dyn Fn(&str) -> bool + Send + Sync> {
@@ -403,7 +404,7 @@ static LLM_PATCH_POINTS: &[LlmPatchPoint] = &[
     LlmPatchPoint {
         file: "pipeline/src/emit/demo.rs",
         lines: "~127-230",
-                what: "Per-tier HTML fixtures (dialogDemoHtml, fieldDemoHtml, etc.) — kernel/trivial-js components get static HTML hand-written here; consumed by pipeline/src/emit/demo.rs.",
+        what: "Per-tier HTML fixtures (dialogDemoHtml, fieldDemoHtml, etc.) — kernel/trivial-js components get static HTML hand-written here; consumed by pipeline/src/emit/demo.rs.",
     },
     LlmPatchPoint {
         file: "docs/demos/",
@@ -538,11 +539,9 @@ pub fn audit_walk(root: &Path) -> Result<Vec<String>, String> {
 /// Finds tool-generated files MODIFIED relative to HEAD. Untracked files are
 /// NOT drift: they are the normal state after `make build`.
 pub fn detect_drift(root: &Path, programmatic: &[Classification]) -> Vec<Classification> {
-    let modified = git_paths(
-        root,
-        "--untracked-files=no",
-        |x, y| x == b'M' || y == b'M' || x == b'D' || y == b'D',
-    );
+    let modified = git_paths(root, "--untracked-files=no", |x, y| {
+        x == b'M' || y == b'M' || x == b'D' || y == b'D'
+    });
     programmatic
         .iter()
         .filter(|c| modified.contains_key(&c.path))
@@ -947,11 +946,7 @@ fn print_if(label: &str, v: &str) {
 }
 
 fn plural(n: usize) -> &'static str {
-    if n == 1 {
-        ""
-    } else {
-        "s"
-    }
+    if n == 1 { "" } else { "s" }
 }
 
 // ---------------------------------------------------------------- output
@@ -1119,9 +1114,7 @@ pub fn run_audit_boundary(args: &[String]) -> i32 {
     print!("\n\n");
     println!("DRIFT — tool-generated files with uncommitted changes");
     println!("{}", "=".repeat(72));
-    println!(
-        r#"(Tool-generated file is "drift" if git status shows it as"#
-    );
+    println!(r#"(Tool-generated file is "drift" if git status shows it as"#);
     println!(" modified. NOTE: this is noisy right after `make build` — every");
     println!(" regenerated file appears as drift until committed. Run");
     println!(" `git status` to see if drift is from a fresh build vs a");
@@ -1166,7 +1159,9 @@ pub fn run_audit_boundary(args: &[String]) -> i32 {
     println!("  drift: {}", drift.len());
     if !unknown.is_empty() {
         println!();
-        println!("UNKNOWN files (no pattern matched — add to programmaticPatterns or handAuthoredPatterns):");
+        println!(
+            "UNKNOWN files (no pattern matched — add to programmaticPatterns or handAuthoredPatterns):"
+        );
         for (i, u) in unknown.iter().enumerate() {
             if i == 20 {
                 println!("  …and {} more", unknown.len() - 20);
@@ -1186,10 +1181,7 @@ pub fn run_audit_boundary(args: &[String]) -> i32 {
 // {name, out} and example-fixture records {name}. A manifest that cannot be
 // read matches nothing, so a missing file degrades to "unknown" rather than
 // to a false claim of ownership. Only a SUCCESSFUL read is remembered.
-fn in_manifest(
-    manifest: &'static str,
-    field: &'static str,
-) -> impl Fn(&str) -> bool + Send + Sync {
+fn in_manifest(manifest: &'static str, field: &'static str) -> impl Fn(&str) -> bool + Send + Sync {
     static OWNED: OnceLock<Mutex<HashMap<&'static str, HashMap<String, bool>>>> = OnceLock::new();
     let owned_store = OWNED.get_or_init(Default::default);
     move |p: &str| {
@@ -1272,30 +1264,68 @@ mod tests {
     fn unit_audit_classify_order() {
         let cases: Vec<(&str, &str, &str)> = vec![
             // RTL variants must reach build-rtl, NOT the broader dist/components rule
-            ("dist/components/alert-rtl-he.html", "programmatic", "pipeline/src/emit/build_rtl.rs"),
-            ("dist/components/alert-rtl-en.html", "programmatic", "pipeline/src/emit/build_rtl.rs"),
-            ("dist/components/alert-rtl-fa.html", "programmatic", "pipeline/src/emit/build_rtl.rs"),
+            (
+                "dist/components/alert-rtl-he.html",
+                "programmatic",
+                "pipeline/src/emit/build_rtl.rs",
+            ),
+            (
+                "dist/components/alert-rtl-en.html",
+                "programmatic",
+                "pipeline/src/emit/build_rtl.rs",
+            ),
+            (
+                "dist/components/alert-rtl-fa.html",
+                "programmatic",
+                "pipeline/src/emit/build_rtl.rs",
+            ),
             // alert-demo is the oracle's, carved out of the same rule
-            ("dist/components/alert-demo.html", "programmatic", "pipeline/src/oracle/example_oracle.rs"),
+            (
+                "dist/components/alert-demo.html",
+                "programmatic",
+                "pipeline/src/oracle/example_oracle.rs",
+            ),
             // a plain component page belongs to the emitter/demo rule
-            ("dist/components/accordion.html", "programmatic",
-             "./build/pipeline example-fixture (per-tier fixture)"),
+            (
+                "dist/components/accordion.html",
+                "programmatic",
+                "./build/pipeline example-fixture (per-tier fixture)",
+            ),
             // docs/demos RTL variants are build-rtl output, not hand-authored —
             // programmatic patterns are consulted before hand-authored ones
-            ("docs/demos/alert-rtl-he.html", "programmatic", "pipeline/src/emit/build_rtl.rs"),
+            (
+                "docs/demos/alert-rtl-he.html",
+                "programmatic",
+                "pipeline/src/emit/build_rtl.rs",
+            ),
             // a bare -rtl.html read as hand-authored too, and is not: the
             // oracle manifest claims it
-            ("docs/demos/alert-rtl.html", "programmatic", "pipeline/src/oracle/example_oracle.rs"),
+            (
+                "docs/demos/alert-rtl.html",
+                "programmatic",
+                "pipeline/src/oracle/example_oracle.rs",
+            ),
             // written by example-oracle from the React render, which its manifest records
-            ("docs/demos/badge-demo.html", "programmatic", "pipeline/src/oracle/example_oracle.rs"),
+            (
+                "docs/demos/badge-demo.html",
+                "programmatic",
+                "pipeline/src/oracle/example_oracle.rs",
+            ),
             // IR json
-            ("generated/ir/badge.json", "programmatic", "pipeline/src/convert/mod.rs"),
+            (
+                "generated/ir/badge.json",
+                "programmatic",
+                "pipeline/src/convert/mod.rs",
+            ),
             // tool source
             ("pipeline/src/emit/demo.rs", "tool-source", ""),
             ("src/tags.mjs", "tool-source", ""),
             // pin.json is hand-authored even though it sits under src/registry
-            ("src/registry/pin.json", "hand-authored",
-             "pipeline upstream (re-pin) / human (vendor re-hash via ./build/pipeline pin --force)"),
+            (
+                "src/registry/pin.json",
+                "hand-authored",
+                "pipeline upstream (re-pin) / human (vendor re-hash via ./build/pipeline pin --force)",
+            ),
             ("pipeline/src/main.rs", "tool-source", ""),
         ];
         for (path, kind, owner) in cases {
@@ -1348,8 +1378,14 @@ mod tests {
     #[test]
     fn unit_audit_heuristic_order() {
         let cases = [
-            ("dist/components/alert-rtl-he.html", "pipeline/src/emit/build_rtl.rs"),
-            ("docs/demos/thing-demo.html", "pipeline/src/oracle/example_oracle.rs"),
+            (
+                "dist/components/alert-rtl-he.html",
+                "pipeline/src/emit/build_rtl.rs",
+            ),
+            (
+                "docs/demos/thing-demo.html",
+                "pipeline/src/oracle/example_oracle.rs",
+            ),
             ("dist/glue/dialog-glue.js", "pipeline/src/emit/demo.rs"),
             // only the catch-all matches this one
             (
@@ -1426,7 +1462,8 @@ mod tests {
         assert_eq!(s.total, 2, "the deep one is in another directory");
         // a file with no classified siblings gets nothing rather than a guess
         assert!(
-            suggest_from_siblings("lonely/x.txt", &["lonely/x.txt".to_string()], &by_path).is_none()
+            suggest_from_siblings("lonely/x.txt", &["lonely/x.txt".to_string()], &by_path)
+                .is_none()
         );
     }
 

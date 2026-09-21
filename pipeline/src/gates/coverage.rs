@@ -8,30 +8,20 @@ use serde::Deserialize;
 use serde_json::Value;
 use std::collections::HashMap;
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 
 pub const COVERAGE_KEY: &str = "coverage.uncovered-cells";
 
-fn re_state_named() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    // Go \w is ASCII; Rust is Unicode — spell it out.
-    R.get_or_init(|| {
-        Regex::new(
+static RE_STATE_NAMED: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
             r"(^|[\t\n\f\r ]|:|-)(data-(open|closed|checked|unchecked|active|selected|disabled|horizontal|vertical|inset|highlighted|empty|pressed)|aria-(expanded|invalid|checked|disabled|pressed|selected|current)|aria-\[[0-9A-Za-z_-]+=[0-9A-Za-z_-]+\]):",
         )
         .unwrap()
-    })
-}
-fn re_state_data() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| {
-        Regex::new(r"(^|[\t\n\f\r ]|:|-)data-\[([0-9A-Za-z_-]+)(=[0-9A-Za-z_-]+)?\]:").unwrap()
-    })
-}
-fn re_ext_dep_gate() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^external dep ").unwrap())
-}
+});
+static RE_STATE_DATA: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r"(^|[\t\n\f\r ]|:|-)data-\[([0-9A-Za-z_-]+)(=[0-9A-Za-z_-]+)?\]:").unwrap()
+});
+static RE_EXT_DEP_GATE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^external dep ").unwrap());
 
 /// The state-token test, kept in the same shape as path-parity's
 /// stateConfigs. RE2 has no negative lookahead, so the `data-[...]` arm drops
@@ -39,10 +29,10 @@ fn re_ext_dep_gate() -> &'static Regex {
 /// load-bearing: Tailwind compound variants (`group-data-[...]:`) put a
 /// literal `-` directly in front of `data-`/`aria-`.
 pub fn has_state_token(all: &str) -> bool {
-    if re_state_named().is_match(all) {
+    if RE_STATE_NAMED.is_match(all) {
         return true;
     }
-    for m in re_state_data().captures_iter(all) {
+    for m in RE_STATE_DATA.captures_iter(all) {
         let name = m.get(2).map(|x| x.as_str()).unwrap_or("");
         let value = m.get(3).map(|x| x.as_str()).unwrap_or("");
         if !value.is_empty() && (name == "slot" || name == "variant" || name == "size") {
@@ -99,7 +89,8 @@ pub fn gate_coverage(root: &Path, argv: &[String]) -> Result<(), String> {
     let flag = |f: &str| argv.iter().any(|a| a == f);
     let read = |p: &str| std::fs::read_to_string(root.join(p)).map_err(|e| format!("{}: {}", p, e));
 
-    let tiers_raw = read("src/registry/tiers.json").map_err(|e| format!("FAIL  coverage: {}", e))?;
+    let tiers_raw =
+        read("src/registry/tiers.json").map_err(|e| format!("FAIL  coverage: {}", e))?;
     let tiers: HashMap<String, TiersEntry> = serde_json::from_str(&tiers_raw)
         .map_err(|e| format!("FAIL  coverage: tiers.json: {}", e))?;
 
@@ -108,7 +99,11 @@ pub fn gate_coverage(root: &Path, argv: &[String]) -> Result<(), String> {
         if t.tier == "external" || t.tier == "logic" {
             continue;
         }
-        if root.join("generated/ir").join(format!("{}.json", n)).exists() {
+        if root
+            .join("generated/ir")
+            .join(format!("{}.json", n))
+            .exists()
+        {
             components.push(n.clone());
         }
     }
@@ -148,11 +143,12 @@ pub fn gate_coverage(root: &Path, argv: &[String]) -> Result<(), String> {
         })
     };
     let rtl_demo_of = |n: &str| -> bool {
-        root.join("docs/demos").join(format!("{}-rtl.html", n)).exists()
+        root.join("docs/demos")
+            .join(format!("{}-rtl.html", n))
+            .exists()
     };
-    let has_behavior = |n: &str| -> bool {
-        tiers.get(n).map(|t| t.tier != "static").unwrap_or(true)
-    };
+    let has_behavior =
+        |n: &str| -> bool { tiers.get(n).map(|t| t.tier != "static").unwrap_or(true) };
 
     // noCSS[n]: the component's IR carries zero classes and zero cva entries
     // at all (upstream ships it unstyled) — open is trivially
@@ -201,7 +197,7 @@ pub fn gate_coverage(root: &Path, argv: &[String]) -> Result<(), String> {
                 Some(r) => r,
                 None => continue,
             };
-            if !re_ext_dep_gate().is_match(reason) {
+            if !RE_EXT_DEP_GATE.is_match(reason) {
                 continue;
             }
             for n in &components {
@@ -395,8 +391,7 @@ pub fn gate_coverage(root: &Path, argv: &[String]) -> Result<(), String> {
         "",
         " ",
     );
-    std::fs::write(root.join("build/gates/coverage.json"), report)
-        .map_err(|e| e.to_string())?;
+    std::fs::write(root.join("build/gates/coverage.json"), report).map_err(|e| e.to_string())?;
 
     if flag("--cells") {
         for x in &uncovered {
@@ -429,7 +424,6 @@ pub fn gate_coverage(root: &Path, argv: &[String]) -> Result<(), String> {
     )
 }
 
-
 /// gate_coverage_budget.go — the ratchet, both ways.
 fn coverage_budget(
     root: &Path,
@@ -461,16 +455,13 @@ fn coverage_budget(
         return Ok(());
     }
 
-    let budget = l
-        .budgets
-        .get(COVERAGE_KEY)
-        .ok_or_else(|| {
-            format!(
-                "FAIL  coverage: no budget {} in {} — run ./build/pipeline coverage --record",
-                COVERAGE_KEY,
-                super::LEDGER_PATH
-            )
-        })?;
+    let budget = l.budgets.get(COVERAGE_KEY).ok_or_else(|| {
+        format!(
+            "FAIL  coverage: no budget {} in {} — run ./build/pipeline coverage --record",
+            COVERAGE_KEY,
+            super::LEDGER_PATH
+        )
+    })?;
     if uncovered as i64 > budget.max {
         return Err(format!(
             "FAIL  coverage: {} uncovered cells > budget {} — a gate or a contract def was lost, or a new component landed unverified",
@@ -534,7 +525,11 @@ mod tests {
             t(&["bg", "-primary", " ", "text", "-sm"]),
         ];
         for tok in &false_cases {
-            assert!(!has_state_token(tok), "{:?} should NOT carry a state token", tok);
+            assert!(
+                !has_state_token(tok),
+                "{:?} should NOT carry a state token",
+                tok
+            );
         }
     }
 }

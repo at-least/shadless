@@ -6,11 +6,11 @@
 
 use regex::Regex;
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 
 use super::parity_baseline::{
-    cell_map, diff_parity_baseline, load_parity_baseline, ParityCell, parity_norm_value,
-    show_cell, show_change, write_parity_baseline,
+    ParityCell, cell_map, diff_parity_baseline, load_parity_baseline, parity_norm_value, show_cell,
+    show_change, write_parity_baseline,
 };
 
 const PP_SIM: &str = "build/gates/path-parity";
@@ -18,13 +18,51 @@ const PP_BASELINE: &str = "gates/path-parity-baseline.json";
 const PP_READ_ALL: &str = include_str!("pp_readall.js");
 
 const PP_PROPS: [&str; 45] = [
-    "color", "background-color", "border-color", "border-top-width", "border-bottom-width",
-    "border-left-width", "border-right-width", "border-radius", "padding-top", "padding-right",
-    "padding-bottom", "padding-left", "margin-top", "margin-left", "margin-right", "width",
-    "min-width", "max-width", "height", "min-height", "row-gap", "column-gap", "font-size",
-    "font-weight", "line-height", "letter-spacing", "text-align", "display", "flex-direction",
-    "align-items", "justify-content", "position", "top", "left", "right", "opacity", "box-shadow",
-    "outline-width", "overflow", "white-space", "text-decoration-line", "transform", "translate", "scale", "visibility",
+    "color",
+    "background-color",
+    "border-color",
+    "border-top-width",
+    "border-bottom-width",
+    "border-left-width",
+    "border-right-width",
+    "border-radius",
+    "padding-top",
+    "padding-right",
+    "padding-bottom",
+    "padding-left",
+    "margin-top",
+    "margin-left",
+    "margin-right",
+    "width",
+    "min-width",
+    "max-width",
+    "height",
+    "min-height",
+    "row-gap",
+    "column-gap",
+    "font-size",
+    "font-weight",
+    "line-height",
+    "letter-spacing",
+    "text-align",
+    "display",
+    "flex-direction",
+    "align-items",
+    "justify-content",
+    "position",
+    "top",
+    "left",
+    "right",
+    "opacity",
+    "box-shadow",
+    "outline-width",
+    "overflow",
+    "white-space",
+    "text-decoration-line",
+    "transform",
+    "translate",
+    "scale",
+    "visibility",
 ];
 
 const PP_VOID: [&str; 4] = ["input", "img", "br", "hr"];
@@ -42,39 +80,26 @@ const PP_SHORTHAND: [(&str, &str, &str); 8] = [
     // note: data-vertical is in the Go map too — see below
 ];
 
-fn re_pp_child_slot() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"data-\[slot=([0-9A-Za-z_-]+)\]").unwrap())
-}
-fn re_pp_combinator() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^(group|peer|has|in)-").unwrap())
-}
-fn re_pp_attr() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^(data|aria)-\[([0-9A-Za-z_-]+)(?:=([0-9A-Za-z_-]+))?\]$").unwrap())
-}
-fn re_pp_aria() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^aria-(expanded|invalid|checked|disabled|pressed|selected|current)$").unwrap())
-}
-fn re_pp_data_bare() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^data-(inset|highlighted|empty|pressed|autoscrolling|popup-open)$").unwrap())
-}
-fn re_not_prefix() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^not-.*$").unwrap())
-}
-fn re_upper() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^[A-Z]").unwrap())
-}
+static RE_PP_CHILD_SLOT: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"data-\[slot=([0-9A-Za-z_-]+)\]").unwrap());
+static RE_PP_COMBINATOR: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^(group|peer|has|in)-").unwrap());
+static RE_PP_ATTR: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r"^(data|aria)-\[([0-9A-Za-z_-]+)(?:=([0-9A-Za-z_-]+))?\]$").unwrap()
+});
+static RE_PP_ARIA: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r"^aria-(expanded|invalid|checked|disabled|pressed|selected|current)$").unwrap()
+});
+static RE_PP_DATA_BARE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r"^data-(inset|highlighted|empty|pressed|autoscrolling|popup-open)$").unwrap()
+});
+static RE_NOT_PREFIX: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^not-.*$").unwrap());
+static RE_UPPER: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^[A-Z]").unwrap());
 
 fn pp_child_slots(cls: &str) -> Vec<String> {
     let mut seen: std::collections::HashSet<String> = std::collections::HashSet::new();
     let mut out: Vec<String> = Vec::new();
-    for m in re_pp_child_slot().captures_iter(cls) {
+    for m in RE_PP_CHILD_SLOT.captures_iter(cls) {
         let s = m[1].to_string();
         if seen.insert(s.clone()) {
             out.push(s);
@@ -85,7 +110,11 @@ fn pp_child_slots(cls: &str) -> Vec<String> {
 
 /// ppInlineClasses: React evaluates a conditional; keep the branch the
 /// default selects, then twMerge the surviving list.
-fn pp_inline_classes(ir: &crate::emit::css::CssIrComponent, fn_: &str, el: &crate::emit::css::IrEl) -> String {
+fn pp_inline_classes(
+    ir: &crate::emit::css::CssIrComponent,
+    fn_: &str,
+    el: &crate::emit::css::IrEl,
+) -> String {
     let mut drop: std::collections::HashSet<String> = std::collections::HashSet::new();
     for c in &ir.conditionals {
         if c.kind != "class-cond" || c.fn_ != fn_ || c.test.is_none() {
@@ -126,7 +155,7 @@ fn pp_state_configs(cls: &str) -> Vec<(String, String)> {
         segs.pop();
         let mut skip = false;
         for v in &segs {
-            if *v == "*" || *v == "**" || re_pp_combinator().is_match(v) {
+            if *v == "*" || *v == "**" || RE_PP_COMBINATOR.is_match(v) {
                 skip = true;
                 break;
             }
@@ -135,7 +164,7 @@ fn pp_state_configs(cls: &str) -> Vec<(String, String)> {
             continue;
         }
         for v in segs {
-            let bare = re_not_prefix().replace_all(v, "");
+            let bare = RE_NOT_PREFIX.replace_all(v, "");
             if bare.is_empty() || bare.starts_with("data-[slot=") {
                 continue;
             }
@@ -151,7 +180,7 @@ fn pp_state_configs(cls: &str) -> Vec<(String, String)> {
                 }
                 continue;
             }
-            if let Some(m) = re_pp_attr().captures(&bare) {
+            if let Some(m) = RE_PP_ATTR.captures(&bare) {
                 let axis = m[2].to_string();
                 if axis == "variant" || axis == "size" {
                     continue;
@@ -167,7 +196,7 @@ fn pp_state_configs(cls: &str) -> Vec<(String, String)> {
                 }
                 continue;
             }
-            if let Some(m) = re_pp_aria().captures(&bare) {
+            if let Some(m) = RE_PP_ARIA.captures(&bare) {
                 let k = format!("aria-{}=true", &m[1]);
                 if !out.contains_key(&k) {
                     out.insert(k.clone(), (format!("aria-{}", &m[1]), "true".to_string()));
@@ -175,7 +204,7 @@ fn pp_state_configs(cls: &str) -> Vec<(String, String)> {
                 }
                 continue;
             }
-            if let Some(m) = re_pp_data_bare().captures(&bare) {
+            if let Some(m) = RE_PP_DATA_BARE.captures(&bare) {
                 let k = format!("data-{}=", &m[1]);
                 if !out.contains_key(&k) {
                     out.insert(k.clone(), (format!("data-{}", &m[1]), String::new()));
@@ -205,10 +234,9 @@ pub fn run_path_parity(root: &Path, record: bool, details: bool) -> i32 {
     {
         let _ = std::os::unix::fs::symlink(root, sim.join("node_modules/shadless"));
     }
-    let oracle_css = std::fs::read_to_string(root.join("build/gates/oracle.css"))
-        .unwrap_or_default();
-    let full_css = std::fs::read_to_string(root.join("dist/shadless.full.css"))
-        .unwrap_or_default();
+    let oracle_css =
+        std::fs::read_to_string(root.join("build/gates/oracle.css")).unwrap_or_default();
+    let full_css = std::fs::read_to_string(root.join("dist/shadless.full.css")).unwrap_or_default();
 
     let shell = match crate::oracle::browser_shell::BrowserShell::start() {
         Ok(s) => s,
@@ -232,31 +260,32 @@ pub fn run_path_parity(root: &Path, record: bool, details: bool) -> i32 {
             root_class, css, pp_shell, body
         )
     };
-    let read_all = |p: &crate::oracle::browser_shell::BPage,
-                    ids: &[String]|
-     -> std::collections::HashMap<String, std::collections::HashMap<String, String>> {
-        let Ok(v) = p.evaluate_fn_arg(
-            PP_READ_ALL,
-            serde_json::json!({"ids": ids, "props": PP_PROPS.to_vec()}),
-        ) else {
-            return Default::default();
-        };
-        let mut out = std::collections::HashMap::new();
-        if let Some(obj) = v.as_object() {
-            for (k, sv) in obj {
-                if let Some(sm) = sv.as_object() {
-                    let mut cellm = std::collections::HashMap::new();
-                    for (prop, val) in sm {
-                        if let Some(s) = val.as_str() {
-                            cellm.insert(prop.clone(), s.to_string());
+    let read_all =
+        |p: &crate::oracle::browser_shell::BPage,
+         ids: &[String]|
+         -> std::collections::HashMap<String, std::collections::HashMap<String, String>> {
+            let Ok(v) = p.evaluate_fn_arg(
+                PP_READ_ALL,
+                serde_json::json!({"ids": ids, "props": PP_PROPS.to_vec()}),
+            ) else {
+                return Default::default();
+            };
+            let mut out = std::collections::HashMap::new();
+            if let Some(obj) = v.as_object() {
+                for (k, sv) in obj {
+                    if let Some(sm) = sv.as_object() {
+                        let mut cellm = std::collections::HashMap::new();
+                        for (prop, val) in sm {
+                            if let Some(s) = val.as_str() {
+                                cellm.insert(prop.clone(), s.to_string());
+                            }
                         }
+                        out.insert(k.clone(), cellm);
                     }
-                    out.insert(k.clone(), cellm);
                 }
             }
-        }
-        out
-    };
+            out
+        };
 
     let mut files: Vec<String> = Vec::new();
     if let Ok(ents) = std::fs::read_dir(root.join("generated/ir")) {
@@ -311,7 +340,8 @@ pub fn run_path_parity(root: &Path, record: bool, details: bool) -> i32 {
             None
         }
         fn tag_of(ir: &crate::emit::css::CssIrComponent, el: &crate::emit::css::IrEl) -> String {
-            crate::emit::tags::normalize_tag(&el.tag, &ir.tag_hints).unwrap_or_else(|| "div".to_string())
+            crate::emit::tags::normalize_tag(&el.tag, &ir.tag_hints)
+                .unwrap_or_else(|| "div".to_string())
         }
         fn classes_of(
             ir: &crate::emit::css::CssIrComponent,
@@ -328,7 +358,9 @@ pub fn run_path_parity(root: &Path, record: bool, details: bool) -> i32 {
                         continue;
                     }
                     for ax in &r.dyn_axes {
-                        let Some(d) = r.defaults.get(ax) else { continue };
+                        let Some(d) = r.defaults.get(ax) else {
+                            continue;
+                        };
                         let mut key = sel.get(ax).cloned().unwrap_or_default();
                         if key.is_empty() {
                             key = d.clone();
@@ -410,9 +442,11 @@ pub fn run_path_parity(root: &Path, record: bool, details: bool) -> i32 {
             let mut kids: Vec<(usize, String)> = Vec::new();
             let (mut slot_kids, mut inline_kids) = (String::new(), String::new());
             for k in pp_child_slots(&cls) {
-                let Some((kc, ke)) = el_of_slot(ir, &k) else { continue };
+                let Some((kc, ke)) = el_of_slot(ir, &k) else {
+                    continue;
+                };
                 let ktag = tag_of(ir, ke);
-                if re_upper().is_match(&ktag) || ktag == "?" {
+                if RE_UPPER.is_match(&ktag) || ktag == "?" {
                     continue;
                 }
                 let kcls = classes_of(ir, cva_slots, kc, ke, &std::collections::HashMap::new());
@@ -429,10 +463,7 @@ pub fn run_path_parity(root: &Path, record: bool, details: bool) -> i32 {
                 kids.push((kid, format!("{}>{}", label, k)));
                 slot_kids += &open_tag(
                     &ktag,
-                    &format!(
-                        r#"data-slot="{}" id="so-{}-{}" class="{}""#,
-                        k, n, kid, km
-                    ),
+                    &format!(r#"data-slot="{}" id="so-{}-{}" class="{}""#, k, n, kid, km),
                     &kinner,
                 );
                 inline_kids += &open_tag(
@@ -480,15 +511,11 @@ pub fn run_path_parity(root: &Path, record: bool, details: bool) -> i32 {
                     continue;
                 }
                 let tag = tag_of(&ir, el);
-                if re_upper().is_match(&tag) || tag == "?" {
+                if RE_UPPER.is_match(&tag) || tag == "?" {
                     continue;
                 }
                 seen.insert(el.slot.clone());
-                let cc = ir
-                    .components
-                    .iter()
-                    .find(|x| x.fn_ == c.fn_)
-                    .unwrap_or(c);
+                let cc = ir.components.iter().find(|x| x.fn_ == c.fn_).unwrap_or(c);
                 let cls = classes_of(&ir, &cva_slots, cc, el, &std::collections::HashMap::new());
                 if cls.trim().is_empty() {
                     continue;
@@ -609,7 +636,10 @@ pub fn run_path_parity(root: &Path, record: bool, details: bool) -> i32 {
         // (a) consumer build: core + this component's css
         std::fs::write(
             sim.join("entry.css"),
-            format!("@import \"shadless\";\n@import \"shadless/{}.css\";\n", name),
+            format!(
+                "@import \"shadless\";\n@import \"shadless/{}.css\";\n",
+                name
+            ),
         )
         .ok();
         // Go runs `./build/pipeline tw <in> <out> --cwd <sim>` and captures
@@ -696,7 +726,8 @@ pub fn run_path_parity(root: &Path, record: bool, details: bool) -> i32 {
         p_b.close();
         p_o.close();
         for it in &items {
-            let mut node_ents: Vec<(String, String)> = vec![(format!("so-{}", it.id), it.label.clone())];
+            let mut node_ents: Vec<(String, String)> =
+                vec![(format!("so-{}", it.id), it.label.clone())];
             for k in &it.kids {
                 node_ents.push((format!("so-{}", k.0), k.1.clone()));
             }
@@ -724,8 +755,14 @@ pub fn run_path_parity(root: &Path, record: bool, details: bool) -> i32 {
                         }
                         compared += 1;
                         for p in PP_PROPS {
-                            let va = parity_norm_value(ref_.get(p).map(String::as_str).unwrap_or(""), false);
-                            let vb = parity_norm_value(got.get(p).map(String::as_str).unwrap_or(""), false);
+                            let va = parity_norm_value(
+                                ref_.get(p).map(String::as_str).unwrap_or(""),
+                                false,
+                            );
+                            let vb = parity_norm_value(
+                                got.get(p).map(String::as_str).unwrap_or(""),
+                                false,
+                            );
                             if va != vb {
                                 cells.push(ParityCell {
                                     id: format!(

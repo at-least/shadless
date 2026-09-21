@@ -6,30 +6,21 @@
 use regex::Regex;
 use serde::Deserialize;
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 
-fn re_sweep_cand() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| {
-        Regex::new(
+static RE_SWEEP_CAND: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
             r#"data-slot="[^"]*-trigger"|aria-expanded=|role="(switch|checkbox|tab)"|data-slot="(carousel-next|carousel-prev)""#,
         )
         .unwrap()
-    })
-}
-fn re_sweep_fam() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| {
-        Regex::new(
+});
+static RE_SWEEP_FAM: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
             r"^(alert-dialog|navigation-menu|context-menu|dropdown-menu|hover-card|button-group|message-scroller|input-group|native-select|radio-group|scroll-area|toggle-group|carousel|accordion|attachment|avatar|breadcrumb|bubble|collapsible|checkbox|combobox|dialog|drawer|field|input|item|kbd|label|marker|menubar|message|pagination|popover|progress|select|sheet|slider|switch|table|tabs|toggle|tooltip)-",
         )
         .unwrap()
-    })
-}
-fn re_sweep_rtl_fam() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"-rtl(-|$).*").unwrap())
-}
+});
+static RE_SWEEP_RTL_FAM: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"-rtl(-|$).*").unwrap());
 
 // static oracle snapshots pending family migration — keyed by family
 pub const SWEEP_KNOWN_DEAD: [&str; 1] = ["message-scroller"];
@@ -47,10 +38,10 @@ const SWEEP_FINGERPRINT: &str = r#"JSON.stringify({
 })"#;
 
 fn sweep_family_of(name: &str) -> String {
-    if let Some(m) = re_sweep_fam().captures(name) {
+    if let Some(m) = RE_SWEEP_FAM.captures(name) {
         return m[1].to_string();
     }
-    re_sweep_rtl_fam().replace_all(name, "").into_owned()
+    RE_SWEEP_RTL_FAM.replace_all(name, "").into_owned()
 }
 
 #[derive(Deserialize, Default)]
@@ -94,7 +85,7 @@ pub fn run_interactivity_sweep(root: &Path) -> i32 {
         }
         pages.push(n.clone());
         if let Ok(b) = std::fs::read_to_string(root.join(site).join(&n)) {
-            if re_sweep_cand().is_match(&b) {
+            if RE_SWEEP_CAND.is_match(&b) {
                 candidates.push(n);
             }
         }
@@ -128,8 +119,10 @@ pub fn run_interactivity_sweep(root: &Path) -> i32 {
     let usable_expr = r#"(e, statics) => !e.disabled && e.getAttribute("aria-disabled") !== "true" && !e.closest("[hidden]") && e.getClientRects().length > 0 &&
         !(e.getAttribute("role") === "tab" && e.getAttribute("data-state") === "active") &&
         !statics.some((s) => (e.getAttribute("data-slot") || "") === s + "-trigger")"#;
-    let own_fam_expr = r#"(e) => (e.getAttribute("data-slot") || "").replace(/-(trigger|item|next|prev)$/, "")"#;
-    let hover_el_expr = r#"(e) => /^(tooltip|hover-card)-trigger$/.test(e.getAttribute("data-slot") || "")"#;
+    let own_fam_expr =
+        r#"(e) => (e.getAttribute("data-slot") || "").replace(/-(trigger|item|next|prev)$/, "")"#;
+    let hover_el_expr =
+        r#"(e) => /^(tooltip|hover-card)-trigger$/.test(e.getAttribute("data-slot") || "")"#;
     let ctx_trg_expr = r#"(e) => e.getAttribute("data-slot") === "context-menu-trigger""#;
 
     for f in &candidates {
@@ -203,7 +196,9 @@ pub fn run_interactivity_sweep(root: &Path) -> i32 {
         }
         let mut responded = false;
         for idx in &usable_idx {
-            let before_v = page.evaluate(SWEEP_FINGERPRINT).unwrap_or(serde_json::Value::Null);
+            let before_v = page
+                .evaluate(SWEEP_FINGERPRINT)
+                .unwrap_or(serde_json::Value::Null);
             let before = before_v.as_str().unwrap_or("").to_string();
             let mut hover_el = false;
             if let Some(arr) = hover_v.as_array() {
@@ -233,7 +228,9 @@ pub fn run_interactivity_sweep(root: &Path) -> i32 {
             } else {
                 let _ = page.wait_for_timeout(600);
             }
-            let after_v = page.evaluate(SWEEP_FINGERPRINT).unwrap_or(serde_json::Value::Null);
+            let after_v = page
+                .evaluate(SWEEP_FINGERPRINT)
+                .unwrap_or(serde_json::Value::Null);
             let after = after_v.as_str().unwrap_or("").to_string();
             if before != after {
                 responded = true;
@@ -252,7 +249,10 @@ pub fn run_interactivity_sweep(root: &Path) -> i32 {
     let dead_total: usize = dead_count.values().sum();
     if !failures.is_empty() {
         let n = failures.len().min(12);
-        eprint!("FAIL  interactivity-sweep\n  {}", failures[..n].join("\n  "));
+        eprint!(
+            "FAIL  interactivity-sweep\n  {}",
+            failures[..n].join("\n  ")
+        );
         if failures.len() > 12 {
             eprint!("\n  … +{} more", failures.len() - 12);
         }

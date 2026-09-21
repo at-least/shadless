@@ -11,12 +11,12 @@ use super::browser_shell::BrowserShell;
 use super::oracle_lib::build_oracle;
 use crate::convert::regex_quote;
 use regex::Regex;
-use serde_json::json;
 use serde::Deserialize;
+use serde_json::json;
 use sha2::{Digest, Sha256};
 use std::collections::{HashMap, HashSet};
 use std::path::{Path, PathBuf};
-use std::sync::OnceLock;
+use std::sync::{LazyLock, OnceLock};
 
 const EF_TMP: &str = "build/example-fixture";
 const EF_SELFTEST: &str = "build/fixture";
@@ -61,52 +61,36 @@ fn abs_or_die(root: &Path, p: &str) -> PathBuf {
 
 // ---- radix id stabilization (Go halves of learn/remap/stripRadixIds) ----
 
-fn re_strip_radix_ids() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r##"\s(?:id|aria-controls|aria-labelledby|aria-describedby)="radix-[^"]*""##).unwrap())
-}
-fn re_strip_hidden() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r##"\s(?:aria-hidden|data-aria-hidden)="true""##).unwrap())
-}
-fn re_radix_tok() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"radix-[A-Za-z0-9:_-]*").unwrap())
-}
-fn re_id_attr() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r##"\sid="(radix-[^"]*)""##).unwrap())
-}
-fn re_labelled_by() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r##"aria-labelledby="(radix-[^"]*)""##).unwrap())
-}
-fn re_id_in_tag() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r##"\sid="(radix-[^"]*)""##).unwrap())
-}
-fn re_trailing_sub() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^(.+?)s\d+$").unwrap())
-}
-fn re_word_trigger() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^(\w+)-trigger$").unwrap())
-}
-fn re_has_id_attr() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r##"\sid=""##).unwrap())
-}
+static RE_STRIP_RADIX_IDS: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r##"\s(?:id|aria-controls|aria-labelledby|aria-describedby)="radix-[^"]*""##)
+        .unwrap()
+});
+static RE_STRIP_HIDDEN: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r##"\s(?:aria-hidden|data-aria-hidden)="true""##).unwrap());
+static RE_RADIX_TOK: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"radix-[A-Za-z0-9:_-]*").unwrap());
+static RE_ID_ATTR: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r##"\sid="(radix-[^"]*)""##).unwrap());
+static RE_LABELLED_BY: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r##"aria-labelledby="(radix-[^"]*)""##).unwrap());
+static RE_ID_IN_TAG: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r##"\sid="(radix-[^"]*)""##).unwrap());
+static RE_TRAILING_SUB: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^(.+?)s\d+$").unwrap());
+static RE_WORD_TRIGGER: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^(\w+)-trigger$").unwrap());
+static RE_HAS_ID_ATTR: LazyLock<Regex> = LazyLock::new(|| Regex::new(r##"\sid=""##).unwrap());
 
 pub fn ef_strip_radix_ids(h: &str) -> String {
-    let h = re_strip_radix_ids().replace_all(h, "").into_owned();
-    re_strip_hidden().replace_all(&h, "").into_owned()
+    let h = RE_STRIP_RADIX_IDS.replace_all(h, "").into_owned();
+    RE_STRIP_HIDDEN.replace_all(&h, "").into_owned()
 }
 
 pub fn ef_remap(h: &str, id_map: &HashMap<String, String>) -> String {
-    re_radix_tok()
+    RE_RADIX_TOK
         .replace_all(h, |m: &regex::Captures| {
-            id_map.get(&m[0]).cloned().unwrap_or_else(|| m[0].to_string())
+            id_map
+                .get(&m[0])
+                .cloned()
+                .unwrap_or_else(|| m[0].to_string())
         })
         .into_owned()
 }
@@ -123,20 +107,17 @@ pub fn ef_learn(html: &str, slot_to_stable: &[EfSlotStable], id_map: &mut HashMa
         // attribute order is radix's, not ours: find the tag, then its id
         static TAG_RE: OnceLock<HashMap<String, Regex>> = OnceLock::new();
         let re_map = TAG_RE.get_or_init(HashMap::new);
-        let re = re_map
-            .get(&e.slot)
-            .cloned()
-            .unwrap_or_else(|| {
-                let r = Regex::new(&format!(
-                    r##"<[^>]*data-slot="{}"[^>]*>"##,
-                    regex_quote(&e.slot)
-                ))
-                .unwrap();
-                r
-            });
+        let re = re_map.get(&e.slot).cloned().unwrap_or_else(|| {
+            let r = Regex::new(&format!(
+                r##"<[^>]*data-slot="{}"[^>]*>"##,
+                regex_quote(&e.slot)
+            ))
+            .unwrap();
+            r
+        });
         let tag = re.find(html).map(|m| m.as_str()).unwrap_or("");
         if !tag.is_empty() {
-            if let Some(m) = re_id_in_tag().captures(tag) {
+            if let Some(m) = RE_ID_IN_TAG.captures(tag) {
                 id_map.insert(m[1].to_string(), e.stable.clone());
             }
         }
@@ -149,7 +130,7 @@ pub fn ef_learn(html: &str, slot_to_stable: &[EfSlotStable], id_map: &mut HashMa
     if base.is_empty() {
         base = "x".to_string();
     }
-    for m in re_id_attr().captures_iter(html) {
+    for m in RE_ID_ATTR.captures_iter(html) {
         if !id_map.contains_key(&m[1]) {
             id_map.insert(m[1].to_string(), format!("{}-e{}", base, n));
             n += 1;
@@ -158,11 +139,11 @@ pub fn ef_learn(html: &str, slot_to_stable: &[EfSlotStable], id_map: &mut HashMa
     // a reference to an id that exists nowhere in the layer is radix's
     // internal id for the TRIGGER: point it at the stable trigger id
     let trigger_stable = if base != "x" {
-        format!("{}-trigger", re_trailing_sub().replace(&base, "$1"))
+        format!("{}-trigger", RE_TRAILING_SUB.replace(&base, "$1"))
     } else {
         String::new()
     };
-    for m in re_labelled_by().captures_iter(html) {
+    for m in RE_LABELLED_BY.captures_iter(html) {
         if !id_map.contains_key(&m[1]) && !trigger_stable.is_empty() {
             id_map.insert(m[1].to_string(), trigger_stable.clone());
         }
@@ -181,7 +162,7 @@ pub fn ef_ensure_content_id(h: &str, comp: &str, id: &str) -> String {
     };
     let end = end_rel + idx;
     let start = h[..idx].rfind('<').unwrap_or(0);
-    if re_has_id_attr().is_match(&h[start..end]) {
+    if RE_HAS_ID_ATTR.is_match(&h[start..end]) {
         return h.to_string();
     }
     format!("{} id=\"{}\">{}", &h[..end], id, &h[end + 1..])
@@ -207,7 +188,7 @@ pub fn ef_trigger_with_id(body_html: &str, comp: &str, id: &str) -> String {
     let whole = m.get(0).unwrap();
     let g1 = m.get(1).unwrap();
     let open = &body_html[g1.start()..g1.end()];
-    if re_has_id_attr().is_match(open) {
+    if RE_HAS_ID_ATTR.is_match(open) {
         return body_html.to_string();
     }
     // Go: bodyHtml[:loc[3]] + ' id="X">' + bodyHtml[loc[1]:]
@@ -223,18 +204,12 @@ pub fn ef_trigger_with_id(body_html: &str, comp: &str, id: &str) -> String {
 /// id now points at the new one.
 pub const EF_RETARGET_JS: &str = r##"if (o && o !== t.id) { const A = ["for", "aria-labelledby", "aria-describedby", "aria-controls", "aria-owns"]; document.querySelectorAll("#root " + A.map((a) => "[" + a + "]").join(",")).forEach((e) => { for (const a of A) { const v = e.getAttribute(a); if (v == null) continue; const ts = v.split(/\s+/); if (ts.includes(o)) e.setAttribute(a, ts.map((x) => (x === o ? t.id : x)).join(" ")) } }) }"##;
 
-pub fn ef_re_harvest_mark() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r##"\sdata-ef-harvested="""##).unwrap())
-}
-pub fn ef_re_orig_attr() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r##"\sdata-ef-orig="[^"]*""##).unwrap())
-}
-pub fn ef_re_orig_and_id() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r##"data-ef-orig="(radix-[^"]*)"[^>]*\sid="([^"]+)""##).unwrap())
-}
+pub static EF_RE_HARVEST_MARK: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r##"\sdata-ef-harvested="""##).unwrap());
+pub static EF_RE_ORIG_ATTR: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r##"\sdata-ef-orig="[^"]*""##).unwrap());
+pub static EF_RE_ORIG_AND_ID: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r##"data-ef-orig="(radix-[^"]*)"[^>]*\sid="([^"]+)""##).unwrap());
 
 fn ef_truncate_all(input: &[String]) -> Vec<String> {
     input
@@ -286,8 +261,9 @@ fn run_with_shell(
     contracts: bool,
     check: bool,
 ) -> Result<(), String> {
-    
-    shell.launch().map_err(|e| format!("example-fixture: {}", e))?;
+    shell
+        .launch()
+        .map_err(|e| format!("example-fixture: {}", e))?;
     let page = shell
         .new_page_errors_only()
         .map_err(|e| format!("example-fixture: {}", e))?;
@@ -307,19 +283,14 @@ fn run_with_shell(
         }
         files.sort();
         for f in &files {
-            let abs = abs_or_die(
-                root,
-                &format!("tools/contracts/components/{}", f),
-            )
-            .to_string_lossy()
-            .into_owned();
+            let abs = abs_or_die(root, &format!("tools/contracts/components/{}", f))
+                .to_string_lossy()
+                .into_owned();
             let res = shell.call(&json!({
                 "op": "loadContractDef", "file": format!("file://{}", abs)
             }))?;
-            let def: EfDef = serde_json::from_value(
-                res.get("def").cloned().unwrap_or(json!({})),
-            )
-            .unwrap_or_default();
+            let def: EfDef = serde_json::from_value(res.get("def").cloned().unwrap_or(json!({})))
+                .unwrap_or_default();
             let comp = f
                 .trim_end_matches(".mjs")
                 .trim_end_matches("-multiple")
@@ -348,7 +319,8 @@ fn run_with_shell(
             #[serde(default)]
             trivial: Vec<String>,
         }
-        let raw: Vec<RawTarget> = serde_json::from_str(&tb).map_err(|e| format!("example-fixture: {}", e))?;
+        let raw: Vec<RawTarget> =
+            serde_json::from_str(&tb).map_err(|e| format!("example-fixture: {}", e))?;
         for t in raw {
             let mut known: Vec<String> = Vec::new();
             let mut unsupported: Vec<String> = Vec::new();
@@ -371,16 +343,16 @@ fn run_with_shell(
     }
 
     // the self-test renders from a scratch tree under build/
-    for d in [format!("{}/pages", EF_SELFTEST), format!("{}/js", EF_SELFTEST)] {
+    for d in [
+        format!("{}/pages", EF_SELFTEST),
+        format!("{}/js", EF_SELFTEST),
+    ] {
         std::fs::create_dir_all(root.join(&d)).map_err(|e| format!("example-fixture: {}", e))?;
     }
     if let Ok(ents) = std::fs::read_dir(root.join("dist/js")) {
         for e in ents.flatten() {
             if let Ok(b) = std::fs::read(e.path()) {
-                let _ = std::fs::write(
-                    root.join(EF_SELFTEST).join("js").join(e.file_name()),
-                    b,
-                );
+                let _ = std::fs::write(root.join(EF_SELFTEST).join("js").join(e.file_name()), b);
             }
         }
     }
@@ -398,8 +370,7 @@ fn run_with_shell(
     for target in &targets {
         let name = &target.name;
         if target.families.is_empty() {
-            unsupported_pages
-                .push(format!("{}: {}", name, target.unsupported.join(", ")));
+            unsupported_pages.push(format!("{}: {}", name, target.unsupported.join(", ")));
             continue;
         }
         if !target.unsupported.is_empty() {
@@ -410,7 +381,10 @@ fn run_with_shell(
                 target.families.join(", ")
             ));
         }
-        let mut out_path = root.join("docs").join("demos").join(format!("{}.html", name));
+        let mut out_path = root
+            .join("docs")
+            .join("demos")
+            .join(format!("{}.html", name));
         let (mut css, mut base, mut jsdir) = (
             "../out.css".to_string(),
             "../shadless.js".to_string(),
@@ -433,12 +407,24 @@ fn run_with_shell(
         let scratch_path: PathBuf = if contracts {
             root.join(EF_SELFTEST).join(format!("{}.html", name))
         } else {
-            root.join(EF_SELFTEST).join("pages").join(format!("{}.html", name))
+            root.join(EF_SELFTEST)
+                .join("pages")
+                .join(format!("{}.html", name))
         };
 
         let build_result = build_one_page(
-            shell, &page, root, name, target, contracts, &mut out_path, &mut css, &mut base,
-            &mut jsdir, &scratch_path, check,
+            shell,
+            &page,
+            root,
+            name,
+            target,
+            contracts,
+            &mut out_path,
+            &mut css,
+            &mut base,
+            &mut jsdir,
+            &scratch_path,
+            check,
         );
         match build_result {
             Ok(()) => {
@@ -504,11 +490,13 @@ fn build_one_page(
     scratch_path: &Path,
     check: bool,
 ) -> Result<(), String> {
-    
     // contracts mode needs the def: re-load it (the Go code carried it via
     // the target; re-loading keeps one code path for the fixture build)
     let contract_def: Option<EfDef> = if contracts {
-        let file = format!("tools/contracts/components/{}.mjs", name.trim_end_matches("-multiple"));
+        let file = format!(
+            "tools/contracts/components/{}.mjs",
+            name.trim_end_matches("-multiple")
+        );
         let abs = abs_or_die(root, &file).to_string_lossy().into_owned();
         let res = shell
             .call(&json!({"op": "loadContractDef", "file": format!("file://{}", abs)}))
@@ -540,12 +528,11 @@ fn build_one_page(
         let def = contract_def.clone().expect("contracts mode has def");
         let out = root.join(EF_TMP).join("contracts").join(name);
         build_contract_oracle(root, &def, &out, "")?;
-        page
-            .goto_url(&format!(
-                "file://{}",
-                abs_or_die(root, format!("{}/oracle.html", out.display()).as_str()).to_string_lossy()
-            ))
-            .map_err(|e| e.to_string())?;
+        page.goto_url(&format!(
+            "file://{}",
+            abs_or_die(root, format!("{}/oracle.html", out.display()).as_str()).to_string_lossy()
+        ))
+        .map_err(|e| e.to_string())?;
         let _ = page.wait_for_timeout(600);
         // controlled-open trees mount their content at first render — close
         let _ = page.evaluate_fn(
@@ -592,9 +579,18 @@ fn build_one_page(
                 ef_learn(
                     &portal_html,
                     &[
-                        EfSlotStable { slot: format!("{}-content", comp), stable: "d1".to_string() },
-                        EfSlotStable { slot: format!("{}-title", comp), stable: "d1-title".to_string() },
-                        EfSlotStable { slot: format!("{}-description", comp), stable: "d1-desc".to_string() },
+                        EfSlotStable {
+                            slot: format!("{}-content", comp),
+                            stable: "d1".to_string(),
+                        },
+                        EfSlotStable {
+                            slot: format!("{}-title", comp),
+                            stable: "d1-title".to_string(),
+                        },
+                        EfSlotStable {
+                            slot: format!("{}-description", comp),
+                            stable: "d1-desc".to_string(),
+                        },
                     ],
                     id_map_ref,
                 );
@@ -616,9 +612,8 @@ fn build_one_page(
                     "d1-trigger",
                 );
                 templates = format!("<template id=\"d1-portal\">\n{}\n</template>", fixed);
-                stored_self_tests.push(super::fixture_families::SelfTestAction::Dialog {
-                    comp: comp.clone(),
-                });
+                stored_self_tests
+                    .push(super::fixture_families::SelfTestAction::Dialog { comp: comp.clone() });
             }
             _ => {
                 // portal / menu / select / nav / inline / none are ported with
@@ -755,7 +750,6 @@ fn build_one_page(
     Ok(())
 }
 
-
 fn root_html(page: &super::browser_shell::BPage<'_>) -> Result<String, String> {
     let v = page
         .evaluate_fn(r##"() => document.querySelector("#root").innerHTML"##)
@@ -791,16 +785,15 @@ pub fn build_contract_oracle(
     );
     let cache = {
         let d = super::oracle_lib::oracle_cache_dir_relative();
-        if d.is_absolute() {
-            d
-        } else {
-            root.join(d)
-        }
+        if d.is_absolute() { d } else { root.join(d) }
     };
     for d in [out, &cache] {
         std::fs::create_dir_all(d).map_err(|e| e.to_string())?;
     }
-    let base_name = out.file_name().map(|s| s.to_string_lossy().into_owned()).unwrap_or_default();
+    let base_name = out
+        .file_name()
+        .map(|s| s.to_string_lossy().into_owned())
+        .unwrap_or_default();
     let (entry_name, bundle_name) = contract_cache_names(&base_name, recorder);
     let entry_file = cache.join(entry_name);
     let bundle = cache.join(bundle_name);
@@ -867,7 +860,7 @@ pub fn contract_cache_names(base_name: &str, recorder: &str) -> (String, String)
 
 /// `foo-trigger` → `foo` (efReWordTrigger's Go use).
 pub fn word_trigger_prefix(id: &str) -> Option<String> {
-    re_word_trigger().captures(id).map(|m| m[1].to_string())
+    RE_WORD_TRIGGER.captures(id).map(|m| m[1].to_string())
 }
 
 #[cfg(test)]
@@ -897,7 +890,10 @@ mod tests {
             (e2.as_str(), b2.as_str()),
             "different recorders must not share cache files either"
         );
-        assert_eq!(contract_cache_names("accordion", "window.__facts = () => {}"), (e1, b1),
-            "names are deterministic so a rebuild hits the same files");
+        assert_eq!(
+            contract_cache_names("accordion", "window.__facts = () => {}"),
+            (e1, b1),
+            "names are deterministic so a rebuild hits the same files"
+        );
     }
 }

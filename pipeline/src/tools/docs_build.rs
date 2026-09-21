@@ -9,21 +9,20 @@ use regex::Regex;
 use serde::Deserialize;
 use std::collections::HashMap;
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::{LazyLock, OnceLock};
 
 use super::docs_transforms::{
-    api_reference_mdx, apply_jsx_overrides, apply_text_adjustments, cva_axis_rows,
-    drop_react_import_fences, extract_demo_scripts, fence_shadow, fm_string, grey_components,
-    guides, locate_api_reference_span, locate_changelog_span, locate_code_tabs_spans,
-    locate_composition_span, locate_install_section, locate_message_scroller_js_span,
-    locate_rtl_framework_span, locate_rtl_migrate_span, locate_usage_span, message_scroller_js_note,
-    parse_frontmatter, protocol_mdx, read_demo_scripts, re_data_slot_attr, re_data_slot_set,
-    replace_span, resolve_docs_route,
-    rewrite_inline_jsx_mentions, rewrite_leaked_jsx_fences, rewrite_utility_jsx_fences,
-    rtl_framework_note, scan_guide_previews, strip_imports, strip_imports_from_mixed_fences,
-    trivial_mdx, Guide,
+    Guide, RE_DATA_SLOT_ATTR, RE_DATA_SLOT_SET, api_reference_mdx, apply_jsx_overrides,
+    apply_text_adjustments, cva_axis_rows, drop_react_import_fences, extract_demo_scripts,
+    fence_shadow, fm_string, grey_components, guides, locate_api_reference_span,
+    locate_changelog_span, locate_code_tabs_spans, locate_composition_span, locate_install_section,
+    locate_message_scroller_js_span, locate_rtl_framework_span, locate_rtl_migrate_span,
+    locate_usage_span, message_scroller_js_note, parse_frontmatter, protocol_mdx,
+    read_demo_scripts, replace_span, resolve_docs_route, rewrite_inline_jsx_mentions,
+    rewrite_leaked_jsx_fences, rewrite_utility_jsx_fences, rtl_framework_note, scan_guide_previews,
+    strip_imports, strip_imports_from_mixed_fences, trivial_mdx,
 };
-use crate::jsonorder::{json_string, Json, JsonObj};
+use crate::jsonorder::{Json, JsonObj, json_string};
 
 const DOCS_RADIX_DIR: &str = "generated/docs-upstream/components/radix";
 #[allow(dead_code)] // ported path constants; kept for parity with the Go docs build
@@ -33,87 +32,42 @@ const SITE_ROOT: &str = "docs/site";
 const CONTENT_ROOT: &str = "docs/site/content";
 const STATIC_ROOT: &str = "docs/site/static";
 
-fn re_fence_split() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?s)(```.*?```)").unwrap())
-}
-fn re_inline_code_span() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new("`+[^`\n]*`+").unwrap())
-}
-fn re_jsx_component() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"<([A-Z][0-9A-Za-z_]*)").unwrap())
-}
-fn re_comp_preview_all() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?s)<ComponentPreview\b.*?/>").unwrap())
-}
-fn re_comp_source_all() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?s)<ComponentSource\b.*?/>").unwrap())
-}
-fn re_steps_tag() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"</?Steps\b[^>]*>").unwrap())
-}
-fn re_step_block() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?s)<Step>(.*?)</Step>").unwrap())
-}
-fn re_kbd_tag() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"</?Kbd>").unwrap())
-}
-fn re_linked_card() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"<LinkedCard\b[^>]*>|</LinkedCard>").unwrap())
-}
-fn re_class_name() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"\bclassName=").unwrap())
-}
-fn re_md_link() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"\[([^\]]*)\]\((/[^)\s]*)\)").unwrap())
-}
-fn re_jsx_attr() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| {
-        Regex::new(r#"([A-Za-z][0-9A-Za-z_-]*)=(?:"([^"]*)"|\{((?:[^{}]|\{[^}]*\})*)\})"#).unwrap()
-    })
-}
-fn re_body_tag() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?s)<body[^>]*>(.*?)</body>").unwrap())
-}
-fn re_script_block() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?s)<script.*?</script>").unwrap())
-}
-fn re_fm_block() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?s)^---\n.*?\n---\n").unwrap())
-}
-fn re_api_ref_heading() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(?m)^## API Reference[ \t]*\n").unwrap())
-}
-fn re_init_all() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"shadless\.initAll\(\)").unwrap())
-}
-fn re_radix_legacy_path() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"https://www\.radix-ui\.com/docs/primitives/").unwrap())
-}
-fn re_callout_start() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"<Callout\b").unwrap())
-}
+static RE_FENCE_SPLIT: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(?s)(```.*?```)").unwrap());
+static RE_INLINE_CODE_SPAN: LazyLock<Regex> = LazyLock::new(|| Regex::new("`+[^`\n]*`+").unwrap());
+static RE_JSX_COMPONENT: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"<([A-Z][0-9A-Za-z_]*)").unwrap());
+static RE_COMP_PREVIEW_ALL: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?s)<ComponentPreview\b.*?/>").unwrap());
+static RE_COMP_SOURCE_ALL: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?s)<ComponentSource\b.*?/>").unwrap());
+static RE_STEPS_TAG: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"</?Steps\b[^>]*>").unwrap());
+static RE_STEP_BLOCK: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?s)<Step>(.*?)</Step>").unwrap());
+static RE_KBD_TAG: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"</?Kbd>").unwrap());
+static RE_LINKED_CARD: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"<LinkedCard\b[^>]*>|</LinkedCard>").unwrap());
+static RE_CLASS_NAME: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\bclassName=").unwrap());
+static RE_MD_LINK: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"\[([^\]]*)\]\((/[^)\s]*)\)").unwrap());
+static RE_JSX_ATTR: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r#"([A-Za-z][0-9A-Za-z_-]*)=(?:"([^"]*)"|\{((?:[^{}]|\{[^}]*\})*)\})"#).unwrap()
+});
+static RE_BODY_TAG: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?s)<body[^>]*>(.*?)</body>").unwrap());
+static RE_SCRIPT_BLOCK: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?s)<script.*?</script>").unwrap());
+static RE_FM_BLOCK: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?s)^---\n.*?\n---\n").unwrap());
+static RE_API_REF_HEADING: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?m)^## API Reference[ \t]*\n").unwrap());
+static RE_INIT_ALL: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"shadless\.initAll\(\)").unwrap());
+static RE_RADIX_LEGACY_PATH: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"https://www\.radix-ui\.com/docs/primitives/").unwrap());
+static RE_CALLOUT_START: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"<Callout\b").unwrap());
 
 fn inline_code_shadow(text: &str) -> String {
-    re_inline_code_span()
+    RE_INLINE_CODE_SPAN
         .replace_all(text, |caps: &regex::Captures| {
             " ".repeat(caps.get(0).unwrap().as_str().len())
         })
@@ -126,11 +80,7 @@ fn markup_shadow(text: &str) -> String {
 
 /// replaceMarkup runs re over the markup shadow and splices replacements into
 /// the REAL text at the same offsets, right to left.
-fn replace_markup(
-    text: &str,
-    re: &Regex,
-    f: impl Fn(&str, &[String]) -> String,
-) -> String {
+fn replace_markup(text: &str, re: &Regex, f: impl Fn(&str, &[String]) -> String) -> String {
     let shadow = markup_shadow(text);
     let locs: Vec<(usize, usize, Vec<String>)> = re
         .captures_iter(&shadow)
@@ -157,7 +107,7 @@ fn replace_markup(
 /// upstream is a React icon element).
 fn parse_attrs(tag: &str) -> HashMap<String, String> {
     let mut attrs: HashMap<String, String> = HashMap::new();
-    for caps in re_jsx_attr().captures_iter(tag) {
+    for caps in RE_JSX_ATTR.captures_iter(tag) {
         // group 2 is the quoted value; group 3 the {expr} — only the quoted
         // form is kept (Go's m[2] is "" when the group did not participate)
         let val = caps.get(2).map(|m| m.as_str()).unwrap_or("");
@@ -170,8 +120,8 @@ fn parse_attrs(tag: &str) -> HashMap<String, String> {
 
 /// stripImportsOutsideFences: split on fence blocks, strip only outside them.
 fn strip_imports_outside_fences(src: &str) -> String {
-    let segs: Vec<&str> = re_fence_split().split(src).collect();
-    let fences: Vec<String> = re_fence_split()
+    let segs: Vec<&str> = RE_FENCE_SPLIT.split(src).collect();
+    let fences: Vec<String> = RE_FENCE_SPLIT
         .captures_iter(src)
         .map(|c| c[1].to_string())
         .collect();
@@ -200,7 +150,7 @@ fn callout_kind(variant: &str) -> &'static str {
 /// It is a scanner rather than `<Callout\b[^>]*>` because a JSX attribute value
 /// is an expression that can contain ">".
 fn find_callout_open(s: &str) -> (isize, isize) {
-    let Some(m) = re_callout_start().find(s) else {
+    let Some(m) = RE_CALLOUT_START.find(s) else {
         return (-1, -1);
     };
     let mut depth = 0isize;
@@ -243,10 +193,7 @@ fn convert_callouts(text: &str, page: &str) -> Result<String, String> {
         let attrs = parse_attrs(&out[open_s..open_e]);
         let kind = callout_kind(attrs.get("variant").map(String::as_str).unwrap_or("info"));
         let body = &out[open_e..close];
-        let ls: Vec<String> = body
-            .split('\n')
-            .map(strip_up_to_3_spaces)
-            .collect();
+        let ls: Vec<String> = body.split('\n').map(strip_up_to_3_spaces).collect();
         let trimmed = ls.join("\n").trim().to_string();
         // vitezola's tip component; `title` must be listed on a block call
         // (empty falls back to the kind's default title).
@@ -303,7 +250,10 @@ fn convert_details(text: &str, page: &str) -> Result<String, String> {
             continue;
         }
         if !open && l.starts_with("::: details ") {
-            let sum = l.trim_start_matches("::: details ").trim().replace('"', "&quot;");
+            let sum = l
+                .trim_start_matches("::: details ")
+                .trim()
+                .replace('"', "&quot;");
             out.push(format!(
                 "{{% <details summary=\"{}\" open={{false}}> %}}",
                 sum
@@ -325,14 +275,12 @@ fn convert_details(text: &str, page: &str) -> Result<String, String> {
 }
 
 fn convert_steps(text: &str) -> String {
-    let out = replace_markup(text, re_steps_tag(), |_, _| String::new());
-    replace_markup(&out, re_step_block(), |_, m| {
-        format!("**{}**", m[0].trim())
-    })
+    let out = replace_markup(text, &RE_STEPS_TAG, |_, _| String::new());
+    replace_markup(&out, &RE_STEP_BLOCK, |_, m| format!("**{}**", m[0].trim()))
 }
 
 fn convert_kbd(text: &str) -> String {
-    replace_markup(text, re_kbd_tag(), |w, _| {
+    replace_markup(text, &RE_KBD_TAG, |w, _| {
         if w.starts_with("</") {
             "</kbd>".to_string()
         } else {
@@ -342,7 +290,7 @@ fn convert_kbd(text: &str) -> String {
 }
 
 fn convert_linked_cards(text: &str) -> String {
-    replace_markup(text, re_linked_card(), |w, _| {
+    replace_markup(text, &RE_LINKED_CARD, |w, _| {
         if w.starts_with("</") {
             "</div>".to_string()
         } else {
@@ -352,14 +300,14 @@ fn convert_linked_cards(text: &str) -> String {
 }
 
 fn convert_class_name(text: &str) -> String {
-    replace_markup(text, re_class_name(), |_, _| "class=".to_string())
+    replace_markup(text, &RE_CLASS_NAME, |_, _| "class=".to_string())
 }
 
 fn rewrite_links(text: &str, site_members: &std::collections::HashSet<String>) -> String {
-    let text = re_radix_legacy_path()
+    let text = RE_RADIX_LEGACY_PATH
         .replace_all(text, "https://www.radix-ui.com/primitives/docs/")
         .into_owned();
-    replace_markup(&text, re_md_link(), |whole, m| {
+    replace_markup(&text, &RE_MD_LINK, |whole, m| {
         let Some(route) = resolve_docs_route(&m[1], site_members) else {
             return whole.to_string();
         };
@@ -385,7 +333,7 @@ fn rewrite_links(text: &str, site_members: &std::collections::HashSet<String>) -
 fn assert_no_jsx(page: &str, text: &str) -> Result<(), String> {
     let mut seen: std::collections::HashSet<String> = std::collections::HashSet::new();
     let mut left: Vec<String> = Vec::new();
-    for caps in re_jsx_component().captures_iter(text) {
+    for caps in RE_JSX_COMPONENT.captures_iter(text) {
         let name = caps[1].to_string();
         if seen.insert(name.clone()) {
             left.push(name);
@@ -449,7 +397,7 @@ impl DocsBuildCtx {
                 let Ok(b) = std::fs::read_to_string(root.join(dir).join(&n)) else {
                     continue;
                 };
-                for m in re_data_slot_attr().captures_iter(&b) {
+                for m in RE_DATA_SLOT_ATTR.captures_iter(&b) {
                     out.insert(m[1].to_string(), true);
                 }
             }
@@ -467,7 +415,7 @@ impl DocsBuildCtx {
             let Ok(b) = std::fs::read_to_string(root.join(f)) else {
                 continue;
             };
-            for m in re_data_slot_set().captures_iter(&b) {
+            for m in RE_DATA_SLOT_SET.captures_iter(&b) {
                 out.insert(m[1].to_string(), true);
             }
         }
@@ -476,9 +424,10 @@ impl DocsBuildCtx {
     }
 
     fn install_steps_mdx(&self, root: &Path, name: &str) -> String {
-        let demo = std::fs::read_to_string(root.join("dist/components").join(format!("{}.html", name)))
-            .unwrap_or_default();
-        let init_all = re_init_all().is_match(&demo);
+        let demo =
+            std::fs::read_to_string(root.join("dist/components").join(format!("{}.html", name)))
+                .unwrap_or_default();
+        let init_all = RE_INIT_ALL.is_match(&demo);
         let scripts = extract_demo_scripts(&demo);
         let inline_init = !scripts.inline_scripts.is_empty();
         let has_own_css = root.join("dist/css").join(format!("{}.css", name)).exists();
@@ -540,7 +489,11 @@ impl DocsBuildCtx {
         } else {
             "\nThis component has no stylesheet of its own — its styling rides the core theme and utilities in `shadless`.\n".to_string()
         };
-        let and_comp = if has_own_css { " and this component" } else { "" };
+        let and_comp = if has_own_css {
+            " and this component"
+        } else {
+            ""
+        };
         let step_tail = if inline_note.is_empty() {
             "Copy the markup"
         } else {
@@ -626,7 +579,7 @@ impl DocsBuildCtx {
         raw: &str,
         seen: &mut Vec<String>,
     ) -> String {
-        let Some(m) = re_api_ref_heading().find(raw) else {
+        let Some(m) = RE_API_REF_HEADING.find(raw) else {
             return raw.to_string();
         };
         seen.push("api-reference".to_string());
@@ -667,7 +620,12 @@ impl DocsBuildCtx {
         format!("{}\n{}{}", &raw[..at], extra, &raw[at..])
     }
 
-    fn component_transform(&mut self, root: &Path, name: &str, raw: &str) -> Result<String, String> {
+    fn component_transform(
+        &mut self,
+        root: &Path,
+        name: &str,
+        raw: &str,
+    ) -> Result<String, String> {
         let mut seen: Vec<String> = Vec::new();
         let mut raw = apply_jsx_overrides(name, raw)?;
         raw = strip_imports_from_mixed_fences(&drop_react_import_fences(&raw));
@@ -728,7 +686,9 @@ fn guide_transform(root: &Path, g: &Guide, raw: &str) -> Result<String, String> 
     }
     if g.install_section {
         let Some(s) = locate_install_section(&fence_shadow(&raw)) else {
-            return Err("utils Installation section: not found (or no following ## Usage)".to_string());
+            return Err(
+                "utils Installation section: not found (or no following ## Usage)".to_string(),
+            );
         };
         raw = replace_span(&raw, s, &format!("{}\n\n", utils_install_mdx(g.util)));
     }
@@ -829,7 +789,10 @@ fn demo_source(ctx: &DocsBuildCtx, file: &str) -> String {
     let mut js: Vec<String> = Vec::new();
     for s in &scripts.src_scripts {
         if s == "shadless.js" {
-            js.push("// <script src=\"shadless.js\"></script>  — the shared runtime (see Installation)".to_string());
+            js.push(
+                "// <script src=\"shadless.js\"></script>  — the shared runtime (see Installation)"
+                    .to_string(),
+            );
             break;
         }
     }
@@ -869,9 +832,9 @@ fn build_page(
     let raw = std::fs::read_to_string(root.join(source)).map_err(|e| e.to_string())?;
     let fm = parse_frontmatter(&raw);
     let mut body = transform(ctx, root, &raw)?;
-    body = re_fm_block().replace_all(&body, "").into_owned();
+    body = RE_FM_BLOCK.replace_all(&body, "").into_owned();
     body = strip_imports_outside_fences(&body);
-    body = replace_markup(&body, re_comp_source_all(), |_, _| String::new());
+    body = replace_markup(&body, &RE_COMP_SOURCE_ALL, |_, _| String::new());
     body = convert_callouts(&body, name)?;
     body = convert_details(&body, name)?;
     body = convert_steps(&body);
@@ -880,7 +843,7 @@ fn build_page(
     body = convert_class_name(&body);
     let site_members = ctx.site_members();
     body = rewrite_links(&body, &site_members);
-    body = replace_markup(&body, re_comp_preview_all(), |whole, _| {
+    body = replace_markup(&body, &RE_COMP_PREVIEW_ALL, |whole, _| {
         let attrs = parse_attrs(whole);
         match preview_markdown(ctx, &attrs, name) {
             Ok(md) => md,
@@ -1182,14 +1145,15 @@ pub fn run_docs_build(root: &Path) -> i32 {
             if !n.ends_with(".html") {
                 continue;
             }
-            let Ok(raw) = std::fs::read_to_string(root.join(STATIC_ROOT).join("demos").join(&n)) else {
+            let Ok(raw) = std::fs::read_to_string(root.join(STATIC_ROOT).join("demos").join(&n))
+            else {
                 continue;
             };
             let mut body = raw.clone();
-            if let Some(m) = re_body_tag().captures(&raw) {
+            if let Some(m) = RE_BODY_TAG.captures(&raw) {
                 body = m[1].to_string();
             }
-            body = re_script_block().replace_all(&body, "").trim().to_string();
+            body = RE_SCRIPT_BLOCK.replace_all(&body, "").trim().to_string();
             items.push((n, body));
         }
     }
@@ -1371,8 +1335,8 @@ fn write_content_map(
     component_pages: &[(String, String)],
     sections: &HashMap<String, Vec<String>>,
 ) -> Result<(), String> {
-    let catalog_b = std::fs::read_to_string(root.join("docs/catalog.json"))
-        .map_err(|e| e.to_string())?;
+    let catalog_b =
+        std::fs::read_to_string(root.join("docs/catalog.json")).map_err(|e| e.to_string())?;
     #[derive(Deserialize)]
     struct Catalog {
         #[serde(default)]
@@ -1417,7 +1381,10 @@ fn write_content_map(
     for g in guides() {
         let mut e: Vec<(String, Json)> = vec![
             ("source".to_string(), Json::Str(g.source.to_string())),
-            ("disposition".to_string(), Json::Str(g.disposition.to_string())),
+            (
+                "disposition".to_string(),
+                Json::Str(g.disposition.to_string()),
+            ),
             ("notes".to_string(), Json::Str(g.notes.to_string())),
         ];
         if let Some(sec) = sections.get(g.slug) {
@@ -1434,7 +1401,10 @@ fn write_content_map(
         "index".to_string(),
         Json::Obj(vec![
             ("source".to_string(), Json::Str("(generated)".to_string())),
-            ("disposition".to_string(), Json::Str("generated".to_string())),
+            (
+                "disposition".to_string(),
+                Json::Str("generated".to_string()),
+            ),
             (
                 "notes".to_string(),
                 Json::Str("components + guides index page".to_string()),
@@ -1443,7 +1413,15 @@ fn write_content_map(
     ));
 
     // pruned in the recorded order
-    let pkeys = ["forms", "react", "registry", "changelog", "(root)", "helpers", "framework sub-pages"];
+    let pkeys = [
+        "forms",
+        "react",
+        "registry",
+        "changelog",
+        "(root)",
+        "helpers",
+        "framework sub-pages",
+    ];
     let mut pruned_kv: Vec<(String, Json)> = Vec::new();
     for k in pkeys {
         let p = super::docs_transforms::pruned_guides()
@@ -1484,14 +1462,20 @@ fn write_content_map(
 
     let root_obj = JsonObj::new()
         .add("version", Json::Int(1))
-        .add("generatedBy", Json::Str("pipeline/src/tools/docs_build.rs".to_string()))
+        .add(
+            "generatedBy",
+            Json::Str("pipeline/src/tools/docs_build.rs".to_string()),
+        )
         .add("pages", Json::Obj(pages_kv))
         .add("pruned", Json::Obj(pruned_kv))
         .add("guidePreviews", Json::Obj(gp_kv));
     std::fs::create_dir_all(root.join("docs")).map_err(|e| e.to_string())?;
     std::fs::write(
         root.join("docs/content-map.json"),
-        format!("{}\n", crate::jsonorder::marshal_js(&Json::from_obj(root_obj))),
+        format!(
+            "{}\n",
+            crate::jsonorder::marshal_js(&Json::from_obj(root_obj))
+        ),
     )
     .map_err(|e| e.to_string())
 }

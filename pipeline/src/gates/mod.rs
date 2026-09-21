@@ -13,16 +13,14 @@ use regex::Regex;
 use serde::Deserialize;
 use std::collections::{HashMap, HashSet};
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::{LazyLock, OnceLock};
 
 /// gate_coverage_budget.go — the ledger lives at a fixed path; one constant
 /// means one file (the coverage budget is stored in it too).
 pub const LEDGER_PATH: &str = "gates/ledger.json";
 
-fn slot_selector_re() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"\[data-slot="[^"]+"\]"#).unwrap())
-}
+static SLOT_SELECTOR_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#"\[data-slot="[^"]+"\]"#).unwrap());
 
 /// gate_dist_complete: the tracked no-build stylesheet must carry every
 /// component's slot rules. Every [data-slot="…"] selector declared in
@@ -46,18 +44,14 @@ pub fn gate_dist_complete(root: &Path) -> Result<usize, String> {
         let src = std::fs::read_to_string(root.join("dist/css").join(name))
             .map_err(|e| format!("FAIL  dist-complete: reading dist/css/{}: {}", name, e))?;
         let mut seen: HashSet<String> = HashSet::new();
-        for sel in slot_selector_re().find_iter(&src) {
+        for sel in SLOT_SELECTOR_RE.find_iter(&src) {
             let sel = sel.as_str();
             if !seen.insert(sel.to_string()) {
                 continue;
             }
             selectors += 1;
             if !out.contains(sel) {
-                missing.push(format!(
-                    "{}: {}",
-                    name.trim_end_matches(".css"),
-                    sel
-                ));
+                missing.push(format!("{}: {}", name.trim_end_matches(".css"), sel));
             }
         }
     }
@@ -126,11 +120,19 @@ pub fn libtest_has_passing_tests(stdout: &str) -> bool {
 
 fn reproducible_roots() -> &'static [&'static str] {
     &[
-        "dist", "docs/catalog.json", "docs/demos", "docs/example-oracle.json",
-        "docs/site/content/components", "docs/site/content/guides",
-        "docs/site/content/_index.md", "docs/site/content/components/_index.md",
-        "docs/site/content/guides/_index.md", "docs/content-map.json",
-        "generated/ir", "generated/docs-upstream", "src/kernel/*.html",
+        "dist",
+        "docs/catalog.json",
+        "docs/demos",
+        "docs/example-oracle.json",
+        "docs/site/content/components",
+        "docs/site/content/guides",
+        "docs/site/content/_index.md",
+        "docs/site/content/components/_index.md",
+        "docs/site/content/guides/_index.md",
+        "docs/content-map.json",
+        "generated/ir",
+        "generated/docs-upstream",
+        "src/kernel/*.html",
         "gates/demo-parity-baseline.json",
         "gates/path-parity-baseline.json",
         "gates/style-parity-baseline.json",
@@ -139,12 +141,17 @@ fn reproducible_roots() -> &'static [&'static str] {
 
 pub fn gate_reproducible(root: &Path) -> Result<usize, String> {
     let mut cmd = std::process::Command::new("git");
-    cmd.arg("status").arg("--porcelain").arg("--untracked-files=all").arg("--");
+    cmd.arg("status")
+        .arg("--porcelain")
+        .arg("--untracked-files=all")
+        .arg("--");
     for r in reproducible_roots() {
         cmd.arg(r);
     }
     cmd.current_dir(root);
-    let out = cmd.output().map_err(|e| format!("FAIL  reproducible (git status failed: {})", e))?;
+    let out = cmd
+        .output()
+        .map_err(|e| format!("FAIL  reproducible (git status failed: {})", e))?;
     if !out.status.success() {
         return Err(format!(
             "FAIL  reproducible (git status failed: {})",
@@ -152,10 +159,7 @@ pub fn gate_reproducible(root: &Path) -> Result<usize, String> {
         ));
     }
     let stdout = String::from_utf8_lossy(&out.stdout).into_owned();
-    let lines: Vec<&str> = stdout
-        .split('\n')
-        .filter(|l| !l.is_empty())
-        .collect();
+    let lines: Vec<&str> = stdout.split('\n').filter(|l| !l.is_empty()).collect();
     if !lines.is_empty() {
         let mut shown: Vec<&str> = lines.clone();
         let more = if shown.len() > 40 {
@@ -172,7 +176,10 @@ pub fn gate_reproducible(root: &Path) -> Result<usize, String> {
             more
         ));
     }
-    println!("PASS  reproducible ({} generated roots match the committed tree)", reproducible_roots().len());
+    println!(
+        "PASS  reproducible ({} generated roots match the committed tree)",
+        reproducible_roots().len()
+    );
     Ok(lines.len())
 }
 
@@ -202,10 +209,16 @@ pub fn gate_product_verify(root: &Path) -> Result<(), String> {
         }
     };
     add("slot rules missing from product build: ", &r.missing);
-    add("slot rules missing from DEMO build (both chains disagree): ", &r.demo_dropped);
+    add(
+        "slot rules missing from DEMO build (both chains disagree): ",
+        &r.demo_dropped,
+    );
     add("docs chrome leaked into product build: ", &r.chrome);
     add("tokens missing from product build: ", &r.tokens);
-    add("standalone classes with no origin in product source (content-scan leak?): ", &r.stray);
+    add(
+        "standalone classes with no origin in product source (content-scan leak?): ",
+        &r.stray,
+    );
     if !problems.is_empty() {
         return Err(format!(
             "FAIL  product-css --verify\n  {}",
@@ -219,7 +232,6 @@ pub fn gate_product_verify(root: &Path) -> Result<(), String> {
 #[cfg(test)]
 mod tests {
     use super::*;
-
 
     /// "120 passed" CONTAINS "0 passed" — a substring check for "0 passed"
     /// went red whenever the passing count merely ended in 0.
@@ -256,7 +268,11 @@ mod tests {
     #[test]
     fn gate_product_verify_on_real_tree() {
         let root = crate::tree_root();
-        for p in ["dist/shadless.full.css", "dist/out.css", "dist/shadless.product.css"] {
+        for p in [
+            "dist/shadless.full.css",
+            "dist/out.css",
+            "dist/shadless.product.css",
+        ] {
             if !root.join(p).exists() {
                 eprintln!("skip: {} missing (run the demo chain first)", p);
                 return;
@@ -331,14 +347,11 @@ pub fn is_physical_utility(token: &str) -> bool {
     physical_patterns().iter().any(|re| re.is_match(u))
 }
 
-fn apply_block_re() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"@apply([^;]+);").unwrap())
-}
+static APPLY_BLOCK_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"@apply([^;]+);").unwrap());
 
 pub fn extract_apply_tokens(css: &str) -> Vec<String> {
     let mut tokens: Vec<String> = Vec::new();
-    for m in apply_block_re().captures_iter(css) {
+    for m in APPLY_BLOCK_RE.captures_iter(css) {
         tokens.extend(m[1].split_whitespace().map(|s| s.to_string()));
     }
     tokens
@@ -373,15 +386,31 @@ fn direction_baseline() -> &'static HashMap<String, usize> {
     static M: OnceLock<HashMap<String, usize>> = OnceLock::new();
     M.get_or_init(|| {
         HashMap::from([
-            ("border-l-0".to_string(), 1usize), ("left-3".to_string(), 1), ("ml-1".to_string(), 1),
-            ("ml-[-0.15rem]".to_string(), 1), ("ml-[-0.3rem]".to_string(), 1), ("mr-1".to_string(), 1),
-            ("mr-[-0.15rem]".to_string(), 1), ("mr-[-0.3rem]".to_string(), 1), ("pl-1.5".to_string(), 4),
-            ("pl-1.5!".to_string(), 1), ("pl-2".to_string(), 4), ("pl-2.5".to_string(), 1),
-            ("pr-0".to_string(), 2), ("pr-1.5".to_string(), 4), ("pr-1.5!".to_string(), 1),
-            ("pr-18".to_string(), 1), ("pr-2".to_string(), 4), ("pr-8".to_string(), 1),
-            ("right-2".to_string(), 1), ("right-2.5".to_string(), 1), ("right-3".to_string(), 2),
-            ("rounded-l-none".to_string(), 1), ("rounded-r-lg".to_string(), 1),
-            ("rounded-r-lg!".to_string(), 1), ("rounded-r-none".to_string(), 1),
+            ("border-l-0".to_string(), 1usize),
+            ("left-3".to_string(), 1),
+            ("ml-1".to_string(), 1),
+            ("ml-[-0.15rem]".to_string(), 1),
+            ("ml-[-0.3rem]".to_string(), 1),
+            ("mr-1".to_string(), 1),
+            ("mr-[-0.15rem]".to_string(), 1),
+            ("mr-[-0.3rem]".to_string(), 1),
+            ("pl-1.5".to_string(), 4),
+            ("pl-1.5!".to_string(), 1),
+            ("pl-2".to_string(), 4),
+            ("pl-2.5".to_string(), 1),
+            ("pr-0".to_string(), 2),
+            ("pr-1.5".to_string(), 4),
+            ("pr-1.5!".to_string(), 1),
+            ("pr-18".to_string(), 1),
+            ("pr-2".to_string(), 4),
+            ("pr-8".to_string(), 1),
+            ("right-2".to_string(), 1),
+            ("right-2.5".to_string(), 1),
+            ("right-3".to_string(), 2),
+            ("rounded-l-none".to_string(), 1),
+            ("rounded-r-lg".to_string(), 1),
+            ("rounded-r-lg!".to_string(), 1),
+            ("rounded-r-none".to_string(), 1),
             ("text-left".to_string(), 5),
         ])
     })
@@ -406,7 +435,10 @@ pub fn gate_css_direction(root: &Path) -> Result<usize, String> {
             _ => {}
         }
     }
-    let mut gone: Vec<(&String, &usize)> = baseline.iter().filter(|(tok, _)| !seen.contains(*tok)).collect();
+    let mut gone: Vec<(&String, &usize)> = baseline
+        .iter()
+        .filter(|(tok, _)| !seen.contains(*tok))
+        .collect();
     gone.sort();
     for (tok, n) in gone {
         diffs.push(format!("  - {} ×{} (gone)", tok, n));
@@ -418,7 +450,10 @@ pub fn gate_css_direction(root: &Path) -> Result<usize, String> {
             diffs.join("\n")
         ));
     }
-    println!("PASS  css-direction-gate ({} physical utilities match baseline)", entries.len());
+    println!(
+        "PASS  css-direction-gate ({} physical utilities match baseline)",
+        entries.len()
+    );
     Ok(entries.len())
 }
 
@@ -510,7 +545,8 @@ pub fn gate_script_refs(root: &Path) -> Result<(usize, usize), String> {
                     if !crate::nodes::GATE_IDS.contains(&g.as_str()) {
                         fail.push(format!(
                             "{}: `pipeline __meta {}` — not a gate id this engine dispatches",
-                            label, g.as_str()
+                            label,
+                            g.as_str()
                         ));
                     }
                 }

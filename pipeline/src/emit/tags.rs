@@ -2,7 +2,7 @@
 
 use regex::Regex;
 use std::collections::HashSet;
-use std::sync::OnceLock;
+use std::sync::{LazyLock, OnceLock};
 
 pub fn native_tags() -> &'static HashSet<&'static str> {
     static S: OnceLock<HashSet<&'static str>> = OnceLock::new();
@@ -50,24 +50,17 @@ pub fn external_member_tag(tag: &str) -> String {
     }
 }
 
-fn kebab_boundary() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"([a-z0-9])([A-Z])").unwrap())
-}
-fn kebab_space() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"[\s.]+").unwrap())
-}
+static KEBAB_BOUNDARY: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"([a-z0-9])([A-Z])").unwrap());
+static KEBAB_SPACE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"[\s.]+").unwrap());
 
 pub fn kebab(s: &str) -> String {
-    let stepped = kebab_boundary().replace_all(s, "${1}-${2}");
-    kebab_space().replace_all(&stepped, "-").to_lowercase()
+    let stepped = KEBAB_BOUNDARY.replace_all(s, "${1}-${2}");
+    KEBAB_SPACE.replace_all(&stepped, "-").to_lowercase()
 }
 
-pub fn ternary_re() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^<ternary:([^/]+)/(.+)>$").unwrap())
-}
+pub static TERNARY_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^<ternary:([^/]+)/(.+)>$").unwrap());
 
 /// Resolves a raw IR tag to a native tag. Returns None when the tag is
 /// unresolvable — the caller must fail loudly.
@@ -78,7 +71,7 @@ pub fn normalize_tag(tag: &str, hints: &HashMap<String, String>) -> Option<Strin
     if native_tags().contains(tag) {
         return Some(tag.to_string());
     }
-    if let Some(m) = ternary_re().captures(tag) {
+    if let Some(m) = TERNARY_RE.captures(tag) {
         return normalize_tag(&m[2], hints);
     }
     if let Some(h) = hints.get(tag) {

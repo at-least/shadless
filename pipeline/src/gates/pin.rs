@@ -6,22 +6,17 @@
 use regex::Regex;
 use serde::Deserialize;
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 
 pub const SHADCN_DIR: &str = ".upstream/shadcn-ui";
 pub const SHADCN_REPO: &str = "https://github.com/shadcn-ui/ui";
 pub const KERNEL_IIFE: &str = "vendor/radix-kernel.iife.js";
 pub const PIN_FILE_PATH: &str = "src/registry/pin.json";
 
-fn release_tag_re() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^shadcn@\d").unwrap())
-}
+static RELEASE_TAG_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^shadcn@\d").unwrap());
 
-fn registry_base_re() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"registry/bases/([^/]+)/").unwrap())
-}
+static REGISTRY_BASE_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"registry/bases/([^/]+)/").unwrap());
 
 #[derive(Deserialize, Clone, Debug, Default)]
 pub struct PinShadcnUi {
@@ -54,7 +49,7 @@ pub struct PinFile {
 }
 
 pub fn pinned_base(p: &PinFile) -> Result<String, String> {
-    match registry_base_re().captures(&p.shadcn_ui.registry) {
+    match REGISTRY_BASE_RE.captures(&p.shadcn_ui.registry) {
         Some(m) => Ok(m[1].to_string()),
         None => Err(format!(
             "pin.json `shadcn_ui.registry` is {:?}, not a path of the form apps/v4/registry/bases/<base>/ui",
@@ -67,7 +62,12 @@ pub fn pinned_base(p: &PinFile) -> Result<String, String> {
 /// graph actually converts from.
 fn check_pinned_base(root: &Path, p: &PinFile) -> Result<(), String> {
     let base = pinned_base(p)?;
-    if !root.join(SHADCN_DIR).join("apps/v4/registry/bases").join(&base).exists() {
+    if !root
+        .join(SHADCN_DIR)
+        .join("apps/v4/registry/bases")
+        .join(&base)
+        .exists()
+    {
         return Err(format!(
             "pin.json targets base {:?}, which the pinned checkout does not have under apps/v4/registry/bases",
             base
@@ -119,8 +119,12 @@ pub fn read_pin(root: &Path) -> Result<PinFile, String> {
 /// src/registry/pin.json already records — a fresh checkout always has a
 /// committed pin to clone to, so this never has to guess a version.
 fn clone_upstream(root: &Path) -> Result<(), String> {
-    let p = read_pin(root)
-        .map_err(|e| format!("cannot read {} to learn which tag to clone: {}", PIN_FILE_PATH, e))?;
+    let p = read_pin(root).map_err(|e| {
+        format!(
+            "cannot read {} to learn which tag to clone: {}",
+            PIN_FILE_PATH, e
+        )
+    })?;
     if p.shadcn_ui.tag.is_empty() {
         return Err(format!("{} has no shadcn_ui.tag recorded", PIN_FILE_PATH));
     }
@@ -160,7 +164,10 @@ pub fn truncate(s: &str, n: usize) -> String {
 pub fn run_pin(root: &Path, check_only: bool, force: bool) -> i32 {
     if !root.join(SHADCN_DIR).exists() {
         if let Err(e) = clone_upstream(root) {
-            eprintln!("PIN FAIL: {} not found and auto-clone failed: {}", SHADCN_DIR, e);
+            eprintln!(
+                "PIN FAIL: {} not found and auto-clone failed: {}",
+                SHADCN_DIR, e
+            );
             return 1;
         }
     }
@@ -200,7 +207,7 @@ pub fn run_pin(root: &Path, check_only: bool, force: bool) -> i32 {
             );
             fail = true;
         }
-        if !release_tag_re().is_match(&recorded.shadcn_ui.tag) {
+        if !RELEASE_TAG_RE.is_match(&recorded.shadcn_ui.tag) {
             eprintln!(
                 "PIN FAIL: pin.json tag {:?} is not a shadcn@* release tag",
                 recorded.shadcn_ui.tag
@@ -248,7 +255,7 @@ pub fn run_pin(root: &Path, check_only: bool, force: bool) -> i32 {
         .collect();
     let mut release_tag = String::new();
     for t in &tags_at_head {
-        if release_tag_re().is_match(t) {
+        if RELEASE_TAG_RE.is_match(t) {
             release_tag = t.clone();
             break;
         }
@@ -316,8 +323,8 @@ pub fn run_pin(root: &Path, check_only: bool, force: bool) -> i32 {
             0
         }
         Ok(old) => {
-            let drift =
-                old.shadcn_ui.commit != next.shadcn_ui.commit || old.kernel.sha256 != next.kernel.sha256;
+            let drift = old.shadcn_ui.commit != next.shadcn_ui.commit
+                || old.kernel.sha256 != next.kernel.sha256;
             if drift && force {
                 if let Err(e) = write(&next) {
                     eprintln!("PIN FAIL: {}", e);

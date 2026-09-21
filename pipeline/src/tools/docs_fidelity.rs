@@ -4,21 +4,17 @@
 use regex::Regex;
 use serde::Deserialize;
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 
 use super::docs_transforms::{
     all_hrefs_of, apply_text_adjustments, compare_page, docs_hrefs_of, guides, md_page_facts,
     mdx_page_facts, rewrite_utility_jsx_fences, text_adjustments,
 };
 
-fn re_comp_source() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"/components/radix/").unwrap())
-}
-fn re_variant_href() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"/components/(base|aria)/|-(base|aria)\.html$").unwrap())
-}
+static RE_COMP_SOURCE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"/components/radix/").unwrap());
+static RE_VARIANT_HREF: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"/components/(base|aria)/|-(base|aria)\.html$").unwrap());
 
 pub fn run_docs_fidelity(root: &Path) -> i32 {
     const DEMOS: &str = "docs/site/static/demos";
@@ -94,7 +90,7 @@ pub fn run_docs_fidelity(root: &Path) -> i32 {
             continue;
         }
         pages += 1;
-        let is_component = re_comp_source().is_match(&meta.source);
+        let is_component = RE_COMP_SOURCE.is_match(&meta.source);
         let g = guide_by_slug.get(name.as_str()).copied();
 
         if meta.source.is_empty() || !root.join(&meta.source).exists() {
@@ -180,11 +176,12 @@ pub fn run_docs_fidelity(root: &Path) -> i32 {
         // The rewritten Installation must name something specific to THIS
         // component, proving the manual tab was regenerated and not left as
         // upstream's shadcn-CLI text.
-        let expected = if is_component && root.join("dist/css").join(format!("{}.css", name)).exists() {
-            format!("shadless/{}.css", name)
-        } else {
-            String::new()
-        };
+        let expected =
+            if is_component && root.join("dist/css").join(format!("{}.css", name)).exists() {
+                format!("shadless/{}.css", name)
+            } else {
+                String::new()
+            };
         for d in compare_page(&m, &h, name, is_component, &expected) {
             let (kind, detail) = match d.find(": ") {
                 Some(i) => (d[..i].to_string(), d[i + 2..].to_string()),
@@ -224,7 +221,7 @@ pub fn run_docs_fidelity(root: &Path) -> i32 {
         // variant retirement (2026-08-26): base/aria mirror is GONE
         let mut variant_hrefs: Vec<String> = Vec::new();
         for h in all_hrefs_of(&md_b) {
-            if re_variant_href().is_match(&h) {
+            if RE_VARIANT_HREF.is_match(&h) {
                 variant_hrefs.push(h);
             }
         }
@@ -292,6 +289,8 @@ pub fn run_docs_fidelity(root: &Path) -> i32 {
         eprintln!("FAIL  docs fidelity (built pages drift from their mdx sources)");
         return 1;
     }
-    println!("PASS  docs fidelity (every page matches its mdx source: headings/previews/fences/links)");
+    println!(
+        "PASS  docs fidelity (every page matches its mdx source: headings/previews/fences/links)"
+    );
     0
 }

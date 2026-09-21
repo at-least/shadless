@@ -4,15 +4,15 @@
 
 pub mod build_rtl;
 pub mod css;
+pub mod demo;
 pub mod product_css;
 pub mod tw;
-pub mod demo;
 
 use std::collections::{HashMap, HashSet};
 
 static SKIN: OnceLock<SkinData> = OnceLock::new();
 use regex::Regex;
-use std::sync::OnceLock;
+use std::sync::{LazyLock, OnceLock};
 pub mod default_content;
 pub mod htmlutil;
 pub mod prepaint;
@@ -30,10 +30,8 @@ pub struct TreeNode {
     pub kids: Vec<TreeNode>,
 }
 
-fn re_sketch() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"^<([^ >]+)(?: slot=([^ >]+))?").unwrap())
-}
+static RE_SKETCH: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^<([^ >]+)(?: slot=([^ >]+))?").unwrap());
 
 struct BuildTreeOpts {
     claimed: HashSet<usize>,
@@ -44,16 +42,12 @@ struct BuildTreeOpts {
 /// Resolves a fn's element tree from the flat walk-order elements + sketches.
 /// Every tag (root AND children) goes through normalize_tag.
 use crate::twmerge;
+use css::{CssIrComponent, IrEl, IrFn, component_css, dedup, split_markers, wrap_component_css};
 use markup5ever_rcdom::{Handle, NodeData};
-use css::{component_css, dedup, split_markers, wrap_component_css, CssIrComponent, IrEl, IrFn};
 use tags::void_tags;
 use tags::{native_tags, normalize_tag};
 
-fn build_tree(
-    ir: &CssIrComponent,
-    f: &IrFn,
-    o: &mut BuildTreeOpts,
-) -> Result<TreeNode, String> {
+fn build_tree(ir: &CssIrComponent, f: &IrFn, o: &mut BuildTreeOpts) -> Result<TreeNode, String> {
     fn resolve(
         ir: &CssIrComponent,
         f: &IrFn,
@@ -63,7 +57,7 @@ fn build_tree(
     ) -> Result<TreeNode, String> {
         let mut kids: Vec<TreeNode> = Vec::new();
         for sk in &el.children {
-            let Some(m) = re_sketch().captures(sk) else {
+            let Some(m) = RE_SKETCH.captures(sk) else {
                 continue; // text/{children}/OPT?/expr → nothing structural
             };
             let raw_tag = &m[1];
@@ -190,9 +184,7 @@ fn render_tree(
 /// ancestors.
 fn table_wrap(tag: &str) -> Option<&'static str> {
     match tag {
-        "thead" | "tbody" | "tfoot" | "caption" | "colgroup" | "tr" | "th" | "td" => {
-            Some("table")
-        }
+        "thead" | "tbody" | "tfoot" | "caption" | "colgroup" | "tr" | "th" | "td" => Some("table"),
         _ => None,
     }
 }
@@ -213,12 +205,14 @@ fn render_fn(
 }
 
 /// string → escaped text; {Inner,Attrs,Children} composed.
-fn resolve_default(ir: &CssIrComponent, f: &IrFn) -> Option<(String, Vec<(String, String)>, HashMap<String, String>)> {
+fn resolve_default(
+    ir: &CssIrComponent,
+    f: &IrFn,
+) -> Option<(String, Vec<(String, String)>, HashMap<String, String>)> {
     let content = default_content::default_content();
     let comp = content.get(ir.name.as_str())?;
     let entry = comp.get(f.fn_.as_str())?;
-    if !entry.set && entry.inner.is_empty() && entry.attrs.is_empty() && entry.children.is_empty()
-    {
+    if !entry.set && entry.inner.is_empty() && entry.attrs.is_empty() && entry.children.is_empty() {
         // present-and-null → explicitly no default
         return None;
     }
@@ -284,10 +278,7 @@ fn validate_default_content(statics: &[CssIrComponent]) -> Vec<String> {
         let mut fns: Vec<&str> = content[comp].keys().copied().collect();
         fns.sort_unstable();
         for f in fns {
-            let exported = ir
-                .components
-                .iter()
-                .any(|c| c.export && c.fn_ == f);
+            let exported = ir.components.iter().any(|c| c.export && c.fn_ == f);
             if !exported {
                 errs.push(format!("[{}] unknown fn key: {}", comp, f));
             }
@@ -331,7 +322,11 @@ pub fn load_skin() {
             Err(e) => {
                 // Go os.ReadFile: open-phase errors report "open"; a directory
                 // opens fine on Linux and fails in read with EISDIR.
-                let op = if e.raw_os_error() == Some(21) { "read" } else { "open" };
+                let op = if e.raw_os_error() == Some(21) {
+                    "read"
+                } else {
+                    "open"
+                };
                 eprintln!("resolve-skins: skin: {}", go_err(op, SKIN_PATH, &e));
                 std::process::exit(1);
             }
@@ -394,7 +389,8 @@ fn parse_skin_map(css: &str, map: &mut HashMap<String, String>) {
     static SKIN_BLOCK: OnceLock<Regex> = OnceLock::new();
     static STYLE_NOVA: OnceLock<Regex> = OnceLock::new();
     static APPLY_STMT: OnceLock<Regex> = OnceLock::new();
-    let skin_block = SKIN_BLOCK.get_or_init(|| Regex::new(r"(?s)\.([\w-]+)\s*\{([^{}]*)\}").unwrap());
+    let skin_block =
+        SKIN_BLOCK.get_or_init(|| Regex::new(r"(?s)\.([\w-]+)\s*\{([^{}]*)\}").unwrap());
     let style_nova = STYLE_NOVA.get_or_init(|| Regex::new(r"^\s*\.style-nova\s*\{").unwrap());
     let apply_stmt = APPLY_STMT.get_or_init(|| Regex::new(r"^\s*@apply\s+([^;]+);\s*$").unwrap());
     let start = css.find('{');
@@ -433,8 +429,8 @@ pub fn run_emit() -> Result<(), String> {
     // statics in sorted-filename order (os.ReadDir sorts)
     let mut statics: Vec<CssIrComponent> = Vec::new();
     let ir_dir = root.join("generated/ir");
-    let names: Vec<String> = crate::fsutil::sorted_read_dir(&ir_dir)
-        .map_err(|e| format!("emit: {}", e))?;
+    let names: Vec<String> =
+        crate::fsutil::sorted_read_dir(&ir_dir).map_err(|e| format!("emit: {}", e))?;
     for n in &names {
         if !n.ends_with(".json") {
             continue;
@@ -537,17 +533,17 @@ pub fn run_emit() -> Result<(), String> {
             prepaint::THEME_PREPAINT_SCRIPT,
             bodies.join("\n")
         );
-        std::fs::write(root.join(format!("dist/components/{}.html", ir.name)), &page)
-            .map_err(|e| format!("emit: {}", e))?;
+        std::fs::write(
+            root.join(format!("dist/components/{}.html", ir.name)),
+            &page,
+        )
+        .map_err(|e| format!("emit: {}", e))?;
         pages.insert(ir.name.clone(), page.clone());
         css_parts.push(wrap_component_css(&ir.name, &css));
         total_slots += page.matches("data-slot=\"").count();
     }
-    std::fs::write(
-        root.join("dist/shadless.css"),
-        css_parts.join("\n\n"),
-    )
-    .map_err(|e| format!("emit: {}", e))?;
+    std::fs::write(root.join("dist/shadless.css"), css_parts.join("\n\n"))
+        .map_err(|e| format!("emit: {}", e))?;
 
     // CSS completeness gate: every class TOKEN must appear in some emitted
     // rule (token-level; same-slot complementary elements legitimately split
@@ -557,11 +553,8 @@ pub fn run_emit() -> Result<(), String> {
         for ir in &statics {
             for c in &ir.components {
                 for el in &c.elements {
-                    let apply_toks: Vec<String> = el
-                        .classes
-                        .iter()
-                        .map(|x| split_markers(x).apply)
-                        .collect();
+                    let apply_toks: Vec<String> =
+                        el.classes.iter().map(|x| split_markers(x).apply).collect();
                     let kept: HashSet<String> = twmerge::merge(&apply_toks.join(" "))
                         .split_whitespace()
                         .map(|s| s.to_string())
@@ -570,7 +563,11 @@ pub fn run_emit() -> Result<(), String> {
                         let applied = split_markers(cs).apply;
                         let missing: Vec<&str> = applied
                             .split_whitespace()
-                            .filter(|t| !t.is_empty() && kept.contains(*t) && !css_contains_token(&all_css, t))
+                            .filter(|t| {
+                                !t.is_empty()
+                                    && kept.contains(*t)
+                                    && !css_contains_token(&all_css, t)
+                            })
                             .collect();
                         if !missing.is_empty() {
                             let n = missing.len().min(6);
@@ -589,8 +586,8 @@ pub fn run_emit() -> Result<(), String> {
 
     // globals (build/emit, NOT dist — the demo chain owns dist/globals.css)
     {
-        let gb =
-            std::fs::read_to_string(root.join("probes/h4/globals.css")).map_err(|e| format!("emit: {}", e))?;
+        let gb = std::fs::read_to_string(root.join("probes/h4/globals.css"))
+            .map_err(|e| format!("emit: {}", e))?;
         let g = gb.replacen("@source \"./demo.html\";\n", "", 1);
         let out = format!(
             "{}\n{}\n{}",
@@ -613,14 +610,19 @@ pub fn run_emit() -> Result<(), String> {
         std::fs::write(root.join("build/emit/demo-index.html"), li)
             .map_err(|e| format!("emit: {}", e))?;
     }
-    println!("emit: {} pages, {} slots, shadless.css", statics.len(), total_slots);
+    println!(
+        "emit: {} pages, {} slots, shadless.css",
+        statics.len(),
+        total_slots
+    );
 
     // ---- gates ----
     static RE_CLASS: OnceLock<Regex> = OnceLock::new();
     let re_class = RE_CLASS.get_or_init(|| Regex::new(r#"class="([^"]*)""#).unwrap());
     static RE_PASCAL: OnceLock<Regex> = OnceLock::new();
-    let re_pascal =
-        RE_PASCAL.get_or_init(|| Regex::new(r"</?([A-Z][A-Za-z0-9]*(?:\.[A-Z][A-Za-z0-9]*)?)[\s>]").unwrap());
+    let re_pascal = RE_PASCAL.get_or_init(|| {
+        Regex::new(r"</?([A-Z][A-Za-z0-9]*(?:\.[A-Z][A-Za-z0-9]*)?)[\s>]").unwrap()
+    });
 
     // gate: no class= beyond markers/anchors/allowlist
     for ir in &statics {
@@ -628,7 +630,9 @@ pub fn run_emit() -> Result<(), String> {
         for m in re_class.captures_iter(h) {
             let mut bad = false;
             for t in m[1].split_whitespace() {
-                if t.is_empty() || css::marker_re().is_match(t) || skin_data().allowlist.contains(t)
+                if t.is_empty()
+                    || css::MARKER_RE.is_match(t)
+                    || skin_data().allowlist.contains(t)
                     || all_anchors.contains(t)
                 {
                     continue;
@@ -700,14 +704,23 @@ pub fn run_emit() -> Result<(), String> {
         };
         let mut tree_pairs: HashSet<String> = HashSet::new();
         let mut tree_edges: HashSet<String> = HashSet::new();
-        fn collect(n: &TreeNode, parent_slot: &str, pairs: &mut HashSet<String>, edges: &mut HashSet<String>) {
+        fn collect(
+            n: &TreeNode,
+            parent_slot: &str,
+            pairs: &mut HashSet<String>,
+            edges: &mut HashSet<String>,
+        ) {
             if !n.slot.is_empty() {
                 pairs.insert(format!("{}@{}", n.tag, n.slot));
                 if !parent_slot.is_empty() {
                     edges.insert(format!("{}>{}", parent_slot, n.slot));
                 }
             }
-            let ps = if !n.slot.is_empty() { &n.slot } else { parent_slot };
+            let ps = if !n.slot.is_empty() {
+                &n.slot
+            } else {
+                parent_slot
+            };
             for k in &n.kids {
                 collect(k, ps, pairs, edges);
             }
@@ -745,7 +758,11 @@ pub fn run_emit() -> Result<(), String> {
             } else {
                 wrap_open.push_str(&format!("<{}>", root_tag));
             }
-            let close_tag = format!("</{}>{}", root_tag, if scope.is_empty() { "" } else { "</table>" });
+            let close_tag = format!(
+                "</{}>{}",
+                root_tag,
+                if scope.is_empty() { "" } else { "</table>" }
+            );
             if let Ok(frag) = parse_html(&format!("{}{}{}", wrap_open, inner, close_tag)) {
                 walk_slotted(&frag.document, "", &mut |e: &Handle, parent_slot: &str| {
                     def_pairs.insert(format!("{}@{}", node_name(e), slot_of(e)));
@@ -763,8 +780,8 @@ pub fn run_emit() -> Result<(), String> {
                 if el.slot.is_empty() {
                     continue;
                 }
-                let tag = normalize_tag(&el.tag, &it.ir.tag_hints)
-                    .unwrap_or_else(|| "?".to_string());
+                let tag =
+                    normalize_tag(&el.tag, &it.ir.tag_hints).unwrap_or_else(|| "?".to_string());
                 ir_pairs.insert(format!("{}@{}", tag, el.slot));
             }
         }
@@ -810,7 +827,10 @@ pub fn run_emit() -> Result<(), String> {
         }
         for d in &dom_nodes {
             if !sanctioned_pairs.contains(d) {
-                eprintln!("FAIL [{}]: DOM slot not sanctioned (tree/IR/default): {}", it.ir.name, d);
+                eprintln!(
+                    "FAIL [{}]: DOM slot not sanctioned (tree/IR/default): {}",
+                    it.ir.name, d
+                );
                 fail = true;
             }
         }
@@ -838,7 +858,6 @@ pub fn run_emit() -> Result<(), String> {
     Ok(())
 }
 
-
 /// Token-boundary containment for CSS class tokens: `p-2` must not match
 /// inside `gap-2` or `p-2.5`. A class token is `[\w-]+`, so an occurrence
 /// is a real token only when neither neighbour is `[\w-]` and the follower
@@ -858,8 +877,7 @@ pub(crate) fn css_contains_token(hay: &str, tok: &str) -> bool {
         let start = from + pos;
         let end = start + tok.len();
         let before_ok = start == 0 || !bad(b[start - 1]);
-        let after_ok =
-            end >= b.len() || (!bad(b[end]) && b[end] != b'.' && b[end] != b'\\');
+        let after_ok = end >= b.len() || (!bad(b[end]) && b[end] != b'.' && b[end] != b'\\');
         if before_ok && after_ok {
             return true;
         }

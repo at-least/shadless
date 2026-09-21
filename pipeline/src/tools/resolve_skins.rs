@@ -7,32 +7,22 @@
 
 use regex::Regex;
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 
 const RESOLVE_SRC: &str = ".upstream/shadcn-ui/apps/v4/registry/bases/radix";
 const RESOLVE_OUT: &str = "build/resolved-ui";
 
-fn cn_token_re() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(^|[ \t\n\f\r ])cn-[a-z0-9-]+").unwrap())
-}
-fn rtl_mappable() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| {
-        Regex::new(
+static CN_TOKEN_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(^|[ \t\n\f\r ])cn-[a-z0-9-]+").unwrap());
+static RTL_MAPPABLE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
             r"(^|[ \t\n\f\r ])(ml-|mr-|pl-|pr-|left-|right-|rounded-[tlbr]+-|border-[lr]\b|text-(left|right)|translate-x-|space-x-|divide-x-|float-|clear-|origin-|scroll-[mp][lr]-|inset-[lr]-|cursor-[we]-resize)",
         )
         .unwrap()
-    })
-}
-fn class_attr_re() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r#"class="[^"]*""#).unwrap())
-}
-fn re_cn_prefix() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| Regex::new(r"(^|[ \t\n\f\r ])cn-").unwrap())
-}
+});
+static CLASS_ATTR_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r#"class="[^"]*""#).unwrap());
+static RE_CN_PREFIX: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(^|[ \t\n\f\r ])cn-").unwrap());
 
 /// expandClassString: cn-X in the skin's @apply body expands in place,
 /// allowlisted names stay, marker-only names styled by no skin are DROPPED.
@@ -74,32 +64,80 @@ pub fn expand_class_string_with(skin: &crate::emit::SkinData, str_: &str) -> Str
 // --- RTL transform (upstream transform-rtl.ts parity) ----------------------
 
 const RTL_MAPPINGS: [(&str, &str); 38] = [
-    ("-ml-", "-ms-"), ("-mr-", "-me-"), ("ml-", "ms-"), ("mr-", "me-"),
-    ("pl-", "ps-"), ("pr-", "pe-"), ("-left-", "-start-"), ("-right-", "-end-"),
-    ("left-", "start-"), ("right-", "end-"), ("inset-l-", "inset-inline-start-"),
-    ("inset-r-", "inset-inline-end-"), ("rounded-tl-", "rounded-ss-"),
-    ("rounded-tr-", "rounded-se-"), ("rounded-bl-", "rounded-es-"),
-    ("rounded-br-", "rounded-ee-"), ("rounded-l-", "rounded-s-"),
-    ("rounded-r-", "rounded-e-"), ("border-l-", "border-s-"), ("border-r-", "border-e-"),
-    ("border-l", "border-s"), ("border-r", "border-e"), ("text-left", "text-start"),
-    ("text-right", "text-end"), ("scroll-ml-", "scroll-ms-"), ("scroll-mr-", "scroll-me-"),
-    ("scroll-pl-", "scroll-ps-"), ("scroll-pr-", "scroll-pe-"),
-    ("float-left", "float-start"), ("float-right", "float-end"),
-    ("clear-left", "clear-start"), ("clear-right", "clear-end"),
-    ("origin-top-left", "origin-top-start"), ("origin-top-right", "origin-top-end"),
-    ("origin-bottom-left", "origin-bottom-start"), ("origin-bottom-right", "origin-bottom-end"),
-    ("origin-left", "origin-start"), ("origin-right", "origin-end"),
+    ("-ml-", "-ms-"),
+    ("-mr-", "-me-"),
+    ("ml-", "ms-"),
+    ("mr-", "me-"),
+    ("pl-", "ps-"),
+    ("pr-", "pe-"),
+    ("-left-", "-start-"),
+    ("-right-", "-end-"),
+    ("left-", "start-"),
+    ("right-", "end-"),
+    ("inset-l-", "inset-inline-start-"),
+    ("inset-r-", "inset-inline-end-"),
+    ("rounded-tl-", "rounded-ss-"),
+    ("rounded-tr-", "rounded-se-"),
+    ("rounded-bl-", "rounded-es-"),
+    ("rounded-br-", "rounded-ee-"),
+    ("rounded-l-", "rounded-s-"),
+    ("rounded-r-", "rounded-e-"),
+    ("border-l-", "border-s-"),
+    ("border-r-", "border-e-"),
+    ("border-l", "border-s"),
+    ("border-r", "border-e"),
+    ("text-left", "text-start"),
+    ("text-right", "text-end"),
+    ("scroll-ml-", "scroll-ms-"),
+    ("scroll-mr-", "scroll-me-"),
+    ("scroll-pl-", "scroll-ps-"),
+    ("scroll-pr-", "scroll-pe-"),
+    ("float-left", "float-start"),
+    ("float-right", "float-end"),
+    ("clear-left", "clear-start"),
+    ("clear-right", "clear-end"),
+    ("origin-top-left", "origin-top-start"),
+    ("origin-top-right", "origin-top-end"),
+    ("origin-bottom-left", "origin-bottom-start"),
+    ("origin-bottom-right", "origin-bottom-end"),
+    ("origin-left", "origin-start"),
+    ("origin-right", "origin-end"),
 ];
 
-const RTL_TRANSLATE_X: [(&str, &str); 2] = [("-translate-x-", "translate-x-"), ("translate-x-", "-translate-x-")];
-const RTL_REVERSE: [(&str, &str); 2] = [("space-x-", "space-x-reverse"), ("divide-x-", "divide-x-reverse")];
-const RTL_SWAP: [(&str, &str); 2] = [("cursor-w-resize", "cursor-e-resize"), ("cursor-e-resize", "cursor-w-resize")];
+const RTL_TRANSLATE_X: [(&str, &str); 2] = [
+    ("-translate-x-", "translate-x-"),
+    ("translate-x-", "-translate-x-"),
+];
+const RTL_REVERSE: [(&str, &str); 2] = [
+    ("space-x-", "space-x-reverse"),
+    ("divide-x-", "divide-x-reverse"),
+];
+const RTL_SWAP: [(&str, &str); 2] = [
+    ("cursor-w-resize", "cursor-e-resize"),
+    ("cursor-e-resize", "cursor-w-resize"),
+];
 
 const RTL_LOGICAL_SLIDE: [(&str, &str, &str); 4] = [
-    ("data-[side=inline-start]", "slide-in-from-right", "slide-in-from-end"),
-    ("data-[side=inline-start]", "slide-out-to-right", "slide-out-to-end"),
-    ("data-[side=inline-end]", "slide-in-from-left", "slide-in-from-start"),
-    ("data-[side=inline-end]", "slide-out-to-left", "slide-out-to-start"),
+    (
+        "data-[side=inline-start]",
+        "slide-in-from-right",
+        "slide-in-from-end",
+    ),
+    (
+        "data-[side=inline-start]",
+        "slide-out-to-right",
+        "slide-out-to-end",
+    ),
+    (
+        "data-[side=inline-end]",
+        "slide-in-from-left",
+        "slide-in-from-start",
+    ),
+    (
+        "data-[side=inline-end]",
+        "slide-out-to-left",
+        "slide-out-to-start",
+    ),
 ];
 
 const POSITIONING_PREFIXES: [&str; 4] = ["-left-", "-right-", "left-", "right-"];
@@ -246,9 +284,10 @@ pub fn apply_rtl_mapping(input: &str) -> String {
         if done {
             continue;
         }
-        let is_phys_side = variant.as_ref().map(|v| {
-            v.contains("data-[side=left]") || v.contains("data-[side=right]")
-        }).unwrap_or(false);
+        let is_phys_side = variant
+            .as_ref()
+            .map(|v| v.contains("data-[side=left]") || v.contains("data-[side=right]"))
+            .unwrap_or(false);
         let mut mapped = value.clone();
         for p in RTL_MAPPINGS {
             if is_phys_side && has_any_prefix(p.0, &POSITIONING_PREFIXES) {
@@ -289,12 +328,12 @@ pub fn resolve_source(src: &str, rtl: bool) -> (String, usize) {
         let content = sp.content(src);
         #[allow(unused_assignments)] // the String::new() init is the no-mapping path's value
         let mut next = String::new();
-        if cn_token_re().is_match(&content) {
+        if CN_TOKEN_RE.is_match(&content) {
             next = expand_class_string(&content);
             if rtl {
                 next = apply_rtl_mapping(&next);
             }
-        } else if rtl && rtl_mappable().is_match(&content) {
+        } else if rtl && RTL_MAPPABLE.is_match(&content) {
             next = apply_rtl_mapping(&content);
         } else {
             continue;
@@ -313,12 +352,7 @@ pub fn resolve_source(src: &str, rtl: bool) -> (String, usize) {
     let mut out = src.to_string();
     edits.sort_by(|a, b| b.start.cmp(&a.start));
     for e in edits {
-        out = format!(
-            "{}{}{}",
-            &out[..e.start - 1],
-            e.value,
-            &out[e.end + 1..]
-        );
+        out = format!("{}{}{}", &out[..e.start - 1], e.value, &out[e.end + 1..]);
     }
     (out, n)
 }
@@ -326,11 +360,11 @@ pub fn resolve_source(src: &str, rtl: bool) -> (String, usize) {
 /// resolveFixtureHtml expands cn-* in kernel fixtures' class attributes.
 /// Idempotent.
 pub fn resolve_fixture_html(html: &str) -> String {
-    class_attr_re()
+    CLASS_ATTR_RE
         .replace_all(html, |caps: &regex::Captures| {
             let m = caps.get(0).unwrap().as_str();
             let inner = &m["class=\"".len()..m.len() - 1];
-            if !re_cn_prefix().is_match(inner) {
+            if !RE_CN_PREFIX.is_match(inner) {
                 return m.to_string();
             }
             let next = expand_class_string(inner);
@@ -399,11 +433,23 @@ pub fn run_resolve_skins(root: &Path, args: &[String]) -> i32 {
         }
         Ok(())
     };
-    if let Err(e) = copy_tree("ui", "ui", Some(|s| resolve_source(s, false)), &mut files, &mut edits) {
+    if let Err(e) = copy_tree(
+        "ui",
+        "ui",
+        Some(|s| resolve_source(s, false)),
+        &mut files,
+        &mut edits,
+    ) {
         eprintln!("resolve-skins: {}", e);
         return 1;
     }
-    if let Err(e) = copy_tree("ui", "ui-rtl", Some(|s| resolve_source(s, true)), &mut files, &mut edits) {
+    if let Err(e) = copy_tree(
+        "ui",
+        "ui-rtl",
+        Some(|s| resolve_source(s, true)),
+        &mut files,
+        &mut edits,
+    ) {
         eprintln!("resolve-skins: {}", e);
         return 1;
     }
@@ -460,55 +506,171 @@ mod tests {
         let cases: [(&str, &str, &str); 39] = [
             ("margin", "ml-2 mr-4 -ml-2 -mr-4", "ms-2 me-4 -ms-2 -me-4"),
             ("padding", "pl-2 pr-4", "ps-2 pe-4"),
-            ("positioning", "left-0 right-0 -left-2 -right-2", "start-0 end-0 -start-2 -end-2"),
-            ("inset", "inset-l-0 inset-r-0", "inset-inline-start-0 inset-inline-end-0"),
-            ("border", "border-l border-r border-l-2 border-r-2", "border-s border-e border-s-2 border-e-2"),
-            ("rounded corners", "rounded-l-md rounded-tl-md rounded-br-md", "rounded-s-md rounded-ss-md rounded-ee-md"),
+            (
+                "positioning",
+                "left-0 right-0 -left-2 -right-2",
+                "start-0 end-0 -start-2 -end-2",
+            ),
+            (
+                "inset",
+                "inset-l-0 inset-r-0",
+                "inset-inline-start-0 inset-inline-end-0",
+            ),
+            (
+                "border",
+                "border-l border-r border-l-2 border-r-2",
+                "border-s border-e border-s-2 border-e-2",
+            ),
+            (
+                "rounded corners",
+                "rounded-l-md rounded-tl-md rounded-br-md",
+                "rounded-s-md rounded-ss-md rounded-ee-md",
+            ),
             ("text align", "text-left text-right", "text-start text-end"),
-            ("scroll margin/padding", "scroll-ml-2 scroll-pr-2", "scroll-ms-2 scroll-pe-2"),
+            (
+                "scroll margin/padding",
+                "scroll-ml-2 scroll-pr-2",
+                "scroll-ms-2 scroll-pe-2",
+            ),
             ("float", "float-left float-right", "float-start float-end"),
             ("clear", "clear-left clear-right", "clear-start clear-end"),
-            ("origin", "origin-left origin-top-right", "origin-start origin-top-end"),
-            ("variant prefix preserved", "hover:ml-2 sm:md:ml-2", "hover:ms-2 sm:md:ms-2"),
-            ("named group selector with data attr", "sm:group-data-[size=default]/alert-dialog-content:text-left",
-                "sm:group-data-[size=default]/alert-dialog-content:text-start"),
-            ("arbitrary values", "ml-[10px] left-[50%]", "ms-[10px] start-[50%]"),
+            (
+                "origin",
+                "origin-left origin-top-right",
+                "origin-start origin-top-end",
+            ),
+            (
+                "variant prefix preserved",
+                "hover:ml-2 sm:md:ml-2",
+                "hover:ms-2 sm:md:ms-2",
+            ),
+            (
+                "named group selector with data attr",
+                "sm:group-data-[size=default]/alert-dialog-content:text-left",
+                "sm:group-data-[size=default]/alert-dialog-content:text-start",
+            ),
+            (
+                "arbitrary values",
+                "ml-[10px] left-[50%]",
+                "ms-[10px] start-[50%]",
+            ),
             ("alpha modifier reattached", "ml-2/50", "ms-2/50"),
-            ("unrelated classes untouched", "bg-red-500 flex mx-auto px-4", "bg-red-500 flex mx-auto px-4"),
-            ("partial-match guard: suffix after the mapped prefix blocks it",
+            (
+                "unrelated classes untouched",
+                "bg-red-500 flex mx-auto px-4",
+                "bg-red-500 flex mx-auto px-4",
+            ),
+            (
+                "partial-match guard: suffix after the mapped prefix blocks it",
                 "border-ring border-ring/50 border-lime-500 scroll-m-4",
-                "border-ring border-ring/50 border-lime-500 scroll-m-4"),
-            ("translate-x gains a mirrored rtl: variant", "-translate-x-1/2", "-translate-x-1/2 rtl:translate-x-1/2"),
-            ("translate-x positive form", "translate-x-full", "translate-x-full rtl:-translate-x-full"),
-            ("translate-x with a variant prefix", "after:-translate-x-1/2", "after:-translate-x-1/2 rtl:after:translate-x-1/2"),
-            ("translate-y is not translate-x", "-translate-y-1/2 translate-y-full", "-translate-y-1/2 translate-y-full"),
-            ("space-x/divide-x gain rtl:-reverse", "space-x-4 divide-x-2", "space-x-4 rtl:space-x-reverse divide-x-2 rtl:divide-x-reverse"),
-            ("space-x with a variant prefix", "md:space-x-4", "md:space-x-4 rtl:md:space-x-reverse"),
-            ("space-y/divide-y untouched", "space-y-4 divide-y-2", "space-y-4 divide-y-2"),
-            ("cursor resize swaps direction", "cursor-w-resize cursor-e-resize", "cursor-w-resize rtl:cursor-e-resize cursor-e-resize rtl:cursor-w-resize"),
-            ("cursor resize with a variant prefix", "hover:cursor-w-resize", "hover:cursor-w-resize rtl:hover:cursor-e-resize"),
+                "border-ring border-ring/50 border-lime-500 scroll-m-4",
+            ),
+            (
+                "translate-x gains a mirrored rtl: variant",
+                "-translate-x-1/2",
+                "-translate-x-1/2 rtl:translate-x-1/2",
+            ),
+            (
+                "translate-x positive form",
+                "translate-x-full",
+                "translate-x-full rtl:-translate-x-full",
+            ),
+            (
+                "translate-x with a variant prefix",
+                "after:-translate-x-1/2",
+                "after:-translate-x-1/2 rtl:after:translate-x-1/2",
+            ),
+            (
+                "translate-y is not translate-x",
+                "-translate-y-1/2 translate-y-full",
+                "-translate-y-1/2 translate-y-full",
+            ),
+            (
+                "space-x/divide-x gain rtl:-reverse",
+                "space-x-4 divide-x-2",
+                "space-x-4 rtl:space-x-reverse divide-x-2 rtl:divide-x-reverse",
+            ),
+            (
+                "space-x with a variant prefix",
+                "md:space-x-4",
+                "md:space-x-4 rtl:md:space-x-reverse",
+            ),
+            (
+                "space-y/divide-y untouched",
+                "space-y-4 divide-y-2",
+                "space-y-4 divide-y-2",
+            ),
+            (
+                "cursor resize swaps direction",
+                "cursor-w-resize cursor-e-resize",
+                "cursor-w-resize rtl:cursor-e-resize cursor-e-resize rtl:cursor-w-resize",
+            ),
+            (
+                "cursor resize with a variant prefix",
+                "hover:cursor-w-resize",
+                "hover:cursor-w-resize rtl:hover:cursor-e-resize",
+            ),
             ("cn-rtl-flip marker, alone", "cn-rtl-flip", "rtl:rotate-180"),
-            ("cn-rtl-flip marker, leading", "cn-rtl-flip size-4", "rtl:rotate-180 size-4"),
-            ("cn-rtl-flip marker, trailing", "size-4 cn-rtl-flip", "size-4 rtl:rotate-180"),
-            ("cn-rtl-flip combined with a real mapping", "cn-rtl-flip ml-2", "rtl:rotate-180 ms-2"),
-            ("logical slide inside a logical side variant", "data-[side=inline-start]:slide-in-from-right-2",
-                "data-[side=inline-start]:slide-in-from-end-2"),
-            ("logical slide, the other side/direction", "data-[side=inline-end]:slide-out-to-left-2",
-                "data-[side=inline-end]:slide-out-to-start-2"),
-            ("slide inside a PHYSICAL side variant is untouched", "data-[side=left]:slide-in-from-right-2",
-                "data-[side=left]:slide-in-from-right-2"),
-            ("positioning inside a physical side variant is excluded", "data-[side=left]:-right-1 data-[side=right]:-left-1 data-[side=left]:right-0",
-                "data-[side=left]:-right-1 data-[side=right]:-left-1 data-[side=left]:right-0"),
-            ("non-positioning classes still map inside a physical side variant",
+            (
+                "cn-rtl-flip marker, leading",
+                "cn-rtl-flip size-4",
+                "rtl:rotate-180 size-4",
+            ),
+            (
+                "cn-rtl-flip marker, trailing",
+                "size-4 cn-rtl-flip",
+                "size-4 rtl:rotate-180",
+            ),
+            (
+                "cn-rtl-flip combined with a real mapping",
+                "cn-rtl-flip ml-2",
+                "rtl:rotate-180 ms-2",
+            ),
+            (
+                "logical slide inside a logical side variant",
+                "data-[side=inline-start]:slide-in-from-right-2",
+                "data-[side=inline-start]:slide-in-from-end-2",
+            ),
+            (
+                "logical slide, the other side/direction",
+                "data-[side=inline-end]:slide-out-to-left-2",
+                "data-[side=inline-end]:slide-out-to-start-2",
+            ),
+            (
+                "slide inside a PHYSICAL side variant is untouched",
+                "data-[side=left]:slide-in-from-right-2",
+                "data-[side=left]:slide-in-from-right-2",
+            ),
+            (
+                "positioning inside a physical side variant is excluded",
+                "data-[side=left]:-right-1 data-[side=right]:-left-1 data-[side=left]:right-0",
+                "data-[side=left]:-right-1 data-[side=right]:-left-1 data-[side=left]:right-0",
+            ),
+            (
+                "non-positioning classes still map inside a physical side variant",
                 "data-[side=left]:ml-2 data-[side=right]:pl-4 data-[side=left]:text-left",
-                "data-[side=left]:ms-2 data-[side=right]:ps-4 data-[side=left]:text-start"),
-            ("already rtl:-prefixed classes pass through untouched", "rtl:ml-2 rtl:text-right rtl:space-x-reverse",
-                "rtl:ml-2 rtl:text-right rtl:space-x-reverse"),
-            ("already ltr:-prefixed classes pass through untouched", "ltr:ml-2 ltr:text-left", "ltr:ml-2 ltr:text-left"),
-            ("rtl:/ltr: classes skipped, others in the same string still map",
-                "ml-2 rtl:mr-2", "ms-2 rtl:mr-2"),
-            ("hand-written ltr:/rtl: translate pair left alone (both already prefixed)",
-                "ltr:-translate-x-1/2 rtl:-translate-x-1/2", "ltr:-translate-x-1/2 rtl:-translate-x-1/2"),
+                "data-[side=left]:ms-2 data-[side=right]:ps-4 data-[side=left]:text-start",
+            ),
+            (
+                "already rtl:-prefixed classes pass through untouched",
+                "rtl:ml-2 rtl:text-right rtl:space-x-reverse",
+                "rtl:ml-2 rtl:text-right rtl:space-x-reverse",
+            ),
+            (
+                "already ltr:-prefixed classes pass through untouched",
+                "ltr:ml-2 ltr:text-left",
+                "ltr:ml-2 ltr:text-left",
+            ),
+            (
+                "rtl:/ltr: classes skipped, others in the same string still map",
+                "ml-2 rtl:mr-2",
+                "ms-2 rtl:mr-2",
+            ),
+            (
+                "hand-written ltr:/rtl: translate pair left alone (both already prefixed)",
+                "ltr:-translate-x-1/2 rtl:-translate-x-1/2",
+                "ltr:-translate-x-1/2 rtl:-translate-x-1/2",
+            ),
         ];
         for (name, input, want) in cases {
             let got = apply_rtl_mapping(input);
@@ -520,15 +682,55 @@ mod tests {
     #[test]
     fn unit_split_class_name() {
         let cases: [(&str, &str, Option<&str>, Option<&str>, Option<&str>); 7] = [
-            ("bare utility, no variant, no alpha", "ml-2", None, Some("ml-2"), None),
-            ("one variant", "hover:ml-2", Some("hover"), Some("ml-2"), None),
-            ("stacked variants split at the LAST colon", "sm:md:ml-2", Some("sm:md"), Some("ml-2"), None),
-            ("alpha modifier", "bg-red-500/50", None, Some("bg-red-500"), Some("50")),
-            ("variant + alpha", "hover:bg-red-500/50", Some("hover"), Some("bg-red-500"), Some("50")),
-            ("bracketed variant with an internal ':' does not split there",
-                "data-[state=open]:bg-red-500/50", Some("data-[state=open]"), Some("bg-red-500"), Some("50")),
-            ("a '/' inside brackets is not the alpha divider",
-                "data-[state=open]:w-1/2", Some("data-[state=open]"), Some("w-1"), Some("2")),
+            (
+                "bare utility, no variant, no alpha",
+                "ml-2",
+                None,
+                Some("ml-2"),
+                None,
+            ),
+            (
+                "one variant",
+                "hover:ml-2",
+                Some("hover"),
+                Some("ml-2"),
+                None,
+            ),
+            (
+                "stacked variants split at the LAST colon",
+                "sm:md:ml-2",
+                Some("sm:md"),
+                Some("ml-2"),
+                None,
+            ),
+            (
+                "alpha modifier",
+                "bg-red-500/50",
+                None,
+                Some("bg-red-500"),
+                Some("50"),
+            ),
+            (
+                "variant + alpha",
+                "hover:bg-red-500/50",
+                Some("hover"),
+                Some("bg-red-500"),
+                Some("50"),
+            ),
+            (
+                "bracketed variant with an internal ':' does not split there",
+                "data-[state=open]:bg-red-500/50",
+                Some("data-[state=open]"),
+                Some("bg-red-500"),
+                Some("50"),
+            ),
+            (
+                "a '/' inside brackets is not the alpha divider",
+                "data-[state=open]:w-1/2",
+                Some("data-[state=open]"),
+                Some("w-1"),
+                Some("2"),
+            ),
         ];
         for (name, input, want_v, want_val, want_a) in cases {
             let (v, val, a) = split_class_name(input);
@@ -548,11 +750,31 @@ mod tests {
         allowlist.insert("cn-keep".to_string());
         let skin = crate::emit::SkinData { map, allowlist };
         let cases: [(&str, &str, &str); 5] = [
-            ("no cn- token: returned verbatim, whitespace untouched", "flex  items-center", "flex  items-center"),
-            ("allowlisted cn- name stays literal", "flex cn-keep", "flex cn-keep"),
-            ("mapped cn- name expands to its @apply body", "cn-btn", "bg-blue-500 text-white"),
-            ("marker cn- name (styled by no skin) drops out", "flex cn-ghost", "flex"),
-            ("allowlist + map + marker together", "cn-keep cn-btn cn-ghost flex", "cn-keep bg-blue-500 text-white flex"),
+            (
+                "no cn- token: returned verbatim, whitespace untouched",
+                "flex  items-center",
+                "flex  items-center",
+            ),
+            (
+                "allowlisted cn- name stays literal",
+                "flex cn-keep",
+                "flex cn-keep",
+            ),
+            (
+                "mapped cn- name expands to its @apply body",
+                "cn-btn",
+                "bg-blue-500 text-white",
+            ),
+            (
+                "marker cn- name (styled by no skin) drops out",
+                "flex cn-ghost",
+                "flex",
+            ),
+            (
+                "allowlist + map + marker together",
+                "cn-keep cn-btn cn-ghost flex",
+                "cn-keep bg-blue-500 text-white flex",
+            ),
         ];
         for (name, input, want) in cases {
             let got = expand_class_string_with(&skin, input);

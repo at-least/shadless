@@ -6,7 +6,7 @@
 //! ASCII semantics and capture-group numbers.
 
 use regex::Regex;
-use std::sync::OnceLock;
+use std::sync::LazyLock;
 
 pub fn re(pattern: &str) -> Regex {
     Regex::new(pattern).expect("convert regex compiles")
@@ -316,9 +316,7 @@ pub fn cv_first_top(s: &str, ops: CvTopOps) -> isize {
             arrow_depth = -1;
         } else if c == b'=' && i + 1 < b.len() && b[i + 1] == b'>' {
             let mut k = i + 2;
-            while k < b.len()
-                && (b[k] == b' ' || b[k] == b'\t' || b[k] == b'\n' || b[k] == b'\r')
-            {
+            while k < b.len() && (b[k] == b' ' || b[k] == b'\t' || b[k] == b'\n' || b[k] == b'\r') {
                 k += 1;
             }
             if k < b.len() && b[k] != b'{' {
@@ -398,22 +396,13 @@ pub struct CvProp {
     pub spread: bool,
 }
 
-pub fn cv_ident_re() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| re(r"^[A-Za-z_$][A-Za-z0-9_$]*$"))
-}
-pub fn cv_member_re() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| re(r"^[A-Za-z_$][A-Za-z0-9_$-]*(?:\.[A-Za-z0-9_$-]+)+$"))
-}
-fn cv_num_re() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| re(r"^(?:0[xXbBoO][0-9a-fA-F_]+|[0-9][0-9_]*(?:\.[0-9_]+)?(?:[eE][+-]?[0-9]+)?|\.[0-9_]+)"))
-}
-fn cv_callee_re() -> &'static Regex {
-    static R: OnceLock<Regex> = OnceLock::new();
-    R.get_or_init(|| re(r"^[A-Za-z_$][A-Za-z0-9_$]*"))
-}
+pub static CV_IDENT_RE: LazyLock<Regex> = LazyLock::new(|| re(r"^[A-Za-z_$][A-Za-z0-9_$]*$"));
+pub static CV_MEMBER_RE: LazyLock<Regex> =
+    LazyLock::new(|| re(r"^[A-Za-z_$][A-Za-z0-9_$-]*(?:\.[A-Za-z0-9_$-]+)+$"));
+static CV_NUM_RE: LazyLock<Regex> = LazyLock::new(|| {
+    re(r"^(?:0[xXbBoO][0-9a-fA-F_]+|[0-9][0-9_]*(?:\.[0-9_]+)?(?:[eE][+-]?[0-9]+)?|\.[0-9_]+)")
+});
+static CV_CALLEE_RE: LazyLock<Regex> = LazyLock::new(|| re(r"^[A-Za-z_$][A-Za-z0-9_$]*"));
 
 pub fn cv_parse_expr(text: &str) -> ExprNode {
     let mut t = text.trim();
@@ -457,12 +446,12 @@ pub fn cv_parse_expr(text: &str) -> ExprNode {
         n.kind = "nul".to_string();
         return n;
     }
-    if cv_ident_re().is_match(t) {
+    if CV_IDENT_RE.is_match(t) {
         n.kind = "ident".to_string();
         n.ident = t.to_string();
         return n;
     }
-    if let Some(m) = cv_num_re().find(t) {
+    if let Some(m) = CV_NUM_RE.find(t) {
         if m.as_str() == t {
             n.kind = "num".to_string();
             n.str = m.as_str().to_string();
@@ -527,7 +516,7 @@ pub fn cv_parse_expr(text: &str) -> ExprNode {
 
 /// `name(` at the root of t → name, else "".
 fn cv_callee_name(t: &str) -> String {
-    match cv_callee_re().find(t) {
+    match CV_CALLEE_RE.find(t) {
         Some(m) if !m.as_str().is_empty() => {
             let mlen = m.end();
             let b = t.as_bytes();
@@ -752,17 +741,16 @@ fn hex_window(bytes: Vec<u8>, n: usize) -> u8 {
             None => break,
         }
     }
-    if got == 0 {
-        0
-    } else {
-        v as u8
-    }
+    if got == 0 { 0 } else { v as u8 }
 }
 
 fn hex_window_u32(bytes: Vec<u8>, n: usize) -> u32 {
     let mut v: u32 = 0;
     let mut got = 0;
-    for &c in bytes.iter().take(if n == usize::MAX { usize::MAX } else { n }) {
+    for &c in bytes
+        .iter()
+        .take(if n == usize::MAX { usize::MAX } else { n })
+    {
         match (c as char).to_digit(16) {
             Some(d) => {
                 v = v.wrapping_mul(16).wrapping_add(d);
@@ -771,11 +759,7 @@ fn hex_window_u32(bytes: Vec<u8>, n: usize) -> u32 {
             None => break,
         }
     }
-    if got == 0 {
-        0
-    } else {
-        v
-    }
+    if got == 0 { 0 } else { v }
 }
 
 pub fn cv_template_has_subst(t: &str) -> bool {
