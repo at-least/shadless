@@ -1958,6 +1958,7 @@ docs/demos/tooltip-sides.html
 docs/example-oracle.json
 package-lock.json
 src/emitter/skin.mjs
+src/registry/emitter-exemptions.json
 src/registry/pin.json
 src/registry/tiers.json
 tools/browser-shell.mjs

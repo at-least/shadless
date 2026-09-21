@@ -112,5 +112,6 @@ generated/ir/toggle-group.json
 generated/ir/toggle.json
 generated/ir/tooltip.json
 src/emitter/skin.mjs
+src/registry/emitter-exemptions.json
 src/registry/pin.json
 tools/browser-shell.mjs

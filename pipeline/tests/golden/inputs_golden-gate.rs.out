@@ -1529,6 +1529,7 @@
 gates/ledger.json
 package-lock.json
 src/emitter/skin.mjs
+src/registry/emitter-exemptions.json
 src/registry/pin.json
 src/registry/upstream-snapshot/accordion.json
 src/registry/upstream-snapshot/alert-dialog.json

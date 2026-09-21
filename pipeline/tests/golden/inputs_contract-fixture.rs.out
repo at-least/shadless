@@ -1,6 +1,7 @@
 dist/out.css
 package-lock.json
 src/emitter/skin.mjs
+src/registry/emitter-exemptions.json
 src/registry/pin.json
 tools/browser-shell.mjs
 tools/contracts/components/accordion-multiple.mjs

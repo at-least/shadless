@@ -1529,6 +1529,7 @@
 docs/catalog.json
 package-lock.json
 src/emitter/skin.mjs
+src/registry/emitter-exemptions.json
 src/registry/pin.json
 src/registry/tiers.json
 src/registry/upstream-snapshot/exemptions.json

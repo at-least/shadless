@@ -2348,6 +2348,7 @@ generated/ir/tooltip.json
 overlays/manifest.json
 overlays/upstream/README.md
 src/emitter/skin.mjs
+src/registry/emitter-exemptions.json
 src/registry/pin.json
 src/registry/rtl-translations.json
 src/runtime/components/accordion.js

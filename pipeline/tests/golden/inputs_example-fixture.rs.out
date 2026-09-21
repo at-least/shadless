@@ -1553,6 +1553,7 @@ dist/out.css
 docs/example-fixture-targets.json
 package-lock.json
 src/emitter/skin.mjs
+src/registry/emitter-exemptions.json
 src/registry/pin.json
 tools/browser-shell.mjs
 tools/contracts/stubs/app-components.jsx
