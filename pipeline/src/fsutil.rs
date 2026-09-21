@@ -31,3 +31,43 @@ pub fn temp_root(purpose: &str) -> std::path::PathBuf {
     std::fs::create_dir_all(&root).unwrap();
     root
 }
+
+/// Go's lowercase strerror for an errno — Go's own table
+/// (syscall/zerrors_linux_amd64.go), not libc's. One table for every tool
+/// that renders io::Errors Go-shaped: the filesystem entries serve all of
+/// them, ETIMEDOUT/ECONNREFUSED serve the network path.
+pub fn go_strerror(code: i32) -> Option<&'static str> {
+    Some(match code {
+        1 => "operation not permitted",
+        2 => "no such file or directory",
+        5 => "input/output error",
+        6 => "no such device or address",
+        12 => "cannot allocate memory",
+        13 => "permission denied",
+        17 => "file exists",
+        20 => "not a directory",
+        21 => "is a directory",
+        22 => "invalid argument",
+        24 => "too many open files",
+        26 => "text file busy",
+        28 => "no space left on device",
+        30 => "read-only file system",
+        36 => "file name too long",
+        39 => "directory not empty",
+        40 => "too many levels of symbolic links",
+        75 => "value too large for defined data type",
+        110 => "connection timed out",
+        111 => "connection refused",
+        _ => return None,
+    })
+}
+
+/// Renders an io::Error the way Go's *PathError does:
+/// `open <path>: <strerror>`. Go never drops the `op <path>:` prefix, so
+/// errnos outside the table fall back to the prefixed Rust display.
+pub fn go_path_err(op: &str, path: impl AsRef<std::path::Path>, e: &std::io::Error) -> String {
+    match e.raw_os_error().and_then(go_strerror) {
+        Some(msg) => format!("{} {}: {}", op, path.as_ref().display(), msg),
+        None => format!("{} {}: {}", op, path.as_ref().display(), e),
+    }
+}

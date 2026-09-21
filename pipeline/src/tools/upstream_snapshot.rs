@@ -87,22 +87,6 @@ pub fn snapshot_slice_previews(html: &str) -> Vec<String> {
     out
 }
 
-/// Renders an io::Error the way Go's *PathError does: `open <path>: <strerror>`
-/// (Go's own lowercase strerror table, not libc's).
-fn go_err(op: &str, path: &Path, e: &std::io::Error) -> String {
-    let msg = match e.raw_os_error() {
-        Some(1) => "operation not permitted",
-        Some(2) => "no such file or directory",
-        Some(13) => "permission denied",
-        Some(17) => "file exists",
-        Some(20) => "not a directory",
-        Some(21) => "is a directory",
-        Some(39) => "directory not empty",
-        _ => return e.to_string(),
-    };
-    format!("{} {}: {}", op, path.display(), msg)
-}
-
 /// Renders a ureq transport error the way Go's net/http does:
 /// `Get "URL": dial tcp HOST:PORT: connect: <strerror>` for connect failures,
 /// `Get "URL": dial tcp: lookup HOST: no such host` for DNS, and the
@@ -141,22 +125,15 @@ fn go_http_err(url: &str, e: ureq::Error) -> String {
                 }
                 if let Some(ioe) = src.downcast_ref::<std::io::Error>() {
                     if let Some(code) = ioe.raw_os_error() {
-                        let msg = match code {
-                            1 => "operation not permitted",
-                            2 => "no such file or directory",
-                            13 => "permission denied",
-                            17 => "file exists",
-                            20 => "not a directory",
-                            21 => "is a directory",
-                            39 => "directory not empty",
-                            110 => "connection timed out",
-                            111 => "connection refused",
-                            _ => return disp,
-                        };
-                        return format!(
-                            "Get \"{}\": dial tcp {}: connect: {}",
-                            url, host_port, msg
-                        );
+                        match crate::fsutil::go_strerror(code) {
+                            Some(msg) => {
+                                return format!(
+                                    "Get \"{}\": dial tcp {}: connect: {}",
+                                    url, host_port, msg
+                                );
+                            }
+                            None => return disp,
+                        }
                     }
                 }
             }
@@ -181,7 +158,7 @@ pub fn run_upstream_snapshot(args: &[String]) -> i32 {
         Err(e) => {
             eprintln!(
                 "upstream-snapshot: {}",
-                go_err("open", Path::new("src/registry/pin.json"), &e)
+                crate::fsutil::go_path_err("open", Path::new("src/registry/pin.json"), &e)
             );
             return 1;
         }
@@ -240,7 +217,7 @@ pub fn run_upstream_snapshot(args: &[String]) -> i32 {
         Err(e) => {
             eprintln!(
                 "upstream-snapshot: {}",
-                go_err("open", Path::new(&docs_dir), &e)
+                crate::fsutil::go_path_err("open", Path::new(&docs_dir), &e)
             );
             return 1;
         }
@@ -252,7 +229,7 @@ pub fn run_upstream_snapshot(args: &[String]) -> i32 {
             Err(e) => {
                 eprintln!(
                     "upstream-snapshot: {}",
-                    go_err("open", Path::new(&docs_dir), &e)
+                    crate::fsutil::go_path_err("open", Path::new(&docs_dir), &e)
                 );
                 return 1;
             }
@@ -270,7 +247,7 @@ pub fn run_upstream_snapshot(args: &[String]) -> i32 {
     if let Err(e) = fs::create_dir_all(out_dir) {
         eprintln!(
             "upstream-snapshot: {}",
-            go_err("mkdir", Path::new(out_dir), &e)
+            crate::fsutil::go_path_err("mkdir", Path::new(out_dir), &e)
         );
         return 1;
     }
@@ -341,7 +318,11 @@ pub fn run_upstream_snapshot(args: &[String]) -> i32 {
         if let Err(e) = fs::write(format!("{}/{}.json", out_dir, page), b.as_bytes()) {
             eprintln!(
                 "upstream-snapshot: {}",
-                go_err("open", Path::new(&format!("{}/{}.json", out_dir, page)), &e)
+                crate::fsutil::go_path_err(
+                    "open",
+                    Path::new(&format!("{}/{}.json", out_dir, page)),
+                    &e
+                )
             );
             return 1;
         }

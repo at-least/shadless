@@ -352,37 +352,11 @@ pub fn load_skin() {
 }
 
 /// Renders an io::Error the way Go's *PathError does: `open <path>: <strerror>`
-/// (Go's own lowercase strerror table, not libc's). The shared entries match
-/// the three go_err copies in tools/ (oracle_css, docs_upstream_mirror,
-/// upstream_snapshot) verbatim; the rest of Go's table
-/// (syscall/zerrors_linux_amd64.go) is added here because the skin path is
-/// user-environment-reachable (ELOOP via a symlinked checkout, ENOSPC/EROFS
-/// on a full disk) and the fallback must keep the `op <path>:` prefix Go
-/// never drops. op comes from errno, not phase: EISDIR is the only in-table
-/// errno Go can raise during Read — an EIO-in-read would print "open" here.
+/// (Go's own lowercase strerror table, not libc's). The table and fallback
+/// live in fsutil; this path is user-environment-reachable (ELOOP via a
+/// symlinked checkout, ENOSPC/EROFS on a full disk), hence the full table.
 fn go_err(op: &str, path: &str, e: &std::io::Error) -> String {
-    let msg = match e.raw_os_error() {
-        Some(1) => "operation not permitted",
-        Some(2) => "no such file or directory",
-        Some(5) => "input/output error",
-        Some(6) => "no such device or address",
-        Some(12) => "cannot allocate memory",
-        Some(13) => "permission denied",
-        Some(17) => "file exists",
-        Some(20) => "not a directory",
-        Some(21) => "is a directory",
-        Some(22) => "invalid argument",
-        Some(24) => "too many open files",
-        Some(26) => "text file busy",
-        Some(28) => "no space left on device",
-        Some(30) => "read-only file system",
-        Some(36) => "file name too long",
-        Some(39) => "directory not empty",
-        Some(40) => "too many levels of symbolic links",
-        Some(75) => "value too large for defined data type",
-        _ => return format!("{} {}: {}", op, path, e),
-    };
-    format!("{} {}: {}", op, path, msg)
+    crate::fsutil::go_path_err(op, path, e)
 }
 
 fn parse_skin_map(css: &str, map: &mut HashMap<String, String>) {

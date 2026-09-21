@@ -663,21 +663,11 @@ fn esbuild_error_text(stderr: &str) -> String {
 
 /// go_fs_err renders an io::Error the way Go's os package does in the
 /// rtl-dict error paths: `open <path>: <errno text>` with the path exactly as
-/// the Go code passed it (relative, unjoined) and the lowercase errno string.
+/// the Go code passed it (relative, unjoined) and the lowercase errno string
+/// (fsutil::go_strerror — the fabricated "I/O error" fallback is gone:
+/// out-of-table errnos now get Go's prefixed shape like every other tool).
 fn go_fs_err(path: &str, e: &std::io::Error) -> String {
-    let op = match e.kind() {
-        std::io::ErrorKind::NotFound => "open",
-        std::io::ErrorKind::PermissionDenied => "open",
-        _ => "open",
-    };
-    let errno = match e.raw_os_error() {
-        Some(2) => "no such file or directory",
-        Some(13) => "permission denied",
-        Some(21) => "is a directory",
-        Some(20) => "not a directory",
-        _ => "I/O error",
-    };
-    format!("{} {}: {}", op, path, errno)
+    crate::fsutil::go_path_err("open", path, e)
 }
 
 /// go_quote mirrors Go's %q on a string: printable runes pass through,

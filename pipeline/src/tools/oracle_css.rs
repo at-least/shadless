@@ -7,7 +7,7 @@
 
 use regex::Regex;
 use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use std::sync::LazyLock;
 
 const UPSTREAM_DIR: &str = ".upstream/shadcn-ui";
@@ -55,22 +55,6 @@ pub fn build_oracle_entry_css(
     lines.join("\n")
 }
 
-/// Renders an io::Error the way Go's *PathError does: `open <path>: <strerror>`
-/// (Go's own lowercase strerror table, not libc's).
-fn go_err(op: &str, path: &Path, e: &std::io::Error) -> String {
-    let msg = match e.raw_os_error() {
-        Some(1) => "operation not permitted",
-        Some(2) => "no such file or directory",
-        Some(13) => "permission denied",
-        Some(17) => "file exists",
-        Some(20) => "not a directory",
-        Some(21) => "is a directory",
-        Some(39) => "directory not empty",
-        _ => return e.to_string(),
-    };
-    format!("{} {}: {}", op, path.display(), msg)
-}
-
 pub fn run_oracle_css() -> i32 {
     let wd = match std::env::current_dir() {
         Ok(d) => d,
@@ -91,7 +75,7 @@ pub fn run_oracle_css() -> i32 {
         let path = abs(p);
         fs::read(&path)
             .map(|b| String::from_utf8_lossy(&b).into_owned())
-            .map_err(|e| go_err("open", &path, &e))
+            .map_err(|e| crate::fsutil::go_path_err("open", &path, &e))
     };
 
     let app = match read(&format!("{}/apps/v4/app/globals.css", UPSTREAM_DIR)) {
@@ -145,12 +129,18 @@ pub fn run_oracle_css() -> i32 {
     );
 
     if let Err(e) = fs::create_dir_all(abs(ORACLE_OUT_DIR)) {
-        eprintln!("oracle-css: {}", go_err("mkdir", &abs(ORACLE_OUT_DIR), &e));
+        eprintln!(
+            "oracle-css: {}",
+            crate::fsutil::go_path_err("mkdir", &abs(ORACLE_OUT_DIR), &e)
+        );
         return 1;
     }
     let entry = format!("{}/oracle.entry.css", ORACLE_OUT_DIR);
     if let Err(e) = fs::write(abs(&entry), entry_css.as_bytes()) {
-        eprintln!("oracle-css: {}", go_err("open", &abs(&entry), &e));
+        eprintln!(
+            "oracle-css: {}",
+            crate::fsutil::go_path_err("open", &abs(&entry), &e)
+        );
         return 1;
     }
 
