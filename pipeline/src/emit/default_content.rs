@@ -1,8 +1,6 @@
-//! Port of pipeline/default_content.go — Code generated from
-//! src/emitter/index.mjs DEFAULT_CONTENT. Entry.set marks the key
-//! present-and-null (the Go equivalent of JS undefined-vs-null).
-//! escHtml is applied at data construction; identity on this corpus's
-//! plain words, kept for parity.
+//! Code generated from src/emitter/index.mjs DEFAULT_CONTENT. DO NOT EDIT;
+//! regenerate with tools/default-content-dump.mjs. Entry.set marks the key
+//! present-and-null (the Rust equivalent of JS undefined-vs-null).
 
 use std::collections::HashMap;
 use std::sync::OnceLock;
