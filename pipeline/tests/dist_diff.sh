@@ -5,7 +5,7 @@
 set -u
 RS_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SHADLESS_ROOT="${SHADLESS_ROOT:-$RS_ROOT/..}"
-RS_BIN="$RS_ROOT/target/release/pipeline"
+RS_BIN="$(node "$RS_ROOT/../tools/pipeline-bin.mjs")"
 
 cd "$SHADLESS_ROOT" || exit 2
 if git status --short dist/ | grep -q .; then

@@ -260,6 +260,7 @@ tools/contracts/stubs/date-fns.mjs
 tools/contracts/stubs/embla-autoplay.mjs
 tools/default-content-dump.mjs
 tools/fs-record.mjs
+tools/pipeline-bin.mjs
 tools/prettier-batch.mjs
 tools/twmerge-dump.mjs
 tools/unit-check.mjs

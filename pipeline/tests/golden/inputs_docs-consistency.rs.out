@@ -676,3 +676,4 @@ docs/site/content/guides/scroll-fade.md
 docs/site/content/guides/shimmer.md
 docs/site/content/guides/typography.md
 package.json
+src/registry/emitter-exemptions.json

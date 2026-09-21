@@ -167,16 +167,8 @@ fn ov_load_tier_sets() -> (Vec<(String, Vec<String>)>, Vec<String>) {
     (sets, icons)
 }
 
-fn ov_skin_allowlist(root: &Path) -> Result<Vec<String>, String> {
-    let p = "src/registry/emitter-exemptions.json";
-    let b = std::fs::read_to_string(root.join(p)).map_err(|e| e.to_string())?;
-    #[derive(serde::Deserialize)]
-    struct Ex {
-        #[serde(rename = "skinAllowlist")]
-        skin_allowlist: Vec<String>,
-    }
-    let ex: Ex = serde_json::from_str(&b).map_err(|e| e.to_string())?;
-    Ok(ex.skin_allowlist)
+fn ov_skin_allowlist(_root: &Path) -> Result<Vec<String>, String> {
+    Ok(crate::fsutil::registry_exemptions().1.clone())
 }
 
 // ---- rule units ----
@@ -300,7 +292,7 @@ fn ov_rule_units(
         ov_up_read(root, "apps/v4/registry/styles/style-nova.css")
     }
 
-    let mut dead_keys: Vec<String> = vec!["origin-top-center".to_string()];
+    let mut dead_keys: Vec<String> = crate::fsutil::registry_exemptions().0.clone();
     dead_keys.sort();
     for tok in dead_keys {
         let tok = tok.clone();
@@ -309,7 +301,7 @@ fn ov_rule_units(
         units.push(OvUnit {
             id: format!("dead-utility:{}", tok),
             kind: "rule".to_string(),
-            home: "pipeline/emitter_css.go DEAD_UTILITIES".to_string(),
+            home: "src/registry/emitter-exemptions.json deadUtilities".to_string(),
             file: String::new(),
             inputs: Vec::new(),
             extra: Vec::new(),
@@ -346,7 +338,7 @@ fn ov_rule_units(
         units.push(OvUnit {
             id: format!("skin-allowlist:{}", tok),
             kind: "rule".to_string(),
-            home: "src/emitter/skin.mjs SKIN_ALLOWLIST".to_string(),
+            home: "src/registry/emitter-exemptions.json skinAllowlist".to_string(),
             file: String::new(),
             inputs: Vec::new(),
             extra: Vec::new(),

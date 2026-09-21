@@ -312,7 +312,10 @@ pub static MARKER_RE: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"^(group|peer)(/[0-9A-Za-z_-]+)?$").unwrap());
 
 pub(crate) fn dead_utilities(t: &str) -> bool {
-    t == "origin-top-center"
+    crate::fsutil::registry_exemptions()
+        .0
+        .iter()
+        .any(|x| x == t)
 }
 
 pub struct SplitMarkersOut {

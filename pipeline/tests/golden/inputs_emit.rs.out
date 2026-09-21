@@ -60,4 +60,5 @@ generated/ir/toggle-group.json
 generated/ir/toggle.json
 generated/ir/tooltip.json
 probes/h4/globals.css
+src/registry/emitter-exemptions.json
 src/registry/tiers.json

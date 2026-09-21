@@ -333,13 +333,8 @@ pub fn load_skin() {
         };
         let mut map: HashMap<String, String> = HashMap::new();
         let mut allowlist: HashSet<String> = HashSet::new();
-        for t in [
-            "cn-menu-target",
-            "cn-menu-translucent",
-            "cn-rtl-flip",
-            "cn-font-heading",
-        ] {
-            allowlist.insert(t.to_string());
+        for t in crate::fsutil::registry_exemptions().1.iter() {
+            allowlist.insert(t.clone());
         }
         parse_skin_map(&b, &mut map);
         SKIN.set(SkinData {

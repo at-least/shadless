@@ -49,7 +49,7 @@
     "dist/shadless.min.js"
   ],
   "scripts": {
-    "pipeline": "cd pipeline && cargo build --release && mkdir -p ../build && cp target/release/pipeline ../build/pipeline",
+    "pipeline": "node tools/pipeline-bin.mjs --install",
     "pin": "npm run pipeline && ./build/pipeline pin",
     "unit": "node tools/unit-check.mjs",
     "typecheck": "tsc -p tsconfig.json",

@@ -32,6 +32,41 @@ pub fn temp_root(purpose: &str) -> std::path::PathBuf {
     root
 }
 
+/// The emitter exemption sets — src/registry/emitter-exemptions.json, the
+/// one source the JS emitters, this port and the overlay audit read.
+/// Resolved from the working directory first (engine verbs run at the repo
+/// root), then the crate-adjacent tree (in-process cargo tests run at the
+/// crate).
+pub fn registry_exemptions() -> &'static (Vec<String>, Vec<String>) {
+    static E: std::sync::OnceLock<(Vec<String>, Vec<String>)> = std::sync::OnceLock::new();
+    E.get_or_init(|| {
+        #[derive(serde::Deserialize)]
+        struct Ex {
+            #[serde(rename = "deadUtilities")]
+            dead_utilities: Vec<String>,
+            #[serde(rename = "skinAllowlist")]
+            skin_allowlist: Vec<String>,
+        }
+        let mut candidates = vec![std::path::PathBuf::from(
+            "src/registry/emitter-exemptions.json",
+        )];
+        if let Some(tree) = crate::crate_adjacent_tree_root() {
+            candidates.push(tree.join("src/registry/emitter-exemptions.json"));
+        }
+        for c in &candidates {
+            if let Ok(b) = std::fs::read_to_string(c) {
+                let ex: Ex = serde_json::from_str(&b)
+                    .unwrap_or_else(|e| panic!("{}: {}", c.display(), e));
+                return (ex.dead_utilities, ex.skin_allowlist);
+            }
+        }
+        panic!(
+            "emitter-exemptions.json not found under any of: {:?}",
+            candidates
+        );
+    })
+}
+
 /// Go's lowercase strerror for an errno — Go's own table
 /// (syscall/zerrors_linux_amd64.go), not libc's. One table for every tool
 /// that renders io::Errors Go-shaped: the filesystem entries serve all of

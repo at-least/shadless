@@ -45,7 +45,7 @@ CRATE_SRC := $(shell find pipeline/src -name '*.rs')
 $(PIPELINE): $(CRATE_SRC) pipeline/Cargo.toml pipeline/Cargo.lock pipeline/build.rs pipeline/rust-toolchain.toml
 	@mkdir -p build
 	cd pipeline && cargo build --release -q
-	cp pipeline/target/release/pipeline $(PIPELINE)
+	cp $$(node tools/pipeline-bin.mjs) $(PIPELINE)
 
 pipeline: $(PIPELINE)
 

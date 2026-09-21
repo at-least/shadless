@@ -189,7 +189,7 @@ pub fn all_go() -> Vec<Node> {
             &[&["./build/pipeline", "resolve-skins"], &["./build/pipeline", "convert"]],
             Some(&[
                 "pipeline/convert.go", "pipeline/resolve_skins.go", "pipeline/internal/twmerge/**",
-                "pipeline/internal/tsx/**", "src/registry/tiers.json", "src/registry/pin.json",
+                "pipeline/internal/tsx/**", "src/registry/tiers.json", "src/registry/emitter-exemptions.json", "src/registry/pin.json",
                 "src/kernel/**", ".upstream/shadcn-ui/apps/v4/registry/bases/radix/**",
                 ".upstream/shadcn-ui/apps/v4/registry/styles/style-nova.css",
             ]),
@@ -202,6 +202,7 @@ pub fn all_go() -> Vec<Node> {
             &["convert", "build-js"],
             &[&["./build/pipeline", "emit"]],
             Some(&[
+                "src/registry/emitter-exemptions.json",
                 "pipeline/emit.go", "pipeline/emitter_css.go", "pipeline/emitter_html.go",
                 "pipeline/default_content.go", "pipeline/prepaint.go", "pipeline/tags.go",
                 "pipeline/resolve_skins.go", "src/registry/tiers.json", "generated/ir/**",
@@ -297,7 +298,8 @@ pub fn all_go() -> Vec<Node> {
             Some(&[
                 "pipeline/demo.go", "pipeline/emitter_css.go", "pipeline/default_content.go",
                 "pipeline/prepaint.go", "pipeline/tags.go", "pipeline/resolve_skins.go",
-                "src/registry/tiers.json", "generated/ir/**", "src/kernel/**", "probes/h4/globals.css",
+                "src/registry/tiers.json", "src/registry/emitter-exemptions.json",
+                "generated/ir/**", "src/kernel/**", "probes/h4/globals.css",
                 "probes/t7/**", "probes/t8/**",
             ]),
             Some(&[
@@ -509,6 +511,7 @@ pub fn all_go() -> Vec<Node> {
             Some(&[
                 "pipeline/docs_consistency.go", "pipeline/resolve_skins.go", "docs/site/content/**",
                 "dist/components/**", "dist/css/**", "docs/demos/**", "package.json",
+                "src/registry/emitter-exemptions.json",
             ]),
             None,
             "no shipped page carries skin residue, every taught @import resolves to a file, and no page teaches React imports",
