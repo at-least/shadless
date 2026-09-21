@@ -783,14 +783,7 @@ mod tests {
     /// Go TestUnitCopyTreeReplaces.
     #[test]
     fn unit_copy_tree_replaces() {
-        let root = std::env::temp_dir().join(format!(
-            "shadless-copytree-{}-{}",
-            std::process::id(),
-            std::time::SystemTime::now()
-                .duration_since(std::time::UNIX_EPOCH)
-                .unwrap()
-                .subsec_nanos()
-        ));
+        let root = crate::fsutil::temp_root("copytree");
         let src = root.join("src");
         let dst = root.join("dst");
         std::fs::create_dir_all(src.join("sub")).unwrap();

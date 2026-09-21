@@ -1389,14 +1389,7 @@ mod tests {
 
     #[test]
     fn unit_audit_walk_is_sorted_and_relative() {
-        let root = std::env::temp_dir().join(format!(
-            "shadless-audit-walk-{}-{}",
-            std::process::id(),
-            std::time::SystemTime::now()
-                .duration_since(std::time::UNIX_EPOCH)
-                .unwrap()
-                .subsec_nanos()
-        ));
+        let root = crate::fsutil::temp_root("audit-walk");
         for p in ["b/2.txt", "a/1.txt", "node_modules/x.txt", "c.txt"] {
             let full = root.join(p);
             std::fs::create_dir_all(full.parent().unwrap()).unwrap();
@@ -1448,14 +1441,7 @@ mod tests {
     /// it is the normal state after `make build`.
     #[test]
     fn unit_audit_drift_ignores_untracked() {
-        let root = std::env::temp_dir().join(format!(
-            "shadless-audit-drift-{}-{}",
-            std::process::id(),
-            std::time::SystemTime::now()
-                .duration_since(std::time::UNIX_EPOCH)
-                .unwrap()
-                .subsec_nanos()
-        ));
+        let root = crate::fsutil::temp_root("audit-drift");
         std::fs::create_dir_all(&root).unwrap();
         let run = |args: &[&str]| -> bool {
             std::process::Command::new("git")

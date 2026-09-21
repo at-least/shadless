@@ -1221,15 +1221,7 @@ mod tests {
     use std::path::PathBuf;
 
     fn tree(files: &[(&str, &str)]) -> PathBuf {
-        let root = std::env::temp_dir().join(format!(
-            "shadless-mut-test-{}-{}",
-            std::process::id(),
-            std::time::SystemTime::now()
-                .duration_since(std::time::UNIX_EPOCH)
-                .unwrap()
-                .subsec_nanos()
-        ));
-        std::fs::create_dir_all(&root).unwrap();
+        let root = crate::fsutil::temp_root("mut-test");
         for (p, c) in files {
             let full = root.join(p);
             std::fs::create_dir_all(full.parent().unwrap()).unwrap();

@@ -14,3 +14,20 @@ pub fn sorted_read_dir(dir: &std::path::Path) -> Result<Vec<String>, String> {
     out.sort();
     Ok(out)
 }
+
+/// Created, unique throwaway directory under the system temp dir — the
+/// collision-safe recipe (pid + subsec nanos) the test fixtures share.
+#[cfg(test)]
+pub fn temp_root(purpose: &str) -> std::path::PathBuf {
+    let root = std::env::temp_dir().join(format!(
+        "shadless-{}-{}-{}",
+        purpose,
+        std::process::id(),
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .subsec_nanos()
+    ));
+    std::fs::create_dir_all(&root).unwrap();
+    root
+}
