@@ -114,7 +114,6 @@ generated/ir/tooltip.json
 package.json
 probes/h4/globals.css
 src/docs/theme-prepaint.mjs
-src/docs/transforms.mjs
 src/emitter/css.mjs
 src/emitter/index.mjs
 src/emitter/skin.mjs
