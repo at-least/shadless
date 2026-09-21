@@ -38,3 +38,13 @@ pub fn crate_adjacent_tree_root() -> Option<std::path::PathBuf> {
     }
     None
 }
+
+/// SHADLESS_ROOT, else the crate-adjacent product tree (crate parent as the
+/// last resort) — the one true-tree resolution the tree-backed tests share.
+pub fn tree_root() -> std::path::PathBuf {
+    match std::env::var("SHADLESS_ROOT") {
+        Ok(r) => std::path::PathBuf::from(r),
+        Err(_) => crate::crate_adjacent_tree_root()
+            .unwrap_or_else(|| std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("..")),
+    }
+}

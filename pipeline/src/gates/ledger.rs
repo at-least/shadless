@@ -1257,14 +1257,7 @@ mod tests {
 
     #[test]
     fn unit_collect_budget_values_reads_golden_and_sweep() {
-        let root = match std::env::var("SHADLESS_ROOT") {
-            Ok(r) => PathBuf::from(r),
-            Err(_) => {
-                let m = crate::crate_adjacent_tree_root()
-                    .unwrap_or(Path::new(env!("CARGO_MANIFEST_DIR")).join(".."));
-                m
-            }
-        };
+        let root = crate::tree_root();
         if !root.join(GOLDEN_EX_PATH).exists() {
             if std::env::var_os("CI").is_some() {
                 panic!("CI: required tree input missing (skip: no shadless tree)");
@@ -1286,14 +1279,7 @@ mod tests {
     #[test]
     fn ledger_on_real_tree() {
         let _serial = RENDER_TEST_LOCK.lock().unwrap_or_else(|e| e.into_inner());
-        let root = match std::env::var("SHADLESS_ROOT") {
-            Ok(r) => PathBuf::from(r),
-            Err(_) => {
-                let m = crate::crate_adjacent_tree_root()
-                    .unwrap_or(Path::new(env!("CARGO_MANIFEST_DIR")).join(".."));
-                m
-            }
-        };
+        let root = crate::tree_root();
         if !root.join(GOLDEN_EX_PATH).exists() {
             if std::env::var_os("CI").is_some() {
                 panic!("CI: required tree input missing (skip: no shadless tree)");
@@ -1313,14 +1299,7 @@ mod tests {
     fn gate_ledger_fails_when_render_drifts() {
         // both real-tree ledger tests touch the one committed EXEMPTIONS.md
         let _serial = RENDER_TEST_LOCK.lock().unwrap_or_else(|e| e.into_inner());
-        let root = match std::env::var("SHADLESS_ROOT") {
-            Ok(r) => PathBuf::from(r),
-            Err(_) => {
-                let m = crate::crate_adjacent_tree_root()
-                    .unwrap_or(Path::new(env!("CARGO_MANIFEST_DIR")).join(".."));
-                m
-            }
-        };
+        let root = crate::tree_root();
         if !root.join(GOLDEN_EX_PATH).exists() {
             if std::env::var_os("CI").is_some() {
                 panic!("CI: required tree input missing (skip: no shadless tree)");

@@ -216,23 +216,12 @@ pub fn gate_consumer_sim(root: &Path) -> Result<(), String> {
 mod tests {
     use super::*;
 
-    fn real_root() -> std::path::PathBuf {
-        match std::env::var("SHADLESS_ROOT") {
-            Ok(r) => std::path::PathBuf::from(r),
-            Err(_) => {
-                let m = crate::crate_adjacent_tree_root()
-                    .unwrap_or(Path::new(env!("CARGO_MANIFEST_DIR")).join(".."));
-                m
-            }
-        }
-    }
-
     /// Go TestConsumerSim: gate(t, gateConsumerSim). Spawns one tailwindcss
     /// subprocess per dist/css/*.css — slow, but that is what the Go test
     /// does too.
     #[test]
     fn consumer_sim_on_real_tree() {
-        let root = real_root();
+        let root = crate::tree_root();
         if !root.join("dist/shadless-core.css").exists() {
             if std::env::var_os("CI").is_some() {
                 panic!("CI: required tree input missing (skip: product css not built)");

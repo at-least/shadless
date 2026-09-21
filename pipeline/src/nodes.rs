@@ -1455,7 +1455,7 @@ mod self_host_tests {
         // are folded into every group's fp — a reference to one of these can
         // never go falsely fresh. (The head regex only sees module-shaped
         // paths, so crate-root items need this explicit list.)
-        const HULL_ROOT_ITEMS: &[&str] = &["crate_adjacent_tree_root"];
+        const HULL_ROOT_ITEMS: &[&str] = &["crate_adjacent_tree_root", "tree_root"];
         let lib_src = std::fs::read_to_string(src.join("lib.rs")).expect("src/lib.rs readable");
         for item in HULL_ROOT_ITEMS {
             assert!(

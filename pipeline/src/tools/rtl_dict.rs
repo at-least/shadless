@@ -746,17 +746,6 @@ fn go_quote_bytes(b: &[u8]) -> String {
 mod tests {
     use super::*;
 
-    fn real_root() -> std::path::PathBuf {
-        match std::env::var("SHADLESS_ROOT") {
-            Ok(r) => std::path::PathBuf::from(r),
-            Err(_) => {
-                let m = crate::crate_adjacent_tree_root()
-                    .unwrap_or(Path::new(env!("CARGO_MANIFEST_DIR")).join(".."));
-                m
-            }
-        }
-    }
-
     /// The committed src/registry/rtl-translations.json was written by the JS
     /// rtl-dict; the port must produce byte-identical output or the whole RTL
     /// demo family shifts underneath gates that hash it. (Go's
@@ -765,7 +754,7 @@ mod tests {
     /// to the committed one, then the original is restored.)
     #[test]
     fn rtl_dict_parity_on_real_tree() {
-        let root = real_root();
+        let root = crate::tree_root();
         let out_path = root.join(RTL_DICT_OUT);
         if !root.join(RTL_DICT_EXAMPLES).exists() {
             if std::env::var_os("CI").is_some() {

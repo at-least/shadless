@@ -255,13 +255,7 @@ mod tests {
 
     #[test]
     fn gate_product_verify_on_real_tree() {
-        let root = match std::env::var("SHADLESS_ROOT") {
-            Ok(r) => std::path::PathBuf::from(r),
-            Err(_) => {
-                crate::crate_adjacent_tree_root()
-                    .unwrap_or_else(|| Path::new(env!("CARGO_MANIFEST_DIR")).join(".."))
-            }
-        };
+        let root = crate::tree_root();
         for p in ["dist/shadless.full.css", "dist/out.css", "dist/shadless.product.css"] {
             if !root.join(p).exists() {
                 eprintln!("skip: {} missing (run the demo chain first)", p);
@@ -273,13 +267,7 @@ mod tests {
 
     #[test]
     fn gate_reproducible_on_real_tree() {
-        let root = match std::env::var("SHADLESS_ROOT") {
-            Ok(r) => std::path::PathBuf::from(r),
-            Err(_) => {
-                crate::crate_adjacent_tree_root()
-                    .unwrap_or_else(|| Path::new(env!("CARGO_MANIFEST_DIR")).join(".."))
-            }
-        };
+        let root = crate::tree_root();
         if !root.join("generated/ir").exists() {
             eprintln!("skip: no shadless tree");
             return;
@@ -289,13 +277,7 @@ mod tests {
 
     #[test]
     fn gate_dist_complete_on_real_tree() {
-        let root = match std::env::var("SHADLESS_ROOT") {
-            Ok(r) => std::path::PathBuf::from(r),
-            Err(_) => {
-                crate::crate_adjacent_tree_root()
-                    .unwrap_or_else(|| Path::new(env!("CARGO_MANIFEST_DIR")).join(".."))
-            }
-        };
+        let root = crate::tree_root();
         let root = root.canonicalize().unwrap_or(root);
         if !root.join("dist/out.css").exists() {
             eprintln!("skip: no shadless tree");
@@ -446,13 +428,7 @@ mod css_direction_tests {
 
     #[test]
     fn css_direction_matches_baseline_on_real_tree() {
-        let root = match std::env::var("SHADLESS_ROOT") {
-            Ok(r) => std::path::PathBuf::from(r),
-            Err(_) => {
-                crate::crate_adjacent_tree_root()
-                    .unwrap_or_else(|| Path::new(env!("CARGO_MANIFEST_DIR")).join(".."))
-            }
-        };
+        let root = crate::tree_root();
         if !root.join("dist/shadless.css").exists() {
             eprintln!("skip: no shadless tree");
             return;
@@ -605,13 +581,7 @@ mod script_refs_tests {
 
     #[test]
     fn script_refs_resolve_on_real_tree() {
-        let root = match std::env::var("SHADLESS_ROOT") {
-            Ok(r) => std::path::PathBuf::from(r),
-            Err(_) => {
-                crate::crate_adjacent_tree_root()
-                    .unwrap_or_else(|| Path::new(env!("CARGO_MANIFEST_DIR")).join(".."))
-            }
-        };
+        let root = crate::tree_root();
         if !root.join("Makefile").exists() {
             eprintln!("skip: no shadless tree");
             return;

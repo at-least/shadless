@@ -290,21 +290,10 @@ pub fn gate_pack(root: &Path) -> Result<(), String> {
 mod tests {
     use super::*;
 
-    fn real_root() -> std::path::PathBuf {
-        match std::env::var("SHADLESS_ROOT") {
-            Ok(r) => std::path::PathBuf::from(r),
-            Err(_) => {
-                let m = crate::crate_adjacent_tree_root()
-                    .unwrap_or(Path::new(env!("CARGO_MANIFEST_DIR")).join(".."));
-                m
-            }
-        }
-    }
-
     /// Go TestPack: gate(t, gatePack).
     #[test]
     fn pack_on_real_tree() {
-        let root = real_root();
+        let root = crate::tree_root();
         if !root.join("package.json").exists() {
             if std::env::var_os("CI").is_some() {
                 panic!("CI: required tree input missing (skip: no shadless tree)");
