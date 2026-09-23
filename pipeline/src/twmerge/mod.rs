@@ -686,16 +686,9 @@ mod tests {
     fn snapshot_conformance() {
         let cases: Vec<(String, String)> = serde_json::from_str(SNAPSHOT_JSON).unwrap();
         assert!(cases.len() > 500, "snapshot corpus went missing");
-        let mut bad = 0;
         for (input, want) in &cases {
             let got = merge(input);
-            if got != *want {
-                if bad < 8 {
-                    panic!("Merge({:?})\n  = {:?}\n  want {:?}", input, got, want);
-                }
-                bad += 1;
-            }
+            assert_eq!(got, *want, "Merge({:?}) disagreeing case", input);
         }
-        assert_eq!(bad, 0, "{} of {} snapshot cases disagree", bad, cases.len());
     }
 }

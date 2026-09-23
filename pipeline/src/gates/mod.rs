@@ -274,6 +274,9 @@ mod tests {
             "dist/shadless.product.css",
         ] {
             if !root.join(p).exists() {
+                if std::env::var_os("CI").is_some() {
+                    panic!("CI: required tree input missing (skip: {} missing — run the demo chain first)", p);
+                }
                 eprintln!("skip: {} missing (run the demo chain first)", p);
                 return;
             }
@@ -285,6 +288,9 @@ mod tests {
     fn gate_reproducible_on_real_tree() {
         let root = crate::tree_root();
         if !root.join("generated/ir").exists() {
+            if std::env::var_os("CI").is_some() {
+                panic!("CI: required tree input missing (skip: no shadless tree)");
+            }
             eprintln!("skip: no shadless tree");
             return;
         }
@@ -296,6 +302,9 @@ mod tests {
         let root = crate::tree_root();
         let root = root.canonicalize().unwrap_or(root);
         if !root.join("dist/out.css").exists() {
+            if std::env::var_os("CI").is_some() {
+                panic!("CI: required tree input missing (skip: no shadless tree)");
+            }
             eprintln!("skip: no shadless tree");
             return;
         }
@@ -465,6 +474,9 @@ mod css_direction_tests {
     fn css_direction_matches_baseline_on_real_tree() {
         let root = crate::tree_root();
         if !root.join("dist/shadless.css").exists() {
+            if std::env::var_os("CI").is_some() {
+                panic!("CI: required tree input missing (skip: no shadless tree)");
+            }
             eprintln!("skip: no shadless tree");
             return;
         }
@@ -619,6 +631,9 @@ mod script_refs_tests {
     fn script_refs_resolve_on_real_tree() {
         let root = crate::tree_root();
         if !root.join("Makefile").exists() {
+            if std::env::var_os("CI").is_some() {
+                panic!("CI: required tree input missing (skip: no shadless tree)");
+            }
             eprintln!("skip: no shadless tree");
             return;
         }
