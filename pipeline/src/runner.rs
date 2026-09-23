@@ -44,6 +44,20 @@ pub const SHELL_INPUT: &str = "tools/browser-shell.mjs";
 /// including the tailwind CLI, which is itself a node script.
 pub const FS_RECORDER: &str = "tools/fs-record.mjs";
 
+/// NODE_OPTIONS is whitespace-split with no quote-escape rule: quoting the
+/// recorder path handles spaces, but a `"` in the checkout path escapes the
+/// injected --import argument — refuse it rather than corrupt the option.
+fn node_options(existing: &str, recorder: &std::path::Path) -> Result<String, String> {
+    let p = recorder.display().to_string();
+    if p.contains('"') {
+        return Err(format!(
+            "checkout path \"{}\" contains a double quote — the NODE_OPTIONS --import injection cannot quote it safely",
+            p
+        ));
+    }
+    Ok(format!("{} --import \"{}\"", existing.trim(), p))
+}
+
 /// Counting semaphore with Go `chan struct{}` semantics.
 pub struct Sem {
     remain: Mutex<usize>,
@@ -279,11 +293,15 @@ impl Runner {
                 // unquoted checkout path with a space broke the injection for
                 // every JS node), and the recorder must resolve from any cwd
                 // a node runs in, not just self.root
-                let node_opts = format!(
-                    "{} --import \"{}\"",
-                    std::env::var("NODE_OPTIONS").unwrap_or_default().trim(),
-                    self.root.join(FS_RECORDER).display()
-                );
+                let node_opts = match node_options(
+                    &std::env::var("NODE_OPTIONS").unwrap_or_default(),
+                    &self.root.join(FS_RECORDER),
+                ) {
+                    Ok(o) => o,
+                    Err(e) => {
+                        return (buf, with_js_log(logs, &js_log), Some(e), dir);
+                    }
+                };
                 c.env("SHADLESS_FSLOG", jl);
                 c.env("NODE_OPTIONS", node_opts);
             }
@@ -939,5 +957,21 @@ mod tests {
         // the semaphore itself must be back at full capacity
         sem.acquire();
         assert_eq!(*sem.remain.lock().unwrap(), 0);
+    }
+
+    /// NODE_OPTIONS is whitespace-split with no quote-escape rule: spaces
+    /// are handled by quoting, but a `"` in the checkout path escapes the
+    /// injected --import argument — refuse it instead of corrupting it.
+    #[test]
+    fn unit_node_options_quotes_spaces_refuses_quotes() {
+        assert_eq!(
+            super::node_options("", std::path::Path::new("/a b/r/tools/fs-record.mjs")).unwrap(),
+            " --import \"/a b/r/tools/fs-record.mjs\""
+        );
+        assert_eq!(
+            super::node_options("--expose-gc", std::path::Path::new("/r/tools/fs-record.mjs")).unwrap(),
+            "--expose-gc --import \"/r/tools/fs-record.mjs\""
+        );
+        assert!(super::node_options("", std::path::Path::new("/a\"b/r/tools/fs-record.mjs")).is_err());
     }
 }

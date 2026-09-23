@@ -201,6 +201,13 @@ pub fn run_upstream_snapshot(args: &[String]) -> i32 {
     let origin = if origin.is_empty() {
         "https://ui.shadcn.com"
     } else {
+        // the fetched HTML is committed as golden oracle data with no
+        // checksum: an overridden origin silently redirects what the goldens
+        // record, so say it loudly before the crawl starts
+        eprintln!(
+            "upstream-snapshot: SHADLESS_SNAPSHOT_ORIGIN is set — crawling {} instead of https://ui.shadcn.com; the fetched pages are committed as goldens",
+            origin
+        );
         &origin
     };
     let crawl_base = format!("{}/docs/components/{}", origin, base);
