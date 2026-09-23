@@ -4,6 +4,17 @@
 import { MARKER, splitMarkers, componentCss, residueResets, cssEscape } from "../../src/emitter/css.mjs"
 
 export function run(t) {
+  // selector strings (slot/axis/value/attr/when) land verbatim inside quoted
+  // attribute selectors — a quote breaks out of the selector into rule space
+  {
+    const ir = { name: "t", tier: "static", cva: {}, conditionals: [], cvaRefs: [],
+      components: [{ fn: "T", export: true, elements: [{ tag: "div", slot: 'x" .evil[', classes: [], spread: false, children: [] }] }] }
+    let threw = null
+    try { componentCss(ir) } catch (e) { threw = e }
+    t.ok("componentCss: a quote-carrying slot is refused at entry",
+      threw && /refuses selector value/.test(threw.message), threw && threw.message)
+  }
+
   // twMerge residue: a value that drops a multi-property base utility must
   // reset the properties it does not set itself (gates/path-parity.mjs)
   t.eq("residue: text-sm dropped by text-[0.8rem] resets line-height",

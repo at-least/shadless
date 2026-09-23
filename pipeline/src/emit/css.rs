@@ -394,8 +394,65 @@ pub struct ComponentCssOut {
     pub unlayered: Vec<String>,
 }
 
+/// Slot names, cva axes/values and conditional attr/when strings land
+/// verbatim inside quoted attribute selectors ([data-slot="{slot}"],
+/// [data-{axis}="{val}"]) — a quote or backslash there breaks out of the
+/// selector into rule space. They are identifiers by construction; the
+/// @apply class lists are deliberately NOT checked (Tailwind arbitrary
+/// values legitimately carry {}[]/:.).
+fn check_selector_values(ir: &CssIrComponent) -> Result<(), String> {
+    let bad = |kind: &str, v: &str| -> String {
+        format!(
+            "css: {} {:?} carries a quote or backslash — refuses selector value",
+            kind, v
+        )
+    };
+    for c in &ir.components {
+        for e in &c.elements {
+            if e.slot.contains('"') || e.slot.contains('\\') {
+                return Err(bad("slot", &e.slot));
+            }
+        }
+    }
+    for var_name in ir.cva.keys() {
+        let table = ir.cva.table(&var_name).expect("keys come from map");
+        for axis in table.axis_order() {
+            if axis.contains('"') || axis.contains('\\') {
+                return Err(bad("axis", &axis));
+            }
+            for val in table.values(&axis).keys() {
+                if val.contains('"') || val.contains('\\') {
+                    return Err(bad("variant value", val));
+                }
+            }
+        }
+    }
+    for c in &ir.conditionals {
+        if let Some(sl) = &c.slot {
+            if sl.contains('"') || sl.contains('\\') {
+                return Err(bad("slot", sl));
+            }
+        }
+    }
+    for r in &ir.cva_refs {
+        if r.slot.contains('"') || r.slot.contains('\\') {
+            return Err(bad("slot", &r.slot));
+        }
+        for d in &r.dyn_ {
+            if d.attr.contains('"') || d.attr.contains('\\') {
+                return Err(bad("attr", &d.attr));
+            }
+            if d.when.contains('"') || d.when.contains('\\') {
+                return Err(bad("when", &d.when));
+            }
+        }
+    }
+    Ok(())
+}
+
 pub fn component_css(ir: &CssIrComponent) -> Result<ComponentCssOut, String> {
     super::load_skin();
+    check_selector_values(ir)?;
     let mut rules: Vec<String> = Vec::new();
     let cva_map = cva_slot(ir);
     let mut cva_slots: HashSet<String> = HashSet::new();
@@ -972,6 +1029,35 @@ mod tests {
     /// `:is(tag)` selector used to come from a HashSet pick — per-process
     /// random. The same IR must emit one stable selector, the way the JS
     /// twin (first tag seen) does.
+    /// Slot names and variant values land verbatim inside quoted attribute
+    /// selectors — a quote or backslash breaks out of the selector into
+    /// rule space. Identifiers by construction; refused at entry.
+    #[test]
+    fn unit_selector_values_with_a_quote_are_refused() {
+        let ir = CssIrComponent {
+            name: "t".into(),
+            tier: "static".into(),
+            components: vec![IrFn {
+                fn_: "T".into(),
+                export: true,
+                elements: vec![IrEl {
+                    tag: "div".into(),
+                    slot: "x\" .evil[".into(),
+                    ..Default::default()
+                }],
+            }],
+            ..Default::default()
+        };
+        let err = match component_css(&ir) {
+            Err(e) => e,
+            Ok(_) => panic!("a slot carrying a quote must be refused at entry"),
+        };
+        assert!(
+            err.contains("refuses selector value"),
+            "got: {err}"
+        );
+    }
+
     #[test]
     fn unit_cva_sig_tag_pick_is_deterministic() {
         let ir = CssIrComponent {

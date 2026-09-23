@@ -147,8 +147,47 @@ export function cvaSlot(ir) {
 
 const cleanTag = (/** @type {string} */ t) => kebab(String(t).replace(/^<ternary:[^/]+\//, "").replace(/>$/, ""))
 
+// Slot names, cva axes/values and conditional attr/when strings land
+// verbatim inside quoted attribute selectors — a quote or backslash there
+// breaks out of the selector into rule space. Identifiers by construction;
+// the @apply class lists are deliberately NOT checked (Tailwind arbitrary
+// values legitimately carry {}[]/:.). Mirrors css.rs check_selector_values.
+/** @param {string} v */
+const selectorValueSafe = (v) => !String(v).includes('"') && !String(v).includes("\\")
+
+/** @param {Ir} ir */
+function checkSelectorValues(ir) {
+  /** @param {string} kind @param {string} v */
+  const bad = (kind, v) => { throw new Error(`css: ${kind} "${v}" carries a quote or backslash — refuses selector value`) }
+  for (const c of ir.components ?? []) {
+    for (const e of c.elements ?? []) {
+      if (e.slot && !selectorValueSafe(e.slot)) bad("slot", e.slot)
+    }
+  }
+  for (const [vn, { table }] of Object.entries(cvaSlot(ir))) {
+    void vn
+    for (const axis of Object.keys(table.variants ?? {})) {
+      if (!selectorValueSafe(axis)) bad("axis", axis)
+      for (const val of Object.keys(table.variants[axis] ?? {})) {
+        if (!selectorValueSafe(val)) bad("variant value", val)
+      }
+    }
+  }
+  for (const c of ir.conditionals ?? []) {
+    if (c.slot && !selectorValueSafe(c.slot)) bad("slot", c.slot)
+  }
+  for (const r of ir.cvaRefs ?? []) {
+    if (r.slot && !selectorValueSafe(r.slot)) bad("slot", r.slot)
+    for (const d of r.dyn ?? []) {
+      if (d.attr && !selectorValueSafe(d.attr)) bad("attr", d.attr)
+      if (d.when && !selectorValueSafe(d.when)) bad("when", d.when)
+    }
+  }
+}
+
 /** @param {Ir} ir @returns {ComponentCssResult} */
 export function componentCss(ir) {
+  checkSelectorValues(ir)
   const rules = []
   const cvaMap = cvaSlot(ir)
   const cvaSlots = new Set(Object.values(cvaMap).map((v) => v.slot).filter(Boolean))
