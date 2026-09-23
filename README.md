@@ -101,8 +101,9 @@ localStorage-backed theme semantics.
 `collapsible` carry no classes upstream, so they have JS (collapsible) or
 nothing to ship (aspect-ratio, direction) but no stylesheet. `field` is
 the one shipped component outside the oracle-backed matrix (logic tier —
-its demo is hand-authored; see the `coverage.uncovered-cells` budget in
-`gates/ledger.json`, or run `./build/pipeline coverage`).
+its demo is hand-authored, so it never enters the matrix and the
+uncovered-cells budget is 0/0 by construction; the ledger's
+coverage-scope work item in `EXEMPTIONS.md` records it).
 
 ## Not included (recorded, not silently dropped)
 

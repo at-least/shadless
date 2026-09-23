@@ -4,7 +4,7 @@
 
 {# The demo card: one bordered card per preview — the iframe on top, the
    demo's source under it inside the same border. Emitted by
-   pipeline/docs_build.go around each <ComponentPreview>. `status` is the
+   pipeline/src/tools/docs_build.rs around each <ComponentPreview>. `status` is the
    catalog's preview status; "authored"/"existing-dist" carry an iframe. #}
 {% component demo(name, status) %}
 {% set s = status | default(value="authored") %}

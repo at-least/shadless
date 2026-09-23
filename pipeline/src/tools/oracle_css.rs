@@ -1,4 +1,5 @@
-//! Port of pipeline/oracle_css.go — see the Go source for the contract.
+//! Port of pipeline/oracle_css.go; the contract was proven byte-identical
+//! during the port (go-parity-final tag).
 //!
 //! A stylesheet for the React oracle that owes nothing to src/emitter:
 //! build/gates/oracle.css is built from upstream's own inputs only, compiled

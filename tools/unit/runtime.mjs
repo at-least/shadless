@@ -10,7 +10,7 @@
 import { readFileSync } from "node:fs"
 import { JSDOM } from "jsdom"
 import { build as esbuild } from "esbuild"
-// The ESM surface is composed by the Go builder (pipeline/jsbuild.go). This
+// The ESM surface is composed by the pipeline (pipeline/src/jsbuild.rs). This
 // suite reads the SHIPPED files rather than recomposing them: recomposing
 // meant a second implementation of the same format, and the point of the
 // assertions below is what a bundler sees in dist/, not what a helper agrees

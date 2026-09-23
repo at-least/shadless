@@ -1,4 +1,5 @@
-//! Port of pipeline/upstream_snapshot.go — see the Go source for the contract.
+//! Port of pipeline/upstream_snapshot.go; the contract was proven
+//! byte-identical during the port (go-parity-final tag).
 //!
 //! Golden-master snapshot of ui.shadcn.com example DOM (hop 1 of the 1:1
 //! gate). Crawls /docs/components/<base>/<page>, slices each preview's demo

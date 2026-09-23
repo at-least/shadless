@@ -1,6 +1,6 @@
 //! Port of pipeline/ir_diff.go — slot-level semantic diff between two IR sets.
-//! See the Go source for the contract; byte-identity with the Go binary is the
-//! acceptance bar.
+//! The contract was proven byte-identical to the Go source during the port
+//! (go-parity-final tag).
 
 use crate::emit::tw::find_repo_root;
 use crate::jsonorder::{marshal_js, Json, JsonObj};

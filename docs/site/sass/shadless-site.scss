@@ -2,7 +2,7 @@
 //
 // Everything else — layout, sidebar, TOC, code blocks, dark mode — is the
 // vitezola theme's VitePress recreation. What is left is the three shapes
-// the content transform (pipeline/docs_build.go) emits that the theme has no
+// the content transform (pipeline/src/tools/docs_build.rs) emits that the theme has no
 // opinion about: the demo iframe, the placeholder for a demo shadless does
 // not carry, and the greyed framework cards in the RTL guide.
 

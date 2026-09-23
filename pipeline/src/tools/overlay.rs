@@ -5,7 +5,7 @@
 //!
 //!   rule      a table entry in the pipeline (DEFAULT_CONTENT,
 //!             TEXT_ADJUSTMENTS, DEAD_UTILITIES, SKIN_ALLOWLIST, KNOWN_ICONS,
-//!             tier sets, the Persian dictionary, contract ignoreAttrs).
+//!             tier sets, contract ignoreAttrs).
 //!             Precondition is a structural predicate on the IR / upstream
 //!             tree.
 //!   authored  a whole hand-written file (kernel behavior files, the runtime,
@@ -182,7 +182,8 @@ fn ov_rule_units(
     let mut units: Vec<OvUnit> = Vec::new();
 
     // DEFAULT_CONTENT — (component, fn) keyed example content for static
-    // pages; the live table is the Go one (the emit node runs Go)
+    // pages; generated from src/emitter/index.mjs into
+    // pipeline/src/emit/default_content.rs
     let mut comps: Vec<&str> = crate::emit::default_content::default_content()
         .keys()
         .copied()
@@ -363,7 +364,7 @@ fn ov_rule_units(
                     return String::new();
                 }
                 format!(
-                    "upstream now defines {} in a form the SKIN_MAP parser can't capture — emitter_css.go's auto-emit won't cover it",
+                    "upstream now defines {} in a form the SKIN_MAP parser can't capture — emit/css.rs's auto-emit won't cover it",
                     tok_dis
                 )
             })),
@@ -788,7 +789,7 @@ fn ov_source_state(root: &Path, u: &OvUnit) -> (&'static str, &'static str) {
     if check(&[]) {
         return (
             "not-applied",
-            "applies cleanly but is not applied — run pipeline upstream --apply-patches",
+            "applies cleanly but is not applied — the next `pipeline upstream` run applies it (git apply --3way)",
         );
     }
     (

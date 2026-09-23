@@ -1,4 +1,5 @@
-//! Port of pipeline/parity_baseline.go — see the Go source for the contract.
+//! Port of pipeline/parity_baseline.go; the contract was proven
+//! byte-identical during the port (go-parity-final tag).
 //!
 //! The recorded-difference baseline shared by the three parity gates
 //! (style-parity, demo-parity, path-parity). Values are pinned too: a

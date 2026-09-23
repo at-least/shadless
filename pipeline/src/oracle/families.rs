@@ -1,6 +1,6 @@
 //! Port of pipeline/docs_families.go — the kernel-tier behavior protocol
-//! table (only what example-fixture consumes; the MDX doc builders stay in
-//! Go for the docs chain).
+//! table (only what example-fixture consumes; the MDX doc builders are
+//! Rust — pipeline/src/tools/docs_build.rs).
 
 #[derive(Clone, Debug, Default)]
 pub struct FamilyEnt {

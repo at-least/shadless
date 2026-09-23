@@ -5,7 +5,8 @@
 // cn-* via @apply under a `.style-<name>` scope). shadless ships the nova
 // skin, and resolves cn-* at the SOURCE (pipeline/src/tools/resolve_skins.rs —
 // upstream generation parity): IR, fixture markup and demo DOM all carry
-// plain utility classes. This module is the map that resolver consumes;
+// plain utility classes. The JS twin's resolver consumes this map (the
+Rust side parses the skin css directly — emit::skin_data);
 // it emits no CSS itself (the old @utility injection + anti-tree-shake
 // sentinel were the downstream patches this replaces).
 //

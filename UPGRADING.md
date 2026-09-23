@@ -47,7 +47,7 @@ generated output (the retired `patches/` mechanism).
 
 | Kind | Home | Anchor | On re-pin |
 |---|---|---|---|
-| **rule** | `DEFAULT_CONTENT`, `TEXT_ADJUSTMENTS`, `DEAD_UTILITIES`, `SKIN_ALLOWLIST`, `KNOWN_ICONS`, tier sets, the Persian dictionary, contract `ignoreAttrs` | a structural predicate on the IR / upstream tree | `orphaned` when the anchor is gone; `dissolved` when upstream no longer needs it |
+| **rule** | `DEFAULT_CONTENT`, `TEXT_ADJUSTMENTS`, `DEAD_UTILITIES`, `SKIN_ALLOWLIST`, `KNOWN_ICONS`, tier sets, contract `ignoreAttrs` | a structural predicate on the IR / upstream tree | `orphaned` when the anchor is gone; `dissolved` when upstream no longer needs it |
 | **authored** | `src/runtime/core.js`, `src/runtime/components/*.js`, `tools/contracts/components/*.mjs`, hand-authored `docs/demos/*.html` | sha256 of the upstream inputs, in `overlays/manifest.json` | `stale` when an input changed → task packet with the diff; `./build/pipeline overlay --record` after re-authoring |
 | **source** | `overlays/upstream/*.patch` | git blob ids | 3-way merge; `conflict` bucket |
 

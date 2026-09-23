@@ -1,4 +1,5 @@
-//! Port of pipeline/docs_upstream_mirror.go — see the Go source for the contract.
+//! Port of pipeline/docs_upstream_mirror.go; the contract was proven
+//! byte-identical during the port (go-parity-final tag).
 //!
 //! Copies the slice of the pinned upstream docs tree that docs-build/
 //! docs-fidelity actually read (components/radix, and the upstream-sourced

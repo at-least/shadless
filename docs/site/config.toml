@@ -2,7 +2,7 @@
 # markdown, highlighting. The theme (themes/shadcn) is this repo's own,
 # replicating the ui.shadcn.com layout (calibrated against .upstream/
 # shadcn-ui apps/v4). What this repo owns is the CONTENT transform
-# (pipeline/docs_build.go: upstream React mdx → markdown for a product that
+# (pipeline/src/tools/docs_build.rs: upstream React mdx → markdown for a product that
 # ships static HTML) and the demos the pages iframe from /demos/, which are
 # the pipeline's own output copied into static/ at build time.
 # NOTE: base_url's PATH must stay "/" — the generated pages hardcode

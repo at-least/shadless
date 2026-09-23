@@ -51,9 +51,11 @@ docs chains rebuilds the JS dist, so skipping `build-js` means testing — and c
   (`tools/contracts/components/`).
 - **Docs** — generated from the upstream mdx by the engine
   (`./build/pipeline docs-build`; `pipeline/src/tools/docs_build.rs`); the
-  runtime protocol text comes from the fixture-family tables in
-  `pipeline/src/oracle/fixture_families.rs` (the same tables that generate
-  the fixtures). Hand-authored demos live in `docs/demos/`.
+  runtime protocol text comes from `protocol_mdx()` in
+  `pipeline/src/tools/docs_transforms.rs`, driven by its own family table
+  (the fixture generators in `pipeline/src/oracle/` keep a parallel one —
+  keep them in step when a family's shape changes). Hand-authored demos
+  live in `docs/demos/`.
 The Rust/JS split in this repo is deliberate and documented in
 [pipeline/PORT.md](pipeline/PORT.md): a step moves into the Rust engine when
 it can produce the same bytes, and the toolchains that stay external (the
