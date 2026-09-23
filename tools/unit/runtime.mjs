@@ -776,6 +776,53 @@ window.__esm = { default: shadless, get, theme, init, named: Object.keys(ns).sor
     t.ok("dialog: the broken template is reported", errs.some((m) => /d9-portal/.test(m)), errs.join(" | "))
     t.ok("dialog: trigger stays closed", doc.getElementById("d9-trigger").getAttribute("data-state") !== "open")
   }
+  // kernel family (2026-09 review): tooltip/popover/hover-card degrade the
+  // same way when their portal template lacks the content slot — reported
+  // at wiring time, no handle, never a TypeError at open.
+  {
+    const dom = bootKernel(`
+<button type="button" data-slot="tooltip-trigger" id="t9-trigger">tip</button>
+<template id="t9-portal"><div>typo: no tooltip-content slot</div></template>
+<button type="button" data-slot="popover-trigger" id="p9-trigger">pop</button>
+<template id="p9-portal"><div>typo: no popover-content slot</div></template>
+<button type="button" data-slot="hover-card-trigger" id="h9-trigger">hov</button>
+<template id="h9-portal"><div>typo: no hover-card-content slot</div></template>`, ["tooltip", "popover", "hover-card"])
+    const doc = dom.window.document
+    const winErrs = []
+    dom.window.addEventListener("error", (e) => winErrs.push(e.message))
+    const errs = []
+    dom.window.console.error = (...a) => errs.push(a.join(" "))
+    dom.window.shadless.initAll()
+    doc.getElementById("t9-trigger").dispatchEvent(new dom.window.FocusEvent("focus"))
+    await tick()
+    click(dom, doc.getElementById("p9-trigger"))
+    t.ok("kernel family: broken templates do not throw at init or open", winErrs.length === 0, winErrs.join(" | "))
+    t.ok("kernel family: each broken template is reported",
+      ["t9-portal", "p9-portal", "h9-portal"].every((id) => errs.some((m) => m.includes(id))), errs.join(" | "))
+    t.ok("kernel family: no handle on a broken template",
+      !dom.window.shadless.get("#t9-trigger") && !dom.window.shadless.get("#p9-trigger") && !dom.window.shadless.get("#h9-trigger"))
+    t.ok("kernel family: nothing mounts from a broken template", !doc.querySelector("[data-slot=popover-content]"))
+  }
+  // select is the sharp edge: the unguarded deref throws inside init's
+  // forEach, so every select AFTER the malformed one stayed unwired.
+  {
+    const dom = bootKernel(`
+<button type="button" data-slot="select-trigger" id="s10a-trigger"><span data-slot="select-value">a</span></button>
+<template id="s10a-tpl"><div>typo: no select-content slot</div></template>
+<button type="button" data-slot="select-trigger" id="s10b-trigger"><span data-slot="select-value">b</span></button>
+<template id="s10b-tpl"><div data-slot="select-content"><div data-slot="select-viewport"><div role="option" aria-selected="true" data-value="B">b</div></div></div></template>`, ["select"])
+    const doc = dom.window.document
+    const winErrs = []
+    dom.window.addEventListener("error", (e) => winErrs.push(e.message))
+    const errs = []
+    dom.window.console.error = (...a) => errs.push(a.join(" "))
+    dom.window.shadless.initAll()
+    t.ok("select: a malformed template does not throw at init", winErrs.length === 0, winErrs.join(" | "))
+    t.ok("select: the broken template is reported", errs.some((m) => m.includes("s10a-tpl")), errs.join(" | "))
+    const later = dom.window.shadless.get("#s10b-trigger")
+    t.ok("select: a LATER select still wires after a malformed one", !!later)
+    t.eq("select: the later select works", later && later.value(), "B")
+  }
   // menu family: an EMPTY -tpl must not throw in mountLayer (kernel treats null as no-op)
   {
     const dom = bootKernel(`
