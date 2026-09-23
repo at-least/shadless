@@ -372,7 +372,7 @@ fn drill_repin(
     let mut conflicts: Vec<PatchConflict> = Vec::new();
     for f in &series {
         let out = std::process::Command::new("git")
-            .args(["-C", UPSTREAM_DIR, "apply", "--3way"])
+            .args(["-C", UPSTREAM_DIR, "apply", "--3way", "--"])
             .arg(root.join("overlays/upstream").join(f))
             .current_dir(root)
             .output();

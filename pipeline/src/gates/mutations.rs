@@ -1076,7 +1076,7 @@ pub fn run_mutation(
             res.note = format!("mutation itself errored: {}", first_line(&e));
             return Ok((res, None));
         }
-        let (run, _) = run_gate(root, n);
+        let (run, log) = run_gate(root, n);
         res.caught = match run {
             GateRun::Red => true,
             GateRun::CouldNotRun => {
@@ -1084,7 +1084,20 @@ pub fn run_mutation(
                     "gate could not run (environment) — this is not a caught mutation".to_string();
                 false
             }
-            GateRun::Green => false,
+            GateRun::Green => {
+                // a surviving mutation used to print with no gate output at
+                // all — carry the log's last lines so the operator sees what
+                // the gate said while green
+                let mut lines: Vec<&str> =
+                    log.lines().filter(|l| !l.trim().is_empty()).collect();
+                if lines.len() > 3 {
+                    lines = lines.split_off(lines.len() - 3);
+                }
+                if !lines.is_empty() {
+                    res.note = format!("gate output tail: {}", lines.join(" | "));
+                }
+                false
+            }
         };
         Ok((res, None))
     })();
