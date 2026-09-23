@@ -30,6 +30,6 @@ export const THEME_PREPAINT_SCRIPT = `<script>(function(){try{var k="shadless-do
 // defaultVariants on the attribute API; regression-gated by
 // gates/path-parity.mjs). Variant-less resting colors now inherit from
 // the page — upstream's own model; the demo globals' body rule provides
-// --foreground. The export stays (tools/demo.mjs and pipeline/product_css.go
-// consume it) for gaps that are genuinely upstream's.
+// --foreground. The export stays (pipeline/src/emit/product_css.rs lifts it
+// by regex) for gaps that are genuinely upstream's.
 export const SHADLESS_CSS_FIXES = ``
