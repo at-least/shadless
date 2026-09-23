@@ -259,6 +259,46 @@ pub fn gate_pack(root: &Path) -> Result<(), String> {
         }
     }
 
+    // 3b. README's "Not included" prose is grey_components(), not a drifted
+    // copy of it: the comma list between the heading and the em-dash must
+    // set-equal the registry's grey list (the two-places rule).
+    if let Some(head) = readme.find("## Not included") {
+        let tail = &readme[head..];
+        // drop the heading line itself — the list is the prose after it
+        let after_head = &tail[tail.find('\n').unwrap_or(tail.len())..];
+        let body = match after_head.find('—') {
+            Some(d) => &after_head[..d],
+            None => after_head,
+        };
+        let listed: BTreeMap<&str, bool> = body
+            .split([',', ' ', '\n', '\t'])
+            .filter(|t| {
+                !t.is_empty()
+                    && t.chars()
+                        .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == '-')
+            })
+            .map(|t| (t, true))
+            .collect();
+        for t in listed.keys() {
+            if !crate::tools::docs_transforms::grey_components().contains(t) {
+                fail.push(format!(
+                    "README \"Not included\" lists {:?} but grey_components() does not",
+                    t
+                ));
+            }
+        }
+        for g in crate::tools::docs_transforms::grey_components() {
+            if !listed.contains_key(g) {
+                fail.push(format!(
+                    "grey_components() lists {:?} but README \"Not included\" does not",
+                    g
+                ));
+            }
+        }
+    } else {
+        fail.push("README has no \"## Not included\" section to cross-check against grey_components()".to_string());
+    }
+
     // 4. nothing outside the product surface
     for f in packed.keys() {
         if !RE_ALLOWED.is_match(f) {

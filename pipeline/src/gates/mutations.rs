@@ -421,6 +421,15 @@ fn apply_pack_broken_export(root: &Path, f: &[String]) -> Result<(), String> {
     )
 }
 
+fn apply_pack_readme_grey_drift(root: &Path, f: &[String]) -> Result<(), String> {
+    mut_replace_once(
+        root,
+        &f[0],
+        "sidebar, sonner, toast,",
+        "sidebar, sonner, toast, bogus-widget,",
+    )
+}
+
 fn apply_path_parity_drop_utility(root: &Path, f: &[String]) -> Result<(), String> {
     mut_replace_re(root, &f[0], &RE_PADDING, "")
 }
@@ -691,6 +700,14 @@ pub static MUTATIONS: &[Mutation] = &[
         files: &["package.json"],
         resolve: None,
         apply: apply_pack_broken_export,
+    },
+    Mutation {
+        id: "pack-readme-grey-drift",
+        gate: "pack",
+        why: "README's 'Not included' prose hand-copies grey_components() — a name added on one side silently drifts the other (the two-places list CONTRIBUTING bans)",
+        files: &["README.md"],
+        resolve: None,
+        apply: apply_pack_readme_grey_drift,
     },
     Mutation {
         id: "path-parity-drop-utility",
