@@ -306,8 +306,10 @@ pub struct SkinData {
 }
 
 pub fn skin_data() -> &'static SkinData {
-    load_skin();
-    SKIN.get().expect("load_skin initialized skin data")
+    // get_or_init, not load_skin()+get(): the old pair raced under parallel
+    // tests — the OnceLock<()> guard fired while the first loader was still
+    // reading, and a second caller's SKIN.get() returned None
+    SKIN.get_or_init(load_skin_sync)
 }
 
 const SKIN_PATH: &str = ".upstream/shadcn-ui/apps/v4/registry/styles/style-nova.css";
@@ -316,8 +318,11 @@ const SKIN_PATH: &str = ".upstream/shadcn-ui/apps/v4/registry/styles/style-nova.
 /// skin.mjs's parseSkinMap; anything other than flat pure-@apply blocks fails
 /// loudly.
 pub fn load_skin() {
-    static ONCE: OnceLock<()> = OnceLock::new();
-    if ONCE.set(()).is_ok() {
+    let _ = skin_data();
+}
+
+fn load_skin_sync() -> SkinData {
+    {
         // the pipeline runs from the repo root; tests run from the crate —
         // fall back to the adjacent product tree so the pinned skin is
         // reachable from both (same bytes either way; errors still report
@@ -348,12 +353,7 @@ pub fn load_skin() {
             allowlist.insert(t.clone());
         }
         parse_skin_map(&b, &mut map);
-        SKIN.set(SkinData {
-            map: map.clone(),
-            allowlist,
-        })
-        .ok();
-        let _ = map;
+        SkinData { map, allowlist }
     }
 }
 
