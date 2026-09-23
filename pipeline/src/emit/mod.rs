@@ -414,13 +414,15 @@ pub fn run_emit() -> Result<(), String> {
             statics.push(ir);
         }
     }
-    let tiers_b = std::fs::read_to_string(root.join("src/registry/tiers.json")).unwrap_or_default();
+    let tiers_b = std::fs::read_to_string(root.join("src/registry/tiers.json"))
+        .map_err(|e| format!("emit: tiers: {}", e))?;
     #[derive(serde::Deserialize)]
     struct TierEntry {
         #[serde(default)]
         tier: String,
     }
-    let tiers: HashMap<String, TierEntry> = serde_json::from_str(&tiers_b).unwrap_or_default();
+    let tiers: HashMap<String, TierEntry> =
+        serde_json::from_str(&tiers_b).map_err(|e| format!("emit: tiers: {}", e))?;
     let want_static = tiers.values().filter(|t| t.tier == "static").count();
     let mut fail = false;
     if statics.len() != want_static {

@@ -492,7 +492,10 @@ pub fn shift_highlight_refs(meta: &str, removed: usize) -> String {
                     continue; // range[0] <= removed → null (dropped)
                 }
                 if let Some(hi) = hi {
-                    shifted.push(format!("{}-{}", lo - removed, hi - removed));
+                    // hi is unguarded upstream input (a reversed range has
+                    // hi < lo): JS prints the negative, so subtract signed
+                    // instead of underflowing usize
+                    shifted.push(format!("{}-{}", lo - removed, hi as i64 - removed as i64));
                 } else {
                     shifted.push(format!("{}", lo - removed));
                 }
@@ -2575,4 +2578,19 @@ pub struct DocsCatalogSource {
 pub struct DocsMeta {
     #[serde(default)]
     pub pages: Vec<String>,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::shift_highlight_refs;
+
+    /// A reversed range ({5-2}) is malformed but the JS callback still
+    /// subtracts both endpoints; the port must print the negative the JS
+    /// oracle prints, not panic on usize underflow (or wrap in release).
+    #[test]
+    fn unit_shift_refs_reversed_range_keeps_js_semantics() {
+        assert_eq!(shift_highlight_refs("{5-2}", 3), "{2--1}");
+        // well-formed ranges shift exactly as before
+        assert_eq!(shift_highlight_refs("{4-6}", 1), "{3-5}");
+    }
 }

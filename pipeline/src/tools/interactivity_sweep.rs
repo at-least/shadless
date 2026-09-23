@@ -59,8 +59,14 @@ pub fn run_interactivity_sweep(root: &Path) -> i32 {
             return 1;
         }
     };
-    let tiers: std::collections::HashMap<String, TierEntry> =
-        serde_json::from_str(&tiers_b).unwrap_or_default();
+    let tiers: std::collections::HashMap<String, TierEntry> = match serde_json::from_str(&tiers_b)
+    {
+        Ok(t) => t,
+        Err(e) => {
+            eprintln!("interactivity-sweep: tiers: {}", e);
+            return 1;
+        }
+    };
     let mut static_families: Vec<String> = tiers
         .iter()
         .filter(|(_, t)| t.tier == "static")
@@ -276,3 +282,4 @@ fn first_line(s: &str) -> String {
         None => s.to_string(),
     }
 }
+

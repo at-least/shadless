@@ -23,6 +23,19 @@ fn run_emit_in(dir: &std::path::Path) -> (i32, String, String) {
     )
 }
 
+fn run_tool_in(dir: &std::path::Path, verb: &str) -> (i32, String, String) {
+    let out = Command::new(env!("CARGO_BIN_EXE_pipeline"))
+        .arg(verb)
+        .current_dir(dir)
+        .output()
+        .expect("spawn pipeline");
+    (
+        out.status.code().unwrap_or(-1),
+        String::from_utf8_lossy(&out.stdout).into_owned(),
+        String::from_utf8_lossy(&out.stderr).into_owned(),
+    )
+}
+
 // The skin lookup falls back to the tree adjacent to the crate — the one
 // compiled in. When THAT tree is pinned (`.upstream/` present, i.e. the
 // normal dev tree after `npm run pin`), the missing-skin scenario cannot
@@ -76,5 +89,47 @@ fn skin_path_directory_reports_read_eisdir() {
         stderr,
         "resolve-skins: skin: read \
          .upstream/shadcn-ui/apps/v4/registry/styles/style-nova.css: is a directory\n"
+    );
+}
+
+// A corrupt tiers.json must fail the tool that reads it, by naming tiers —
+// not by coincidence downstream. Both tools used to parse it with
+// unwrap_or_default: the sweep ran with no static families excluded (a
+// verdict over a matrix it did not mean to test) and emit reported
+// "expected 0 static" nonsense instead of the parse error. 2026-09 review.
+#[test]
+fn corrupt_tiers_json_fails_the_sweep_naming_tiers() {
+    let tmp = tempfile::tempdir().unwrap();
+    std::fs::create_dir_all(tmp.path().join("src/registry")).unwrap();
+    std::fs::create_dir_all(tmp.path().join("docs/site/static/demos")).unwrap();
+    std::fs::write(tmp.path().join("src/registry/tiers.json"), "{ not json").unwrap();
+    let (code, _stdout, stderr) = run_tool_in(tmp.path(), "interactivity-sweep");
+    assert_eq!(code, 1, "stderr: {}", stderr);
+    assert!(
+        stderr.contains("interactivity-sweep: tiers:"),
+        "must name the corrupt file, got: {}",
+        stderr
+    );
+}
+
+#[test]
+fn corrupt_tiers_json_fails_emit_naming_tiers() {
+    // emit loads the pinned skin before reading tiers: the fallback to the
+    // crate-adjacent tree needs THAT tree pinned, or the run dies on the
+    // missing skin before it ever reaches the corrupt file
+    if !adjacent_tree_is_pinned() {
+        eprintln!("skip: the adjacent tree is unpinned — emit dies on the missing skin before tiers");
+        return;
+    }
+    let tmp = tempfile::tempdir().unwrap();
+    std::fs::create_dir_all(tmp.path().join("src/registry")).unwrap();
+    std::fs::create_dir_all(tmp.path().join("generated/ir")).unwrap();
+    std::fs::write(tmp.path().join("src/registry/tiers.json"), "{ not json").unwrap();
+    let (code, _stdout, stderr) = run_tool_in(tmp.path(), "emit");
+    assert_eq!(code, 1, "stderr: {}", stderr);
+    assert!(
+        stderr.contains("emit: tiers:"),
+        "must name the corrupt file, got: {}",
+        stderr
     );
 }
