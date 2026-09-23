@@ -284,7 +284,7 @@ pub fn run_product_css() -> i32 {
             stray_imports.join(", ")
         ));
     }
-    let core = "/* shadless theme — extracted from probes/h4/globals.css by pipeline/product_css.go.\n   Product surface ONLY: theme vars, @theme, custom variants, @utility helpers,\n   keyframes. Deliberately excluded: docs-site chrome (prose/steps/packs),\n   demo @source and demo body padding. The only @import left is \"tailwindcss\"\n   itself — the animate layer is inlined so consumers need nothing else. */\n".to_string() + &tokens;
+    let core = "/* shadless theme — extracted from probes/h4/globals.css by pipeline/src/emit/product_css.rs.\n   Product surface ONLY: theme vars, @theme, custom variants, @utility helpers,\n   keyframes. Deliberately excluded: docs-site chrome (prose/steps/packs),\n   demo @source and demo body padding. The only @import left is \"tailwindcss\"\n   itself — the animate layer is inlined so consumers need nothing else. */\n".to_string() + &tokens;
     if let Err(e) = std::fs::write(root.join("dist/shadless-core.css"), core.clone()) {
         return fail(e.to_string());
     }

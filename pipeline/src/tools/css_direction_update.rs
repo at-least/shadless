@@ -19,7 +19,7 @@ pub fn run_css_direction_update(root: &Path) -> i32 {
     };
     let entries = crate::gates::scan_directions(&css);
     println!(
-        "// fresh inventory ({} entries) — paste into directionBaseline in pipeline/gate_css_direction.go after review:",
+        "// fresh inventory ({} entries) — paste into direction_baseline in pipeline/src/gates/mod.rs after review:",
         entries.len()
     );
     for e in entries {

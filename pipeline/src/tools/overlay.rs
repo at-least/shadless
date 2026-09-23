@@ -200,7 +200,7 @@ fn ov_rule_units(
             units.push(OvUnit {
                 id: format!("default-content:{}.{}", comp, fn_),
                 kind: "rule".to_string(),
-                home: "pipeline/default_content.go DEFAULT_CONTENT".to_string(),
+                home: "src/emitter/index.mjs DEFAULT_CONTENT (mirrored into pipeline/src/emit/default_content.rs)".to_string(),
                 file: String::new(),
                 inputs: Vec::new(),
                 extra: Vec::new(),
@@ -232,7 +232,7 @@ fn ov_rule_units(
             units.push(OvUnit {
                 id: format!("text-adjustment:{}#{}", adj.id, i),
                 kind: "rule".to_string(),
-                home: "pipeline/docs_transforms.go TEXT_ADJUSTMENTS".to_string(),
+                home: "pipeline/src/tools/docs_transforms.rs TEXT_ADJUSTMENTS".to_string(),
                 file: String::new(),
                 inputs: Vec::new(),
                 extra: Vec::new(),
@@ -380,7 +380,7 @@ fn ov_rule_units(
         units.push(OvUnit {
             id: format!("known-icon:{}", icon),
             kind: "rule".to_string(),
-            home: "pipeline/convert.go KNOWN_ICONS".to_string(),
+            home: "pipeline/src/convert/mod.rs cv_known_icons".to_string(),
             file: String::new(),
             inputs: Vec::new(),
             extra: Vec::new(),
@@ -410,7 +410,7 @@ fn ov_rule_units(
             units.push(OvUnit {
                 id: format!("tier:{}:{}", tier, name),
                 kind: "rule".to_string(),
-                home: "pipeline/convert.go tier sets".to_string(),
+                home: "pipeline/src/convert/mod.rs cv_tier_sets".to_string(),
                 file: String::new(),
                 inputs: Vec::new(),
                 extra: Vec::new(),
@@ -431,7 +431,7 @@ fn ov_rule_units(
     units.push(OvUnit {
         id: "tier:coverage".to_string(),
         kind: "rule".to_string(),
-        home: "pipeline/convert.go tier sets".to_string(),
+        home: "pipeline/src/convert/mod.rs cv_tier_sets".to_string(),
         file: String::new(),
         inputs: Vec::new(),
         extra: Vec::new(),
