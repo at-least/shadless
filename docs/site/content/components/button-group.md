@@ -926,6 +926,12 @@ Nest `data-slot="button-group"` components to create button groups with spacing.
       if (!w) return
       var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-portal"));
       if (!tpl) return;
+      if (!tpl.content.querySelector("[data-slot=tooltip-content]")) {
+        // the template is the component's contract (dialog family): without
+        // a content slot there is nothing to wire — report and stay closed
+        console.error("shadless: tooltip template \"" + tpl.id + "\" carries no tooltip-content slot — staying closed");
+        return;
+      }
       var wasOpen = false;
       var wired = RadixKernel.wireTooltip({
         trigger: trigger,
@@ -1296,6 +1302,12 @@ Wrap an `InputGroup` component to create complex input layouts.
       if (!w) return
       var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-portal"));
       if (!tpl) return;
+      if (!tpl.content.querySelector("[data-slot=tooltip-content]")) {
+        // the template is the component's contract (dialog family): without
+        // a content slot there is nothing to wire — report and stay closed
+        console.error("shadless: tooltip template \"" + tpl.id + "\" carries no tooltip-content slot — staying closed");
+        return;
+      }
       var wasOpen = false;
       var wired = RadixKernel.wireTooltip({
         trigger: trigger,
@@ -1824,6 +1836,13 @@ Pair with a `Select` component.
       if (!w) return
       var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-tpl"));
       if (!tpl) return;
+      if (!tpl.content.querySelector("[data-slot=select-content]")) {
+        // the template is the component's contract (dialog family): without
+        // a content slot there is nothing to wire — report and skip THIS
+        // trigger, never the rest of the forEach
+        console.error("shadless: select template \"" + tpl.id + "\" carries no select-content slot — staying closed");
+        return;
+      }
       var valueNode = trigger.querySelector("[data-slot=select-value]");
 
       // clone once — kernel mounts/unmounts the wrapper around the same content
@@ -2073,6 +2092,12 @@ Use with a `Popover` component.
       if (!w) return
       var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-portal"));
       if (!tpl) return;
+      if (!tpl.content.querySelector("[data-slot=popover-content]")) {
+        // the template is the component's contract (dialog family): without
+        // a content slot there is nothing to wire — report and stay closed
+        console.error("shadless: popover template \"" + tpl.id + "\" carries no popover-content slot — staying closed");
+        return;
+      }
       var open = false, handles = null, content = null;
 
       function setState(s) {

@@ -896,6 +896,12 @@ Wrap a bubble in a [`Tooltip`](/components/tooltip) to reveal metadata on hover,
       if (!w) return
       var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-portal"));
       if (!tpl) return;
+      if (!tpl.content.querySelector("[data-slot=tooltip-content]")) {
+        // the template is the component's contract (dialog family): without
+        // a content slot there is nothing to wire — report and stay closed
+        console.error("shadless: tooltip template \"" + tpl.id + "\" carries no tooltip-content slot — staying closed");
+        return;
+      }
       var wasOpen = false;
       var wired = RadixKernel.wireTooltip({
         trigger: trigger,
@@ -1067,6 +1073,12 @@ Pair a bubble with a [`Popover`](/components/popover) to surface more informatio
       if (!w) return
       var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-portal"));
       if (!tpl) return;
+      if (!tpl.content.querySelector("[data-slot=popover-content]")) {
+        // the template is the component's contract (dialog family): without
+        // a content slot there is nothing to wire — report and stay closed
+        console.error("shadless: popover template \"" + tpl.id + "\" carries no popover-content slot — staying closed");
+        return;
+      }
       var open = false, handles = null, content = null;
 
       function setState(s) {

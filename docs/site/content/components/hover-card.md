@@ -69,6 +69,12 @@ For sighted users to preview content available behind a link.
       if (!w) return
       var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-portal"));
       if (!tpl) return;
+      if (!tpl.content.querySelector("[data-slot=hover-card-content]")) {
+        // the template is the component's contract (dialog family): without
+        // a content slot there is nothing to wire — report and stay closed
+        console.error("shadless: hover-card template \"" + tpl.id + "\" carries no hover-card-content slot — staying closed");
+        return;
+      }
       var open = false, current = null;
       var wired = RadixKernel.wireHoverCard({
         trigger: trigger,
@@ -232,6 +238,12 @@ shadless's hover-card glue doesn't expose `side`/`align` through markup either �
       if (!w) return
       var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-portal"));
       if (!tpl) return;
+      if (!tpl.content.querySelector("[data-slot=hover-card-content]")) {
+        // the template is the component's contract (dialog family): without
+        // a content slot there is nothing to wire — report and stay closed
+        console.error("shadless: hover-card template \"" + tpl.id + "\" carries no hover-card-content slot — staying closed");
+        return;
+      }
       var open = false, current = null;
       var wired = RadixKernel.wireHoverCard({
         trigger: trigger,
@@ -488,6 +500,12 @@ shadless's hover-card glue doesn't expose `side`/`align` through markup either �
       if (!w) return
       var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-portal"));
       if (!tpl) return;
+      if (!tpl.content.querySelector("[data-slot=hover-card-content]")) {
+        // the template is the component's contract (dialog family): without
+        // a content slot there is nothing to wire — report and stay closed
+        console.error("shadless: hover-card template \"" + tpl.id + "\" carries no hover-card-content slot — staying closed");
+        return;
+      }
       var open = false, current = null;
       var wired = RadixKernel.wireHoverCard({
         trigger: trigger,
@@ -746,6 +764,12 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       if (!w) return
       var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-portal"));
       if (!tpl) return;
+      if (!tpl.content.querySelector("[data-slot=hover-card-content]")) {
+        // the template is the component's contract (dialog family): without
+        // a content slot there is nothing to wire — report and stay closed
+        console.error("shadless: hover-card template \"" + tpl.id + "\" carries no hover-card-content slot — staying closed");
+        return;
+      }
       var open = false, current = null;
       var wired = RadixKernel.wireHoverCard({
         trigger: trigger,

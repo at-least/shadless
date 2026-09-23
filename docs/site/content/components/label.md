@@ -883,6 +883,13 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
       if (!w) return
       var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-tpl"));
       if (!tpl) return;
+      if (!tpl.content.querySelector("[data-slot=select-content]")) {
+        // the template is the component's contract (dialog family): without
+        // a content slot there is nothing to wire — report and skip THIS
+        // trigger, never the rest of the forEach
+        console.error("shadless: select template \"" + tpl.id + "\" carries no select-content slot — staying closed");
+        return;
+      }
       var valueNode = trigger.querySelector("[data-slot=select-value]");
 
       // clone once — kernel mounts/unmounts the wrapper around the same content
