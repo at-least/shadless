@@ -38,6 +38,12 @@ fn copy_tree(src: &Path, dst: &Path) -> Result<(), String> {
             fs::symlink_metadata(&p).map_err(|e| crate::fsutil::go_path_err("lstat", &p, &e))?;
         let rel = p.strip_prefix(src).map_err(|e| e.to_string())?;
         let target = dst.join(rel);
+        if meta.file_type().is_symlink() {
+            return Err(format!(
+                "copy_tree: {}: symlink refused — the pinned tree must not carry symlinks",
+                p.display()
+            ));
+        }
         if meta.is_dir() {
             fs::create_dir_all(&target)
                 .map_err(|e| crate::fsutil::go_path_err("mkdir", &target, &e))?;

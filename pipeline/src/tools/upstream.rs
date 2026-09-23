@@ -602,6 +602,12 @@ fn copy_tree(src: &Path, dst: &Path) -> Result<(), String> {
         let e = e.map_err(|e| e.to_string())?;
         let rel = e.path().strip_prefix(src).map_err(|e| e.to_string())?;
         let target = dst.join(rel);
+        if e.file_type().is_symlink() {
+            return Err(format!(
+                "copy_tree: {}: symlink refused — the pinned tree must not carry symlinks",
+                e.path().display()
+            ));
+        }
         if e.file_type().is_dir() {
             std::fs::create_dir_all(&target).map_err(|e| e.to_string())?;
             continue;
@@ -618,6 +624,28 @@ fn copy_tree(src: &Path, dst: &Path) -> Result<(), String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// git tracks symlinks: a compromised pinned upstream could commit
+    /// content/docs/foo.mdx -> /home/<user>/.ssh/id_rsa and the drill would
+    /// read through it into a committed artifact. Refused loudly instead.
+    #[test]
+    fn unit_copy_tree_refuses_file_symlinks() {
+        let src = crate::fsutil::temp_root("copytree-symlink-src");
+        std::fs::write(src.join("real.txt"), "x").unwrap();
+        std::os::unix::fs::symlink("/etc/hostname", src.join("link.txt")).unwrap();
+        let dst = crate::fsutil::temp_root("copytree-symlink-dst");
+        let r = copy_tree(&src, &dst);
+        let err = match r {
+            Err(e) => e,
+            Ok(()) => panic!("a symlink in the copied tree must be refused"),
+        };
+        assert!(err.contains("symlink"), "got: {err}");
+        assert!(
+            !dst.join("link.txt").exists(),
+            "no bytes may be read through the link"
+        );
+    }
+
 
     /// Go TestUnitClassifyFailures.
     #[test]
