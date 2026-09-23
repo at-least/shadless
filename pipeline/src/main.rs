@@ -4,8 +4,9 @@
 //!   pipeline list   <tier|node…>   the closure, annotated, no execution
 //!   pipeline status <tier|node…>   fresh / stale, per node
 //!
-//! Output formats are byte-identical with the Go binary (pipeline/main.go) —
-//! that is the M1 acceptance bar; see tests/golden.rs.
+//! Output formats were pinned byte-identical to the Go binary during the
+//! port (the M1 bar; go-parity-final tag); tests/golden.rs now replays this
+//! engine's own bytes.
 
 use pipeline::glob::files;
 use pipeline::graph::{load_graph_at, Graph};

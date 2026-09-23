@@ -1,7 +1,7 @@
 //! Port of pipeline/rtl_dict.go — lift the RTL translation dictionaries out of
-//! upstream's aria examples into src/registry/rtl-translations.json. See the Go
-//! source for the contract; byte-identity with the Go binary is the acceptance
-//! bar.
+//! upstream's aria examples into src/registry/rtl-translations.json. The
+//! contract was proven byte-identical to the Go source during the port
+//! (go-parity-final tag).
 
 use crate::convert::esbuild_tsx;
 use crate::jsonorder::json_string;

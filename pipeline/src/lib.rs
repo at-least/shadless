@@ -1,5 +1,7 @@
 //! shadless-rs — Rust port of shadless/pipeline (the graph runner + converters).
-//! Byte-identity with the Go binary is the acceptance bar; see PLAN.md.
+//! The port's acceptance bar was byte-identity with the Go binary
+//! (go-parity-final tag); the live bar is the self-recorded golden harness
+//! (tests/gen_golden.sh). See PORT.md.
 
 pub mod convert;
 pub mod engine;

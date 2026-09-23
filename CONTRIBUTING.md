@@ -31,8 +31,10 @@ npm run pin                                   # auto-clones the pinned upstream 
 `generated/ir/`, `docs/catalog.json`, `docs/demos/`, …) with what the
 pipeline just produced, so **commit regenerated outputs with the source
 change that caused them**.
-After touching `src/runtime/**`: `npm run pipeline` (`./build/pipeline build-js`) → `npm run demo` → `npm run docs`, in that order (the emitter wipes the interactive
-demo pages; only the full demo build restores them).
+After touching `src/runtime/**`: `./build/pipeline build-js` → `npm run demo` → `npm run docs`.
+`npm run pipeline` only builds the binary (`pipeline-bin.mjs --install`); nothing in the demo or
+docs chains rebuilds the JS dist, so skipping `build-js` means testing — and committing, when
+`reproducible` goes green against a stale tree — the old `dist/shadless.js`.
 
 ## Where changes go
 

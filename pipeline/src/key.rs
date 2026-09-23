@@ -2,9 +2,9 @@
 //!
 //! The whole rule: key(n) = H( n.id, n.run, contents of every declared input,
 //! key(d) for every d in n.needs ). Hash-field bytes ("node\x00..\n" etc.)
-//! are reproduced exactly, so keys are byte-identical with the Go binary's
-//! and the same stamps directory is readable by both — that is what makes the
-//! `status` golden-diff a test of this file.
+//! are reproduced exactly, so keys were byte-identical with the Go binary's
+//! (the port's bar — the Go engine is history, go-parity-final tag), which is
+//! what makes the `status` golden-diff a test of this file.
 
 use crate::glob::files;
 use crate::graph::Graph;

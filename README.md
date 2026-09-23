@@ -42,7 +42,7 @@ ships every component precompiled as the zero-setup alternative.
 | `shadless/<name>.css` | per-component `@apply` source, one import per component you use |
 | `shadless/full.css` / `shadless/full.min.css` | every component precompiled (no-build path) |
 | `shadless/js` / `js.min` | the JS base: engine + registry + theme (+ the vendored radix kernel), auto-initialises. `<script>` gets the IIFE (`window.shadless`), and `js.min` is the minified one. Under `import` both resolve to the same ES module — `dist/esm/shadless.mjs`, `export default shadless` + named `init`, `get`, `theme`, … — because there is exactly one ES-module base for every component file to register on; minify it in your own bundle |
-| `shadless/js/<name>` | one behavior file per interactive component, registers with the base; `shadless.get(el)` returns its handle (`open()`, `close()`, `toggle()`, `isOpen()`; tabs `activate(i)`; slider `values()` / `setValue()`; carousel the embla api). Under `import` each file is a module that imports the base itself, so import order does not matter |
+| `shadless/js/<name>` | one behavior file per interactive component, registers with the base; `shadless.get(el)` returns its handle (`open()`, `close()`, `toggle()`, `isOpen()`; tabs `activate(i)`; slider `values()` / `setValue()`; carousel the embla api; select `select(item)` / `value()` / `label()` / `selected()`). Under `import` each file is a module that imports the base itself, so import order does not matter |
 | `shadless/esm/<name>` | the ES-module files by explicit path (`shadless.mjs` is the base) |
 
 ```js
@@ -70,6 +70,7 @@ delegate on `document` instead of polling:
 | | toggle | `{ pressed }` |
 | | radio-group / toggle-group root | `{ value, item }` (`value` is the item's `value` attr or id; an array for multiple toggle-groups) |
 | | tabs root | `{ index, trigger }` |
+| | select trigger | `{ value, label, item }` |
 | | slider root | `{ values }` (live, every step of a drag) |
 | `shadless:commit` | slider root | `{ values }` once per gesture (radix `onValueCommit`) — the value to persist |
 | `shadless:themechange` | `document` | `{ mode }` |

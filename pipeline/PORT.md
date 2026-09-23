@@ -13,7 +13,7 @@ rebuild, so a step that cannot promise identical bytes must not move in.
 
 | Toolchain | Used by | Why it stays |
 |---|---|---|
-| the pinned `node_modules/.bin/esbuild` binary | `convert`, `rtl-dict` (Transform), `build-js` (minify) | The committed `dist/shadless.min.js` and the IR scanner are byte-pinned to esbuild's printer. Measured (probe/oxc REPORT — the probe dir did not survive into this repo): 0/61 inputs byte-identical from pure-Rust printers — the divergence is in codegen order/renaming, not configurable. |
+| the pinned `node_modules/.bin/esbuild` binary | `convert`, `rtl-dict` (Transform), `build-js` (minify) | The committed `dist/shadless.min.js` and the IR scanner are byte-pinned to esbuild's printer. Measured (pipeline/probe/oxc REPORT): 0/61 inputs byte-identical from pure-Rust printers — the divergence is in codegen order/renaming, not configurable. |
 | tailwind CLI | `tw` steps | The committed `dist/*.css` are tailwind's bytes. |
 | playwright (chromium) | browser gates, contracts, fixture self-tests | The oracle IS React in a real browser; jsdom does not produce comparable bytes. |
 | node + `tools/*.mjs` | the JS runtime surface, unit/contract harnesses, prettier batching | The product ships JS; its tests run where the product runs. |

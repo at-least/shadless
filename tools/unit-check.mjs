@@ -13,9 +13,9 @@
 // area; this file is just the runner. Zero framework, same convention as
 // every other gate: inline asserts, exit 1 on any failure, honest PASS.
 //
-// A suite moves out of this file when the tool it tests moves to Go — the
-// assertions go with the implementation (`go test -run ^TestUnit`), so there
-// is never a JS test standing over a Go function. The `unit` node runs both.
+// A suite moves out of this file when the tool it tests gains its own
+// harness — the assertions go with the implementation, so there is never a
+// JS test standing over a Rust function. The `unit` node runs everything.
 import { makeT } from "./unit/harness.mjs"
 import * as css from "./unit/css.mjs"
 import * as emitter from "./unit/emitter.mjs"

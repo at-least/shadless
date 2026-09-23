@@ -7,7 +7,8 @@
 //!
 //! `plan` is a declaration-order DFS post-order (targets in argv order, each
 //! node's `needs` in declared order) — the traversal order IS the output
-//! interface and is golden-diffed against the Go binary.
+//! interface and is golden-diffed (tests/gen_golden.sh records this engine's
+//! own bytes).
 
 use crate::nodes::{self, Node};
 use std::collections::{HashMap, HashSet};

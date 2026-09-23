@@ -1,14 +1,14 @@
 //! Port of pipeline/nodes.go — THE pipeline graph, single source of truth.
 //! Transcribed field-for-field: any drift shows up as a key mismatch in the
-//! `status` golden-diff against the Go binary. `inputs: None` is Go's nil
+//! `status` golden-diff (self-recorded by tests/gen_golden.sh). `inputs: None` is Go's nil
 //! (never fresh); `produces: None` is Go's nil (no declared outputs).
 //!
 //! Two graph shapes live here:
 //!
-//! - `all_go()` is the authored, Go-verbatim table — the byte-parity oracle
-//!   the acceptance harness (tests/gen_golden.sh + tests/golden.rs) runs
-//!   against the Go binary. Transcription errors surface there as key
-//!   mismatches.
+//! - `all_go()` is the authored, Go-verbatim table kept from the port. The
+//!   dual-engine byte-parity oracle that ran it against the Go binary is
+//!   history (go-parity-final tag); today tests/gen_golden.sh +
+//!   tests/golden.rs pin this engine's own keys.
 //! - `all()` returns the graph the engine actually runs. Default is the
 //!   self-hosted shape (`self_host`): every node executes this binary, not
 //!   the Go one. `SHADLESS_GRAPH=go-mirror` selects `all_go()` verbatim for

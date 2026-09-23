@@ -1,6 +1,8 @@
 //! Ports of the remaining pipeline tools: the pure-file builders and the
 //! browser-driven gates. Each submodule is a direct port of its Go file;
-//! byte-identity with the Go binary is the acceptance bar.
+//! byte-identity with the Go binary was the port's acceptance bar
+//! (go-parity-final tag — the harness that proved it is retired;
+//! tests/gen_golden.sh now self-records).
 
 pub mod css_direction_update;
 pub mod demo_parity;
