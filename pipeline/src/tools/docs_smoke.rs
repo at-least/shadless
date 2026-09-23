@@ -8,6 +8,10 @@
 
 use std::path::Path;
 use std::process::{Child, Command, Stdio};
+use std::sync::LazyLock;
+
+static RE_IFRAME_SRC: LazyLock<regex::Regex> =
+    LazyLock::new(|| regex::Regex::new(r#"<iframe[^>]*\ssrc="([^"]+)""#).unwrap());
 
 pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
     let site_dir = root.join("docs/site/public");
@@ -15,6 +19,48 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
         eprintln!("FAIL  docs smoke: the site is not built — run make docs first");
         return 1;
     }
+
+    let mut failures: Vec<String> = Vec::new();
+
+    // ---- 0. every root-relative preview iframe src is a built file ----
+    // The browser rounds below visit dialog and avatar (or, under --all,
+    // count iframes without asserting their targets): a preview pointing at
+    // a page that does not exist is invisible to all of them — accordion's
+    // iframe can 404 and the gate stays green. Check the links statically,
+    // on every built page, in both modes.
+    {
+        let mut dead: Vec<String> = Vec::new();
+        for e in walkdir::WalkDir::new(&site_dir) {
+            let Ok(e) = e else { continue };
+            if e.file_type().is_dir() || e.file_name() != "index.html" {
+                continue;
+            }
+            let Ok(rel) = e.path().strip_prefix(&site_dir) else {
+                continue;
+            };
+            let Ok(b) = std::fs::read_to_string(e.path()) else {
+                continue;
+            };
+            for m in RE_IFRAME_SRC.captures_iter(&b) {
+                let src = &m[1];
+                if src.starts_with('/') && !src.contains("//") {
+                    if !site_dir.join(src.trim_start_matches('/')).exists() {
+                        dead.push(format!("{}: {}", rel.display(), src));
+                    }
+                }
+            }
+        }
+        dead.sort();
+        if dead.is_empty() {
+            println!("PASS  iframe targets: every root-relative preview iframe src is a built page");
+        } else {
+            for d in &dead {
+                eprintln!("FAIL  iframe target missing — {}", d);
+            }
+            failures.push("iframe targets".to_string());
+        }
+    }
+
 
     // ephemeral-port static server (python3 http.server, same as the JS gate).
     // The listener is dropped before python binds the port (a TOCTOU window:
@@ -98,7 +144,6 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
         return 1;
     }
 
-    let mut failures: Vec<String> = Vec::new();
     let check = |label: &str, ok: bool, detail: &str, failures: &mut Vec<String>| {
         if ok {
             println!("PASS  {}", label);
