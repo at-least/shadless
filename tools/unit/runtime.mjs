@@ -823,6 +823,25 @@ window.__esm = { default: shadless, get, theme, init, named: Object.keys(ns).sor
     t.ok("select: a LATER select still wires after a malformed one", !!later)
     t.eq("select: the later select works", later && later.value(), "B")
   }
+  // a "-portal" id on a NON-template element must degrade the same way —
+  // tpl.content is undefined there and the deref used to throw inside the
+  // forEach, unwiring every later trigger of the family (review follow-up)
+  {
+    const dom = bootKernel(`
+<div id="t11a-portal">not a template</div>
+<button type="button" data-slot="tooltip-trigger" id="t11a-trigger">broken</button>
+<button type="button" data-slot="tooltip-trigger" id="t11b-trigger">ok</button>
+<template id="t11b-portal"><div data-slot="tooltip-content">tip</div></template>`, ["tooltip"])
+    const doc = dom.window.document
+    const winErrs = []
+    dom.window.addEventListener("error", (e) => winErrs.push(e.message))
+    const errs = []
+    dom.window.console.error = (...a) => errs.push(a.join(" "))
+    dom.window.shadless.initAll()
+    t.ok("tooltip: a non-template -portal does not throw at init", winErrs.length === 0, winErrs.join(" | "))
+    t.ok("tooltip: the non-template portal is reported", errs.some((m) => m.includes("t11a-portal")), errs.join(" | "))
+    t.ok("tooltip: a LATER trigger still wires after a non-template portal", !!dom.window.shadless.get("#t11b-trigger"))
+  }
   // menu family: an EMPTY -tpl must not throw in mountLayer (kernel treats null as no-op)
   {
     const dom = bootKernel(`

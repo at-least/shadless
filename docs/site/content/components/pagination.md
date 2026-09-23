@@ -497,7 +497,7 @@ Use just the previous and next buttons without page numbers. This is useful for 
       if (!w) return
       var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-tpl"));
       if (!tpl) return;
-      if (!tpl.content.querySelector("[data-slot=select-content]")) {
+      if (!tpl.content || !tpl.content.querySelector("[data-slot=select-content]")) {
         // the template is the component's contract (dialog family): without
         // a content slot there is nothing to wire — report and skip THIS
         // trigger, never the rest of the forEach

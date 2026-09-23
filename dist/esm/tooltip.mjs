@@ -14,7 +14,7 @@ import "./shadless.mjs"
       if (!w) return
       var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-portal"));
       if (!tpl) return;
-      if (!tpl.content.querySelector("[data-slot=tooltip-content]")) {
+      if (!tpl.content || !tpl.content.querySelector("[data-slot=tooltip-content]")) {
         // the template is the component's contract (dialog family): without
         // a content slot there is nothing to wire — report and stay closed
         console.error("shadless: tooltip template \"" + tpl.id + "\" carries no tooltip-content slot — staying closed");

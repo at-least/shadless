@@ -767,7 +767,7 @@ Combine labels, controls, and help text to compose accessible form fields and gr
       if (!w) return
       var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-tpl"));
       if (!tpl) return;
-      if (!tpl.content.querySelector("[data-slot=select-content]")) {
+      if (!tpl.content || !tpl.content.querySelector("[data-slot=select-content]")) {
         // the template is the component's contract (dialog family): without
         // a content slot there is nothing to wire — report and skip THIS
         // trigger, never the rest of the forEach
@@ -1324,7 +1324,7 @@ See the Form documentation for building forms with the `Field` component and Rea
       if (!w) return
       var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-tpl"));
       if (!tpl) return;
-      if (!tpl.content.querySelector("[data-slot=select-content]")) {
+      if (!tpl.content || !tpl.content.querySelector("[data-slot=select-content]")) {
         // the template is the component's contract (dialog family): without
         // a content slot there is nothing to wire — report and skip THIS
         // trigger, never the rest of the forEach
@@ -3366,7 +3366,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       if (!w) return
       var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-tpl"));
       if (!tpl) return;
-      if (!tpl.content.querySelector("[data-slot=select-content]")) {
+      if (!tpl.content || !tpl.content.querySelector("[data-slot=select-content]")) {
         // the template is the component's contract (dialog family): without
         // a content slot there is nothing to wire — report and skip THIS
         // trigger, never the rest of the forEach

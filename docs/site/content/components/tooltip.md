@@ -107,7 +107,7 @@ A popup that displays information related to an element when the element receive
       if (!w) return
       var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-portal"));
       if (!tpl) return;
-      if (!tpl.content.querySelector("[data-slot=tooltip-content]")) {
+      if (!tpl.content || !tpl.content.querySelector("[data-slot=tooltip-content]")) {
         // the template is the component's contract (dialog family): without
         // a content slot there is nothing to wire — report and stay closed
         console.error("shadless: tooltip template \"" + tpl.id + "\" carries no tooltip-content slot — staying closed");
@@ -549,7 +549,7 @@ Use the `side` prop to change the position of the tooltip.
       if (!w) return
       var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-portal"));
       if (!tpl) return;
-      if (!tpl.content.querySelector("[data-slot=tooltip-content]")) {
+      if (!tpl.content || !tpl.content.querySelector("[data-slot=tooltip-content]")) {
         // the template is the component's contract (dialog family): without
         // a content slot there is nothing to wire — report and stay closed
         console.error("shadless: tooltip template \"" + tpl.id + "\" carries no tooltip-content slot — staying closed");
@@ -724,7 +724,7 @@ Use the `side` prop to change the position of the tooltip.
       if (!w) return
       var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-portal"));
       if (!tpl) return;
-      if (!tpl.content.querySelector("[data-slot=tooltip-content]")) {
+      if (!tpl.content || !tpl.content.querySelector("[data-slot=tooltip-content]")) {
         // the template is the component's contract (dialog family): without
         // a content slot there is nothing to wire — report and stay closed
         console.error("shadless: tooltip template \"" + tpl.id + "\" carries no tooltip-content slot — staying closed");
@@ -876,7 +876,7 @@ Show a tooltip on a disabled button by wrapping it with a span.
       if (!w) return
       var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-portal"));
       if (!tpl) return;
-      if (!tpl.content.querySelector("[data-slot=tooltip-content]")) {
+      if (!tpl.content || !tpl.content.querySelector("[data-slot=tooltip-content]")) {
         // the template is the component's contract (dialog family): without
         // a content slot there is nothing to wire — report and stay closed
         console.error("shadless: tooltip template \"" + tpl.id + "\" carries no tooltip-content slot — staying closed");
@@ -1262,7 +1262,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       if (!w) return
       var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-portal"));
       if (!tpl) return;
-      if (!tpl.content.querySelector("[data-slot=tooltip-content]")) {
+      if (!tpl.content || !tpl.content.querySelector("[data-slot=tooltip-content]")) {
         // the template is the component's contract (dialog family): without
         // a content slot there is nothing to wire — report and stay closed
         console.error("shadless: tooltip template \"" + tpl.id + "\" carries no tooltip-content slot — staying closed");

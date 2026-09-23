@@ -8,7 +8,7 @@
       if (!w) return
       var tpl = document.getElementById(trigger.id.replace(/-trigger$/, "-portal"));
       if (!tpl) return;
-      if (!tpl.content.querySelector("[data-slot=hover-card-content]")) {
+      if (!tpl.content || !tpl.content.querySelector("[data-slot=hover-card-content]")) {
         // the template is the component's contract (dialog family): without
         // a content slot there is nothing to wire — report and stay closed
         console.error("shadless: hover-card template \"" + tpl.id + "\" carries no hover-card-content slot — staying closed");
