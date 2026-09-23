@@ -1,7 +1,7 @@
 // emitter (src/emitter/index.mjs) + tags.mjs — Wave H: tree building, render
 // semantics (root-replace defaults, leaf fills, anchors), attr merging,
 // DEFAULT_CONTENT key validation.
-import { buildTree, renderTree, renderFn, escHtml, mergeRootAttrs, validateDefaultContent, resolveDefault, DEFAULT_CONTENT, cssIncludesToken }
+import { buildTree, renderTree, renderFn, escHtml, mergeRootAttrs, validateDefaultContent, resolveDefault, DEFAULT_CONTENT, cssIncludesToken, validName }
   from "../../src/emitter/index.mjs"
 import { normalizeTag, kebab, NAT, VOID, externalMemberTag } from "../../src/tags.mjs"
 
@@ -94,6 +94,10 @@ export function run(t) {
     t.eq("render: slot with a quote stays inside the attribute",
       renderTree({ tag: "div", slot: 'card" onmouseover="x', anchor: null, kids: [] }, {}, "", {}, false),
       '<div data-slot="card&quot; onmouseover=&quot;x"></div>')
+    // a component name becomes an output path — kebab only, no traversal
+    t.ok("validName: real kebab names pass", validName("alert-dialog") && validName("button2"))
+    t.ok("validName: traversal and dot names are refused",
+      !validName("../../evil") && !validName("a/b") && !validName("a.b") && !validName("") && !validName("A-B"))
     t.eq("render: class tokens with a quote stay inside the attribute",
       renderTree({ tag: "div", slot: null, anchor: 'a"b', kids: [] }, {}, "", {}, false),
       '<div class="a&quot;b"></div>')

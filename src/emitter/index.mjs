@@ -337,6 +337,12 @@ export const escHtml = (s) => String(s)
   .replace(/&/g, "&amp;").replace(/</g, "&lt;")
   .replace(/>/g, "&gt;").replace(/"/g, "&quot;")
 
+// a component name becomes an output path (dist/components/<name>.html) —
+// kebab only, mirroring the Rust twin's valid_component_name
+/** @param {string} name */
+export const validName = (name) =>
+  name !== "" && /^[a-z0-9][a-z0-9-]*$/.test(name)
+
 /**
  * @param {Ir} ir
  * @param {IrComponent} fn
@@ -413,6 +419,9 @@ function main() {
   const files = readdirSync(IRDIR).filter((f) => f.endsWith(".json")).sort()
   const statics = /** @type {Ir[]} */ (files.map((f) => JSON.parse(readFileSync(join(IRDIR, f), "utf8"))))
     .filter((ir) => ir.tier === "static")
+  for (const ir of statics) {
+    if (!validName(ir.name)) { console.error(`FAIL ir[${ir.name}]: name is not a kebab component name — refusing to write outside the output tree`); process.exit(1) }
+  }
   /** @type {Record<string, import("../ir.d.ts").TierEntry>} */
   const EXPECTED_STATIC = JSON.parse(readFileSync("src/registry/tiers.json", "utf8"))
   const wantStatic = Object.values(EXPECTED_STATIC).filter((t) => t.tier === "static").length

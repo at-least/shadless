@@ -182,6 +182,17 @@ fn render_tree(
 
 /// Stray table-parts get dropped by HTML parsers at body level — wrap
 /// ancestors.
+/// Component names become output paths (dist/components/{name}.html,
+/// docs/demos/{name}.html) and CSS comment headers — a name carrying path
+/// separators or dots escapes the output tree. Every registry name is a
+/// kebab identifier; anything else is refused at load.
+pub fn valid_component_name(name: &str) -> bool {
+    !name.is_empty()
+        && name
+            .chars()
+            .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == '-')
+}
+
 fn table_wrap(tag: &str) -> Option<&'static str> {
     match tag {
         "thead" | "tbody" | "tfoot" | "caption" | "colgroup" | "tr" | "th" | "td" => Some("table"),
@@ -410,6 +421,12 @@ pub fn run_emit() -> Result<(), String> {
         css::drop_nulls(&mut v);
         let ir: CssIrComponent =
             serde_json::from_value(v).map_err(|e| format!("emit: ir: {} {}", n, e))?;
+        if !valid_component_name(&ir.name) {
+            return Err(format!(
+                "emit: ir: {}: name {:?} is not a kebab component name — refusing to write outside the output tree",
+                n, ir.name
+            ));
+        }
         if ir.tier == "static" {
             statics.push(ir);
         }

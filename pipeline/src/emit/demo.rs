@@ -156,6 +156,12 @@ pub fn run_demo() -> Result<(), String> {
         super::css::drop_nulls(&mut v);
         let ir: CssIrComponent =
             serde_json::from_value(v).map_err(|e| format!("demo: ir: {} {}", n, e))?;
+        if !super::valid_component_name(&ir.name) {
+            return Err(format!(
+                "demo: ir: {}: name {:?} is not a kebab component name — refusing to write outside the output tree",
+                n, ir.name
+            ));
+        }
         if shipped_tier(&ir.tier) || reg_tiers.get(&ir.name).map(|t| t.emit).unwrap_or(false) {
             file_order.push(ir.name.clone());
             ir_all.insert(ir.name.clone(), ir);

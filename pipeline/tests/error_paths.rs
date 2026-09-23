@@ -232,3 +232,46 @@ fn corrupt_owned_manifest_fails_example_oracle_check() {
         stderr
     );
 }
+
+// An IR name becomes an output path (dist/components/{name}.html) and a CSS
+// comment header: a name with path separators writes outside the output
+// tree. Round-2 review: no loader validated the charset.
+#[test]
+fn traversal_ir_name_fails_emit() {
+    if !adjacent_tree_is_pinned() {
+        eprintln!("skip: the adjacent tree is unpinned — emit dies on the missing skin before the IR");
+        return;
+    }
+    let tmp = tempfile::tempdir().unwrap();
+    // a real IR file, only the name mutated
+    let ir_src = std::fs::read_to_string(
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../generated/ir/button.json"),
+    )
+    .unwrap();
+    let mut ir: serde_json::Value = serde_json::from_str(&ir_src).unwrap();
+    ir["name"] = serde_json::json!("../../evil");
+    std::fs::create_dir_all(tmp.path().join("generated/ir")).unwrap();
+    std::fs::create_dir_all(tmp.path().join("src/registry")).unwrap();
+    std::fs::write(
+        tmp.path().join("generated/ir/evil.json"),
+        serde_json::to_string(&ir).unwrap(),
+    )
+    .unwrap();
+    std::fs::write(
+        tmp.path().join("src/registry/tiers.json"),
+        "{\"button\": {\"tier\": \"static\"}}",
+    )
+    .unwrap();
+    let (code, _stdout, stderr) = run_tool_in(tmp.path(), "emit");
+    assert_eq!(code, 1, "stderr: {}", stderr);
+    assert!(
+        stderr.contains("kebab component name"),
+        "must refuse the traversal name, got: {}",
+        stderr
+    );
+    assert!(
+        !tmp.path().join("evil.html").exists(),
+        "the traversal write must not happen"
+    );
+}
