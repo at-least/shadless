@@ -150,7 +150,7 @@ pub fn all_go() -> Vec<Node> {
             Some(&["pipeline/gate_pack.go", "pipeline/gates_test.go", "package.json", "README.md", "dist/**"]),
             None,
             "the npm surface — exports map, tarball contents, README specifiers, an empty dependencies — must agree: a bare-string ./runtime.min export served an IIFE to `import`, README documented a specifier that does not resolve, and a React-free package installed React through dependencies",
-            &["pack-broken-export"],
+            &["pack-broken-export", "pack-readme-grey-drift"],
         ),
         node(
             "coverage", "gate", "fast",
