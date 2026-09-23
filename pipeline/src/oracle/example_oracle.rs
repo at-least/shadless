@@ -47,9 +47,9 @@ pub struct OraTarget {
 }
 
 #[derive(Deserialize)]
-struct TierEntry {
+pub(crate) struct TierEntry {
     #[serde(default)]
-    tier: String,
+    pub(crate) tier: String,
 }
 
 /// tiers.json read once for the whole run; an unparseable file is fatal —
@@ -61,25 +61,71 @@ fn tiers_map() -> Result<HashMap<String, TierEntry>, String> {
     serde_json::from_str(&tiers_b).map_err(|e| format!("tiers: {}", e))
 }
 
-pub(crate) fn ora_load_targets(tiers: &HashMap<String, TierEntry>) -> (Vec<OraTarget>, Vec<String>) {
+#[derive(Deserialize)]
+struct Preview {
+    #[serde(default)]
+    name: String,
+    #[serde(default)]
+    status: String,
+}
+
+#[derive(Deserialize, Default)]
+struct Catalog {
+    #[serde(default)]
+    previews: Vec<Preview>,
+}
+
+#[derive(Deserialize)]
+struct Owned {
+    #[serde(default)]
+    name: String,
+    #[serde(default)]
+    out: String,
+}
+
+/// Every input whose corruption used to silently change what this tool does:
+/// the catalog and overlays manifest decide what the stale-page sweep may
+/// DELETE, the owned manifest decides what --check verifies (an empty either
+/// used to mean mass deletion or a vacuous green). All parsed up front,
+/// before the browser — and the sweep — runs.
+struct OraInputs {
+    tiers: HashMap<String, TierEntry>,
+    catalog: Catalog,
+    overlay_manifest: serde_json::Value,
+    owned: Vec<Owned>,
+}
+
+fn ora_inputs(check: bool) -> Result<OraInputs, String> {
+    let tiers = tiers_map()?;
+    let catalog_b = std::fs::read_to_string("docs/catalog.json")
+        .map_err(|e| format!("catalog: {}", e))?;
+    let catalog: Catalog =
+        serde_json::from_str(&catalog_b).map_err(|e| format!("catalog: {}", e))?;
+    let om_b = std::fs::read_to_string("overlays/manifest.json")
+        .map_err(|e| format!("overlays manifest: {}", e))?;
+    let overlay_manifest =
+        serde_json::from_str(&om_b).map_err(|e| format!("overlays manifest: {}", e))?;
+    let owned = if check {
+        let owned_b = std::fs::read_to_string(ORA_MANIFEST)
+            .map_err(|e| format!("owned: {}", e))?;
+        serde_json::from_str(&owned_b).map_err(|e| format!("owned: {}", e))?
+    } else {
+        Vec::new()
+    };
+    Ok(OraInputs {
+        tiers,
+        catalog,
+        overlay_manifest,
+        owned,
+    })
+}
+
+pub(crate) fn ora_load_targets(
+    tiers: &HashMap<String, TierEntry>,
+    catalog: &Catalog,
+) -> (Vec<OraTarget>, Vec<String>) {
     let mut targets: Vec<OraTarget> = Vec::new();
     let mut skipped: Vec<String> = Vec::new();
-    let catalog_b = std::fs::read_to_string("docs/catalog.json").unwrap_or_default();
-    #[derive(Deserialize)]
-    struct Preview {
-        #[serde(default)]
-        name: String,
-        #[serde(default)]
-        status: String,
-    }
-    #[derive(Deserialize)]
-    struct Catalog {
-        #[serde(default)]
-        previews: Vec<Preview>,
-    }
-    let catalog: Catalog = serde_json::from_str(&catalog_b).unwrap_or(Catalog {
-        previews: Vec::new(),
-    });
     static DEMO_RE: OnceLock<Regex> = OnceLock::new();
     let demo_re = DEMO_RE.get_or_init(|| Regex::new(r"^(.+)-demo$").unwrap());
     let is_kernel_demo = |demo_name: &str| -> bool {
@@ -210,9 +256,9 @@ fn run_inner(check: bool) -> Result<(), String> {
         }
     }
 
-    let tiers = tiers_map()?;
+    let inputs = ora_inputs(check)?;
     let shell = BrowserShell::start().map_err(|e| format!("example-oracle: {}", e))?;
-    let result = run_with_shell(&shell, check, &no_oracle, &tiers);
+    let result = run_with_shell(&shell, check, &no_oracle, &inputs);
     shell.close();
     result
 }
@@ -221,13 +267,13 @@ fn run_with_shell(
     shell: &BrowserShell,
     check: bool,
     no_oracle: &HashSet<String>,
-    tiers: &HashMap<String, TierEntry>,
+    inputs: &OraInputs,
 ) -> Result<(), String> {
     shell.launch().map_err(|e| format!("example-oracle: {}", e))?;
     let page =
         shell.new_page(false).map_err(|e| format!("example-oracle: new page: {}", e))?;
 
-    let (targets, skipped) = ora_load_targets(tiers);
+    let (targets, skipped) = ora_load_targets(&inputs.tiers, &inputs.catalog);
     if !skipped.is_empty() {
         println!(
             "oracle: {} authored demos have no upstream example (kept hand-authored): {}",
@@ -237,18 +283,9 @@ fn run_with_shell(
     }
 
     if check {
-        let owned_b = std::fs::read_to_string(ORA_MANIFEST)
-            .map_err(|e| format!("example-oracle: {}", e))?;
-        #[derive(Deserialize)]
-        struct Owned {
-            #[serde(default)]
-            name: String,
-            #[serde(default)]
-            out: String,
-        }
-        let owned: Vec<Owned> = serde_json::from_str(&owned_b).unwrap_or_default();
+        let owned = &inputs.owned;
         let mut drift = 0;
-        for t in &owned {
+        for t in owned {
             let html_file = match build_oracle(Path::new("."), &t.name, Path::new("build/example-oracle")) {
                 Ok(h) => h,
                 Err(e) => {
@@ -302,13 +339,13 @@ fn run_with_shell(
 
     // trivial-js components with a behavior file; selector per component
     let mut trivial_js: Vec<String> = Vec::new();
-    if let Ok(rt_ents) = std::fs::read_dir("src/runtime/components") {
-        for e in rt_ents.flatten() {
-            let c = e.file_name().to_string_lossy().into_owned();
-            let c = c.trim_end_matches(".js").to_string();
-            if tiers.get(&c).map(|t| t.tier == "trivial-js").unwrap_or(false) {
-                trivial_js.push(c);
-            }
+    let rt_ents = std::fs::read_dir("src/runtime/components")
+        .map_err(|e| format!("runtime components: {}", e))?;
+    for e in rt_ents.flatten() {
+        let c = e.file_name().to_string_lossy().into_owned();
+        let c = c.trim_end_matches(".js").to_string();
+        if inputs.tiers.get(&c).map(|t| t.tier == "trivial-js").unwrap_or(false) {
+            trivial_js.push(c);
         }
     }
     let mut trivial_sel: HashMap<String, String> = HashMap::new();
@@ -474,21 +511,17 @@ fn run_with_shell(
     legit.extend(fixture_targets.iter().map(|f| f.name.clone()));
     // overlay-authored demo pages (e.g. the message-scroller units) are
     // written by `make overlay`, not by this node — they are legit
-    if let Ok(om) = std::fs::read_to_string("overlays/manifest.json") {
-        if let Ok(v) = serde_json::from_str::<serde_json::Value>(&om) {
-            if let Some(units) = v.get("units").and_then(|u| u.as_object()) {
-                for (uid, u) in units {
-                    if let Some(file) = u.get("file").and_then(|f| f.as_str()) {
-                        if let Some(stem) = file
-                            .strip_prefix("docs/demos/")
-                            .and_then(|f| f.strip_suffix(".html"))
-                        {
-                            legit.insert(stem.to_string());
-                        }
-                    }
-                    let _ = uid;
+    if let Some(units) = inputs.overlay_manifest.get("units").and_then(|u| u.as_object()) {
+        for (uid, u) in units {
+            if let Some(file) = u.get("file").and_then(|f| f.as_str()) {
+                if let Some(stem) = file
+                    .strip_prefix("docs/demos/")
+                    .and_then(|f| f.strip_suffix(".html"))
+                {
+                    legit.insert(stem.to_string());
                 }
             }
+            let _ = uid;
         }
     }
     legit.insert("alert-demo".to_string());

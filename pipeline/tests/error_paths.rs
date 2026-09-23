@@ -24,11 +24,15 @@ fn run_emit_in(dir: &std::path::Path) -> (i32, String, String) {
 }
 
 fn run_tool_in(dir: &std::path::Path, verb: &str) -> (i32, String, String) {
-    let out = Command::new(env!("CARGO_BIN_EXE_pipeline"))
-        .arg(verb)
-        .current_dir(dir)
-        .output()
-        .expect("spawn pipeline");
+    run_tool_args_in(dir, verb, &[])
+}
+
+fn run_tool_args_in(dir: &std::path::Path, verb: &str, args: &[&str]) -> (i32, String, String) {
+    let mut cmd = Command::new(env!("CARGO_BIN_EXE_pipeline"));
+    cmd.arg(verb)
+        .args(args)
+        .current_dir(dir);
+    let out = cmd.output().expect("spawn pipeline");
     (
         out.status.code().unwrap_or(-1),
         String::from_utf8_lossy(&out.stdout).into_owned(),
@@ -165,6 +169,66 @@ fn docs_smoke_without_iframes_fails_not_vacuously_passes() {
     assert!(
         stderr.contains("no preview iframes"),
         "must name the missing iframes, got: {}",
+        stderr
+    );
+}
+
+// example-oracle decides what its stale-page sweep may DELETE from
+// docs/catalog.json and overlays/manifest.json, and what --check verifies
+// from docs/example-oracle.json. All three used to parse with silent
+// empty fallbacks: a corrupt catalog made the sweep's legit set empty (it
+// would delete every non-overlay demo page and exit 0), a corrupt owned
+// manifest made the check vacuously green. All three are now fatal at
+// preflight, before the browser (and the sweep) runs. 2026-09 review r2.
+#[test]
+fn corrupt_catalog_fails_example_oracle_before_any_work() {
+    let tmp = tempfile::tempdir().unwrap();
+    std::fs::create_dir_all(tmp.path().join("src/registry")).unwrap();
+    std::fs::write(tmp.path().join("src/registry/tiers.json"), "{}").unwrap();
+    std::fs::create_dir_all(tmp.path().join("docs")).unwrap();
+    std::fs::write(tmp.path().join("docs/catalog.json"), "{ not json").unwrap();
+    let (code, _stdout, stderr) = run_tool_in(tmp.path(), "example-oracle");
+    assert_eq!(code, 1, "stderr: {}", stderr);
+    assert!(
+        stderr.contains("example-oracle: catalog:"),
+        "must name the corrupt file, got: {}",
+        stderr
+    );
+}
+
+#[test]
+fn corrupt_overlays_manifest_fails_example_oracle() {
+    let tmp = tempfile::tempdir().unwrap();
+    std::fs::create_dir_all(tmp.path().join("src/registry")).unwrap();
+    std::fs::write(tmp.path().join("src/registry/tiers.json"), "{}").unwrap();
+    std::fs::create_dir_all(tmp.path().join("docs")).unwrap();
+    std::fs::write(tmp.path().join("docs/catalog.json"), "{\"previews\": []}").unwrap();
+    std::fs::create_dir_all(tmp.path().join("overlays")).unwrap();
+    std::fs::write(tmp.path().join("overlays/manifest.json"), "{ not json").unwrap();
+    let (code, _stdout, stderr) = run_tool_in(tmp.path(), "example-oracle");
+    assert_eq!(code, 1, "stderr: {}", stderr);
+    assert!(
+        stderr.contains("example-oracle: overlays manifest:"),
+        "must name the corrupt file, got: {}",
+        stderr
+    );
+}
+
+#[test]
+fn corrupt_owned_manifest_fails_example_oracle_check() {
+    let tmp = tempfile::tempdir().unwrap();
+    std::fs::create_dir_all(tmp.path().join("src/registry")).unwrap();
+    std::fs::write(tmp.path().join("src/registry/tiers.json"), "{}").unwrap();
+    std::fs::create_dir_all(tmp.path().join("overlays")).unwrap();
+    std::fs::write(tmp.path().join("overlays/manifest.json"), "{}").unwrap();
+    std::fs::create_dir_all(tmp.path().join("docs")).unwrap();
+    std::fs::write(tmp.path().join("docs/catalog.json"), "{\"previews\": []}").unwrap();
+    std::fs::write(tmp.path().join("docs/example-oracle.json"), "{ not json").unwrap();
+    let (code, _stdout, stderr) = run_tool_args_in(tmp.path(), "example-oracle", &["--check"]);
+    assert_eq!(code, 1, "stderr: {}", stderr);
+    assert!(
+        stderr.contains("example-oracle: owned:"),
+        "must name the corrupt file, got: {}",
         stderr
     );
 }
