@@ -155,12 +155,12 @@ fn render_tree(
     let cls = if classes.is_empty() {
         String::new()
     } else {
-        format!(" class=\"{}\"", classes.join(" "))
+        format!(" class=\"{}\"", htmlutil::esc_html(&classes.join(" ")))
     };
     let slot = if node.slot.is_empty() {
         String::new()
     } else {
-        format!(" data-slot=\"{}\"", node.slot)
+        format!(" data-slot=\"{}\"", htmlutil::esc_html(&node.slot))
     };
     let open = format!("<{}{}{}>", node.tag, slot, cls);
     if void_tags().contains(node.tag.as_str()) {
@@ -500,7 +500,7 @@ pub fn run_emit() -> Result<(), String> {
         });
         let page = format!(
             "<!doctype html>\n<html><head><meta charset=\"utf-8\"><title>shadless {}</title>\n<link rel=\"stylesheet\" href=\"../out.css\">{}</head>\n<body>\n{}\n</body></html>",
-            ir.name,
+            htmlutil::esc_html(&ir.name),
             prepaint::THEME_PREPAINT_SCRIPT,
             bodies.join("\n")
         );
@@ -574,7 +574,8 @@ pub fn run_emit() -> Result<(), String> {
         for ir in &statics {
             li.push_str(&format!(
                 "<li><a href=\"components/{}.html\">{}</a></li>",
-                ir.name, ir.name
+                htmlutil::esc_html(&ir.name),
+                htmlutil::esc_html(&ir.name)
             ));
         }
         li.push_str("</ul>\n</body></html>");
@@ -903,5 +904,36 @@ mod tests {
         assert!(css_contains_token(".hover\\:p-2 { }", "p-2"));
         assert!(!css_contains_token("", "p-2"));
         assert!(!css_contains_token(".p-2 { }", ""));
+    }
+
+    /// A quoted token in the pinned upstream must not break out of the
+    /// attribute: merge_root_attrs already escaped its values (mod.rs:238);
+    /// render_tree's own slot/class interpolation didn't. The JS twin
+    /// (src/emitter/index.mjs renderTree) is pinned to the same bytes by
+    /// tools/unit/emitter.mjs.
+    #[test]
+    fn unit_render_tree_escapes_slot_and_class() {
+        let node = TreeNode {
+            tag: "div".to_string(),
+            slot: "card\" onmouseover=\"x".to_string(),
+            anchor: String::new(),
+            anchor_m: vec![],
+            kids: vec![],
+        };
+        assert_eq!(
+            render_tree(&node, &HashMap::new(), "", &HashMap::new(), false),
+            "<div data-slot=\"card&quot; onmouseover=&quot;x\"></div>"
+        );
+        let node = TreeNode {
+            tag: "div".to_string(),
+            slot: String::new(),
+            anchor: "a\"b".to_string(),
+            anchor_m: vec![],
+            kids: vec![],
+        };
+        assert_eq!(
+            render_tree(&node, &HashMap::new(), "", &HashMap::new(), false),
+            "<div class=\"a&quot;b\"></div>"
+        );
     }
 }

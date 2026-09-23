@@ -89,6 +89,14 @@ export function run(t) {
     t.eq("render: void tag has no closing",
       renderTree({ tag: "input", slot: "i", anchor: null, kids: [] }, {}, "", {}, false),
       '<input data-slot="i">')
+    // a quoted token in the pinned upstream must not break out of the
+    // attribute (mergeRootAttrs already escaped its values; render didn't)
+    t.eq("render: slot with a quote stays inside the attribute",
+      renderTree({ tag: "div", slot: 'card" onmouseover="x', anchor: null, kids: [] }, {}, "", {}, false),
+      '<div data-slot="card&quot; onmouseover=&quot;x"></div>')
+    t.eq("render: class tokens with a quote stay inside the attribute",
+      renderTree({ tag: "div", slot: null, anchor: 'a"b', kids: [] }, {}, "", {}, false),
+      '<div class="a&quot;b"></div>')
   }
 
   // ---- renderFn table wrapping ----

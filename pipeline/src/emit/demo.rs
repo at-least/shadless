@@ -5,6 +5,7 @@
 //! probes/t8; menubar/navigation-menu from src/kernel; field is inlined.
 
 use super::css::{CssIrComponent, component_css, wrap_component_css};
+use super::htmlutil;
 use super::prepaint::{SHADLESS_CSS_FIXES, inject_pre_paint};
 use super::{load_skin, skin_data};
 use regex::Regex;
@@ -311,7 +312,8 @@ pub fn run_demo() -> Result<(), String> {
         for n in &ns {
             idx.push_str(&format!(
                 "<li><a href=\"components/{}.html\">{}</a></li>",
-                n, n
+                htmlutil::esc_html(n),
+                htmlutil::esc_html(n)
             ));
         }
         idx.push_str("</ul>\n");

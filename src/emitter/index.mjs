@@ -128,8 +128,8 @@ export function renderTree(node, markers = {}, defaultInner = "", defaultBySlot 
   if (node.slot && markers[node.slot]?.length) classes.push(...new Set(markers[node.slot]))
   if (node.anchor) classes.push(node.anchor)
   if (node.anchorM?.length) classes.push(...node.anchorM)
-  const cls = classes.length ? ` class="${classes.join(" ")}"` : ""
-  const slot = node.slot ? ` data-slot="${node.slot}"` : ""
+  const cls = classes.length ? ` class="${escHtml(classes.join(" "))}"` : ""
+  const slot = node.slot ? ` data-slot="${escHtml(node.slot)}"` : ""
   const open = `<${node.tag}${slot}${cls}>`
   // Void elements: no closing tag, no children (would be invalid HTML)
   if (VOID.has(node.tag)) return open
@@ -497,7 +497,7 @@ ${body}
   // static-only demo index (the shipped dist/demo-index.html is tools/demo.mjs's)
   writeFileSync("build/emit/demo-index.html", `<!doctype html><html><head><meta charset="utf-8">
 <link rel="stylesheet" href="out.css"></head><body>
-<ul>${statics.map((ir) => `<li><a href="components/${ir.name}.html">${ir.name}</a></li>`).join("")}</ul>
+<ul>${statics.map((ir) => `<li><a href="components/${escHtml(ir.name)}.html">${escHtml(ir.name)}</a></li>`).join("")}</ul>
 </body></html>`)
   console.log(`emit: ${statics.length} pages, ${totalSlots} slots, shadless.css`)
 
