@@ -30,9 +30,12 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
     // on every built page, in both modes.
     {
         let mut dead: Vec<String> = Vec::new();
+        let mut seen = 0usize;
         for e in walkdir::WalkDir::new(&site_dir) {
             let Ok(e) = e else { continue };
-            if e.file_type().is_dir() || e.file_name() != "index.html" {
+            if e.file_type().is_dir()
+                || e.path().extension().map(|x| x != "html").unwrap_or(true)
+            {
                 continue;
             }
             let Ok(rel) = e.path().strip_prefix(&site_dir) else {
@@ -42,6 +45,7 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
                 continue;
             };
             for m in RE_IFRAME_SRC.captures_iter(&b) {
+                seen += 1;
                 let src = &m[1];
                 if src.starts_with('/') && !src.contains("//") {
                     if !site_dir.join(src.trim_start_matches('/')).exists() {
@@ -51,11 +55,18 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
             }
         }
         dead.sort();
-        if dead.is_empty() {
-            println!("PASS  iframe targets: every root-relative preview iframe src is a built page");
+        if dead.is_empty() && seen > 0 {
+            println!(
+                "PASS  iframe targets: every root-relative preview iframe src is a built page ({seen} iframes)"
+            );
         } else {
             for d in &dead {
                 eprintln!("FAIL  iframe target missing — {}", d);
+            }
+            if seen == 0 {
+                // a template drift that stops emitting preview iframes would
+                // otherwise turn this check into a vacuous pass
+                eprintln!("FAIL  iframe targets: no preview iframes found in the built pages — the preview template changed?");
             }
             failures.push("iframe targets".to_string());
         }

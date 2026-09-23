@@ -49,6 +49,12 @@ pub const FS_RECORDER: &str = "tools/fs-record.mjs";
 /// injected --import argument — refuse it rather than corrupt the option.
 fn node_options(existing: &str, recorder: &std::path::Path) -> Result<String, String> {
     let p = recorder.display().to_string();
+    if existing.contains('"') {
+        return Err(format!(
+            "inherited NODE_OPTIONS {:?} contains a double quote — the --import injection cannot be appended safely",
+            existing
+        ));
+    }
     if p.contains('"') {
         return Err(format!(
             "checkout path \"{}\" contains a double quote — the NODE_OPTIONS --import injection cannot quote it safely",
@@ -973,5 +979,7 @@ mod tests {
             "--expose-gc --import \"/r/tools/fs-record.mjs\""
         );
         assert!(super::node_options("", std::path::Path::new("/a\"b/r/tools/fs-record.mjs")).is_err());
+        // an unbalanced quote in the inherited value swallows --import
+        assert!(super::node_options("--expose-\"gc", std::path::Path::new("/r/tools/fs-record.mjs")).is_err());
     }
 }

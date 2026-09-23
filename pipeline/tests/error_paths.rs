@@ -133,3 +133,38 @@ fn corrupt_tiers_json_fails_emit_naming_tiers() {
         stderr
     );
 }
+
+// example-oracle parsed tiers with unwrap_or_default too (both halves of
+// the run): an empty tier map silently made is_kernel_demo always-false —
+// the same vacuous-verdict shape as the sweep. Review follow-up.
+#[test]
+fn corrupt_tiers_json_fails_example_oracle_naming_tiers() {
+    let tmp = tempfile::tempdir().unwrap();
+    std::fs::create_dir_all(tmp.path().join("src/registry")).unwrap();
+    std::fs::write(tmp.path().join("src/registry/tiers.json"), "{ not json").unwrap();
+    let (code, _stdout, stderr) = run_tool_in(tmp.path(), "example-oracle");
+    assert_eq!(code, 1, "stderr: {}", stderr);
+    assert!(
+        stderr.contains("example-oracle: tiers:"),
+        "must name the corrupt file, got: {}",
+        stderr
+    );
+}
+
+// docs-smoke's iframe check must not pass vacuously when the built pages
+// carry no preview iframes at all (template drift would re-open the hole
+// the mutation pins). Review follow-up.
+#[test]
+fn docs_smoke_without_iframes_fails_not_vacuously_passes() {
+    let tmp = tempfile::tempdir().unwrap();
+    let public = tmp.path().join("docs/site/public");
+    std::fs::create_dir_all(&public).unwrap();
+    std::fs::write(public.join("index.html"), "<html><body><article>x</article></body></html>").unwrap();
+    let (code, _stdout, stderr) = run_tool_in(tmp.path(), "docs-smoke");
+    assert_eq!(code, 1, "stderr: {}", stderr);
+    assert!(
+        stderr.contains("no preview iframes"),
+        "must name the missing iframes, got: {}",
+        stderr
+    );
+}

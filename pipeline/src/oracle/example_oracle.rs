@@ -46,7 +46,22 @@ pub struct OraTarget {
     pub out: String,
 }
 
-pub fn ora_load_targets() -> (Vec<OraTarget>, Vec<String>) {
+#[derive(Deserialize)]
+struct TierEntry {
+    #[serde(default)]
+    tier: String,
+}
+
+/// tiers.json read once for the whole run; an unparseable file is fatal —
+/// an empty map used to silently make is_kernel_demo always-false and drop
+/// every trivial-js script (the vacuous-verdict shape the sweep fixed).
+fn tiers_map() -> Result<HashMap<String, TierEntry>, String> {
+    let tiers_b = std::fs::read_to_string("src/registry/tiers.json")
+        .map_err(|e| format!("tiers: {}", e))?;
+    serde_json::from_str(&tiers_b).map_err(|e| format!("tiers: {}", e))
+}
+
+pub(crate) fn ora_load_targets(tiers: &HashMap<String, TierEntry>) -> (Vec<OraTarget>, Vec<String>) {
     let mut targets: Vec<OraTarget> = Vec::new();
     let mut skipped: Vec<String> = Vec::new();
     let catalog_b = std::fs::read_to_string("docs/catalog.json").unwrap_or_default();
@@ -65,13 +80,6 @@ pub fn ora_load_targets() -> (Vec<OraTarget>, Vec<String>) {
     let catalog: Catalog = serde_json::from_str(&catalog_b).unwrap_or(Catalog {
         previews: Vec::new(),
     });
-    let tiers_b = std::fs::read_to_string("src/registry/tiers.json").unwrap_or_default();
-    #[derive(Deserialize)]
-    struct TierEntry {
-        #[serde(default)]
-        tier: String,
-    }
-    let tiers: HashMap<String, TierEntry> = serde_json::from_str(&tiers_b).unwrap_or_default();
     static DEMO_RE: OnceLock<Regex> = OnceLock::new();
     let demo_re = DEMO_RE.get_or_init(|| Regex::new(r"^(.+)-demo$").unwrap());
     let is_kernel_demo = |demo_name: &str| -> bool {
@@ -202,8 +210,9 @@ fn run_inner(check: bool) -> Result<(), String> {
         }
     }
 
+    let tiers = tiers_map()?;
     let shell = BrowserShell::start().map_err(|e| format!("example-oracle: {}", e))?;
-    let result = run_with_shell(&shell, check, &no_oracle);
+    let result = run_with_shell(&shell, check, &no_oracle, &tiers);
     shell.close();
     result
 }
@@ -212,12 +221,13 @@ fn run_with_shell(
     shell: &BrowserShell,
     check: bool,
     no_oracle: &HashSet<String>,
+    tiers: &HashMap<String, TierEntry>,
 ) -> Result<(), String> {
     shell.launch().map_err(|e| format!("example-oracle: {}", e))?;
     let page =
         shell.new_page(false).map_err(|e| format!("example-oracle: new page: {}", e))?;
 
-    let (targets, skipped) = ora_load_targets();
+    let (targets, skipped) = ora_load_targets(tiers);
     if !skipped.is_empty() {
         println!(
             "oracle: {} authored demos have no upstream example (kept hand-authored): {}",
@@ -291,19 +301,12 @@ fn run_with_shell(
     }
 
     // trivial-js components with a behavior file; selector per component
-    let tiers_b = std::fs::read_to_string("src/registry/tiers.json").unwrap_or_default();
-    #[derive(Deserialize)]
-    struct TierEntry {
-        #[serde(default)]
-        tier: String,
-    }
-    let tiers_all: HashMap<String, TierEntry> = serde_json::from_str(&tiers_b).unwrap_or_default();
     let mut trivial_js: Vec<String> = Vec::new();
     if let Ok(rt_ents) = std::fs::read_dir("src/runtime/components") {
         for e in rt_ents.flatten() {
             let c = e.file_name().to_string_lossy().into_owned();
             let c = c.trim_end_matches(".js").to_string();
-            if tiers_all.get(&c).map(|t| t.tier == "trivial-js").unwrap_or(false) {
+            if tiers.get(&c).map(|t| t.tier == "trivial-js").unwrap_or(false) {
                 trivial_js.push(c);
             }
         }

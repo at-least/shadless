@@ -454,7 +454,7 @@ function main() {
     }).join("\n")
     treesByIr.set(ir.name, { ir, trees })
     const html = `<!doctype html>
-<html><head><meta charset="utf-8"><title>shadless ${ir.name}</title>
+<html><head><meta charset="utf-8"><title>shadless ${escHtml(ir.name)}</title>
 <link rel="stylesheet" href="../out.css">${THEME_PREPAINT_SCRIPT}</head>
 <body>
 ${body}
