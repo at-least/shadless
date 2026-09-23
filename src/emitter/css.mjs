@@ -153,34 +153,39 @@ const cleanTag = (/** @type {string} */ t) => kebab(String(t).replace(/^<ternary
 // the @apply class lists are deliberately NOT checked (Tailwind arbitrary
 // values legitimately carry {}[]/:.). Mirrors css.rs check_selector_values.
 /** @param {string} v */
-const selectorValueSafe = (v) => !String(v).includes('"') && !String(v).includes("\\")
+const selectorValueSafe = (v) => !/[\\"\n\r]/.test(String(v))
+/** @param {string} v */
+const selectorIdentSafe = (v) => /^[A-Za-z0-9_-]+$/.test(String(v))
 
 /** @param {Ir} ir */
 function checkSelectorValues(ir) {
   /** @param {string} kind @param {string} v */
-  const bad = (kind, v) => { throw new Error(`css: ${kind} "${v}" carries a quote or backslash — refuses selector value`) }
+  const bad = (kind, v) => { throw new Error(`css: ${kind} "${v}" is not selector-safe — refuses selector value`) }
+  /** @param {string} kind @param {string | null | undefined} v */
+  const value = (kind, v) => { if (v != null && !selectorValueSafe(v)) bad(kind, v) }
+  /** @param {string} kind @param {string | null | undefined} v */
+  const ident = (kind, v) => { if (v != null && !selectorIdentSafe(v)) bad(kind, v) }
   for (const c of ir.components ?? []) {
-    for (const e of c.elements ?? []) {
-      if (e.slot && !selectorValueSafe(e.slot)) bad("slot", e.slot)
-    }
+    for (const e of c.elements ?? []) value("slot", e.slot)
   }
-  for (const [vn, { table }] of Object.entries(cvaSlot(ir))) {
-    void vn
+  for (const table of Object.values(ir.cva ?? {})) {
     for (const axis of Object.keys(table.variants ?? {})) {
-      if (!selectorValueSafe(axis)) bad("axis", axis)
-      for (const val of Object.keys(table.variants[axis] ?? {})) {
-        if (!selectorValueSafe(val)) bad("variant value", val)
-      }
+      ident("axis", axis)
+      for (const val of Object.keys(table.variants[axis] ?? {})) value("variant value", val)
     }
   }
-  for (const c of ir.conditionals ?? []) {
-    if (c.slot && !selectorValueSafe(c.slot)) bad("slot", c.slot)
-  }
+  for (const c of ir.conditionals ?? []) value("slot", c.slot)
   for (const r of ir.cvaRefs ?? []) {
-    if (r.slot && !selectorValueSafe(r.slot)) bad("slot", r.slot)
+    value("slot", r.slot)
     for (const d of r.dyn ?? []) {
-      if (d.attr && !selectorValueSafe(d.attr)) bad("attr", d.attr)
-      if (d.when && !selectorValueSafe(d.when)) bad("when", d.when)
+      ident("attr", d.attr)
+      value("when", d.when)
+    }
+    for (const axis of r.dynAxes ?? []) ident("axis", axis)
+    const table = r.table ?? {}
+    for (const axis of Object.keys(table.variants ?? {})) {
+      ident("axis", axis)
+      for (const val of Object.keys(table.variants[axis] ?? {})) value("variant value", val)
     }
   }
 }

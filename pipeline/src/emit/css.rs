@@ -401,49 +401,69 @@ pub struct ComponentCssOut {
 /// @apply class lists are deliberately NOT checked (Tailwind arbitrary
 /// values legitimately carry {}[]/:.).
 fn check_selector_values(ir: &CssIrComponent) -> Result<(), String> {
+    // quoted positions ([data-slot="{slot}"], [data-{axis}="{val}"]): a
+    // quote, backslash or raw newline ends the string early and breaks into
+    // rule space
+    let value_ok = |v: &str| !v.contains('"') && !v.contains('\\') && !v.contains('\n') && !v.contains('\r');
+    // unquoted positions (the attribute NAME [data-{axis}=…], [{attr}=…]):
+    // no quote is needed to break out — ], {, }, whitespace all do — so
+    // these are whitelisted to identifiers
+    let ident_ok = |v: &str| {
+        !v.is_empty() && v.chars().all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '-')
+    };
     let bad = |kind: &str, v: &str| -> String {
         format!(
-            "css: {} {:?} carries a quote or backslash — refuses selector value",
+            "css: {} {:?} is not selector-safe — refuses selector value",
             kind, v
         )
     };
+    let mut check_value = |kind: &str, v: &str| -> Result<(), String> {
+        if value_ok(v) {
+            Ok(())
+        } else {
+            Err(bad(kind, v))
+        }
+    };
     for c in &ir.components {
         for e in &c.elements {
-            if e.slot.contains('"') || e.slot.contains('\\') {
-                return Err(bad("slot", &e.slot));
-            }
+            check_value("slot", &e.slot)?;
         }
     }
     for var_name in ir.cva.keys() {
         let table = ir.cva.table(&var_name).expect("keys come from map");
         for axis in table.axis_order() {
-            if axis.contains('"') || axis.contains('\\') {
+            if !ident_ok(&axis) {
                 return Err(bad("axis", &axis));
             }
             for val in table.values(&axis).keys() {
-                if val.contains('"') || val.contains('\\') {
-                    return Err(bad("variant value", val));
-                }
+                check_value("variant value", val)?;
             }
         }
     }
     for c in &ir.conditionals {
         if let Some(sl) = &c.slot {
-            if sl.contains('"') || sl.contains('\\') {
-                return Err(bad("slot", sl));
-            }
+            check_value("slot", sl)?;
         }
     }
     for r in &ir.cva_refs {
-        if r.slot.contains('"') || r.slot.contains('\\') {
-            return Err(bad("slot", &r.slot));
-        }
+        check_value("slot", &r.slot)?;
         for d in &r.dyn_ {
-            if d.attr.contains('"') || d.attr.contains('\\') {
+            if !ident_ok(&d.attr) {
                 return Err(bad("attr", &d.attr));
             }
-            if d.when.contains('"') || d.when.contains('\\') {
-                return Err(bad("when", &d.when));
+            check_value("when", &d.when)?;
+        }
+        for axis in &r.dyn_axes {
+            if !ident_ok(axis) {
+                return Err(bad("axis", axis));
+            }
+        }
+        for axis in r.table.axis_order() {
+            if !ident_ok(&axis) {
+                return Err(bad("axis", &axis));
+            }
+            for val in r.table.values(&axis).keys() {
+                check_value("variant value", val)?;
             }
         }
     }
@@ -1056,6 +1076,50 @@ mod tests {
             err.contains("refuses selector value"),
             "got: {err}"
         );
+    }
+
+    /// The axis sits in an UNQUOTED attribute-name position — it needs an
+    /// identifier whitelist, not the quote blacklist (review r3).
+    #[test]
+    fn unit_selector_axis_is_whitelisted() {
+        let ir = CssIrComponent {
+            name: "t".into(),
+            tier: "static".into(),
+            cva: serde_json::from_value(serde_json::json!({
+                "TVariants": {
+                    "base": "p-2",
+                    "variants": { "x]{}*{color:red}[data-y": {"top": "p-1"} }
+                }
+            }))
+            .unwrap(),
+            ..Default::default()
+        };
+        let err = match component_css(&ir) {
+            Err(e) => e,
+            Ok(_) => panic!("a non-identifier axis must be refused at entry"),
+        };
+        assert!(err.contains("refuses selector value"), "got: {err}");
+    }
+
+    #[test]
+    fn unit_selector_value_with_newline_refused() {
+        let ir = CssIrComponent {
+            name: "t".into(),
+            tier: "static".into(),
+            cva: serde_json::from_value(serde_json::json!({
+                "TVariants": {
+                    "base": "p-2",
+                    "variants": { "side": {"to\np": "p-1"} }
+                }
+            }))
+            .unwrap(),
+            ..Default::default()
+        };
+        let err = match component_css(&ir) {
+            Err(e) => e,
+            Ok(_) => panic!("a newline in a quoted selector value must be refused"),
+        };
+        assert!(err.contains("refuses selector value"), "got: {err}");
     }
 
     #[test]

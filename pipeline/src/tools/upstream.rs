@@ -595,6 +595,17 @@ fn flag_value(args: &[String], name: &str) -> String {
 /// copyTree copies src over dst, replacing it. The drill snapshots the IR
 /// before a re-pin so ir-diff has a "before" to compare against.
 fn copy_tree(src: &Path, dst: &Path) -> Result<(), String> {
+    // pre-scan: refuse the whole copy BEFORE wiping dst, so a symlink found
+    // halfway cannot leave the "before" snapshot deleted or half-written
+    for e in walkdir::WalkDir::new(src) {
+        let e = e.map_err(|e| e.to_string())?;
+        if e.file_type().is_symlink() {
+            return Err(format!(
+                "copy_tree: {}: symlink refused — the pinned tree must not carry symlinks",
+                e.path().display()
+            ));
+        }
+    }
     if dst.exists() {
         std::fs::remove_dir_all(dst).map_err(|e| e.to_string())?;
     }
@@ -602,12 +613,6 @@ fn copy_tree(src: &Path, dst: &Path) -> Result<(), String> {
         let e = e.map_err(|e| e.to_string())?;
         let rel = e.path().strip_prefix(src).map_err(|e| e.to_string())?;
         let target = dst.join(rel);
-        if e.file_type().is_symlink() {
-            return Err(format!(
-                "copy_tree: {}: symlink refused — the pinned tree must not carry symlinks",
-                e.path().display()
-            ));
-        }
         if e.file_type().is_dir() {
             std::fs::create_dir_all(&target).map_err(|e| e.to_string())?;
             continue;

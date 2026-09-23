@@ -103,8 +103,13 @@ fn ora_inputs(check: bool) -> Result<OraInputs, String> {
         serde_json::from_str(&catalog_b).map_err(|e| format!("catalog: {}", e))?;
     let om_b = std::fs::read_to_string("overlays/manifest.json")
         .map_err(|e| format!("overlays manifest: {}", e))?;
-    let overlay_manifest =
+    let overlay_manifest: serde_json::Value =
         serde_json::from_str(&om_b).map_err(|e| format!("overlays manifest: {}", e))?;
+    // a manifest that parses but lacks a units object silently empties the
+    // sweep's legit set — the mass-deletion shape preflight exists to stop
+    if overlay_manifest.get("units").and_then(|u| u.as_object()).is_none() {
+        return Err("overlays manifest: no units object".to_string());
+    }
     let owned = if check {
         let owned_b = std::fs::read_to_string(ORA_MANIFEST)
             .map_err(|e| format!("owned: {}", e))?;

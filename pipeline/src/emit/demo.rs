@@ -5,7 +5,7 @@
 //! probes/t8; menubar/navigation-menu from src/kernel; field is inlined.
 
 use super::css::{CssIrComponent, component_css, wrap_component_css};
-use super::htmlutil;
+use super::{htmlutil, valid_component_name};
 use super::prepaint::{SHADLESS_CSS_FIXES, inject_pre_paint};
 use super::{load_skin, skin_data};
 use regex::Regex;
@@ -156,7 +156,7 @@ pub fn run_demo() -> Result<(), String> {
         super::css::drop_nulls(&mut v);
         let ir: CssIrComponent =
             serde_json::from_value(v).map_err(|e| format!("demo: ir: {} {}", n, e))?;
-        if !super::valid_component_name(&ir.name) {
+        if !valid_component_name(&ir.name) {
             return Err(format!(
                 "demo: ir: {}: name {:?} is not a kebab component name — refusing to write outside the output tree",
                 n, ir.name

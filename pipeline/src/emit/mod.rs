@@ -187,7 +187,13 @@ fn render_tree(
 /// separators or dots escapes the output tree. Every registry name is a
 /// kebab identifier; anything else is refused at load.
 pub fn valid_component_name(name: &str) -> bool {
-    !name.is_empty()
+    // first char alnum: a leading dash is option-shaped / traversal-adjacent
+    let first_ok = name
+        .chars()
+        .next()
+        .map(|c| c.is_ascii_lowercase() || c.is_ascii_digit())
+        .unwrap_or(false);
+    first_ok
         && name
             .chars()
             .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == '-')
@@ -921,6 +927,16 @@ mod tests {
         assert!(css_contains_token(".hover\\:p-2 { }", "p-2"));
         assert!(!css_contains_token("", "p-2"));
         assert!(!css_contains_token(".p-2 { }", ""));
+    }
+
+    #[test]
+    fn unit_component_name_whitelist() {
+        assert!(valid_component_name("alert-dialog"));
+        assert!(valid_component_name("button2"));
+        // leading dash: an option-shaped or traversal-adjacent name
+        assert!(!valid_component_name("-x"));
+        assert!(!valid_component_name("../../evil"));
+        assert!(!valid_component_name(""));
     }
 
     /// A quoted token in the pinned upstream must not break out of the

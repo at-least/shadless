@@ -220,7 +220,7 @@ fn corrupt_owned_manifest_fails_example_oracle_check() {
     std::fs::create_dir_all(tmp.path().join("src/registry")).unwrap();
     std::fs::write(tmp.path().join("src/registry/tiers.json"), "{}").unwrap();
     std::fs::create_dir_all(tmp.path().join("overlays")).unwrap();
-    std::fs::write(tmp.path().join("overlays/manifest.json"), "{}").unwrap();
+    std::fs::write(tmp.path().join("overlays/manifest.json"), "{\"units\": {}}").unwrap();
     std::fs::create_dir_all(tmp.path().join("docs")).unwrap();
     std::fs::write(tmp.path().join("docs/catalog.json"), "{\"previews\": []}").unwrap();
     std::fs::write(tmp.path().join("docs/example-oracle.json"), "{ not json").unwrap();
@@ -273,5 +273,25 @@ fn traversal_ir_name_fails_emit() {
     assert!(
         !tmp.path().join("evil.html").exists(),
         "the traversal write must not happen"
+    );
+}
+
+// a manifest that parses but lacks a units object would silently empty the
+// sweep's legit set — the mass-deletion shape preflight exists to stop.
+#[test]
+fn unitsless_overlays_manifest_fails_example_oracle() {
+    let tmp = tempfile::tempdir().unwrap();
+    std::fs::create_dir_all(tmp.path().join("src/registry")).unwrap();
+    std::fs::write(tmp.path().join("src/registry/tiers.json"), "{}").unwrap();
+    std::fs::create_dir_all(tmp.path().join("docs")).unwrap();
+    std::fs::write(tmp.path().join("docs/catalog.json"), "{\"previews\": []}").unwrap();
+    std::fs::create_dir_all(tmp.path().join("overlays")).unwrap();
+    std::fs::write(tmp.path().join("overlays/manifest.json"), "{}").unwrap();
+    let (code, _stdout, stderr) = run_tool_in(tmp.path(), "example-oracle");
+    assert_eq!(code, 1, "stderr: {}", stderr);
+    assert!(
+        stderr.contains("no units object"),
+        "must name the missing units, got: {}",
+        stderr
     );
 }

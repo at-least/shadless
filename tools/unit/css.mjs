@@ -13,6 +13,12 @@ export function run(t) {
     try { componentCss(ir) } catch (e) { threw = e }
     t.ok("componentCss: a quote-carrying slot is refused at entry",
       threw && /refuses selector value/.test(threw.message), threw && threw.message)
+    // the axis sits UNQUOTED in the attribute-name position — whitelist
+    let threwAxis = null
+    try { componentCss({ name: "t", tier: "static", conditionals: [], cvaRefs: [],
+      cva: { TVariants: { base: "p-2", variants: { "x]{}*{color:red}[data-y": { top: "p-1" } } } },
+      components: [{ fn: "T", export: true, elements: [{ tag: "div", slot: null, classes: [], spread: false, children: [] }] }] }) } catch (e) { threwAxis = e }
+    t.ok("componentCss: a non-identifier axis is refused", threwAxis && /refuses selector value/.test(threwAxis.message), threwAxis && threwAxis.message)
   }
 
   // twMerge residue: a value that drops a multi-property base utility must
