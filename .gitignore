@@ -24,3 +24,8 @@ probes/scratch/
 # (config.toml, templates/, sass/) are tracked sources too.
 /docs/site/public/
 /docs/site/static/
+
+# local tooling (code-index MCP index, zcode session)
+.mcp-index/
+.mcp-index.json
+.zcode/
