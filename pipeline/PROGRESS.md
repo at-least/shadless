@@ -830,3 +830,84 @@ unit 不依賴 pin——Setup 的「先 npm run pin」是承重順序,CONTRIBUTI
 一個未解的一次性觀察:表驅動改寫中途的一次 cargo test,golden 重播報
 67 個 inputs 案例分歧;其後兩輪全綠(66s 實跑),樹與碼在兩次之間無相關
 變更,歸檔為中途態噪聲,不影響交付。
+
+## 記錄不確定點的實驗驗證輪(2026-09-28)
+
+對本檔與 PLAN.md 掛帳的全部「殘餘/未解/已知偏差」逐一實驗取證。四種判定:
+VERIFIED(實驗證實) / SUPERSEDED(記錄當時準確、被後續記錄在案的改動取代,
+非缺陷) / UNREPRODUCED(結構證實、行為未觸發) / MOOT(Go 對照半已隨引擎
+刪除無法重演)。列表重建自 repo 記錄(前一 session 無報告留存)。
+
+(對照 2026-09-07 的 example-fixture「未解 26 頁」:已被 2026-09-08 兩節收口
+——根因 nav id 重複拼綴,修後 105/105 self-test 全過,見前文兩節;此行僅為
+讓 grep「未解」者找到答案。)
+
+**記錄修正(三條記錄 SUPERSEDED——記錄當時準確,已被記錄在案的後續改動取代)**:
+1. 「reproducible 結構性競態…留待日後」(2026-09-11)——**同日 08:47 已修**
+   (a20ac50:self_host 給 reproducible 加上全部 generated-root 生產者的 needs,
+   go-mirror 表保持 Go 逐字 4 條)。實證:自表 `list all` 顯示 15 條 needs
+   (build-js/emit/demo/docs-build/…);worktree 破壞 dist/out.css 後
+   `run reproducible --gates-only` 紅(「1 generated paths differ…M dist/out.css」),
+   還原後綠——暫態即紅、非暫態即綠的判別力成立。兩項合起來才收口記錄:
+   list 證明邊存在、破壞實驗證明閘抓得住暫態。**並行窗僅在 self-host 表消除;
+   go-mirror 模式保留 Go 原表 4 條 needs,該模式下競態窗仍在(legacy 對照模式)**。
+   live race 未重演(UNREPRODUCED;self-host 結構上已無窗)。
+2. PLAN 已知偏差 #2(script-refs 的 -run 檢查對 all_go() 空轉)——被 swap 輪的
+   **script-refs v2 取代**:現閘對 `__gate <id>` 驗證 GATE_IDS、並把任何
+   `go test` 回流 Makefile/package.json 定為 FAIL;gates/ 已無 all_go() 引用。
+   實證:`__gate script-refs` -j1 綠。
+3. 2026-09-10 的 Spot A 數字(docs_smoke.rs 改動 → 僅 docs-smoke+unit STALE)
+   ——被 S1 的 GROUP_DEPS gates+=tools + convert 折 tools 群組覆蓋:實測同檔
+   註解改動 → **66 STALE / 2 fresh(build-js、typecheck)/ 1 NEVER-FRESH**,
+   與「編輯 tools 級聯全圖」的後記一致;還原重建後 adopt all → 68 fresh 恢復。
+   指紋機制本身(改動 → 確定性 stale 集 → 還原 → 蓋章恢復)成立。
+
+**本輪新實證**:
+- 餘留1(include 伸出 src 的廉價跟進)——**已實現**:
+  `nodes::self_host_tests::product_includes_stay_inside_src` 綠;突變檢驗
+  (fsutil.rs 加 `include_str!("../Cargo.toml")`)→ 測試紅(101),還原後綠。
+- 理論殘餘(無效 UTF-8 皮膚檔):tempdir 樹實測 stderr 逐字
+  `resolve-skins: skin: open .upstream/…/style-nova.css: stream did not contain
+  valid UTF-8`、exit 1——Rust InvalidData Display 文本,如記錄(Go 半 MOOT)。
+- EIO 相位殘餘:皮膚檔 symlink → /proc/self/mem(open 成功、read 得 EIO)實測
+  stderr `…: open …: input/output error`——op 仍是 `open`(僅 EISDIR 映射
+  read),殘餘如記錄重演(Go 半 MOOT)。
+- copy_tree 拒絕不毀目的地:單元測試只斷言「連結內容不被讀」;本輪以真 CLI 面
+  補證——.upstream radix 目錄注入 symlink,`docs-upstream-mirror` exit 1 +
+  拒絕訊息,`generated/docs-upstream`(69 tracked 檔)雜湊不變,.upstream 還原乾淨。
+- fresh clone 語意:worktree(0 個 stamp)`status all` = **68 STALE +
+  1 NEVER-FRESH**;主樹 stamps 雜湊前後不變——「68 fresh 不是 repo 不變量」證實。
+- skin_data 競態修復(4a7662f,記錄 n=3):lib 套件連跑 **5 次 159/0** 加固。
+- golden 一次性觀察(67 案分歧):gen_golden **104 passed / 0 failed**、
+  go stub 28 筆全為預期形狀(零真 Go)。
+- PLAN 偏差 #1(__gate 無 testlog):runner 只對 is_go_test argv 注入
+  `-test.testlogfile`(runner.rs:284);self-host 下 gate 無此證據、僅餘
+  fs-record——`PIPELINE_PARALLEL=1 run script-refs/build-js --force`(-j1 稽查)
+  皆乾淨綠;build-js 重跑後 dist 位元組不變(git 乾淨)。
+- PLAN 偏差 #3:#usage env 分叉實測——go-mirror 印 Go 閘文案、預設印自我接管句。
+- PLAN 偏差 #6:upstream --report-only 產出的 build/gates/upstream-report.md
+  仍寫 `./build/pipeline ledger --record`(機器無關路徑),執行走 pipeline_exe()。
+- 09-08 刻意偏差 #3:coverage 無 --record → exit 2、stderr 指向 cargo test。
+- 偏差 #4(in_manifest 根序):audit_boundary.rs:1226 cwd 向上找
+  (package.json+pipeline/) → SHADLESS_ROOT → (僅測試)crate 鄰位,代碼逐字吻合。
+- `__gate unit`(偏差 #5):靜默綠(設計:失敗才印),exit 0;--lib/--bins
+  逐目標 passing-count 檢查防零命中空綠(main.rs:731)。
+
+**全套回歸**:cargo test 159 lib + 2 bin + 11 error_paths + golden 重播(63s)
+全綠;CI=1 同綠。終態:tracked 樹乾淨、68 fresh + 1 NEVER-FRESH。
+
+**環境註記**:本輪進行中有另一 session 在同樹 benchmark `run all`(5 連跑)——
+中途的指紋實驗編輯使其 run1 以 66-stale 冷跑(時序上編輯先於其啟動,無中途
+ENOENT);本輪樹敏感步驟全部延後至其空檔,實驗編輯即時還原。教訓:多 session
+共用一棵樹時,指紋實驗必須「編輯→量測→還原」原子化,並以 `ps` 檢查同樹的
+pipeline 行程再動 cargo。本輪兩次動 build/pipeline 二進位(唯一可能誘發記錄中
+fork/exec ENOENT 的操作)分別在其 run1 啟動前一分鐘與一個實證無行程的空檔;
+對方 session 的 stdout 不可讀,ENOENT 是否發生無從觀察——按時序推斷不應發生,
+未觀察到即記錄為「無法觀察」,不宣告「未發生」。瀏覽器層(example-fixture、
+demo-parity、example-gate 等)本輪未自行重跑——其綠由對方 session 同樹完整
+run 的 stamp 為證(example-gate/demo-parity/golden-gate/style-parity 於
+17:52–18:06 蓋章);cargo test 與 gen_golden 不覆蓋瀏覽器層,記錄在案。
+
+**附帶觀察(記錄不修)**:`audit-boundary --strict` 的稽查根是 cwd 精確
+(非向上找),從子目錄跑會對錯誤的樹出綠(268 檔全 unknown、exit 0)——
+引擎動詞的既定契約是 cwd==repo 根(status 從子目錄直接紅),此閘缺同款護欄。
