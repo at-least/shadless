@@ -27,3 +27,6 @@ probes/scratch/
 
 # local tooling (zcode session)
 .zcode/
+
+# codegraph index
+.codegraph/
