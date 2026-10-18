@@ -26,7 +26,7 @@ The component **markup** is not in the package, by design: it is text you copy
 into your own page and edit, not a module you import. Every example on this
 site shows its markup in a code tab under the preview — that is the copy
 source, and it is **slot-only markup**: the `data-slot`/`data-*` attributes
-plus only the classes the component stylesheet does not already supply.
+plus only the classes the component stylesheet cannot reproduce on its own.
 Import `shadless` and the component's stylesheet and it renders exactly like
 the preview — machine-checked (`docs-code-parity`) in a consumer build as
 well as against the precompiled CSS. The preview iframe itself renders the
@@ -67,7 +67,7 @@ consumer and asserts zero leakage from non-imported components).
 
 The tab is slot-only: the `data-slot`/`data-*` attributes are the contract —
 keep them — and the classes already in the tab are only the ones the
-component stylesheet does not supply. Customize by adding utilities (they
+component stylesheet cannot reproduce on its own. Customize by adding utilities (they
 sit in the utilities layer and win over the component styles) or by setting
 the documented `data-*` attributes; either way your build's content scan
 picks the tab's classes up like any class you wrote yourself. RTL examples

@@ -23,12 +23,10 @@ Renders an accessible label associated with controls.
     data-state="unchecked"
     value="on"
     data-slot="checkbox"
-    class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
+    class="peer"
     id="terms"
   ></button
-  ><label data-slot="label" class="text-sm leading-none" for="terms"
-    >Accept terms and conditions</label
-  >
+  ><label data-slot="label" for="terms">Accept terms and conditions</label>
 </div>
 ```
 
@@ -130,27 +128,13 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
 ```text,name=field-demo.html
 <div class="w-full max-w-md">
   <form>
-    <div
-      data-slot="field-group"
-      class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group"
-    >
+    <div data-slot="field-group" class="*:data-[slot=field-group]:gap-4 group/field-group">
       <fieldset
         data-slot="field-set"
-        class="gap-4 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3"
+        class="has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3"
       >
-        <legend
-          data-slot="field-legend"
-          data-variant="legend"
-          class="data-[variant=label]:text-sm data-[variant=legend]:text-base"
-        >
-          Payment Method
-        </legend>
-        <p
-          data-slot="field-description"
-          class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-        >
-          All transactions are secure and encrypted
-        </p>
+        <legend data-slot="field-legend" data-variant="legend">Payment Method</legend>
+        <p data-slot="field-description">All transactions are secure and encrypted</p>
         <div
           data-slot="field-group"
           class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group"
@@ -159,7 +143,7 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
             role="group"
             data-slot="field"
             data-orientation="vertical"
-            class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+            class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
           >
             <label
               data-slot="field-label"
@@ -168,7 +152,7 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
               >Name on Card</label
             ><input
               data-slot="input"
-              class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+              class="w-full"
               id="checkout-7j9-card-name-43j"
               placeholder="Evil Rabbit"
               required=""
@@ -178,7 +162,7 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
             role="group"
             data-slot="field"
             data-orientation="vertical"
-            class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+            class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
           >
             <label
               data-slot="field-label"
@@ -187,24 +171,19 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
               >Card Number</label
             ><input
               data-slot="input"
-              class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+              class="w-full"
               id="checkout-7j9-card-number-uw1"
               placeholder="1234 5678 9012 3456"
               required=""
             />
-            <p
-              data-slot="field-description"
-              class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-            >
-              Enter your 16-digit card number
-            </p>
+            <p data-slot="field-description">Enter your 16-digit card number</p>
           </div>
           <div class="grid grid-cols-3 gap-4">
             <div
               role="group"
               data-slot="field"
               data-orientation="vertical"
-              class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+              class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
             >
               <label
                 data-slot="field-label"
@@ -222,7 +201,7 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
                 data-placeholder=""
                 data-slot="select-trigger"
                 data-size="default"
-                class="border-input dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 gap-1.5 rounded-lg bg-transparent data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:gap-1.5 [&_svg:not([class*='size-'])]:size-4 flex w-fit *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex"
+                class="gap-1.5 *:data-[slot=select-value]:gap-1.5 [&_svg:not([class*='size-'])]:size-4 w-fit"
                 id="s0-trigger"
               >
                 <span data-slot="select-value" style="pointer-events: none">MM</span
@@ -273,7 +252,7 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
               role="group"
               data-slot="field"
               data-orientation="vertical"
-              class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+              class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
             >
               <label
                 data-slot="field-label"
@@ -291,7 +270,7 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
                 data-placeholder=""
                 data-slot="select-trigger"
                 data-size="default"
-                class="border-input dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 gap-1.5 rounded-lg bg-transparent data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:gap-1.5 [&_svg:not([class*='size-'])]:size-4 flex w-fit *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex"
+                class="gap-1.5 *:data-[slot=select-value]:gap-1.5 [&_svg:not([class*='size-'])]:size-4 w-fit"
                 id="s1-trigger"
               >
                 <span data-slot="select-value" style="pointer-events: none">YYYY</span
@@ -336,7 +315,7 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
               role="group"
               data-slot="field"
               data-orientation="vertical"
-              class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+              class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
             >
               <label
                 data-slot="field-label"
@@ -345,7 +324,7 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
                 >CVV</label
               ><input
                 data-slot="input"
-                class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+                class="w-full"
                 id="checkout-7j9-cvv"
                 placeholder="123"
                 required=""
@@ -354,35 +333,20 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
           </div>
         </div>
       </fieldset>
-      <div
-        data-slot="field-separator"
-        data-content="false"
-        class="-my-2 group-data-[variant=outline]/field-group:-mb-2"
-      >
+      <div data-slot="field-separator" data-content="false">
         <div
           data-orientation="horizontal"
           role="none"
           data-slot="separator"
-          class="data-horizontal:w-full data-vertical:w-px absolute inset-0 top-1/2"
+          class="absolute inset-0 top-1/2"
         ></div>
       </div>
       <fieldset
         data-slot="field-set"
-        class="gap-4 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3"
+        class="has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3"
       >
-        <legend
-          data-slot="field-legend"
-          data-variant="legend"
-          class="data-[variant=label]:text-sm data-[variant=legend]:text-base"
-        >
-          Billing Address
-        </legend>
-        <p
-          data-slot="field-description"
-          class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-        >
-          The billing address associated with your payment method
-        </p>
+        <legend data-slot="field-legend" data-variant="legend">Billing Address</legend>
+        <p data-slot="field-description">The billing address associated with your payment method</p>
         <div
           data-slot="field-group"
           class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group"
@@ -391,7 +355,7 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
             role="group"
             data-slot="field"
             data-orientation="horizontal"
-            class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
+            class="gap-2 group/field *:data-[slot=field-label]:flex-auto"
           >
             <button
               type="button"
@@ -400,7 +364,7 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
               data-state="checked"
               value="on"
               data-slot="checkbox"
-              class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
+              class="peer shrink-0"
               id="checkout-7j9-same-as-shipping-wgm"
             >
               <span data-state="checked" data-slot="checkbox-indicator" style="pointer-events: none"
@@ -434,7 +398,7 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
               "
             /><label
               data-slot="field-label"
-              class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+              class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
               for="checkout-7j9-same-as-shipping-wgm"
               >Same as shipping address</label
             >
@@ -443,7 +407,7 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
       </fieldset>
       <fieldset
         data-slot="field-set"
-        class="gap-4 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3"
+        class="has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3"
       >
         <div
           data-slot="field-group"
@@ -453,7 +417,7 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
             role="group"
             data-slot="field"
             data-orientation="vertical"
-            class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+            class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
           >
             <label
               data-slot="field-label"
@@ -462,7 +426,7 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
               >Comments</label
             ><textarea
               data-slot="textarea"
-              class="border-input dark:bg-input/30 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 bg-transparent text-base md:text-sm w-full resize-none"
+              class="w-full resize-none"
               id="checkout-7j9-optional-comments"
               placeholder="Add any additional comments"
             ></textarea>
@@ -473,13 +437,13 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
         role="group"
         data-slot="field"
         data-orientation="horizontal"
-        class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
+        class="gap-2 group/field *:data-[slot=field-label]:flex-auto"
       >
         <button
           data-slot="button"
           data-variant="default"
           data-size="default"
-          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent [&_svg:not([class*='size-'])]:size-4 group/button bg-primary hover:bg-primary/80 h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+          class="group/button shrink-0 [&_svg]:shrink-0 gap-1.5"
           type="submit"
         >
           Submit</button
@@ -487,7 +451,7 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
           data-slot="button"
           data-variant="outline"
           data-size="default"
-          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+          class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input gap-1.5"
           type="button"
         >
           Cancel
@@ -540,7 +504,6 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
           data-highlighted=""
         >
@@ -556,7 +519,6 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -571,7 +533,6 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -586,7 +547,6 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -601,7 +561,6 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -616,7 +575,6 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -631,7 +589,6 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -646,7 +603,6 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -661,7 +617,6 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -676,7 +631,6 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -691,7 +645,6 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -706,7 +659,6 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -762,7 +714,6 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
           data-highlighted=""
         >
@@ -778,7 +729,6 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -793,7 +743,6 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -808,7 +757,6 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -823,7 +771,6 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -838,7 +785,6 @@ includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span

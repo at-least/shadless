@@ -38,7 +38,6 @@ Extends the Dialog component to display content that complements the main conten
     data-state="open"
     data-slot="sheet-content"
     data-side="right"
-    class="data-[side=bottom]:inset-x-0 data-[side=bottom]:bottom-0 data-[side=bottom]:h-auto data-[side=left]:inset-y-0 data-[side=left]:left-0 data-[side=left]:h-full data-[side=right]:inset-y-0 data-[side=right]:right-0 data-[side=right]:h-full data-[side=top]:inset-x-0 data-[side=top]:top-0 data-[side=top]:h-auto"
     tabindex="-1"
     style="pointer-events: auto"
   >
@@ -220,7 +219,7 @@ Use the `side` prop on `SheetContent` to set the edge of the screen where the sh
     data-state="open"
     data-slot="sheet-content"
     data-side="top"
-    class="data-[side=bottom]:inset-x-0 data-[side=bottom]:bottom-0 data-[side=bottom]:h-auto data-[side=left]:inset-y-0 data-[side=left]:left-0 data-[side=left]:h-full data-[side=right]:inset-y-0 data-[side=right]:right-0 data-[side=right]:h-full data-[side=top]:inset-x-0 data-[side=top]:top-0 data-[side=top]:h-auto data-[side=bottom]:max-h-[50vh] data-[side=top]:max-h-[50vh]"
+    class="data-[side=bottom]:max-h-[50vh] data-[side=top]:max-h-[50vh]"
     tabindex="-1"
     style="pointer-events: auto"
   >
@@ -307,7 +306,7 @@ Use the `side` prop on `SheetContent` to set the edge of the screen where the sh
         data-slot="button"
         data-variant="default"
         data-size="default"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent [&_svg:not([class*='size-'])]:size-4 group/button bg-primary hover:bg-primary/80 h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+        class="group/button"
         type="submit"
       >
         Save changes</button
@@ -402,7 +401,6 @@ Use `showCloseButton={false}` on `SheetContent` to hide the close button.
     data-state="open"
     data-slot="sheet-content"
     data-side="right"
-    class="data-[side=bottom]:inset-x-0 data-[side=bottom]:bottom-0 data-[side=bottom]:h-auto data-[side=left]:inset-y-0 data-[side=left]:left-0 data-[side=left]:h-full data-[side=right]:inset-y-0 data-[side=right]:right-0 data-[side=right]:h-full data-[side=top]:inset-x-0 data-[side=top]:top-0 data-[side=top]:h-auto"
     tabindex="-1"
     style="pointer-events: auto"
   >

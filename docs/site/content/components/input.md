@@ -19,7 +19,7 @@ A text input component for forms and user data entry with built-in styling and a
   role="group"
   data-slot="field"
   data-orientation="vertical"
-  class="group/field w-full *:w-full [&>.sr-only]:w-auto"
+  class="group/field *:w-full [&>.sr-only]:w-auto"
 >
   <label
     data-slot="field-label"
@@ -28,17 +28,12 @@ A text input component for forms and user data entry with built-in styling and a
     >API Key</label
   ><input
     data-slot="input"
-    class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+    class="w-full"
     id="input-demo-api-key"
     placeholder="sk-..."
     type="password"
   />
-  <p
-    data-slot="field-description"
-    class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-  >
-    Your API key is encrypted and stored securely.
-  </p>
+  <p data-slot="field-description">Your API key is encrypted and stored securely.</p>
 </div>
 ```
 {% </codegroup> %}
@@ -75,11 +70,7 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 
 {% <codegroup> %}
 ```text,name=input-basic.html
-<input
-  data-slot="input"
-  class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
-  placeholder="Enter text"
-/>
+<input data-slot="input" placeholder="Enter text" />
 ```
 {% </codegroup> %}
 
@@ -101,7 +92,7 @@ label and description.
   role="group"
   data-slot="field"
   data-orientation="vertical"
-  class="group/field w-full *:w-full [&>.sr-only]:w-auto"
+  class="group/field *:w-full [&>.sr-only]:w-auto"
 >
   <label
     data-slot="field-label"
@@ -110,17 +101,12 @@ label and description.
     >Username</label
   ><input
     data-slot="input"
-    class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+    class="w-full"
     id="input-field-username"
     placeholder="Enter your username"
     type="text"
   />
-  <p
-    data-slot="field-description"
-    class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-  >
-    Choose a unique username for your account.
-  </p>
+  <p data-slot="field-description">Choose a unique username for your account.</p>
 </div>
 ```
 {% </codegroup> %}
@@ -138,33 +124,25 @@ Use `FieldGroup` to show multiple `Field` blocks and to build forms.
 
 {% <codegroup> %}
 ```text,name=input-fieldgroup.html
-<div
-  data-slot="field-group"
-  class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group"
->
+<div data-slot="field-group" class="*:data-[slot=field-group]:gap-4 group/field-group">
   <div
     role="group"
     data-slot="field"
     data-orientation="vertical"
-    class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+    class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
   >
     <label
       data-slot="field-label"
       class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
       for="fieldgroup-name"
       >Name</label
-    ><input
-      data-slot="input"
-      class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
-      id="fieldgroup-name"
-      placeholder="Jordan Lee"
-    />
+    ><input data-slot="input" class="w-full" id="fieldgroup-name" placeholder="Jordan Lee" />
   </div>
   <div
     role="group"
     data-slot="field"
     data-orientation="vertical"
-    class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+    class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
   >
     <label
       data-slot="field-label"
@@ -173,29 +151,24 @@ Use `FieldGroup` to show multiple `Field` blocks and to build forms.
       >Email</label
     ><input
       data-slot="input"
-      class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+      class="w-full"
       id="fieldgroup-email"
       placeholder="name@example.com"
       type="email"
     />
-    <p
-      data-slot="field-description"
-      class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-    >
-      We'll send updates to this address.
-    </p>
+    <p data-slot="field-description">We'll send updates to this address.</p>
   </div>
   <div
     role="group"
     data-slot="field"
     data-orientation="horizontal"
-    class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
+    class="gap-2 group/field *:data-[slot=field-label]:flex-auto"
   >
     <button
       data-slot="button"
       data-variant="outline"
       data-size="default"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input gap-1.5"
       type="reset"
     >
       Reset</button
@@ -203,7 +176,7 @@ Use `FieldGroup` to show multiple `Field` blocks and to build forms.
       data-slot="button"
       data-variant="default"
       data-size="default"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent [&_svg:not([class*='size-'])]:size-4 group/button bg-primary hover:bg-primary/80 h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+      class="group/button shrink-0 [&_svg]:shrink-0 gap-1.5"
       type="submit"
     >
       Submit
@@ -230,7 +203,7 @@ Use the `disabled` prop to disable the input. To style the disabled state, add t
   role="group"
   data-slot="field"
   data-orientation="vertical"
-  class="group/field w-full *:w-full [&>.sr-only]:w-auto"
+  class="group/field *:w-full [&>.sr-only]:w-auto"
   data-disabled="true"
 >
   <label
@@ -240,18 +213,13 @@ Use the `disabled` prop to disable the input. To style the disabled state, add t
     >Email</label
   ><input
     data-slot="input"
-    class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+    class="w-full"
     id="input-demo-disabled"
     placeholder="Email"
     disabled=""
     type="email"
   />
-  <p
-    data-slot="field-description"
-    class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-  >
-    This field is currently disabled.
-  </p>
+  <p data-slot="field-description">This field is currently disabled.</p>
 </div>
 ```
 {% </codegroup> %}
@@ -273,7 +241,7 @@ Use the `aria-invalid` prop to mark the input as invalid. To style the invalid s
   role="group"
   data-slot="field"
   data-orientation="vertical"
-  class="group/field w-full *:w-full [&>.sr-only]:w-auto"
+  class="group/field *:w-full [&>.sr-only]:w-auto"
   data-invalid="true"
 >
   <label
@@ -283,17 +251,12 @@ Use the `aria-invalid` prop to mark the input as invalid. To style the invalid s
     >Invalid Input</label
   ><input
     data-slot="input"
-    class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+    class="w-full"
     id="input-invalid"
     placeholder="Error"
     aria-invalid="true"
   />
-  <p
-    data-slot="field-description"
-    class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-  >
-    This field contains validation errors.
-  </p>
+  <p data-slot="field-description">This field contains validation errors.</p>
 </div>
 ```
 {% </codegroup> %}
@@ -315,25 +278,15 @@ Use the `type="file"` prop to create a file input.
   role="group"
   data-slot="field"
   data-orientation="vertical"
-  class="group/field w-full *:w-full [&>.sr-only]:w-auto"
+  class="group/field *:w-full [&>.sr-only]:w-auto"
 >
   <label
     data-slot="field-label"
     class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
     for="picture"
     >Picture</label
-  ><input
-    data-slot="input"
-    class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
-    id="picture"
-    type="file"
-  />
-  <p
-    data-slot="field-description"
-    class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-  >
-    Select a picture to upload.
-  </p>
+  ><input data-slot="input" class="w-full" id="picture" type="file" />
+  <p data-slot="field-description">Select a picture to upload.</p>
 </div>
 ```
 {% </codegroup> %}
@@ -356,18 +309,13 @@ Pair with `Button` to create a search input with a button.
   role="group"
   data-slot="field"
   data-orientation="horizontal"
-  class="group/field items-center has-[>[data-slot=field-content]]:items-start"
+  class="group/field *:data-[slot=field-label]:flex-auto"
 >
-  <input
-    data-slot="input"
-    class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
-    placeholder="Search..."
-    type="search"
-  /><button
+  <input data-slot="input" placeholder="Search..." type="search" /><button
     data-slot="button"
     data-variant="default"
     data-size="default"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent [&_svg:not([class*='size-'])]:size-4 group/button bg-primary hover:bg-primary/80 h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+    class="group/button shrink-0 [&_svg]:shrink-0"
   >
     Search
   </button>
@@ -390,43 +338,33 @@ Use a grid layout to place multiple inputs side by side.
 ```text,name=input-grid.html
 <div
   data-slot="field-group"
-  class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group grid max-w-sm grid-cols-2"
+  class="*:data-[slot=field-group]:gap-4 group/field-group grid max-w-sm grid-cols-2"
 >
   <div
     role="group"
     data-slot="field"
     data-orientation="vertical"
-    class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+    class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
   >
     <label
       data-slot="field-label"
       class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
       for="first-name"
       >First Name</label
-    ><input
-      data-slot="input"
-      class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
-      id="first-name"
-      placeholder="Jordan"
-    />
+    ><input data-slot="input" class="w-full" id="first-name" placeholder="Jordan" />
   </div>
   <div
     role="group"
     data-slot="field"
     data-orientation="vertical"
-    class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+    class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
   >
     <label
       data-slot="field-label"
       class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
       for="last-name"
       >Last Name</label
-    ><input
-      data-slot="input"
-      class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
-      id="last-name"
-      placeholder="Lee"
-    />
+    ><input data-slot="input" class="w-full" id="last-name" placeholder="Lee" />
   </div>
 </div>
 ```
@@ -449,7 +387,7 @@ Use the `required` attribute to indicate required inputs.
   role="group"
   data-slot="field"
   data-orientation="vertical"
-  class="group/field w-full *:w-full [&>.sr-only]:w-auto"
+  class="group/field *:w-full [&>.sr-only]:w-auto"
 >
   <label
     data-slot="field-label"
@@ -458,17 +396,12 @@ Use the `required` attribute to indicate required inputs.
     >Required Field <span class="text-destructive">*</span></label
   ><input
     data-slot="input"
-    class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+    class="w-full"
     id="input-required"
     placeholder="This field is required"
     required=""
   />
-  <p
-    data-slot="field-description"
-    class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-  >
-    This field must be filled out.
-  </p>
+  <p data-slot="field-description">This field must be filled out.</p>
 </div>
 ```
 {% </codegroup> %}
@@ -490,7 +423,7 @@ Use `Badge` in the label to highlight a recommended field.
   role="group"
   data-slot="field"
   data-orientation="vertical"
-  class="group/field w-full *:w-full [&>.sr-only]:w-auto"
+  class="group/field *:w-full [&>.sr-only]:w-auto"
 >
   <label
     data-slot="field-label"
@@ -500,12 +433,12 @@ Use `Badge` in the label to highlight a recommended field.
     <span
       data-slot="badge"
       data-variant="secondary"
-      class="h-5 border-transparent px-2 py-0.5 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 bg-secondary [a]:hover:bg-secondary/80 ml-auto"
+      class="px-2 py-0.5 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit ml-auto"
       >Beta</span
     ></label
   ><input
     data-slot="input"
-    class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+    class="w-full"
     id="input-badge"
     placeholder="https://api.example.com/webhook"
     type="url"
@@ -531,7 +464,7 @@ To add icons, text, or buttons inside an input, use the `InputGroup` component. 
   role="group"
   data-slot="field"
   data-orientation="vertical"
-  class="group/field w-full *:w-full [&>.sr-only]:w-auto"
+  class="group/field *:w-full [&>.sr-only]:w-auto"
 >
   <label
     data-slot="field-label"
@@ -542,7 +475,7 @@ To add icons, text, or buttons inside an input, use the `InputGroup` component. 
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 w-full has-[>textarea]:h-auto"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 w-full"
   >
     <input
       data-slot="input-group-control"
@@ -554,7 +487,7 @@ To add icons, text, or buttons inside an input, use the `InputGroup` component. 
       role="group"
       data-slot="input-group-addon"
       data-align="inline-start"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pl-2 has-[>button]:ml-[-0.3rem] has-[>kbd]:ml-[-0.15rem]"
+      class="py-1.5 [&>svg:not([class*='size-'])]:size-4 pl-2"
     >
       <span
         class="text-muted-foreground gap-2 text-sm [&_svg:not([class*='size-'])]:size-4 flex items-center [&_svg]:pointer-events-none"
@@ -565,7 +498,7 @@ To add icons, text, or buttons inside an input, use the `InputGroup` component. 
       role="group"
       data-slot="input-group-addon"
       data-align="inline-end"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem]"
+      class="py-1.5 [&>svg:not([class*='size-'])]:size-4 pr-2"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -606,7 +539,7 @@ To add buttons to an input, use the `ButtonGroup` component. See the [Button Gro
   role="group"
   data-slot="field"
   data-orientation="vertical"
-  class="group/field w-full *:w-full [&>.sr-only]:w-auto"
+  class="group/field *:w-full [&>.sr-only]:w-auto"
 >
   <label
     data-slot="field-label"
@@ -617,18 +550,18 @@ To add buttons to an input, use the `ButtonGroup` component. See the [Button Gro
   <div
     role="group"
     data-slot="button-group"
-    class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group w-fit [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none"
+    class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group w-fit [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1 [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none"
   >
     <input
       data-slot="input"
-      class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+      class="rounded-lg border w-full file:border-0"
       id="input-button-group"
       placeholder="Type to search..."
     /><button
       data-slot="button"
       data-variant="outline"
       data-size="default"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input"
     >
       Search
     </button>
@@ -651,15 +584,12 @@ A full form example with multiple inputs, a select, and a button.
 {% <codegroup> %}
 ```text,name=input-form.html
 <form class="w-full max-w-sm">
-  <div
-    data-slot="field-group"
-    class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group"
-  >
+  <div data-slot="field-group" class="*:data-[slot=field-group]:gap-4 group/field-group">
     <div
       role="group"
       data-slot="field"
       data-orientation="vertical"
-      class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+      class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
     >
       <label
         data-slot="field-label"
@@ -668,7 +598,7 @@ A full form example with multiple inputs, a select, and a button.
         >Name</label
       ><input
         data-slot="input"
-        class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+        class="w-full"
         id="form-name"
         placeholder="Evil Rabbit"
         required=""
@@ -679,7 +609,7 @@ A full form example with multiple inputs, a select, and a button.
       role="group"
       data-slot="field"
       data-orientation="vertical"
-      class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+      class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
     >
       <label
         data-slot="field-label"
@@ -688,24 +618,19 @@ A full form example with multiple inputs, a select, and a button.
         >Email</label
       ><input
         data-slot="input"
-        class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+        class="w-full"
         id="form-email"
         placeholder="john@example.com"
         type="email"
       />
-      <p
-        data-slot="field-description"
-        class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-      >
-        We'll never share your email with anyone.
-      </p>
+      <p data-slot="field-description">We'll never share your email with anyone.</p>
     </div>
     <div class="grid grid-cols-2 gap-4">
       <div
         role="group"
         data-slot="field"
         data-orientation="vertical"
-        class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+        class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
       >
         <label
           data-slot="field-label"
@@ -714,7 +639,7 @@ A full form example with multiple inputs, a select, and a button.
           >Phone</label
         ><input
           data-slot="input"
-          class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+          class="w-full"
           id="form-phone"
           placeholder="+1 (555) 123-4567"
           type="tel"
@@ -724,7 +649,7 @@ A full form example with multiple inputs, a select, and a button.
         role="group"
         data-slot="field"
         data-orientation="vertical"
-        class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+        class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
       >
         <label
           data-slot="field-label"
@@ -741,7 +666,7 @@ A full form example with multiple inputs, a select, and a button.
           data-state="closed"
           data-slot="select-trigger"
           data-size="default"
-          class="border-input dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 gap-1.5 rounded-lg bg-transparent data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:gap-1.5 [&_svg:not([class*='size-'])]:size-4 flex w-fit *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex"
+          class="gap-1.5 *:data-[slot=select-value]:gap-1.5 [&_svg:not([class*='size-'])]:size-4 w-fit"
           id="s0-trigger"
         >
           <span data-slot="select-value" style="pointer-events: none">United States</span
@@ -784,7 +709,7 @@ A full form example with multiple inputs, a select, and a button.
       role="group"
       data-slot="field"
       data-orientation="vertical"
-      class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+      class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
     >
       <label
         data-slot="field-label"
@@ -793,7 +718,7 @@ A full form example with multiple inputs, a select, and a button.
         >Address</label
       ><input
         data-slot="input"
-        class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+        class="w-full"
         id="form-address"
         placeholder="123 Main St"
         type="text"
@@ -803,13 +728,13 @@ A full form example with multiple inputs, a select, and a button.
       role="group"
       data-slot="field"
       data-orientation="horizontal"
-      class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
+      class="gap-2 group/field *:data-[slot=field-label]:flex-auto"
     >
       <button
         data-slot="button"
         data-variant="outline"
         data-size="default"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+        class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input gap-1.5"
         type="button"
       >
         Cancel</button
@@ -817,7 +742,7 @@ A full form example with multiple inputs, a select, and a button.
         data-slot="button"
         data-variant="default"
         data-size="default"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent [&_svg:not([class*='size-'])]:size-4 group/button bg-primary hover:bg-primary/80 h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+        class="group/button shrink-0 [&_svg]:shrink-0 gap-1.5"
         type="submit"
       >
         Submit
@@ -868,7 +793,6 @@ A full form example with multiple inputs, a select, and a button.
         data-state="checked"
         tabindex="-1"
         data-slot="select-item"
-        class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
         data-radix-collection-item=""
         data-highlighted=""
       >
@@ -896,7 +820,6 @@ A full form example with multiple inputs, a select, and a button.
         data-state="unchecked"
         tabindex="-1"
         data-slot="select-item"
-        class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
         data-radix-collection-item=""
       >
         <span
@@ -911,7 +834,6 @@ A full form example with multiple inputs, a select, and a button.
         data-state="unchecked"
         tabindex="-1"
         data-slot="select-item"
-        class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
         data-radix-collection-item=""
       >
         <span

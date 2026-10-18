@@ -16,25 +16,17 @@ Displays a badge or a component that looks like a badge.
 {% <codegroup> %}
 ```text,name=badge-demo.html
 <div class="flex w-full flex-wrap justify-center gap-2">
-  <span
-    data-slot="badge"
-    data-variant="default"
-    class="h-5 border-transparent px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 bg-primary [a]:hover:bg-primary/80"
-    >Badge</span
-  ><span
-    data-slot="badge"
-    data-variant="secondary"
-    class="h-5 border-transparent px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 bg-secondary [a]:hover:bg-secondary/80"
-    >Secondary</span
+  <span data-slot="badge" data-variant="default" class="group/badge">Badge</span
+  ><span data-slot="badge" data-variant="secondary" class="group/badge">Secondary</span
   ><span
     data-slot="badge"
     data-variant="destructive"
-    class="h-5 border-transparent px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 bg-destructive/10 [a]:hover:bg-destructive/20 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/20"
+    class="group/badge aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40"
     >Destructive</span
   ><span
     data-slot="badge"
     data-variant="outline"
-    class="h-5 px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 border-border text-foreground [a]:hover:text-muted-foreground"
+    class="group/badge focus-visible:border-ring aria-invalid:border-destructive border-border"
     >Outline</span
   >
 </div>
@@ -76,32 +68,19 @@ Use the `variant` prop to change the variant of the badge.
 {% <codegroup> %}
 ```text,name=badge-variants.html
 <div class="flex flex-wrap gap-2">
-  <span
-    data-slot="badge"
-    data-variant="default"
-    class="h-5 border-transparent px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 bg-primary [a]:hover:bg-primary/80"
-    >Default</span
-  ><span
-    data-slot="badge"
-    data-variant="secondary"
-    class="h-5 border-transparent px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 bg-secondary [a]:hover:bg-secondary/80"
-    >Secondary</span
+  <span data-slot="badge" data-variant="default" class="group/badge">Default</span
+  ><span data-slot="badge" data-variant="secondary" class="group/badge">Secondary</span
   ><span
     data-slot="badge"
     data-variant="destructive"
-    class="h-5 border-transparent px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 bg-destructive/10 [a]:hover:bg-destructive/20 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/20"
+    class="group/badge aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40"
     >Destructive</span
   ><span
     data-slot="badge"
     data-variant="outline"
-    class="h-5 px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 border-border text-foreground [a]:hover:text-muted-foreground"
+    class="group/badge focus-visible:border-ring aria-invalid:border-destructive border-border"
     >Outline</span
-  ><span
-    data-slot="badge"
-    data-variant="ghost"
-    class="h-5 border-transparent px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 hover:bg-muted dark:hover:bg-muted/50"
-    >Ghost</span
-  >
+  ><span data-slot="badge" data-variant="ghost" class="group/badge">Ghost</span>
 </div>
 ```
 {% </codegroup> %}
@@ -120,10 +99,7 @@ You can render an icon inside the badge. Use `data-icon="inline-start"` to rende
 {% <codegroup> %}
 ```text,name=badge-icon.html
 <div class="flex flex-wrap gap-2">
-  <span
-    data-slot="badge"
-    data-variant="secondary"
-    class="h-5 border-transparent px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 bg-secondary [a]:hover:bg-secondary/80"
+  <span data-slot="badge" data-variant="secondary" class="group/badge"
     ><svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -145,7 +121,7 @@ You can render an icon inside the badge. Use `data-icon="inline-start"` to rende
   ><span
     data-slot="badge"
     data-variant="outline"
-    class="h-5 px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 border-border text-foreground [a]:hover:text-muted-foreground"
+    class="group/badge focus-visible:border-ring aria-invalid:border-destructive border-border"
     >Bookmark<svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -182,7 +158,7 @@ You can render a spinner inside the badge. Remember to add the `data-icon="inlin
   <span
     data-slot="badge"
     data-variant="destructive"
-    class="h-5 border-transparent px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 bg-destructive/10 [a]:hover:bg-destructive/20 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/20"
+    class="[&>svg]:size-3! group/badge aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40"
     ><svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -201,10 +177,7 @@ You can render a spinner inside the badge. Remember to add the `data-icon="inlin
     >
       <path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg
     >Deleting</span
-  ><span
-    data-slot="badge"
-    data-variant="secondary"
-    class="h-5 border-transparent px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 bg-secondary [a]:hover:bg-secondary/80"
+  ><span data-slot="badge" data-variant="secondary" class="[&>svg]:size-3! group/badge"
     >Generating<svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -240,11 +213,7 @@ Use the `asChild` prop to render a link as a badge.
 
 {% <codegroup> %}
 ```text,name=badge-link.html
-<a
-  href="#link"
-  data-slot="badge"
-  data-variant="default"
-  class="h-5 border-transparent px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 bg-primary [a]:hover:bg-primary/80"
+<a href="#link" data-slot="badge" data-variant="default" class="group/badge"
   >Open Link
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -282,27 +251,27 @@ You can customize the colors of a badge by adding custom classes such as `bg-gre
   <span
     data-slot="badge"
     data-variant="default"
-    class="h-5 border-transparent px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [a]:hover:bg-primary/80 bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
+    class="group/badge [a]:hover:bg-primary/80 bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
     >Blue</span
   ><span
     data-slot="badge"
     data-variant="default"
-    class="h-5 border-transparent px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [a]:hover:bg-primary/80 bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300"
+    class="group/badge [a]:hover:bg-primary/80 bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300"
     >Green</span
   ><span
     data-slot="badge"
     data-variant="default"
-    class="h-5 border-transparent px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [a]:hover:bg-primary/80 bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300"
+    class="group/badge [a]:hover:bg-primary/80 bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300"
     >Sky</span
   ><span
     data-slot="badge"
     data-variant="default"
-    class="h-5 border-transparent px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [a]:hover:bg-primary/80 bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300"
+    class="group/badge [a]:hover:bg-primary/80 bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300"
     >Purple</span
   ><span
     data-slot="badge"
     data-variant="default"
-    class="h-5 border-transparent px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [a]:hover:bg-primary/80 bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300"
+    class="group/badge [a]:hover:bg-primary/80 bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300"
     >Red</span
   >
 </div>

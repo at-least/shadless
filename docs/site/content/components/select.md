@@ -26,7 +26,6 @@ Displays a list of options for the user to pick from—triggered by a button.
     data-state="closed"
     data-slot="select-trigger"
     data-size="default"
-    class="border-input dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg bg-transparent data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] [&_svg:not([class*='size-'])]:size-4 flex w-fit *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex"
     id="s1-trigger"
   >
     <span data-slot="select-value" style="pointer-events: none">Apple</span
@@ -89,7 +88,6 @@ Displays a list of options for the user to pick from—triggered by a button.
         data-state="checked"
         tabindex="-1"
         data-slot="select-item"
-        class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
         data-radix-collection-item=""
         data-highlighted=""
       >
@@ -117,7 +115,6 @@ Displays a list of options for the user to pick from—triggered by a button.
         data-state="unchecked"
         tabindex="-1"
         data-slot="select-item"
-        class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
         data-radix-collection-item=""
       >
         <span
@@ -319,26 +316,23 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
 
 {% <codegroup> %}
 ```text,name=select-align-item.html
-<div
-  data-slot="field-group"
-  class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group max-w-xs"
->
+<div data-slot="field-group" class="*:data-[slot=field-group]:gap-4 group/field-group max-w-xs">
   <div
     role="group"
     data-slot="field"
     data-orientation="horizontal"
-    class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+    class="gap-2 group/field *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
   >
-    <div data-slot="field-content" class="gap-0.5 group/field-content">
+    <div data-slot="field-content" class="gap-0.5 group/field-content flex-1">
       <label
         data-slot="field-label"
-        class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+        class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
         for="align-item"
         >Align Item</label
       >
       <p
         data-slot="field-description"
-        class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
+        class="[[data-variant=legend]+&]:-mt-1.5 last:mt-0 nth-last-2:-mt-1"
       >
         Toggle to align the item with the trigger.
       </p>
@@ -351,21 +345,17 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
       value="on"
       data-slot="switch"
       data-size="default"
-      class="data-checked:bg-primary data-unchecked:bg-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 dark:data-unchecked:bg-input/80 border-transparent focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:border-transparent data-[size=default]:h-[18.4px] data-[size=default]:w-[32px] data-[size=sm]:h-[14px] data-[size=sm]:w-[24px] peer group/switch relative after:absolute"
+      class="shrink-0 peer group/switch"
       id="align-item"
     >
-      <span
-        data-state="checked"
-        data-slot="switch-thumb"
-        class="bg-background dark:data-unchecked:bg-foreground dark:data-checked:bg-primary-foreground group-data-[size=default]/switch:size-4 group-data-[size=sm]/switch:size-3 group-data-[size=default]/switch:data-checked:translate-x-[calc(100%-2px)] group-data-[size=sm]/switch:data-checked:translate-x-[calc(100%-2px)] group-data-[size=default]/switch:data-unchecked:translate-x-0 group-data-[size=sm]/switch:data-unchecked:translate-x-0"
-      ></span>
+      <span data-state="checked" data-slot="switch-thumb"></span>
     </button>
   </div>
   <div
     role="group"
     data-slot="field"
     data-orientation="vertical"
-    class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+    class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
   >
     <button
       type="button"
@@ -377,7 +367,7 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
       data-state="closed"
       data-slot="select-trigger"
       data-size="default"
-      class="border-input dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 gap-1.5 rounded-lg bg-transparent data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:gap-1.5 [&_svg:not([class*='size-'])]:size-4 flex w-fit *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex"
+      class="gap-1.5 *:data-[slot=select-value]:gap-1.5 [&_svg:not([class*='size-'])]:size-4 w-fit"
       id="s0-trigger"
     >
       <span data-slot="select-value" style="pointer-events: none">Banana</span
@@ -442,7 +432,6 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -457,7 +446,6 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
           data-state="checked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
           data-highlighted=""
         >
@@ -485,7 +473,6 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -500,7 +487,6 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -515,7 +501,6 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -696,7 +681,7 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
   data-placeholder=""
   data-slot="select-trigger"
   data-size="default"
-  class="border-input dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg bg-transparent data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] [&_svg:not([class*='size-'])]:size-4 flex *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex w-full max-w-48"
+  class="w-full max-w-48"
   id="s0-trigger"
 >
   <span data-slot="select-value" style="pointer-events: none">Select a fruit</span
@@ -776,7 +761,6 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
           data-highlighted=""
         >
@@ -792,7 +776,6 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -807,7 +790,6 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -826,7 +808,6 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -841,7 +822,6 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -856,7 +836,6 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1008,7 +987,7 @@ A select with many items that scrolls.
   data-placeholder=""
   data-slot="select-trigger"
   data-size="default"
-  class="border-input dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg bg-transparent data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] [&_svg:not([class*='size-'])]:size-4 flex *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex w-full max-w-64"
+  class="w-full max-w-64"
   id="s0-trigger"
 >
   <span data-slot="select-value" style="pointer-events: none">Select a timezone</span
@@ -1088,7 +1067,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
           data-highlighted=""
         >
@@ -1104,7 +1082,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1119,7 +1096,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1134,7 +1110,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1149,7 +1124,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1164,7 +1138,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1182,7 +1155,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1197,7 +1169,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1212,7 +1183,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1227,7 +1197,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1242,7 +1211,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1257,7 +1225,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1275,7 +1242,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1290,7 +1256,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1305,7 +1270,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1320,7 +1284,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1335,7 +1298,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1350,7 +1312,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1368,7 +1329,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1383,7 +1343,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1398,7 +1357,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1413,7 +1371,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1428,7 +1385,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1446,7 +1402,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1461,7 +1416,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1476,7 +1430,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1491,7 +1444,6 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1642,7 +1594,7 @@ A select with many items that scrolls.
   data-placeholder=""
   data-slot="select-trigger"
   data-size="default"
-  class="border-input dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg bg-transparent data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] [&_svg:not([class*='size-'])]:size-4 flex *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex w-full max-w-48"
+  class="w-full max-w-48"
   id="s0-trigger"
 >
   <span data-slot="select-value" style="pointer-events: none">Select a fruit</span
@@ -1803,7 +1755,7 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
   role="group"
   data-slot="field"
   data-orientation="vertical"
-  class="group/field *:w-full [&>.sr-only]:w-auto w-full max-w-48"
+  class="group/field *:w-full [&>.sr-only]:w-auto max-w-48"
   data-invalid="true"
 >
   <label
@@ -1821,7 +1773,7 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
     data-placeholder=""
     data-slot="select-trigger"
     data-size="default"
-    class="border-input dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg bg-transparent data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] [&_svg:not([class*='size-'])]:size-4 flex w-fit *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex"
+    class="[&_svg:not([class*='size-'])]:size-4 w-fit"
     aria-invalid="true"
     id="s0-trigger"
   >
@@ -1887,7 +1839,6 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
           data-highlighted=""
         >
@@ -1903,7 +1854,6 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1918,7 +1868,6 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span

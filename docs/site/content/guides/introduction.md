@@ -14,7 +14,7 @@ shadless ships shadcn/ui's radix-line components as compiled HTML, CSS, and JS a
 
 ## Open Code
 
-shadless hands you the actual component markup — the same DOM shadcn's JSX renders, written out as HTML, without the JSX wrappers and React hooks. Every example on this site shows it in a code tab under the preview; copy it and adapt any part to fit your design and functionality requirements. The tab is slot-only — `data-slot`/`data-*` attributes plus only the classes the component stylesheet does not already supply — so importing `shadless` and the component's stylesheet renders it exactly like the preview (`docs-code-parity` proves that, in a consumer build as well as against the precompiled CSS).
+shadless hands you the actual component markup — the same DOM shadcn's JSX renders, written out as HTML, without the JSX wrappers and React hooks. Every example on this site shows it in a code tab under the preview; copy it and adapt any part to fit your design and functionality requirements. The tab is slot-only — `data-slot`/`data-*` attributes plus only the classes the component stylesheet cannot reproduce on its own — so importing `shadless` and the component's stylesheet renders it exactly like the preview (`docs-code-parity` proves that, in a consumer build as well as against the precompiled CSS).
 
 - **Full Transparency:** The HTML, the CSS, and the JS runtime are all on disk. Nothing is hidden behind a build step.
 - **Easy Customization:** Edit the markup directly. Slots are marked with `data-slot="…"`; keep them and the shipped styles apply unchanged.

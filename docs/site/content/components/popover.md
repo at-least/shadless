@@ -608,41 +608,21 @@ A popover with form fields inside.
         data-slot="field-group"
         class="data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group gap-4"
       >
-        <div
-          role="group"
-          data-slot="field"
-          data-orientation="horizontal"
-          class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
-        >
+        <div role="group" data-slot="field" data-orientation="horizontal" class="gap-2 group/field">
           <label
             data-slot="field-label"
             class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col w-1/2"
             for="width"
             >Width</label
-          ><input
-            data-slot="input"
-            class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
-            id="width"
-            value="100%"
-          />
+          ><input data-slot="input" id="width" value="100%" />
         </div>
-        <div
-          role="group"
-          data-slot="field"
-          data-orientation="horizontal"
-          class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
-        >
+        <div role="group" data-slot="field" data-orientation="horizontal" class="gap-2 group/field">
           <label
             data-slot="field-label"
             class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col w-1/2"
             for="height"
             >Height</label
-          ><input
-            data-slot="input"
-            class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
-            id="height"
-            value="25px"
-          />
+          ><input data-slot="input" id="height" value="25px" />
         </div>
       </div>
     </div>

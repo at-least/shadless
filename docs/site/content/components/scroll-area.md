@@ -69,7 +69,6 @@ Augments native scroll functionality for custom, cross-browser styling.
       data-orientation="vertical"
       data-state="visible"
       data-slot="scroll-area-scrollbar"
-      class="data-horizontal:h-2.5 data-vertical:h-full"
       style="
         position: absolute;
         top: 0px;

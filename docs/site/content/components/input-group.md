@@ -18,19 +18,14 @@ Add addons, buttons, and helper content to inputs.
 <div
   data-slot="input-group"
   role="group"
-  class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto max-w-xs"
+  class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 max-w-xs"
 >
   <input
     data-slot="input-group-control"
     class="border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium md:text-sm w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
     placeholder="Search..."
   />
-  <div
-    role="group"
-    data-slot="input-group-addon"
-    data-align="inline-start"
-    class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pl-2 has-[>button]:ml-[-0.3rem] has-[>kbd]:ml-[-0.15rem]"
-  >
+  <div role="group" data-slot="input-group-addon" data-align="inline-start" class="py-1.5 pl-2">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -47,12 +42,7 @@ Add addons, buttons, and helper content to inputs.
       <path d="m21 21-4.3-4.3"></path>
     </svg>
   </div>
-  <div
-    role="group"
-    data-slot="input-group-addon"
-    data-align="inline-end"
-    class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem]"
-  >
+  <div role="group" data-slot="input-group-addon" data-align="inline-end" class="py-1.5 pr-2">
     12 results
   </div>
 </div>
@@ -119,7 +109,7 @@ Use `align="inline-start"` to position the addon at the start of the input. This
   role="group"
   data-slot="field"
   data-orientation="vertical"
-  class="group/field w-full *:w-full [&>.sr-only]:w-auto max-w-sm"
+  class="group/field *:w-full [&>.sr-only]:w-auto max-w-sm"
 >
   <label
     data-slot="field-label"
@@ -130,7 +120,7 @@ Use `align="inline-start"` to position the addon at the start of the input. This
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 w-full has-[>textarea]:h-auto"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 w-full"
   >
     <input
       data-slot="input-group-control"
@@ -142,7 +132,7 @@ Use `align="inline-start"` to position the addon at the start of the input. This
       role="group"
       data-slot="input-group-addon"
       data-align="inline-start"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pl-2 has-[>button]:ml-[-0.3rem] has-[>kbd]:ml-[-0.15rem]"
+      class="py-1.5 [&>svg:not([class*='size-'])]:size-4 pl-2"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -161,12 +151,7 @@ Use `align="inline-start"` to position the addon at the start of the input. This
       </svg>
     </div>
   </div>
-  <p
-    data-slot="field-description"
-    class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-  >
-    Icon positioned at the start.
-  </p>
+  <p data-slot="field-description">Icon positioned at the start.</p>
 </div>
 ```
 {% </codegroup> %}
@@ -188,7 +173,7 @@ Use `align="inline-end"` to position the addon at the end of the input.
   role="group"
   data-slot="field"
   data-orientation="vertical"
-  class="group/field w-full *:w-full [&>.sr-only]:w-auto max-w-sm"
+  class="group/field *:w-full [&>.sr-only]:w-auto max-w-sm"
 >
   <label
     data-slot="field-label"
@@ -199,7 +184,7 @@ Use `align="inline-end"` to position the addon at the end of the input.
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 w-full has-[>textarea]:h-auto"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 w-full"
   >
     <input
       data-slot="input-group-control"
@@ -212,7 +197,7 @@ Use `align="inline-end"` to position the addon at the end of the input.
       role="group"
       data-slot="input-group-addon"
       data-align="inline-end"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem]"
+      class="py-1.5 [&>svg:not([class*='size-'])]:size-4 pr-2"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -237,12 +222,7 @@ Use `align="inline-end"` to position the addon at the end of the input.
       </svg>
     </div>
   </div>
-  <p
-    data-slot="field-description"
-    class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-  >
-    Icon positioned at the end.
-  </p>
+  <p data-slot="field-description">Icon positioned at the end.</p>
 </div>
 ```
 {% </codegroup> %}
@@ -260,15 +240,12 @@ Use `align="block-start"` to position the addon above the input.
 
 {% <codegroup> %}
 ```text,name=input-group-block-start.html
-<div
-  data-slot="field-group"
-  class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group max-w-sm"
->
+<div data-slot="field-group" class="*:data-[slot=field-group]:gap-4 group/field-group max-w-sm">
   <div
     role="group"
     data-slot="field"
     data-orientation="vertical"
-    class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+    class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
   >
     <label
       data-slot="field-label"
@@ -279,7 +256,7 @@ Use `align="block-start"` to position the addon above the input.
     <div
       data-slot="input-group"
       role="group"
-      class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 w-full has-[>textarea]:h-auto h-auto"
+      class="group/input-group has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 w-full has-[>textarea]:h-auto h-auto"
     >
       <input
         data-slot="input-group-control"
@@ -291,7 +268,7 @@ Use `align="block-start"` to position the addon above the input.
         role="group"
         data-slot="input-group-addon"
         data-align="block-start"
-        class="h-auto gap-2 py-1.5 [&>svg:not([class*='size-'])]:size-4 px-2.5 pt-2 group-has-[>input]/input-group:pt-2 [.border-b]:pb-2 w-full"
+        class="gap-2 py-1.5 [&>svg:not([class*='size-'])]:size-4 px-2.5 pt-2 group-has-[>input]/input-group:pt-2 [.border-b]:pb-2 w-full"
       >
         <span
           class="text-muted-foreground gap-2 text-sm [&_svg:not([class*='size-'])]:size-4 flex items-center [&_svg]:pointer-events-none"
@@ -299,18 +276,13 @@ Use `align="block-start"` to position the addon above the input.
         >
       </div>
     </div>
-    <p
-      data-slot="field-description"
-      class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-    >
-      Header positioned above the input.
-    </p>
+    <p data-slot="field-description">Header positioned above the input.</p>
   </div>
   <div
     role="group"
     data-slot="field"
     data-orientation="vertical"
-    class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+    class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
   >
     <label
       data-slot="field-label"
@@ -321,7 +293,7 @@ Use `align="block-start"` to position the addon above the input.
     <div
       data-slot="input-group"
       role="group"
-      class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 w-full has-[>textarea]:h-auto"
+      class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 w-full"
     >
       <textarea
         data-slot="input-group-control"
@@ -333,7 +305,7 @@ Use `align="block-start"` to position the addon above the input.
         role="group"
         data-slot="input-group-addon"
         data-align="block-start"
-        class="h-auto gap-2 py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 px-2.5 pt-2 group-has-[>input]/input-group:pt-2 [.border-b]:pb-2 w-full"
+        class="gap-2 py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 px-2.5 pt-2 group-has-[>input]/input-group:pt-2 [.border-b]:pb-2 w-full"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -379,12 +351,7 @@ Use `align="block-start"` to position the addon above the input.
         </button>
       </div>
     </div>
-    <p
-      data-slot="field-description"
-      class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-    >
-      Header positioned above the textarea.
-    </p>
+    <p data-slot="field-description">Header positioned above the textarea.</p>
   </div>
 </div>
 ```
@@ -403,15 +370,12 @@ Use `align="block-end"` to position the addon below the input.
 
 {% <codegroup> %}
 ```text,name=input-group-block-end.html
-<div
-  data-slot="field-group"
-  class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group max-w-sm"
->
+<div data-slot="field-group" class="*:data-[slot=field-group]:gap-4 group/field-group max-w-sm">
   <div
     role="group"
     data-slot="field"
     data-orientation="vertical"
-    class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+    class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
   >
     <label
       data-slot="field-label"
@@ -422,7 +386,7 @@ Use `align="block-end"` to position the addon below the input.
     <div
       data-slot="input-group"
       role="group"
-      class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 w-full has-[>textarea]:h-auto h-auto"
+      class="group/input-group has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 w-full has-[>textarea]:h-auto h-auto"
     >
       <input
         data-slot="input-group-control"
@@ -434,7 +398,7 @@ Use `align="block-end"` to position the addon below the input.
         role="group"
         data-slot="input-group-addon"
         data-align="block-end"
-        class="h-auto gap-2 py-1.5 [&>svg:not([class*='size-'])]:size-4 px-2.5 pb-2 group-has-[>input]/input-group:pb-2 [.border-t]:pt-2 w-full"
+        class="gap-2 py-1.5 [&>svg:not([class*='size-'])]:size-4 px-2.5 pb-2 group-has-[>input]/input-group:pb-2 [.border-t]:pt-2 w-full"
       >
         <span
           class="text-muted-foreground gap-2 text-sm [&_svg:not([class*='size-'])]:size-4 flex items-center [&_svg]:pointer-events-none"
@@ -442,18 +406,13 @@ Use `align="block-end"` to position the addon below the input.
         >
       </div>
     </div>
-    <p
-      data-slot="field-description"
-      class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-    >
-      Footer positioned below the input.
-    </p>
+    <p data-slot="field-description">Footer positioned below the input.</p>
   </div>
   <div
     role="group"
     data-slot="field"
     data-orientation="vertical"
-    class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+    class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
   >
     <label
       data-slot="field-label"
@@ -464,7 +423,7 @@ Use `align="block-end"` to position the addon below the input.
     <div
       data-slot="input-group"
       role="group"
-      class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 w-full has-[>textarea]:h-auto"
+      class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 w-full"
     >
       <textarea
         data-slot="input-group-control"
@@ -476,7 +435,7 @@ Use `align="block-end"` to position the addon below the input.
         role="group"
         data-slot="input-group-addon"
         data-align="block-end"
-        class="h-auto gap-2 py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 px-2.5 pb-2 group-has-[>input]/input-group:pb-2 [.border-t]:pt-2 w-full"
+        class="gap-2 py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 px-2.5 pb-2 group-has-[>input]/input-group:pb-2 [.border-t]:pt-2 w-full"
       >
         <span
           class="text-muted-foreground gap-2 text-sm [&_svg:not([class*='size-'])]:size-4 flex items-center [&_svg]:pointer-events-none"
@@ -492,12 +451,7 @@ Use `align="block-end"` to position the addon below the input.
         </button>
       </div>
     </div>
-    <p
-      data-slot="field-description"
-      class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-    >
-      Footer positioned below the textarea.
-    </p>
+    <p data-slot="field-description">Footer positioned below the textarea.</p>
   </div>
 </div>
 ```
@@ -518,19 +472,14 @@ Use `align="block-end"` to position the addon below the input.
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5"
   >
     <input
       data-slot="input-group-control"
       class="border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium md:text-sm w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
       placeholder="Search..."
     />
-    <div
-      role="group"
-      data-slot="input-group-addon"
-      data-align="inline-start"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pl-2 has-[>button]:ml-[-0.3rem] has-[>kbd]:ml-[-0.15rem]"
-    >
+    <div role="group" data-slot="input-group-addon" data-align="inline-start" class="py-1.5 pl-2">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -551,7 +500,7 @@ Use `align="block-end"` to position the addon below the input.
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5"
   >
     <input
       data-slot="input-group-control"
@@ -559,12 +508,7 @@ Use `align="block-end"` to position the addon below the input.
       placeholder="Enter your email"
       type="email"
     />
-    <div
-      role="group"
-      data-slot="input-group-addon"
-      data-align="inline-start"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pl-2 has-[>button]:ml-[-0.3rem] has-[>kbd]:ml-[-0.15rem]"
-    >
+    <div role="group" data-slot="input-group-addon" data-align="inline-start" class="py-1.5 pl-2">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -585,19 +529,14 @@ Use `align="block-end"` to position the addon below the input.
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5"
   >
     <input
       data-slot="input-group-control"
       class="border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium md:text-sm w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
       placeholder="Card number"
     />
-    <div
-      role="group"
-      data-slot="input-group-addon"
-      data-align="inline-start"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pl-2 has-[>button]:ml-[-0.3rem] has-[>kbd]:ml-[-0.15rem]"
-    >
+    <div role="group" data-slot="input-group-addon" data-align="inline-start" class="py-1.5 pl-2">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -614,12 +553,7 @@ Use `align="block-end"` to position the addon below the input.
         <line x1="2" x2="22" y1="10" y2="10"></line>
       </svg>
     </div>
-    <div
-      role="group"
-      data-slot="input-group-addon"
-      data-align="inline-end"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem]"
-    >
+    <div role="group" data-slot="input-group-addon" data-align="inline-end" class="py-1.5 pr-2">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -639,19 +573,14 @@ Use `align="block-end"` to position the addon below the input.
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5"
   >
     <input
       data-slot="input-group-control"
       class="border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium md:text-sm w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
       placeholder="Card number"
     />
-    <div
-      role="group"
-      data-slot="input-group-addon"
-      data-align="inline-end"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem]"
-    >
+    <div role="group" data-slot="input-group-addon" data-align="inline-end" class="py-1.5 pr-2">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -704,14 +633,9 @@ Use `align="block-end"` to position the addon below the input.
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5"
   >
-    <div
-      role="group"
-      data-slot="input-group-addon"
-      data-align="inline-start"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pl-2 has-[>button]:ml-[-0.3rem] has-[>kbd]:ml-[-0.15rem]"
-    >
+    <div role="group" data-slot="input-group-addon" data-align="inline-start" class="py-1.5 pl-2">
       <span
         class="text-muted-foreground gap-2 text-sm [&_svg:not([class*='size-'])]:size-4 flex items-center [&_svg]:pointer-events-none"
         >$</span
@@ -722,12 +646,7 @@ Use `align="block-end"` to position the addon below the input.
       class="border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium md:text-sm w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
       placeholder="0.00"
     />
-    <div
-      role="group"
-      data-slot="input-group-addon"
-      data-align="inline-end"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem]"
-    >
+    <div role="group" data-slot="input-group-addon" data-align="inline-end" class="py-1.5 pr-2">
       <span
         class="text-muted-foreground gap-2 text-sm [&_svg:not([class*='size-'])]:size-4 flex items-center [&_svg]:pointer-events-none"
         >USD</span
@@ -737,14 +656,9 @@ Use `align="block-end"` to position the addon below the input.
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5"
   >
-    <div
-      role="group"
-      data-slot="input-group-addon"
-      data-align="inline-start"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pl-2 has-[>button]:ml-[-0.3rem] has-[>kbd]:ml-[-0.15rem]"
-    >
+    <div role="group" data-slot="input-group-addon" data-align="inline-start" class="py-1.5 pl-2">
       <span
         class="text-muted-foreground gap-2 text-sm [&_svg:not([class*='size-'])]:size-4 flex items-center [&_svg]:pointer-events-none"
         >https://</span
@@ -755,12 +669,7 @@ Use `align="block-end"` to position the addon below the input.
       class="border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium md:text-sm w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 pl-0.5!"
       placeholder="example.com"
     />
-    <div
-      role="group"
-      data-slot="input-group-addon"
-      data-align="inline-end"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem]"
-    >
+    <div role="group" data-slot="input-group-addon" data-align="inline-end" class="py-1.5 pr-2">
       <span
         class="text-muted-foreground gap-2 text-sm [&_svg:not([class*='size-'])]:size-4 flex items-center [&_svg]:pointer-events-none"
         >.com</span
@@ -770,19 +679,14 @@ Use `align="block-end"` to position the addon below the input.
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5"
   >
     <input
       data-slot="input-group-control"
       class="border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium md:text-sm w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
       placeholder="Enter your username"
     />
-    <div
-      role="group"
-      data-slot="input-group-addon"
-      data-align="inline-end"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem]"
-    >
+    <div role="group" data-slot="input-group-addon" data-align="inline-end" class="py-1.5 pr-2">
       <span
         class="text-muted-foreground gap-2 text-sm [&_svg:not([class*='size-'])]:size-4 flex items-center [&_svg]:pointer-events-none"
         >@company.com</span
@@ -792,7 +696,7 @@ Use `align="block-end"` to position the addon below the input.
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5"
   >
     <textarea
       data-slot="input-group-control"
@@ -803,7 +707,7 @@ Use `align="block-end"` to position the addon below the input.
       role="group"
       data-slot="input-group-addon"
       data-align="block-end"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 px-2.5 pb-2 group-has-[>input]/input-group:pb-2 [.border-t]:pt-2 w-full"
+      class="py-1.5 px-2.5 pb-2 group-has-[>input]/input-group:pb-2 [.border-t]:pt-2"
     >
       <span
         class="gap-2 [&_svg:not([class*='size-'])]:size-4 flex items-center [&_svg]:pointer-events-none text-xs text-muted-foreground"
@@ -830,7 +734,7 @@ Use `align="block-end"` to position the addon below the input.
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5"
   >
     <input
       data-slot="input-group-control"
@@ -842,7 +746,7 @@ Use `align="block-end"` to position the addon below the input.
       role="group"
       data-slot="input-group-addon"
       data-align="inline-end"
-      class="h-auto py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem]"
+      class="py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 pr-2"
     >
       <button
         data-slot="button"
@@ -878,7 +782,7 @@ Use `align="block-end"` to position the addon below the input.
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto [--radius:9999px]"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 [--radius:9999px]"
   >
     <div
       role="group"
@@ -917,12 +821,7 @@ Use `align="block-end"` to position the addon below the input.
         </svg>
       </button>
     </div>
-    <div
-      role="group"
-      data-slot="input-group-addon"
-      data-align="inline-start"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 has-[>button]:ml-[-0.3rem] has-[>kbd]:ml-[-0.15rem] pl-1.5"
-    >
+    <div role="group" data-slot="input-group-addon" data-align="inline-start" class="py-1.5 pl-1.5">
       https://
     </div>
     <input
@@ -934,7 +833,7 @@ Use `align="block-end"` to position the addon below the input.
       role="group"
       data-slot="input-group-addon"
       data-align="inline-end"
-      class="h-auto py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem]"
+      class="py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 pr-2"
     >
       <button
         data-slot="button"
@@ -966,7 +865,7 @@ Use `align="block-end"` to position the addon below the input.
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5"
   >
     <input
       data-slot="input-group-control"
@@ -977,7 +876,7 @@ Use `align="block-end"` to position the addon below the input.
       role="group"
       data-slot="input-group-addon"
       data-align="inline-end"
-      class="h-auto py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem]"
+      class="py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 pr-2"
     >
       <button
         data-slot="button"
@@ -1105,19 +1004,14 @@ Use `align="block-end"` to position the addon below the input.
 <div
   data-slot="input-group"
   role="group"
-  class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto max-w-sm"
+  class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 max-w-sm"
 >
   <input
     data-slot="input-group-control"
     class="border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium md:text-sm w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
     placeholder="Search..."
   />
-  <div
-    role="group"
-    data-slot="input-group-addon"
-    data-align="inline-start"
-    class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pl-2 has-[>button]:ml-[-0.3rem] has-[>kbd]:ml-[-0.15rem]"
-  >
+  <div role="group" data-slot="input-group-addon" data-align="inline-start" class="py-1.5 pl-2">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -1138,11 +1032,9 @@ Use `align="block-end"` to position the addon below the input.
     role="group"
     data-slot="input-group-addon"
     data-align="inline-end"
-    class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem]"
+    class="py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 pr-2"
   >
-    <kbd
-      data-slot="kbd"
-      class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit px-1 [&_svg:not([class*='size-'])]:size-3"
+    <kbd data-slot="kbd" class="h-5 w-fit rounded-sm px-1 [&_svg:not([class*='size-'])]:size-3"
       >⌘K</kbd
     >
   </div>
@@ -1165,7 +1057,7 @@ Use `align="block-end"` to position the addon below the input.
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5"
   >
     <input
       data-slot="input-group-control"
@@ -1176,7 +1068,7 @@ Use `align="block-end"` to position the addon below the input.
       role="group"
       data-slot="input-group-addon"
       data-align="inline-end"
-      class="h-auto py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem]"
+      class="py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 pr-2"
     >
       <button
         data-slot="dropdown-menu-trigger"
@@ -1213,7 +1105,7 @@ Use `align="block-end"` to position the addon below the input.
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto [--radius:1rem]"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 [--radius:1rem]"
   >
     <input
       data-slot="input-group-control"
@@ -1224,7 +1116,7 @@ Use `align="block-end"` to position the addon below the input.
       role="group"
       data-slot="input-group-addon"
       data-align="inline-end"
-      class="h-auto py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem]"
+      class="py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 pr-2"
     >
       <button
         data-slot="dropdown-menu-trigger"
@@ -1269,7 +1161,7 @@ Use `align="block-end"` to position the addon below the input.
     id="m0"
     aria-labelledby="m0-trigger"
     data-slot="dropdown-menu-content"
-    class="cn-menu-target cn-menu-translucent overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -1287,7 +1179,7 @@ Use `align="block-end"` to position the addon below the input.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1298,7 +1190,7 @@ Use `align="block-end"` to position the addon below the input.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1309,7 +1201,7 @@ Use `align="block-end"` to position the addon below the input.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1331,7 +1223,7 @@ Use `align="block-end"` to position the addon below the input.
     id="m1"
     aria-labelledby="m1-trigger"
     data-slot="dropdown-menu-content"
-    class="cn-menu-target cn-menu-translucent overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden [--radius:0.95rem]"
+    class="cn-menu-target cn-menu-translucent [--radius:0.95rem]"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -1349,7 +1241,7 @@ Use `align="block-end"` to position the addon below the input.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1360,7 +1252,7 @@ Use `align="block-end"` to position the addon below the input.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1371,7 +1263,7 @@ Use `align="block-end"` to position the addon below the input.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1412,19 +1304,14 @@ Use `align="block-end"` to position the addon below the input.
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5"
   >
     <input
       data-slot="input-group-control"
       class="border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium md:text-sm w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
       placeholder="Searching..."
     />
-    <div
-      role="group"
-      data-slot="input-group-addon"
-      data-align="inline-end"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem]"
-    >
+    <div role="group" data-slot="input-group-addon" data-align="inline-end" class="py-1.5 pr-2">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -1447,19 +1334,14 @@ Use `align="block-end"` to position the addon below the input.
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5"
   >
     <input
       data-slot="input-group-control"
       class="border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium md:text-sm w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
       placeholder="Processing..."
     />
-    <div
-      role="group"
-      data-slot="input-group-addon"
-      data-align="inline-start"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pl-2 has-[>button]:ml-[-0.3rem] has-[>kbd]:ml-[-0.15rem]"
-    >
+    <div role="group" data-slot="input-group-addon" data-align="inline-start" class="py-1.5 pl-2">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -1482,19 +1364,14 @@ Use `align="block-end"` to position the addon below the input.
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5"
   >
     <input
       data-slot="input-group-control"
       class="border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium md:text-sm w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
       placeholder="Saving changes..."
     />
-    <div
-      role="group"
-      data-slot="input-group-addon"
-      data-align="inline-end"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem]"
-    >
+    <div role="group" data-slot="input-group-addon" data-align="inline-end" class="py-1.5 pr-2">
       <span
         class="text-muted-foreground gap-2 text-sm [&_svg:not([class*='size-'])]:size-4 flex items-center [&_svg]:pointer-events-none"
         >Saving...</span
@@ -1520,19 +1397,14 @@ Use `align="block-end"` to position the addon below the input.
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5"
   >
     <input
       data-slot="input-group-control"
       class="border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium md:text-sm w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
       placeholder="Refreshing data..."
     />
-    <div
-      role="group"
-      data-slot="input-group-addon"
-      data-align="inline-start"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pl-2 has-[>button]:ml-[-0.3rem] has-[>kbd]:ml-[-0.15rem]"
-    >
+    <div role="group" data-slot="input-group-addon" data-align="inline-start" class="py-1.5 pl-2">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -1555,12 +1427,7 @@ Use `align="block-end"` to position the addon below the input.
         <path d="m4.9 4.9 2.9 2.9"></path>
       </svg>
     </div>
-    <div
-      role="group"
-      data-slot="input-group-addon"
-      data-align="inline-end"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem]"
-    >
+    <div role="group" data-slot="input-group-addon" data-align="inline-end" class="py-1.5 pr-2">
       <span
         class="gap-2 text-sm [&_svg:not([class*='size-'])]:size-4 flex items-center [&_svg]:pointer-events-none text-muted-foreground"
         >Please wait...</span
@@ -1586,7 +1453,7 @@ Use `align="block-end"` to position the addon below the input.
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5"
   >
     <textarea
       data-slot="input-group-control"
@@ -1598,7 +1465,7 @@ Use `align="block-end"` to position the addon below the input.
       role="group"
       data-slot="input-group-addon"
       data-align="block-end"
-      class="h-auto py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 px-2.5 pb-2 group-has-[>input]/input-group:pb-2 [.border-t]:pt-2 w-full border-t"
+      class="py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 px-2.5 pb-2 group-has-[>input]/input-group:pb-2 [.border-t]:pt-2 border-t"
     >
       <span
         class="text-muted-foreground gap-2 text-sm [&_svg:not([class*='size-'])]:size-4 flex items-center [&_svg]:pointer-events-none"
@@ -1631,7 +1498,7 @@ Use `align="block-end"` to position the addon below the input.
       role="group"
       data-slot="input-group-addon"
       data-align="block-start"
-      class="h-auto py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 px-2.5 pt-2 group-has-[>input]/input-group:pt-2 [.border-b]:pb-2 w-full border-b"
+      class="py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 px-2.5 pt-2 group-has-[>input]/input-group:pt-2 [.border-b]:pb-2 border-b"
     >
       <span
         class="text-muted-foreground gap-2 text-sm [&_svg:not([class*='size-'])]:size-4 flex items-center [&_svg]:pointer-events-none font-mono font-medium"
@@ -1727,7 +1594,7 @@ Here's an example of a custom resizable textarea from a third-party library.
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5"
   >
     <textarea
       data-slot="input-group-control"
@@ -1738,7 +1605,7 @@ Here's an example of a custom resizable textarea from a third-party library.
       role="group"
       data-slot="input-group-addon"
       data-align="block-end"
-      class="h-auto py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 px-2.5 pb-2 group-has-[>input]/input-group:pb-2 [.border-t]:pt-2 w-full"
+      class="py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 px-2.5 pb-2 group-has-[>input]/input-group:pb-2 [.border-t]:pt-2"
     >
       <button
         data-slot="button"

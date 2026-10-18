@@ -20,7 +20,7 @@ A two-state button that can be either on or off.
   aria-pressed="false"
   data-state="off"
   data-slot="toggle"
-  class="aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted group/toggle border-input hover:bg-muted border bg-transparent h-7 min-w-7 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
+  class="aria-pressed:bg-muted focus-visible:border-ring aria-invalid:border-destructive data-[state=on]:bg-muted group/toggle border-input hover:bg-muted border bg-transparent h-7 min-w-7 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
   aria-label="Toggle bookmark"
 >
   <svg
@@ -117,7 +117,7 @@ Use `variant="outline"` for an outline style.
     aria-pressed="false"
     data-state="off"
     data-slot="toggle"
-    class="aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted [&_svg:not([class*='size-'])]:size-4 group/toggle border-input hover:bg-muted border bg-transparent h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+    class="aria-pressed:bg-muted focus-visible:border-ring aria-invalid:border-destructive data-[state=on]:bg-muted group/toggle border-input hover:bg-muted border bg-transparent"
     aria-label="Toggle italic"
   >
     <svg
@@ -141,7 +141,7 @@ Use `variant="outline"` for an outline style.
     aria-pressed="false"
     data-state="off"
     data-slot="toggle"
-    class="aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted [&_svg:not([class*='size-'])]:size-4 group/toggle border-input hover:bg-muted border bg-transparent h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+    class="aria-pressed:bg-muted focus-visible:border-ring aria-invalid:border-destructive data-[state=on]:bg-muted group/toggle border-input hover:bg-muted border bg-transparent"
     aria-label="Toggle bold"
   >
     <svg
@@ -201,7 +201,7 @@ Use `variant="outline"` for an outline style.
   aria-pressed="false"
   data-state="off"
   data-slot="toggle"
-  class="aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted [&_svg:not([class*='size-'])]:size-4 group/toggle hover:bg-muted bg-transparent h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+  class="aria-pressed:bg-muted data-[state=on]:bg-muted group/toggle hover:bg-muted bg-transparent"
   aria-label="Toggle italic"
 >
   <svg
@@ -265,7 +265,7 @@ Use the `size` prop to change the size of the toggle.
     aria-pressed="false"
     data-state="off"
     data-slot="toggle"
-    class="aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted group/toggle border-input hover:bg-muted border bg-transparent h-7 min-w-7 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
+    class="aria-pressed:bg-muted focus-visible:border-ring aria-invalid:border-destructive data-[state=on]:bg-muted group/toggle border-input hover:bg-muted border bg-transparent h-7 min-w-7 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
     aria-label="Toggle small"
   >
     Small</button
@@ -274,7 +274,7 @@ Use the `size` prop to change the size of the toggle.
     aria-pressed="false"
     data-state="off"
     data-slot="toggle"
-    class="aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted [&_svg:not([class*='size-'])]:size-4 group/toggle border-input hover:bg-muted border bg-transparent h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+    class="aria-pressed:bg-muted focus-visible:border-ring aria-invalid:border-destructive data-[state=on]:bg-muted group/toggle border-input hover:bg-muted border bg-transparent"
     aria-label="Toggle default"
   >
     Default</button
@@ -283,7 +283,7 @@ Use the `size` prop to change the size of the toggle.
     aria-pressed="false"
     data-state="off"
     data-slot="toggle"
-    class="aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted [&_svg:not([class*='size-'])]:size-4 group/toggle border-input hover:bg-muted border bg-transparent h-9 min-w-9 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+    class="aria-pressed:bg-muted focus-visible:border-ring aria-invalid:border-destructive data-[state=on]:bg-muted group/toggle border-input hover:bg-muted border bg-transparent h-9 min-w-9"
     aria-label="Toggle large"
   >
     Large
@@ -332,7 +332,7 @@ Use the `size` prop to change the size of the toggle.
     data-state="off"
     data-disabled=""
     data-slot="toggle"
-    class="aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted [&_svg:not([class*='size-'])]:size-4 group/toggle hover:bg-muted bg-transparent h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+    class="aria-pressed:bg-muted data-[state=on]:bg-muted group/toggle hover:bg-muted bg-transparent"
     aria-label="Toggle disabled"
     disabled=""
   >
@@ -343,7 +343,7 @@ Use the `size` prop to change the size of the toggle.
     data-state="off"
     data-disabled=""
     data-slot="toggle"
-    class="aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted [&_svg:not([class*='size-'])]:size-4 group/toggle border-input hover:bg-muted border bg-transparent h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+    class="aria-pressed:bg-muted focus-visible:border-ring aria-invalid:border-destructive data-[state=on]:bg-muted group/toggle border-input hover:bg-muted border bg-transparent"
     aria-label="Toggle disabled outline"
     disabled=""
   >

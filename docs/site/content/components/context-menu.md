@@ -51,7 +51,7 @@ Displays a menu of actions triggered by a right click.
       role="menuitem"
       data-slot="context-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+      class="group/context-menu-item"
       id="d1-item-1"
       tabindex="-1"
       data-orientation="vertical"
@@ -63,7 +63,7 @@ Displays a menu of actions triggered by a right click.
       role="menuitem"
       data-slot="context-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+      class="group/context-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -212,7 +212,7 @@ A simple context menu with a few actions.
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -225,7 +225,7 @@ A simple context menu with a few actions.
         data-disabled=""
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -236,7 +236,7 @@ A simple context menu with a few actions.
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -312,31 +312,23 @@ Use `ContextMenuSub` to nest secondary actions.
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        Copy<span
-          data-slot="context-menu-shortcut"
-          class="text-muted-foreground group-focus/context-menu-item:text-accent-foreground"
-          >⌘C</span
-        >
+        Copy<span data-slot="context-menu-shortcut">⌘C</span>
       </div>
       <div
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        Cut<span
-          data-slot="context-menu-shortcut"
-          class="text-muted-foreground group-focus/context-menu-item:text-accent-foreground"
-          >⌘X</span
-        >
+        Cut<span data-slot="context-menu-shortcut">⌘X</span>
       </div>
     </div>
     <div
@@ -347,7 +339,6 @@ Use `ContextMenuSub` to nest secondary actions.
       aria-controls="m0s0"
       data-state="closed"
       data-slot="context-menu-sub-trigger"
-      class="px-1.5 data-inset:pl-7"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -400,7 +391,7 @@ Use `ContextMenuSub` to nest secondary actions.
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -411,7 +402,7 @@ Use `ContextMenuSub` to nest secondary actions.
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -422,7 +413,7 @@ Use `ContextMenuSub` to nest secondary actions.
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -436,7 +427,7 @@ Use `ContextMenuSub` to nest secondary actions.
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -450,7 +441,7 @@ Use `ContextMenuSub` to nest secondary actions.
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="destructive"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -526,16 +517,12 @@ Add `ContextMenuShortcut` to show keyboard hints.
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        Back<span
-          data-slot="context-menu-shortcut"
-          class="text-muted-foreground group-focus/context-menu-item:text-accent-foreground"
-          >⌘[</span
-        >
+        Back<span data-slot="context-menu-shortcut">⌘[</span>
       </div>
       <div
         role="menuitem"
@@ -543,31 +530,23 @@ Add `ContextMenuShortcut` to show keyboard hints.
         data-disabled=""
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        Forward<span
-          data-slot="context-menu-shortcut"
-          class="text-muted-foreground group-focus/context-menu-item:text-accent-foreground"
-          >⌘]</span
-        >
+        Forward<span data-slot="context-menu-shortcut">⌘]</span>
       </div>
       <div
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        Reload<span
-          data-slot="context-menu-shortcut"
-          class="text-muted-foreground group-focus/context-menu-item:text-accent-foreground"
-          >⌘R</span
-        >
+        Reload<span data-slot="context-menu-shortcut">⌘R</span>
       </div>
     </div>
     <div role="separator" aria-orientation="horizontal" data-slot="context-menu-separator"></div>
@@ -576,31 +555,23 @@ Add `ContextMenuShortcut` to show keyboard hints.
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        Save<span
-          data-slot="context-menu-shortcut"
-          class="text-muted-foreground group-focus/context-menu-item:text-accent-foreground"
-          >⌘S</span
-        >
+        Save<span data-slot="context-menu-shortcut">⌘S</span>
       </div>
       <div
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        Save As...<span
-          data-slot="context-menu-shortcut"
-          class="text-muted-foreground group-focus/context-menu-item:text-accent-foreground"
-          >⇧⌘S</span
-        >
+        Save As...<span data-slot="context-menu-shortcut">⇧⌘S</span>
       </div>
     </div>
   </div>
@@ -667,85 +638,65 @@ Group related actions and separate them with dividers.
     "
   >
     <div role="group" data-slot="context-menu-group">
-      <div data-slot="context-menu-label" class="px-1.5 data-inset:pl-7">File</div>
+      <div data-slot="context-menu-label">File</div>
       <div
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        New File<span
-          data-slot="context-menu-shortcut"
-          class="text-muted-foreground group-focus/context-menu-item:text-accent-foreground"
-          >⌘N</span
-        >
+        New File<span data-slot="context-menu-shortcut">⌘N</span>
       </div>
       <div
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        Open File<span
-          data-slot="context-menu-shortcut"
-          class="text-muted-foreground group-focus/context-menu-item:text-accent-foreground"
-          >⌘O</span
-        >
+        Open File<span data-slot="context-menu-shortcut">⌘O</span>
       </div>
       <div
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        Save<span
-          data-slot="context-menu-shortcut"
-          class="text-muted-foreground group-focus/context-menu-item:text-accent-foreground"
-          >⌘S</span
-        >
+        Save<span data-slot="context-menu-shortcut">⌘S</span>
       </div>
     </div>
     <div role="separator" aria-orientation="horizontal" data-slot="context-menu-separator"></div>
     <div role="group" data-slot="context-menu-group">
-      <div data-slot="context-menu-label" class="px-1.5 data-inset:pl-7">Edit</div>
+      <div data-slot="context-menu-label">Edit</div>
       <div
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        Undo<span
-          data-slot="context-menu-shortcut"
-          class="text-muted-foreground group-focus/context-menu-item:text-accent-foreground"
-          >⌘Z</span
-        >
+        Undo<span data-slot="context-menu-shortcut">⌘Z</span>
       </div>
       <div
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        Redo<span
-          data-slot="context-menu-shortcut"
-          class="text-muted-foreground group-focus/context-menu-item:text-accent-foreground"
-          >⇧⌘Z</span
-        >
+        Redo<span data-slot="context-menu-shortcut">⇧⌘Z</span>
       </div>
     </div>
     <div role="separator" aria-orientation="horizontal" data-slot="context-menu-separator"></div>
@@ -754,46 +705,34 @@ Group related actions and separate them with dividers.
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        Cut<span
-          data-slot="context-menu-shortcut"
-          class="text-muted-foreground group-focus/context-menu-item:text-accent-foreground"
-          >⌘X</span
-        >
+        Cut<span data-slot="context-menu-shortcut">⌘X</span>
       </div>
       <div
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        Copy<span
-          data-slot="context-menu-shortcut"
-          class="text-muted-foreground group-focus/context-menu-item:text-accent-foreground"
-          >⌘C</span
-        >
+        Copy<span data-slot="context-menu-shortcut">⌘C</span>
       </div>
       <div
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        Paste<span
-          data-slot="context-menu-shortcut"
-          class="text-muted-foreground group-focus/context-menu-item:text-accent-foreground"
-          >⌘V</span
-        >
+        Paste<span data-slot="context-menu-shortcut">⌘V</span>
       </div>
     </div>
     <div role="separator" aria-orientation="horizontal" data-slot="context-menu-separator"></div>
@@ -802,16 +741,12 @@ Group related actions and separate them with dividers.
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="destructive"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        Delete<span
-          data-slot="context-menu-shortcut"
-          class="text-muted-foreground group-focus/context-menu-item:text-accent-foreground"
-          >⌫</span
-        >
+        Delete<span data-slot="context-menu-shortcut">⌫</span>
       </div>
     </div>
   </div>
@@ -882,7 +817,7 @@ Combine icons with labels for quick scanning.
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -907,7 +842,7 @@ Combine icons with labels for quick scanning.
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -935,7 +870,7 @@ Combine icons with labels for quick scanning.
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -966,7 +901,7 @@ Combine icons with labels for quick scanning.
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="destructive"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1057,7 +992,6 @@ Use `ContextMenuCheckboxItem` for toggles.
         role="menuitemcheckbox"
         aria-checked="false"
         data-slot="context-menu-checkbox-item"
-        class="pl-1.5 data-inset:pl-7"
         data-state="unchecked"
         tabindex="-1"
         data-orientation="vertical"
@@ -1069,7 +1003,6 @@ Use `ContextMenuCheckboxItem` for toggles.
         role="menuitemcheckbox"
         aria-checked="false"
         data-slot="context-menu-checkbox-item"
-        class="pl-1.5 data-inset:pl-7"
         data-state="unchecked"
         tabindex="-1"
         data-orientation="vertical"
@@ -1081,7 +1014,6 @@ Use `ContextMenuCheckboxItem` for toggles.
         role="menuitemcheckbox"
         aria-checked="false"
         data-slot="context-menu-checkbox-item"
-        class="pl-1.5 data-inset:pl-7"
         data-state="unchecked"
         tabindex="-1"
         data-orientation="vertical"
@@ -1154,13 +1086,12 @@ Use `ContextMenuRadioItem` for exclusive choices.
     "
   >
     <div role="group" data-slot="context-menu-group">
-      <div data-slot="context-menu-label" class="px-1.5 data-inset:pl-7">People</div>
+      <div data-slot="context-menu-label">People</div>
       <div role="group" data-slot="context-menu-radio-group">
         <div
           role="menuitemradio"
           aria-checked="true"
           data-slot="context-menu-radio-item"
-          class="pl-1.5 data-inset:pl-7"
           data-state="checked"
           tabindex="-1"
           data-orientation="vertical"
@@ -1187,7 +1118,6 @@ Use `ContextMenuRadioItem` for exclusive choices.
           role="menuitemradio"
           aria-checked="false"
           data-slot="context-menu-radio-item"
-          class="pl-1.5 data-inset:pl-7"
           data-state="unchecked"
           tabindex="-1"
           data-orientation="vertical"
@@ -1199,13 +1129,12 @@ Use `ContextMenuRadioItem` for exclusive choices.
     </div>
     <div role="separator" aria-orientation="horizontal" data-slot="context-menu-separator"></div>
     <div role="group" data-slot="context-menu-group">
-      <div data-slot="context-menu-label" class="px-1.5 data-inset:pl-7">Theme</div>
+      <div data-slot="context-menu-label">Theme</div>
       <div role="group" data-slot="context-menu-radio-group">
         <div
           role="menuitemradio"
           aria-checked="true"
           data-slot="context-menu-radio-item"
-          class="pl-1.5 data-inset:pl-7"
           data-state="checked"
           tabindex="-1"
           data-orientation="vertical"
@@ -1232,7 +1161,6 @@ Use `ContextMenuRadioItem` for exclusive choices.
           role="menuitemradio"
           aria-checked="false"
           data-slot="context-menu-radio-item"
-          class="pl-1.5 data-inset:pl-7"
           data-state="unchecked"
           tabindex="-1"
           data-orientation="vertical"
@@ -1244,7 +1172,6 @@ Use `ContextMenuRadioItem` for exclusive choices.
           role="menuitemradio"
           aria-checked="false"
           data-slot="context-menu-radio-item"
-          class="pl-1.5 data-inset:pl-7"
           data-state="unchecked"
           tabindex="-1"
           data-orientation="vertical"
@@ -1322,7 +1249,7 @@ Use `variant="destructive"` to style the menu item as destructive.
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1349,7 +1276,7 @@ Use `variant="destructive"` to style the menu item as destructive.
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1378,7 +1305,7 @@ Use `variant="destructive"` to style the menu item as destructive.
         role="menuitem"
         data-slot="context-menu-item"
         data-variant="destructive"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive focus:*:[svg]:text-accent-foreground px-1.5 data-inset:pl-7 group/context-menu-item"
+        class="group/context-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""

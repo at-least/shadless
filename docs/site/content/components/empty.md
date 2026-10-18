@@ -17,11 +17,7 @@ Use the Empty component to display an empty state.
 ```text,name=empty-demo.html
 <div data-slot="empty">
   <div data-slot="empty-header">
-    <div
-      data-slot="empty-icon"
-      data-variant="icon"
-      class="size-8 [&_svg:not([class*='size-'])]:size-4"
-    >
+    <div data-slot="empty-icon" data-variant="icon">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -40,23 +36,18 @@ Use the Empty component to display an empty state.
       </svg>
     </div>
     <div data-slot="empty-title" class="cn-font-heading">No Projects Yet</div>
-    <div data-slot="empty-description" class="text-muted-foreground [&>a:hover]:text-primary">
+    <div data-slot="empty-description">
       You haven't created any projects yet. Get started by creating your first project.
     </div>
   </div>
   <div data-slot="empty-content" class="flex-row justify-center gap-2">
-    <button
-      data-slot="button"
-      data-variant="default"
-      data-size="default"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent [&_svg:not([class*='size-'])]:size-4 group/button bg-primary hover:bg-primary/80 h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
-    >
+    <button data-slot="button" data-variant="default" data-size="default" class="group/button">
       Create Project</button
     ><button
       data-slot="button"
       data-variant="outline"
       data-size="default"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 group/button border-border dark:border-input"
     >
       Import Project
     </button>
@@ -66,7 +57,7 @@ Use the Empty component to display an empty state.
     data-slot="button"
     data-variant="link"
     data-size="sm"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button h-7 rounded-[min(var(--radius-md),12px)] px-2.5 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 text-muted-foreground"
+    class="group/button text-muted-foreground"
     >Learn More
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -136,11 +127,7 @@ Use the `border` utility class to create an outline empty state.
 ```text,name=empty-outline.html
 <div data-slot="empty" class="border">
   <div data-slot="empty-header">
-    <div
-      data-slot="empty-icon"
-      data-variant="icon"
-      class="size-8 [&_svg:not([class*='size-'])]:size-4"
-    >
+    <div data-slot="empty-icon" data-variant="icon">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -159,7 +146,7 @@ Use the `border` utility class to create an outline empty state.
       </svg>
     </div>
     <div data-slot="empty-title" class="cn-font-heading">Cloud Storage Empty</div>
-    <div data-slot="empty-description" class="text-muted-foreground [&>a:hover]:text-primary">
+    <div data-slot="empty-description">
       Upload files to your cloud storage to access them anywhere.
     </div>
   </div>
@@ -168,7 +155,7 @@ Use the `border` utility class to create an outline empty state.
       data-slot="button"
       data-variant="outline"
       data-size="sm"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-7 rounded-[min(var(--radius-md),12px)] px-2.5 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 group/button border-border dark:border-input"
     >
       Upload Files
     </button>
@@ -192,11 +179,7 @@ Use the `bg-*` and `bg-gradient-*` utilities to add a background to the empty st
 ```text,name=empty-background.html
 <div data-slot="empty" class="h-full bg-muted/30">
   <div data-slot="empty-header">
-    <div
-      data-slot="empty-icon"
-      data-variant="icon"
-      class="size-8 [&_svg:not([class*='size-'])]:size-4"
-    >
+    <div data-slot="empty-icon" data-variant="icon">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -216,10 +199,7 @@ Use the `bg-*` and `bg-gradient-*` utilities to add a background to the empty st
       </svg>
     </div>
     <div data-slot="empty-title" class="cn-font-heading">No Notifications</div>
-    <div
-      data-slot="empty-description"
-      class="text-muted-foreground [&>a:hover]:text-primary max-w-xs text-pretty"
-    >
+    <div data-slot="empty-description" class="max-w-xs text-pretty">
       You're all caught up. New notifications will appear here.
     </div>
   </div>
@@ -228,7 +208,7 @@ Use the `bg-*` and `bg-gradient-*` utilities to add a background to the empty st
       data-slot="button"
       data-variant="outline"
       data-size="default"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 group/button border-border dark:border-input"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -272,22 +252,17 @@ Use the `EmptyMedia` component to display an avatar in the empty state.
       <span
         data-slot="avatar"
         data-size="default"
-        class="data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten size-12"
+        class="data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar size-12"
         ><img data-slot="avatar-image" class="grayscale" src="https://github.com/shadcn.png"
       /></span>
     </div>
     <div data-slot="empty-title" class="cn-font-heading">User Offline</div>
-    <div data-slot="empty-description" class="text-muted-foreground [&>a:hover]:text-primary">
+    <div data-slot="empty-description">
       This user is currently offline. You can leave a message to notify them or try again later.
     </div>
   </div>
   <div data-slot="empty-content">
-    <button
-      data-slot="button"
-      data-variant="default"
-      data-size="sm"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button bg-primary hover:bg-primary/80 h-7 rounded-[min(var(--radius-md),12px)] px-2.5 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
-    >
+    <button data-slot="button" data-variant="default" data-size="sm" class="group/button">
       Leave Message
     </button>
   </div>
@@ -343,39 +318,23 @@ Use the `EmptyMedia` component to display an avatar group in the empty state.
       <div
         class="flex -space-x-2 *:data-[slot=avatar]:size-12 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background *:data-[slot=avatar]:grayscale"
       >
-        <span
-          data-slot="avatar"
-          data-size="default"
-          class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+        <span data-slot="avatar" data-size="default" class="group/avatar"
           ><img data-slot="avatar-image" alt="@shadcn" src="https://github.com/shadcn.png" /></span
-        ><span
-          data-slot="avatar"
-          data-size="default"
-          class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+        ><span data-slot="avatar" data-size="default" class="group/avatar"
           ><img
             data-slot="avatar-image"
             alt="@maxleiter"
             src="https://github.com/maxleiter.png" /></span
-        ><span
-          data-slot="avatar"
-          data-size="default"
-          class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+        ><span data-slot="avatar" data-size="default" class="group/avatar"
           ><img data-slot="avatar-image" alt="@evilrabbit" src="https://github.com/evilrabbit.png"
         /></span>
       </div>
     </div>
     <div data-slot="empty-title" class="cn-font-heading">No Team Members</div>
-    <div data-slot="empty-description" class="text-muted-foreground [&>a:hover]:text-primary">
-      Invite your team to collaborate on this project.
-    </div>
+    <div data-slot="empty-description">Invite your team to collaborate on this project.</div>
   </div>
   <div data-slot="empty-content">
-    <button
-      data-slot="button"
-      data-variant="default"
-      data-size="sm"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button bg-primary hover:bg-primary/80 h-7 rounded-[min(var(--radius-md),12px)] px-2.5 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
-    >
+    <button data-slot="button" data-variant="default" data-size="sm" class="group/button">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -442,7 +401,7 @@ You can add an `InputGroup` component to the `EmptyContent` component.
 <div data-slot="empty">
   <div data-slot="empty-header">
     <div data-slot="empty-title" class="cn-font-heading">404 - Not Found</div>
-    <div data-slot="empty-description" class="text-muted-foreground [&>a:hover]:text-primary">
+    <div data-slot="empty-description">
       The page you're looking for doesn't exist. Try searching for what you need below.
     </div>
   </div>
@@ -450,19 +409,14 @@ You can add an `InputGroup` component to the `EmptyContent` component.
     <div
       data-slot="input-group"
       role="group"
-      class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 w-full has-[>textarea]:h-auto sm:w-3/4"
+      class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 sm:w-3/4"
     >
       <input
         data-slot="input-group-control"
         class="border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium md:text-sm w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
         placeholder="Try searching for pages..."
       />
-      <div
-        role="group"
-        data-slot="input-group-addon"
-        data-align="inline-start"
-        class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pl-2 has-[>button]:ml-[-0.3rem] has-[>kbd]:ml-[-0.15rem]"
-      >
+      <div role="group" data-slot="input-group-addon" data-align="inline-start" class="py-1.5 pl-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -483,18 +437,14 @@ You can add an `InputGroup` component to the `EmptyContent` component.
         role="group"
         data-slot="input-group-addon"
         data-align="inline-end"
-        class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem]"
+        class="py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 pr-2"
       >
-        <kbd
-          data-slot="kbd"
-          class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit px-1 [&_svg:not([class*='size-'])]:size-3"
+        <kbd data-slot="kbd" class="h-5 w-fit rounded-sm px-1 [&_svg:not([class*='size-'])]:size-3"
           >/</kbd
         >
       </div>
     </div>
-    <div data-slot="empty-description" class="text-muted-foreground [&>a:hover]:text-primary">
-      Need help? <a href="#">Contact support</a>
-    </div>
+    <div data-slot="empty-description">Need help? <a href="#">Contact support</a></div>
   </div>
 </div>
 ```

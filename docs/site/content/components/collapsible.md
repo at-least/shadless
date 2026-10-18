@@ -152,7 +152,7 @@ Use the `open` and `onOpenChange` props to control the state.
 <div
   data-slot="card"
   data-size="default"
-  class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card mx-auto w-full max-w-sm"
+  class="*:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card mx-auto w-full max-w-sm"
 >
   <div data-slot="card-content">
     <div data-state="closed" data-slot="collapsible" class="rounded-md data-[state=open]:bg-muted">
@@ -240,15 +240,10 @@ Use a trigger button to reveal additional settings.
 <div
   data-slot="card"
   data-size="sm"
-  class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card mx-auto w-full max-w-xs"
+  class="*:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card mx-auto w-full max-w-xs"
 >
   <div data-slot="card-header" class="group/card-header">
-    <div
-      data-slot="card-title"
-      class="text-base leading-snug group-data-[size=sm]/card:text-sm cn-font-heading"
-    >
-      Radius
-    </div>
+    <div data-slot="card-title" class="cn-font-heading">Radius</div>
     <div data-slot="card-description">Set the corner radius of the element.</div>
   </div>
   <div data-slot="card-content">
@@ -261,7 +256,7 @@ Use a trigger button to reveal additional settings.
           role="group"
           data-slot="field"
           data-orientation="vertical"
-          class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+          class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
         >
           <label
             data-slot="field-label"
@@ -270,7 +265,7 @@ Use a trigger button to reveal additional settings.
             >Radius X</label
           ><input
             data-slot="input"
-            class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+            class="rounded-lg w-full"
             id="radius"
             placeholder="0"
             value="0"
@@ -280,7 +275,7 @@ Use a trigger button to reveal additional settings.
           role="group"
           data-slot="field"
           data-orientation="vertical"
-          class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+          class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
         >
           <label
             data-slot="field-label"
@@ -289,7 +284,7 @@ Use a trigger button to reveal additional settings.
             >Radius Y</label
           ><input
             data-slot="input"
-            class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+            class="rounded-lg w-full"
             id="radius"
             placeholder="0"
             value="0"
@@ -383,7 +378,7 @@ Use nested collapsibles to build a file tree.
 <div
   data-slot="card"
   data-size="sm"
-  class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card mx-auto w-full max-w-[16rem] gap-2"
+  class="*:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card mx-auto w-full max-w-[16rem] gap-2"
 >
   <div data-slot="card-header" class="group/card-header">
     <div dir="ltr" data-orientation="horizontal" data-slot="tabs" class="group/tabs">
@@ -392,7 +387,7 @@ Use nested collapsibles to build a file tree.
         aria-orientation="horizontal"
         data-slot="tabs-list"
         data-variant="default"
-        class="rounded-lg group-data-horizontal/tabs:h-8 data-[variant=line]:rounded-none group/tabs-list group-data-vertical/tabs:h-fit w-full"
+        class="rounded-lg data-[variant=line]:rounded-none group/tabs-list w-full"
         tabindex="0"
         data-orientation="horizontal"
         style="outline: none"
@@ -404,7 +399,7 @@ Use nested collapsibles to build a file tree.
           data-state="active"
           id="tab0-0"
           data-slot="tabs-trigger"
-          class="rounded-md border-transparent px-1.5 group-data-[variant=default]/tabs-list:data-active:shadow-sm group-data-[variant=line]/tabs-list:data-active:shadow-none [&_svg:not([class*='size-'])]:size-4 has-data-[icon=inline-end]:pr-1 has-data-[icon=inline-start]:pl-1 relative h-[calc(100%-1px)] flex-1 justify-center text-foreground/60 transition-all group-data-vertical/tabs:w-full group-data-vertical/tabs:justify-start hover:text-foreground focus-visible:border-ring disabled:opacity-50 dark:text-muted-foreground dark:hover:text-foreground [&_svg]:shrink-0 group-data-[variant=line]/tabs-list:bg-transparent group-data-[variant=line]/tabs-list:data-active:bg-transparent dark:group-data-[variant=line]/tabs-list:data-active:border-transparent dark:group-data-[variant=line]/tabs-list:data-active:bg-transparent data-active:bg-background data-active:text-foreground dark:data-active:border-input dark:data-active:bg-input/30 dark:data-active:text-foreground after:absolute after:bg-foreground after:opacity-0 after:transition-opacity group-data-horizontal/tabs:after:inset-x-0 group-data-horizontal/tabs:after:bottom-[-5px] group-data-horizontal/tabs:after:h-0.5 group-data-vertical/tabs:after:inset-y-0 group-data-vertical/tabs:after:-right-1 group-data-vertical/tabs:after:w-0.5 group-data-[variant=line]/tabs-list:data-active:after:opacity-100"
+          class="rounded-md"
           tabindex="-1"
           data-orientation="horizontal"
           data-radix-collection-item=""
@@ -417,7 +412,7 @@ Use nested collapsibles to build a file tree.
           data-state="inactive"
           id="tab0-1"
           data-slot="tabs-trigger"
-          class="rounded-md border-transparent px-1.5 group-data-[variant=default]/tabs-list:data-active:shadow-sm group-data-[variant=line]/tabs-list:data-active:shadow-none [&_svg:not([class*='size-'])]:size-4 has-data-[icon=inline-end]:pr-1 has-data-[icon=inline-start]:pl-1 relative h-[calc(100%-1px)] flex-1 justify-center text-foreground/60 transition-all group-data-vertical/tabs:w-full group-data-vertical/tabs:justify-start hover:text-foreground focus-visible:border-ring disabled:opacity-50 dark:text-muted-foreground dark:hover:text-foreground [&_svg]:shrink-0 group-data-[variant=line]/tabs-list:bg-transparent group-data-[variant=line]/tabs-list:data-active:bg-transparent dark:group-data-[variant=line]/tabs-list:data-active:border-transparent dark:group-data-[variant=line]/tabs-list:data-active:bg-transparent data-active:bg-background data-active:text-foreground dark:data-active:border-input dark:data-active:bg-input/30 dark:data-active:text-foreground after:absolute after:bg-foreground after:opacity-0 after:transition-opacity group-data-horizontal/tabs:after:inset-x-0 group-data-horizontal/tabs:after:bottom-[-5px] group-data-horizontal/tabs:after:h-0.5 group-data-vertical/tabs:after:inset-y-0 group-data-vertical/tabs:after:-right-1 group-data-vertical/tabs:after:w-0.5 group-data-[variant=line]/tabs-list:data-active:after:opacity-100"
+          class="rounded-md"
           tabindex="-1"
           data-orientation="horizontal"
           data-radix-collection-item=""
@@ -683,7 +678,7 @@ Use nested collapsibles to build a file tree.
         data-slot="button"
         data-variant="link"
         data-size="sm"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button h-7 rounded-[min(var(--radius-md),12px)] px-2.5 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 w-full justify-start gap-2 text-foreground"
+        class="group/button rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg w-full justify-start gap-2 text-foreground"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -704,7 +699,7 @@ Use nested collapsibles to build a file tree.
         data-slot="button"
         data-variant="link"
         data-size="sm"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button h-7 rounded-[min(var(--radius-md),12px)] px-2.5 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 w-full justify-start gap-2 text-foreground"
+        class="group/button rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg w-full justify-start gap-2 text-foreground"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -725,7 +720,7 @@ Use nested collapsibles to build a file tree.
         data-slot="button"
         data-variant="link"
         data-size="sm"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button h-7 rounded-[min(var(--radius-md),12px)] px-2.5 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 w-full justify-start gap-2 text-foreground"
+        class="group/button rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg w-full justify-start gap-2 text-foreground"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -746,7 +741,7 @@ Use nested collapsibles to build a file tree.
         data-slot="button"
         data-variant="link"
         data-size="sm"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button h-7 rounded-[min(var(--radius-md),12px)] px-2.5 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 w-full justify-start gap-2 text-foreground"
+        class="group/button rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg w-full justify-start gap-2 text-foreground"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -767,7 +762,7 @@ Use nested collapsibles to build a file tree.
         data-slot="button"
         data-variant="link"
         data-size="sm"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button h-7 rounded-[min(var(--radius-md),12px)] px-2.5 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 w-full justify-start gap-2 text-foreground"
+        class="group/button rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg w-full justify-start gap-2 text-foreground"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -788,7 +783,7 @@ Use nested collapsibles to build a file tree.
         data-slot="button"
         data-variant="link"
         data-size="sm"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button h-7 rounded-[min(var(--radius-md),12px)] px-2.5 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 w-full justify-start gap-2 text-foreground"
+        class="group/button rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg w-full justify-start gap-2 text-foreground"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -809,7 +804,7 @@ Use nested collapsibles to build a file tree.
         data-slot="button"
         data-variant="link"
         data-size="sm"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button h-7 rounded-[min(var(--radius-md),12px)] px-2.5 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 w-full justify-start gap-2 text-foreground"
+        class="group/button rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg w-full justify-start gap-2 text-foreground"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -18,131 +18,64 @@ Displays a message in a conversation, with optional avatar, header, footer, and 
 <div class="flex w-full max-w-sm flex-col gap-6 py-12">
   <div data-slot="message" data-align="end" class="group/message">
     <div data-slot="message-avatar">
-      <span
-        data-slot="avatar"
-        data-size="default"
-        class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
-        ><span data-slot="avatar-fallback" class="text-sm group-data-[size=sm]/avatar:text-xs"
-          >ME</span
-        ></span
+      <span data-slot="avatar" data-size="default" class="group/avatar"
+        ><span data-slot="avatar-fallback">ME</span></span
       >
     </div>
     <div data-slot="message-content">
-      <div
-        data-slot="bubble"
-        data-variant="default"
-        data-align="start"
-        class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-primary [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
-      >
-        <div
-          data-slot="bubble-content"
-          class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
-        >
-          Deploying to prod real quick.
-        </div>
+      <div data-slot="bubble" data-variant="default" data-align="start" class="group/bubble">
+        <div data-slot="bubble-content">Deploying to prod real quick.</div>
       </div>
     </div>
   </div>
   <div data-slot="message" data-align="start" class="group/message">
     <div data-slot="message-avatar">
-      <span
-        data-slot="avatar"
-        data-size="default"
-        class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
-        ><span data-slot="avatar-fallback" class="text-sm group-data-[size=sm]/avatar:text-xs"
-          >R</span
-        ></span
+      <span data-slot="avatar" data-size="default" class="group/avatar"
+        ><span data-slot="avatar-fallback">R</span></span
       >
     </div>
     <div data-slot="message-content">
-      <div
-        data-slot="bubble"
-        data-variant="muted"
-        data-align="start"
-        class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
-      >
-        <div
-          data-slot="bubble-content"
-          class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
-        >
-          It's 4:55 PM. On a Friday.
-        </div>
+      <div data-slot="bubble" data-variant="muted" data-align="start" class="group/bubble">
+        <div data-slot="bubble-content">It's 4:55 PM. On a Friday.</div>
       </div>
     </div>
   </div>
   <div data-slot="message" data-align="end" class="group/message">
     <div data-slot="message-avatar">
-      <span
-        data-slot="avatar"
-        data-size="default"
-        class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
-        ><span data-slot="avatar-fallback" class="text-sm group-data-[size=sm]/avatar:text-xs"
-          >ME</span
-        ></span
+      <span data-slot="avatar" data-size="default" class="group/avatar"
+        ><span data-slot="avatar-fallback">ME</span></span
       >
     </div>
     <div data-slot="message-content">
-      <div
-        data-slot="bubble"
-        data-variant="default"
-        data-align="start"
-        class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-primary [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
-      >
-        <div
-          data-slot="bubble-content"
-          class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
-        >
-          It's a one-line change.
-        </div>
+      <div data-slot="bubble" data-variant="default" data-align="start" class="group/bubble">
+        <div data-slot="bubble-content">It's a one-line change.</div>
       </div>
-      <div data-slot="message-footer" class="px-3 group-has-data-[variant=ghost]/message:px-0">
-        Delivered
-      </div>
+      <div data-slot="message-footer">Delivered</div>
     </div>
   </div>
   <div data-slot="message" data-align="start" class="group/message">
     <div data-slot="message-avatar">
-      <span
-        data-slot="avatar"
-        data-size="default"
-        class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
-        ><span data-slot="avatar-fallback" class="text-sm group-data-[size=sm]/avatar:text-xs"
-          >R</span
-        ></span
+      <span data-slot="avatar" data-size="default" class="group/avatar"
+        ><span data-slot="avatar-fallback">R</span></span
       >
     </div>
     <div data-slot="message-content">
       <div data-slot="bubble-group">
-        <div
-          data-slot="bubble"
-          data-variant="muted"
-          data-align="start"
-          class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
-        >
-          <div
-            data-slot="bubble-content"
-            class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
-          >
-            It's always a one-line change 😭.
-          </div>
+        <div data-slot="bubble" data-variant="muted" data-align="start" class="group/bubble">
+          <div data-slot="bubble-content">It's always a one-line change 😭.</div>
         </div>
         <div
           data-slot="bubble"
           data-variant="muted"
           data-align="start"
-          class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
+          class="group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
         >
-          <div
-            data-slot="bubble-content"
-            class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
-          >
-            Alright, let me take a look.
-          </div>
+          <div data-slot="bubble-content">Alright, let me take a look.</div>
           <div
             data-slot="bubble-reactions"
             data-align="end"
             data-side="bottom"
-            class="bg-muted px-1.5 py-0.5 has-[button]:p-0"
+            class="bg-muted"
             aria-label="Reactions: thumbs up"
           >
             <span>👍</span>
@@ -151,12 +84,7 @@ Displays a message in a conversation, with optional avatar, header, footer, and 
       </div>
     </div>
   </div>
-  <div
-    data-slot="marker"
-    data-variant="default"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
-    role="status"
-  >
+  <div data-slot="marker" data-variant="default" class="group/marker" role="status">
     <span data-slot="marker-content" class="shimmer"
       ><span class="font-medium">Oliver</span> is typing...</span
     >
@@ -257,94 +185,41 @@ Use `MessageAvatar` to render an avatar next to the message. Set `align="end"` o
 <div class="flex w-full max-w-sm flex-col gap-6 py-12">
   <div data-slot="message" data-align="start" class="group/message">
     <div data-slot="message-avatar">
-      <span
-        data-slot="avatar"
-        data-size="default"
-        class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
-        ><span data-slot="avatar-fallback" class="text-sm group-data-[size=sm]/avatar:text-xs"
-          >R</span
-        ></span
+      <span data-slot="avatar" data-size="default" class="group/avatar"
+        ><span data-slot="avatar-fallback">R</span></span
       >
     </div>
     <div data-slot="message-content">
-      <div
-        data-slot="bubble"
-        data-variant="muted"
-        data-align="start"
-        class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
-      >
-        <div
-          data-slot="bubble-content"
-          class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
-        >
-          The build failed during dependency installation.
-        </div>
+      <div data-slot="bubble" data-variant="muted" data-align="start" class="group/bubble">
+        <div data-slot="bubble-content">The build failed during dependency installation.</div>
       </div>
     </div>
   </div>
   <div data-slot="message" data-align="end" class="group/message">
     <div data-slot="message-avatar">
-      <span
-        data-slot="avatar"
-        data-size="default"
-        class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
-        ><span data-slot="avatar-fallback" class="text-sm group-data-[size=sm]/avatar:text-xs"
-          >R</span
-        ></span
+      <span data-slot="avatar" data-size="default" class="group/avatar"
+        ><span data-slot="avatar-fallback">R</span></span
       >
     </div>
     <div data-slot="message-content">
-      <div
-        data-slot="bubble"
-        data-variant="default"
-        data-align="start"
-        class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-primary [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
-      >
-        <div
-          data-slot="bubble-content"
-          class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
-        >
-          Can you share the exact error?
-        </div>
+      <div data-slot="bubble" data-variant="default" data-align="start" class="group/bubble">
+        <div data-slot="bubble-content">Can you share the exact error?</div>
       </div>
     </div>
   </div>
   <div data-slot="message" data-align="start" class="group/message">
     <div data-slot="message-avatar">
-      <span
-        data-slot="avatar"
-        data-size="default"
-        class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
-        ><span data-slot="avatar-fallback" class="text-sm group-data-[size=sm]/avatar:text-xs"
-          >R</span
-        ></span
+      <span data-slot="avatar" data-size="default" class="group/avatar"
+        ><span data-slot="avatar-fallback">R</span></span
       >
     </div>
     <div data-slot="message-content">
       <div data-slot="bubble-group">
-        <div
-          data-slot="bubble"
-          data-variant="muted"
-          data-align="start"
-          class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
-        >
-          <div
-            data-slot="bubble-content"
-            class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
-          >
-            Here's the error from the logs
-          </div>
+        <div data-slot="bubble" data-variant="muted" data-align="start" class="group/bubble">
+          <div data-slot="bubble-content">Here's the error from the logs</div>
         </div>
-        <div
-          data-slot="bubble"
-          data-variant="muted"
-          data-align="start"
-          class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
-        >
-          <div
-            data-slot="bubble-content"
-            class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
-          >
+        <div data-slot="bubble" data-variant="muted" data-align="start" class="group/bubble">
+          <div data-slot="bubble-content">
             Something went wrong with the build. The libraries are not installed correctly. Try
             running the build again.
           </div>
@@ -408,43 +283,20 @@ Use `MessageGroup` to stack consecutive messages from the same sender. Render an
     <div data-slot="message" data-align="start" class="group/message">
       <div data-slot="message-avatar"></div>
       <div data-slot="message-content">
-        <div
-          data-slot="bubble"
-          data-variant="muted"
-          data-align="start"
-          class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
-        >
-          <div
-            data-slot="bubble-content"
-            class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
-          >
-            I checked the registry addresses.
-          </div>
+        <div data-slot="bubble" data-variant="muted" data-align="start" class="group/bubble">
+          <div data-slot="bubble-content">I checked the registry addresses.</div>
         </div>
       </div>
     </div>
     <div data-slot="message" data-align="start" class="group/message">
       <div data-slot="message-avatar">
-        <span
-          data-slot="avatar"
-          data-size="default"
-          class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
-          ><span data-slot="avatar-fallback" class="text-sm group-data-[size=sm]/avatar:text-xs"
-            >CN</span
-          ></span
+        <span data-slot="avatar" data-size="default" class="group/avatar"
+          ><span data-slot="avatar-fallback">CN</span></span
         >
       </div>
       <div data-slot="message-content">
-        <div
-          data-slot="bubble"
-          data-variant="muted"
-          data-align="start"
-          class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
-        >
-          <div
-            data-slot="bubble-content"
-            class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
-          >
+        <div data-slot="bubble" data-variant="muted" data-align="start" class="group/bubble">
+          <div data-slot="bubble-content">
             The component and example JSON now live under the UI registry.
           </div>
         </div>
@@ -500,40 +352,20 @@ Use `MessageHeader` for a sender name and `MessageFooter` for metadata such as a
 <div class="flex w-full max-w-sm flex-col gap-8 py-12">
   <div data-slot="message" data-align="start" class="group/message">
     <div data-slot="message-content">
-      <div data-slot="message-header" class="px-3 group-has-data-[variant=ghost]/message:px-0">
-        Olivia
-      </div>
-      <div
-        data-slot="bubble"
-        data-variant="muted"
-        data-align="start"
-        class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
-      >
-        <div
-          data-slot="bubble-content"
-          class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
-        >
-          I already checked the logs.
-        </div>
+      <div data-slot="message-header">Olivia</div>
+      <div data-slot="bubble" data-variant="muted" data-align="start" class="group/bubble">
+        <div data-slot="bubble-content">I already checked the logs.</div>
       </div>
     </div>
   </div>
   <div data-slot="message" data-align="end" class="group/message">
     <div data-slot="message-content">
-      <div
-        data-slot="bubble"
-        data-variant="default"
-        data-align="start"
-        class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-primary [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
-      >
-        <div
-          data-slot="bubble-content"
-          class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
-        >
+      <div data-slot="bubble" data-variant="default" data-align="start" class="group/bubble">
+        <div data-slot="bubble-content">
           Send the report to the team. Ping @shadcn if you need help.
         </div>
       </div>
-      <div data-slot="message-footer" class="px-3 group-has-data-[variant=ghost]/message:px-0">
+      <div data-slot="message-footer">
         <div>Read <span class="font-normal">Yesterday</span></div>
       </div>
     </div>
@@ -558,25 +390,17 @@ Place message-level actions in `MessageFooter`, such as copy, retry, or feedback
 <div class="flex w-full max-w-sm flex-col gap-8 py-12">
   <div data-slot="message" data-align="start" class="group/message">
     <div data-slot="message-content">
-      <div
-        data-slot="bubble"
-        data-variant="muted"
-        data-align="start"
-        class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
-      >
-        <div
-          data-slot="bubble-content"
-          class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
-        >
+      <div data-slot="bubble" data-variant="muted" data-align="start" class="group/bubble">
+        <div data-slot="bubble-content">
           The install failure is coming from the workspace package.
         </div>
       </div>
-      <div data-slot="message-footer" class="px-3 group-has-data-[variant=ghost]/message:px-0">
+      <div data-slot="message-footer">
         <button
           data-slot="button"
           data-variant="ghost"
           data-size="icon"
-          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent [&_svg:not([class*='size-'])]:size-4 group/button hover:bg-muted dark:hover:bg-muted/50 aria-expanded:bg-muted size-8"
+          class="group/button"
           aria-label="Copy"
           title="Copy"
         >
@@ -599,7 +423,7 @@ Place message-level actions in `MessageFooter`, such as copy, retry, or feedback
           data-slot="button"
           data-variant="ghost"
           data-size="icon"
-          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent [&_svg:not([class*='size-'])]:size-4 group/button hover:bg-muted dark:hover:bg-muted/50 aria-expanded:bg-muted size-8"
+          class="group/button"
           aria-label="Like"
           title="Like"
         >
@@ -624,7 +448,7 @@ Place message-level actions in `MessageFooter`, such as copy, retry, or feedback
           data-slot="button"
           data-variant="ghost"
           data-size="icon"
-          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent [&_svg:not([class*='size-'])]:size-4 group/button hover:bg-muted dark:hover:bg-muted/50 aria-expanded:bg-muted size-8"
+          class="group/button"
           aria-label="Dislike"
           title="Dislike"
         >
@@ -651,29 +475,16 @@ Place message-level actions in `MessageFooter`, such as copy, retry, or feedback
   </div>
   <div data-slot="message" data-align="end" class="group/message">
     <div data-slot="message-content">
-      <div
-        data-slot="bubble"
-        data-variant="default"
-        data-align="start"
-        class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-primary [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
-      >
-        <div
-          data-slot="bubble-content"
-          class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
-        >
-          Okay drop me a link. Taking a look...
-        </div>
+      <div data-slot="bubble" data-variant="default" data-align="start" class="group/bubble">
+        <div data-slot="bubble-content">Okay drop me a link. Taking a look...</div>
       </div>
-      <div
-        data-slot="message-footer"
-        class="px-3 group-has-data-[variant=ghost]/message:px-0 gap-2"
-      >
+      <div data-slot="message-footer" class="gap-2">
         <span class="font-normal text-destructive">Failed to send</span
         ><button
           data-slot="button"
           data-variant="ghost"
           data-size="icon-xs"
-          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button hover:bg-muted dark:hover:bg-muted/50 aria-expanded:bg-muted size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
+          class="group/button"
           title="Retry"
           aria-label="Retry"
         >
@@ -721,12 +532,12 @@ Place message-level actions in `MessageFooter`, such as copy, retry, or feedback
         data-state="done"
         data-size="default"
         data-orientation="vertical"
-        class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 w-24 has-data-[slot=attachment-content]:w-30"
+        class="group/attachment"
       >
         <div
           data-slot="attachment-media"
           data-variant="image"
-          class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive opacity-60 group-data-[state=idle]/attachment:opacity-100 group-data-[state=done]/attachment:opacity-100 *:[img]:w-full"
+          class="[&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! *:[img]:w-full"
         >
           <img
             alt="Workspace"
@@ -734,16 +545,8 @@ Place message-level actions in `MessageFooter`, such as copy, retry, or feedback
           />
         </div>
       </div>
-      <div
-        data-slot="bubble"
-        data-variant="default"
-        data-align="start"
-        class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-primary [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
-      >
-        <div
-          data-slot="bubble-content"
-          class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
-        >
+      <div data-slot="bubble" data-variant="default" data-align="start" class="group/bubble">
+        <div data-slot="bubble-content">
           Here's the image. Can you add it to the PDF? Use it for the cover page.
         </div>
       </div>
@@ -751,16 +554,8 @@ Place message-level actions in `MessageFooter`, such as copy, retry, or feedback
   </div>
   <div data-slot="message" data-align="start" class="group/message">
     <div data-slot="message-content">
-      <div
-        data-slot="bubble"
-        data-variant="muted"
-        data-align="start"
-        class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
-      >
-        <div
-          data-slot="bubble-content"
-          class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
-        >
+      <div data-slot="bubble" data-variant="muted" data-align="start" class="group/bubble">
+        <div data-slot="bubble-content">
           Done. Here's the PDF with the image added as the cover page.
         </div>
       </div>
@@ -769,12 +564,12 @@ Place message-level actions in `MessageFooter`, such as copy, retry, or feedback
         data-state="done"
         data-size="default"
         data-orientation="horizontal"
-        class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2"
+        class="group/attachment"
       >
         <div
           data-slot="attachment-media"
           data-variant="icon"
-          class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive"
+          class="[&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6!"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -797,16 +592,9 @@ Place message-level actions in `MessageFooter`, such as copy, retry, or feedback
         </div>
         <div data-slot="attachment-content">
           <span data-slot="attachment-title">sales-dashboard.pdf</span
-          ><span
-            data-slot="attachment-description"
-            class="text-muted-foreground group-data-[state=error]/attachment:text-destructive/80"
-            >PDF · 2.4 MB</span
-          >
+          ><span data-slot="attachment-description">PDF · 2.4 MB</span>
         </div>
-        <div
-          data-slot="attachment-actions"
-          class="group-data-[orientation=vertical]/attachment:absolute relative"
-        >
+        <div data-slot="attachment-actions">
           <button
             data-slot="attachment-action"
             data-variant="secondary"
@@ -839,18 +627,8 @@ Place message-level actions in `MessageFooter`, such as copy, retry, or feedback
   </div>
   <div data-slot="message" data-align="end" class="group/message">
     <div data-slot="message-content">
-      <div
-        data-slot="bubble"
-        data-variant="default"
-        data-align="start"
-        class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-primary [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
-      >
-        <div
-          data-slot="bubble-content"
-          class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
-        >
-          Thanks. Looks good.
-        </div>
+      <div data-slot="bubble" data-variant="default" data-align="start" class="group/bubble">
+        <div data-slot="bubble-content">Thanks. Looks good.</div>
       </div>
     </div>
   </div>

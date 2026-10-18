@@ -812,12 +812,24 @@ struct SlotEntry {
 /// `hidden` at rest and docs-code-parity went red. A slot ABSENT from the
 /// map (every cva slot, whose base+value rules carry the full set) means
 /// "everything supplied".
+///
+/// `own_rule` is, per IR, each slot's exact `[data-slot="x"] { @apply …; }`
+/// rule as dist/css ships it: tokens in ONE @apply are emitted in the
+/// utilities layer's own sort order (layer closure below), so the closure
+/// needs to know which supplied tokens share that rule.
 struct SlotIndex {
     irs: Vec<crate::emit::css::CssIrComponent>,
     cva_slots: Vec<HashMap<String, crate::emit::css::CvaTable>>,
     slots: HashMap<String, Vec<SlotEntry>>,
     supply: Vec<HashMap<String, std::collections::HashSet<String>>>,
+    own_rule: Vec<HashMap<String, std::collections::HashSet<String>>>,
 }
+
+/// A slot's own rule in dist/css/<name>.css: the bare `[data-slot="x"]`
+/// selector, one @apply on one line (the css.rs emit shape).
+static RE_OWN_SLOT_RULE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r#"(?m)^\s*\[data-slot="([^"]+)"\] \{ @apply ([^;]*); \}\s*$"#).unwrap()
+});
 
 impl SlotIndex {
     /// Every generated/ir component that SHIPS CSS (the same filter
@@ -841,11 +853,22 @@ impl SlotIndex {
             cva_slots: Vec::new(),
             slots: HashMap::new(),
             supply: Vec::new(),
+            own_rule: Vec::new(),
         };
         for f in &names {
             let name = f.trim_end_matches(".json");
-            if !root.join("dist/css").join(format!("{}.css", name)).exists() {
+            let css_path = root.join("dist/css").join(format!("{}.css", name));
+            if !css_path.exists() {
                 continue;
+            }
+            let css = std::fs::read_to_string(&css_path)
+                .unwrap_or_else(|e| panic!("projection: reading dist/css/{name}.css: {e}"));
+            let mut own: HashMap<String, std::collections::HashSet<String>> = HashMap::new();
+            for caps in RE_OWN_SLOT_RULE.captures_iter(&css) {
+                own.insert(
+                    caps[1].to_string(),
+                    caps[2].split_whitespace().map(|t| t.to_string()).collect(),
+                );
             }
             let b = std::fs::read_to_string(root.join("generated/ir").join(f))
                 .unwrap_or_else(|e| panic!("projection: reading generated/ir/{f}: {e}"));
@@ -902,6 +925,7 @@ impl SlotIndex {
                 }
             }
             out.supply.push(acc);
+            out.own_rule.push(own);
             out.irs.push(ir);
             out.cva_slots.push(cva_slots);
         }
@@ -1138,9 +1162,84 @@ fn conflicts(x: &str, k: &str) -> bool {
     !has(&m1, xb) || !has(&m1, kb) || !has(&m2, xb) || !has(&m2, kb)
 }
 
+/// Does the token carry a variant (a top-level `:` outside []/())?
+fn has_variant(t: &str) -> bool {
+    let bare = t.strip_prefix('!').unwrap_or(t);
+    let bare = bare.strip_suffix('!').unwrap_or(bare);
+    base_token(bare) != bare
+}
+
+/// A kept utility k cannot flip a dropped x when x is unvarianted and k is
+/// varianted: the utilities layer sorts every unvarianted utility before
+/// every varianted one (measured on tailwind 4.3.3), so inline k already
+/// won exactly when its variant matched — which it still does from the
+/// utilities layer over x in @layer components. `!` reverses layer order
+/// for important declarations, so any `!` keeps the pair conservative.
+fn variant_cannot_flip(x: &str, k: &str) -> bool {
+    !has_variant(x) && has_variant(k) && !x.contains('!') && !k.contains('!')
+}
+
+/// Does the token style elements OTHER than the one carrying it? A
+/// variant in its chain selects children, descendants or siblings: `*:`,
+/// `**:`, or an arbitrary `[&…]` variant whose `&` is followed by a
+/// combinator (`_` = descendant space, `>`, `+`, `~`). `[&:hover]`,
+/// `has-[>svg]:`, `group-*:` and `[.border-b]:` all style the element
+/// itself.
+fn targets_other_elements(t: &str) -> bool {
+    let t = t.strip_prefix('!').unwrap_or(t);
+    let mut depth = 0i32;
+    let mut start = 0usize;
+    let mut variants: Vec<&str> = Vec::new();
+    for (i, c) in t.char_indices() {
+        match c {
+            '[' | '(' => depth += 1,
+            ']' | ')' => depth -= 1,
+            ':' if depth == 0 => {
+                variants.push(&t[start..i]);
+                start = i + 1;
+            }
+            _ => {}
+        }
+    }
+    variants.iter().any(|v| {
+        *v == "*"
+            || *v == "**"
+            || (v.starts_with('[')
+                && v.match_indices('&').any(|(i, _)| {
+                    matches!(v.as_bytes().get(i + 1), Some(b'_' | b'>' | b'+' | b'~'))
+                }))
+    })
+}
+
+/// Can x and y land on the same element? Not when exactly one of them
+/// targets other elements: `[&_svg]:size-4` sizes the button's svg, h-8
+/// the button itself. Two other-targeting tokens may meet on one
+/// descendant, so they count.
+fn same_target(x: &str, y: &str) -> bool {
+    targets_other_elements(x) == targets_other_elements(y)
+}
+
 struct Projected {
+    indexed: bool, // counted in ProjectMetrics::tokens_before
     kept: Vec<String>,
     dropped: Vec<String>,
+    supplied: Vec<String>,
+    rules: Vec<std::collections::HashSet<String>>,
+    markers: Vec<String>,
+}
+
+impl Projected {
+    /// D kept whole: an unindexed slot, or no consistent candidate.
+    fn verbatim(d_tokens: &[String], indexed: bool) -> Projected {
+        Projected {
+            indexed,
+            kept: d_tokens.to_vec(),
+            dropped: Vec::new(),
+            supplied: Vec::new(),
+            rules: Vec::new(),
+            markers: Vec::new(),
+        }
+    }
 }
 
 fn project_element(
@@ -1155,10 +1254,7 @@ fn project_element(
         Some(c) => c,
         None => {
             m.unindexed_slot += 1;
-            return Projected {
-                kept: d_tokens.to_vec(),
-                dropped: Vec::new(),
-            };
+            return Projected::verbatim(d_tokens, false);
         }
     };
     m.slotted += 1;
@@ -1195,11 +1291,7 @@ fn project_element(
     }
     let Some((entry, a_toks, _)) = best else {
         m.fallback_inconsistent += 1;
-        m.tokens_after += d_tokens.len();
-        return Projected {
-            kept: d_tokens.to_vec(),
-            dropped: Vec::new(),
-        };
+        return Projected::verbatim(d_tokens, true);
     };
     if best_tie {
         m.collision_ties += 1;
@@ -1227,38 +1319,104 @@ fn project_element(
         }
     }
 
-    // LAYER CLOSURE: every dropped token would arrive from the component
-    // CSS in @layer components, where ANY kept utilities-layer token with
-    // a conflicting base beats it regardless of variants. Move conflicted
-    // tokens back into K, to a fixpoint. Over-keeping is always safe.
-    //
-    // The second source is the component CSS's own order: in the original
-    // markup x sat inline in the utilities layer and beat EVERY component
-    // token with a conflicting base; after the projection x and its
-    // conflict both come from ONE @apply rule, where the emitter's
-    // declaration order decides — and can flip the winner (measured:
-    // item-title's line-clamp-1 lost to the rule's own trailing `flex`).
-    // So x also stays whenever ANOTHER supplied token conflicts with it.
-    // A is post-twMerge, so such pairs are exactly the order-dependent
-    // ones (line-clamp-1 + flex merges to both in that order, drops flex
-    // in the other).
+    // The same-element layer closure runs in project_body (close_element),
+    // together with the cross-element one, to one shared fixpoint.
+    let mut supplied: Vec<String> = a.iter().map(|t| t.to_string()).collect();
+    supplied.sort();
+    // The single-@apply rules that style this element: the slot's own
+    // [data-slot] rule and, for a cva slot, the one value rule per axis
+    // its data-* selects (classes_of's key choice; every registered table's
+    // value class sits whole inside an emitted value rule, measured over
+    // dist/css).
+    let mut rules: Vec<std::collections::HashSet<String>> = Vec::new();
+    if let Some(r) = index.own_rule[entry.ir].get(slot) {
+        rules.push(r.clone());
+    }
+    if let Some(table) = index.cva_slots[entry.ir].get(slot) {
+        let sel = build_sel(
+            &index.irs[entry.ir],
+            &index.cva_slots[entry.ir],
+            slot,
+            e,
+            ctx,
+        );
+        for axis in table.axis_order() {
+            let mut key = sel.get(&axis).cloned().unwrap_or_default();
+            if key.is_empty() {
+                key = table.defaults.get(&axis).cloned().unwrap_or_default();
+            }
+            if let Some(v) = table.class_of(&axis, &key)
+                && !v.is_empty()
+            {
+                rules.push(
+                    crate::emit::css::split_markers(&v)
+                        .apply
+                        .split_whitespace()
+                        .map(|t| t.to_string())
+                        .collect(),
+                );
+            }
+        }
+    }
+    Projected {
+        indexed: true,
+        kept,
+        dropped,
+        supplied,
+        rules,
+        markers: d_markers,
+    }
+}
+
+/// The same-element half of the LAYER CLOSURE, to a fixpoint on one
+/// element; returns whether a token moved. Every dropped token x arrives
+/// from the component CSS in @layer components after the projection, while
+/// in the original markup it sat inline in the utilities layer. x moves
+/// back into K (over-keeping is always safe) when that layer change could
+/// flip a winner:
+///
+/// Only pairs that can style the same element count (same_target).
+///
+/// - a KEPT non-marker token k conflicts with x: k now always beats x —
+///   except when variant_cannot_flip(x, k);
+/// - ANOTHER SUPPLIED token y conflicts with x: inline, x beat every
+///   component token; now x and y compete inside @layer components
+///   (measured: item-image's item-title carries line-clamp-1 but not flex
+///   — twMerge removed it — yet the [data-slot] rule applies both, and
+///   flex wins there). The one pair that cannot flip: x and y BOTH
+///   rendered inline in the original (y in D) and BOTH in one of the
+///   element's single-@apply rules (the slot's own [data-slot] rule or the
+///   cva value rule its data-* selects). @apply emits its candidates in the utilities
+///   layer's own sort order whatever the written order (measured on
+///   tailwind 4.3.3: `@apply flex line-clamp-1` and `@apply line-clamp-1
+///   flex` compile identically, in the order the utilities layer emits
+///   .line-clamp-1 and .flex), so the pair resolves as it did inline.
+///   Pairs across rules (base vs a cva value rule) are kept: rule order,
+///   not utility order, decides there.
+fn close_element(st: &mut ElemState, m: &mut ProjectMetrics) -> bool {
+    let mut moved = false;
     loop {
         let mut changed = false;
-        for x in dropped.clone() {
-            if kept.iter().any(|t| t == &x) {
-                continue;
-            }
-            let kept_conflict = kept
+        for x in st.dropped.clone() {
+            let kept_conflict = st
+                .kept
                 .iter()
-                .filter(|k| !d_markers.iter().any(|dm| dm == *k))
-                .any(|k| conflicts(&x, k));
-            let css_conflict = a
+                .filter(|k| !st.markers.contains(*k))
+                .any(|k| same_target(&x, k) && conflicts(&x, k) && !variant_cannot_flip(&x, k));
+            let same_rule_inline = |y: &String| {
+                st.d.contains(y)
+                    && st.rules.iter().any(|r| r.contains(&x) && r.contains(y))
+                    && !x.contains('!')
+                    && !y.contains('!')
+            };
+            let css_conflict = st
+                .supplied
                 .iter()
-                .filter(|y| y.as_str() != x)
-                .any(|y| conflicts(&x, y));
+                .filter(|y| **y != x)
+                .any(|y| same_target(&x, y) && conflicts(&x, y) && !same_rule_inline(y));
             if kept_conflict || css_conflict {
-                kept.push(x.clone());
-                dropped.retain(|t| t != &x);
+                st.kept.push(x.clone());
+                st.dropped.retain(|t| t != &x);
                 m.closure_kept_tokens += 1;
                 changed = true;
             }
@@ -1266,9 +1424,9 @@ fn project_element(
         if !changed {
             break;
         }
+        moved = true;
     }
-
-    Projected { kept, dropped }
+    moved
 }
 
 /// Parse a demo body fragment: a full-document parse, then the <body>
@@ -1312,8 +1470,7 @@ fn project_body(
     use markup5ever_rcdom::NodeData;
     let (_dom, body) = parse_body_fragment(body_text)?;
 
-    // pass 1: compute every element's kept/dropped sets (same-element
-    // closure inside project_element), in document order
+    // pass 1: compute every element's kept/dropped sets, in document order
     let mut states: Vec<ElemState> = Vec::new();
     {
         fn walk1(
@@ -1341,8 +1498,12 @@ fn project_body(
                     states.push(ElemState {
                         el: n.clone(),
                         d,
+                        indexed: p.indexed,
                         kept: p.kept,
                         dropped: p.dropped,
+                        supplied: p.supplied,
+                        rules: p.rules,
+                        markers: p.markers,
                     });
                 }
             }
@@ -1366,7 +1527,9 @@ fn project_body(
         walk1(&body, index, &mut ctx, m, &mut states);
     }
 
-    // pass 2: the closure across elements, to a fixpoint. A kept token on
+    // pass 2: the layer closure, same-element (close_element) and across
+    // elements, to one shared fixpoint — a token the cross-element sweep
+    // moves into K can flip a same-element pair, and back. A kept token on
     // one element can defeat a dropped one on another (a button's kept
     // `[&_svg:not([class*='size-'])]:size-3.5` matching a spinner's dropped
     // `size-4`), and a dropped token on an ancestor can be beaten by a
@@ -1374,42 +1537,54 @@ fn project_body(
     // supplied `has-[>…]:[&>input]:pl-1.5` against the control's kept
     // `px-2.5`). In the original markup BOTH sides sat inline in the
     // utilities layer; after the projection only the kept side does, and
-    // the layer order flips the winner. Conflicted tokens move back into
-    // K — over-keeping is always safe — until nothing moves.
+    // the layer order flips the winner. When BOTH sides drop, each comes
+    // from its own component rule and those rules' specificity and order
+    // decide instead of the utility sort (measured: field's `*:w-full` lost
+    // to field-label's w-fit, whose `:is(label)` rule is more specific
+    // though it comes first; a button's dropped `[&_svg:not(
+    // [class*='size-'])]:size-3.5` took the spinner once its size-4 left the
+    // class attribute the selector reads). So every conflicting pair of an
+    // ancestor's descendant-targeting token and a descendant's token ends
+    // with BOTH sides in K — over-keeping is always safe — until nothing
+    // moves.
     fn settle(
         states: &mut [ElemState],
         ancestors: &[usize],
         b: usize,
         m: &mut ProjectMetrics,
     ) -> bool {
+        fn keep(st: &mut ElemState, t: &str, m: &mut ProjectMetrics) -> bool {
+            if !st.dropped.iter().any(|d| d == t) {
+                return false;
+            }
+            st.dropped.retain(|d| d != t);
+            st.kept.push(t.to_string());
+            m.closure_kept_tokens += 1;
+            true
+        }
         let mut moved = false;
         for &a in ancestors {
-            let from_a: Vec<String> = states[a].dropped.clone();
+            let from_a: Vec<String> = states[a]
+                .kept
+                .iter()
+                .chain(states[a].dropped.iter())
+                .filter(|x| targets_descendants(x))
+                .cloned()
+                .collect();
             for x in from_a {
-                if states[a].kept.iter().any(|t| t == &x) {
-                    continue;
-                }
-                if targets_descendants(&x) && states[b].kept.iter().any(|k| conflicts(&x, k)) {
-                    states[a].kept.push(x.clone());
-                    states[a].dropped.retain(|t| t != &x);
-                    m.closure_kept_tokens += 1;
-                    moved = true;
-                }
-            }
-            let from_b: Vec<String> = states[b].dropped.clone();
-            for x in from_b {
-                if states[b].kept.iter().any(|t| t == &x) {
-                    continue;
-                }
-                if states[a]
+                let hits: Vec<String> = states[b]
                     .kept
                     .iter()
-                    .any(|k| targets_descendants(k) && conflicts(&x, k))
-                {
-                    states[b].kept.push(x.clone());
-                    states[b].dropped.retain(|t| t != &x);
-                    m.closure_kept_tokens += 1;
-                    moved = true;
+                    .chain(states[b].dropped.iter())
+                    .filter(|y| conflicts(&x, y))
+                    .cloned()
+                    .collect();
+                if hits.is_empty() {
+                    continue;
+                }
+                moved |= keep(&mut states[a], &x, m);
+                for y in &hits {
+                    moved |= keep(&mut states[b], y, m);
                 }
             }
         }
@@ -1454,7 +1629,12 @@ fn project_body(
         // sweep terminates; the bound just caps the walk
         let mut ancestors: Vec<usize> = Vec::new();
         for _ in 0..64 {
-            if !walk2(&body, &mut ancestors, &mut states, m) {
+            let mut moved = false;
+            for st in states.iter_mut() {
+                moved |= close_element(st, m);
+            }
+            moved |= walk2(&body, &mut ancestors, &mut states, m);
+            if !moved {
                 break;
             }
         }
@@ -1473,7 +1653,7 @@ fn project_body(
             }
         }
     }
-    for st in &states {
+    for st in states.iter().filter(|st| st.indexed) {
         m.tokens_after += st.kept.len();
         if st.kept.is_empty() {
             m.zero_class_after += 1;
@@ -1485,8 +1665,12 @@ fn project_body(
 struct ElemState {
     el: markup5ever_rcdom::Handle,
     d: Vec<String>,
+    indexed: bool,
     kept: Vec<String>,
     dropped: Vec<String>,
+    supplied: Vec<String>,
+    rules: Vec<std::collections::HashSet<String>>,
+    markers: Vec<String>,
 }
 
 impl ElemState {
@@ -2698,6 +2882,7 @@ mod tests {
             cva_slots: vec![HashMap::new()],
             slots: HashMap::new(),
             supply: Vec::new(),
+            own_rule: Vec::new(),
         };
         index.slots.insert(
             "accordion-trigger-icon".to_string(),
@@ -2721,6 +2906,7 @@ mod tests {
                 .into_iter()
                 .collect(),
         );
+        index.own_rule.push(sup.clone());
         index.supply.push(sup);
 
         // the second icon: `hidden` is anchor-keyed — it must SURVIVE the
@@ -2785,6 +2971,7 @@ mod tests {
             cva_slots: vec![HashMap::new()],
             slots: HashMap::new(),
             supply: Vec::new(),
+            own_rule: Vec::new(),
         };
         index.slots.insert(
             slot.to_string(),
@@ -2799,6 +2986,7 @@ mod tests {
             slot.to_string(),
             supply.iter().map(|c| c.to_string()).collect(),
         );
+        index.own_rule.push(sup.clone());
         index.supply.push(sup);
         index
     }
@@ -2821,6 +3009,8 @@ mod tests {
         let mut m = super::ProjectMetrics::default();
         let out = super::project_body(html, &index, &mut m).expect("projects");
         assert_eq!(m.fallback_inconsistent, 1, "{out}");
+        // a fallback element counts its tokens once on each side
+        assert_eq!((m.tokens_before, m.tokens_after), (2, 2), "{out}");
         assert!(
             out.contains(r#"class="pointer-events-none gap-2""#),
             "unrendered candidate must keep all of D: {out}"
@@ -2828,14 +3018,52 @@ mod tests {
     }
 
     #[test]
+    fn unit_metrics_count_indexed_elements_only() {
+        // An unindexed slot keeps its classes verbatim and stays out of the
+        // before/after token counts on both sides; counting its kept tokens
+        // after but not before inflated the printed total.
+        let index = single_slot_index("test-icon", &["shrink-0"], &["shrink-0"]);
+        let html = r#"<div data-slot="test-hook" class="prose p-4"><span data-slot="test-icon" class="shrink-0"></span></div>"#;
+        let mut m = super::ProjectMetrics::default();
+        let out = super::project_body(html, &index, &mut m).expect("projects");
+        assert_eq!(m.unindexed_slot, 1, "{out}");
+        assert_eq!((m.tokens_before, m.tokens_after), (1, 0), "{out}");
+        assert_eq!(m.zero_class_after, 1, "{out}");
+        assert!(out.contains(r#"class="prose p-4""#), "{out}");
+    }
+
+    #[test]
     fn unit_closure_keeps_dropped_token_conflicting_with_a_kept_one() {
-        // `w-px` is supplied by the [data-slot] rule and dropped from the
-        // tab — but the demo author's own `sm:w-full` stays inline, and in
-        // the original BOTH sat in the utilities layer where order decided.
-        // After the projection w-px would come from @layer components,
-        // which ANY kept utilities-layer token with a conflicting base
-        // beats — so the closure moves w-px back into K. Deleting the
-        // same-element closure makes this test fail.
+        // `sm:w-px` is supplied by the [data-slot] rule and dropped from
+        // the tab — but the demo author's own `w-full` stays inline. In the
+        // original both sat in the utilities layer, where the varianted
+        // sm:w-px sorts after w-full and wins at sm. After the projection
+        // sm:w-px would come from @layer components, which the kept
+        // utilities-layer w-full beats — so the closure moves sm:w-px back
+        // into K. Deleting the same-element closure makes this test fail.
+        let index = single_slot_index(
+            "test-trigger",
+            &["sm:w-px", "rounded-md"],
+            &["sm:w-px", "rounded-md"],
+        );
+        let html = r#"<div><button data-slot="test-trigger" class="sm:w-px w-full rounded-md"></button></div>"#;
+        let mut m = super::ProjectMetrics::default();
+        let out = super::project_body(html, &index, &mut m).expect("projects");
+        assert!(
+            out.contains(r#"class="sm:w-px w-full""#),
+            "sm:w-px conflicts with the kept w-full and must stay: {out}"
+        );
+        // rounded-md conflicts with nothing kept or supplied — it still drops
+        assert!(!out.contains("rounded-md"), "{out}");
+    }
+
+    #[test]
+    fn unit_closure_drops_unvarianted_token_under_a_kept_variant() {
+        // The mirror image: the supplied token is unvarianted (w-px), the
+        // kept one varianted (sm:w-full). Inline, sm:w-full sorted after
+        // w-px and won exactly at sm; from the utilities layer over @layer
+        // components it still wins exactly at sm — no flip, w-px drops.
+        // Deleting variant_cannot_flip keeps w-px and this test fails.
         let index = single_slot_index(
             "test-trigger",
             &["w-px", "rounded-md"],
@@ -2844,23 +3072,152 @@ mod tests {
         let html = r#"<div><button data-slot="test-trigger" class="w-px sm:w-full rounded-md"></button></div>"#;
         let mut m = super::ProjectMetrics::default();
         let out = super::project_body(html, &index, &mut m).expect("projects");
-        assert!(
-            out.contains(r#"class="w-px sm:w-full""#),
-            "w-px conflicts with the kept sm:w-full and must stay: {out}"
+        assert!(out.contains(r#"class="sm:w-full""#), "{out}");
+    }
+
+    #[test]
+    fn unit_closure_drops_a_same_rule_pair_both_rendered_inline() {
+        // item-title's default shape: D carries line-clamp-1 AND flex, and
+        // the slot's own [data-slot] rule applies both. @apply emits them in
+        // the utilities layer's sort order, so the pair resolves exactly as
+        // it did inline — both drop and the class attribute goes. Deleting
+        // the same-rule exemption keeps both and this test fails.
+        let index = single_slot_index(
+            "test-title",
+            &["line-clamp-1", "flex"],
+            &["line-clamp-1", "flex"],
         );
-        // rounded-md conflicts with nothing kept or supplied — it still drops
-        assert!(!out.contains("rounded-md"), "{out}");
+        let html = r#"<div><span data-slot="test-title" class="line-clamp-1 flex"></span></div>"#;
+        let mut m = super::ProjectMetrics::default();
+        let out = super::project_body(html, &index, &mut m).expect("projects");
+        assert!(
+            out.contains(r#"<span data-slot="test-title"></span>"#),
+            "{out}"
+        );
+        assert_eq!((m.tokens_before, m.tokens_after), (2, 0));
+    }
+
+    #[test]
+    fn unit_closure_drops_a_pair_inside_the_selected_cva_value_rule() {
+        // The button's default size rule applies px-2.5 AND
+        // has-data-[icon=inline-end]:pr-2 in one @apply, and the demo DOM
+        // rendered both inline: the pair cannot flip, both drop with the
+        // base. Without the value rule in the element's rule set the pair
+        // stays inline — and then a copied tab would pin the default size's
+        // padding against a later data-size change.
+        use crate::emit::css::{CssIrComponent, CvaTable, IrEl, IrFn};
+        use std::collections::{HashMap, HashSet};
+        let table: CvaTable = serde_json::from_value(serde_json::json!({
+            "base": "rounded-lg",
+            "variants": {"size": {
+                "default": "px-2.5 has-data-[icon=inline-end]:pr-2",
+                "sm": "px-2 has-data-[icon=inline-end]:pr-1.5"
+            }},
+            "defaults": {"size": "default"}
+        }))
+        .expect("table");
+        let ir = CssIrComponent {
+            name: "test".to_string(),
+            components: vec![IrFn {
+                fn_: "Test".to_string(),
+                export: true,
+                elements: vec![IrEl {
+                    tag: "button".to_string(),
+                    slot: "test-button".to_string(),
+                    classes: vec![
+                        "rounded-lg".to_string(),
+                        "px-2.5 has-data-[icon=inline-end]:pr-2".to_string(),
+                    ],
+                    ..Default::default()
+                }],
+            }],
+            ..Default::default()
+        };
+        let mut cva: HashMap<String, CvaTable> = HashMap::new();
+        cva.insert("test-button".to_string(), table);
+        let mut index = super::SlotIndex {
+            irs: vec![ir],
+            cva_slots: vec![cva],
+            slots: HashMap::new(),
+            supply: vec![HashMap::new()], // cva slot: everything supplied
+            own_rule: Vec::new(),
+        };
+        index.slots.insert(
+            "test-button".to_string(),
+            vec![super::SlotEntry {
+                ir: 0,
+                fn_: "Test".to_string(),
+                el: 0,
+            }],
+        );
+        let mut own: HashMap<String, HashSet<String>> = HashMap::new();
+        own.insert(
+            "test-button".to_string(),
+            ["rounded-lg".to_string()].into_iter().collect(),
+        );
+        index.own_rule.push(own);
+        let html = r#"<div><button data-slot="test-button" data-size="default" class="rounded-lg px-2.5 has-data-[icon=inline-end]:pr-2"></button></div>"#;
+        let mut m = super::ProjectMetrics::default();
+        let out = super::project_body(html, &index, &mut m).expect("projects");
+        assert!(
+            out.contains(r#"<button data-slot="test-button" data-size="default"></button>"#),
+            "{out}"
+        );
+    }
+
+    #[test]
+    fn unit_targets_other_elements_shape() {
+        use super::{same_target, targets_other_elements};
+        assert!(targets_other_elements(
+            "[&_svg:not([class*='size-'])]:size-4"
+        ));
+        assert!(targets_other_elements("[&>input]:pl-1.5"));
+        assert!(targets_other_elements("has-[>svg]:[&>input]:pl-1.5"));
+        assert!(targets_other_elements("*:data-[slot=button]:rounded-none"));
+        assert!(targets_other_elements("**:data-[slot=x]:p-0"));
+        assert!(targets_other_elements("[&+div]:mt-2"));
+        // the element itself
+        assert!(!targets_other_elements("[&:hover]:bg-muted"));
+        assert!(!targets_other_elements("has-[>svg]:px-2"));
+        assert!(!targets_other_elements("group-hover/card:p-2"));
+        assert!(!targets_other_elements("[.border-b]:pb-4"));
+        assert!(!targets_other_elements("h-8"));
+        // an ancestor condition (`&` at the end) still styles the element
+        assert!(!targets_other_elements("[[data-x]_&]:p-1"));
+        assert!(!same_target("h-8", "[&_svg]:size-4"));
+        assert!(same_target("h-8", "hover:h-9"));
+        assert!(same_target("[&_svg]:size-3", "[&_svg]:size-4"));
+    }
+
+    #[test]
+    fn unit_closure_ignores_a_pair_on_different_elements() {
+        // h-8 sizes the button, `[&_svg]:size-4` its svg: they never meet
+        // on one element, so the stripped-variant conflict (size-4 vs h-8)
+        // is not one. The supplied `[&_svg]:size-4` is not rendered (D
+        // overrides it with size-3), which would otherwise pin h-8 inline.
+        // Deleting same_target keeps h-8 and this test fails.
+        let index = single_slot_index(
+            "test-button",
+            &["[&_svg]:size-4", "h-8"],
+            &["[&_svg]:size-4", "h-8"],
+        );
+        let html =
+            r#"<div><button data-slot="test-button" class="h-8 [&_svg]:size-3"></button></div>"#;
+        let mut m = super::ProjectMetrics::default();
+        let out = super::project_body(html, &index, &mut m).expect("projects");
+        assert!(out.contains(r#"class="[&_svg]:size-3""#), "{out}");
     }
 
     #[test]
     fn unit_closure_keeps_dropped_token_conflicting_with_another_supplied_one() {
-        // The item-title shape: the [data-slot] rule applies line-clamp-1
-        // AND flex in one @apply, where the emitter's declaration order
-        // decides a pair that was order-dependent inline (line-clamp-1 sets
+        // The item-image shape: the [data-slot] rule applies line-clamp-1
+        // AND flex in one @apply, where flex wins (line-clamp-1 sets
         // display: -webkit-box, flex sets display: flex). The demo DOM
-        // carries line-clamp-1; dropping it hands the win to the rule's own
-        // trailing flex, so the closure keeps it. Deleting the css-conflict
-        // arm empties K entirely and this test fails.
+        // carries line-clamp-1 but NOT flex — React's twMerge removed it —
+        // so inline, line-clamp-1 beat the rule's flex from the utilities
+        // layer; dropping it hands the win to flex, so the closure keeps it.
+        // Deleting the css-conflict arm empties K entirely and this test
+        // fails.
         let index = single_slot_index(
             "test-title",
             &["line-clamp-1", "flex"],
@@ -2913,6 +3270,7 @@ mod tests {
             cva_slots: vec![HashMap::new()],
             slots: HashMap::new(),
             supply: Vec::new(),
+            own_rule: Vec::new(),
         };
         index.slots.insert(
             "test-trigger".to_string(),
@@ -2941,6 +3299,7 @@ mod tests {
             "test-icon".to_string(),
             ["size-4".to_string()].into_iter().collect(),
         );
+        index.own_rule.push(sup.clone());
         index.supply.push(sup);
 
         let html = r#"<div><button data-slot="test-trigger" class="[&_svg]:size-4 inline-flex"><svg data-slot="test-icon" class="size-3"></svg></button></div>"#;
@@ -2955,6 +3314,149 @@ mod tests {
         assert!(
             out.contains(r#"class="size-3""#),
             "the icon's own override stays: {out}"
+        );
+    }
+
+    #[test]
+    fn unit_closure_reruns_same_element_after_a_cross_element_move() {
+        // The label's px-3 and pr-1 are both rendered inline and both in
+        // its own rule, so the same-element closure lets them drop. Then
+        // the parent's kept `[&_span]:pl-2` (it beat px-3's left padding
+        // inline, by specificity) pulls px-3 back into K. Now px-3 sits in
+        // the utilities layer over pr-1 in @layer components — inline,
+        // pr-1 sorted after px-3 and won the right padding — so pr-1 must
+        // follow. Running the same-element closure only once, before the
+        // cross-element sweep, leaves pr-1 dropped and this test fails.
+        use crate::emit::css::{CssIrComponent, IrEl, IrFn};
+        use std::collections::{HashMap, HashSet};
+        let ir = CssIrComponent {
+            name: "test".to_string(),
+            components: vec![IrFn {
+                fn_: "Test".to_string(),
+                export: true,
+                elements: vec![
+                    IrEl {
+                        tag: "div".to_string(),
+                        slot: "test-group".to_string(),
+                        classes: vec!["inline-flex".to_string()],
+                        ..Default::default()
+                    },
+                    IrEl {
+                        tag: "span".to_string(),
+                        slot: "test-label".to_string(),
+                        classes: vec!["px-3".to_string(), "pr-1".to_string()],
+                        ..Default::default()
+                    },
+                ],
+            }],
+            ..Default::default()
+        };
+        let mut index = super::SlotIndex {
+            irs: vec![ir],
+            cva_slots: vec![HashMap::new()],
+            slots: HashMap::new(),
+            supply: Vec::new(),
+            own_rule: Vec::new(),
+        };
+        for (slot, el) in [("test-group", 0), ("test-label", 1)] {
+            index.slots.insert(
+                slot.to_string(),
+                vec![super::SlotEntry {
+                    ir: 0,
+                    fn_: "Test".to_string(),
+                    el,
+                }],
+            );
+        }
+        let mut sup: HashMap<String, HashSet<String>> = HashMap::new();
+        sup.insert(
+            "test-group".to_string(),
+            ["inline-flex".to_string()].into_iter().collect(),
+        );
+        sup.insert(
+            "test-label".to_string(),
+            ["px-3".to_string(), "pr-1".to_string()]
+                .into_iter()
+                .collect(),
+        );
+        index.own_rule.push(sup.clone());
+        index.supply.push(sup);
+
+        let html = r#"<div><div data-slot="test-group" class="[&_span]:pl-2 inline-flex"><span data-slot="test-label" class="px-3 pr-1"></span></div></div>"#;
+        let mut m = super::ProjectMetrics::default();
+        let out = super::project_body(html, &index, &mut m).expect("projects");
+        assert!(
+            out.contains(r#"<span data-slot="test-label" class="px-3 pr-1">"#),
+            "pr-1 must follow px-3 back into K: {out}"
+        );
+        assert!(
+            out.contains(r#"class="[&_span]:pl-2""#),
+            "inline-flex still drops from the group: {out}"
+        );
+    }
+
+    #[test]
+    fn unit_closure_keeps_a_cross_element_pair_when_both_sides_drop() {
+        // The field shape: the parent's `*:w-full` and the label's w-fit
+        // are both supplied, so both would drop — and then the two
+        // component rules' stylesheet order decides instead of the utility
+        // sort that let *:w-full win inline. Both stay. Without the
+        // both-dropped arm of settle neither keeps a class and this test
+        // fails.
+        use crate::emit::css::{CssIrComponent, IrEl, IrFn};
+        use std::collections::{HashMap, HashSet};
+        let el = |tag: &str, slot: &str, cls: &str| IrEl {
+            tag: tag.to_string(),
+            slot: slot.to_string(),
+            classes: vec![cls.to_string()],
+            ..Default::default()
+        };
+        let ir = CssIrComponent {
+            name: "test".to_string(),
+            components: vec![IrFn {
+                fn_: "Test".to_string(),
+                export: true,
+                elements: vec![
+                    el("div", "test-field", "*:w-full flex"),
+                    el("label", "test-label", "w-fit"),
+                ],
+            }],
+            ..Default::default()
+        };
+        let mut index = super::SlotIndex {
+            irs: vec![ir],
+            cva_slots: vec![HashMap::new()],
+            slots: HashMap::new(),
+            supply: Vec::new(),
+            own_rule: Vec::new(),
+        };
+        for (slot, el) in [("test-field", 0), ("test-label", 1)] {
+            index.slots.insert(
+                slot.to_string(),
+                vec![super::SlotEntry {
+                    ir: 0,
+                    fn_: "Test".to_string(),
+                    el,
+                }],
+            );
+        }
+        let set = |v: &[&str]| v.iter().map(|t| t.to_string()).collect::<HashSet<String>>();
+        let mut sup: HashMap<String, HashSet<String>> = HashMap::new();
+        sup.insert("test-field".to_string(), set(&["*:w-full", "flex"]));
+        sup.insert("test-label".to_string(), set(&["w-fit"]));
+        index.own_rule.push(sup.clone());
+        index.supply.push(sup);
+
+        let html = r#"<div><div data-slot="test-field" class="*:w-full flex"><label data-slot="test-label" class="w-fit"></label></div></div>"#;
+        let mut m = super::ProjectMetrics::default();
+        let out = super::project_body(html, &index, &mut m).expect("projects");
+        assert!(
+            out.contains(r#"<div data-slot="test-field" class="*:w-full">"#),
+            "{out}"
+        );
+        assert!(
+            out.contains(r#"<label data-slot="test-label" class="w-fit">"#),
+            "{out}"
         );
     }
 

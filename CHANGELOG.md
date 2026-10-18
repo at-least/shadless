@@ -9,16 +9,17 @@ upstream is `src/registry/pin.json`; re-pins land through the upstream drill
 ### Changed
 - Docs: the code tab under every non-RTL preview is **slot-only markup** —
   the `data-slot`/`data-*` attributes plus only the classes the component
-  stylesheet does not already supply (the example's own layout/size
-  choices, group/peer markers, anything the CSS cannot reproduce). Copy the
+  stylesheet cannot reproduce on its own (the example's own layout/size
+  choices, group/peer markers, and the few supplied classes whose inline
+  cascade position matters). Copy the
   tab, import `shadless` and the component's stylesheet, and you get exactly
   the preview; customize by adding utilities (they sit in the utilities
   layer and win over the component styles) or by setting the documented
   `data-*` attributes. The preview iframe keeps rendering the full inline
   DOM shadcn's React produces (`docs/demos/*.html`), and RTL examples keep
   every class in their tabs — their logical-direction utilities exist only
-  inline. Token count on slotted elements across the docs corpus drops from
-  50,929 to 26,284.
+  inline. Class tokens on the 3,549 slotted elements of the projected demos
+  drop from 50,929 to 13,096; 46% of them carry no class at all.
 
 ### Added
 - `docs-code-parity`, a full-tier browser gate: for every built page and

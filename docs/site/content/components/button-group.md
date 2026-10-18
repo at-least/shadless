@@ -29,7 +29,7 @@ A container that groups related buttons together with consistent styling.
       data-slot="button"
       data-variant="outline"
       data-size="icon"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-8"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input size-8"
       aria-label="Go Back"
     >
       <svg
@@ -58,14 +58,14 @@ A container that groups related buttons together with consistent styling.
       data-slot="button"
       data-variant="outline"
       data-size="default"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input"
     >
       Archive</button
     ><button
       data-slot="button"
       data-variant="outline"
       data-size="default"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input"
     >
       Report
     </button>
@@ -79,7 +79,7 @@ A container that groups related buttons together with consistent styling.
       data-slot="button"
       data-variant="outline"
       data-size="default"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input"
     >
       Snooze</button
     ><button
@@ -126,7 +126,7 @@ A container that groups related buttons together with consistent styling.
     id="m0"
     aria-labelledby="m0-trigger"
     data-slot="dropdown-menu-content"
-    class="cn-menu-target cn-menu-translucent overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden w-40"
+    class="cn-menu-target cn-menu-translucent w-40"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -144,7 +144,7 @@ A container that groups related buttons together with consistent styling.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -170,7 +170,7 @@ A container that groups related buttons together with consistent styling.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -199,7 +199,7 @@ A container that groups related buttons together with consistent styling.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -224,7 +224,7 @@ A container that groups related buttons together with consistent styling.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -253,7 +253,7 @@ A container that groups related buttons together with consistent styling.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -283,7 +283,6 @@ A container that groups related buttons together with consistent styling.
         aria-controls="m0s0"
         data-state="closed"
         data-slot="dropdown-menu-sub-trigger"
-        class="px-1.5 data-inset:pl-7"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -327,7 +326,7 @@ A container that groups related buttons together with consistent styling.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="destructive"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -384,7 +383,6 @@ A container that groups related buttons together with consistent styling.
         role="menuitemradio"
         aria-checked="true"
         data-slot="dropdown-menu-radio-item"
-        class="pl-1.5 data-inset:pl-7"
         data-state="checked"
         tabindex="-1"
         data-orientation="vertical"
@@ -411,7 +409,6 @@ A container that groups related buttons together with consistent styling.
         role="menuitemradio"
         aria-checked="false"
         data-slot="dropdown-menu-radio-item"
-        class="pl-1.5 data-inset:pl-7"
         data-state="unchecked"
         tabindex="-1"
         data-orientation="vertical"
@@ -423,7 +420,6 @@ A container that groups related buttons together with consistent styling.
         role="menuitemradio"
         aria-checked="false"
         data-slot="dropdown-menu-radio-item"
-        class="pl-1.5 data-inset:pl-7"
         data-state="unchecked"
         tabindex="-1"
         data-orientation="vertical"
@@ -517,14 +513,14 @@ Set the `orientation` prop to change the button group layout.
   role="group"
   data-slot="button-group"
   data-orientation="vertical"
-  class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>[data-slot]:not(:has(~[data-slot]))]:rounded-b-lg! [&>*:not(:first-child)]:rounded-t-none [&>*:not(:last-child)]:rounded-b-none h-fit"
+  class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1 [&>[data-slot]:not(:has(~[data-slot]))]:rounded-b-lg! [&>*:not(:first-child)]:rounded-t-none [&>*:not(:first-child)]:border-t-0 [&>*:not(:last-child)]:rounded-b-none h-fit"
   aria-label="Media controls"
 >
   <button
     data-slot="button"
     data-variant="outline"
     data-size="icon"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-8"
+    class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input size-8"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -545,7 +541,7 @@ Set the `orientation` prop to change the button group layout.
     data-slot="button"
     data-variant="outline"
     data-size="icon"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-8"
+    class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input size-8"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -583,34 +579,34 @@ Control the size of buttons using the `size` prop on individual buttons.
   <div
     role="group"
     data-slot="button-group"
-    class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:last-child)]:rounded-r-none"
+    class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1 [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none"
   >
     <button
       data-slot="button"
       data-variant="outline"
       data-size="sm"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-7 rounded-[min(var(--radius-md),12px)] px-2.5 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3.5"
     >
       Small</button
     ><button
       data-slot="button"
       data-variant="outline"
       data-size="sm"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-7 rounded-[min(var(--radius-md),12px)] px-2.5 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3.5"
     >
       Button</button
     ><button
       data-slot="button"
       data-variant="outline"
       data-size="sm"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-7 rounded-[min(var(--radius-md),12px)] px-2.5 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3.5"
     >
       Group</button
     ><button
       data-slot="button"
       data-variant="outline"
       data-size="icon-sm"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -632,34 +628,34 @@ Control the size of buttons using the `size` prop on individual buttons.
   <div
     role="group"
     data-slot="button-group"
-    class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:last-child)]:rounded-r-none"
+    class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1 [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none"
   >
     <button
       data-slot="button"
       data-variant="outline"
       data-size="default"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input"
     >
       Default</button
     ><button
       data-slot="button"
       data-variant="outline"
       data-size="default"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input"
     >
       Button</button
     ><button
       data-slot="button"
       data-variant="outline"
       data-size="default"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input"
     >
       Group</button
     ><button
       data-slot="button"
       data-variant="outline"
       data-size="icon"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-8"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input size-8"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -681,34 +677,34 @@ Control the size of buttons using the `size` prop on individual buttons.
   <div
     role="group"
     data-slot="button-group"
-    class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:last-child)]:rounded-r-none"
+    class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1 [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none"
   >
     <button
       data-slot="button"
       data-variant="outline"
       data-size="lg"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-9 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input"
     >
       Large</button
     ><button
       data-slot="button"
       data-variant="outline"
       data-size="lg"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-9 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input"
     >
       Button</button
     ><button
       data-slot="button"
       data-variant="outline"
       data-size="lg"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-9 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input"
     >
       Group</button
     ><button
       data-slot="button"
       data-variant="outline"
       data-size="icon-lg"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-9"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input size-9"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -747,18 +743,18 @@ Nest `data-slot="button-group"` components to create button groups with spacing.
 <div
   role="group"
   data-slot="button-group"
-  class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none"
+  class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1 [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none"
 >
   <div
     role="group"
     data-slot="button-group"
-    class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none"
+    class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1 [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none"
   >
     <button
       data-slot="button"
       data-variant="outline"
       data-size="icon"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-8"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input size-8"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -785,7 +781,7 @@ Nest `data-slot="button-group"` components to create button groups with spacing.
     <div
       data-slot="input-group"
       role="group"
-      class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 rounded-lg border in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 w-full has-[>textarea]:h-auto"
+      class="group/input-group rounded-lg border has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 w-full"
     >
       <input
         data-slot="input-group-control"
@@ -845,7 +841,6 @@ Nest `data-slot="button-group"` components to create button groups with spacing.
       data-align="center"
       data-state="delayed-open"
       data-slot="tooltip-content"
-      class="rounded-md px-3 has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:rounded-sm"
       style="
         --radix-tooltip-content-transform-origin: var(--radix-popper-transform-origin);
         --radix-tooltip-content-available-width: var(--radix-popper-available-width);
@@ -962,13 +957,13 @@ Buttons with variant `outline` do not need a separator since they have a border.
 <div
   role="group"
   data-slot="button-group"
-  class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1 [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:last-child)]:rounded-r-none"
+  class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1 [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none"
 >
   <button
     data-slot="button"
     data-variant="secondary"
     data-size="sm"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button shrink-0 [&_svg]:shrink-0 bg-secondary hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary h-7 rounded-[min(var(--radius-md),12px)] px-2.5 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
+    class="border group/button shrink-0 [&_svg]:shrink-0 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3.5"
   >
     Copy
   </button>
@@ -982,7 +977,7 @@ Buttons with variant `outline` do not need a separator since they have a border.
     data-slot="button"
     data-variant="secondary"
     data-size="sm"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button shrink-0 [&_svg]:shrink-0 bg-secondary hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary h-7 rounded-[min(var(--radius-md),12px)] px-2.5 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
+    class="border group/button shrink-0 [&_svg]:shrink-0 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3.5"
   >
     Paste
   </button>
@@ -1006,13 +1001,13 @@ Create a split button group by adding two buttons separated by a `ButtonGroupSep
 <div
   role="group"
   data-slot="button-group"
-  class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1 [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:last-child)]:rounded-r-none"
+  class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1 [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none"
 >
   <button
     data-slot="button"
     data-variant="secondary"
     data-size="default"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border-transparent [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 bg-secondary hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+    class="rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0"
   >
     Button
   </button>
@@ -1026,7 +1021,7 @@ Create a split button group by adding two buttons separated by a `ButtonGroupSep
     data-slot="button"
     data-variant="secondary"
     data-size="icon"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border-transparent [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 bg-secondary hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary size-8"
+    class="rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 size-8"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -1064,17 +1059,17 @@ Wrap an `Input` component with buttons.
 <div
   role="group"
   data-slot="button-group"
-  class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none"
+  class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1 [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none"
 >
   <input
     data-slot="input"
-    class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+    class="rounded-lg border w-full file:border-0"
     placeholder="Search..."
   /><button
     data-slot="button"
     data-variant="outline"
     data-size="default"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+    class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input"
     aria-label="Search"
   >
     <svg
@@ -1124,7 +1119,7 @@ Wrap an `InputGroup` component to create complex input layouts.
       data-slot="button"
       data-variant="outline"
       data-size="icon"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-8"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input size-8"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -1151,7 +1146,7 @@ Wrap an `InputGroup` component to create complex input layouts.
     <div
       data-slot="input-group"
       role="group"
-      class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 rounded-lg border in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 w-full has-[>textarea]:h-auto"
+      class="group/input-group rounded-lg border has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 w-full"
     >
       <input
         data-slot="input-group-control"
@@ -1162,7 +1157,7 @@ Wrap an `InputGroup` component to create complex input layouts.
         role="group"
         data-slot="input-group-addon"
         data-align="inline-end"
-        class="h-auto py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem]"
+        class="py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 pr-2"
       >
         <button
           data-slot="tooltip-trigger"
@@ -1221,7 +1216,6 @@ Wrap an `InputGroup` component to create complex input layouts.
       data-align="center"
       data-state="delayed-open"
       data-slot="tooltip-content"
-      class="rounded-md px-3 has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:rounded-sm"
       style="
         --radix-tooltip-content-transform-origin: var(--radix-popper-transform-origin);
         --radix-tooltip-content-available-width: var(--radix-popper-available-width);
@@ -1342,7 +1336,7 @@ Create a split button group with a `DropdownMenu` component.
     data-slot="button"
     data-variant="outline"
     data-size="default"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+    class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input"
   >
     Follow</button
   ><button
@@ -1385,7 +1379,7 @@ Create a split button group with a `DropdownMenu` component.
     id="m0"
     aria-labelledby="m0-trigger"
     data-slot="dropdown-menu-content"
-    class="cn-menu-target cn-menu-translucent overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden w-44"
+    class="cn-menu-target cn-menu-translucent w-44"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -1403,7 +1397,7 @@ Create a split button group with a `DropdownMenu` component.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1433,7 +1427,7 @@ Create a split button group with a `DropdownMenu` component.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1457,7 +1451,7 @@ Create a split button group with a `DropdownMenu` component.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1483,7 +1477,7 @@ Create a split button group with a `DropdownMenu` component.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1510,7 +1504,7 @@ Create a split button group with a `DropdownMenu` component.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1536,7 +1530,7 @@ Create a split button group with a `DropdownMenu` component.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1564,7 +1558,7 @@ Create a split button group with a `DropdownMenu` component.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="destructive"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1621,12 +1615,12 @@ Pair with a `Select` component.
 <div
   role="group"
   data-slot="button-group"
-  class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none"
+  class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1 [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none"
 >
   <div
     role="group"
     data-slot="button-group"
-    class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none"
+    class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1 [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none"
   >
     <button
       type="button"
@@ -1638,7 +1632,7 @@ Pair with a `Select` component.
       data-state="closed"
       data-slot="select-trigger"
       data-size="default"
-      class="border-input dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border bg-transparent data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] [&_svg:not([class*='size-'])]:size-4 flex w-fit *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex font-mono"
+      class="rounded-lg border data-[size=sm]:rounded-[min(var(--radius-md),10px)] [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 font-mono"
       id="s0-trigger"
     >
       $<svg
@@ -1657,7 +1651,7 @@ Pair with a `Select` component.
       </svg></button
     ><input
       data-slot="input"
-      class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+      class="rounded-lg border w-full file:border-0"
       placeholder="10.00"
       pattern="[0-9]*"
     />
@@ -1665,13 +1659,13 @@ Pair with a `Select` component.
   <div
     role="group"
     data-slot="button-group"
-    class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none"
+    class="has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-lg group/button-group [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1 [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg! [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none"
   >
     <button
       data-slot="button"
       data-variant="outline"
       data-size="icon"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-8"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input size-8"
       aria-label="Send"
     >
       <svg
@@ -1736,7 +1730,6 @@ Pair with a `Select` component.
           data-state="checked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span class="pointer-events-none absolute right-2 flex size-4 items-center justify-center"
@@ -1763,7 +1756,6 @@ Pair with a `Select` component.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1778,7 +1770,6 @@ Pair with a `Select` component.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1928,7 +1919,7 @@ Use with a `Popover` component.
     data-slot="button"
     data-variant="outline"
     data-size="default"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+    class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border [&_svg:not([class*='size-'])]:size-4 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -2021,7 +2012,7 @@ Use with a `Popover` component.
         role="group"
         data-slot="field"
         data-orientation="vertical"
-        class="group/field w-full *:w-full [&>.sr-only]:w-auto"
+        class="group/field *:w-full [&>.sr-only]:w-auto"
       >
         <label
           data-slot="field-label"
@@ -2030,16 +2021,11 @@ Use with a `Popover` component.
           >Task Description</label
         ><textarea
           data-slot="textarea"
-          class="border-input dark:bg-input/30 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 bg-transparent text-base md:text-sm w-full resize-none"
+          class="w-full resize-none"
           id="task"
           placeholder="I need to..."
         ></textarea>
-        <p
-          data-slot="field-description"
-          class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-        >
-          Copilot will open a pull request for review.
-        </p>
+        <p data-slot="field-description">Copilot will open a pull request for review.</p>
       </div>
     </div>
   </div>

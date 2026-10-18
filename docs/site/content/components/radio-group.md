@@ -32,12 +32,12 @@ A set of checkable buttons—known as radio buttons—where no more than one of 
       data-state="unchecked"
       value="default"
       data-slot="radio-group-item"
-      class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+      class="group/radio-group-item peer"
       id="r1"
       tabindex="-1"
       data-radix-collection-item=""
     ></button
-    ><label data-slot="label" class="text-sm leading-none" for="r1">Default</label>
+    ><label data-slot="label" for="r1">Default</label>
   </div>
   <div class="flex items-center gap-3">
     <button
@@ -47,7 +47,7 @@ A set of checkable buttons—known as radio buttons—where no more than one of 
       data-state="checked"
       value="comfortable"
       data-slot="radio-group-item"
-      class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+      class="group/radio-group-item peer"
       id="r2"
       tabindex="-1"
       data-radix-collection-item=""
@@ -57,7 +57,7 @@ A set of checkable buttons—known as radio buttons—where no more than one of 
           class="bg-primary-foreground absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full"
         ></span
       ></span></button
-    ><label data-slot="label" class="text-sm leading-none" for="r2">Comfortable</label>
+    ><label data-slot="label" for="r2">Comfortable</label>
   </div>
   <div class="flex items-center gap-3">
     <button
@@ -67,12 +67,12 @@ A set of checkable buttons—known as radio buttons—where no more than one of 
       data-state="unchecked"
       value="compact"
       data-slot="radio-group-item"
-      class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+      class="group/radio-group-item peer"
       id="r3"
       tabindex="-1"
       data-radix-collection-item=""
     ></button
-    ><label data-slot="label" class="text-sm leading-none" for="r3">Compact</label>
+    ><label data-slot="label" for="r3">Compact</label>
   </div>
 </div>
 ```
@@ -208,7 +208,7 @@ Radio group items with a description using the `Field` component.
     role="group"
     data-slot="field"
     data-orientation="horizontal"
-    class="group/field items-center has-[>[data-slot=field-content]]:items-start has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+    class="group/field *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
   >
     <button
       type="button"
@@ -217,21 +217,21 @@ Radio group items with a description using the `Field` component.
       data-state="unchecked"
       value="default"
       data-slot="radio-group-item"
-      class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+      class="group/radio-group-item peer shrink-0"
       id="desc-r1"
       tabindex="-1"
       data-radix-collection-item=""
     ></button>
-    <div data-slot="field-content" class="group/field-content">
+    <div data-slot="field-content" class="group/field-content flex-1">
       <label
         data-slot="field-label"
-        class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+        class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
         for="desc-r1"
         >Default</label
       >
       <p
         data-slot="field-description"
-        class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
+        class="[[data-variant=legend]+&]:-mt-1.5 last:mt-0 nth-last-2:-mt-1"
       >
         Standard spacing for most use cases.
       </p>
@@ -241,7 +241,7 @@ Radio group items with a description using the `Field` component.
     role="group"
     data-slot="field"
     data-orientation="horizontal"
-    class="group/field items-center has-[>[data-slot=field-content]]:items-start has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+    class="group/field *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
   >
     <button
       type="button"
@@ -250,7 +250,7 @@ Radio group items with a description using the `Field` component.
       data-state="checked"
       value="comfortable"
       data-slot="radio-group-item"
-      class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+      class="group/radio-group-item peer shrink-0"
       id="desc-r2"
       tabindex="-1"
       data-radix-collection-item=""
@@ -261,16 +261,16 @@ Radio group items with a description using the `Field` component.
         ></span
       ></span>
     </button>
-    <div data-slot="field-content" class="group/field-content">
+    <div data-slot="field-content" class="group/field-content flex-1">
       <label
         data-slot="field-label"
-        class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+        class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
         for="desc-r2"
         >Comfortable</label
       >
       <p
         data-slot="field-description"
-        class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
+        class="[[data-variant=legend]+&]:-mt-1.5 last:mt-0 nth-last-2:-mt-1"
       >
         More space between elements.
       </p>
@@ -280,7 +280,7 @@ Radio group items with a description using the `Field` component.
     role="group"
     data-slot="field"
     data-orientation="horizontal"
-    class="group/field items-center has-[>[data-slot=field-content]]:items-start has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+    class="group/field *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
   >
     <button
       type="button"
@@ -289,21 +289,21 @@ Radio group items with a description using the `Field` component.
       data-state="unchecked"
       value="compact"
       data-slot="radio-group-item"
-      class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+      class="group/radio-group-item peer shrink-0"
       id="desc-r3"
       tabindex="-1"
       data-radix-collection-item=""
     ></button>
-    <div data-slot="field-content" class="group/field-content">
+    <div data-slot="field-content" class="group/field-content flex-1">
       <label
         data-slot="field-label"
-        class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+        class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
         for="desc-r3"
         >Compact</label
       >
       <p
         data-slot="field-description"
-        class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
+        class="[[data-variant=legend]+&]:-mt-1.5 last:mt-0 nth-last-2:-mt-1"
       >
         Minimal spacing for dense layouts.
       </p>
@@ -394,19 +394,19 @@ Use `FieldLabel` to wrap the entire `Field` for a clickable card-style selection
 >
   <label
     data-slot="field-label"
-    class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+    class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
     for="plus-plan"
     ><div
       role="group"
       data-slot="field"
       data-orientation="horizontal"
-      class="group/field items-center has-[>[data-slot=field-content]]:items-start has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+      class="group/field *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
     >
-      <div data-slot="field-content" class="group/field-content">
+      <div data-slot="field-content" class="group/field-content flex-1">
         <div data-slot="field-label" class="text-sm font-medium items-center">Plus</div>
         <p
           data-slot="field-description"
-          class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
+          class="[[data-variant=legend]+&]:-mt-1.5 last:mt-0 nth-last-2:-mt-1"
         >
           For individuals and small teams.
         </p>
@@ -418,7 +418,7 @@ Use `FieldLabel` to wrap the entire `Field` for a clickable card-style selection
         data-state="checked"
         value="plus"
         data-slot="radio-group-item"
-        class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+        class="group/radio-group-item peer shrink-0"
         id="plus-plan"
         tabindex="-1"
         data-radix-collection-item=""
@@ -431,19 +431,19 @@ Use `FieldLabel` to wrap the entire `Field` for a clickable card-style selection
       </button></div></label
   ><label
     data-slot="field-label"
-    class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+    class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
     for="pro-plan"
     ><div
       role="group"
       data-slot="field"
       data-orientation="horizontal"
-      class="group/field items-center has-[>[data-slot=field-content]]:items-start has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+      class="group/field *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
     >
-      <div data-slot="field-content" class="group/field-content">
+      <div data-slot="field-content" class="group/field-content flex-1">
         <div data-slot="field-label" class="text-sm font-medium items-center">Pro</div>
         <p
           data-slot="field-description"
-          class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
+          class="[[data-variant=legend]+&]:-mt-1.5 last:mt-0 nth-last-2:-mt-1"
         >
           For growing businesses.
         </p>
@@ -455,26 +455,26 @@ Use `FieldLabel` to wrap the entire `Field` for a clickable card-style selection
         data-state="unchecked"
         value="pro"
         data-slot="radio-group-item"
-        class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+        class="group/radio-group-item peer shrink-0"
         id="pro-plan"
         tabindex="-1"
         data-radix-collection-item=""
       ></button></div></label
   ><label
     data-slot="field-label"
-    class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+    class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
     for="enterprise-plan"
     ><div
       role="group"
       data-slot="field"
       data-orientation="horizontal"
-      class="group/field items-center has-[>[data-slot=field-content]]:items-start has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+      class="group/field *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
     >
-      <div data-slot="field-content" class="group/field-content">
+      <div data-slot="field-content" class="group/field-content flex-1">
         <div data-slot="field-label" class="text-sm font-medium items-center">Enterprise</div>
         <p
           data-slot="field-description"
-          class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
+          class="[[data-variant=legend]+&]:-mt-1.5 last:mt-0 nth-last-2:-mt-1"
         >
           For large teams and enterprises.
         </p>
@@ -486,7 +486,7 @@ Use `FieldLabel` to wrap the entire `Field` for a clickable card-style selection
         data-state="unchecked"
         value="enterprise"
         data-slot="radio-group-item"
-        class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+        class="group/radio-group-item peer shrink-0"
         id="enterprise-plan"
         tabindex="-1"
         data-radix-collection-item=""
@@ -566,23 +566,9 @@ Use `FieldSet` and `FieldLegend` to group radio items with a label and descripti
 
 {% <codegroup> %}
 ```text,name=radio-group-fieldset.html
-<fieldset
-  data-slot="field-set"
-  class="gap-4 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3 w-full max-w-xs"
->
-  <legend
-    data-slot="field-legend"
-    data-variant="label"
-    class="data-[variant=label]:text-sm data-[variant=legend]:text-base"
-  >
-    Subscription Plan
-  </legend>
-  <p
-    data-slot="field-description"
-    class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-  >
-    Yearly and lifetime plans offer significant savings.
-  </p>
+<fieldset data-slot="field-set" class="w-full max-w-xs">
+  <legend data-slot="field-legend" data-variant="label">Subscription Plan</legend>
+  <p data-slot="field-description">Yearly and lifetime plans offer significant savings.</p>
   <div
     role="radiogroup"
     aria-required="false"
@@ -595,7 +581,7 @@ Use `FieldSet` and `FieldLegend` to group radio items with a label and descripti
       role="group"
       data-slot="field"
       data-orientation="horizontal"
-      class="group/field items-center has-[>[data-slot=field-content]]:items-start"
+      class="group/field *:data-[slot=field-label]:flex-auto"
     >
       <button
         type="button"
@@ -604,7 +590,7 @@ Use `FieldSet` and `FieldLegend` to group radio items with a label and descripti
         data-state="checked"
         value="monthly"
         data-slot="radio-group-item"
-        class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+        class="group/radio-group-item peer shrink-0"
         id="plan-monthly"
         tabindex="-1"
         data-radix-collection-item=""
@@ -616,7 +602,7 @@ Use `FieldSet` and `FieldLegend` to group radio items with a label and descripti
         ></span></button
       ><label
         data-slot="field-label"
-        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
         for="plan-monthly"
         >Monthly ($9.99/month)</label
       >
@@ -625,7 +611,7 @@ Use `FieldSet` and `FieldLegend` to group radio items with a label and descripti
       role="group"
       data-slot="field"
       data-orientation="horizontal"
-      class="group/field items-center has-[>[data-slot=field-content]]:items-start"
+      class="group/field *:data-[slot=field-label]:flex-auto"
     >
       <button
         type="button"
@@ -634,14 +620,14 @@ Use `FieldSet` and `FieldLegend` to group radio items with a label and descripti
         data-state="unchecked"
         value="yearly"
         data-slot="radio-group-item"
-        class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+        class="group/radio-group-item peer shrink-0"
         id="plan-yearly"
         tabindex="-1"
         data-radix-collection-item=""
       ></button
       ><label
         data-slot="field-label"
-        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
         for="plan-yearly"
         >Yearly ($99.99/year)</label
       >
@@ -650,7 +636,7 @@ Use `FieldSet` and `FieldLegend` to group radio items with a label and descripti
       role="group"
       data-slot="field"
       data-orientation="horizontal"
-      class="group/field items-center has-[>[data-slot=field-content]]:items-start"
+      class="group/field *:data-[slot=field-label]:flex-auto"
     >
       <button
         type="button"
@@ -659,14 +645,14 @@ Use `FieldSet` and `FieldLegend` to group radio items with a label and descripti
         data-state="unchecked"
         value="lifetime"
         data-slot="radio-group-item"
-        class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+        class="group/radio-group-item peer shrink-0"
         id="plan-lifetime"
         tabindex="-1"
         data-radix-collection-item=""
       ></button
       ><label
         data-slot="field-label"
-        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
         for="plan-lifetime"
         >Lifetime ($299.99)</label
       >
@@ -759,7 +745,7 @@ Use the `disabled` prop on `RadioGroupItem` to disable individual items.
     role="group"
     data-slot="field"
     data-orientation="horizontal"
-    class="group/field items-center has-[>[data-slot=field-content]]:items-start"
+    class="group/field *:data-[slot=field-label]:flex-auto"
     data-disabled="true"
   >
     <button
@@ -771,14 +757,14 @@ Use the `disabled` prop on `RadioGroupItem` to disable individual items.
       disabled=""
       value="option1"
       data-slot="radio-group-item"
-      class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+      class="group/radio-group-item peer shrink-0"
       id="disabled-1"
       tabindex="-1"
       data-radix-collection-item=""
     ></button
     ><label
       data-slot="field-label"
-      class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+      class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
       for="disabled-1"
       >Disabled</label
     >
@@ -787,7 +773,7 @@ Use the `disabled` prop on `RadioGroupItem` to disable individual items.
     role="group"
     data-slot="field"
     data-orientation="horizontal"
-    class="group/field items-center has-[>[data-slot=field-content]]:items-start"
+    class="group/field *:data-[slot=field-label]:flex-auto"
   >
     <button
       type="button"
@@ -796,7 +782,7 @@ Use the `disabled` prop on `RadioGroupItem` to disable individual items.
       data-state="checked"
       value="option2"
       data-slot="radio-group-item"
-      class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+      class="group/radio-group-item peer shrink-0"
       id="disabled-2"
       tabindex="-1"
       data-radix-collection-item=""
@@ -808,7 +794,7 @@ Use the `disabled` prop on `RadioGroupItem` to disable individual items.
       ></span></button
     ><label
       data-slot="field-label"
-      class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+      class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
       for="disabled-2"
       >Option 2</label
     >
@@ -817,7 +803,7 @@ Use the `disabled` prop on `RadioGroupItem` to disable individual items.
     role="group"
     data-slot="field"
     data-orientation="horizontal"
-    class="group/field items-center has-[>[data-slot=field-content]]:items-start"
+    class="group/field *:data-[slot=field-label]:flex-auto"
   >
     <button
       type="button"
@@ -826,14 +812,14 @@ Use the `disabled` prop on `RadioGroupItem` to disable individual items.
       data-state="unchecked"
       value="option3"
       data-slot="radio-group-item"
-      class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+      class="group/radio-group-item peer shrink-0"
       id="disabled-3"
       tabindex="-1"
       data-radix-collection-item=""
     ></button
     ><label
       data-slot="field-label"
-      class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+      class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
       for="disabled-3"
       >Option 3</label
     >
@@ -912,23 +898,9 @@ Use `aria-invalid` on `RadioGroupItem` and `data-invalid` on `Field` to show val
 
 {% <codegroup> %}
 ```text,name=radio-group-invalid.html
-<fieldset
-  data-slot="field-set"
-  class="gap-4 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3 w-full max-w-xs"
->
-  <legend
-    data-slot="field-legend"
-    data-variant="label"
-    class="data-[variant=label]:text-sm data-[variant=legend]:text-base"
-  >
-    Notification Preferences
-  </legend>
-  <p
-    data-slot="field-description"
-    class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-  >
-    Choose how you want to receive notifications.
-  </p>
+<fieldset data-slot="field-set" class="w-full max-w-xs">
+  <legend data-slot="field-legend" data-variant="label">Notification Preferences</legend>
+  <p data-slot="field-description">Choose how you want to receive notifications.</p>
   <div
     role="radiogroup"
     aria-required="false"
@@ -941,7 +913,7 @@ Use `aria-invalid` on `RadioGroupItem` and `data-invalid` on `Field` to show val
       role="group"
       data-slot="field"
       data-orientation="horizontal"
-      class="group/field items-center has-[>[data-slot=field-content]]:items-start"
+      class="group/field *:data-[slot=field-label]:flex-auto"
       data-invalid="true"
     >
       <button
@@ -951,7 +923,7 @@ Use `aria-invalid` on `RadioGroupItem` and `data-invalid` on `Field` to show val
         data-state="checked"
         value="email"
         data-slot="radio-group-item"
-        class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+        class="group/radio-group-item peer shrink-0"
         id="invalid-email"
         aria-invalid="true"
         tabindex="-1"
@@ -964,7 +936,7 @@ Use `aria-invalid` on `RadioGroupItem` and `data-invalid` on `Field` to show val
         ></span></button
       ><label
         data-slot="field-label"
-        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
         for="invalid-email"
         >Email only</label
       >
@@ -973,7 +945,7 @@ Use `aria-invalid` on `RadioGroupItem` and `data-invalid` on `Field` to show val
       role="group"
       data-slot="field"
       data-orientation="horizontal"
-      class="group/field items-center has-[>[data-slot=field-content]]:items-start"
+      class="group/field *:data-[slot=field-label]:flex-auto"
       data-invalid="true"
     >
       <button
@@ -983,7 +955,7 @@ Use `aria-invalid` on `RadioGroupItem` and `data-invalid` on `Field` to show val
         data-state="unchecked"
         value="sms"
         data-slot="radio-group-item"
-        class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+        class="group/radio-group-item peer shrink-0"
         id="invalid-sms"
         aria-invalid="true"
         tabindex="-1"
@@ -991,7 +963,7 @@ Use `aria-invalid` on `RadioGroupItem` and `data-invalid` on `Field` to show val
       ></button
       ><label
         data-slot="field-label"
-        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
         for="invalid-sms"
         >SMS only</label
       >
@@ -1000,7 +972,7 @@ Use `aria-invalid` on `RadioGroupItem` and `data-invalid` on `Field` to show val
       role="group"
       data-slot="field"
       data-orientation="horizontal"
-      class="group/field items-center has-[>[data-slot=field-content]]:items-start"
+      class="group/field *:data-[slot=field-label]:flex-auto"
       data-invalid="true"
     >
       <button
@@ -1010,7 +982,7 @@ Use `aria-invalid` on `RadioGroupItem` and `data-invalid` on `Field` to show val
         data-state="unchecked"
         value="both"
         data-slot="radio-group-item"
-        class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+        class="group/radio-group-item peer shrink-0"
         id="invalid-both"
         aria-invalid="true"
         tabindex="-1"
@@ -1018,7 +990,7 @@ Use `aria-invalid` on `RadioGroupItem` and `data-invalid` on `Field` to show val
       ></button
       ><label
         data-slot="field-label"
-        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
         for="invalid-both"
         >Both Email &amp; SMS</label
       >

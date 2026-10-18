@@ -15,11 +15,7 @@ Displays a form textarea or a component that looks like a textarea.
 
 {% <codegroup> %}
 ```text,name=textarea-demo.html
-<textarea
-  data-slot="textarea"
-  class="border-input dark:bg-input/30 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 bg-transparent text-base md:text-sm"
-  placeholder="Type your message here."
-></textarea>
+<textarea data-slot="textarea" placeholder="Type your message here."></textarea>
 ```
 {% </codegroup> %}
 
@@ -61,7 +57,7 @@ Use `Field`, `FieldLabel`, and `FieldDescription` to create a textarea with a la
   role="group"
   data-slot="field"
   data-orientation="vertical"
-  class="group/field w-full *:w-full [&>.sr-only]:w-auto"
+  class="group/field *:w-full [&>.sr-only]:w-auto"
 >
   <label
     data-slot="field-label"
@@ -69,15 +65,10 @@ Use `Field`, `FieldLabel`, and `FieldDescription` to create a textarea with a la
     for="textarea-message"
     >Message</label
   >
-  <p
-    data-slot="field-description"
-    class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-  >
-    Enter your message below.
-  </p>
+  <p data-slot="field-description">Enter your message below.</p>
   <textarea
     data-slot="textarea"
-    class="border-input dark:bg-input/30 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 bg-transparent text-base md:text-sm w-full"
+    class="w-full"
     id="textarea-message"
     placeholder="Type your message here."
   ></textarea>
@@ -102,7 +93,7 @@ Use the `disabled` prop to disable the textarea. To style the disabled state, ad
   role="group"
   data-slot="field"
   data-orientation="vertical"
-  class="group/field w-full *:w-full [&>.sr-only]:w-auto"
+  class="group/field *:w-full [&>.sr-only]:w-auto"
   data-disabled="true"
 >
   <label
@@ -112,7 +103,7 @@ Use the `disabled` prop to disable the textarea. To style the disabled state, ad
     >Message</label
   ><textarea
     data-slot="textarea"
-    class="border-input dark:bg-input/30 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 bg-transparent text-base md:text-sm w-full"
+    class="w-full"
     id="textarea-disabled"
     placeholder="Type your message here."
     disabled=""
@@ -138,7 +129,7 @@ Use the `aria-invalid` prop to mark the textarea as invalid. To style the invali
   role="group"
   data-slot="field"
   data-orientation="vertical"
-  class="group/field w-full *:w-full [&>.sr-only]:w-auto"
+  class="group/field *:w-full [&>.sr-only]:w-auto"
   data-invalid="true"
 >
   <label
@@ -148,17 +139,12 @@ Use the `aria-invalid` prop to mark the textarea as invalid. To style the invali
     >Message</label
   ><textarea
     data-slot="textarea"
-    class="border-input dark:bg-input/30 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 bg-transparent text-base md:text-sm w-full"
+    class="w-full"
     id="textarea-invalid"
     placeholder="Type your message here."
     aria-invalid="true"
   ></textarea>
-  <p
-    data-slot="field-description"
-    class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-  >
-    Please enter a valid message.
-  </p>
+  <p data-slot="field-description">Please enter a valid message.</p>
 </div>
 ```
 {% </codegroup> %}
@@ -177,17 +163,8 @@ Pair with `Button` to create a textarea with a submit button.
 {% <codegroup> %}
 ```text,name=textarea-button.html
 <div class="grid w-full gap-2">
-  <textarea
-    data-slot="textarea"
-    class="border-input dark:bg-input/30 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 bg-transparent text-base md:text-sm"
-    placeholder="Type your message here."
-  ></textarea
-  ><button
-    data-slot="button"
-    data-variant="default"
-    data-size="default"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent [&_svg:not([class*='size-'])]:size-4 group/button bg-primary hover:bg-primary/80 h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
-  >
+  <textarea data-slot="textarea" placeholder="Type your message here."></textarea
+  ><button data-slot="button" data-variant="default" data-size="default" class="group/button">
     Send message
   </button>
 </div>

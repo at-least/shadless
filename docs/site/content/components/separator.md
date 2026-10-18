@@ -20,12 +20,7 @@ Visually or semantically separates content.
     <div class="leading-none font-medium">shadcn/ui</div>
     <div class="text-muted-foreground">The Foundation for your Design System</div>
   </div>
-  <div
-    data-orientation="horizontal"
-    role="none"
-    data-slot="separator"
-    class="data-horizontal:w-full data-vertical:w-px"
-  ></div>
+  <div data-orientation="horizontal" role="none" data-slot="separator"></div>
   <div>A set of beautifully designed components that you can customize, extend, and build on.</div>
 </div>
 ```
@@ -73,19 +68,9 @@ Use `orientation="vertical"` for a vertical separator.
 ```text,name=separator-vertical.html
 <div class="flex h-5 items-center gap-4 text-sm">
   <div>Blog</div>
-  <div
-    data-orientation="vertical"
-    role="none"
-    data-slot="separator"
-    class="data-horizontal:w-full data-vertical:w-px"
-  ></div>
+  <div data-orientation="vertical" role="none" data-slot="separator"></div>
   <div>Docs</div>
-  <div
-    data-orientation="vertical"
-    role="none"
-    data-slot="separator"
-    class="data-horizontal:w-full data-vertical:w-px"
-  ></div>
+  <div data-orientation="vertical" role="none" data-slot="separator"></div>
   <div>Source</div>
 </div>
 ```
@@ -109,22 +94,12 @@ Vertical separators between menu items with descriptions.
     <span class="font-medium">Settings</span
     ><span class="text-xs text-muted-foreground">Manage preferences</span>
   </div>
-  <div
-    data-orientation="vertical"
-    role="none"
-    data-slot="separator"
-    class="data-horizontal:w-full data-vertical:w-px"
-  ></div>
+  <div data-orientation="vertical" role="none" data-slot="separator"></div>
   <div class="flex flex-col gap-1">
     <span class="font-medium">Account</span
     ><span class="text-xs text-muted-foreground">Profile &amp; security</span>
   </div>
-  <div
-    data-orientation="vertical"
-    role="none"
-    data-slot="separator"
-    class="data-horizontal:w-full data-vertical:w-px hidden md:block"
-  ></div>
+  <div data-orientation="vertical" role="none" data-slot="separator" class="hidden md:block"></div>
   <div class="hidden flex-col gap-1 md:flex">
     <span class="font-medium">Help</span
     ><span class="text-xs text-muted-foreground">Support &amp; docs</span>
@@ -151,22 +126,12 @@ Horizontal separators between list items.
     <dt>Item 1</dt>
     <dd class="text-muted-foreground">Value 1</dd>
   </dl>
-  <div
-    data-orientation="horizontal"
-    role="none"
-    data-slot="separator"
-    class="data-horizontal:w-full data-vertical:w-px"
-  ></div>
+  <div data-orientation="horizontal" role="none" data-slot="separator"></div>
   <dl class="flex items-center justify-between">
     <dt>Item 2</dt>
     <dd class="text-muted-foreground">Value 2</dd>
   </dl>
-  <div
-    data-orientation="horizontal"
-    role="none"
-    data-slot="separator"
-    class="data-horizontal:w-full data-vertical:w-px"
-  ></div>
+  <div data-orientation="horizontal" role="none" data-slot="separator"></div>
   <dl class="flex items-center justify-between">
     <dt>Item 3</dt>
     <dd class="text-muted-foreground">Value 3</dd>

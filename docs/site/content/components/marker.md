@@ -16,11 +16,7 @@ Displays an inline status, system note, bordered row, or labeled separator in a 
 {% <codegroup> %}
 ```text,name=marker-demo.html
 <div class="flex w-full max-w-sm flex-col gap-8 py-12">
-  <div
-    data-slot="marker"
-    data-variant="default"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
-  >
+  <div data-slot="marker" data-variant="default" class="group/marker">
     <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
@@ -40,12 +36,7 @@ Displays an inline status, system note, bordered row, or labeled separator in a 
         <path d="M18 9a9 9 0 0 1-9 9"></path></svg></span
     ><span data-slot="marker-content">Switched to a new branch</span>
   </div>
-  <div
-    data-slot="marker"
-    data-variant="default"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
-    role="status"
-  >
+  <div data-slot="marker" data-variant="default" class="group/marker" role="status">
     <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
@@ -65,18 +56,10 @@ Displays an inline status, system note, bordered row, or labeled separator in a 
         <path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg></span
     ><span data-slot="marker-content" class="shimmer">Thinking...</span>
   </div>
-  <div
-    data-slot="marker"
-    data-variant="separator"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full before:h-px after:h-px"
-  >
+  <div data-slot="marker" data-variant="separator" class="group/marker">
     <span data-slot="marker-content">Conversation compacted</span>
   </div>
-  <div
-    data-slot="marker"
-    data-variant="default"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
-  >
+  <div data-slot="marker" data-variant="default" class="group/marker">
     <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
@@ -153,25 +136,13 @@ Use `variant` to switch between an inline marker, bordered row, and labeled sepa
 {% <codegroup> %}
 ```text,name=marker-variants.html
 <div class="flex w-full max-w-sm flex-col gap-8 py-12">
-  <div
-    data-slot="marker"
-    data-variant="default"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
-  >
+  <div data-slot="marker" data-variant="default" class="group/marker">
     <span data-slot="marker-content">A default marker for inline notes.</span>
   </div>
-  <div
-    data-slot="marker"
-    data-variant="separator"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full before:h-px after:h-px"
-  >
+  <div data-slot="marker" data-variant="separator" class="group/marker">
     <span data-slot="marker-content">A separator marker</span>
   </div>
-  <div
-    data-slot="marker"
-    data-variant="border"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
-  >
+  <div data-slot="marker" data-variant="border" class="group/marker">
     <span data-slot="marker-content">A border marker for row boundaries.</span>
   </div>
 </div>
@@ -198,12 +169,7 @@ Set `role="status"` and include a [`Spinner`](/components/spinner) for streaming
 {% <codegroup> %}
 ```text,name=marker-status.html
 <div class="flex w-full max-w-sm flex-col gap-8 py-12">
-  <div
-    data-slot="marker"
-    data-variant="default"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
-    role="status"
-  >
+  <div data-slot="marker" data-variant="default" class="group/marker" role="status">
     <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
@@ -223,12 +189,7 @@ Set `role="status"` and include a [`Spinner`](/components/spinner) for streaming
         <path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg></span
     ><span data-slot="marker-content">Compacting conversation</span>
   </div>
-  <div
-    data-slot="marker"
-    data-variant="separator"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full before:h-px after:h-px"
-    role="status"
-  >
+  <div data-slot="marker" data-variant="separator" class="group/marker" role="status">
     <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
@@ -266,20 +227,10 @@ Add the [`shimmer`](/guides/shimmer) utility class to `MarkerContent` for an ani
 {% <codegroup> %}
 ```text,name=marker-shimmer.html
 <div class="flex w-full max-w-sm flex-col gap-8 py-12">
-  <div
-    data-slot="marker"
-    data-variant="default"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
-    role="status"
-  >
+  <div data-slot="marker" data-variant="default" class="group/marker" role="status">
     <span data-slot="marker-content" class="shimmer">Thinking...</span>
   </div>
-  <div
-    data-slot="marker"
-    data-variant="separator"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full before:h-px after:h-px"
-    role="status"
-  >
+  <div data-slot="marker" data-variant="separator" class="group/marker" role="status">
     <span data-slot="marker-content" class="shimmer">Reading 4 files</span>
   </div>
 </div>
@@ -300,25 +251,13 @@ Use the `separator` variant for labeled dividers, such as dates or section break
 {% <codegroup> %}
 ```text,name=marker-separator.html
 <div class="flex w-full max-w-sm flex-col gap-8 py-12">
-  <div
-    data-slot="marker"
-    data-variant="separator"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full before:h-px after:h-px"
-  >
+  <div data-slot="marker" data-variant="separator" class="group/marker">
     <span data-slot="marker-content">Today</span>
   </div>
-  <div
-    data-slot="marker"
-    data-variant="separator"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full before:h-px after:h-px"
-  >
+  <div data-slot="marker" data-variant="separator" class="group/marker">
     <span data-slot="marker-content">Worked for 42s</span>
   </div>
-  <div
-    data-slot="marker"
-    data-variant="separator"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full before:h-px after:h-px"
-  >
+  <div data-slot="marker" data-variant="separator" class="group/marker">
     <span data-slot="marker-content">Conversation compacted</span>
   </div>
 </div>
@@ -339,11 +278,7 @@ Use the `border` variant for status rows that should keep the default marker ali
 {% <codegroup> %}
 ```text,name=marker-border.html
 <div class="flex w-full max-w-sm flex-col gap-3 py-12">
-  <div
-    data-slot="marker"
-    data-variant="border"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
-  >
+  <div data-slot="marker" data-variant="border" class="group/marker">
     <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
@@ -363,11 +298,7 @@ Use the `border` variant for status rows that should keep the default marker ali
         <path d="M18 9a9 9 0 0 1-9 9"></path></svg></span
     ><span data-slot="marker-content">Switched to release-candidate</span>
   </div>
-  <div
-    data-slot="marker"
-    data-variant="border"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
-  >
+  <div data-slot="marker" data-variant="border" class="group/marker">
     <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
@@ -385,11 +316,7 @@ Use the `border` variant for status rows that should keep the default marker ali
         <path d="m21 21-4.3-4.3"></path></svg></span
     ><span data-slot="marker-content">Reviewed 8 related files</span>
   </div>
-  <div
-    data-slot="marker"
-    data-variant="border"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
-  >
+  <div data-slot="marker" data-variant="border" class="group/marker">
     <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
@@ -428,11 +355,7 @@ Use `MarkerIcon` to render an icon alongside the content. Use `flex-col` to stac
 {% <codegroup> %}
 ```text,name=marker-icon.html
 <div class="flex w-full max-w-sm flex-col gap-12 py-12">
-  <div
-    data-slot="marker"
-    data-variant="default"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
-  >
+  <div data-slot="marker" data-variant="default" class="group/marker">
     <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
@@ -452,11 +375,7 @@ Use `MarkerIcon` to render an icon alongside the content. Use `flex-col` to stac
         <path d="M18 9a9 9 0 0 1-9 9"></path></svg></span
     ><span data-slot="marker-content">Switched to a new branch</span>
   </div>
-  <div
-    data-slot="marker"
-    data-variant="separator"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full before:h-px after:h-px"
-  >
+  <div data-slot="marker" data-variant="separator" class="group/marker">
     <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
@@ -474,11 +393,7 @@ Use `MarkerIcon` to render an icon alongside the content. Use `flex-col` to stac
         <path d="m21 21-4.3-4.3"></path></svg></span
     ><span data-slot="marker-content">Explored 4 files</span>
   </div>
-  <div
-    data-slot="marker"
-    data-variant="default"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full flex-col"
-  >
+  <div data-slot="marker" data-variant="default" class="group/marker flex-col">
     <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
@@ -517,11 +432,7 @@ Turn a marker into a link or button by putting `data-slot="marker"` on the `<a>`
 {% <codegroup> %}
 ```text,name=marker-link-button.html
 <div class="flex w-full max-w-sm flex-col gap-8 py-12">
-  <a
-    href="#links-and-buttons"
-    data-slot="marker"
-    data-variant="default"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
+  <a href="#links-and-buttons" data-slot="marker" data-variant="default" class="group/marker"
     ><span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
@@ -542,7 +453,7 @@ Turn a marker into a link or button by putting `data-slot="marker"` on the `<a>`
     ><span data-slot="marker-content">View the pull request</span></a
   ><button
     type="button"
-    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full transition-colors hover:text-foreground"
+    class="group/marker transition-colors hover:text-foreground"
     data-slot="marker"
     data-variant="default"
   >

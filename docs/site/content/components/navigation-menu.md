@@ -32,7 +32,7 @@ A collection of links for navigating websites.
           aria-expanded="false"
           aria-controls="n0-content"
           data-slot="navigation-menu-trigger"
-          class="hover:bg-muted focus:bg-muted data-open:hover:bg-muted data-open:focus:bg-muted data-open:bg-muted/50 data-popup-open:bg-muted/50 data-popup-open:hover:bg-muted group/navigation-menu-trigger group"
+          class="group/navigation-menu-trigger group"
           data-radix-collection-item=""
           data-radixuigo-nav-trigger="n0"
         >
@@ -60,7 +60,7 @@ A collection of links for navigating websites.
           aria-expanded="false"
           aria-controls="n1-content"
           data-slot="navigation-menu-trigger"
-          class="hover:bg-muted focus:bg-muted data-open:hover:bg-muted data-open:focus:bg-muted data-open:bg-muted/50 data-popup-open:bg-muted/50 data-popup-open:hover:bg-muted group/navigation-menu-trigger group"
+          class="group/navigation-menu-trigger group"
           data-radix-collection-item=""
           data-radixuigo-nav-trigger="n1"
         >
@@ -85,7 +85,7 @@ A collection of links for navigating websites.
         <a
           href="/docs"
           data-slot="navigation-menu-link"
-          class="data-active:focus:bg-muted data-active:hover:bg-muted data-active:bg-muted/50 p-2 in-data-[slot=navigation-menu-content]:rounded-md [&_svg:not([class*='size-'])]:size-4 hover:bg-muted focus:bg-muted data-open:hover:bg-muted data-open:focus:bg-muted data-open:bg-muted/50 data-popup-open:bg-muted/50 data-popup-open:hover:bg-muted rounded-lg px-2.5 py-1.5 font-medium disabled:opacity-50 group/navigation-menu-trigger inline-flex h-9 w-max justify-center disabled:pointer-events-none"
+          class="data-active:focus:bg-muted data-active:hover:bg-muted data-active:bg-muted/50 p-2 hover:bg-muted focus:bg-muted data-open:hover:bg-muted data-open:focus:bg-muted data-open:bg-muted/50 data-popup-open:bg-muted/50 data-popup-open:hover:bg-muted px-2.5 py-1.5 font-medium disabled:opacity-50 group/navigation-menu-trigger inline-flex h-9 w-max justify-center disabled:pointer-events-none"
           data-radix-collection-item=""
           >Docs</a
         >
@@ -100,7 +100,7 @@ A collection of links for navigating websites.
     aria-labelledby="n0-trigger"
     data-orientation="horizontal"
     data-slot="navigation-menu-content"
-    class="group-data-[viewport=false]/navigation-menu:ring-1 top-0 w-full group-data-[viewport=false]/navigation-menu:top-full **:data-[slot=navigation-menu-link]:focus:ring-0 md:w-auto"
+    class="**:data-[slot=navigation-menu-link]:focus:ring-0"
     dir="ltr"
   >
     <ul class="w-96">
@@ -108,7 +108,7 @@ A collection of links for navigating websites.
         <a
           href="/docs"
           data-slot="navigation-menu-link"
-          class="data-active:focus:bg-muted data-active:hover:bg-muted data-active:bg-muted/50 hover:bg-muted focus:bg-muted rounded-lg focus-visible:ring-3 in-data-[slot=navigation-menu-content]:rounded-md"
+          class="focus-visible:ring-3"
           data-radix-collection-item=""
           ><div class="flex flex-col gap-1 text-sm">
             <div class="leading-none font-medium">Introduction</div>
@@ -122,7 +122,7 @@ A collection of links for navigating websites.
         <a
           href="/docs/installation"
           data-slot="navigation-menu-link"
-          class="data-active:focus:bg-muted data-active:hover:bg-muted data-active:bg-muted/50 hover:bg-muted focus:bg-muted rounded-lg focus-visible:ring-3 in-data-[slot=navigation-menu-content]:rounded-md"
+          class="focus-visible:ring-3"
           data-radix-collection-item=""
           ><div class="flex flex-col gap-1 text-sm">
             <div class="leading-none font-medium">Installation</div>
@@ -136,7 +136,7 @@ A collection of links for navigating websites.
         <a
           href="/docs/primitives/typography"
           data-slot="navigation-menu-link"
-          class="data-active:focus:bg-muted data-active:hover:bg-muted data-active:bg-muted/50 hover:bg-muted focus:bg-muted rounded-lg focus-visible:ring-3 in-data-[slot=navigation-menu-content]:rounded-md"
+          class="focus-visible:ring-3"
           data-radix-collection-item=""
           ><div class="flex flex-col gap-1 text-sm">
             <div class="leading-none font-medium">Typography</div>
@@ -155,7 +155,7 @@ A collection of links for navigating websites.
     aria-labelledby="n1-trigger"
     data-orientation="horizontal"
     data-slot="navigation-menu-content"
-    class="group-data-[viewport=false]/navigation-menu:ring-1 top-0 w-full group-data-[viewport=false]/navigation-menu:top-full **:data-[slot=navigation-menu-link]:focus:ring-0 md:w-auto"
+    class="**:data-[slot=navigation-menu-link]:focus:ring-0"
     dir="ltr"
   >
     <ul class="grid w-[400px] gap-2 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
@@ -163,7 +163,7 @@ A collection of links for navigating websites.
         <a
           href="/docs/primitives/alert-dialog"
           data-slot="navigation-menu-link"
-          class="data-active:focus:bg-muted data-active:hover:bg-muted data-active:bg-muted/50 hover:bg-muted focus:bg-muted rounded-lg focus-visible:ring-3 in-data-[slot=navigation-menu-content]:rounded-md"
+          class="focus-visible:ring-3"
           data-radix-collection-item=""
           ><div class="flex flex-col gap-1 text-sm">
             <div class="leading-none font-medium">Alert Dialog</div>
@@ -177,7 +177,7 @@ A collection of links for navigating websites.
         <a
           href="/docs/primitives/hover-card"
           data-slot="navigation-menu-link"
-          class="data-active:focus:bg-muted data-active:hover:bg-muted data-active:bg-muted/50 hover:bg-muted focus:bg-muted rounded-lg focus-visible:ring-3 in-data-[slot=navigation-menu-content]:rounded-md"
+          class="focus-visible:ring-3"
           data-radix-collection-item=""
           ><div class="flex flex-col gap-1 text-sm">
             <div class="leading-none font-medium">Hover Card</div>
@@ -191,7 +191,7 @@ A collection of links for navigating websites.
         <a
           href="/docs/primitives/progress"
           data-slot="navigation-menu-link"
-          class="data-active:focus:bg-muted data-active:hover:bg-muted data-active:bg-muted/50 hover:bg-muted focus:bg-muted rounded-lg focus-visible:ring-3 in-data-[slot=navigation-menu-content]:rounded-md"
+          class="focus-visible:ring-3"
           data-radix-collection-item=""
           ><div class="flex flex-col gap-1 text-sm">
             <div class="leading-none font-medium">Progress</div>
@@ -206,7 +206,7 @@ A collection of links for navigating websites.
         <a
           href="/docs/primitives/scroll-area"
           data-slot="navigation-menu-link"
-          class="data-active:focus:bg-muted data-active:hover:bg-muted data-active:bg-muted/50 hover:bg-muted focus:bg-muted rounded-lg focus-visible:ring-3 in-data-[slot=navigation-menu-content]:rounded-md"
+          class="focus-visible:ring-3"
           data-radix-collection-item=""
           ><div class="flex flex-col gap-1 text-sm">
             <div class="leading-none font-medium">Scroll-area</div>
@@ -220,7 +220,7 @@ A collection of links for navigating websites.
         <a
           href="/docs/primitives/tabs"
           data-slot="navigation-menu-link"
-          class="data-active:focus:bg-muted data-active:hover:bg-muted data-active:bg-muted/50 hover:bg-muted focus:bg-muted rounded-lg focus-visible:ring-3 in-data-[slot=navigation-menu-content]:rounded-md"
+          class="focus-visible:ring-3"
           data-radix-collection-item=""
           ><div class="flex flex-col gap-1 text-sm">
             <div class="leading-none font-medium">Tabs</div>
@@ -235,7 +235,7 @@ A collection of links for navigating websites.
         <a
           href="/docs/primitives/tooltip"
           data-slot="navigation-menu-link"
-          class="data-active:focus:bg-muted data-active:hover:bg-muted data-active:bg-muted/50 hover:bg-muted focus:bg-muted rounded-lg focus-visible:ring-3 in-data-[slot=navigation-menu-content]:rounded-md"
+          class="focus-visible:ring-3"
           data-radix-collection-item=""
           ><div class="flex flex-col gap-1 text-sm">
             <div class="leading-none font-medium">Tooltip</div>

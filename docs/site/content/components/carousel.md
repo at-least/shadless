@@ -25,11 +25,7 @@ A carousel with motion and swipe built using Embla.
     <div class="flex -ml-4" style="transform: translate3d(0px, 0px, 0px)">
       <div role="group" aria-roledescription="slide" data-slot="carousel-item">
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -41,11 +37,7 @@ A carousel with motion and swipe built using Embla.
       </div>
       <div role="group" aria-roledescription="slide" data-slot="carousel-item">
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -57,11 +49,7 @@ A carousel with motion and swipe built using Embla.
       </div>
       <div role="group" aria-roledescription="slide" data-slot="carousel-item">
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -73,11 +61,7 @@ A carousel with motion and swipe built using Embla.
       </div>
       <div role="group" aria-roledescription="slide" data-slot="carousel-item">
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -89,11 +73,7 @@ A carousel with motion and swipe built using Embla.
       </div>
       <div role="group" aria-roledescription="slide" data-slot="carousel-item">
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -109,7 +89,7 @@ A carousel with motion and swipe built using Embla.
     data-slot="carousel-previous"
     data-variant="outline"
     data-size="icon-sm"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-7 in-data-[slot=button-group]:rounded-lg rounded-full"
+    class="group/button"
     disabled=""
   >
     <svg
@@ -130,7 +110,7 @@ A carousel with motion and swipe built using Embla.
     data-slot="carousel-next"
     data-variant="outline"
     data-size="icon-sm"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-7 in-data-[slot=button-group]:rounded-lg rounded-full"
+    class="group/button"
     disabled=""
   >
     <svg
@@ -1913,11 +1893,7 @@ To set the size of the items, you can use the `basis` utility class on the `data
         class="basis-1/2 lg:basis-1/3"
       >
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -1934,11 +1910,7 @@ To set the size of the items, you can use the `basis` utility class on the `data
         class="basis-1/2 lg:basis-1/3"
       >
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -1955,11 +1927,7 @@ To set the size of the items, you can use the `basis` utility class on the `data
         class="basis-1/2 lg:basis-1/3"
       >
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -1976,11 +1944,7 @@ To set the size of the items, you can use the `basis` utility class on the `data
         class="basis-1/2 lg:basis-1/3"
       >
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -1997,11 +1961,7 @@ To set the size of the items, you can use the `basis` utility class on the `data
         class="basis-1/2 lg:basis-1/3"
       >
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -2017,7 +1977,7 @@ To set the size of the items, you can use the `basis` utility class on the `data
     data-slot="carousel-previous"
     data-variant="outline"
     data-size="icon-sm"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-7 in-data-[slot=button-group]:rounded-lg rounded-full"
+    class="group/button"
     disabled=""
   >
     <svg
@@ -2038,7 +1998,7 @@ To set the size of the items, you can use the `basis` utility class on the `data
     data-slot="carousel-next"
     data-variant="outline"
     data-size="icon-sm"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-7 in-data-[slot=button-group]:rounded-lg rounded-full"
+    class="group/button"
     disabled=""
   >
     <svg
@@ -3787,11 +3747,7 @@ To set the spacing between the items, we use a `pl-[VALUE]` utility on the `data
         class="basis-1/2 pl-1 lg:basis-1/3"
       >
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -3808,11 +3764,7 @@ To set the spacing between the items, we use a `pl-[VALUE]` utility on the `data
         class="basis-1/2 pl-1 lg:basis-1/3"
       >
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -3829,11 +3781,7 @@ To set the spacing between the items, we use a `pl-[VALUE]` utility on the `data
         class="basis-1/2 pl-1 lg:basis-1/3"
       >
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -3850,11 +3798,7 @@ To set the spacing between the items, we use a `pl-[VALUE]` utility on the `data
         class="basis-1/2 pl-1 lg:basis-1/3"
       >
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -3871,11 +3815,7 @@ To set the spacing between the items, we use a `pl-[VALUE]` utility on the `data
         class="basis-1/2 pl-1 lg:basis-1/3"
       >
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -3891,7 +3831,7 @@ To set the spacing between the items, we use a `pl-[VALUE]` utility on the `data
     data-slot="carousel-previous"
     data-variant="outline"
     data-size="icon-sm"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-7 in-data-[slot=button-group]:rounded-lg rounded-full"
+    class="group/button"
     disabled=""
   >
     <svg
@@ -3912,7 +3852,7 @@ To set the spacing between the items, we use a `pl-[VALUE]` utility on the `data
     data-slot="carousel-next"
     data-variant="outline"
     data-size="icon-sm"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-7 in-data-[slot=button-group]:rounded-lg rounded-full"
+    class="group/button"
     disabled=""
   >
     <svg
@@ -5654,11 +5594,7 @@ Use the `orientation` prop to set the orientation of the carousel.
         class="min-w-0 shrink-0 grow-0 basis-1/2 pt-1"
       >
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div data-slot="card-content" class="flex items-center justify-center p-6">
               <span class="text-3xl font-semibold">1</span>
             </div>
@@ -5672,11 +5608,7 @@ Use the `orientation` prop to set the orientation of the carousel.
         class="min-w-0 shrink-0 grow-0 basis-1/2 pt-1"
       >
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div data-slot="card-content" class="flex items-center justify-center p-6">
               <span class="text-3xl font-semibold">2</span>
             </div>
@@ -5690,11 +5622,7 @@ Use the `orientation` prop to set the orientation of the carousel.
         class="min-w-0 shrink-0 grow-0 basis-1/2 pt-1"
       >
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div data-slot="card-content" class="flex items-center justify-center p-6">
               <span class="text-3xl font-semibold">3</span>
             </div>
@@ -5708,11 +5636,7 @@ Use the `orientation` prop to set the orientation of the carousel.
         class="min-w-0 shrink-0 grow-0 basis-1/2 pt-1"
       >
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div data-slot="card-content" class="flex items-center justify-center p-6">
               <span class="text-3xl font-semibold">4</span>
             </div>
@@ -5726,11 +5650,7 @@ Use the `orientation` prop to set the orientation of the carousel.
         class="min-w-0 shrink-0 grow-0 basis-1/2 pt-1"
       >
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div data-slot="card-content" class="flex items-center justify-center p-6">
               <span class="text-3xl font-semibold">5</span>
             </div>
@@ -7497,11 +7417,7 @@ Use a state and the `setApi` props to get an instance of the carousel API.
     <div data-slot="carousel-content">
       <div class="flex -ml-4" style="transform: translate3d(0px, 0px, 0px)">
         <div role="group" aria-roledescription="slide" data-slot="carousel-item">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card m-px"
-          >
+          <div data-slot="card" data-size="default" class="group/card m-px">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -7511,11 +7427,7 @@ Use a state and the `setApi` props to get an instance of the carousel API.
           </div>
         </div>
         <div role="group" aria-roledescription="slide" data-slot="carousel-item">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card m-px"
-          >
+          <div data-slot="card" data-size="default" class="group/card m-px">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -7525,11 +7437,7 @@ Use a state and the `setApi` props to get an instance of the carousel API.
           </div>
         </div>
         <div role="group" aria-roledescription="slide" data-slot="carousel-item">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card m-px"
-          >
+          <div data-slot="card" data-size="default" class="group/card m-px">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -7539,11 +7447,7 @@ Use a state and the `setApi` props to get an instance of the carousel API.
           </div>
         </div>
         <div role="group" aria-roledescription="slide" data-slot="carousel-item">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card m-px"
-          >
+          <div data-slot="card" data-size="default" class="group/card m-px">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -7553,11 +7457,7 @@ Use a state and the `setApi` props to get an instance of the carousel API.
           </div>
         </div>
         <div role="group" aria-roledescription="slide" data-slot="carousel-item">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card m-px"
-          >
+          <div data-slot="card" data-size="default" class="group/card m-px">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -7572,7 +7472,7 @@ Use a state and the `setApi` props to get an instance of the carousel API.
       data-slot="carousel-previous"
       data-variant="outline"
       data-size="icon-sm"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-7 in-data-[slot=button-group]:rounded-lg rounded-full"
+      class="group/button"
       disabled=""
     >
       <svg
@@ -7593,7 +7493,7 @@ Use a state and the `setApi` props to get an instance of the carousel API.
       data-slot="carousel-next"
       data-variant="outline"
       data-size="icon-sm"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-7 in-data-[slot=button-group]:rounded-lg rounded-full"
+      class="group/button"
       disabled=""
     >
       <svg
@@ -9340,11 +9240,7 @@ Plugins are an Embla concept (`EmblaCarousel(viewport, options, plugins)`) — s
     <div class="flex -ml-4" style="transform: translate3d(0px, 0px, 0px)">
       <div role="group" aria-roledescription="slide" data-slot="carousel-item">
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -9356,11 +9252,7 @@ Plugins are an Embla concept (`EmblaCarousel(viewport, options, plugins)`) — s
       </div>
       <div role="group" aria-roledescription="slide" data-slot="carousel-item">
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -9372,11 +9264,7 @@ Plugins are an Embla concept (`EmblaCarousel(viewport, options, plugins)`) — s
       </div>
       <div role="group" aria-roledescription="slide" data-slot="carousel-item">
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -9388,11 +9276,7 @@ Plugins are an Embla concept (`EmblaCarousel(viewport, options, plugins)`) — s
       </div>
       <div role="group" aria-roledescription="slide" data-slot="carousel-item">
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -9404,11 +9288,7 @@ Plugins are an Embla concept (`EmblaCarousel(viewport, options, plugins)`) — s
       </div>
       <div role="group" aria-roledescription="slide" data-slot="carousel-item">
         <div class="p-1">
-          <div
-            data-slot="card"
-            data-size="default"
-            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
-          >
+          <div data-slot="card" data-size="default" class="group/card">
             <div
               data-slot="card-content"
               class="flex aspect-square items-center justify-center p-6"
@@ -9424,7 +9304,7 @@ Plugins are an Embla concept (`EmblaCarousel(viewport, options, plugins)`) — s
     data-slot="carousel-previous"
     data-variant="outline"
     data-size="icon-sm"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-7 in-data-[slot=button-group]:rounded-lg rounded-full"
+    class="group/button"
     disabled=""
   >
     <svg
@@ -9445,7 +9325,7 @@ Plugins are an Embla concept (`EmblaCarousel(viewport, options, plugins)`) — s
     data-slot="carousel-next"
     data-variant="outline"
     data-size="icon-sm"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-7 in-data-[slot=button-group]:rounded-lg rounded-full"
+    class="group/button"
     disabled=""
   >
     <svg

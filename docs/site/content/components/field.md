@@ -17,27 +17,13 @@ Combine labels, controls, and help text to compose accessible form fields and gr
 ```text,name=field-demo.html
 <div class="w-full max-w-md">
   <form>
-    <div
-      data-slot="field-group"
-      class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group"
-    >
+    <div data-slot="field-group" class="*:data-[slot=field-group]:gap-4 group/field-group">
       <fieldset
         data-slot="field-set"
-        class="gap-4 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3"
+        class="has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3"
       >
-        <legend
-          data-slot="field-legend"
-          data-variant="legend"
-          class="data-[variant=label]:text-sm data-[variant=legend]:text-base"
-        >
-          Payment Method
-        </legend>
-        <p
-          data-slot="field-description"
-          class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-        >
-          All transactions are secure and encrypted
-        </p>
+        <legend data-slot="field-legend" data-variant="legend">Payment Method</legend>
+        <p data-slot="field-description">All transactions are secure and encrypted</p>
         <div
           data-slot="field-group"
           class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group"
@@ -46,7 +32,7 @@ Combine labels, controls, and help text to compose accessible form fields and gr
             role="group"
             data-slot="field"
             data-orientation="vertical"
-            class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+            class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
           >
             <label
               data-slot="field-label"
@@ -55,7 +41,7 @@ Combine labels, controls, and help text to compose accessible form fields and gr
               >Name on Card</label
             ><input
               data-slot="input"
-              class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+              class="w-full"
               id="checkout-7j9-card-name-43j"
               placeholder="Evil Rabbit"
               required=""
@@ -65,7 +51,7 @@ Combine labels, controls, and help text to compose accessible form fields and gr
             role="group"
             data-slot="field"
             data-orientation="vertical"
-            class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+            class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
           >
             <label
               data-slot="field-label"
@@ -74,24 +60,19 @@ Combine labels, controls, and help text to compose accessible form fields and gr
               >Card Number</label
             ><input
               data-slot="input"
-              class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+              class="w-full"
               id="checkout-7j9-card-number-uw1"
               placeholder="1234 5678 9012 3456"
               required=""
             />
-            <p
-              data-slot="field-description"
-              class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-            >
-              Enter your 16-digit card number
-            </p>
+            <p data-slot="field-description">Enter your 16-digit card number</p>
           </div>
           <div class="grid grid-cols-3 gap-4">
             <div
               role="group"
               data-slot="field"
               data-orientation="vertical"
-              class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+              class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
             >
               <label
                 data-slot="field-label"
@@ -109,7 +90,7 @@ Combine labels, controls, and help text to compose accessible form fields and gr
                 data-placeholder=""
                 data-slot="select-trigger"
                 data-size="default"
-                class="border-input dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 gap-1.5 rounded-lg bg-transparent data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:gap-1.5 [&_svg:not([class*='size-'])]:size-4 flex w-fit *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex"
+                class="gap-1.5 *:data-[slot=select-value]:gap-1.5 [&_svg:not([class*='size-'])]:size-4 w-fit"
                 id="s0-trigger"
               >
                 <span data-slot="select-value" style="pointer-events: none">MM</span
@@ -160,7 +141,7 @@ Combine labels, controls, and help text to compose accessible form fields and gr
               role="group"
               data-slot="field"
               data-orientation="vertical"
-              class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+              class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
             >
               <label
                 data-slot="field-label"
@@ -178,7 +159,7 @@ Combine labels, controls, and help text to compose accessible form fields and gr
                 data-placeholder=""
                 data-slot="select-trigger"
                 data-size="default"
-                class="border-input dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 gap-1.5 rounded-lg bg-transparent data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:gap-1.5 [&_svg:not([class*='size-'])]:size-4 flex w-fit *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex"
+                class="gap-1.5 *:data-[slot=select-value]:gap-1.5 [&_svg:not([class*='size-'])]:size-4 w-fit"
                 id="s1-trigger"
               >
                 <span data-slot="select-value" style="pointer-events: none">YYYY</span
@@ -223,7 +204,7 @@ Combine labels, controls, and help text to compose accessible form fields and gr
               role="group"
               data-slot="field"
               data-orientation="vertical"
-              class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+              class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
             >
               <label
                 data-slot="field-label"
@@ -232,7 +213,7 @@ Combine labels, controls, and help text to compose accessible form fields and gr
                 >CVV</label
               ><input
                 data-slot="input"
-                class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+                class="w-full"
                 id="checkout-7j9-cvv"
                 placeholder="123"
                 required=""
@@ -241,35 +222,20 @@ Combine labels, controls, and help text to compose accessible form fields and gr
           </div>
         </div>
       </fieldset>
-      <div
-        data-slot="field-separator"
-        data-content="false"
-        class="-my-2 group-data-[variant=outline]/field-group:-mb-2"
-      >
+      <div data-slot="field-separator" data-content="false">
         <div
           data-orientation="horizontal"
           role="none"
           data-slot="separator"
-          class="data-horizontal:w-full data-vertical:w-px absolute inset-0 top-1/2"
+          class="absolute inset-0 top-1/2"
         ></div>
       </div>
       <fieldset
         data-slot="field-set"
-        class="gap-4 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3"
+        class="has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3"
       >
-        <legend
-          data-slot="field-legend"
-          data-variant="legend"
-          class="data-[variant=label]:text-sm data-[variant=legend]:text-base"
-        >
-          Billing Address
-        </legend>
-        <p
-          data-slot="field-description"
-          class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-        >
-          The billing address associated with your payment method
-        </p>
+        <legend data-slot="field-legend" data-variant="legend">Billing Address</legend>
+        <p data-slot="field-description">The billing address associated with your payment method</p>
         <div
           data-slot="field-group"
           class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group"
@@ -278,7 +244,7 @@ Combine labels, controls, and help text to compose accessible form fields and gr
             role="group"
             data-slot="field"
             data-orientation="horizontal"
-            class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
+            class="gap-2 group/field *:data-[slot=field-label]:flex-auto"
           >
             <button
               type="button"
@@ -287,7 +253,7 @@ Combine labels, controls, and help text to compose accessible form fields and gr
               data-state="checked"
               value="on"
               data-slot="checkbox"
-              class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
+              class="peer shrink-0"
               id="checkout-7j9-same-as-shipping-wgm"
             >
               <span data-state="checked" data-slot="checkbox-indicator" style="pointer-events: none"
@@ -321,7 +287,7 @@ Combine labels, controls, and help text to compose accessible form fields and gr
               "
             /><label
               data-slot="field-label"
-              class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+              class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
               for="checkout-7j9-same-as-shipping-wgm"
               >Same as shipping address</label
             >
@@ -330,7 +296,7 @@ Combine labels, controls, and help text to compose accessible form fields and gr
       </fieldset>
       <fieldset
         data-slot="field-set"
-        class="gap-4 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3"
+        class="has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3"
       >
         <div
           data-slot="field-group"
@@ -340,7 +306,7 @@ Combine labels, controls, and help text to compose accessible form fields and gr
             role="group"
             data-slot="field"
             data-orientation="vertical"
-            class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+            class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
           >
             <label
               data-slot="field-label"
@@ -349,7 +315,7 @@ Combine labels, controls, and help text to compose accessible form fields and gr
               >Comments</label
             ><textarea
               data-slot="textarea"
-              class="border-input dark:bg-input/30 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 bg-transparent text-base md:text-sm w-full resize-none"
+              class="w-full resize-none"
               id="checkout-7j9-optional-comments"
               placeholder="Add any additional comments"
             ></textarea>
@@ -360,13 +326,13 @@ Combine labels, controls, and help text to compose accessible form fields and gr
         role="group"
         data-slot="field"
         data-orientation="horizontal"
-        class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
+        class="gap-2 group/field *:data-[slot=field-label]:flex-auto"
       >
         <button
           data-slot="button"
           data-variant="default"
           data-size="default"
-          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent [&_svg:not([class*='size-'])]:size-4 group/button bg-primary hover:bg-primary/80 h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+          class="group/button shrink-0 [&_svg]:shrink-0 gap-1.5"
           type="submit"
         >
           Submit</button
@@ -374,7 +340,7 @@ Combine labels, controls, and help text to compose accessible form fields and gr
           data-slot="button"
           data-variant="outline"
           data-size="default"
-          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+          class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 group/button shrink-0 [&_svg]:shrink-0 border-border dark:border-input gap-1.5"
           type="button"
         >
           Cancel
@@ -427,7 +393,6 @@ Combine labels, controls, and help text to compose accessible form fields and gr
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
           data-highlighted=""
         >
@@ -443,7 +408,6 @@ Combine labels, controls, and help text to compose accessible form fields and gr
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -458,7 +422,6 @@ Combine labels, controls, and help text to compose accessible form fields and gr
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -473,7 +436,6 @@ Combine labels, controls, and help text to compose accessible form fields and gr
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -488,7 +450,6 @@ Combine labels, controls, and help text to compose accessible form fields and gr
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -503,7 +464,6 @@ Combine labels, controls, and help text to compose accessible form fields and gr
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -518,7 +478,6 @@ Combine labels, controls, and help text to compose accessible form fields and gr
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -533,7 +492,6 @@ Combine labels, controls, and help text to compose accessible form fields and gr
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -548,7 +506,6 @@ Combine labels, controls, and help text to compose accessible form fields and gr
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -563,7 +520,6 @@ Combine labels, controls, and help text to compose accessible form fields and gr
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -578,7 +534,6 @@ Combine labels, controls, and help text to compose accessible form fields and gr
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -593,7 +548,6 @@ Combine labels, controls, and help text to compose accessible form fields and gr
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -649,7 +603,6 @@ Combine labels, controls, and help text to compose accessible form fields and gr
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
           data-highlighted=""
         >
@@ -665,7 +618,6 @@ Combine labels, controls, and help text to compose accessible form fields and gr
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -680,7 +632,6 @@ Combine labels, controls, and help text to compose accessible form fields and gr
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -695,7 +646,6 @@ Combine labels, controls, and help text to compose accessible form fields and gr
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -710,7 +660,6 @@ Combine labels, controls, and help text to compose accessible form fields and gr
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -725,7 +674,6 @@ Combine labels, controls, and help text to compose accessible form fields and gr
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -956,44 +904,27 @@ See the Form documentation for building forms with the `Field` component and Rea
 
 {% <codegroup> %}
 ```text,name=field-input.html
-<fieldset
-  data-slot="field-set"
-  class="gap-4 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3 w-full max-w-xs"
->
-  <div
-    data-slot="field-group"
-    class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group"
-  >
+<fieldset data-slot="field-set" class="w-full max-w-xs">
+  <div data-slot="field-group" class="*:data-[slot=field-group]:gap-4 group/field-group">
     <div
       role="group"
       data-slot="field"
       data-orientation="vertical"
-      class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+      class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
     >
       <label
         data-slot="field-label"
         class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
         for="username"
         >Username</label
-      ><input
-        data-slot="input"
-        class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
-        id="username"
-        placeholder="Max Leiter"
-        type="text"
-      />
-      <p
-        data-slot="field-description"
-        class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-      >
-        Choose a unique username for your account.
-      </p>
+      ><input data-slot="input" class="w-full" id="username" placeholder="Max Leiter" type="text" />
+      <p data-slot="field-description">Choose a unique username for your account.</p>
     </div>
     <div
       role="group"
       data-slot="field"
       data-orientation="vertical"
-      class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+      class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
     >
       <label
         data-slot="field-label"
@@ -1001,15 +932,10 @@ See the Form documentation for building forms with the `Field` component and Rea
         for="password"
         >Password</label
       >
-      <p
-        data-slot="field-description"
-        class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-      >
-        Must be at least 8 characters long.
-      </p>
+      <p data-slot="field-description">Must be at least 8 characters long.</p>
       <input
         data-slot="input"
-        class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+        class="w-full"
         id="password"
         placeholder="••••••••"
         type="password"
@@ -1031,19 +957,13 @@ See the Form documentation for building forms with the `Field` component and Rea
 
 {% <codegroup> %}
 ```text,name=field-textarea.html
-<fieldset
-  data-slot="field-set"
-  class="gap-4 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3 w-full max-w-xs"
->
-  <div
-    data-slot="field-group"
-    class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group"
-  >
+<fieldset data-slot="field-set" class="w-full max-w-xs">
+  <div data-slot="field-group" class="*:data-[slot=field-group]:gap-4 group/field-group">
     <div
       role="group"
       data-slot="field"
       data-orientation="vertical"
-      class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+      class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
     >
       <label
         data-slot="field-label"
@@ -1052,17 +972,12 @@ See the Form documentation for building forms with the `Field` component and Rea
         >Feedback</label
       ><textarea
         data-slot="textarea"
-        class="border-input dark:bg-input/30 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 bg-transparent text-base md:text-sm w-full"
+        class="w-full"
         id="feedback"
         placeholder="Your feedback helps us improve..."
         rows="4"
       ></textarea>
-      <p
-        data-slot="field-description"
-        class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-      >
-        Share your thoughts about our service.
-      </p>
+      <p data-slot="field-description">Share your thoughts about our service.</p>
     </div>
   </div>
 </fieldset>
@@ -1084,7 +999,7 @@ See the Form documentation for building forms with the `Field` component and Rea
   role="group"
   data-slot="field"
   data-orientation="vertical"
-  class="group/field *:w-full [&>.sr-only]:w-auto w-full max-w-xs"
+  class="group/field *:w-full [&>.sr-only]:w-auto max-w-xs"
 >
   <label
     data-slot="field-label"
@@ -1101,7 +1016,7 @@ See the Form documentation for building forms with the `Field` component and Rea
     data-placeholder=""
     data-slot="select-trigger"
     data-size="default"
-    class="border-input dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg bg-transparent data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] [&_svg:not([class*='size-'])]:size-4 flex w-fit *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex"
+    class="[&_svg:not([class*='size-'])]:size-4 w-fit"
     id="s0-trigger"
   >
     <span data-slot="select-value" style="pointer-events: none">Choose department</span
@@ -1120,12 +1035,7 @@ See the Form documentation for building forms with the `Field` component and Rea
       <path d="m6 9 6 6 6-6"></path>
     </svg>
   </button>
-  <p
-    data-slot="field-description"
-    class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-  >
-    Select your department or area of work.
-  </p>
+  <p data-slot="field-description">Select your department or area of work.</p>
 </div>
 <template id="s0-tpl">
   <div
@@ -1171,7 +1081,6 @@ See the Form documentation for building forms with the `Field` component and Rea
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
           data-highlighted=""
         >
@@ -1187,7 +1096,6 @@ See the Form documentation for building forms with the `Field` component and Rea
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1202,7 +1110,6 @@ See the Form documentation for building forms with the `Field` component and Rea
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1217,7 +1124,6 @@ See the Form documentation for building forms with the `Field` component and Rea
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1232,7 +1138,6 @@ See the Form documentation for building forms with the `Field` component and Rea
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1247,7 +1152,6 @@ See the Form documentation for building forms with the `Field` component and Rea
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1262,7 +1166,6 @@ See the Form documentation for building forms with the `Field` component and Rea
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1277,7 +1180,6 @@ See the Form documentation for building forms with the `Field` component and Rea
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1420,13 +1322,10 @@ See the Form documentation for building forms with the `Field` component and Rea
   role="group"
   data-slot="field"
   data-orientation="vertical"
-  class="group/field *:w-full [&>.sr-only]:w-auto w-full max-w-xs"
+  class="group/field *:w-full [&>.sr-only]:w-auto max-w-xs"
 >
   <div data-slot="field-label" class="text-sm font-medium w-fit items-center">Price Range</div>
-  <p
-    data-slot="field-description"
-    class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-  >
+  <p data-slot="field-description">
     Set your budget range ($<span class="font-medium tabular-nums">200</span> -
     <span class="font-medium tabular-nums">800</span>).
   </p>
@@ -1441,7 +1340,7 @@ See the Form documentation for building forms with the `Field` component and Rea
     ><span
       data-orientation="horizontal"
       data-slot="slider-track"
-      class="data-horizontal:h-1 data-vertical:w-1 data-horizontal:w-full data-vertical:h-full"
+      class="data-vertical:w-1 data-horizontal:w-full"
       ><span
         data-orientation="horizontal"
         data-slot="slider-range"
@@ -1462,7 +1361,7 @@ See the Form documentation for building forms with the `Field` component and Rea
         data-orientation="horizontal"
         tabindex="0"
         data-slot="slider-thumb"
-        class="relative size-3 after:absolute"
+        class="size-3"
         data-radix-collection-item=""
         aria-label="Minimum"
         aria-valuenow="200"
@@ -1482,7 +1381,7 @@ See the Form documentation for building forms with the `Field` component and Rea
         data-orientation="horizontal"
         tabindex="0"
         data-slot="slider-thumb"
-        class="relative size-3 after:absolute"
+        class="size-3"
         data-radix-collection-item=""
         aria-label="Maximum"
         aria-valuenow="800"
@@ -1554,84 +1453,49 @@ See the Form documentation for building forms with the `Field` component and Rea
 
 {% <codegroup> %}
 ```text,name=field-fieldset.html
-<fieldset
-  data-slot="field-set"
-  class="gap-4 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3 w-full max-w-sm"
->
-  <legend
-    data-slot="field-legend"
-    data-variant="legend"
-    class="data-[variant=label]:text-sm data-[variant=legend]:text-base"
-  >
-    Address Information
-  </legend>
-  <p
-    data-slot="field-description"
-    class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-  >
-    We need your address to deliver your order.
-  </p>
-  <div
-    data-slot="field-group"
-    class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group"
-  >
+<fieldset data-slot="field-set" class="w-full max-w-sm">
+  <legend data-slot="field-legend" data-variant="legend">Address Information</legend>
+  <p data-slot="field-description">We need your address to deliver your order.</p>
+  <div data-slot="field-group" class="*:data-[slot=field-group]:gap-4 group/field-group">
     <div
       role="group"
       data-slot="field"
       data-orientation="vertical"
-      class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+      class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
     >
       <label
         data-slot="field-label"
         class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
         for="street"
         >Street Address</label
-      ><input
-        data-slot="input"
-        class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
-        id="street"
-        placeholder="123 Main St"
-        type="text"
-      />
+      ><input data-slot="input" class="w-full" id="street" placeholder="123 Main St" type="text" />
     </div>
     <div class="grid grid-cols-2 gap-4">
       <div
         role="group"
         data-slot="field"
         data-orientation="vertical"
-        class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+        class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
       >
         <label
           data-slot="field-label"
           class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
           for="city"
           >City</label
-        ><input
-          data-slot="input"
-          class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
-          id="city"
-          placeholder="New York"
-          type="text"
-        />
+        ><input data-slot="input" class="w-full" id="city" placeholder="New York" type="text" />
       </div>
       <div
         role="group"
         data-slot="field"
         data-orientation="vertical"
-        class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
+        class="gap-2 group/field *:w-full [&>.sr-only]:w-auto"
       >
         <label
           data-slot="field-label"
           class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
           for="zip"
           >Postal Code</label
-        ><input
-          data-slot="input"
-          class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
-          id="zip"
-          placeholder="90502"
-          type="text"
-        />
+        ><input data-slot="input" class="w-full" id="zip" placeholder="90502" type="text" />
       </div>
     </div>
   </div>
@@ -1650,27 +1514,13 @@ See the Form documentation for building forms with the `Field` component and Rea
 
 {% <codegroup> %}
 ```text,name=field-checkbox.html
-<div
-  data-slot="field-group"
-  class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group max-w-xs"
->
+<div data-slot="field-group" class="*:data-[slot=field-group]:gap-4 group/field-group max-w-xs">
   <fieldset
     data-slot="field-set"
-    class="gap-4 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3"
+    class="has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3"
   >
-    <legend
-      data-slot="field-legend"
-      data-variant="label"
-      class="data-[variant=label]:text-sm data-[variant=legend]:text-base"
-    >
-      Show these items on the desktop
-    </legend>
-    <p
-      data-slot="field-description"
-      class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-    >
-      Select the items you want to show on the desktop.
-    </p>
+    <legend data-slot="field-legend" data-variant="label">Show these items on the desktop</legend>
+    <p data-slot="field-description">Select the items you want to show on the desktop.</p>
     <div
       data-slot="field-group"
       class="data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group gap-3"
@@ -1679,7 +1529,7 @@ See the Form documentation for building forms with the `Field` component and Rea
         role="group"
         data-slot="field"
         data-orientation="horizontal"
-        class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
+        class="gap-2 group/field *:data-[slot=field-label]:flex-auto"
       >
         <button
           type="button"
@@ -1688,12 +1538,12 @@ See the Form documentation for building forms with the `Field` component and Rea
           data-state="unchecked"
           value="on"
           data-slot="checkbox"
-          class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
+          class="peer shrink-0"
           id="finder-pref-9k2-hard-disks-ljj"
         ></button
         ><label
           data-slot="field-label"
-          class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+          class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
           for="finder-pref-9k2-hard-disks-ljj"
           >Hard disks</label
         >
@@ -1702,7 +1552,7 @@ See the Form documentation for building forms with the `Field` component and Rea
         role="group"
         data-slot="field"
         data-orientation="horizontal"
-        class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
+        class="gap-2 group/field *:data-[slot=field-label]:flex-auto"
       >
         <button
           type="button"
@@ -1711,12 +1561,12 @@ See the Form documentation for building forms with the `Field` component and Rea
           data-state="unchecked"
           value="on"
           data-slot="checkbox"
-          class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
+          class="peer shrink-0"
           id="finder-pref-9k2-external-disks-1yg"
         ></button
         ><label
           data-slot="field-label"
-          class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+          class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
           for="finder-pref-9k2-external-disks-1yg"
           >External disks</label
         >
@@ -1725,7 +1575,7 @@ See the Form documentation for building forms with the `Field` component and Rea
         role="group"
         data-slot="field"
         data-orientation="horizontal"
-        class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
+        class="gap-2 group/field *:data-[slot=field-label]:flex-auto"
       >
         <button
           type="button"
@@ -1734,12 +1584,12 @@ See the Form documentation for building forms with the `Field` component and Rea
           data-state="unchecked"
           value="on"
           data-slot="checkbox"
-          class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
+          class="peer shrink-0"
           id="finder-pref-9k2-cds-dvds-fzt"
         ></button
         ><label
           data-slot="field-label"
-          class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+          class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
           for="finder-pref-9k2-cds-dvds-fzt"
           >CDs, DVDs, and iPods</label
         >
@@ -1748,7 +1598,7 @@ See the Form documentation for building forms with the `Field` component and Rea
         role="group"
         data-slot="field"
         data-orientation="horizontal"
-        class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
+        class="gap-2 group/field *:data-[slot=field-label]:flex-auto"
       >
         <button
           type="button"
@@ -1757,35 +1607,31 @@ See the Form documentation for building forms with the `Field` component and Rea
           data-state="unchecked"
           value="on"
           data-slot="checkbox"
-          class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
+          class="peer shrink-0"
           id="finder-pref-9k2-connected-servers-6l2"
         ></button
         ><label
           data-slot="field-label"
-          class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+          class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
           for="finder-pref-9k2-connected-servers-6l2"
           >Connected servers</label
         >
       </div>
     </div>
   </fieldset>
-  <div
-    data-slot="field-separator"
-    data-content="false"
-    class="-my-2 group-data-[variant=outline]/field-group:-mb-2"
-  >
+  <div data-slot="field-separator" data-content="false">
     <div
       data-orientation="horizontal"
       role="none"
       data-slot="separator"
-      class="data-horizontal:w-full data-vertical:w-px absolute inset-0 top-1/2"
+      class="absolute inset-0 top-1/2"
     ></div>
   </div>
   <div
     role="group"
     data-slot="field"
     data-orientation="horizontal"
-    class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+    class="gap-2 group/field *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
   >
     <button
       type="button"
@@ -1794,7 +1640,7 @@ See the Form documentation for building forms with the `Field` component and Rea
       data-state="checked"
       value="on"
       data-slot="checkbox"
-      class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
+      class="peer shrink-0"
       id="finder-pref-9k2-sync-folders-nep"
     >
       <span data-state="checked" data-slot="checkbox-indicator" style="pointer-events: none"
@@ -1813,16 +1659,16 @@ See the Form documentation for building forms with the `Field` component and Rea
           <path d="M20 6 9 17l-5-5"></path></svg
       ></span>
     </button>
-    <div data-slot="field-content" class="gap-0.5 group/field-content">
+    <div data-slot="field-content" class="gap-0.5 group/field-content flex-1">
       <label
         data-slot="field-label"
-        class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+        class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
         for="finder-pref-9k2-sync-folders-nep"
         >Sync Desktop &amp; Documents folders</label
       >
       <p
         data-slot="field-description"
-        class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
+        class="[[data-variant=legend]+&]:-mt-1.5 last:mt-0 nth-last-2:-mt-1"
       >
         Your Desktop &amp; Documents folders are being synced with iCloud Drive. You can access them
         from other devices.
@@ -1886,23 +1732,9 @@ See the Form documentation for building forms with the `Field` component and Rea
 
 {% <codegroup> %}
 ```text,name=field-radio.html
-<fieldset
-  data-slot="field-set"
-  class="gap-4 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3 w-full max-w-xs"
->
-  <legend
-    data-slot="field-legend"
-    data-variant="label"
-    class="data-[variant=label]:text-sm data-[variant=legend]:text-base"
-  >
-    Subscription Plan
-  </legend>
-  <p
-    data-slot="field-description"
-    class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-  >
-    Yearly and lifetime plans offer significant savings.
-  </p>
+<fieldset data-slot="field-set" class="w-full max-w-xs">
+  <legend data-slot="field-legend" data-variant="label">Subscription Plan</legend>
+  <p data-slot="field-description">Yearly and lifetime plans offer significant savings.</p>
   <div
     role="radiogroup"
     aria-required="false"
@@ -1915,7 +1747,7 @@ See the Form documentation for building forms with the `Field` component and Rea
       role="group"
       data-slot="field"
       data-orientation="horizontal"
-      class="group/field items-center has-[>[data-slot=field-content]]:items-start"
+      class="group/field *:data-[slot=field-label]:flex-auto"
     >
       <button
         type="button"
@@ -1924,7 +1756,7 @@ See the Form documentation for building forms with the `Field` component and Rea
         data-state="checked"
         value="monthly"
         data-slot="radio-group-item"
-        class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+        class="group/radio-group-item peer shrink-0"
         id="plan-monthly"
         tabindex="-1"
         data-radix-collection-item=""
@@ -1936,7 +1768,7 @@ See the Form documentation for building forms with the `Field` component and Rea
         ></span></button
       ><label
         data-slot="field-label"
-        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
         for="plan-monthly"
         >Monthly ($9.99/month)</label
       >
@@ -1945,7 +1777,7 @@ See the Form documentation for building forms with the `Field` component and Rea
       role="group"
       data-slot="field"
       data-orientation="horizontal"
-      class="group/field items-center has-[>[data-slot=field-content]]:items-start"
+      class="group/field *:data-[slot=field-label]:flex-auto"
     >
       <button
         type="button"
@@ -1954,14 +1786,14 @@ See the Form documentation for building forms with the `Field` component and Rea
         data-state="unchecked"
         value="yearly"
         data-slot="radio-group-item"
-        class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+        class="group/radio-group-item peer shrink-0"
         id="plan-yearly"
         tabindex="-1"
         data-radix-collection-item=""
       ></button
       ><label
         data-slot="field-label"
-        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
         for="plan-yearly"
         >Yearly ($99.99/year)</label
       >
@@ -1970,7 +1802,7 @@ See the Form documentation for building forms with the `Field` component and Rea
       role="group"
       data-slot="field"
       data-orientation="horizontal"
-      class="group/field items-center has-[>[data-slot=field-content]]:items-start"
+      class="group/field *:data-[slot=field-label]:flex-auto"
     >
       <button
         type="button"
@@ -1979,14 +1811,14 @@ See the Form documentation for building forms with the `Field` component and Rea
         data-state="unchecked"
         value="lifetime"
         data-slot="radio-group-item"
-        class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+        class="group/radio-group-item peer shrink-0"
         id="plan-lifetime"
         tabindex="-1"
         data-radix-collection-item=""
       ></button
       ><label
         data-slot="field-label"
-        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
         for="plan-lifetime"
         >Lifetime ($299.99)</label
       >
@@ -2068,11 +1900,11 @@ See the Form documentation for building forms with the `Field` component and Rea
   role="group"
   data-slot="field"
   data-orientation="horizontal"
-  class="group/field items-center has-[>[data-slot=field-content]]:items-start w-fit"
+  class="group/field *:data-[slot=field-label]:flex-auto w-fit"
 >
   <label
     data-slot="field-label"
-    class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+    class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
     for="2fa"
     >Multi-factor authentication</label
   ><button
@@ -2083,14 +1915,10 @@ See the Form documentation for building forms with the `Field` component and Rea
     value="on"
     data-slot="switch"
     data-size="default"
-    class="data-checked:bg-primary data-unchecked:bg-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 dark:data-unchecked:bg-input/80 border-transparent focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:border-transparent data-[size=default]:h-[18.4px] data-[size=default]:w-[32px] data-[size=sm]:h-[14px] data-[size=sm]:w-[24px] peer group/switch relative after:absolute"
+    class="shrink-0 peer group/switch"
     id="2fa"
   >
-    <span
-      data-state="unchecked"
-      data-slot="switch-thumb"
-      class="bg-background dark:data-unchecked:bg-foreground dark:data-checked:bg-primary-foreground group-data-[size=default]/switch:size-4 group-data-[size=sm]/switch:size-3 group-data-[size=default]/switch:data-checked:translate-x-[calc(100%-2px)] group-data-[size=sm]/switch:data-checked:translate-x-[calc(100%-2px)] group-data-[size=default]/switch:data-unchecked:translate-x-0 group-data-[size=sm]/switch:data-unchecked:translate-x-0"
-    ></span>
+    <span data-state="unchecked" data-slot="switch-thumb"></span>
   </button>
 </div>
 ```
@@ -2142,27 +1970,13 @@ Wrap `Field` components inside `FieldLabel` to create selectable field groups. T
 
 {% <codegroup> %}
 ```text,name=field-choice-card.html
-<div
-  data-slot="field-group"
-  class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group max-w-xs"
->
+<div data-slot="field-group" class="*:data-[slot=field-group]:gap-4 group/field-group max-w-xs">
   <fieldset
     data-slot="field-set"
-    class="gap-4 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3"
+    class="has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3"
   >
-    <legend
-      data-slot="field-legend"
-      data-variant="label"
-      class="data-[variant=label]:text-sm data-[variant=legend]:text-base"
-    >
-      Compute Environment
-    </legend>
-    <p
-      data-slot="field-description"
-      class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-    >
-      Select the compute environment for your cluster.
-    </p>
+    <legend data-slot="field-legend" data-variant="label">Compute Environment</legend>
+    <p data-slot="field-description">Select the compute environment for your cluster.</p>
     <div
       role="radiogroup"
       aria-required="false"
@@ -2174,21 +1988,21 @@ Wrap `Field` components inside `FieldLabel` to create selectable field groups. T
     >
       <label
         data-slot="field-label"
-        class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+        class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
         for="kubernetes-r2h"
         ><div
           role="group"
           data-slot="field"
           data-orientation="horizontal"
-          class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+          class="gap-2 group/field *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
         >
-          <div data-slot="field-content" class="gap-0.5 group/field-content">
+          <div data-slot="field-content" class="gap-0.5 group/field-content flex-1">
             <div data-slot="field-label" class="gap-2 text-sm font-medium items-center">
               Kubernetes
             </div>
             <p
               data-slot="field-description"
-              class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
+              class="[[data-variant=legend]+&]:-mt-1.5 last:mt-0 nth-last-2:-mt-1"
             >
               Run GPU workloads on a K8s cluster.
             </p>
@@ -2200,7 +2014,7 @@ Wrap `Field` components inside `FieldLabel` to create selectable field groups. T
             data-state="checked"
             value="kubernetes"
             data-slot="radio-group-item"
-            class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+            class="group/radio-group-item peer shrink-0"
             id="kubernetes-r2h"
             tabindex="-1"
             data-radix-collection-item=""
@@ -2213,21 +2027,21 @@ Wrap `Field` components inside `FieldLabel` to create selectable field groups. T
           </button></div></label
       ><label
         data-slot="field-label"
-        class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+        class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
         for="vm-z4k"
         ><div
           role="group"
           data-slot="field"
           data-orientation="horizontal"
-          class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+          class="gap-2 group/field *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
         >
-          <div data-slot="field-content" class="gap-0.5 group/field-content">
+          <div data-slot="field-content" class="gap-0.5 group/field-content flex-1">
             <div data-slot="field-label" class="gap-2 text-sm font-medium items-center">
               Virtual Machine
             </div>
             <p
               data-slot="field-description"
-              class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
+              class="[[data-variant=legend]+&]:-mt-1.5 last:mt-0 nth-last-2:-mt-1"
             >
               Access a cluster to run GPU workloads.
             </p>
@@ -2239,7 +2053,7 @@ Wrap `Field` components inside `FieldLabel` to create selectable field groups. T
             data-state="unchecked"
             value="vm"
             data-slot="radio-group-item"
-            class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:aria-invalid:border-destructive/50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary group/radio-group-item peer relative after:absolute"
+            class="group/radio-group-item peer shrink-0"
             id="vm-z4k"
             tabindex="-1"
             data-radix-collection-item=""
@@ -2321,23 +2135,17 @@ Stack `Field` components with `FieldGroup`. Add `FieldSeparator` to divide them.
 
 {% <codegroup> %}
 ```text,name=field-group.html
-<div
-  data-slot="field-group"
-  class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group max-w-xs"
->
+<div data-slot="field-group" class="*:data-[slot=field-group]:gap-4 group/field-group max-w-xs">
   <fieldset
     data-slot="field-set"
-    class="gap-4 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3"
+    class="has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3"
   >
     <label
       data-slot="field-label"
-      class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+      class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
       >Responses</label
     >
-    <p
-      data-slot="field-description"
-      class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-    >
+    <p data-slot="field-description">
       Get notified when ChatGPT responds to requests that take time, like research or image
       generation.
     </p>
@@ -2349,7 +2157,7 @@ Stack `Field` components with `FieldGroup`. Add `FieldSeparator` to divide them.
         role="group"
         data-slot="field"
         data-orientation="horizontal"
-        class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
+        class="gap-2 group/field *:data-[slot=field-label]:flex-auto"
       >
         <button
           type="button"
@@ -2360,7 +2168,7 @@ Stack `Field` components with `FieldGroup`. Add `FieldSeparator` to divide them.
           disabled=""
           value="on"
           data-slot="checkbox"
-          class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
+          class="peer shrink-0"
           id="push"
         >
           <span
@@ -2384,38 +2192,31 @@ Stack `Field` components with `FieldGroup`. Add `FieldSeparator` to divide them.
           ></span></button
         ><label
           data-slot="field-label"
-          class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+          class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
           for="push"
           >Push notifications</label
         >
       </div>
     </div>
   </fieldset>
-  <div
-    data-slot="field-separator"
-    data-content="false"
-    class="-my-2 group-data-[variant=outline]/field-group:-mb-2"
-  >
+  <div data-slot="field-separator" data-content="false">
     <div
       data-orientation="horizontal"
       role="none"
       data-slot="separator"
-      class="data-horizontal:w-full data-vertical:w-px absolute inset-0 top-1/2"
+      class="absolute inset-0 top-1/2"
     ></div>
   </div>
   <fieldset
     data-slot="field-set"
-    class="gap-4 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3"
+    class="has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3"
   >
     <label
       data-slot="field-label"
-      class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+      class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
       >Tasks</label
     >
-    <p
-      data-slot="field-description"
-      class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-    >
+    <p data-slot="field-description">
       Get notified when tasks you've created have updates. <a href="#">Manage tasks</a>
     </p>
     <div
@@ -2426,7 +2227,7 @@ Stack `Field` components with `FieldGroup`. Add `FieldSeparator` to divide them.
         role="group"
         data-slot="field"
         data-orientation="horizontal"
-        class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
+        class="gap-2 group/field *:data-[slot=field-label]:flex-auto"
       >
         <button
           type="button"
@@ -2435,12 +2236,12 @@ Stack `Field` components with `FieldGroup`. Add `FieldSeparator` to divide them.
           data-state="unchecked"
           value="on"
           data-slot="checkbox"
-          class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
+          class="peer shrink-0"
           id="push-tasks"
         ></button
         ><label
           data-slot="field-label"
-          class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+          class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
           for="push-tasks"
           >Push notifications</label
         >
@@ -2449,7 +2250,7 @@ Stack `Field` components with `FieldGroup`. Add `FieldSeparator` to divide them.
         role="group"
         data-slot="field"
         data-orientation="horizontal"
-        class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
+        class="gap-2 group/field *:data-[slot=field-label]:flex-auto"
       >
         <button
           type="button"
@@ -2458,12 +2259,12 @@ Stack `Field` components with `FieldGroup`. Add `FieldSeparator` to divide them.
           data-state="unchecked"
           value="on"
           data-slot="checkbox"
-          class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
+          class="peer shrink-0"
           id="email-tasks"
         ></button
         ><label
           data-slot="field-label"
-          class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+          class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
           for="email-tasks"
           >Email notifications</label
         >
@@ -3470,32 +3271,15 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 ```text,name=field-responsive.html
 <div class="w-full max-w-lg">
   <form>
-    <fieldset
-      data-slot="field-set"
-      class="gap-4 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3"
-    >
-      <legend
-        data-slot="field-legend"
-        data-variant="legend"
-        class="data-[variant=label]:text-sm data-[variant=legend]:text-base"
-      >
-        Profile
-      </legend>
-      <p
-        data-slot="field-description"
-        class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
-      >
-        Fill in your profile information.
-      </p>
-      <div
-        data-slot="field-group"
-        class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group"
-      >
+    <fieldset data-slot="field-set">
+      <legend data-slot="field-legend" data-variant="legend">Profile</legend>
+      <p data-slot="field-description">Fill in your profile information.</p>
+      <div data-slot="field-group" class="*:data-[slot=field-group]:gap-4 group/field-group">
         <div
           role="group"
           data-slot="field"
           data-orientation="responsive"
-          class="gap-2 group/field w-full flex-col *:w-full @md/field-group:flex-row @md/field-group:items-center @md/field-group:*:w-auto @md/field-group:has-[>[data-slot=field-content]]:items-start [&>.sr-only]:w-auto @md/field-group:has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+          class="gap-2 group/field *:w-full @md/field-group:*:w-auto [&>.sr-only]:w-auto @md/field-group:has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
         >
           <div data-slot="field-content" class="gap-0.5 group/field-content">
             <label
@@ -3506,30 +3290,24 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
             >
             <p
               data-slot="field-description"
-              class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
+              class="[[data-variant=legend]+&]:-mt-1.5 last:mt-0 nth-last-2:-mt-1"
             >
               Provide your full name for identification
             </p>
           </div>
-          <input
-            data-slot="input"
-            class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm w-full file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
-            id="name"
-            placeholder="Evil Rabbit"
-            required=""
-          />
+          <input data-slot="input" class="w-full" id="name" placeholder="Evil Rabbit" required="" />
         </div>
         <div
           role="group"
           data-slot="field"
           data-orientation="responsive"
-          class="gap-2 group/field w-full flex-col *:w-full @md/field-group:flex-row @md/field-group:items-center @md/field-group:*:w-auto @md/field-group:has-[>[data-slot=field-content]]:items-start [&>.sr-only]:w-auto"
+          class="gap-2 group/field *:w-full @md/field-group:*:w-auto [&>.sr-only]:w-auto"
         >
           <button
             data-slot="button"
             data-variant="default"
             data-size="default"
-            class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent [&_svg:not([class*='size-'])]:size-4 group/button bg-primary hover:bg-primary/80 h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+            class="[&_svg:not([class*='size-'])]:size-4 group/button gap-1.5"
             type="submit"
           >
             Submit</button
@@ -3537,7 +3315,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
             data-slot="button"
             data-variant="outline"
             data-size="default"
-            class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+            class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border dark:border-input gap-1.5"
             type="button"
           >
             Cancel

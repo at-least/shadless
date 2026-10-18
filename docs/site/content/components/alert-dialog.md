@@ -38,30 +38,20 @@ A modal dialog that interrupts the user with important content and expects a res
     data-state="open"
     data-slot="alert-dialog-content"
     data-size="default"
-    class="data-[size=default]:max-w-xs data-[size=sm]:max-w-xs data-[size=default]:sm:max-w-sm group/alert-dialog-content"
+    class="group/alert-dialog-content"
     tabindex="-1"
     style="pointer-events: auto"
   >
-    <div
-      data-slot="alert-dialog-header"
-      class="grid-rows-[auto_1fr] place-items-center gap-1.5 text-center has-data-[slot=alert-dialog-media]:grid-rows-[auto_auto_1fr] has-data-[slot=alert-dialog-media]:gap-x-4 sm:group-data-[size=default]/alert-dialog-content:place-items-start sm:group-data-[size=default]/alert-dialog-content:text-left sm:group-data-[size=default]/alert-dialog-content:has-data-[slot=alert-dialog-media]:grid-rows-[auto_1fr]"
-    >
+    <div data-slot="alert-dialog-header">
       <h2 id="d1-title" data-slot="alert-dialog-title" class="cn-font-heading">
         Are you absolutely sure?
       </h2>
-      <p
-        id="d1-desc"
-        data-slot="alert-dialog-description"
-        class="text-muted-foreground *:[a]:hover:text-foreground text-balance md:text-pretty"
-      >
+      <p id="d1-desc" data-slot="alert-dialog-description">
         This action cannot be undone. This will permanently delete your account and remove your data
         from our servers.
       </p>
     </div>
-    <div
-      data-slot="alert-dialog-footer"
-      class="flex flex-col-reverse group-data-[size=sm]/alert-dialog-content:grid sm:flex-row"
-    >
+    <div data-slot="alert-dialog-footer">
       <button
         type="button"
         data-slot="alert-dialog-cancel"
@@ -201,30 +191,20 @@ A basic alert dialog with a title, description, and cancel and continue buttons.
     data-state="open"
     data-slot="alert-dialog-content"
     data-size="default"
-    class="data-[size=default]:max-w-xs data-[size=sm]:max-w-xs data-[size=default]:sm:max-w-sm group/alert-dialog-content"
+    class="group/alert-dialog-content"
     tabindex="-1"
     style="pointer-events: auto"
   >
-    <div
-      data-slot="alert-dialog-header"
-      class="grid-rows-[auto_1fr] place-items-center gap-1.5 text-center has-data-[slot=alert-dialog-media]:grid-rows-[auto_auto_1fr] has-data-[slot=alert-dialog-media]:gap-x-4 sm:group-data-[size=default]/alert-dialog-content:place-items-start sm:group-data-[size=default]/alert-dialog-content:text-left sm:group-data-[size=default]/alert-dialog-content:has-data-[slot=alert-dialog-media]:grid-rows-[auto_1fr]"
-    >
+    <div data-slot="alert-dialog-header">
       <h2 id="d1-title" data-slot="alert-dialog-title" class="cn-font-heading">
         Are you absolutely sure?
       </h2>
-      <p
-        id="d1-desc"
-        data-slot="alert-dialog-description"
-        class="text-muted-foreground *:[a]:hover:text-foreground text-balance md:text-pretty"
-      >
+      <p id="d1-desc" data-slot="alert-dialog-description">
         This action cannot be undone. This will permanently delete your account and remove your data
         from our servers.
       </p>
     </div>
-    <div
-      data-slot="alert-dialog-footer"
-      class="flex flex-col-reverse group-data-[size=sm]/alert-dialog-content:grid sm:flex-row"
-    >
+    <div data-slot="alert-dialog-footer">
       <button
         type="button"
         data-slot="alert-dialog-cancel"
@@ -305,29 +285,19 @@ Use the `size="sm"` prop to make the alert dialog smaller.
     data-state="open"
     data-slot="alert-dialog-content"
     data-size="sm"
-    class="data-[size=default]:max-w-xs data-[size=sm]:max-w-xs data-[size=default]:sm:max-w-sm group/alert-dialog-content"
+    class="group/alert-dialog-content"
     tabindex="-1"
     style="pointer-events: auto"
   >
-    <div
-      data-slot="alert-dialog-header"
-      class="grid-rows-[auto_1fr] place-items-center gap-1.5 text-center has-data-[slot=alert-dialog-media]:grid-rows-[auto_auto_1fr] has-data-[slot=alert-dialog-media]:gap-x-4 sm:group-data-[size=default]/alert-dialog-content:place-items-start sm:group-data-[size=default]/alert-dialog-content:text-left sm:group-data-[size=default]/alert-dialog-content:has-data-[slot=alert-dialog-media]:grid-rows-[auto_1fr]"
-    >
+    <div data-slot="alert-dialog-header">
       <h2 id="d1-title" data-slot="alert-dialog-title" class="cn-font-heading">
         Allow accessory to connect?
       </h2>
-      <p
-        id="d1-desc"
-        data-slot="alert-dialog-description"
-        class="text-muted-foreground *:[a]:hover:text-foreground text-balance md:text-pretty"
-      >
+      <p id="d1-desc" data-slot="alert-dialog-description">
         Do you want to allow the USB accessory to connect to this device?
       </p>
     </div>
-    <div
-      data-slot="alert-dialog-footer"
-      class="flex flex-col-reverse group-data-[size=sm]/alert-dialog-content:grid sm:flex-row"
-    >
+    <div data-slot="alert-dialog-footer">
       <button
         type="button"
         data-slot="alert-dialog-cancel"
@@ -408,15 +378,12 @@ Use the `AlertDialogMedia` component to add a media element such as an icon or i
     data-state="open"
     data-slot="alert-dialog-content"
     data-size="default"
-    class="data-[size=default]:max-w-xs data-[size=sm]:max-w-xs data-[size=default]:sm:max-w-sm group/alert-dialog-content"
+    class="group/alert-dialog-content"
     tabindex="-1"
     style="pointer-events: auto"
   >
-    <div
-      data-slot="alert-dialog-header"
-      class="grid-rows-[auto_1fr] place-items-center gap-1.5 text-center has-data-[slot=alert-dialog-media]:grid-rows-[auto_auto_1fr] has-data-[slot=alert-dialog-media]:gap-x-4 sm:group-data-[size=default]/alert-dialog-content:place-items-start sm:group-data-[size=default]/alert-dialog-content:text-left sm:group-data-[size=default]/alert-dialog-content:has-data-[slot=alert-dialog-media]:grid-rows-[auto_1fr]"
-    >
-      <div data-slot="alert-dialog-media" class="size-10 *:[svg:not([class*='size-'])]:size-6">
+    <div data-slot="alert-dialog-header">
+      <div data-slot="alert-dialog-media">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -441,18 +408,11 @@ Use the `AlertDialogMedia` component to add a media element such as an icon or i
       <h2 id="d1-title" data-slot="alert-dialog-title" class="cn-font-heading">
         Share this project?
       </h2>
-      <p
-        id="d1-desc"
-        data-slot="alert-dialog-description"
-        class="text-muted-foreground *:[a]:hover:text-foreground text-balance md:text-pretty"
-      >
+      <p id="d1-desc" data-slot="alert-dialog-description">
         Anyone with the link will be able to view and edit this project.
       </p>
     </div>
-    <div
-      data-slot="alert-dialog-footer"
-      class="flex flex-col-reverse group-data-[size=sm]/alert-dialog-content:grid sm:flex-row"
-    >
+    <div data-slot="alert-dialog-footer">
       <button
         type="button"
         data-slot="alert-dialog-cancel"
@@ -533,15 +493,12 @@ Use the `size="sm"` prop to make the alert dialog smaller and the `AlertDialogMe
     data-state="open"
     data-slot="alert-dialog-content"
     data-size="sm"
-    class="data-[size=default]:max-w-xs data-[size=sm]:max-w-xs data-[size=default]:sm:max-w-sm group/alert-dialog-content"
+    class="group/alert-dialog-content"
     tabindex="-1"
     style="pointer-events: auto"
   >
-    <div
-      data-slot="alert-dialog-header"
-      class="grid-rows-[auto_1fr] place-items-center gap-1.5 text-center has-data-[slot=alert-dialog-media]:grid-rows-[auto_auto_1fr] has-data-[slot=alert-dialog-media]:gap-x-4 sm:group-data-[size=default]/alert-dialog-content:place-items-start sm:group-data-[size=default]/alert-dialog-content:text-left sm:group-data-[size=default]/alert-dialog-content:has-data-[slot=alert-dialog-media]:grid-rows-[auto_1fr]"
-    >
-      <div data-slot="alert-dialog-media" class="size-10 *:[svg:not([class*='size-'])]:size-6">
+    <div data-slot="alert-dialog-header">
+      <div data-slot="alert-dialog-media">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -560,18 +517,11 @@ Use the `size="sm"` prop to make the alert dialog smaller and the `AlertDialogMe
       <h2 id="d1-title" data-slot="alert-dialog-title" class="cn-font-heading">
         Allow accessory to connect?
       </h2>
-      <p
-        id="d1-desc"
-        data-slot="alert-dialog-description"
-        class="text-muted-foreground *:[a]:hover:text-foreground text-balance md:text-pretty"
-      >
+      <p id="d1-desc" data-slot="alert-dialog-description">
         Do you want to allow the USB accessory to connect to this device?
       </p>
     </div>
-    <div
-      data-slot="alert-dialog-footer"
-      class="flex flex-col-reverse group-data-[size=sm]/alert-dialog-content:grid sm:flex-row"
-    >
+    <div data-slot="alert-dialog-footer">
       <button
         type="button"
         data-slot="alert-dialog-cancel"
@@ -652,17 +602,14 @@ Use the `AlertDialogAction` component to add a destructive action button to the 
     data-state="open"
     data-slot="alert-dialog-content"
     data-size="sm"
-    class="data-[size=default]:max-w-xs data-[size=sm]:max-w-xs data-[size=default]:sm:max-w-sm group/alert-dialog-content"
+    class="group/alert-dialog-content"
     tabindex="-1"
     style="pointer-events: auto"
   >
-    <div
-      data-slot="alert-dialog-header"
-      class="grid-rows-[auto_1fr] place-items-center gap-1.5 text-center has-data-[slot=alert-dialog-media]:grid-rows-[auto_auto_1fr] has-data-[slot=alert-dialog-media]:gap-x-4 sm:group-data-[size=default]/alert-dialog-content:place-items-start sm:group-data-[size=default]/alert-dialog-content:text-left sm:group-data-[size=default]/alert-dialog-content:has-data-[slot=alert-dialog-media]:grid-rows-[auto_1fr]"
-    >
+    <div data-slot="alert-dialog-header">
       <div
         data-slot="alert-dialog-media"
-        class="size-10 *:[svg:not([class*='size-'])]:size-6 bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive"
+        class="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -684,19 +631,12 @@ Use the `AlertDialogAction` component to add a destructive action button to the 
         </svg>
       </div>
       <h2 id="d1-title" data-slot="alert-dialog-title" class="cn-font-heading">Delete chat?</h2>
-      <p
-        id="d1-desc"
-        data-slot="alert-dialog-description"
-        class="text-muted-foreground *:[a]:hover:text-foreground text-balance md:text-pretty"
-      >
+      <p id="d1-desc" data-slot="alert-dialog-description">
         This will permanently delete this chat conversation. View <a href="#">Settings</a> delete
         any memories saved during this chat.
       </p>
     </div>
-    <div
-      data-slot="alert-dialog-footer"
-      class="flex flex-col-reverse group-data-[size=sm]/alert-dialog-content:grid sm:flex-row"
-    >
+    <div data-slot="alert-dialog-footer">
       <button
         type="button"
         data-slot="alert-dialog-cancel"

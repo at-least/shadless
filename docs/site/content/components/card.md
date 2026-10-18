@@ -18,22 +18,17 @@ Displays a card with header, content, and footer.
 <div
   data-slot="card"
   data-size="default"
-  class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card w-full max-w-sm"
+  class="*:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card w-full max-w-sm"
 >
   <div data-slot="card-header" class="group/card-header">
-    <div
-      data-slot="card-title"
-      class="text-base leading-snug group-data-[size=sm]/card:text-sm cn-font-heading"
-    >
-      Login to your account
-    </div>
+    <div data-slot="card-title" class="cn-font-heading">Login to your account</div>
     <div data-slot="card-description">Enter your email below to login to your account</div>
     <div data-slot="card-action">
       <button
         data-slot="button"
         data-variant="link"
         data-size="default"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border-transparent [&_svg:not([class*='size-'])]:size-4 group/button h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+        class="rounded-lg group/button"
       >
         Sign Up
       </button>
@@ -43,10 +38,10 @@ Displays a card with header, content, and footer.
     <form>
       <div class="flex flex-col gap-6">
         <div class="grid gap-2">
-          <label data-slot="label" class="text-sm leading-none" for="email">Email</label
+          <label data-slot="label" for="email">Email</label
           ><input
             data-slot="input"
-            class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent text-base file:h-6 file:text-sm md:text-sm file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+            class="rounded-lg"
             id="email"
             placeholder="m@example.com"
             required=""
@@ -55,18 +50,12 @@ Displays a card with header, content, and footer.
         </div>
         <div class="grid gap-2">
           <div class="flex items-center">
-            <label data-slot="label" class="text-sm leading-none" for="password">Password</label
+            <label data-slot="label" for="password">Password</label
             ><a href="#" class="ml-auto inline-block text-sm underline-offset-4 hover:underline"
               >Forgot your password?</a
             >
           </div>
-          <input
-            data-slot="input"
-            class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent text-base file:h-6 file:text-sm md:text-sm file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
-            id="password"
-            required=""
-            type="password"
-          />
+          <input data-slot="input" class="rounded-lg" id="password" required="" type="password" />
         </div>
       </div>
     </form>
@@ -76,7 +65,7 @@ Displays a card with header, content, and footer.
       data-slot="button"
       data-variant="default"
       data-size="default"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border-transparent [&_svg:not([class*='size-'])]:size-4 group/button bg-primary hover:bg-primary/80 h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 w-full"
+      class="rounded-lg group/button w-full"
       type="submit"
     >
       Login</button
@@ -84,7 +73,7 @@ Displays a card with header, content, and footer.
       data-slot="button"
       data-variant="outline"
       data-size="default"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 w-full"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg group/button border-border dark:border-input w-full"
     >
       Login with Google
     </button>
@@ -144,15 +133,10 @@ Use the `size="sm"` prop to set the size of the card to small. The small size va
 <div
   data-slot="card"
   data-size="sm"
-  class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card mx-auto w-full max-w-sm"
+  class="*:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card mx-auto w-full max-w-sm"
 >
   <div data-slot="card-header" class="group/card-header">
-    <div
-      data-slot="card-title"
-      class="text-base leading-snug group-data-[size=sm]/card:text-sm cn-font-heading"
-    >
-      Small Card
-    </div>
+    <div data-slot="card-title" class="cn-font-heading">Small Card</div>
     <div data-slot="card-description">This card uses the small size variant.</div>
   </div>
   <div data-slot="card-content">
@@ -165,7 +149,7 @@ Use the `size="sm"` prop to set the size of the card to small. The small size va
       data-slot="button"
       data-variant="outline"
       data-size="sm"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-7 rounded-[min(var(--radius-md),12px)] px-2.5 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5 w-full"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 group/button border-border dark:border-input rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg w-full"
     >
       Action
     </button>
@@ -196,7 +180,7 @@ In addition to the `size` prop, you can use the `--card-spacing` CSS variable to
     data-size="sm"
     data-spacing="2"
     data-orientation="horizontal"
-    class="rounded-lg data-[size=sm]:rounded-[min(var(--radius-md),10px)] group/toggle-group flex-row items-center data-vertical:flex-col data-vertical:items-stretch justify-center"
+    class="group/toggle-group justify-center"
     tabindex="0"
     style="outline: none; --gap: 2"
   >
@@ -209,7 +193,7 @@ In addition to the `size` prop, you can use the `--card-spacing` CSS variable to
       data-variant="outline"
       data-size="sm"
       data-spacing="2"
-      class="group-data-[spacing=0]/toggle-group:rounded-none group-data-[spacing=0]/toggle-group:px-2 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-end]:pr-1.5 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-start]:pl-1.5 group-data-horizontal/toggle-group:data-[spacing=0]:first:rounded-l-lg group-data-vertical/toggle-group:data-[spacing=0]:first:rounded-t-lg group-data-horizontal/toggle-group:data-[spacing=0]:last:rounded-r-lg group-data-vertical/toggle-group:data-[spacing=0]:last:rounded-b-lg group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:border-l-0 group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:border-t-0 group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-l group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-t aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted group/toggle border-input hover:bg-muted border bg-transparent h-7 min-w-7 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
+      class="group-data-[spacing=0]/toggle-group:rounded-none group-data-[spacing=0]/toggle-group:px-2 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-end]:pr-1.5 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-start]:pl-1.5 group-data-horizontal/toggle-group:data-[spacing=0]:first:rounded-l-lg group-data-vertical/toggle-group:data-[spacing=0]:first:rounded-t-lg group-data-horizontal/toggle-group:data-[spacing=0]:last:rounded-r-lg group-data-vertical/toggle-group:data-[spacing=0]:last:rounded-b-lg group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:border-l-0 group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:border-t-0 group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-l group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-t aria-pressed:bg-muted focus-visible:border-ring aria-invalid:border-destructive data-[state=on]:bg-muted group/toggle border-input hover:bg-muted border bg-transparent h-7 min-w-7 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
       tabindex="-1"
       data-radix-collection-item=""
     >
@@ -223,7 +207,7 @@ In addition to the `size` prop, you can use the `--card-spacing` CSS variable to
       data-variant="outline"
       data-size="sm"
       data-spacing="2"
-      class="group-data-[spacing=0]/toggle-group:rounded-none group-data-[spacing=0]/toggle-group:px-2 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-end]:pr-1.5 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-start]:pl-1.5 group-data-horizontal/toggle-group:data-[spacing=0]:first:rounded-l-lg group-data-vertical/toggle-group:data-[spacing=0]:first:rounded-t-lg group-data-horizontal/toggle-group:data-[spacing=0]:last:rounded-r-lg group-data-vertical/toggle-group:data-[spacing=0]:last:rounded-b-lg group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:border-l-0 group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:border-t-0 group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-l group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-t aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted group/toggle border-input hover:bg-muted border bg-transparent h-7 min-w-7 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
+      class="group-data-[spacing=0]/toggle-group:rounded-none group-data-[spacing=0]/toggle-group:px-2 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-end]:pr-1.5 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-start]:pl-1.5 group-data-horizontal/toggle-group:data-[spacing=0]:first:rounded-l-lg group-data-vertical/toggle-group:data-[spacing=0]:first:rounded-t-lg group-data-horizontal/toggle-group:data-[spacing=0]:last:rounded-r-lg group-data-vertical/toggle-group:data-[spacing=0]:last:rounded-b-lg group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:border-l-0 group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:border-t-0 group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-l group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-t aria-pressed:bg-muted focus-visible:border-ring aria-invalid:border-destructive data-[state=on]:bg-muted group/toggle border-input hover:bg-muted border bg-transparent h-7 min-w-7 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
       tabindex="-1"
       data-radix-collection-item=""
     >
@@ -237,7 +221,7 @@ In addition to the `size` prop, you can use the `--card-spacing` CSS variable to
       data-variant="outline"
       data-size="sm"
       data-spacing="2"
-      class="group-data-[spacing=0]/toggle-group:rounded-none group-data-[spacing=0]/toggle-group:px-2 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-end]:pr-1.5 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-start]:pl-1.5 group-data-horizontal/toggle-group:data-[spacing=0]:first:rounded-l-lg group-data-vertical/toggle-group:data-[spacing=0]:first:rounded-t-lg group-data-horizontal/toggle-group:data-[spacing=0]:last:rounded-r-lg group-data-vertical/toggle-group:data-[spacing=0]:last:rounded-b-lg group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:border-l-0 group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:border-t-0 group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-l group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-t aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted group/toggle border-input hover:bg-muted border bg-transparent h-7 min-w-7 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
+      class="group-data-[spacing=0]/toggle-group:rounded-none group-data-[spacing=0]/toggle-group:px-2 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-end]:pr-1.5 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-start]:pl-1.5 group-data-horizontal/toggle-group:data-[spacing=0]:first:rounded-l-lg group-data-vertical/toggle-group:data-[spacing=0]:first:rounded-t-lg group-data-horizontal/toggle-group:data-[spacing=0]:last:rounded-r-lg group-data-vertical/toggle-group:data-[spacing=0]:last:rounded-b-lg group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:border-l-0 group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:border-t-0 group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-l group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-t aria-pressed:bg-muted focus-visible:border-ring aria-invalid:border-destructive data-[state=on]:bg-muted group/toggle border-input hover:bg-muted border bg-transparent h-7 min-w-7 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
       tabindex="-1"
       data-radix-collection-item=""
     >
@@ -251,7 +235,7 @@ In addition to the `size` prop, you can use the `--card-spacing` CSS variable to
       data-variant="outline"
       data-size="sm"
       data-spacing="2"
-      class="group-data-[spacing=0]/toggle-group:rounded-none group-data-[spacing=0]/toggle-group:px-2 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-end]:pr-1.5 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-start]:pl-1.5 group-data-horizontal/toggle-group:data-[spacing=0]:first:rounded-l-lg group-data-vertical/toggle-group:data-[spacing=0]:first:rounded-t-lg group-data-horizontal/toggle-group:data-[spacing=0]:last:rounded-r-lg group-data-vertical/toggle-group:data-[spacing=0]:last:rounded-b-lg group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:border-l-0 group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:border-t-0 group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-l group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-t aria-pressed:bg-muted focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[state=on]:bg-muted group/toggle border-input hover:bg-muted border bg-transparent h-7 min-w-7 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
+      class="group-data-[spacing=0]/toggle-group:rounded-none group-data-[spacing=0]/toggle-group:px-2 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-end]:pr-1.5 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-start]:pl-1.5 group-data-horizontal/toggle-group:data-[spacing=0]:first:rounded-l-lg group-data-vertical/toggle-group:data-[spacing=0]:first:rounded-t-lg group-data-horizontal/toggle-group:data-[spacing=0]:last:rounded-r-lg group-data-vertical/toggle-group:data-[spacing=0]:last:rounded-b-lg group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:border-l-0 group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:border-t-0 group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-l group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-t aria-pressed:bg-muted focus-visible:border-ring aria-invalid:border-destructive data-[state=on]:bg-muted group/toggle border-input hover:bg-muted border bg-transparent h-7 min-w-7 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
       tabindex="-1"
       data-radix-collection-item=""
     >
@@ -261,22 +245,17 @@ In addition to the `size` prop, you can use the `--card-spacing` CSS variable to
   <div
     data-slot="card"
     data-size="default"
-    class="rounded-xl py-(--card-spacing) has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card [--card-spacing:--spacing(4)]"
+    class="*:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
   >
     <div data-slot="card-header" class="group/card-header">
-      <div
-        data-slot="card-title"
-        class="text-base leading-snug group-data-[size=sm]/card:text-sm cn-font-heading"
-      >
-        Login to your account
-      </div>
+      <div data-slot="card-title" class="cn-font-heading">Login to your account</div>
       <div data-slot="card-description">Enter your email below to login to your account</div>
       <div data-slot="card-action">
         <button
           data-slot="button"
           data-variant="link"
           data-size="default"
-          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border-transparent [&_svg:not([class*='size-'])]:size-4 group/button h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+          class="rounded-lg group/button"
         >
           Sign Up
         </button>
@@ -286,10 +265,10 @@ In addition to the `size` prop, you can use the `--card-spacing` CSS variable to
       <form>
         <div class="flex flex-col gap-6">
           <div class="grid gap-2">
-            <label data-slot="label" class="text-sm leading-none" for="email-spacing">Email</label
+            <label data-slot="label" for="email-spacing">Email</label
             ><input
               data-slot="input"
-              class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent text-base file:h-6 file:text-sm md:text-sm file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+              class="rounded-lg"
               id="email-spacing"
               placeholder="m@example.com"
               required=""
@@ -298,15 +277,14 @@ In addition to the `size` prop, you can use the `--card-spacing` CSS variable to
           </div>
           <div class="grid gap-2">
             <div class="flex items-center">
-              <label data-slot="label" class="text-sm leading-none" for="password-spacing"
-                >Password</label
+              <label data-slot="label" for="password-spacing">Password</label
               ><a href="#" class="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                 >Forgot your password?</a
               >
             </div>
             <input
               data-slot="input"
-              class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent text-base file:h-6 file:text-sm md:text-sm file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
+              class="rounded-lg"
               id="password-spacing"
               required=""
               type="password"
@@ -320,7 +298,7 @@ In addition to the `size` prop, you can use the `--card-spacing` CSS variable to
         data-slot="button"
         data-variant="default"
         data-size="default"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border-transparent [&_svg:not([class*='size-'])]:size-4 group/button bg-primary hover:bg-primary/80 h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 w-full"
+        class="rounded-lg group/button w-full"
         type="submit"
       >
         Login</button
@@ -328,7 +306,7 @@ In addition to the `size` prop, you can use the `--card-spacing` CSS variable to
         data-slot="button"
         data-variant="outline"
         data-size="default"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 w-full"
+        class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg group/button border-border dark:border-input w-full"
       >
         Login with Google
       </button>
@@ -408,15 +386,10 @@ Use negative margins with `-mx-(--card-spacing)` to make content go edge to edge
 <div
   data-slot="card"
   data-size="default"
-  class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card mx-auto w-full max-w-sm"
+  class="*:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card mx-auto w-full max-w-sm"
 >
   <div data-slot="card-header" class="group/card-header">
-    <div
-      data-slot="card-title"
-      class="text-base leading-snug group-data-[size=sm]/card:text-sm cn-font-heading"
-    >
-      Terms of Service
-    </div>
+    <div data-slot="card-title" class="cn-font-heading">Terms of Service</div>
     <div data-slot="card-description">Review the terms before accepting the agreement.</div>
   </div>
   <div data-slot="card-content" class="-mb-(--card-spacing)">
@@ -446,14 +419,14 @@ Use negative margins with `-mx-(--card-spacing)` to make content go edge to edge
       data-slot="button"
       data-variant="outline"
       data-size="default"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+      class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg group/button border-border dark:border-input"
     >
       Decline</button
     ><button
       data-slot="button"
       data-variant="default"
       data-size="default"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border-transparent [&_svg:not([class*='size-'])]:size-4 group/button bg-primary hover:bg-primary/80 h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+      class="rounded-lg group/button"
     >
       Accept
     </button>
@@ -478,7 +451,7 @@ Add an image before the card header to create a card with an image.
 <div
   data-slot="card"
   data-size="default"
-  class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card relative mx-auto w-full max-w-sm pt-0"
+  class="py-(--card-spacing) has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card relative mx-auto w-full max-w-sm pt-0"
 >
   <div class="absolute inset-0 z-30 aspect-video bg-black/35"></div>
   <img
@@ -488,19 +461,11 @@ Add an image before the card header to create a card with an image.
   />
   <div data-slot="card-header" class="group/card-header">
     <div data-slot="card-action">
-      <span
-        data-slot="badge"
-        data-variant="secondary"
-        class="h-5 rounded-4xl border-transparent px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 bg-secondary [a]:hover:bg-secondary/80"
+      <span data-slot="badge" data-variant="secondary" class="rounded-4xl group/badge"
         >Featured</span
       >
     </div>
-    <div
-      data-slot="card-title"
-      class="text-base leading-snug group-data-[size=sm]/card:text-sm cn-font-heading"
-    >
-      Design systems meetup
-    </div>
+    <div data-slot="card-title" class="cn-font-heading">Design systems meetup</div>
     <div data-slot="card-description">
       A practical talk on component APIs, accessibility, and shipping faster.
     </div>
@@ -510,7 +475,7 @@ Add an image before the card header to create a card with an image.
       data-slot="button"
       data-variant="default"
       data-size="default"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border-transparent [&_svg:not([class*='size-'])]:size-4 group/button bg-primary hover:bg-primary/80 h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 w-full"
+      class="rounded-lg group/button w-full"
     >
       View Event
     </button>

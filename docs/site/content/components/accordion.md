@@ -26,7 +26,7 @@ A vertically stacked set of interactive headings that each reveal a section of c
         data-orientation="vertical"
         id="radix-a2"
         data-slot="accordion-trigger"
-        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
+        class="group/accordion-trigger"
         data-radix-collection-item=""
       >
         What are your shipping options?<svg
@@ -94,7 +94,7 @@ A vertically stacked set of interactive headings that each reveal a section of c
         data-orientation="vertical"
         id="radix-a4"
         data-slot="accordion-trigger"
-        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
+        class="group/accordion-trigger"
         data-radix-collection-item=""
       >
         What is your return policy?<svg
@@ -152,7 +152,7 @@ A vertically stacked set of interactive headings that each reveal a section of c
         data-orientation="vertical"
         id="radix-a6"
         data-slot="accordion-trigger"
-        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
+        class="group/accordion-trigger"
         data-radix-collection-item=""
       >
         How can I contact customer support?<svg
@@ -334,7 +334,7 @@ A basic accordion that shows one item at a time. The first item is open by defau
         data-orientation="vertical"
         id="radix-a2"
         data-slot="accordion-trigger"
-        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
+        class="group/accordion-trigger"
         data-radix-collection-item=""
       >
         How do I reset my password?<svg
@@ -402,7 +402,7 @@ A basic accordion that shows one item at a time. The first item is open by defau
         data-orientation="vertical"
         id="radix-a4"
         data-slot="accordion-trigger"
-        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
+        class="group/accordion-trigger"
         data-radix-collection-item=""
       >
         Can I change my subscription plan?<svg
@@ -460,7 +460,7 @@ A basic accordion that shows one item at a time. The first item is open by defau
         data-orientation="vertical"
         id="radix-a6"
         data-slot="accordion-trigger"
-        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
+        class="group/accordion-trigger"
         data-radix-collection-item=""
       >
         What payment methods do you accept?<svg
@@ -593,7 +593,7 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
         data-orientation="vertical"
         id="radix-a2"
         data-slot="accordion-trigger"
-        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
+        class="group/accordion-trigger"
         data-radix-collection-item=""
       >
         Notification Settings<svg
@@ -661,7 +661,7 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
         data-orientation="vertical"
         id="radix-a4"
         data-slot="accordion-trigger"
-        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
+        class="group/accordion-trigger"
         data-radix-collection-item=""
       >
         Privacy &amp; Security<svg
@@ -719,7 +719,7 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
         data-orientation="vertical"
         id="radix-a6"
         data-slot="accordion-trigger"
-        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
+        class="group/accordion-trigger"
         data-radix-collection-item=""
       >
         Billing &amp; Subscription<svg
@@ -852,7 +852,7 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
         data-orientation="vertical"
         id="radix-a2"
         data-slot="accordion-trigger"
-        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
+        class="group/accordion-trigger"
         data-radix-collection-item=""
       >
         Can I access my account history?<svg
@@ -912,7 +912,7 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
         data-orientation="vertical"
         id="radix-a4"
         data-slot="accordion-trigger"
-        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
+        class="group/accordion-trigger"
         data-radix-collection-item=""
       >
         Premium feature information<svg
@@ -971,7 +971,7 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
         data-orientation="vertical"
         id="radix-a6"
         data-slot="accordion-trigger"
-        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
+        class="group/accordion-trigger"
         data-radix-collection-item=""
       >
         How do I update my email address?<svg
@@ -1109,7 +1109,7 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
         data-orientation="vertical"
         id="radix-a2"
         data-slot="accordion-trigger"
-        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
+        class="group/accordion-trigger"
         data-radix-collection-item=""
       >
         How does billing work?<svg
@@ -1183,7 +1183,7 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
         data-orientation="vertical"
         id="radix-a4"
         data-slot="accordion-trigger"
-        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
+        class="group/accordion-trigger"
         data-radix-collection-item=""
       >
         Is my data secure?<svg
@@ -1246,7 +1246,7 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
         data-orientation="vertical"
         id="radix-a6"
         data-slot="accordion-trigger"
-        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
+        class="group/accordion-trigger"
         data-radix-collection-item=""
       >
         What integrations do you support?<svg
@@ -1371,15 +1371,10 @@ Wrap the `Accordion` in a `Card` component.
 <div
   data-slot="card"
   data-size="default"
-  class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card w-full max-w-sm"
+  class="*:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card w-full max-w-sm"
 >
   <div data-slot="card-header" class="group/card-header">
-    <div
-      data-slot="card-title"
-      class="text-base leading-snug group-data-[size=sm]/card:text-sm cn-font-heading"
-    >
-      Subscription &amp; Billing
-    </div>
+    <div data-slot="card-title" class="cn-font-heading">Subscription &amp; Billing</div>
     <div data-slot="card-description">
       Common questions about your account, plans, payments and cancellations.
     </div>
@@ -1396,7 +1391,7 @@ Wrap the `Accordion` in a `Card` component.
             data-orientation="vertical"
             id="radix-a2"
             data-slot="accordion-trigger"
-            class="focus-visible:border-ring focus-visible:after:border-ring rounded-lg group/accordion-trigger border-transparent"
+            class="rounded-lg group/accordion-trigger"
             data-radix-collection-item=""
           >
             What subscription plans do you offer?<svg
@@ -1465,7 +1460,7 @@ Wrap the `Accordion` in a `Card` component.
             data-orientation="vertical"
             id="radix-a4"
             data-slot="accordion-trigger"
-            class="focus-visible:border-ring focus-visible:after:border-ring rounded-lg group/accordion-trigger border-transparent"
+            class="rounded-lg group/accordion-trigger"
             data-radix-collection-item=""
           >
             How does billing work?<svg
@@ -1523,7 +1518,7 @@ Wrap the `Accordion` in a `Card` component.
             data-orientation="vertical"
             id="radix-a6"
             data-slot="accordion-trigger"
-            class="focus-visible:border-ring focus-visible:after:border-ring rounded-lg group/accordion-trigger border-transparent"
+            class="rounded-lg group/accordion-trigger"
             data-radix-collection-item=""
           >
             How do I cancel my subscription?<svg

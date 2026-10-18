@@ -78,7 +78,7 @@ Use a `Field` component to add a label to the progress bar.
   role="group"
   data-slot="field"
   data-orientation="vertical"
-  class="group/field *:w-full [&>.sr-only]:w-auto w-full max-w-sm"
+  class="group/field *:w-full [&>.sr-only]:w-auto max-w-sm"
 >
   <label
     data-slot="field-label"
@@ -142,12 +142,8 @@ A progress bar that can be controlled by a slider.
     data-orientation="horizontal"
     aria-disabled="false"
     data-slot="slider"
-    class="w-full data-vertical:w-auto"
     style="--radix-slider-thumb-transform: translateX(-50%)"
-    ><span
-      data-orientation="horizontal"
-      data-slot="slider-track"
-      class="data-horizontal:h-1 data-vertical:w-1 data-horizontal:w-full data-vertical:h-full"
+    ><span data-orientation="horizontal" data-slot="slider-track"
       ><span
         data-orientation="horizontal"
         data-slot="slider-range"
@@ -167,7 +163,6 @@ A progress bar that can be controlled by a slider.
         data-orientation="horizontal"
         tabindex="0"
         data-slot="slider-thumb"
-        class="relative after:absolute"
         data-radix-collection-item=""
         aria-valuenow="50"
         style=""

@@ -17,34 +17,10 @@ Used to display textual user input from keyboard.
 ```text,name=kbd-demo.html
 <div class="flex flex-col items-center gap-4">
   <kbd data-slot="kbd-group"
-    ><kbd
-      data-slot="kbd"
-      class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit [&_svg:not([class*='size-'])]:size-3"
-      >⌘</kbd
-    ><kbd
-      data-slot="kbd"
-      class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit [&_svg:not([class*='size-'])]:size-3"
-      >⇧</kbd
-    ><kbd
-      data-slot="kbd"
-      class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit [&_svg:not([class*='size-'])]:size-3"
-      >⌥</kbd
-    ><kbd
-      data-slot="kbd"
-      class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit [&_svg:not([class*='size-'])]:size-3"
-      >⌃</kbd
-    ></kbd
+    ><kbd data-slot="kbd">⌘</kbd><kbd data-slot="kbd">⇧</kbd><kbd data-slot="kbd">⌥</kbd
+    ><kbd data-slot="kbd">⌃</kbd></kbd
   ><kbd data-slot="kbd-group"
-    ><kbd
-      data-slot="kbd"
-      class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit [&_svg:not([class*='size-'])]:size-3"
-      >Ctrl</kbd
-    ><span>+</span
-    ><kbd
-      data-slot="kbd"
-      class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit [&_svg:not([class*='size-'])]:size-3"
-      >B</kbd
-    ></kbd
+    ><kbd data-slot="kbd">Ctrl</kbd><span>+</span><kbd data-slot="kbd">B</kbd></kbd
   >
 </div>
 ```
@@ -99,15 +75,7 @@ Use the `KbdGroup` component to group keyboard keys together.
   <p class="text-sm text-muted-foreground">
     Use
     <kbd data-slot="kbd-group"
-      ><kbd
-        data-slot="kbd"
-        class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit [&_svg:not([class*='size-'])]:size-3"
-        >Ctrl + B</kbd
-      ><kbd
-        data-slot="kbd"
-        class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit [&_svg:not([class*='size-'])]:size-3"
-        >Ctrl + K</kbd
-      ></kbd
+      ><kbd data-slot="kbd">Ctrl + B</kbd><kbd data-slot="kbd">Ctrl + K</kbd></kbd
     >
     to open the command palette
   </p>
@@ -132,12 +100,12 @@ Use the `Kbd` component inside a `Button` component to display a keyboard key in
   data-slot="button"
   data-variant="outline"
   data-size="default"
-  class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+  class="focus-visible:border-ring aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border dark:border-input"
 >
   Accept
   <kbd
     data-slot="kbd"
-    class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit [&_svg:not([class*='size-'])]:size-3 translate-x-0.5"
+    class="h-5 w-fit [&_svg:not([class*='size-'])]:size-3 translate-x-0.5"
     data-icon="inline-end"
     >⏎</kbd
   >
@@ -207,7 +175,6 @@ You can use the `Kbd` component inside a `Tooltip` component to display a toolti
       data-align="center"
       data-state="delayed-open"
       data-slot="tooltip-content"
-      class="rounded-md px-3 has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:rounded-sm"
       style="
         --radix-tooltip-content-transform-origin: var(--radix-popper-transform-origin);
         --radix-tooltip-content-available-width: var(--radix-popper-available-width);
@@ -217,11 +184,7 @@ You can use the `Kbd` component inside a `Tooltip` component to display a toolti
       "
       id="k0"
     >
-      Save Changes
-      <kbd
-        data-slot="kbd"
-        class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit [&_svg:not([class*='size-'])]:size-3"
-        >S</kbd
+      Save Changes <kbd data-slot="kbd">S</kbd
       ><span
         style="
           position: absolute;
@@ -254,12 +217,7 @@ You can use the `Kbd` component inside a `Tooltip` component to display a toolti
           white-space: nowrap;
           overflow-wrap: normal;
         "
-        >Save Changes
-        <kbd
-          data-slot="kbd"
-          class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit [&_svg:not([class*='size-'])]:size-3"
-          >S</kbd
-        ></span
+        >Save Changes <kbd data-slot="kbd">S</kbd></span
       >
     </div>
   </div>
@@ -286,7 +244,6 @@ You can use the `Kbd` component inside a `Tooltip` component to display a toolti
       data-align="center"
       data-state="delayed-open"
       data-slot="tooltip-content"
-      class="rounded-md px-3 has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:rounded-sm"
       style="
         --radix-tooltip-content-transform-origin: var(--radix-popper-transform-origin);
         --radix-tooltip-content-available-width: var(--radix-popper-available-width);
@@ -297,16 +254,7 @@ You can use the `Kbd` component inside a `Tooltip` component to display a toolti
       id="k1"
     >
       Print Document
-      <kbd data-slot="kbd-group"
-        ><kbd
-          data-slot="kbd"
-          class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit [&_svg:not([class*='size-'])]:size-3"
-          >Ctrl</kbd
-        ><kbd
-          data-slot="kbd"
-          class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit [&_svg:not([class*='size-'])]:size-3"
-          >P</kbd
-        ></kbd
+      <kbd data-slot="kbd-group"><kbd data-slot="kbd">Ctrl</kbd><kbd data-slot="kbd">P</kbd></kbd
       ><span
         style="
           position: absolute;
@@ -341,15 +289,7 @@ You can use the `Kbd` component inside a `Tooltip` component to display a toolti
         "
         >Print Document
         <kbd data-slot="kbd-group"
-          ><kbd
-            data-slot="kbd"
-            class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit [&_svg:not([class*='size-'])]:size-3"
-            >Ctrl</kbd
-          ><kbd
-            data-slot="kbd"
-            class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit [&_svg:not([class*='size-'])]:size-3"
-            >P</kbd
-          ></kbd
+          ><kbd data-slot="kbd">Ctrl</kbd><kbd data-slot="kbd">P</kbd></kbd
         ></span
       >
     </div>
@@ -430,19 +370,14 @@ You can use the `Kbd` component inside a `InputGroupAddon` component to display 
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto"
+    class="group/input-group has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5"
   >
     <input
       data-slot="input-group-control"
       class="border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium md:text-sm w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
       placeholder="Search..."
     />
-    <div
-      role="group"
-      data-slot="input-group-addon"
-      data-align="inline-start"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pl-2 has-[>button]:ml-[-0.3rem] has-[>kbd]:ml-[-0.15rem]"
-    >
+    <div role="group" data-slot="input-group-addon" data-align="inline-start" class="py-1.5 pl-2">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -463,15 +398,11 @@ You can use the `Kbd` component inside a `InputGroupAddon` component to display 
       role="group"
       data-slot="input-group-addon"
       data-align="inline-end"
-      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem]"
+      class="py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 pr-2"
     >
-      <kbd
-        data-slot="kbd"
-        class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit px-1 [&_svg:not([class*='size-'])]:size-3"
+      <kbd data-slot="kbd" class="h-5 w-fit rounded-sm px-1 [&_svg:not([class*='size-'])]:size-3"
         >⌘</kbd
-      ><kbd
-        data-slot="kbd"
-        class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit px-1 [&_svg:not([class*='size-'])]:size-3"
+      ><kbd data-slot="kbd" class="h-5 w-fit rounded-sm px-1 [&_svg:not([class*='size-'])]:size-3"
         >K</kbd
       >
     </div>

@@ -16,11 +16,7 @@ Displays a callout for user attention.
 {% <codegroup> %}
 ```text,name=alert-demo.html
 <div class="grid w-full max-w-md items-start gap-4">
-  <div
-    data-slot="alert"
-    role="alert"
-    class="gap-0.5 px-2.5 has-data-[slot=alert-action]:pr-18 has-[>svg]:gap-x-2 *:[svg]:text-current *:[svg:not([class*='size-'])]:size-4 group/alert w-full text-card-foreground"
-  >
+  <div data-slot="alert" role="alert" class="*:[svg]:text-current group/alert">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -37,18 +33,11 @@ Displays a callout for user attention.
       <path d="m9 12 2 2 4-4"></path>
     </svg>
     <div data-slot="alert-title" class="[&_a]:hover:text-foreground">Payment successful</div>
-    <div
-      data-slot="alert-description"
-      class="text-muted-foreground text-balance md:text-pretty [&_a]:hover:text-foreground"
-    >
+    <div data-slot="alert-description" class="text-muted-foreground [&_a]:hover:text-foreground">
       Your payment of $29.99 has been processed. A receipt has been sent to your email address.
     </div>
   </div>
-  <div
-    data-slot="alert"
-    role="alert"
-    class="gap-0.5 px-2.5 has-data-[slot=alert-action]:pr-18 has-[>svg]:gap-x-2 *:[svg]:text-current *:[svg:not([class*='size-'])]:size-4 group/alert w-full text-card-foreground"
-  >
+  <div data-slot="alert" role="alert" class="*:[svg]:text-current group/alert">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -66,10 +55,7 @@ Displays a callout for user attention.
       <path d="M12 8h.01"></path>
     </svg>
     <div data-slot="alert-title" class="[&_a]:hover:text-foreground">New feature available</div>
-    <div
-      data-slot="alert-description"
-      class="text-muted-foreground text-balance md:text-pretty [&_a]:hover:text-foreground"
-    >
+    <div data-slot="alert-description" class="text-muted-foreground [&_a]:hover:text-foreground">
       We've added dark mode support. You can enable it in your account settings.
     </div>
   </div>
@@ -123,11 +109,7 @@ A basic alert with an icon, title and description.
 
 {% <codegroup> %}
 ```text,name=alert-basic.html
-<div
-  data-slot="alert"
-  role="alert"
-  class="gap-0.5 px-2.5 has-data-[slot=alert-action]:pr-18 has-[>svg]:gap-x-2 *:[svg]:text-current *:[svg:not([class*='size-'])]:size-4 group/alert w-full text-card-foreground max-w-md"
->
+<div data-slot="alert" role="alert" class="*:[svg]:text-current group/alert max-w-md">
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -146,10 +128,7 @@ A basic alert with an icon, title and description.
   <div data-slot="alert-title" class="[&_a]:hover:text-foreground">
     Account updated successfully
   </div>
-  <div
-    data-slot="alert-description"
-    class="text-muted-foreground text-balance md:text-pretty [&_a]:hover:text-foreground"
-  >
+  <div data-slot="alert-description" class="text-muted-foreground [&_a]:hover:text-foreground">
     Your profile information has been saved. Changes will be reflected immediately.
   </div>
 </div>
@@ -172,7 +151,7 @@ Use `variant="destructive"` to create a destructive alert.
 <div
   data-slot="alert"
   role="alert"
-  class="gap-0.5 px-2.5 has-data-[slot=alert-action]:pr-18 has-[>svg]:gap-x-2 *:[svg:not([class*='size-'])]:size-4 group/alert w-full text-destructive *:data-[slot=alert-description]:text-destructive/90 *:[svg]:text-current max-w-md"
+  class="group/alert text-destructive *:data-[slot=alert-description]:text-destructive/90 *:[svg]:text-current max-w-md"
 >
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -191,10 +170,7 @@ Use `variant="destructive"` to create a destructive alert.
     <line x1="12" x2="12.01" y1="16" y2="16"></line>
   </svg>
   <div data-slot="alert-title" class="[&_a]:hover:text-foreground">Payment failed</div>
-  <div
-    data-slot="alert-description"
-    class="text-muted-foreground text-balance md:text-pretty [&_a]:hover:text-foreground"
-  >
+  <div data-slot="alert-description" class="text-muted-foreground [&_a]:hover:text-foreground">
     Your payment could not be processed. Please check your payment method and try again.
   </div>
 </div>
@@ -217,13 +193,10 @@ Use `AlertAction` to add a button or other action element to the alert.
 <div
   data-slot="alert"
   role="alert"
-  class="gap-0.5 px-2.5 has-data-[slot=alert-action]:pr-18 has-[>svg]:gap-x-2 *:[svg]:text-current *:[svg:not([class*='size-'])]:size-4 group/alert w-full text-card-foreground max-w-md"
+  class="*:[svg]:translate-y-0.5 *:[svg]:text-current *:[svg:not([class*='size-'])]:size-4 group/alert max-w-md"
 >
   <div data-slot="alert-title" class="[&_a]:hover:text-foreground">Dark mode is now available</div>
-  <div
-    data-slot="alert-description"
-    class="text-muted-foreground text-balance md:text-pretty [&_a]:hover:text-foreground"
-  >
+  <div data-slot="alert-description" class="text-muted-foreground [&_a]:hover:text-foreground">
     Enable it under your profile settings to get started.
   </div>
   <div data-slot="alert-action">
@@ -231,7 +204,7 @@ Use `AlertAction` to add a button or other action element to the alert.
       data-slot="button"
       data-variant="default"
       data-size="xs"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button bg-primary text-primary-foreground hover:bg-primary/80 h-6 rounded-[min(var(--radius-md),10px)] px-2 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3"
+      class="active:not-aria-[haspopup]:translate-y-px group/button text-primary-foreground h-6 [&_svg:not([class*='size-'])]:size-3"
     >
       Enable
     </button>
@@ -256,7 +229,7 @@ You can customize the alert colors by adding custom classes such as `bg-amber-50
 <div
   data-slot="alert"
   role="alert"
-  class="gap-0.5 px-2.5 has-data-[slot=alert-action]:pr-18 has-[>svg]:gap-x-2 *:[svg]:text-current *:[svg:not([class*='size-'])]:size-4 group/alert w-full max-w-md border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-50"
+  class="*:[svg]:text-current group/alert max-w-md border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-50"
 >
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -277,10 +250,7 @@ You can customize the alert colors by adding custom classes such as `bg-amber-50
   <div data-slot="alert-title" class="[&_a]:hover:text-foreground">
     Your subscription will expire in 3 days.
   </div>
-  <div
-    data-slot="alert-description"
-    class="text-muted-foreground text-balance md:text-pretty [&_a]:hover:text-foreground"
-  >
+  <div data-slot="alert-description" class="text-muted-foreground [&_a]:hover:text-foreground">
     Renew now to avoid service interruption or upgrade to a paid plan to continue using the service.
   </div>
 </div>

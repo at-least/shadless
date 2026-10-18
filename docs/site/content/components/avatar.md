@@ -16,50 +16,30 @@ An image element with a fallback for representing the user.
 {% <codegroup> %}
 ```text,name=avatar-demo.html
 <div class="flex flex-row flex-wrap items-center gap-6 md:gap-12">
-  <span
-    data-slot="avatar"
-    data-size="default"
-    class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+  <span data-slot="avatar" data-size="default" class="group/avatar"
     ><img
       data-slot="avatar-image"
       class="grayscale"
       alt="@shadcn"
       src="https://github.com/shadcn.png" /></span
-  ><span
-    data-slot="avatar"
-    data-size="default"
-    class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+  ><span data-slot="avatar" data-size="default" class="group/avatar"
     ><img data-slot="avatar-image" alt="@evilrabbit" src="https://github.com/evilrabbit.png" /><span
       data-slot="avatar-badge"
-      class="inline-flex group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&>svg]:hidden group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&>svg]:size-2 group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&>svg]:size-2 bg-green-600 dark:bg-green-800"
+      class="bg-green-600 dark:bg-green-800"
     ></span
   ></span>
   <div data-slot="avatar-group" class="group/avatar-group grayscale">
-    <span
-      data-slot="avatar"
-      data-size="default"
-      class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+    <span data-slot="avatar" data-size="default" class="group/avatar"
       ><img data-slot="avatar-image" alt="@shadcn" src="https://github.com/shadcn.png" /></span
-    ><span
-      data-slot="avatar"
-      data-size="default"
-      class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+    ><span data-slot="avatar" data-size="default" class="group/avatar"
       ><img
         data-slot="avatar-image"
         alt="@maxleiter"
         src="https://github.com/maxleiter.png" /></span
-    ><span
-      data-slot="avatar"
-      data-size="default"
-      class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+    ><span data-slot="avatar" data-size="default" class="group/avatar"
       ><img data-slot="avatar-image" alt="@evilrabbit" src="https://github.com/evilrabbit.png"
     /></span>
-    <div
-      data-slot="avatar-group-count"
-      class="size-8 group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&>svg]:size-4 group-has-data-[size=lg]/avatar-group:[&>svg]:size-5 group-has-data-[size=sm]/avatar-group:[&>svg]:size-3"
-    >
-      +3
-    </div>
+    <div data-slot="avatar-group-count">+3</div>
   </div>
 </div>
 ```
@@ -151,10 +131,7 @@ A basic avatar component with an image and a fallback.
 
 {% <codegroup> %}
 ```text,name=avatar-basic.html
-<span
-  data-slot="avatar"
-  data-size="default"
-  class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+<span data-slot="avatar" data-size="default" class="group/avatar"
   ><img
     data-slot="avatar-image"
     class="grayscale"
@@ -206,13 +183,10 @@ Use the `AvatarBadge` component to add a badge to the avatar. The badge is posit
 
 {% <codegroup> %}
 ```text,name=avatar-badge.html
-<span
-  data-slot="avatar"
-  data-size="default"
-  class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+<span data-slot="avatar" data-size="default" class="group/avatar"
   ><img data-slot="avatar-image" alt="@shadcn" src="https://github.com/shadcn.png" /><span
     data-slot="avatar-badge"
-    class="inline-flex group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&>svg]:hidden group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&>svg]:size-2 group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&>svg]:size-2 bg-green-600 dark:bg-green-800"
+    class="bg-green-600 dark:bg-green-800"
   ></span
 ></span>
 ```
@@ -270,13 +244,9 @@ You can also use an icon inside `data-slot="avatar-badge"`.
 
 {% <codegroup> %}
 ```text,name=avatar-badge-icon.html
-<span
-  data-slot="avatar"
-  data-size="default"
-  class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten grayscale"
+<span data-slot="avatar" data-size="default" class="group/avatar grayscale"
   ><img data-slot="avatar-image" alt="@pranathip" src="https://github.com/pranathip.png" /><span
     data-slot="avatar-badge"
-    class="inline-flex group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&>svg]:hidden group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&>svg]:size-2 group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&>svg]:size-2"
     ><svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -338,20 +308,11 @@ Use the `AvatarGroup` component to add a group of avatars.
 {% <codegroup> %}
 ```text,name=avatar-group.html
 <div data-slot="avatar-group" class="group/avatar-group grayscale">
-  <span
-    data-slot="avatar"
-    data-size="default"
-    class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+  <span data-slot="avatar" data-size="default" class="group/avatar"
     ><img data-slot="avatar-image" alt="@shadcn" src="https://github.com/shadcn.png" /></span
-  ><span
-    data-slot="avatar"
-    data-size="default"
-    class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+  ><span data-slot="avatar" data-size="default" class="group/avatar"
     ><img data-slot="avatar-image" alt="@maxleiter" src="https://github.com/maxleiter.png" /></span
-  ><span
-    data-slot="avatar"
-    data-size="default"
-    class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+  ><span data-slot="avatar" data-size="default" class="group/avatar"
     ><img data-slot="avatar-image" alt="@evilrabbit" src="https://github.com/evilrabbit.png"
   /></span>
 </div>
@@ -401,28 +362,14 @@ Use `data-slot="avatar-group-count"` to add a count to the group.
 {% <codegroup> %}
 ```text,name=avatar-group-count.html
 <div data-slot="avatar-group" class="group/avatar-group grayscale">
-  <span
-    data-slot="avatar"
-    data-size="default"
-    class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+  <span data-slot="avatar" data-size="default" class="group/avatar"
     ><img data-slot="avatar-image" alt="@shadcn" src="https://github.com/shadcn.png" /></span
-  ><span
-    data-slot="avatar"
-    data-size="default"
-    class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+  ><span data-slot="avatar" data-size="default" class="group/avatar"
     ><img data-slot="avatar-image" alt="@maxleiter" src="https://github.com/maxleiter.png" /></span
-  ><span
-    data-slot="avatar"
-    data-size="default"
-    class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+  ><span data-slot="avatar" data-size="default" class="group/avatar"
     ><img data-slot="avatar-image" alt="@evilrabbit" src="https://github.com/evilrabbit.png"
   /></span>
-  <div
-    data-slot="avatar-group-count"
-    class="size-8 group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&>svg]:size-4 group-has-data-[size=lg]/avatar-group:[&>svg]:size-5 group-has-data-[size=sm]/avatar-group:[&>svg]:size-3"
-  >
-    +3
-  </div>
+  <div data-slot="avatar-group-count">+3</div>
 </div>
 ```
 
@@ -470,26 +417,14 @@ You can also use an icon inside `data-slot="avatar-group-count"`.
 {% <codegroup> %}
 ```text,name=avatar-group-count-icon.html
 <div data-slot="avatar-group" class="group/avatar-group grayscale">
-  <span
-    data-slot="avatar"
-    data-size="default"
-    class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+  <span data-slot="avatar" data-size="default" class="group/avatar"
     ><img data-slot="avatar-image" alt="@shadcn" src="https://github.com/shadcn.png" /></span
-  ><span
-    data-slot="avatar"
-    data-size="default"
-    class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+  ><span data-slot="avatar" data-size="default" class="group/avatar"
     ><img data-slot="avatar-image" alt="@maxleiter" src="https://github.com/maxleiter.png" /></span
-  ><span
-    data-slot="avatar"
-    data-size="default"
-    class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+  ><span data-slot="avatar" data-size="default" class="group/avatar"
     ><img data-slot="avatar-image" alt="@evilrabbit" src="https://github.com/evilrabbit.png"
   /></span>
-  <div
-    data-slot="avatar-group-count"
-    class="size-8 group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&>svg]:size-4 group-has-data-[size=lg]/avatar-group:[&>svg]:size-5 group-has-data-[size=sm]/avatar-group:[&>svg]:size-3"
-  >
+  <div data-slot="avatar-group-count">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -553,20 +488,11 @@ Use the `size` prop to change the size of the avatar.
 {% <codegroup> %}
 ```text,name=avatar-size.html
 <div class="flex flex-wrap items-center gap-2 grayscale">
-  <span
-    data-slot="avatar"
-    data-size="sm"
-    class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+  <span data-slot="avatar" data-size="sm" class="group/avatar"
     ><img data-slot="avatar-image" alt="@shadcn" src="https://github.com/shadcn.png" /></span
-  ><span
-    data-slot="avatar"
-    data-size="default"
-    class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+  ><span data-slot="avatar" data-size="default" class="group/avatar"
     ><img data-slot="avatar-image" alt="@shadcn" src="https://github.com/shadcn.png" /></span
-  ><span
-    data-slot="avatar"
-    data-size="lg"
-    class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+  ><span data-slot="avatar" data-size="lg" class="group/avatar"
     ><img data-slot="avatar-image" alt="@shadcn" src="https://github.com/shadcn.png"
   /></span>
 </div>
@@ -630,10 +556,8 @@ You can use the `Avatar` component as a trigger for a dropdown menu.
   <span
     data-slot="avatar"
     data-size="default"
-    class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
-    ><span data-slot="avatar-fallback" class="size-full text-sm group-data-[size=sm]/avatar:text-xs"
-      >CN</span
-    ></span
+    class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar"
+    ><span data-slot="avatar-fallback" class="size-full">CN</span></span
   >
 </button>
 <template id="m0-tpl">
@@ -648,7 +572,7 @@ You can use the `Avatar` component as a trigger for a dropdown menu.
     id="m0"
     aria-labelledby="m0-trigger"
     data-slot="dropdown-menu-content"
-    class="cn-menu-target cn-menu-translucent overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden w-32"
+    class="cn-menu-target cn-menu-translucent w-32"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -666,7 +590,7 @@ You can use the `Avatar` component as a trigger for a dropdown menu.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -677,7 +601,7 @@ You can use the `Avatar` component as a trigger for a dropdown menu.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -688,7 +612,7 @@ You can use the `Avatar` component as a trigger for a dropdown menu.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -702,7 +626,7 @@ You can use the `Avatar` component as a trigger for a dropdown menu.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="destructive"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+        class="group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""

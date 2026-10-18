@@ -75,10 +75,7 @@ Pagination with page navigation, next and previous links.
       >
     </li>
     <li data-slot="pagination-item">
-      <span
-        aria-hidden="true"
-        data-slot="pagination-ellipsis"
-        class="size-8 [&_svg:not([class*='size-'])]:size-4"
+      <span aria-hidden="true" data-slot="pagination-ellipsis"
         ><svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -255,11 +252,11 @@ Use just the previous and next buttons without page numbers. This is useful for 
     role="group"
     data-slot="field"
     data-orientation="horizontal"
-    class="group/field items-center has-[>[data-slot=field-content]]:items-start w-fit"
+    class="group/field *:data-[slot=field-label]:flex-auto w-fit"
   >
     <label
       data-slot="field-label"
-      class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+      class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
       for="s0-trigger"
       >Rows per page</label
     ><button
@@ -272,7 +269,7 @@ Use just the previous and next buttons without page numbers. This is useful for 
       data-state="closed"
       data-slot="select-trigger"
       data-size="default"
-      class="border-input dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg bg-transparent data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] [&_svg:not([class*='size-'])]:size-4 flex *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex w-20"
+      class="[&_svg]:shrink-0 w-20"
       id="s0-trigger"
     >
       <span data-slot="select-value" style="pointer-events: none">25</span
@@ -391,7 +388,6 @@ Use just the previous and next buttons without page numbers. This is useful for 
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -406,7 +402,6 @@ Use just the previous and next buttons without page numbers. This is useful for 
           data-state="checked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
           data-highlighted=""
         >
@@ -434,7 +429,6 @@ Use just the previous and next buttons without page numbers. This is useful for 
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -449,7 +443,6 @@ Use just the previous and next buttons without page numbers. This is useful for 
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span

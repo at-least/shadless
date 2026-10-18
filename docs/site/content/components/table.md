@@ -21,90 +21,61 @@ A responsive table component.
       A list of your recent invoices.
     </caption>
     <thead data-slot="table-header">
-      <tr
-        data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted has-aria-expanded:bg-muted/50"
-      >
-        <th data-slot="table-head" class="px-2 [&:has([role=checkbox])]:pr-0 w-[100px]">Invoice</th>
-        <th data-slot="table-head" class="px-2 [&:has([role=checkbox])]:pr-0">Status</th>
-        <th data-slot="table-head" class="px-2 [&:has([role=checkbox])]:pr-0">Method</th>
-        <th data-slot="table-head" class="px-2 [&:has([role=checkbox])]:pr-0 text-right">Amount</th>
+      <tr data-slot="table-row">
+        <th data-slot="table-head" class="w-[100px]">Invoice</th>
+        <th data-slot="table-head">Status</th>
+        <th data-slot="table-head">Method</th>
+        <th data-slot="table-head" class="text-right">Amount</th>
       </tr>
     </thead>
-    <tbody data-slot="table-body">
-      <tr
-        data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted has-aria-expanded:bg-muted/50"
-      >
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 font-medium">INV001</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">Paid</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">Credit Card</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 text-right">$250.00</td>
+    <tbody data-slot="table-body" class="[&_tr:last-child]:border-0">
+      <tr data-slot="table-row" class="border-b">
+        <td data-slot="table-cell" class="font-medium">INV001</td>
+        <td data-slot="table-cell">Paid</td>
+        <td data-slot="table-cell">Credit Card</td>
+        <td data-slot="table-cell" class="text-right">$250.00</td>
       </tr>
-      <tr
-        data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted has-aria-expanded:bg-muted/50"
-      >
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 font-medium">INV002</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">Pending</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">PayPal</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 text-right">$150.00</td>
+      <tr data-slot="table-row" class="border-b">
+        <td data-slot="table-cell" class="font-medium">INV002</td>
+        <td data-slot="table-cell">Pending</td>
+        <td data-slot="table-cell">PayPal</td>
+        <td data-slot="table-cell" class="text-right">$150.00</td>
       </tr>
-      <tr
-        data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted has-aria-expanded:bg-muted/50"
-      >
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 font-medium">INV003</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">Unpaid</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">Bank Transfer</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 text-right">$350.00</td>
+      <tr data-slot="table-row" class="border-b">
+        <td data-slot="table-cell" class="font-medium">INV003</td>
+        <td data-slot="table-cell">Unpaid</td>
+        <td data-slot="table-cell">Bank Transfer</td>
+        <td data-slot="table-cell" class="text-right">$350.00</td>
       </tr>
-      <tr
-        data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted has-aria-expanded:bg-muted/50"
-      >
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 font-medium">INV004</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">Paid</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">Credit Card</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 text-right">$450.00</td>
+      <tr data-slot="table-row" class="border-b">
+        <td data-slot="table-cell" class="font-medium">INV004</td>
+        <td data-slot="table-cell">Paid</td>
+        <td data-slot="table-cell">Credit Card</td>
+        <td data-slot="table-cell" class="text-right">$450.00</td>
       </tr>
-      <tr
-        data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted has-aria-expanded:bg-muted/50"
-      >
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 font-medium">INV005</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">Paid</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">PayPal</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 text-right">$550.00</td>
+      <tr data-slot="table-row" class="border-b">
+        <td data-slot="table-cell" class="font-medium">INV005</td>
+        <td data-slot="table-cell">Paid</td>
+        <td data-slot="table-cell">PayPal</td>
+        <td data-slot="table-cell" class="text-right">$550.00</td>
       </tr>
-      <tr
-        data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted has-aria-expanded:bg-muted/50"
-      >
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 font-medium">INV006</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">Pending</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">Bank Transfer</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 text-right">$200.00</td>
+      <tr data-slot="table-row" class="border-b">
+        <td data-slot="table-cell" class="font-medium">INV006</td>
+        <td data-slot="table-cell">Pending</td>
+        <td data-slot="table-cell">Bank Transfer</td>
+        <td data-slot="table-cell" class="text-right">$200.00</td>
       </tr>
-      <tr
-        data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted has-aria-expanded:bg-muted/50"
-      >
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 font-medium">INV007</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">Unpaid</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">Credit Card</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 text-right">$300.00</td>
+      <tr data-slot="table-row" class="border-b">
+        <td data-slot="table-cell" class="font-medium">INV007</td>
+        <td data-slot="table-cell">Unpaid</td>
+        <td data-slot="table-cell">Credit Card</td>
+        <td data-slot="table-cell" class="text-right">$300.00</td>
       </tr>
     </tbody>
-    <tfoot data-slot="table-footer">
-      <tr
-        data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted has-aria-expanded:bg-muted/50"
-      >
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0" colspan="3">Total</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 text-right">
-          $2,500.00
-        </td>
+    <tfoot data-slot="table-footer" class="[&>tr]:last:border-b-0">
+      <tr data-slot="table-row" class="border-b">
+        <td data-slot="table-cell" colspan="3">Total</td>
+        <td data-slot="table-cell" class="text-right">$2,500.00</td>
       </tr>
     </tfoot>
   </table>
@@ -179,54 +150,37 @@ Use the `data-slot="table-footer"` component to add a footer to the table.
       A list of your recent invoices.
     </caption>
     <thead data-slot="table-header">
-      <tr
-        data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted has-aria-expanded:bg-muted/50"
-      >
-        <th data-slot="table-head" class="px-2 [&:has([role=checkbox])]:pr-0 w-[100px]">Invoice</th>
-        <th data-slot="table-head" class="px-2 [&:has([role=checkbox])]:pr-0">Status</th>
-        <th data-slot="table-head" class="px-2 [&:has([role=checkbox])]:pr-0">Method</th>
-        <th data-slot="table-head" class="px-2 [&:has([role=checkbox])]:pr-0 text-right">Amount</th>
+      <tr data-slot="table-row">
+        <th data-slot="table-head" class="w-[100px]">Invoice</th>
+        <th data-slot="table-head">Status</th>
+        <th data-slot="table-head">Method</th>
+        <th data-slot="table-head" class="text-right">Amount</th>
       </tr>
     </thead>
-    <tbody data-slot="table-body">
-      <tr
-        data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted has-aria-expanded:bg-muted/50"
-      >
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 font-medium">INV001</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">Paid</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">Credit Card</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 text-right">$250.00</td>
+    <tbody data-slot="table-body" class="[&_tr:last-child]:border-0">
+      <tr data-slot="table-row" class="border-b">
+        <td data-slot="table-cell" class="font-medium">INV001</td>
+        <td data-slot="table-cell">Paid</td>
+        <td data-slot="table-cell">Credit Card</td>
+        <td data-slot="table-cell" class="text-right">$250.00</td>
       </tr>
-      <tr
-        data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted has-aria-expanded:bg-muted/50"
-      >
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 font-medium">INV002</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">Pending</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">PayPal</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 text-right">$150.00</td>
+      <tr data-slot="table-row" class="border-b">
+        <td data-slot="table-cell" class="font-medium">INV002</td>
+        <td data-slot="table-cell">Pending</td>
+        <td data-slot="table-cell">PayPal</td>
+        <td data-slot="table-cell" class="text-right">$150.00</td>
       </tr>
-      <tr
-        data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted has-aria-expanded:bg-muted/50"
-      >
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 font-medium">INV003</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">Unpaid</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">Bank Transfer</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 text-right">$350.00</td>
+      <tr data-slot="table-row" class="border-b">
+        <td data-slot="table-cell" class="font-medium">INV003</td>
+        <td data-slot="table-cell">Unpaid</td>
+        <td data-slot="table-cell">Bank Transfer</td>
+        <td data-slot="table-cell" class="text-right">$350.00</td>
       </tr>
     </tbody>
-    <tfoot data-slot="table-footer">
-      <tr
-        data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted has-aria-expanded:bg-muted/50"
-      >
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0" colspan="3">Total</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 text-right">
-          $2,500.00
-        </td>
+    <tfoot data-slot="table-footer" class="[&>tr]:last:border-b-0">
+      <tr data-slot="table-row" class="border-b">
+        <td data-slot="table-cell" colspan="3">Total</td>
+        <td data-slot="table-cell" class="text-right">$2,500.00</td>
       </tr>
     </tfoot>
   </table>
@@ -250,27 +204,17 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
 <div data-slot="table-container">
   <table data-slot="table">
     <thead data-slot="table-header">
-      <tr
-        data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted has-aria-expanded:bg-muted/50"
-      >
-        <th data-slot="table-head" class="px-2 [&:has([role=checkbox])]:pr-0">Product</th>
-        <th data-slot="table-head" class="px-2 [&:has([role=checkbox])]:pr-0">Price</th>
-        <th data-slot="table-head" class="px-2 [&:has([role=checkbox])]:pr-0 text-right">
-          Actions
-        </th>
+      <tr data-slot="table-row">
+        <th data-slot="table-head">Product</th>
+        <th data-slot="table-head">Price</th>
+        <th data-slot="table-head" class="text-right">Actions</th>
       </tr>
     </thead>
     <tbody data-slot="table-body" class="[&_tr:last-child]:border-0">
-      <tr
-        data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b has-aria-expanded:bg-muted/50"
-      >
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 font-medium">
-          Wireless Mouse
-        </td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">$29.99</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 text-right">
+      <tr data-slot="table-row" class="border-b">
+        <td data-slot="table-cell" class="font-medium">Wireless Mouse</td>
+        <td data-slot="table-cell">$29.99</td>
+        <td data-slot="table-cell" class="text-right">
           <button
             data-slot="dropdown-menu-trigger"
             data-variant="ghost"
@@ -302,15 +246,10 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
           </button>
         </td>
       </tr>
-      <tr
-        data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b has-aria-expanded:bg-muted/50"
-      >
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 font-medium">
-          Mechanical Keyboard
-        </td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">$129.99</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 text-right">
+      <tr data-slot="table-row" class="border-b">
+        <td data-slot="table-cell" class="font-medium">Mechanical Keyboard</td>
+        <td data-slot="table-cell">$129.99</td>
+        <td data-slot="table-cell" class="text-right">
           <button
             data-slot="dropdown-menu-trigger"
             data-variant="ghost"
@@ -342,15 +281,10 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
           </button>
         </td>
       </tr>
-      <tr
-        data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b has-aria-expanded:bg-muted/50"
-      >
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 font-medium">
-          USB-C Hub
-        </td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">$49.99</td>
-        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 text-right">
+      <tr data-slot="table-row" class="border-b">
+        <td data-slot="table-cell" class="font-medium">USB-C Hub</td>
+        <td data-slot="table-cell">$49.99</td>
+        <td data-slot="table-cell" class="text-right">
           <button
             data-slot="dropdown-menu-trigger"
             data-variant="ghost"
@@ -397,7 +331,7 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
     id="m0"
     aria-labelledby="m0-trigger"
     data-slot="dropdown-menu-content"
-    class="cn-menu-target cn-menu-translucent overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -414,7 +348,7 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+      class="group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -425,7 +359,7 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+      class="group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -437,7 +371,7 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="destructive"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+      class="group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -458,7 +392,7 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
     id="m1"
     aria-labelledby="m1-trigger"
     data-slot="dropdown-menu-content"
-    class="cn-menu-target cn-menu-translucent overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -475,7 +409,7 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+      class="group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -486,7 +420,7 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+      class="group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -498,7 +432,7 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="destructive"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+      class="group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -519,7 +453,7 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
     id="m2"
     aria-labelledby="m2-trigger"
     data-slot="dropdown-menu-content"
-    class="cn-menu-target cn-menu-translucent overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -536,7 +470,7 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+      class="group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -547,7 +481,7 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+      class="group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -559,7 +493,7 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="destructive"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
+      class="group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""

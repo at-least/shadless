@@ -21,13 +21,9 @@ An input where the user selects a value from within a given range.
     data-orientation="horizontal"
     aria-disabled="false"
     data-slot="slider"
-    class="w-full data-vertical:w-auto"
     id="s1"
     style="--radix-slider-thumb-transform: translateX(-50%)"
-    ><span
-      data-orientation="horizontal"
-      data-slot="slider-track"
-      class="data-horizontal:h-1 data-vertical:w-1 data-horizontal:w-full data-vertical:h-full"
+    ><span data-orientation="horizontal" data-slot="slider-track"
       ><span
         data-orientation="horizontal"
         data-slot="slider-range"
@@ -47,7 +43,6 @@ An input where the user selects a value from within a given range.
         data-orientation="horizontal"
         tabindex="0"
         data-slot="slider-thumb"
-        class="relative after:absolute"
         data-radix-collection-item=""
         aria-valuenow="50"
         style=""
@@ -164,12 +159,9 @@ Use an array with two values for a range slider.
   data-orientation="horizontal"
   aria-disabled="false"
   data-slot="slider"
-  class="data-vertical:w-auto mx-auto w-full max-w-xs"
+  class="mx-auto max-w-xs"
   style="--radix-slider-thumb-transform: translateX(-50%)"
-  ><span
-    data-orientation="horizontal"
-    data-slot="slider-track"
-    class="data-horizontal:h-1 data-vertical:w-1 data-horizontal:w-full data-vertical:h-full"
+  ><span data-orientation="horizontal" data-slot="slider-track"
     ><span
       data-orientation="horizontal"
       data-slot="slider-range"
@@ -189,7 +181,6 @@ Use an array with two values for a range slider.
       data-orientation="horizontal"
       tabindex="0"
       data-slot="slider-thumb"
-      class="relative after:absolute"
       data-radix-collection-item=""
       aria-label="Minimum"
       aria-valuenow="25"
@@ -209,7 +200,6 @@ Use an array with two values for a range slider.
       data-orientation="horizontal"
       tabindex="0"
       data-slot="slider-thumb"
-      class="relative after:absolute"
       data-radix-collection-item=""
       aria-label="Maximum"
       aria-valuenow="50"
@@ -287,12 +277,9 @@ Use an array with multiple values for multiple thumbs.
   data-orientation="horizontal"
   aria-disabled="false"
   data-slot="slider"
-  class="data-vertical:w-auto mx-auto w-full max-w-xs"
+  class="mx-auto max-w-xs"
   style="--radix-slider-thumb-transform: translateX(-50%)"
-  ><span
-    data-orientation="horizontal"
-    data-slot="slider-track"
-    class="data-horizontal:h-1 data-vertical:w-1 data-horizontal:w-full data-vertical:h-full"
+  ><span data-orientation="horizontal" data-slot="slider-track"
     ><span
       data-orientation="horizontal"
       data-slot="slider-range"
@@ -313,7 +300,6 @@ Use an array with multiple values for multiple thumbs.
       data-orientation="horizontal"
       tabindex="0"
       data-slot="slider-thumb"
-      class="relative after:absolute"
       data-radix-collection-item=""
       aria-valuenow="10"
       style=""
@@ -333,7 +319,6 @@ Use an array with multiple values for multiple thumbs.
       data-orientation="horizontal"
       tabindex="0"
       data-slot="slider-thumb"
-      class="relative after:absolute"
       data-radix-collection-item=""
       aria-valuenow="20"
       style=""
@@ -353,7 +338,6 @@ Use an array with multiple values for multiple thumbs.
       data-orientation="horizontal"
       tabindex="0"
       data-slot="slider-thumb"
-      class="relative after:absolute"
       data-radix-collection-item=""
       aria-valuenow="70"
       style=""
@@ -430,12 +414,9 @@ Use `orientation="vertical"` for a vertical slider.
     data-orientation="vertical"
     aria-disabled="false"
     data-slot="slider"
-    class="w-full data-vertical:h-full data-vertical:w-auto h-40"
+    class="data-vertical:h-full h-40"
     style="--radix-slider-thumb-transform: translateY(50%)"
-    ><span
-      data-orientation="vertical"
-      data-slot="slider-track"
-      class="data-horizontal:h-1 data-vertical:w-1 data-horizontal:w-full data-vertical:h-full"
+    ><span data-orientation="vertical" data-slot="slider-track"
       ><span
         data-orientation="vertical"
         data-slot="slider-range"
@@ -455,7 +436,6 @@ Use `orientation="vertical"` for a vertical slider.
         data-orientation="vertical"
         tabindex="0"
         data-slot="slider-thumb"
-        class="relative after:absolute"
         data-radix-collection-item=""
         aria-valuenow="50"
         style=""
@@ -464,12 +444,9 @@ Use `orientation="vertical"` for a vertical slider.
     data-orientation="vertical"
     aria-disabled="false"
     data-slot="slider"
-    class="w-full data-vertical:h-full data-vertical:w-auto h-40"
+    class="data-vertical:h-full h-40"
     style="--radix-slider-thumb-transform: translateY(50%)"
-    ><span
-      data-orientation="vertical"
-      data-slot="slider-track"
-      class="data-horizontal:h-1 data-vertical:w-1 data-horizontal:w-full data-vertical:h-full"
+    ><span data-orientation="vertical" data-slot="slider-track"
       ><span
         data-orientation="vertical"
         data-slot="slider-range"
@@ -489,7 +466,6 @@ Use `orientation="vertical"` for a vertical slider.
         data-orientation="vertical"
         tabindex="0"
         data-slot="slider-thumb"
-        class="relative after:absolute"
         data-radix-collection-item=""
         aria-valuenow="25"
         style=""
@@ -562,8 +538,7 @@ Use `orientation="vertical"` for a vertical slider.
 ```text,name=slider-controlled.html
 <div class="mx-auto grid w-full max-w-xs gap-3">
   <div class="flex items-center justify-between gap-2">
-    <label data-slot="label" class="text-sm leading-none" for="slider-demo-temperature"
-      >Temperature</label
+    <label data-slot="label" for="slider-demo-temperature">Temperature</label
     ><span class="text-sm text-muted-foreground">0.3, 0.7</span>
   </div>
   <span
@@ -571,13 +546,9 @@ Use `orientation="vertical"` for a vertical slider.
     data-orientation="horizontal"
     aria-disabled="false"
     data-slot="slider"
-    class="w-full data-vertical:w-auto"
     id="slider-demo-temperature"
     style="--radix-slider-thumb-transform: translateX(-50%)"
-    ><span
-      data-orientation="horizontal"
-      data-slot="slider-track"
-      class="data-horizontal:h-1 data-vertical:w-1 data-horizontal:w-full data-vertical:h-full"
+    ><span data-orientation="horizontal" data-slot="slider-track"
       ><span
         data-orientation="horizontal"
         data-slot="slider-range"
@@ -597,7 +568,6 @@ Use `orientation="vertical"` for a vertical slider.
         data-orientation="horizontal"
         tabindex="0"
         data-slot="slider-thumb"
-        class="relative after:absolute"
         data-radix-collection-item=""
         aria-label="Minimum"
         aria-valuenow="0.3"
@@ -617,7 +587,6 @@ Use `orientation="vertical"` for a vertical slider.
         data-orientation="horizontal"
         tabindex="0"
         data-slot="slider-thumb"
-        class="relative after:absolute"
         data-radix-collection-item=""
         aria-label="Maximum"
         aria-valuenow="0.7"
@@ -697,13 +666,9 @@ Use the `disabled` prop to disable the slider.
   aria-disabled="true"
   data-disabled=""
   data-slot="slider"
-  class="data-vertical:w-auto mx-auto w-full max-w-xs"
+  class="mx-auto max-w-xs"
   style="--radix-slider-thumb-transform: translateX(-50%)"
-  ><span
-    data-disabled=""
-    data-orientation="horizontal"
-    data-slot="slider-track"
-    class="data-horizontal:h-1 data-vertical:w-1 data-horizontal:w-full data-vertical:h-full"
+  ><span data-disabled="" data-orientation="horizontal" data-slot="slider-track"
     ><span
       data-orientation="horizontal"
       data-disabled=""
@@ -724,7 +689,6 @@ Use the `disabled` prop to disable the slider.
       data-orientation="horizontal"
       data-disabled=""
       data-slot="slider-thumb"
-      class="relative after:absolute"
       data-radix-collection-item=""
       aria-valuenow="50"
       style=""

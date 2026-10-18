@@ -81,7 +81,7 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 <div
   data-slot="card"
   data-size="default"
-  class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card w-full max-w-xs"
+  class="*:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card w-full max-w-xs"
 >
   <div data-slot="card-header" class="group/card-header">
     <div data-slot="skeleton" class="rounded-md h-4 w-2/3"></div>

@@ -21,11 +21,7 @@ component.
 {% <codegroup> %}
 ```text,name=native-select-demo.html
 <div class="group/native-select" data-slot="native-select-wrapper" data-size="default">
-  <select
-    data-slot="native-select"
-    data-size="default"
-    class="border-input placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 rounded-lg bg-transparent py-1 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] data-[size=sm]:py-0.5"
-  >
+  <select data-slot="native-select" data-size="default">
     <option data-slot="native-select-option" value="">Select status</option>
     <option data-slot="native-select-option" value="todo">Todo</option>
     <option data-slot="native-select-option" value="in-progress">In Progress</option>
@@ -98,11 +94,7 @@ Use `NativeSelectOptGroup` to organize options into categories.
 {% <codegroup> %}
 ```text,name=native-select-groups.html
 <div class="group/native-select" data-slot="native-select-wrapper" data-size="default">
-  <select
-    data-slot="native-select"
-    data-size="default"
-    class="border-input placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 rounded-lg bg-transparent py-1 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] data-[size=sm]:py-0.5"
-  >
+  <select data-slot="native-select" data-size="default">
     <option data-slot="native-select-option" value="">Select department</option>
     <optgroup data-slot="native-select-optgroup" label="Engineering">
       <option data-slot="native-select-option" value="frontend">Frontend</option>
@@ -153,12 +145,7 @@ Add the `disabled` prop to the `NativeSelect` component to disable the select.
 {% <codegroup> %}
 ```text,name=native-select-disabled.html
 <div class="group/native-select" data-slot="native-select-wrapper" data-size="default">
-  <select
-    data-slot="native-select"
-    data-size="default"
-    class="border-input placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 rounded-lg bg-transparent py-1 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] data-[size=sm]:py-0.5"
-    disabled=""
-  >
+  <select data-slot="native-select" data-size="default" disabled="">
     <option data-slot="native-select-option" value="">Disabled</option>
     <option data-slot="native-select-option" value="apple">Apple</option>
     <option data-slot="native-select-option" value="banana">Banana</option>
@@ -197,12 +184,7 @@ Use `aria-invalid` to show validation errors and the `data-invalid` attribute to
 {% <codegroup> %}
 ```text,name=native-select-invalid.html
 <div class="group/native-select" data-slot="native-select-wrapper" data-size="default">
-  <select
-    data-slot="native-select"
-    data-size="default"
-    class="border-input placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 rounded-lg bg-transparent py-1 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] data-[size=sm]:py-0.5"
-    aria-invalid="true"
-  >
+  <select data-slot="native-select" data-size="default" aria-invalid="true">
     <option data-slot="native-select-option" value="">Error state</option>
     <option data-slot="native-select-option" value="apple">Apple</option>
     <option data-slot="native-select-option" value="banana">Banana</option>

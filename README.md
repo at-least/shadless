@@ -22,7 +22,7 @@ The component **markup** is deliberately not in the package: it is text you
 copy and edit, not a file you import. The copy source is the code tab under
 every example on the docs site (`npm run docs && npm run docs:preview`) —
 **slot-only markup**: the `data-slot`/`data-*` attributes plus only the
-classes the component stylesheet does not already supply. Import `shadless`
+classes the component stylesheet cannot reproduce on its own. Import `shadless`
 and the component's stylesheet and it renders exactly like the preview
 (`docs-code-parity` proves that, in a consumer build as well as against the
 precompiled CSS). The preview iframe itself renders the full inline DOM
