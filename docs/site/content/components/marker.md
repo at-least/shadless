@@ -19,12 +19,12 @@ Displays an inline status, system note, bordered row, or labeled separator in a 
   <div
     data-slot="marker"
     data-variant="default"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&amp;_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
+    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
   >
     <span
       data-slot="marker-icon"
       aria-hidden="true"
-      class="size-4 [&amp;_svg:not([class*='size-'])]:size-4 shrink-0"
+      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -50,13 +50,13 @@ Displays an inline status, system note, bordered row, or labeled separator in a 
   <div
     data-slot="marker"
     data-variant="default"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&amp;_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
+    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
     role="status"
   >
     <span
       data-slot="marker-icon"
       aria-hidden="true"
-      class="size-4 [&amp;_svg:not([class*='size-'])]:size-4 shrink-0"
+      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -82,7 +82,7 @@ Displays an inline status, system note, bordered row, or labeled separator in a 
   <div
     data-slot="marker"
     data-variant="separator"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&amp;_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
+    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
   >
     <span
       data-slot="marker-content"
@@ -93,12 +93,12 @@ Displays an inline status, system note, bordered row, or labeled separator in a 
   <div
     data-slot="marker"
     data-variant="default"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&amp;_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
+    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
   >
     <span
       data-slot="marker-icon"
       aria-hidden="true"
-      class="size-4 [&amp;_svg:not([class*='size-'])]:size-4 shrink-0"
+      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -181,7 +181,7 @@ Use `variant` to switch between an inline marker, bordered row, and labeled sepa
   <div
     data-slot="marker"
     data-variant="default"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&amp;_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
+    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
   >
     <span
       data-slot="marker-content"
@@ -192,7 +192,7 @@ Use `variant` to switch between an inline marker, bordered row, and labeled sepa
   <div
     data-slot="marker"
     data-variant="separator"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&amp;_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
+    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
   >
     <span
       data-slot="marker-content"
@@ -203,7 +203,7 @@ Use `variant` to switch between an inline marker, bordered row, and labeled sepa
   <div
     data-slot="marker"
     data-variant="border"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&amp;_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center border-b border-border pb-2"
+    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center border-b border-border pb-2"
   >
     <span
       data-slot="marker-content"
@@ -238,13 +238,13 @@ Set `role="status"` and include a [`Spinner`](/components/spinner) for streaming
   <div
     data-slot="marker"
     data-variant="default"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&amp;_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
+    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
     role="status"
   >
     <span
       data-slot="marker-icon"
       aria-hidden="true"
-      class="size-4 [&amp;_svg:not([class*='size-'])]:size-4 shrink-0"
+      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -270,13 +270,13 @@ Set `role="status"` and include a [`Spinner`](/components/spinner) for streaming
   <div
     data-slot="marker"
     data-variant="separator"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&amp;_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
+    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
     role="status"
   >
     <span
       data-slot="marker-icon"
       aria-hidden="true"
-      class="size-4 [&amp;_svg:not([class*='size-'])]:size-4 shrink-0"
+      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -320,7 +320,7 @@ Add the [`shimmer`](/guides/shimmer) utility class to `MarkerContent` for an ani
   <div
     data-slot="marker"
     data-variant="default"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&amp;_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
+    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
     role="status"
   >
     <span
@@ -332,7 +332,7 @@ Add the [`shimmer`](/guides/shimmer) utility class to `MarkerContent` for an ani
   <div
     data-slot="marker"
     data-variant="separator"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&amp;_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
+    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
     role="status"
   >
     <span
@@ -362,7 +362,7 @@ Use the `separator` variant for labeled dividers, such as dates or section break
   <div
     data-slot="marker"
     data-variant="separator"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&amp;_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
+    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
   >
     <span
       data-slot="marker-content"
@@ -373,7 +373,7 @@ Use the `separator` variant for labeled dividers, such as dates or section break
   <div
     data-slot="marker"
     data-variant="separator"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&amp;_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
+    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
   >
     <span
       data-slot="marker-content"
@@ -384,7 +384,7 @@ Use the `separator` variant for labeled dividers, such as dates or section break
   <div
     data-slot="marker"
     data-variant="separator"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&amp;_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
+    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
   >
     <span
       data-slot="marker-content"
@@ -413,12 +413,12 @@ Use the `border` variant for status rows that should keep the default marker ali
   <div
     data-slot="marker"
     data-variant="border"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&amp;_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center border-b border-border pb-2"
+    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center border-b border-border pb-2"
   >
     <span
       data-slot="marker-icon"
       aria-hidden="true"
-      class="size-4 [&amp;_svg:not([class*='size-'])]:size-4 shrink-0"
+      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -444,12 +444,12 @@ Use the `border` variant for status rows that should keep the default marker ali
   <div
     data-slot="marker"
     data-variant="border"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&amp;_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center border-b border-border pb-2"
+    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center border-b border-border pb-2"
   >
     <span
       data-slot="marker-icon"
       aria-hidden="true"
-      class="size-4 [&amp;_svg:not([class*='size-'])]:size-4 shrink-0"
+      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -473,12 +473,12 @@ Use the `border` variant for status rows that should keep the default marker ali
   <div
     data-slot="marker"
     data-variant="border"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&amp;_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center border-b border-border pb-2"
+    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center border-b border-border pb-2"
   >
     <span
       data-slot="marker-icon"
       aria-hidden="true"
-      class="size-4 [&amp;_svg:not([class*='size-'])]:size-4 shrink-0"
+      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -523,12 +523,12 @@ Use `MarkerIcon` to render an icon alongside the content. Use `flex-col` to stac
   <div
     data-slot="marker"
     data-variant="default"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&amp;_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
+    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
   >
     <span
       data-slot="marker-icon"
       aria-hidden="true"
-      class="size-4 [&amp;_svg:not([class*='size-'])]:size-4 shrink-0"
+      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -554,12 +554,12 @@ Use `MarkerIcon` to render an icon alongside the content. Use `flex-col` to stac
   <div
     data-slot="marker"
     data-variant="separator"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&amp;_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
+    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
   >
     <span
       data-slot="marker-icon"
       aria-hidden="true"
-      class="size-4 [&amp;_svg:not([class*='size-'])]:size-4 shrink-0"
+      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -583,12 +583,12 @@ Use `MarkerIcon` to render an icon alongside the content. Use `flex-col` to stac
   <div
     data-slot="marker"
     data-variant="default"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&amp;_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center flex-col"
+    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center flex-col"
   >
     <span
       data-slot="marker-icon"
       aria-hidden="true"
-      class="size-4 [&amp;_svg:not([class*='size-'])]:size-4 shrink-0"
+      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -634,11 +634,11 @@ Turn a marker into a link or button by putting `data-slot="marker"` on the `<a>`
     href="#links-and-buttons"
     data-slot="marker"
     data-variant="default"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&amp;_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
+    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
     ><span
       data-slot="marker-icon"
       aria-hidden="true"
-      class="size-4 [&amp;_svg:not([class*='size-'])]:size-4 shrink-0"
+      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -662,14 +662,14 @@ Turn a marker into a link or button by putting `data-slot="marker"` on the `<a>`
     ></a
   ><button
     type="button"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&amp;_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center transition-colors hover:text-foreground"
+    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center transition-colors hover:text-foreground"
     data-slot="marker"
     data-variant="default"
   >
     <span
       data-slot="marker-icon"
       aria-hidden="true"
-      class="size-4 [&amp;_svg:not([class*='size-'])]:size-4 shrink-0"
+      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -782,8 +782,21 @@ When a marker links or triggers an action, put `data-slot="marker"` on a real `<
 | `data-slot="marker-icon"` |
 | `data-slot="marker-content"` |
 
-**Runtime:** no JavaScript — this is markup + CSS. Each row below is a `cva`-declared variant baked into the shipped CSS as a `data-*` attribute; set it next to the slot's `data-slot` to pick that value (the Default needs no attribute). This table only covers `cva` variants — check `dist/css/marker.css` for any other `data-*` selector on these slots.
+**Runtime:** no JavaScript — this is markup + CSS. Each row below is a `cva`-declared variant baked into the shipped CSS as a `data-*` attribute; set it next to the slot's `data-slot` to pick that value (the Default needs no attribute). This table only covers `cva` variants — the component stylesheet (`shadless/marker.css`) embedded below carries any other `data-*` selector on these slots.
 
 | Slot | Attribute | Values | Default |
 | --- | --- | --- | --- |
 | `marker` | `data-variant` | `default`, `separator`, `border` | `default` |
+
+**The stylesheet** — `shadless/marker.css`, the exact bytes of `dist/css/marker.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, so this is the authoritative default look of each slot:
+
+```css
+/* marker */
+@layer components {
+  [data-slot="marker-icon"] { @apply size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0; }
+  [data-slot="marker-content"] { @apply group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word; }
+  [data-slot="marker"] { @apply gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left relative flex w-full items-center; }
+  [data-slot="marker"]:where([data-variant="separator"]) { @apply before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1; }
+  [data-slot="marker"]:where([data-variant="border"]) { @apply border-b border-border pb-2; }
+}
+```

@@ -24,7 +24,7 @@ A versatile component for displaying content with media, title, description, and
   >
     <div
       data-slot="item-content"
-      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none"
+      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none"
     >
       <div
         data-slot="item-title"
@@ -34,7 +34,7 @@ A versatile component for displaying content with media, title, description, and
       </div>
       <p
         data-slot="item-description"
-        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
       >
         A simple item with title and description.
       </p>
@@ -44,7 +44,7 @@ A versatile component for displaying content with media, title, description, and
         data-slot="button"
         data-variant="outline"
         data-size="sm"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&amp;_svg:not([class*='size-'])]:size-3.5"
+        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
       >
         Action
       </button>
@@ -59,7 +59,7 @@ A versatile component for displaying content with media, title, description, and
     ><div
       data-slot="item-media"
       data-variant="default"
-      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&amp;_svg]:pointer-events-none bg-transparent"
+      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&_svg]:pointer-events-none bg-transparent"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -81,7 +81,7 @@ A versatile component for displaying content with media, title, description, and
     </div>
     <div
       data-slot="item-content"
-      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none"
+      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none"
     >
       <div
         data-slot="item-title"
@@ -178,7 +178,7 @@ Use the `variant` prop to change the visual style of the item.
     <div
       data-slot="item-media"
       data-variant="icon"
-      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4"
+      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -200,7 +200,7 @@ Use the `variant` prop to change the visual style of the item.
     </div>
     <div
       data-slot="item-content"
-      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none"
+      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none"
     >
       <div
         data-slot="item-title"
@@ -210,7 +210,7 @@ Use the `variant` prop to change the visual style of the item.
       </div>
       <p
         data-slot="item-description"
-        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
       >
         Transparent background with no border.
       </p>
@@ -225,7 +225,7 @@ Use the `variant` prop to change the visual style of the item.
     <div
       data-slot="item-media"
       data-variant="icon"
-      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4"
+      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -247,7 +247,7 @@ Use the `variant` prop to change the visual style of the item.
     </div>
     <div
       data-slot="item-content"
-      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none"
+      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none"
     >
       <div
         data-slot="item-title"
@@ -257,7 +257,7 @@ Use the `variant` prop to change the visual style of the item.
       </div>
       <p
         data-slot="item-description"
-        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
       >
         Outlined style with a visible border.
       </p>
@@ -272,7 +272,7 @@ Use the `variant` prop to change the visual style of the item.
     <div
       data-slot="item-media"
       data-variant="icon"
-      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4"
+      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -294,7 +294,7 @@ Use the `variant` prop to change the visual style of the item.
     </div>
     <div
       data-slot="item-content"
-      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none"
+      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none"
     >
       <div
         data-slot="item-title"
@@ -304,7 +304,7 @@ Use the `variant` prop to change the visual style of the item.
       </div>
       <p
         data-slot="item-description"
-        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
       >
         Muted background for secondary content.
       </p>
@@ -337,7 +337,7 @@ Use the `size` prop to change the size of the item. Available sizes are `default
     <div
       data-slot="item-media"
       data-variant="icon"
-      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4"
+      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -359,7 +359,7 @@ Use the `size` prop to change the size of the item. Available sizes are `default
     </div>
     <div
       data-slot="item-content"
-      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none"
+      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none"
     >
       <div
         data-slot="item-title"
@@ -369,7 +369,7 @@ Use the `size` prop to change the size of the item. Available sizes are `default
       </div>
       <p
         data-slot="item-description"
-        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
       >
         The standard size for most use cases.
       </p>
@@ -384,7 +384,7 @@ Use the `size` prop to change the size of the item. Available sizes are `default
     <div
       data-slot="item-media"
       data-variant="icon"
-      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4"
+      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -406,7 +406,7 @@ Use the `size` prop to change the size of the item. Available sizes are `default
     </div>
     <div
       data-slot="item-content"
-      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none"
+      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none"
     >
       <div
         data-slot="item-title"
@@ -416,7 +416,7 @@ Use the `size` prop to change the size of the item. Available sizes are `default
       </div>
       <p
         data-slot="item-description"
-        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
       >
         A compact size for dense layouts.
       </p>
@@ -431,7 +431,7 @@ Use the `size` prop to change the size of the item. Available sizes are `default
     <div
       data-slot="item-media"
       data-variant="icon"
-      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4"
+      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -453,7 +453,7 @@ Use the `size` prop to change the size of the item. Available sizes are `default
     </div>
     <div
       data-slot="item-content"
-      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none"
+      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none"
     >
       <div
         data-slot="item-title"
@@ -463,7 +463,7 @@ Use the `size` prop to change the size of the item. Available sizes are `default
       </div>
       <p
         data-slot="item-description"
-        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
       >
         The most compact size available.
       </p>
@@ -496,7 +496,7 @@ Use `ItemMedia` with `variant="icon"` to display an icon.
     <div
       data-slot="item-media"
       data-variant="icon"
-      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4"
+      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -519,7 +519,7 @@ Use `ItemMedia` with `variant="icon"` to display an icon.
     </div>
     <div
       data-slot="item-content"
-      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none"
+      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none"
     >
       <div
         data-slot="item-title"
@@ -529,7 +529,7 @@ Use `ItemMedia` with `variant="icon"` to display an icon.
       </div>
       <p
         data-slot="item-description"
-        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
       >
         New login detected from unknown device.
       </p>
@@ -539,7 +539,7 @@ Use `ItemMedia` with `variant="icon"` to display an icon.
         data-slot="button"
         data-variant="outline"
         data-size="sm"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&amp;_svg:not([class*='size-'])]:size-3.5"
+        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
       >
         Review
       </button>
@@ -572,7 +572,7 @@ You can use `ItemMedia` with `variant="avatar"` to display an avatar.
     <div
       data-slot="item-media"
       data-variant="default"
-      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&amp;_svg]:pointer-events-none bg-transparent"
+      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&_svg]:pointer-events-none bg-transparent"
     >
       <span
         data-slot="avatar"
@@ -586,7 +586,7 @@ You can use `ItemMedia` with `variant="avatar"` to display an avatar.
     </div>
     <div
       data-slot="item-content"
-      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none"
+      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none"
     >
       <div
         data-slot="item-title"
@@ -596,7 +596,7 @@ You can use `ItemMedia` with `variant="avatar"` to display an avatar.
       </div>
       <p
         data-slot="item-description"
-        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
       >
         Last seen 5 months ago
       </p>
@@ -606,7 +606,7 @@ You can use `ItemMedia` with `variant="avatar"` to display an avatar.
         data-slot="button"
         data-variant="outline"
         data-size="icon-sm"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full"
+        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full"
         aria-label="Invite"
       >
         <svg
@@ -636,7 +636,7 @@ You can use `ItemMedia` with `variant="avatar"` to display an avatar.
     <div
       data-slot="item-media"
       data-variant="default"
-      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&amp;_svg]:pointer-events-none bg-transparent"
+      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&_svg]:pointer-events-none bg-transparent"
     >
       <div
         class="flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background *:data-[slot=avatar]:grayscale"
@@ -673,7 +673,7 @@ You can use `ItemMedia` with `variant="avatar"` to display an avatar.
     </div>
     <div
       data-slot="item-content"
-      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none"
+      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none"
     >
       <div
         data-slot="item-title"
@@ -683,7 +683,7 @@ You can use `ItemMedia` with `variant="avatar"` to display an avatar.
       </div>
       <p
         data-slot="item-description"
-        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
       >
         Invite your team to collaborate on this project.
       </p>
@@ -693,7 +693,7 @@ You can use `ItemMedia` with `variant="avatar"` to display an avatar.
         data-slot="button"
         data-variant="outline"
         data-size="sm"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&amp;_svg:not([class*='size-'])]:size-3.5"
+        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
       >
         Invite
       </button>
@@ -761,7 +761,7 @@ Use `ItemMedia` with `variant="image"` to display an image.
       ><div
         data-slot="item-media"
         data-variant="image"
-        class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&amp;_svg]:pointer-events-none size-10 overflow-hidden rounded-sm group-data-[size=sm]/item:size-8 group-data-[size=xs]/item:size-6 [&amp;_img]:size-full [&amp;_img]:object-cover"
+        class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&_svg]:pointer-events-none size-10 overflow-hidden rounded-sm group-data-[size=sm]/item:size-8 group-data-[size=xs]/item:size-6 [&_img]:size-full [&_img]:object-cover"
       >
         <img
           alt="Midnight City Lights"
@@ -777,7 +777,7 @@ Use `ItemMedia` with `variant="image"` to display an image.
       </div>
       <div
         data-slot="item-content"
-        class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none"
+        class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none"
       >
         <div
           data-slot="item-title"
@@ -787,18 +787,18 @@ Use `ItemMedia` with `variant="image"` to display an image.
         </div>
         <p
           data-slot="item-description"
-          class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+          class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
         >
           Neon Dreams
         </p>
       </div>
       <div
         data-slot="item-content"
-        class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-col [&amp;+[data-slot=item-content]]:flex-none flex-none text-center"
+        class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-col [&+[data-slot=item-content]]:flex-none flex-none text-center"
       >
         <p
           data-slot="item-description"
-          class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+          class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
         >
           3:45
         </p>
@@ -813,7 +813,7 @@ Use `ItemMedia` with `variant="image"` to display an image.
       ><div
         data-slot="item-media"
         data-variant="image"
-        class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&amp;_svg]:pointer-events-none size-10 overflow-hidden rounded-sm group-data-[size=sm]/item:size-8 group-data-[size=xs]/item:size-6 [&amp;_img]:size-full [&amp;_img]:object-cover"
+        class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&_svg]:pointer-events-none size-10 overflow-hidden rounded-sm group-data-[size=sm]/item:size-8 group-data-[size=xs]/item:size-6 [&_img]:size-full [&_img]:object-cover"
       >
         <img
           alt="Coffee Shop Conversations"
@@ -829,7 +829,7 @@ Use `ItemMedia` with `variant="image"` to display an image.
       </div>
       <div
         data-slot="item-content"
-        class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none"
+        class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none"
       >
         <div
           data-slot="item-title"
@@ -839,18 +839,18 @@ Use `ItemMedia` with `variant="image"` to display an image.
         </div>
         <p
           data-slot="item-description"
-          class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+          class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
         >
           The Morning Brew
         </p>
       </div>
       <div
         data-slot="item-content"
-        class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-col [&amp;+[data-slot=item-content]]:flex-none flex-none text-center"
+        class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-col [&+[data-slot=item-content]]:flex-none flex-none text-center"
       >
         <p
           data-slot="item-description"
-          class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+          class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
         >
           4:05
         </p>
@@ -865,7 +865,7 @@ Use `ItemMedia` with `variant="image"` to display an image.
       ><div
         data-slot="item-media"
         data-variant="image"
-        class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&amp;_svg]:pointer-events-none size-10 overflow-hidden rounded-sm group-data-[size=sm]/item:size-8 group-data-[size=xs]/item:size-6 [&amp;_img]:size-full [&amp;_img]:object-cover"
+        class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&_svg]:pointer-events-none size-10 overflow-hidden rounded-sm group-data-[size=sm]/item:size-8 group-data-[size=xs]/item:size-6 [&_img]:size-full [&_img]:object-cover"
       >
         <img
           alt="Digital Rain"
@@ -881,7 +881,7 @@ Use `ItemMedia` with `variant="image"` to display an image.
       </div>
       <div
         data-slot="item-content"
-        class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none"
+        class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none"
       >
         <div
           data-slot="item-title"
@@ -891,18 +891,18 @@ Use `ItemMedia` with `variant="image"` to display an image.
         </div>
         <p
           data-slot="item-description"
-          class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+          class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
         >
           Cyber Symphony
         </p>
       </div>
       <div
         data-slot="item-content"
-        class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-col [&amp;+[data-slot=item-content]]:flex-none flex-none text-center"
+        class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-col [&+[data-slot=item-content]]:flex-none flex-none text-center"
       >
         <p
           data-slot="item-description"
-          class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+          class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
         >
           3:30
         </p>
@@ -940,7 +940,7 @@ Use `ItemGroup` to group related items together.
     <div
       data-slot="item-media"
       data-variant="default"
-      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&amp;_svg]:pointer-events-none bg-transparent"
+      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&_svg]:pointer-events-none bg-transparent"
     >
       <span
         data-slot="avatar"
@@ -954,7 +954,7 @@ Use `ItemGroup` to group related items together.
     </div>
     <div
       data-slot="item-content"
-      class="group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none gap-1"
+      class="group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none gap-1"
     >
       <div
         data-slot="item-title"
@@ -964,7 +964,7 @@ Use `ItemGroup` to group related items together.
       </div>
       <p
         data-slot="item-description"
-        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
       >
         shadcn@vercel.com
       </p>
@@ -974,7 +974,7 @@ Use `ItemGroup` to group related items together.
         data-slot="button"
         data-variant="ghost"
         data-size="icon"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8 rounded-full"
+        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8 rounded-full"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -1003,7 +1003,7 @@ Use `ItemGroup` to group related items together.
     <div
       data-slot="item-media"
       data-variant="default"
-      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&amp;_svg]:pointer-events-none bg-transparent"
+      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&_svg]:pointer-events-none bg-transparent"
     >
       <span
         data-slot="avatar"
@@ -1017,7 +1017,7 @@ Use `ItemGroup` to group related items together.
     </div>
     <div
       data-slot="item-content"
-      class="group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none gap-1"
+      class="group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none gap-1"
     >
       <div
         data-slot="item-title"
@@ -1027,7 +1027,7 @@ Use `ItemGroup` to group related items together.
       </div>
       <p
         data-slot="item-description"
-        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
       >
         maxleiter@vercel.com
       </p>
@@ -1037,7 +1037,7 @@ Use `ItemGroup` to group related items together.
         data-slot="button"
         data-variant="ghost"
         data-size="icon"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8 rounded-full"
+        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8 rounded-full"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -1066,7 +1066,7 @@ Use `ItemGroup` to group related items together.
     <div
       data-slot="item-media"
       data-variant="default"
-      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&amp;_svg]:pointer-events-none bg-transparent"
+      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&_svg]:pointer-events-none bg-transparent"
     >
       <span
         data-slot="avatar"
@@ -1080,7 +1080,7 @@ Use `ItemGroup` to group related items together.
     </div>
     <div
       data-slot="item-content"
-      class="group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none gap-1"
+      class="group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none gap-1"
     >
       <div
         data-slot="item-title"
@@ -1090,7 +1090,7 @@ Use `ItemGroup` to group related items together.
       </div>
       <p
         data-slot="item-description"
-        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
       >
         evilrabbit@vercel.com
       </p>
@@ -1100,7 +1100,7 @@ Use `ItemGroup` to group related items together.
         data-slot="button"
         data-variant="ghost"
         data-size="icon"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8 rounded-full"
+        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8 rounded-full"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -1193,7 +1193,7 @@ Use `ItemHeader` to add a header above the item content.
       </div>
       <div
         data-slot="item-content"
-        class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none"
+        class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none"
       >
         <div
           data-slot="item-title"
@@ -1203,7 +1203,7 @@ Use `ItemHeader` to add a header above the item content.
         </div>
         <p
           data-slot="item-description"
-          class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+          class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
         >
           Everyday tasks and UI generation.
         </p>
@@ -1230,7 +1230,7 @@ Use `ItemHeader` to add a header above the item content.
       </div>
       <div
         data-slot="item-content"
-        class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none"
+        class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none"
       >
         <div
           data-slot="item-title"
@@ -1240,7 +1240,7 @@ Use `ItemHeader` to add a header above the item content.
         </div>
         <p
           data-slot="item-description"
-          class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+          class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
         >
           Advanced thinking or reasoning.
         </p>
@@ -1267,7 +1267,7 @@ Use `ItemHeader` to add a header above the item content.
       </div>
       <div
         data-slot="item-content"
-        class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none"
+        class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none"
       >
         <div
           data-slot="item-title"
@@ -1277,7 +1277,7 @@ Use `ItemHeader` to add a header above the item content.
         </div>
         <p
           data-slot="item-description"
-          class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+          class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
         >
           Open Source model for everyone.
         </p>
@@ -1310,7 +1310,7 @@ shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The h
     class="[a]:hover:bg-muted rounded-lg border text-sm group/item flex w-full flex-wrap items-center transition-colors duration-100 outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 [a]:transition-colors border-transparent gap-2.5 px-3 py-2.5"
     ><div
       data-slot="item-content"
-      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none"
+      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none"
     >
       <div
         data-slot="item-title"
@@ -1320,7 +1320,7 @@ shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The h
       </div>
       <p
         data-slot="item-description"
-        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
       >
         Learn how to get started with our components.
       </p>
@@ -1350,7 +1350,7 @@ shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The h
     class="[a]:hover:bg-muted rounded-lg border text-sm group/item flex w-full flex-wrap items-center transition-colors duration-100 outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 [a]:transition-colors border-border gap-2.5 px-3 py-2.5"
     ><div
       data-slot="item-content"
-      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none"
+      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none"
     >
       <div
         data-slot="item-title"
@@ -1360,7 +1360,7 @@ shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The h
       </div>
       <p
         data-slot="item-description"
-        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+        class="text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
       >
         Opens in a new tab with security attributes.
       </p>
@@ -1414,7 +1414,7 @@ shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The h
   data-slot="dropdown-menu-trigger"
   data-variant="outline"
   data-size="default"
-  class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+  class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
   type="button"
   id="m0-trigger"
   aria-haspopup="menu"
@@ -1468,7 +1468,7 @@ shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The h
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1482,7 +1482,7 @@ shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The h
           <div
             data-slot="item-media"
             data-variant="default"
-            class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&amp;_svg]:pointer-events-none bg-transparent"
+            class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&_svg]:pointer-events-none bg-transparent"
           >
             <span
               data-slot="avatar"
@@ -1497,7 +1497,7 @@ shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The h
           </div>
           <div
             data-slot="item-content"
-            class="group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none gap-0"
+            class="group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none gap-0"
           >
             <div
               data-slot="item-title"
@@ -1507,7 +1507,7 @@ shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The h
             </div>
             <p
               data-slot="item-description"
-              class="text-muted-foreground text-left text-sm group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary leading-none"
+              class="text-muted-foreground text-left text-sm group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary leading-none"
             >
               shadcn@vercel.com
             </p>
@@ -1518,7 +1518,7 @@ shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The h
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1532,7 +1532,7 @@ shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The h
           <div
             data-slot="item-media"
             data-variant="default"
-            class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&amp;_svg]:pointer-events-none bg-transparent"
+            class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&_svg]:pointer-events-none bg-transparent"
           >
             <span
               data-slot="avatar"
@@ -1547,7 +1547,7 @@ shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The h
           </div>
           <div
             data-slot="item-content"
-            class="group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none gap-0"
+            class="group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none gap-0"
           >
             <div
               data-slot="item-title"
@@ -1557,7 +1557,7 @@ shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The h
             </div>
             <p
               data-slot="item-description"
-              class="text-muted-foreground text-left text-sm group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary leading-none"
+              class="text-muted-foreground text-left text-sm group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary leading-none"
             >
               maxleiter@vercel.com
             </p>
@@ -1568,7 +1568,7 @@ shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The h
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1582,7 +1582,7 @@ shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The h
           <div
             data-slot="item-media"
             data-variant="default"
-            class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&amp;_svg]:pointer-events-none bg-transparent"
+            class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&_svg]:pointer-events-none bg-transparent"
           >
             <span
               data-slot="avatar"
@@ -1597,7 +1597,7 @@ shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The h
           </div>
           <div
             data-slot="item-content"
-            class="group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none gap-0"
+            class="group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none gap-0"
           >
             <div
               data-slot="item-title"
@@ -1607,7 +1607,7 @@ shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The h
             </div>
             <p
               data-slot="item-description"
-              class="text-muted-foreground text-left text-sm group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary leading-none"
+              class="text-muted-foreground text-left text-sm group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary leading-none"
             >
               evilrabbit@vercel.com
             </p>
@@ -1656,7 +1656,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
   >
     <div
       data-slot="item-content"
-      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none"
+      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none"
     >
       <div
         data-slot="item-title"
@@ -1666,7 +1666,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       </div>
       <p
         data-slot="item-description"
-        class="text-muted-foreground text-start text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 [&amp;&gt;a:hover]:text-primary"
+        class="text-muted-foreground text-start text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
       >
         عنصر بسيط يحتوي على عنوان ووصف.
       </p>
@@ -1676,7 +1676,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
         data-slot="button"
         data-variant="outline"
         data-size="sm"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pe-1.5 has-data-[icon=inline-start]:ps-1.5 [&amp;_svg:not([class*='size-'])]:size-3.5"
+        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pe-1.5 has-data-[icon=inline-start]:ps-1.5 [&_svg:not([class*='size-'])]:size-3.5"
       >
         إجراء
       </button>
@@ -1692,7 +1692,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
     ><div
       data-slot="item-media"
       data-variant="default"
-      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&amp;_svg]:pointer-events-none bg-transparent"
+      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&_svg]:pointer-events-none bg-transparent"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -1714,7 +1714,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
     </div>
     <div
       data-slot="item-content"
-      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&amp;+[data-slot=item-content]]:flex-none"
+      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none"
     >
       <div
         data-slot="item-title"
@@ -1762,10 +1762,37 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | `data-slot="item-header"` |
 | `data-slot="item-footer"` |
 
-**Runtime:** no JavaScript — this is markup + CSS. Each row below is a `cva`-declared variant baked into the shipped CSS as a `data-*` attribute; set it next to the slot's `data-slot` to pick that value (the Default needs no attribute). This table only covers `cva` variants — check `dist/css/item.css` for any other `data-*` selector on these slots.
+**Runtime:** no JavaScript — this is markup + CSS. Each row below is a `cva`-declared variant baked into the shipped CSS as a `data-*` attribute; set it next to the slot's `data-slot` to pick that value (the Default needs no attribute). This table only covers `cva` variants — the component stylesheet (`shadless/item.css`) embedded below carries any other `data-*` selector on these slots.
 
 | Slot | Attribute | Values | Default |
 | --- | --- | --- | --- |
 | `item` | `data-variant` | `default`, `outline`, `muted` | `default` |
 | `item` | `data-size` | `default`, `sm`, `xs` | `default` |
 | `item-media` | `data-variant` | `default`, `icon`, `image` | `default` |
+
+**The stylesheet** — `shadless/item.css`, the exact bytes of `dist/css/item.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, so this is the authoritative default look of each slot:
+
+```css
+/* item */
+@layer components {
+  [data-slot="item-group"] { @apply gap-4 has-data-[size=sm]:gap-2.5 has-data-[size=xs]:gap-2 flex w-full flex-col; }
+  [data-slot="item-separator"] { @apply my-2; }
+  [data-slot="item-content"] { @apply gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none; }
+  [data-slot="item-title"] { @apply gap-2 text-sm leading-snug font-medium underline-offset-4 line-clamp-1 flex w-fit items-center; }
+  [data-slot="item-description"] { @apply text-muted-foreground text-left text-sm leading-normal group-data-[size=xs]/item:text-xs line-clamp-2 font-normal [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary; }
+  [data-slot="item-actions"] { @apply gap-2 flex items-center; }
+  [data-slot="item-header"] { @apply gap-2 flex basis-full items-center justify-between; }
+  [data-slot="item-footer"] { @apply gap-2 flex basis-full items-center justify-between; }
+  [data-slot="item"] { @apply [a]:hover:bg-muted rounded-lg border text-sm flex w-full flex-wrap items-center transition-colors duration-100 outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 [a]:transition-colors; }
+  [data-slot="item"]:where(:not([data-variant]), [data-variant="default"], [data-variant=""]) { @apply border-transparent; }
+  [data-slot="item"]:where([data-variant="outline"]) { @apply border-border; }
+  [data-slot="item"]:where([data-variant="muted"]) { @apply bg-muted/50 border-transparent; }
+  [data-slot="item"]:where(:not([data-size]), [data-size="default"], [data-size=""]) { @apply gap-2.5 px-3 py-2.5; }
+  [data-slot="item"]:where([data-size="sm"]) { @apply gap-2.5 px-3 py-2.5; }
+  [data-slot="item"]:where([data-size="xs"]) { @apply gap-2 px-2.5 py-2 in-data-[slot=dropdown-menu-content]:p-0; }
+  [data-slot="item-media"] { @apply gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&_svg]:pointer-events-none; }
+  [data-slot="item-media"]:where(:not([data-variant]), [data-variant="default"], [data-variant=""]) { @apply bg-transparent; }
+  [data-slot="item-media"]:where([data-variant="icon"]) { @apply [&_svg:not([class*='size-'])]:size-4; }
+  [data-slot="item-media"]:where([data-variant="image"]) { @apply size-10 overflow-hidden rounded-sm group-data-[size=sm]/item:size-8 group-data-[size=xs]/item:size-6 [&_img]:size-full [&_img]:object-cover; }
+}
+```

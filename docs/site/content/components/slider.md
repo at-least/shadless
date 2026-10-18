@@ -911,4 +911,16 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 **Runtime:** `shadless.get(el)` (element or selector, any element inside the instance) → `values()`, `setValue(value, index)`; the root dispatches `shadless:change` (live) and `shadless:commit` (once per gesture) with `detail: { values }`; a `name` attribute submits one input per thumb. Markup protocol: see Installation → Behavior protocol.
 
+**The stylesheet** — `shadless/slider.css`, the exact bytes of `dist/css/slider.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, so this is the authoritative default look of each slot:
+
+```css
+/* slider */
+@layer components {
+  [data-slot="slider"] { @apply data-vertical:min-h-40 relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col; }
+  [data-slot="slider-track"] { @apply bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full; }
+  [data-slot="slider-range"] { @apply bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full; }
+  [data-slot="slider-thumb"] { @apply border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50; }
+}
+```
+
 See the [Radix UI Slider](https://www.radix-ui.com/primitives/docs/components/slider#api-reference) documentation.

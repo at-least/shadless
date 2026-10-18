@@ -2278,8 +2278,7 @@ pub fn cva_axis_rows(ir: &crate::emit::css::CssIrComponent) -> Vec<CvaAxisRow> {
 pub fn cva_axis_table_mdx(comp: &str, axes: &[CvaAxisRow]) -> String {
     let mut b = String::new();
     b.push_str(&format!(
-        "Each row below is a `cva`-declared variant baked into the shipped CSS as a `data-*` attribute; set it next to the slot's `data-slot` to pick that value (the Default needs no attribute). This table only covers `cva` variants — check `dist/css/{}.css` for any other `data-*` selector on these slots.\n\n",
-        comp
+        "Each row below is a `cva`-declared variant baked into the shipped CSS as a `data-*` attribute; set it next to the slot's `data-slot` to pick that value (the Default needs no attribute). This table only covers `cva` variants — the component stylesheet (`shadless/{comp}.css`) embedded below carries any other `data-*` selector on these slots.\n\n",
     ));
     b.push_str("| Slot | Attribute | Values | Default |\n| --- | --- | --- | --- |\n");
     for a in axes {
@@ -2305,6 +2304,19 @@ pub fn api_reference_mdx(
 ) -> String {
     let t = trivial(comp);
     let f = family(comp);
+    // The stylesheet itself, verbatim: every rule keys on the data-slot /
+    // data-* attributes the tables above list, so the default look of each
+    // slot is readable (by a person or an LLM agent) without opening the
+    // package. Checked byte-for-byte against the file by docs-consistency.
+    let mut stylesheet = String::new();
+    let css_path = root.join("dist/css").join(format!("{}.css", comp));
+    if let Ok(b) = std::fs::read_to_string(&css_path) {
+        let css = b.strip_suffix('\n').unwrap_or(b.as_str());
+        stylesheet = format!(
+            "\n**The stylesheet** — `shadless/{c}.css`, the exact bytes of `dist/css/{c}.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, so this is the authoritative default look of each slot:\n\n```css\n{css}\n```\n",
+            c = comp
+        );
+    }
     let mut rows: Vec<String> = Vec::new();
     for s in slots {
         rows.push(format!("| `data-slot=\"{}\"` |", s));
@@ -2359,10 +2371,7 @@ pub fn api_reference_mdx(
         if !axes.is_empty() {
             b.push_str(&cva_axis_table_mdx(comp, axes));
         } else if root.join("dist/css").join(format!("{}.css", comp)).exists() {
-            b.push_str(&format!(
-                "No `cva`-declared variants. Check `dist/css/{}.css` for any `data-*` attribute this slot's styling depends on.\n",
-                comp
-            ));
+            b.push_str("No `cva`-declared variants — the stylesheet embedded below is the whole default look; its `data-*` selectors are the attributes each slot's styling depends on.\n");
         } else {
             // aspect-ratio, collapsible and direction ship no stylesheet of
             // their own; the page's own Installation section says exactly that
@@ -2379,7 +2388,7 @@ pub fn api_reference_mdx(
     if !leaked && !axes.is_empty() {
         runtime += &format!("\n{}", cva_axis_table_mdx(comp, axes));
     }
-    if slot_table.is_empty() && runtime.is_empty() {
+    if slot_table.is_empty() && runtime.is_empty() && stylesheet.is_empty() {
         return String::new();
     }
     let preamble = if leaked {
@@ -2387,7 +2396,7 @@ pub fn api_reference_mdx(
     } else {
         "\n**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.\n"
     };
-    format!("{}{}{}", preamble, slot_table, runtime)
+    format!("{}{}{}{}", preamble, slot_table, runtime, stylesheet)
 }
 
 // ---------------------------------------------------------------- demo scripts

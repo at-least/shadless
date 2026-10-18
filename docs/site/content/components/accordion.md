@@ -83,7 +83,7 @@ A vertically stacked set of interactive headings that each reveal a section of c
       "
     >
       <div
-        class="pt-0 pb-2.5 h-(--radix-accordion-content-height) [&amp;_a]:underline [&amp;_a]:underline-offset-3 [&amp;_a]:hover:text-foreground [&amp;_p:not(:last-child)]:mb-4"
+        class="pt-0 pb-2.5 h-(--radix-accordion-content-height) [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4"
       >
         We offer standard (5-7 days), express (2-3 days), and overnight shipping. Free shipping on
         international orders.
@@ -409,7 +409,7 @@ A basic accordion that shows one item at a time. The first item is open by defau
       "
     >
       <div
-        class="pt-0 pb-2.5 h-(--radix-accordion-content-height) [&amp;_a]:underline [&amp;_a]:underline-offset-3 [&amp;_a]:hover:text-foreground [&amp;_p:not(:last-child)]:mb-4"
+        class="pt-0 pb-2.5 h-(--radix-accordion-content-height) [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4"
       >
         Click on 'Forgot Password' on the login page, enter your email address, and we'll send you a
         link to reset your password. The link will expire in 24 hours.
@@ -691,7 +691,7 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
       "
     >
       <div
-        class="pt-0 pb-2.5 h-(--radix-accordion-content-height) [&amp;_a]:underline [&amp;_a]:underline-offset-3 [&amp;_a]:hover:text-foreground [&amp;_p:not(:last-child)]:mb-4"
+        class="pt-0 pb-2.5 h-(--radix-accordion-content-height) [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4"
       >
         Manage how you receive notifications. You can enable email alerts for updates or push
         notifications for mobile devices.
@@ -1243,7 +1243,7 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
       "
     >
       <div
-        class="pt-0 pb-2.5 h-(--radix-accordion-content-height) [&amp;_a]:underline [&amp;_a]:underline-offset-3 [&amp;_a]:hover:text-foreground [&amp;_p:not(:last-child)]:mb-4"
+        class="pt-0 pb-2.5 h-(--radix-accordion-content-height) [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4"
       >
         We offer monthly and annual subscription plans. Billing is charged at the beginning of each
         cycle, and you can cancel anytime. All plans include automatic backups, 24/7 support, and
@@ -1456,7 +1456,7 @@ Wrap the `Accordion` in a `Card` component.
 <div
   data-slot="card"
   data-size="default"
-  class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[&gt;img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col w-full max-w-sm"
+  class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col w-full max-w-sm"
 >
   <div
     data-slot="card-header"
@@ -1541,7 +1541,7 @@ Wrap the `Accordion` in a `Card` component.
           "
         >
           <div
-            class="pt-0 pb-2.5 h-(--radix-accordion-content-height) [&amp;_a]:underline [&amp;_a]:underline-offset-3 [&amp;_a]:hover:text-foreground [&amp;_p:not(:last-child)]:mb-4"
+            class="pt-0 pb-2.5 h-(--radix-accordion-content-height) [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4"
           >
             We offer three subscription tiers: Starter ($9/month), Professional ($29/month), and
             Enterprise ($99/month). Each plan includes increasing storage limits, API access,
@@ -1821,7 +1821,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       "
     >
       <div
-        class="pt-0 pb-2.5 h-(--radix-accordion-content-height) [&amp;_a]:underline [&amp;_a]:underline-offset-3 [&amp;_a]:hover:text-foreground [&amp;_p:not(:last-child)]:mb-4"
+        class="pt-0 pb-2.5 h-(--radix-accordion-content-height) [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4"
       >
         انقر على 'نسيت كلمة المرور' في صفحة تسجيل الدخول، أدخل عنوان بريدك الإلكتروني، وسنرسل لك
         رابطًا لإعادة تعيين كلمة المرور. سينتهي صلاحية الرابط خلال 24 ساعة.
@@ -2032,5 +2032,22 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | `data-slot="accordion-content"` |
 
 **Runtime:** root `data-type="single|multiple"`; each `accordion-trigger` carries `aria-expanded` + `data-state="open|closed"` and `aria-controls` → its `accordion-content`, which is `hidden` while closed (kept in the DOM — radix unmounts it). Keys: arrows / Home / End move focus between triggers (rtl-aware); Enter / Space / click toggles. Each trigger dispatches `shadless:open` / `shadless:close` (a sibling closed by single mode gets its own `close`). No handle — `shadless.get(el)` returns `null`; `el.click()` is the driver.
+
+**The stylesheet** — `shadless/accordion.css`, the exact bytes of `dist/css/accordion.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, so this is the authoritative default look of each slot:
+
+```css
+/* accordion */
+@layer components {
+  .accordion-trigger { @apply flex; }
+  .accordion-content-div { @apply pt-0 pb-2.5 h-(--radix-accordion-content-height) [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4; }
+  [data-slot="accordion"] { @apply flex w-full flex-col; }
+  [data-slot="accordion-item"] { @apply not-last:border-b; }
+  [data-slot="accordion-trigger"] { @apply focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50; }
+  [data-slot="accordion-trigger-icon"] { @apply pointer-events-none shrink-0; }
+  [data-slot="accordion-content"] { @apply data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden; }
+  .accordion-trigger-icon { @apply group-aria-expanded/accordion-trigger:hidden; }
+  .accordion-trigger-icon-2 { @apply hidden group-aria-expanded/accordion-trigger:inline; }
+}
+```
 
 See the [Radix UI](https://www.radix-ui.com/primitives/docs/components/accordion#api-reference) documentation for more information.

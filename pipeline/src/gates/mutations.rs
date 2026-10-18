@@ -290,6 +290,24 @@ fn apply_dist_complete_drop_component(root: &Path, f: &[String]) -> Result<(), S
     )
 }
 
+fn apply_docs_consistency_code_tab_entity(root: &Path, f: &[String]) -> Result<(), String> {
+    mut_replace_once(
+        root,
+        &f[0],
+        "[&_a]:underline-offset-3",
+        "[&amp;_a]:underline-offset-3",
+    )
+}
+
+fn apply_docs_consistency_css_embed(root: &Path, f: &[String]) -> Result<(), String> {
+    mut_replace_once(
+        root,
+        &f[0],
+        "flex items-center; }",
+        "flex items-center gap-2; }",
+    )
+}
+
 fn apply_docs_consistency_react_import(root: &Path, f: &[String]) -> Result<(), String> {
     mut_replace_once(
         root,
@@ -607,6 +625,22 @@ pub static MUTATIONS: &[Mutation] = &[
         files: &["dist/out.css"],
         resolve: None,
         apply: apply_dist_complete_drop_component,
+    },
+    Mutation {
+        id: "docs-consistency-code-tab-entity",
+        gate: "docs-consistency",
+        why: "a code tab's class attribute carries `&amp;` again — the demo serialization escaped into the copy source, and a consumer's Tailwind content scan extracts nothing from an escaped bracket utility",
+        files: &["docs/site/content/components/accordion.md"],
+        resolve: None,
+        apply: apply_docs_consistency_code_tab_entity,
+    },
+    Mutation {
+        id: "docs-consistency-css-embed",
+        gate: "docs-consistency",
+        why: "a component stylesheet changes without the page's embedded copy following — the API Reference stops being the authoritative default look of each slot",
+        files: &["dist/css/card.css"],
+        resolve: None,
+        apply: apply_docs_consistency_css_embed,
     },
     Mutation {
         id: "docs-consistency-react-import",

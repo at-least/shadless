@@ -20,63 +20,63 @@ A responsive table component.
     <caption data-slot="table-caption" class="text-muted-foreground mt-4 text-sm">
       A list of your recent invoices.
     </caption>
-    <thead data-slot="table-header" class="[&amp;_tr]:border-b">
+    <thead data-slot="table-header" class="[&_tr]:border-b">
       <tr
         data-slot="table-row"
         class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors has-aria-expanded:bg-muted/50"
       >
         <th
           data-slot="table-head"
-          class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 w-[100px]"
+          class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 w-[100px]"
         >
           Invoice
         </th>
         <th
           data-slot="table-head"
-          class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Status
         </th>
         <th
           data-slot="table-head"
-          class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Method
         </th>
         <th
           data-slot="table-head"
-          class="text-foreground h-10 px-2 align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 text-right"
+          class="text-foreground h-10 px-2 align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 text-right"
         >
           Amount
         </th>
       </tr>
     </thead>
-    <tbody data-slot="table-body" class="[&amp;_tr:last-child]:border-0">
+    <tbody data-slot="table-body" class="[&_tr:last-child]:border-0">
       <tr
         data-slot="table-row"
         class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors has-aria-expanded:bg-muted/50"
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 font-medium"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 font-medium"
         >
           INV001
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Paid
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Credit Card
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 text-right"
         >
           $250.00
         </td>
@@ -87,25 +87,25 @@ A responsive table component.
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 font-medium"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 font-medium"
         >
           INV002
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Pending
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           PayPal
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 text-right"
         >
           $150.00
         </td>
@@ -116,25 +116,25 @@ A responsive table component.
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 font-medium"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 font-medium"
         >
           INV003
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Unpaid
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Bank Transfer
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 text-right"
         >
           $350.00
         </td>
@@ -145,25 +145,25 @@ A responsive table component.
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 font-medium"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 font-medium"
         >
           INV004
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Paid
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Credit Card
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 text-right"
         >
           $450.00
         </td>
@@ -174,25 +174,25 @@ A responsive table component.
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 font-medium"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 font-medium"
         >
           INV005
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Paid
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           PayPal
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 text-right"
         >
           $550.00
         </td>
@@ -203,25 +203,25 @@ A responsive table component.
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 font-medium"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 font-medium"
         >
           INV006
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Pending
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Bank Transfer
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 text-right"
         >
           $200.00
         </td>
@@ -232,25 +232,25 @@ A responsive table component.
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 font-medium"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 font-medium"
         >
           INV007
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Unpaid
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Credit Card
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 text-right"
         >
           $300.00
         </td>
@@ -258,7 +258,7 @@ A responsive table component.
     </tbody>
     <tfoot
       data-slot="table-footer"
-      class="bg-muted/50 border-t font-medium [&amp;&gt;tr]:last:border-b-0"
+      class="bg-muted/50 border-t font-medium [&>tr]:last:border-b-0"
     >
       <tr
         data-slot="table-row"
@@ -266,14 +266,14 @@ A responsive table component.
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
           colspan="3"
         >
           Total
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 text-right"
         >
           $2,500.00
         </td>
@@ -350,63 +350,63 @@ Use the `data-slot="table-footer"` component to add a footer to the table.
     <caption data-slot="table-caption" class="text-muted-foreground mt-4 text-sm">
       A list of your recent invoices.
     </caption>
-    <thead data-slot="table-header" class="[&amp;_tr]:border-b">
+    <thead data-slot="table-header" class="[&_tr]:border-b">
       <tr
         data-slot="table-row"
         class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors has-aria-expanded:bg-muted/50"
       >
         <th
           data-slot="table-head"
-          class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 w-[100px]"
+          class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 w-[100px]"
         >
           Invoice
         </th>
         <th
           data-slot="table-head"
-          class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Status
         </th>
         <th
           data-slot="table-head"
-          class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Method
         </th>
         <th
           data-slot="table-head"
-          class="text-foreground h-10 px-2 align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 text-right"
+          class="text-foreground h-10 px-2 align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 text-right"
         >
           Amount
         </th>
       </tr>
     </thead>
-    <tbody data-slot="table-body" class="[&amp;_tr:last-child]:border-0">
+    <tbody data-slot="table-body" class="[&_tr:last-child]:border-0">
       <tr
         data-slot="table-row"
         class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors has-aria-expanded:bg-muted/50"
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 font-medium"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 font-medium"
         >
           INV001
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Paid
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Credit Card
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 text-right"
         >
           $250.00
         </td>
@@ -417,25 +417,25 @@ Use the `data-slot="table-footer"` component to add a footer to the table.
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 font-medium"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 font-medium"
         >
           INV002
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Pending
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           PayPal
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 text-right"
         >
           $150.00
         </td>
@@ -446,25 +446,25 @@ Use the `data-slot="table-footer"` component to add a footer to the table.
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 font-medium"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 font-medium"
         >
           INV003
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Unpaid
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Bank Transfer
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 text-right"
         >
           $350.00
         </td>
@@ -472,7 +472,7 @@ Use the `data-slot="table-footer"` component to add a footer to the table.
     </tbody>
     <tfoot
       data-slot="table-footer"
-      class="bg-muted/50 border-t font-medium [&amp;&gt;tr]:last:border-b-0"
+      class="bg-muted/50 border-t font-medium [&>tr]:last:border-b-0"
     >
       <tr
         data-slot="table-row"
@@ -480,14 +480,14 @@ Use the `data-slot="table-footer"` component to add a footer to the table.
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
           colspan="3"
         >
           Total
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 text-right"
         >
           $2,500.00
         </td>
@@ -513,57 +513,57 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
 ```text,name=table-actions.html
 <div data-slot="table-container" class="relative w-full overflow-x-auto">
   <table data-slot="table" class="w-full caption-bottom text-sm">
-    <thead data-slot="table-header" class="[&amp;_tr]:border-b">
+    <thead data-slot="table-header" class="[&_tr]:border-b">
       <tr
         data-slot="table-row"
         class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors has-aria-expanded:bg-muted/50"
       >
         <th
           data-slot="table-head"
-          class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Product
         </th>
         <th
           data-slot="table-head"
-          class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           Price
         </th>
         <th
           data-slot="table-head"
-          class="text-foreground h-10 px-2 align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 text-right"
+          class="text-foreground h-10 px-2 align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 text-right"
         >
           Actions
         </th>
       </tr>
     </thead>
-    <tbody data-slot="table-body" class="[&amp;_tr:last-child]:border-0">
+    <tbody data-slot="table-body" class="[&_tr:last-child]:border-0">
       <tr
         data-slot="table-row"
         class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors has-aria-expanded:bg-muted/50"
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 font-medium"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 font-medium"
         >
           Wireless Mouse
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           $29.99
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 text-right"
         >
           <button
             data-slot="dropdown-menu-trigger"
             data-variant="ghost"
             data-size="icon"
-            class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8"
+            class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8"
             type="button"
             id="m0-trigger"
             aria-haspopup="menu"
@@ -596,25 +596,25 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 font-medium"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 font-medium"
         >
           Mechanical Keyboard
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           $129.99
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 text-right"
         >
           <button
             data-slot="dropdown-menu-trigger"
             data-variant="ghost"
             data-size="icon"
-            class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8"
+            class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8"
             type="button"
             id="m1-trigger"
             aria-haspopup="menu"
@@ -647,25 +647,25 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 font-medium"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 font-medium"
         >
           USB-C Hub
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
         >
           $49.99
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 text-right"
         >
           <button
             data-slot="dropdown-menu-trigger"
             data-variant="ghost"
             data-size="icon"
-            class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&amp;_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8"
+            class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8"
             type="button"
             id="m2-trigger"
             aria-haspopup="menu"
@@ -724,7 +724,7 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -735,7 +735,7 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -752,7 +752,7 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="destructive"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -790,7 +790,7 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -801,7 +801,7 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -818,7 +818,7 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="destructive"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -856,7 +856,7 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -867,7 +867,7 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -884,7 +884,7 @@ A table showing actions for each row using a dropdown-menu trigger (see the [Dro
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="destructive"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&amp;_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -935,63 +935,63 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
     <caption data-slot="table-caption" class="text-muted-foreground mt-4 text-sm">
       قائمة بفواتيرك الأخيرة.
     </caption>
-    <thead data-slot="table-header" class="[&amp;_tr]:border-b">
+    <thead data-slot="table-header" class="[&_tr]:border-b">
       <tr
         data-slot="table-row"
         class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors has-aria-expanded:bg-muted/50"
       >
         <th
           data-slot="table-head"
-          class="text-foreground h-10 px-2 text-start align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0 w-[100px]"
+          class="text-foreground h-10 px-2 text-start align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pe-0 w-[100px]"
         >
           الفاتورة
         </th>
         <th
           data-slot="table-head"
-          class="text-foreground h-10 px-2 text-start align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0"
+          class="text-foreground h-10 px-2 text-start align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pe-0"
         >
           الحالة
         </th>
         <th
           data-slot="table-head"
-          class="text-foreground h-10 px-2 text-start align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0"
+          class="text-foreground h-10 px-2 text-start align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pe-0"
         >
           الطريقة
         </th>
         <th
           data-slot="table-head"
-          class="text-foreground h-10 px-2 align-middle font-medium whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0 text-right"
+          class="text-foreground h-10 px-2 align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pe-0 text-right"
         >
           المبلغ
         </th>
       </tr>
     </thead>
-    <tbody data-slot="table-body" class="[&amp;_tr:last-child]:border-0">
+    <tbody data-slot="table-body" class="[&_tr:last-child]:border-0">
       <tr
         data-slot="table-row"
         class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors has-aria-expanded:bg-muted/50"
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0 font-medium"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0 font-medium"
         >
           INV001
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0"
         >
           مدفوع
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0"
         >
           بطاقة ائتمانية
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0 text-right"
         >
           $250.00
         </td>
@@ -1002,25 +1002,25 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0 font-medium"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0 font-medium"
         >
           INV002
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0"
         >
           قيد الانتظار
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0"
         >
           PayPal
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0 text-right"
         >
           $150.00
         </td>
@@ -1031,25 +1031,25 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0 font-medium"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0 font-medium"
         >
           INV003
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0"
         >
           غير مدفوع
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0"
         >
           تحويل بنكي
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0 text-right"
         >
           $350.00
         </td>
@@ -1060,25 +1060,25 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0 font-medium"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0 font-medium"
         >
           INV004
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0"
         >
           مدفوع
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0"
         >
           بطاقة ائتمانية
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0 text-right"
         >
           $450.00
         </td>
@@ -1089,25 +1089,25 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0 font-medium"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0 font-medium"
         >
           INV005
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0"
         >
           مدفوع
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0"
         >
           PayPal
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0 text-right"
         >
           $550.00
         </td>
@@ -1118,25 +1118,25 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0 font-medium"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0 font-medium"
         >
           INV006
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0"
         >
           قيد الانتظار
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0"
         >
           تحويل بنكي
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0 text-right"
         >
           $200.00
         </td>
@@ -1147,25 +1147,25 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0 font-medium"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0 font-medium"
         >
           INV007
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0"
         >
           غير مدفوع
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0"
         >
           بطاقة ائتمانية
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0 text-right"
         >
           $300.00
         </td>
@@ -1173,7 +1173,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
     </tbody>
     <tfoot
       data-slot="table-footer"
-      class="bg-muted/50 border-t font-medium [&amp;&gt;tr]:last:border-b-0"
+      class="bg-muted/50 border-t font-medium [&>tr]:last:border-b-0"
     >
       <tr
         data-slot="table-row"
@@ -1181,14 +1181,14 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       >
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0"
           colspan="3"
         >
           المجموع
         </td>
         <td
           data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0 text-right"
+          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0 text-right"
         >
           $2,500.00
         </td>

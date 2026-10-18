@@ -780,6 +780,81 @@ fn preview_markdown(
     ))
 }
 
+/// unescape_class_attrs rewrites ONLY the values of `class="…"` attributes:
+/// `&amp;` → `&`, `&gt;` → `>`, `&lt;` → `<`. Everything else — text nodes,
+/// other attributes, other entities — is copied through untouched.
+///
+/// `&amp;` stays escaped when the next character is ASCII alphanumeric or
+/// `#`: decoded and re-parsed, that pair would start a character reference
+/// (`&amp;copy;` → `©`, `&amp;#38;` → `&`) and change the class token.
+/// Raw `<` and `>` inside a quoted attribute value never reparse as markup,
+/// so `&lt;`/`&gt;` are always safe to unescape.
+fn unescape_class_attrs(html: &str) -> String {
+    let b = html.as_bytes();
+    let mut out = String::with_capacity(html.len());
+    let mut i = 0usize; // byte cursor
+    let mut copied = 0usize; // start of the not-yet-copied run
+    while i < b.len() {
+        let at_class_attr =
+            b[i..].starts_with(b"class=\"") && (i == 0 || b[i - 1].is_ascii_whitespace());
+        if !at_class_attr {
+            i += 1;
+            continue;
+        }
+        let vstart = i + "class=\"".len();
+        let Some(vrel) = b[vstart..].iter().position(|&c| c == b'"') else {
+            break; // unterminated attribute: copy the remainder verbatim
+        };
+        let vend = vstart + vrel;
+        out.push_str(&html[copied..vstart]);
+        out.push_str(&unescape_class_value(&html[vstart..vend]));
+        // resume the plain copy at the closing quote so it lands in the next run
+        i = vend;
+        copied = vend;
+    }
+    out.push_str(&html[copied..]);
+    out
+}
+
+fn unescape_class_value(v: &str) -> String {
+    let b = v.as_bytes();
+    let mut out = String::with_capacity(v.len());
+    let mut i = 0usize;
+    while i < b.len() {
+        if b[i] == b'&' {
+            if v[i..].starts_with("&amp;") {
+                let hazardous = b
+                    .get(i + "&amp;".len())
+                    .is_some_and(|c| c.is_ascii_alphanumeric() || *c == b'#');
+                if hazardous {
+                    out.push_str("&amp;");
+                } else {
+                    out.push('&');
+                }
+                i += "&amp;".len();
+                continue;
+            }
+            if v[i..].starts_with("&gt;") {
+                out.push('>');
+                i += "&gt;".len();
+                continue;
+            }
+            if v[i..].starts_with("&lt;") {
+                out.push('<');
+                i += "&lt;".len();
+                continue;
+            }
+        }
+        let ch = v[i..]
+            .chars()
+            .next()
+            .expect("class-value cursor left a char boundary");
+        out.push(ch);
+        i += ch.len_utf8();
+    }
+    out
+}
+
 fn demo_source(ctx: &DocsBuildCtx, file: &str) -> String {
     let path = format!("{}/demos/{}", STATIC_ROOT, file);
     let Some(markup) = ctx.markup.get(file) else {
@@ -1157,13 +1232,23 @@ pub fn run_docs_build(root: &Path) -> i32 {
             items.push((n, body));
         }
     }
-    let markup = match prettier_batch(&items) {
+    let mut markup = match prettier_batch(&items) {
         Ok(m) => m,
         Err(e) => {
             eprintln!("docs-build: prettier: {}", e);
             return 1;
         }
     };
+    // The demo bytes are Chromium innerHTML serializations, which escape
+    // & < > inside attribute values (`[&amp;_svg]`, `has-[&gt;svg]`). Legal
+    // HTML that renders fine in the served iframe — but the code tab is text
+    // a consumer copies and their Tailwind build content-scans, and a scan
+    // extracts nothing from an escaped bracket utility. prettier preserves
+    // both forms verbatim (measured: it never re-escapes), so the raw forms
+    // go into the tab after formatting.
+    for v in markup.values_mut() {
+        *v = unescape_class_attrs(v);
+    }
 
     let mut ctx = DocsBuildCtx {
         catalog,
@@ -1516,4 +1601,97 @@ fn prettier_batch(items: &[(String, String)]) -> Result<HashMap<String, String>,
         ));
     }
     serde_json::from_slice(&out.stdout).map_err(|e| e.to_string())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::unescape_class_attrs;
+
+    #[test]
+    fn unit_unescape_class_attrs_bracket_utilities() {
+        // the exact shapes the Chromium serializations ship
+        assert_eq!(
+            unescape_class_attrs(r#"<span class="[&amp;_svg]:pointer-events-none">x</span>"#),
+            r#"<span class="[&_svg]:pointer-events-none">x</span>"#
+        );
+        assert_eq!(
+            unescape_class_attrs(r#"<div class="grid has-[&gt;svg]:grid-cols-[auto_1fr]">x</div>"#),
+            r#"<div class="grid has-[>svg]:grid-cols-[auto_1fr]">x</div>"#
+        );
+        assert_eq!(
+            unescape_class_attrs(r#"<div class="[&lt;svg]:size-4">x</div>"#),
+            r#"<div class="[<svg]:size-4">x</div>"#
+        );
+    }
+
+    #[test]
+    fn unit_unescape_class_attrs_keeps_reference_shaped_escapes() {
+        // `&amp;` + alnum would reparse as a character reference — stays escaped
+        assert_eq!(
+            unescape_class_attrs(r#"<div class="a&amp;copy">"#),
+            r#"<div class="a&amp;copy">"#
+        );
+        assert_eq!(
+            unescape_class_attrs(r#"<div class="a&amp;#38;b">"#),
+            r#"<div class="a&amp;#38;b">"#
+        );
+        // …while a trailing or punctuation-followed `&amp;` decodes
+        assert_eq!(
+            unescape_class_attrs(r#"<div class="a&amp;">"#),
+            r#"<div class="a&">"#
+        );
+        assert_eq!(
+            unescape_class_attrs(r#"<div class="a&amp;_b">"#),
+            r#"<div class="a&_b">"#
+        );
+        // longest match first: `&amp;gt;` is the ENTITY &gt; (DOM value `&gt;`),
+        // not a `&gt;` to strip
+        assert_eq!(
+            unescape_class_attrs(r#"<div class="a&amp;gt;b">"#),
+            r#"<div class="a&amp;gt;b">"#
+        );
+    }
+
+    #[test]
+    fn unit_unescape_class_attrs_touches_class_values_only() {
+        // text outside class untouched
+        assert_eq!(
+            unescape_class_attrs("<p>a &amp; b &lt; c &gt; d</p>"),
+            "<p>a &amp; b &lt; c &gt; d</p>"
+        );
+        // other attributes untouched
+        assert_eq!(
+            unescape_class_attrs(r#"<a href="/x?a=1&amp;b=2" title="&lt;i&gt;" class="g">l</a>"#),
+            r#"<a href="/x?a=1&amp;b=2" title="&lt;i&gt;" class="g">l</a>"#
+        );
+        // a class-suffixed attribute is not a class attribute
+        assert_eq!(
+            unescape_class_attrs(r#"<div data-class="&amp;#38;">"#),
+            r#"<div data-class="&amp;#38;">"#
+        );
+    }
+
+    #[test]
+    fn unit_unescape_class_attrs_shapes() {
+        // multiple class attributes in one document
+        assert_eq!(
+            unescape_class_attrs(r#"<a class="x&amp;_y"></a><b class="p&gt;q"></b>"#),
+            r#"<a class="x&_y"></a><b class="p>q"></b>"#
+        );
+        // non-ASCII passes through byte-exact
+        assert_eq!(
+            unescape_class_attrs(r#"<div class="grü&amp;ße">ß</div>"#),
+            r#"<div class="grü&ße">ß</div>"#
+        );
+        // empty value, no class attribute at all, unterminated attribute
+        assert_eq!(
+            unescape_class_attrs(r#"<div class="">"#),
+            r#"<div class="">"#
+        );
+        assert_eq!(unescape_class_attrs("<div>plain</div>"), "<div>plain</div>");
+        assert_eq!(
+            unescape_class_attrs(r#"<div class="open"#),
+            r#"<div class="open"#
+        );
+    }
 }

@@ -435,4 +435,17 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | `data-slot="native-select-option"` |
 | `data-slot="native-select-optgroup"` |
 
-**Runtime:** no JavaScript — this is markup + CSS. No `cva`-declared variants. Check `dist/css/native-select.css` for any `data-*` attribute this slot's styling depends on.
+**Runtime:** no JavaScript — this is markup + CSS. No `cva`-declared variants — the stylesheet embedded below is the whole default look; its `data-*` selectors are the attributes each slot's styling depends on.
+
+**The stylesheet** — `shadless/native-select.css`, the exact bytes of `dist/css/native-select.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, so this is the authoritative default look of each slot:
+
+```css
+/* native-select */
+@layer components {
+  [data-slot="native-select-wrapper"] { @apply relative w-fit has-[select:disabled]:opacity-50; }
+  [data-slot="native-select"] { @apply border-input placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 w-full min-w-0 appearance-none rounded-lg border bg-transparent py-1 pr-8 pl-2.5 text-sm transition-colors select-none focus-visible:ring-3 aria-invalid:ring-3 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] data-[size=sm]:py-0.5 outline-none disabled:pointer-events-none disabled:cursor-not-allowed; }
+  [data-slot="native-select-icon"] { @apply text-muted-foreground top-1/2 right-2.5 size-4 -translate-y-1/2 pointer-events-none absolute select-none; }
+  [data-slot="native-select-option"] { @apply bg-[Canvas] text-[CanvasText]; }
+  [data-slot="native-select-optgroup"] { @apply bg-[Canvas] text-[CanvasText]; }
+}
+```

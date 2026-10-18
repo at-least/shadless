@@ -7,6 +7,18 @@ upstream is `src/registry/pin.json`; re-pins land through the upstream drill
 ## Unreleased
 
 ### Fixed
+- Docs: the copyable code tab under every preview no longer carries HTML
+  entity escapes inside `class` attributes. The tab's source is the demo
+  page's browser serialization, which ships `[&amp;_svg]` and
+  `has-[&gt;svg]` for what the DOM holds as `[&_svg]` and `has-[>svg]` —
+  legal HTML that rendered fine, but a Tailwind content scan extracts
+  nothing from an escaped candidate, so markup copied out of the tab
+  silently lost every `[…&…]`-shaped utility (measured on tailwindcss
+  4.3.3: the copied accordion demo produced zero `underline-offset`
+  rules). The generator now unescapes `&amp;`/`&gt;`/`&lt;` in class
+  values only (`&amp;` stays escaped where the decoded `&` would start a
+  character reference); every other attribute and text node is untouched,
+  and every built tab parses to the identical DOM it parsed to before.
 - `package.json`: React and the conversion toolchain moved from
   `dependencies` to `devDependencies` — installing shadless no longer
   installs React 19. `tailwindcss` is an optional peer.
@@ -33,6 +45,14 @@ upstream is `src/registry/pin.json`; re-pins land through the upstream drill
   and swaps the horizontal arrows under `dir="rtl"`.
 
 ### Added
+- Docs: every component page's API Reference embeds the component's
+  stylesheet (`shadless/<name>.css`) verbatim in a `css` fence, introduced
+  as the authoritative default look of each slot — every rule keys on the
+  `data-slot` / `data-*` attributes the tables above list, so a reader (or
+  an LLM agent) can see what each `data-slot` does by default without
+  opening the package. The embed is checked byte-exact against
+  `dist/css/<name>.css` by `docs-consistency`, and code tabs are checked
+  for re-escaped class attributes.
 - Forms: a checkbox, switch, radio-group root, select trigger or slider
   root carrying a `name` attribute keeps hidden inputs beside it (like
   radix's BubbleInput); a plain `<form>` submits them and `form.reset()`

@@ -520,8 +520,12 @@ pub fn all_go() -> Vec<Node> {
                 "src/registry/emitter-exemptions.json",
             ]),
             None,
-            "no shipped page carries skin residue, every taught @import resolves to a file, and no page teaches React imports",
-            &["docs-consistency-react-import"],
+            "no shipped page carries skin residue, every taught @import resolves to a file, no page teaches React imports, no code tab's class attributes carry entity escapes a Tailwind content scan cannot read, and every component page with a stylesheet embeds it byte-exact",
+            &[
+                "docs-consistency-code-tab-entity",
+                "docs-consistency-css-embed",
+                "docs-consistency-react-import",
+            ],
         ),
         node(
             "docs-fidelity", "gate", "fast",

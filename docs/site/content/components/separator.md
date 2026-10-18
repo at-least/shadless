@@ -214,4 +214,13 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | --- |
 | `data-slot="separator"` |
 
+**The stylesheet** — `shadless/separator.css`, the exact bytes of `dist/css/separator.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, so this is the authoritative default look of each slot:
+
+```css
+/* separator */
+@layer components {
+  [data-slot="separator"] { @apply shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch; }
+}
+```
+
 See the [Radix UI Separator](https://www.radix-ui.com/primitives/docs/components/separator#api-reference) documentation.

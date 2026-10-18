@@ -1,4 +1,4 @@
-//! Port of pipeline/docs_consistency.go. Eight checks that a builder cannot
+//! Port of pipeline/docs_consistency.go. Ten checks that a builder cannot
 //! answer for itself:
 //!
 //!   1. skin residue: shipped HTML carries zero non-allowlist cn-* classes
@@ -11,6 +11,11 @@
 //!   7. every data-slot an API Reference table lists exists in shipped markup
 //!      or is set by the shipped runtime
 //!   8. no shipped demo page carries the same id twice
+//!   9. no class attribute inside a code-tab fence carries an entity escape
+//!      a Tailwind content scan cannot read (&amp;/&gt;/&lt; — `&amp;` stays
+//!      legal only where the decoded `&` would start a character reference)
+//!  10. every component page with a stylesheet embeds it byte-exact in its
+//!      API Reference, and no page embeds a stylesheet that does not exist
 
 use regex::Regex;
 use serde_json::Value;
@@ -27,6 +32,44 @@ static RE_DIST_PATH: LazyLock<Regex> =
 static RE_ID_ATTR: LazyLock<Regex> = LazyLock::new(|| Regex::new(r#"[ \t]id="([^"]+)""#).unwrap());
 static RE_SLOT_TABLE_ROW: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r#"^\| `data-slot="([a-z0-9-]+)"` \|$"#).unwrap());
+static RE_MD_CLASS_ATTR: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#"class="([^"]*)""#).unwrap());
+// group 1 excludes the fence's own trailing newline — the embed convention
+// (see check 10) compares it against the file minus its one trailing newline
+static RE_CSS_FENCE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?ms)^```css\n(.*?)\n^```").unwrap());
+
+/// The entity escapes a Tailwind content scan cannot read inside a class
+/// value: `&gt;`/`&lt;` always, and every `&amp;` except the ones the
+/// code-tab projection must keep — where the decoded `&` would start a
+/// character reference on reparse (next char alphanumeric or `#`,
+/// `&amp;copy;` → `©`). An `&amp;` followed by anything else, `[&amp;_svg]`
+/// above all, decodes to a bare `&` that every scanner reads — the escaped
+/// form is exactly the copy that silently loses the utility.
+fn escaped_class_offences(v: &str) -> Vec<String> {
+    let b = v.as_bytes();
+    let mut bad: Vec<String> = Vec::new();
+    let mut i = 0usize;
+    while i < b.len() {
+        if v[i..].starts_with("&gt;") || v[i..].starts_with("&lt;") {
+            bad.push(v[i..i + 4].to_string());
+            i += 4;
+            continue;
+        }
+        if v[i..].starts_with("&amp;") {
+            let reference_shaped = b
+                .get(i + 5)
+                .is_some_and(|c| c.is_ascii_alphanumeric() || *c == b'#');
+            if !reference_shaped {
+                bad.push(v[i..i + 5].to_string());
+            }
+            i += 5;
+            continue;
+        }
+        i += 1;
+    }
+    bad
+}
 
 struct Problem {
     kind: String,
@@ -374,6 +417,129 @@ pub fn run_docs_consistency(root: &Path) -> i32 {
         }
     }
 
+    // 9. the code tab is a copy source: a consumer pastes it and their
+    // Tailwind build content-scans it. No class attribute inside a
+    // ```text,name=… fence may carry an escape the scan cannot read.
+    let mut tabs_checked = 0usize;
+    for f in &page_files {
+        let Ok(b) = std::fs::read_to_string(root.join(f)) else {
+            continue;
+        };
+        let mut in_tab = false;
+        for (i, line) in b.split('\n').enumerate() {
+            if line.starts_with("```") {
+                // a ```text,name=… line opens the copy tab; any other fence
+                // line either closes it or was never inside one
+                in_tab = line.starts_with("```text,name=");
+                if in_tab {
+                    tabs_checked += 1;
+                }
+                continue;
+            }
+            if !in_tab {
+                continue;
+            }
+            for m in RE_MD_CLASS_ATTR.captures_iter(line) {
+                let offences = escaped_class_offences(&m[1]);
+                if !offences.is_empty() {
+                    add_problem(
+                        "code-tab-entity",
+                        f,
+                        format!(
+                            "line {}: class value carries {} — a consumer's Tailwind content scan extracts nothing from it, so the copied markup silently loses those utilities",
+                            i + 1,
+                            offences.join(" ")
+                        ),
+                        &mut problems,
+                    );
+                }
+            }
+        }
+    }
+
+    // 10. the API Reference embeds the component's stylesheet, byte-exact —
+    // it claims to be the authoritative default look of each slot, so a
+    // stale embed lies. Only `data-slot=`-shaped css fences count: the
+    // Installation fences teach `@import` lines, never selectors.
+    let mut embeds_checked = 0usize;
+    for f in &page_files {
+        if !f.starts_with("docs/site/content/components/") {
+            continue;
+        }
+        let name = f
+            .trim_start_matches("docs/site/content/components/")
+            .trim_end_matches(".md");
+        let css_path = root.join("dist/css").join(format!("{}.css", name));
+        let css_b = std::fs::read_to_string(&css_path).ok();
+        let Ok(b) = std::fs::read_to_string(root.join(f)) else {
+            continue;
+        };
+        let embeds: Vec<&str> = RE_CSS_FENCE
+            .captures_iter(&b)
+            .filter_map(|c| c.get(1).map(|m| m.as_str()))
+            .filter(|c| c.contains("data-slot="))
+            .collect();
+        let has_api_reference = b.split('\n').any(|l| l == "## API Reference");
+        embeds_checked += embeds.len();
+        if embeds.len() > 1 {
+            add_problem(
+                "css-embed",
+                f,
+                format!("{} stylesheet embeds, expected exactly 1", embeds.len()),
+                &mut problems,
+            );
+        }
+        if let Some(embed) = embeds.first() {
+            let Some(file_css) = &css_b else {
+                add_problem(
+                    "css-embed",
+                    f,
+                    format!(
+                        "embeds a stylesheet that does not exist on disk ({})",
+                        css_path.display()
+                    ),
+                    &mut problems,
+                );
+                continue;
+            };
+            let Some(expected) = file_css.strip_suffix('\n') else {
+                add_problem(
+                    "css-embed",
+                    f,
+                    format!(
+                        "{} does not end with a newline — the embed convention cannot hold",
+                        css_path.display()
+                    ),
+                    &mut problems,
+                );
+                continue;
+            };
+            if *embed != expected {
+                add_problem(
+                    "css-embed",
+                    f,
+                    format!(
+                        "embedded stylesheet differs from {} (embed {} bytes, file {} bytes) — regenerate the docs",
+                        css_path.display(),
+                        embed.len(),
+                        expected.len()
+                    ),
+                    &mut problems,
+                );
+            }
+        } else if css_b.is_some() && has_api_reference {
+            add_problem(
+                "css-embed",
+                f,
+                format!(
+                    "the page has an API Reference but no stylesheet embed ({} exists)",
+                    css_path.display()
+                ),
+                &mut problems,
+            );
+        }
+    }
+
     // report
     let mut by_kind: std::collections::HashMap<String, Vec<&Problem>> =
         std::collections::HashMap::new();
@@ -394,7 +560,7 @@ pub fn run_docs_consistency(root: &Path) -> i32 {
         }
     }
     println!(
-        "docs consistency: {} shipped pages scanned for skin residue, {} taught @imports resolved, {} built pages checked for React imports, {} shipped js files checked for a behavior tab, {} table dist refs resolved, {} slot rows checked, {} demo pages checked for duplicate ids — problems: {}",
+        "docs consistency: {} shipped pages scanned for skin residue, {} taught @imports resolved, {} built pages checked for React imports, {} shipped js files checked for a behavior tab, {} table dist refs resolved, {} slot rows checked, {} demo pages checked for duplicate ids, {} code tabs checked for entity escapes, {} stylesheet embeds checked byte-exact — problems: {}",
         skin_scanned,
         imports_checked,
         page_files.len(),
@@ -402,6 +568,8 @@ pub fn run_docs_consistency(root: &Path) -> i32 {
         dist_refs,
         slot_rows,
         demo_id_pages,
+        tabs_checked,
+        embeds_checked,
         problems.len()
     );
     if !problems.is_empty() {
@@ -446,4 +614,25 @@ fn resolve_import(exports: &Value, spec: &str) -> String {
             .to_string();
     }
     String::new()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::escaped_class_offences;
+
+    #[test]
+    fn unit_escaped_class_offences() {
+        // the shapes the Chromium serialization used to ship into the tabs
+        assert_eq!(
+            escaped_class_offences("[&amp;_svg]:size-4 has-[&gt;svg]:grid"),
+            vec!["&amp;".to_string(), "&gt;".to_string()]
+        );
+        // the projection may keep an escape only where the decoded `&`
+        // would start a character reference
+        assert!(escaped_class_offences("[&amp;copy]").is_empty());
+        assert!(escaped_class_offences("[&amp;#38;]").is_empty());
+        // raw forms and non-class text carry nothing
+        assert!(escaped_class_offences("[&_svg]:size-4 has-[>svg]:grid").is_empty());
+        assert!(escaped_class_offences("a & b < c > d").is_empty());
+    }
 }

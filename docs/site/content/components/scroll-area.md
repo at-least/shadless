@@ -748,4 +748,16 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 **Runtime:** wired from `data-slot` alone — no handle, no events; see Installation → Behavior protocol.
 
+**The stylesheet** — `shadless/scroll-area.css`, the exact bytes of `dist/css/scroll-area.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, so this is the authoritative default look of each slot:
+
+```css
+/* scroll-area */
+@layer components {
+  [data-slot="scroll-area"] { @apply relative; }
+  [data-slot="scroll-area-viewport"] { @apply size-full rounded-[inherit] transition-[color,box-shadow] outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1; }
+  [data-slot="scroll-area-scrollbar"] { @apply data-horizontal:h-2.5 data-horizontal:flex-col data-horizontal:border-t data-horizontal:border-t-transparent data-vertical:h-full data-vertical:w-2.5 data-vertical:border-l data-vertical:border-l-transparent flex touch-none p-px transition-colors select-none; }
+  [data-slot="scroll-area-thumb"] { @apply rounded-full relative flex-1 bg-border; }
+}
+```
+
 See the [Radix UI Scroll Area](https://www.radix-ui.com/primitives/docs/components/scroll-area#api-reference) documentation.
