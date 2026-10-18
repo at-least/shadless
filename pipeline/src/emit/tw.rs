@@ -37,9 +37,62 @@ fn is_repo_root(dir: &Path) -> bool {
     dir.join("package.json").exists() && dir.join("pipeline").is_dir()
 }
 
+/// One tailwind CLI and the way it is spawned. Both of the repo's toolchains
+/// are run by script path (`node <script>`) on purpose: the
+/// `node_modules/.bin/tailwindcss` slot is owned by npm, and adding the floor
+/// alias can flip it between `@tailwindcss/cli` and
+/// `@tailwindcss/cli-floor` depending on install history — whoever owns the
+/// slot would silently become every build's compiler. A script path names one
+/// package exactly. Both CLIs ship `#!/usr/bin/env node` entry scripts, so
+/// `node <script>` is what executing the `.bin` symlink runs anyway (outputs
+/// byte-identical, measured).
+#[derive(Clone, Copy)]
+pub struct TwCli {
+    /// The CLI's entry script, relative to the repo root.
+    script: &'static str,
+}
+
+impl TwCli {
+    /// The dev toolchain: `@tailwindcss/cli` (the `^4.3.3` devDependency).
+    pub const fn dev() -> TwCli {
+        TwCli {
+            script: "node_modules/@tailwindcss/cli/dist/index.mjs",
+        }
+    }
+
+    /// The declared floor: the `@tailwindcss/cli-floor` alias
+    /// (`npm:@tailwindcss/cli@4.3.0`), pinned by consumer-sim to package.json's
+    /// peer-range bottom.
+    pub const fn floor() -> TwCli {
+        TwCli {
+            script: "node_modules/@tailwindcss/cli-floor/dist/index.mjs",
+        }
+    }
+
+    /// const so a nodes.rs input table can name the executed path directly.
+    pub const fn script(&self) -> &'static str {
+        self.script
+    }
+}
+
 /// `in` and `out` are resolved against the repo root, never against the
 /// compile cwd, and so is the CLI binary.
 pub fn tw_compile(
+    root: &Path,
+    input: &str,
+    out: &str,
+    compile_cwd: &str,
+    minify: bool,
+    quiet: bool,
+) -> Result<(), String> {
+    tw_compile_cli(&TwCli::dev(), root, input, out, compile_cwd, minify, quiet)
+}
+
+/// [`tw_compile`] with the CLI chosen by the caller — the floor half of
+/// consumer-sim runs [`TwCli::floor`] so the declared minimum tailwindcss is
+/// compiled against, not assumed.
+pub fn tw_compile_cli(
+    cli: &TwCli,
     root: &Path,
     input: &str,
     out: &str,
@@ -84,8 +137,8 @@ pub fn tw_compile(
         None => abs(compile_cwd),
     };
 
-    let mut cmd = std::process::Command::new(root.join("node_modules/.bin/tailwindcss"));
-    cmd.args(&argv).current_dir(&dir);
+    let mut cmd = std::process::Command::new("node");
+    cmd.arg(root.join(cli.script)).args(&argv).current_dir(&dir);
     if !quiet {
         cmd.stdout(std::process::Stdio::inherit());
         cmd.stderr(std::process::Stdio::inherit());

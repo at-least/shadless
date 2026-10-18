@@ -1,12 +1,12 @@
 ---
 title: "Installation"
-description: "shadless plugs into your Tailwind v4 build — two imports per component, vanilla JS where behavior is needed."
+description: "shadless plugs into your Tailwind v4 build (>= 4.3) — two imports per component, vanilla JS where behavior is needed."
 weight: 2
 ---
 
 # Installation
 
-shadless plugs into your Tailwind v4 build — two imports per component, vanilla JS where behavior is needed.
+shadless plugs into your Tailwind v4 build (>= 4.3) — two imports per component, vanilla JS where behavior is needed.
 
 shadless is consumed as plain files: every component ships as HTML markup
 carrying plain Tailwind utilities, a self-contained theme/stylesheet
@@ -36,10 +36,16 @@ React. See the **Installation** section on any component page for its exact
 file list.
 {% </tip> %}
 
-## Primary: your Tailwind v4 build
+## Primary: your Tailwind v4 (>= 4.3) build
 
 The intended path is the one you already know from shadcn itself: the
 classes live in your markup, **your** Tailwind build compiles them.
+
+The 4.3 floor is real and machine-checked, not a guess: the shipped
+`@apply` sources use `scrollbar-none` and `scrollbar-thin`, built-ins no
+tailwindcss line before 4.3.0 has, so `package.json` declares
+`tailwindcss ^4.3.0` and the repo's `consumer-sim` gate compiles every
+component stylesheet on 4.3.0 as well as on its own dev toolchain.
 
 **Add shadless to your Tailwind entry, then one import per component you use.**
 

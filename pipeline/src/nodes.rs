@@ -358,11 +358,17 @@ pub fn all_go() -> Vec<Node> {
             &[&["go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestConsumerSim$", "."]],
             Some(&[
                 "pipeline/gate_consumer_sim.go", "pipeline/tw.go", "pipeline/gates_test.go",
-                "dist/css/**", "dist/shadless-core.css", "package.json", "node_modules/.bin/tailwindcss",
+                "dist/css/**", "dist/shadless-core.css", "package.json", "package-lock.json",
+                "node_modules/@tailwindcss/cli/dist/index.mjs",
+                "node_modules/@tailwindcss/cli-floor/**",
             ]),
             None,
-            "the PRIMARY consume path, machine-checked: a scratch consumer importing core + N component files gets exactly those styles, and every component compiles ALONE (not only as part of the full product entry)",
-            &["consumer-sim-unknown-utility"],
+            "the PRIMARY consume path, machine-checked: a scratch consumer importing core + N component files gets exactly those styles, and every component compiles ALONE (not only as part of the full product entry) — on the dev CLI AND on the declared floor, package.json's peer-range bottom via the @tailwindcss/cli-floor alias. The floor used to be a promise nothing checked: the peer range said ^4 while dist/css used 4.1/4.3-era built-ins (scrollbar-none, scrollbar-thin, wrap-break-word), so a consumer on tailwindcss 4.0-4.2 got failing builds the repo never saw. The gate compiles every component on both toolchains, checks each output's header names the toolchain that claims it, asserts the floor CLI and its nested tailwindcss are one version, and fails if the peer range drifts off the floor",
+            &[
+                "consumer-sim-floor-only-utility",
+                "consumer-sim-peer-floor-drift",
+                "consumer-sim-unknown-utility",
+            ],
         ),
         node(
             "path-parity", "gate", "full",
@@ -965,9 +971,14 @@ fn self_host(n: Node) -> Node {
         ("build-js", "node_modules/.bin/esbuild"),
         ("convert", "node_modules/.bin/esbuild"),
         ("typecheck", "node_modules/.bin/tsc"),
-        ("demo", "node_modules/.bin/tailwindcss"),
-        ("product-build", "node_modules/.bin/tailwindcss"),
-        ("oracle-css", "node_modules/.bin/tailwindcss"),
+        // tailwind runs by script path (see emit/tw.rs TwCli): the .bin slot
+        // is npm's to hand out, and adding the floor alias demonstrably flips
+        // it — whoever owns it must not silently be every build's compiler.
+        // The declared input IS TwCli::dev()'s script, so this table cannot
+        // drift from the Command::new site.
+        ("demo", crate::emit::tw::TwCli::dev().script()),
+        ("product-build", crate::emit::tw::TwCli::dev().script()),
+        ("oracle-css", crate::emit::tw::TwCli::dev().script()),
         ("example-oracle", "node_modules/.bin/esbuild"),
         ("example-fixture", "node_modules/.bin/esbuild"),
         ("contract-fixture", "node_modules/.bin/esbuild"),
@@ -1042,9 +1053,9 @@ mod self_host_tests {
             ("build-js", "node_modules/.bin/esbuild"),
             ("convert", "node_modules/.bin/esbuild"),
             ("typecheck", "node_modules/.bin/tsc"),
-            ("demo", "node_modules/.bin/tailwindcss"),
-            ("product-build", "node_modules/.bin/tailwindcss"),
-            ("oracle-css", "node_modules/.bin/tailwindcss"),
+            ("demo", crate::emit::tw::TwCli::dev().script()),
+            ("product-build", crate::emit::tw::TwCli::dev().script()),
+            ("oracle-css", crate::emit::tw::TwCli::dev().script()),
             ("example-oracle", "node_modules/.bin/esbuild"),
             ("example-fixture", "node_modules/.bin/esbuild"),
             ("contract-fixture", "node_modules/.bin/esbuild"),
@@ -1057,6 +1068,25 @@ mod self_host_tests {
                 "{id} executes {bin} but does not declare it — upgrading the binary stays falsely fresh"
             );
         }
+        // consumer-sim declared its tailwind path in the Go table, so it is
+        // not in the self_host TOOLCHAIN_INPUTS table above — but it now runs
+        // TWO toolchains, and the floor one runs by script path out of the
+        // aliased package (npm gives the .bin slot to whichever CLI it likes),
+        // so the whole alias tree must be declared.
+        let cs = g.iter().find(|n| n.id == "consumer-sim").unwrap();
+        let cs_inputs = cs.inputs.as_deref().unwrap_or(&[]);
+        assert!(
+            cs_inputs
+                .iter()
+                .any(|p| p.starts_with("node_modules/@tailwindcss/cli-floor/")),
+            "consumer-sim compiles on the floor (@tailwindcss/cli-floor) but does not declare it"
+        );
+        assert!(
+            cs_inputs
+                .iter()
+                .any(|p| p == crate::emit::tw::TwCli::dev().script()),
+            "consumer-sim executes the dev CLI by script path but does not declare it"
+        );
     }
 
     #[test]

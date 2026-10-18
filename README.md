@@ -24,8 +24,10 @@ markup is in `docs/demos/*.html`, rendered with a copyable code tab by the
 docs site (`npm run docs && npm run docs:preview`), and `dist/components/`
 holds one minimal page per component.
 
-Primary path — your own Tailwind v4 build (tree-shaken to exactly the
-components you import; machine-checked by the repo's consumer-sim gate):
+Primary path — your own Tailwind v4 build, >= 4.3 (tree-shaken to exactly the
+components you import; machine-checked by the repo's consumer-sim gate, which
+compiles every component stylesheet on the dev toolchain and on the 4.3 floor
+the peer range declares):
 
 ```css
 @import "shadless";            /* theme + animate layer, self-contained */
@@ -38,7 +40,7 @@ ships every component precompiled as the zero-setup alternative.
 
 | Export | What it is |
 |---|---|
-| `shadless` | theme + animate layer (self-contained — needs only your tailwindcss) |
+| `shadless` | theme + animate layer (self-contained — needs only your tailwindcss, >= 4.3) |
 | `shadless/<name>.css` | per-component `@apply` source, one import per component you use |
 | `shadless/full.css` / `shadless/full.min.css` | every component precompiled (no-build path) |
 | `shadless/js` / `js.min` | the JS base: engine + registry + theme (+ the vendored radix kernel), auto-initialises. `<script>` gets the IIFE (`window.shadless`), and `js.min` is the minified one. Under `import` both resolve to the same ES module — `dist/esm/shadless.mjs`, `export default shadless` + named `init`, `get`, `theme`, … — because there is exactly one ES-module base for every component file to register on; minify it in your own bundle |

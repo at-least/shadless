@@ -29,6 +29,12 @@ workflow is gone, so it is invoked by hand until the Dagger port replaces it.
 | 6 | `./build/pipeline overlay --tasks` | every hand-written unit re-proves it still applies; the ones that don't become task packets |
 | 7 | classification | each failed gate is **EXPECTED** (its components changed upstream per step 5) or **UNEXPECTED** (nothing moved upstream — our pipeline regressed) |
 
+Step 4 re-checks the Tailwind floor on its own: `consumer-sim` now compiles
+every component stylesheet on the declared floor too (the
+`@tailwindcss/cli-floor` alias, pinned to `peerDependencies.tailwindcss`) —
+raising the floor means bumping the peer range and the alias in the same
+commit, and the gate fails if they drift apart.
+
 ## Reading the report
 
 Work it top-down:

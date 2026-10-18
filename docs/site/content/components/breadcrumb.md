@@ -208,7 +208,7 @@ Displays the path to the current resource using a hierarchy of links.
 
 ## Installation
 
-**Add shadless and this component to your Tailwind v4 entry:**
+**Add shadless and this component to your Tailwind v4 (>= 4.3) entry:**
 
 ```css
 @import "shadless";
@@ -219,7 +219,7 @@ The files this component needs:
 
 | File | Purpose |
 | --- | --- |
-| `dist/shadless-core.css` | theme + animate layer — self-contained, needs only your tailwindcss build |
+| `dist/shadless-core.css` | theme + animate layer — self-contained, needs only your tailwindcss build (>= 4.3) |
 | `dist/css/breadcrumb.css` | this component's slot styles (`@apply` source — your build compiles it) |
 | — | no JavaScript: this component is markup + CSS |
 

@@ -432,7 +432,7 @@ impl DocsBuildCtx {
         let inline_init = !scripts.inline_scripts.is_empty();
         let has_own_css = root.join("dist/css").join(format!("{}.css", name)).exists();
         let mut rows: Vec<String> = vec![
-            "| `dist/shadless-core.css` | theme + animate layer — self-contained, needs only your tailwindcss build |".to_string(),
+            "| `dist/shadless-core.css` | theme + animate layer — self-contained, needs only your tailwindcss build (>= 4.3) |".to_string(),
         ];
         if has_own_css {
             rows.push(format!(
@@ -505,7 +505,7 @@ impl DocsBuildCtx {
             ""
         };
         format!(
-            "<Steps>\n\n<Step>Add shadless{} to your Tailwind v4 entry:</Step>\n\n```css\n@import \"shadless\";{}\n```\n{}\nThe files this component needs:\n\n| File | Purpose |\n| --- | --- |\n{}\n{}\n\n<Step>{} from any example on this page (the code tab under its preview) into your page and adapt it{} — the inline utilities are picked up by your build's content scan.</Step>\n{}{}\nNo Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.\n\n</Steps>",
+            "<Steps>\n\n<Step>Add shadless{} to your Tailwind v4 (>= 4.3) entry:</Step>\n\n```css\n@import \"shadless\";{}\n```\n{}\nThe files this component needs:\n\n| File | Purpose |\n| --- | --- |\n{}\n{}\n\n<Step>{} from any example on this page (the code tab under its preview) into your page and adapt it{} — the inline utilities are picked up by your build's content scan.</Step>\n{}{}\nNo Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadless/full.min.css`, every component) as a single stylesheet instead of the imports above.\n\n</Steps>",
             and_comp,
             css_imports,
             no_css_note,

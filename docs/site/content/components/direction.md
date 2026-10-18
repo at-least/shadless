@@ -121,7 +121,7 @@ Here's a preview of the component in RTL mode. Use the language selector to swit
 
 ## Installation
 
-**Add shadless to your Tailwind v4 entry:**
+**Add shadless to your Tailwind v4 (>= 4.3) entry:**
 
 ```css
 @import "shadless";
@@ -133,7 +133,7 @@ The files this component needs:
 
 | File | Purpose |
 | --- | --- |
-| `dist/shadless-core.css` | theme + animate layer — self-contained, needs only your tailwindcss build |
+| `dist/shadless-core.css` | theme + animate layer — self-contained, needs only your tailwindcss build (>= 4.3) |
 | — | no JavaScript: this component is markup + CSS |
 
 **Copy the markup from any example on this page (the code tab under its preview) into your page and adapt it — the inline utilities are picked up by your build's content scan.**

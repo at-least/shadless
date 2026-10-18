@@ -48,6 +48,17 @@ upstream is `src/registry/pin.json`; re-pins land through the upstream drill
   the no-handle contract, form `name`); `API Reference` carries the
   shadless surface (data-slot vocabulary + runtime) beside the Radix link.
 
+### Changed
+- The declared Tailwind floor is now a machine-checked one:
+  `peerDependencies.tailwindcss` says `^4.3.0` (was `^4`) and the
+  `consumer-sim` gate compiles every component stylesheet on 4.3.0 (the
+  `@tailwindcss/cli-floor` dev alias) as well as on the dev toolchain. The
+  shipped `@apply` sources use `scrollbar-none` and `scrollbar-thin`,
+  built-ins no tailwindcss line before 4.3.0 has, so the old range promised
+  compatibility with tailwindcss 4.0–4.2 that the CSS never had.
+  The gate fails if the peer range drifts off the floor toolchain; raising
+  the floor means bumping the peer range and the alias together.
+
 ## 1.0.0 — pinned to `shadcn@4.19.0`
 
 Initial release: 48 components with CSS, 23 with behavior, converted

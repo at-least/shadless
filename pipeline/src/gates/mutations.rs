@@ -224,6 +224,24 @@ fn apply_consumer_sim_unknown_utility(root: &Path, f: &[String]) -> Result<(), S
     )
 }
 
+/// auto-rows-12 exists in tailwindcss 4.3.2+ only (bare spacing values for
+/// auto-rows-*/auto-cols-*, proven by compiling the same entry on both CLIs):
+/// the dev compile stays green and ONLY the floor compile fails, proving the
+/// floor toolchain in the gate is live rather than a second copy of the dev
+/// one.
+fn apply_consumer_sim_floor_only_utility(root: &Path, f: &[String]) -> Result<(), String> {
+    mut_replace_once(root, &f[0], "@apply ", "@apply auto-rows-12 ")
+}
+
+fn apply_consumer_sim_peer_floor_drift(root: &Path, _f: &[String]) -> Result<(), String> {
+    mut_replace_once(
+        root,
+        "package.json",
+        "\"tailwindcss\": \"^4.3.0\"",
+        "\"tailwindcss\": \"^4.2.0\"",
+    )
+}
+
 fn apply_contracts_strip_glue(root: &Path, f: &[String]) -> Result<(), String> {
     mut_replace_once(
         root,
@@ -518,6 +536,22 @@ fn apply_variant_merge_defaults(root: &Path, f: &[String]) -> Result<(), String>
 /// both directions: every gate must be named by at least one mutation, and
 /// every mutation must name a gate that lists it.
 pub static MUTATIONS: &[Mutation] = &[
+    Mutation {
+        id: "consumer-sim-floor-only-utility",
+        gate: "consumer-sim",
+        why: "a component stylesheet @applies a utility newer than the declared floor — the dev compile stays green and ONLY the floor compile may fail, proving the floor toolchain really runs",
+        files: &["dist/css/table.css"],
+        resolve: None,
+        apply: apply_consumer_sim_floor_only_utility,
+    },
+    Mutation {
+        id: "consumer-sim-peer-floor-drift",
+        gate: "consumer-sim",
+        why: "package.json's peer range bottoms below the floor toolchain — the exact drift that shipped (peer ^4 while dist/css needed 4.3)",
+        files: &["package.json"],
+        resolve: None,
+        apply: apply_consumer_sim_peer_floor_drift,
+    },
     Mutation {
         id: "consumer-sim-unknown-utility",
         gate: "consumer-sim",

@@ -195,7 +195,7 @@ A set of layered sections of content—known as tab panels—that are displayed 
 
 ## Installation
 
-**Add shadless and this component to your Tailwind v4 entry:**
+**Add shadless and this component to your Tailwind v4 (>= 4.3) entry:**
 
 ```css
 @import "shadless";
@@ -206,7 +206,7 @@ The files this component needs:
 
 | File | Purpose |
 | --- | --- |
-| `dist/shadless-core.css` | theme + animate layer — self-contained, needs only your tailwindcss build |
+| `dist/shadless-core.css` | theme + animate layer — self-contained, needs only your tailwindcss build (>= 4.3) |
 | `dist/css/tabs.css` | this component's slot styles (`@apply` source — your build compiles it) |
 | `dist/shadless.js` | behavior base — engine, registry, theme; initialises on DOMContentLoaded (`shadless.init(root)` for content added later) |
 | `dist/js/tabs.js` | this component's behavior — registers with the base |
