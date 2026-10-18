@@ -15,7 +15,7 @@ link = "/components/"
 
 [[extra.vitepress_home.features]]
 title = "Static HTML"
-details = "Every component is markup + CSS you copy — data-slot attributes, Tailwind utilities, no framework."
+details = "Every component is markup + CSS you copy — data-slot attributes plus only the utilities you add; the stylesheet supplies the rest. No framework."
 
 [[extra.vitepress_home.features]]
 title = "Vanilla runtime"

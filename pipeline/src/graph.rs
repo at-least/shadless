@@ -180,7 +180,7 @@ mod tests {
     #[test]
     fn authored_graph_shape() {
         let g = authored();
-        assert_eq!(g.ids().len(), 41);
+        assert_eq!(g.ids().len(), 42);
         assert!(g.node("pin").is_some());
         assert!(g.node("contracts").is_some());
         assert!(g.node("nope").is_none());

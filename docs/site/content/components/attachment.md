@@ -16,38 +16,29 @@ Displays a file or image attachment with media, metadata, upload state, and acti
 {% <codegroup> %}
 ```text,name=attachment-demo.html
 <div class="mx-auto flex w-full max-w-sm flex-col gap-3 py-12">
-  <div
-    data-slot="attachment-group"
-    class="gap-3 scroll-px-1 py-1 flex min-w-0 scroll-fade-x snap-x snap-mandatory scrollbar-none overflow-x-auto overscroll-x-contain *:data-[slot=attachment]:flex-none *:data-[slot=attachment]:snap-start"
-  >
+  <div data-slot="attachment-group">
     <div
       data-slot="attachment"
       data-state="done"
       data-size="default"
       data-orientation="vertical"
-      class="rounded-xl focus-within:ring-1 focus-within:ring-ring/50 group/attachment relative flex max-w-full min-w-0 shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 text-sm w-24 has-data-[slot=attachment-content]:w-30 flex-col"
+      class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 w-24 has-data-[slot=attachment-content]:w-30"
     >
       <div
         data-slot="attachment-media"
         data-variant="image"
-        class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none opacity-60 group-data-[state=idle]/attachment:opacity-100 group-data-[state=done]/attachment:opacity-100 *:[img]:aspect-square *:[img]:w-full *:[img]:object-cover"
+        class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive opacity-60 group-data-[state=idle]/attachment:opacity-100 group-data-[state=done]/attachment:opacity-100 *:[img]:w-full"
       >
         <img
           alt="Workspace"
           src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&amp;auto=format&amp;fit=crop&amp;q=80"
         />
       </div>
-      <div
-        data-slot="attachment-content"
-        class="leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1"
-      >
-        <span
-          data-slot="attachment-title"
-          class="font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer"
-          >workspace.png</span
+      <div data-slot="attachment-content">
+        <span data-slot="attachment-title">workspace.png</span
         ><span
           data-slot="attachment-description"
-          class="mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full"
+          class="text-muted-foreground group-data-[state=error]/attachment:text-destructive/80"
           >PNG · 820 KB</span
         >
       </div>
@@ -57,29 +48,23 @@ Displays a file or image attachment with media, metadata, upload state, and acti
       data-state="done"
       data-size="default"
       data-orientation="vertical"
-      class="rounded-xl focus-within:ring-1 focus-within:ring-ring/50 group/attachment relative flex max-w-full min-w-0 shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 text-sm w-24 has-data-[slot=attachment-content]:w-30 flex-col"
+      class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 w-24 has-data-[slot=attachment-content]:w-30"
     >
       <div
         data-slot="attachment-media"
         data-variant="image"
-        class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none opacity-60 group-data-[state=idle]/attachment:opacity-100 group-data-[state=done]/attachment:opacity-100 *:[img]:aspect-square *:[img]:w-full *:[img]:object-cover"
+        class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive opacity-60 group-data-[state=idle]/attachment:opacity-100 group-data-[state=done]/attachment:opacity-100 *:[img]:w-full"
       >
         <img
           alt="Desk"
           src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=900&amp;auto=format&amp;fit=crop&amp;q=80"
         />
       </div>
-      <div
-        data-slot="attachment-content"
-        class="leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1"
-      >
-        <span
-          data-slot="attachment-title"
-          class="font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer"
-          >desk-reference.jpg</span
+      <div data-slot="attachment-content">
+        <span data-slot="attachment-title">desk-reference.jpg</span
         ><span
           data-slot="attachment-description"
-          class="mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full"
+          class="text-muted-foreground group-data-[state=error]/attachment:text-destructive/80"
           >JPG · 1.1 MB</span
         >
       </div>
@@ -89,29 +74,23 @@ Displays a file or image attachment with media, metadata, upload state, and acti
       data-state="done"
       data-size="default"
       data-orientation="vertical"
-      class="rounded-xl focus-within:ring-1 focus-within:ring-ring/50 group/attachment relative flex max-w-full min-w-0 shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 text-sm w-24 has-data-[slot=attachment-content]:w-30 flex-col"
+      class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 w-24 has-data-[slot=attachment-content]:w-30"
     >
       <div
         data-slot="attachment-media"
         data-variant="image"
-        class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none opacity-60 group-data-[state=idle]/attachment:opacity-100 group-data-[state=done]/attachment:opacity-100 *:[img]:aspect-square *:[img]:w-full *:[img]:object-cover"
+        class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive opacity-60 group-data-[state=idle]/attachment:opacity-100 group-data-[state=done]/attachment:opacity-100 *:[img]:w-full"
       >
         <img
           alt="Office"
           src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&amp;auto=format&amp;fit=crop&amp;q=80"
         />
       </div>
-      <div
-        data-slot="attachment-content"
-        class="leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1"
-      >
-        <span
-          data-slot="attachment-title"
-          class="font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer"
-          >office-reference.jpg</span
+      <div data-slot="attachment-content">
+        <span data-slot="attachment-title">office-reference.jpg</span
         ><span
           data-slot="attachment-description"
-          class="mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full"
+          class="text-muted-foreground group-data-[state=error]/attachment:text-destructive/80"
           >JPG · 940 KB</span
         >
       </div>
@@ -122,12 +101,12 @@ Displays a file or image attachment with media, metadata, upload state, and acti
     data-state="uploading"
     data-size="default"
     data-orientation="horizontal"
-    class="rounded-xl focus-within:ring-1 focus-within:ring-ring/50 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 text-sm min-w-40 items-center w-full"
+    class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 w-full"
   >
     <div
       data-slot="attachment-media"
       data-variant="icon"
-      class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none"
+      class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -139,7 +118,7 @@ Displays a file or image attachment with media, metadata, upload state, and acti
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        class="lucide lucide-loader-circle size-4 animate-spin"
+        class="lucide lucide-loader-circle size-4"
         data-slot="spinner"
         role="status"
         aria-label="Loading"
@@ -147,29 +126,23 @@ Displays a file or image attachment with media, metadata, upload state, and acti
         <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
       </svg>
     </div>
-    <div
-      data-slot="attachment-content"
-      class="leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1"
-    >
-      <span
-        data-slot="attachment-title"
-        class="font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer"
-        >sales-dashboard.pdf</span
+    <div data-slot="attachment-content">
+      <span data-slot="attachment-title">sales-dashboard.pdf</span
       ><span
         data-slot="attachment-description"
-        class="mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full"
+        class="text-muted-foreground group-data-[state=error]/attachment:text-destructive/80"
         >Uploading · 64%</span
       >
     </div>
     <div
       data-slot="attachment-actions"
-      class="group-data-[orientation=vertical]/attachment:absolute group-data-[orientation=vertical]/attachment:top-3 group-data-[orientation=vertical]/attachment:right-3 relative z-20 group-data-[orientation=vertical]/attachment:gap-1 flex shrink-0 items-center"
+      class="group-data-[orientation=vertical]/attachment:absolute relative"
     >
       <button
         data-slot="attachment-action"
         data-variant="ghost"
         data-size="icon-xs"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
+        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button hover:bg-muted dark:hover:bg-muted/50 aria-expanded:bg-muted size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
         aria-label="Cancel upload"
       >
         <svg
@@ -195,12 +168,12 @@ Displays a file or image attachment with media, metadata, upload state, and acti
     data-state="done"
     data-size="default"
     data-orientation="horizontal"
-    class="rounded-xl focus-within:ring-1 focus-within:ring-ring/50 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 text-sm min-w-40 items-center w-full"
+    class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 w-full"
   >
     <div
       data-slot="attachment-media"
       data-variant="icon"
-      class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none"
+      class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -220,29 +193,23 @@ Displays a file or image attachment with media, metadata, upload state, and acti
         <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"></path>
       </svg>
     </div>
-    <div
-      data-slot="attachment-content"
-      class="leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1"
-    >
-      <span
-        data-slot="attachment-title"
-        class="font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer"
-        >message-renderer.tsx</span
+    <div data-slot="attachment-content">
+      <span data-slot="attachment-title">message-renderer.tsx</span
       ><span
         data-slot="attachment-description"
-        class="mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full"
+        class="text-muted-foreground group-data-[state=error]/attachment:text-destructive/80"
         >TypeScript · 12 KB</span
       >
     </div>
     <div
       data-slot="attachment-actions"
-      class="group-data-[orientation=vertical]/attachment:absolute group-data-[orientation=vertical]/attachment:top-3 group-data-[orientation=vertical]/attachment:right-3 relative z-20 group-data-[orientation=vertical]/attachment:gap-1 flex shrink-0 items-center"
+      class="group-data-[orientation=vertical]/attachment:absolute relative"
     >
       <button
         data-slot="attachment-action"
         data-variant="ghost"
         data-size="icon-xs"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
+        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button hover:bg-muted dark:hover:bg-muted/50 aria-expanded:bg-muted size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
         aria-label="Remove message-renderer.tsx"
       >
         <svg
@@ -328,50 +295,41 @@ Set `variant="image"` on `AttachmentMedia` and render an `<img>` inside it. Use 
 {% <codegroup> %}
 ```text,name=attachment-image.html
 <div class="mx-auto w-full max-w-sm py-12">
-  <div
-    data-slot="attachment-group"
-    class="gap-3 scroll-px-1 py-1 flex min-w-0 scroll-fade-x snap-x snap-mandatory scrollbar-none overflow-x-auto overscroll-x-contain *:data-[slot=attachment]:flex-none *:data-[slot=attachment]:snap-start w-full"
-  >
+  <div data-slot="attachment-group" class="w-full">
     <div
       data-slot="attachment"
       data-state="done"
       data-size="default"
       data-orientation="vertical"
-      class="rounded-xl focus-within:ring-1 focus-within:ring-ring/50 group/attachment relative flex max-w-full min-w-0 shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 text-sm w-24 has-data-[slot=attachment-content]:w-30 flex-col"
+      class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 w-24 has-data-[slot=attachment-content]:w-30"
     >
       <div
         data-slot="attachment-media"
         data-variant="image"
-        class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none opacity-60 group-data-[state=idle]/attachment:opacity-100 group-data-[state=done]/attachment:opacity-100 *:[img]:aspect-square *:[img]:w-full *:[img]:object-cover"
+        class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive opacity-60 group-data-[state=idle]/attachment:opacity-100 group-data-[state=done]/attachment:opacity-100 *:[img]:w-full"
       >
         <img
           alt="Workspace"
           src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&amp;auto=format&amp;fit=crop&amp;q=80"
         />
       </div>
-      <div
-        data-slot="attachment-content"
-        class="leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1"
-      >
-        <span
-          data-slot="attachment-title"
-          class="font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer"
-          >workspace.png</span
+      <div data-slot="attachment-content">
+        <span data-slot="attachment-title">workspace.png</span
         ><span
           data-slot="attachment-description"
-          class="mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full"
+          class="text-muted-foreground group-data-[state=error]/attachment:text-destructive/80"
           >PNG · 820 KB</span
         >
       </div>
       <div
         data-slot="attachment-actions"
-        class="group-data-[orientation=vertical]/attachment:absolute group-data-[orientation=vertical]/attachment:top-3 group-data-[orientation=vertical]/attachment:right-3 relative z-20 group-data-[orientation=vertical]/attachment:gap-1 flex shrink-0 items-center"
+        class="group-data-[orientation=vertical]/attachment:absolute relative"
       >
         <button
           data-slot="attachment-action"
           data-variant="ghost"
           data-size="icon-xs"
-          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
+          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button hover:bg-muted dark:hover:bg-muted/50 aria-expanded:bg-muted size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
           aria-label="Remove workspace.png"
         >
           <svg
@@ -397,7 +355,6 @@ Set `variant="image"` on `AttachmentMedia` and render an `<img>` inside it. Use 
         rel="noreferrer"
         aria-label="Open workspace.png"
         data-slot="attachment-trigger"
-        class="absolute inset-0 z-10 outline-none"
       ></a>
     </div>
     <div
@@ -405,41 +362,35 @@ Set `variant="image"` on `AttachmentMedia` and render an `<img>` inside it. Use 
       data-state="done"
       data-size="default"
       data-orientation="vertical"
-      class="rounded-xl focus-within:ring-1 focus-within:ring-ring/50 group/attachment relative flex max-w-full min-w-0 shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 text-sm w-24 has-data-[slot=attachment-content]:w-30 flex-col"
+      class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 w-24 has-data-[slot=attachment-content]:w-30"
     >
       <div
         data-slot="attachment-media"
         data-variant="image"
-        class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none opacity-60 group-data-[state=idle]/attachment:opacity-100 group-data-[state=done]/attachment:opacity-100 *:[img]:aspect-square *:[img]:w-full *:[img]:object-cover"
+        class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive opacity-60 group-data-[state=idle]/attachment:opacity-100 group-data-[state=done]/attachment:opacity-100 *:[img]:w-full"
       >
         <img
           alt="Desk"
           src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=900&amp;auto=format&amp;fit=crop&amp;q=80"
         />
       </div>
-      <div
-        data-slot="attachment-content"
-        class="leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1"
-      >
-        <span
-          data-slot="attachment-title"
-          class="font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer"
-          >desk-reference.jpg</span
+      <div data-slot="attachment-content">
+        <span data-slot="attachment-title">desk-reference.jpg</span
         ><span
           data-slot="attachment-description"
-          class="mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full"
+          class="text-muted-foreground group-data-[state=error]/attachment:text-destructive/80"
           >JPG · 1.1 MB</span
         >
       </div>
       <div
         data-slot="attachment-actions"
-        class="group-data-[orientation=vertical]/attachment:absolute group-data-[orientation=vertical]/attachment:top-3 group-data-[orientation=vertical]/attachment:right-3 relative z-20 group-data-[orientation=vertical]/attachment:gap-1 flex shrink-0 items-center"
+        class="group-data-[orientation=vertical]/attachment:absolute relative"
       >
         <button
           data-slot="attachment-action"
           data-variant="ghost"
           data-size="icon-xs"
-          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
+          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button hover:bg-muted dark:hover:bg-muted/50 aria-expanded:bg-muted size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
           aria-label="Remove desk-reference.jpg"
         >
           <svg
@@ -465,7 +416,6 @@ Set `variant="image"` on `AttachmentMedia` and render an `<img>` inside it. Use 
         rel="noreferrer"
         aria-label="Open desk-reference.jpg"
         data-slot="attachment-trigger"
-        class="absolute inset-0 z-10 outline-none"
       ></a>
     </div>
     <div
@@ -473,41 +423,35 @@ Set `variant="image"` on `AttachmentMedia` and render an `<img>` inside it. Use 
       data-state="done"
       data-size="default"
       data-orientation="vertical"
-      class="rounded-xl focus-within:ring-1 focus-within:ring-ring/50 group/attachment relative flex max-w-full min-w-0 shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 text-sm w-24 has-data-[slot=attachment-content]:w-30 flex-col"
+      class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 w-24 has-data-[slot=attachment-content]:w-30"
     >
       <div
         data-slot="attachment-media"
         data-variant="image"
-        class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none opacity-60 group-data-[state=idle]/attachment:opacity-100 group-data-[state=done]/attachment:opacity-100 *:[img]:aspect-square *:[img]:w-full *:[img]:object-cover"
+        class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive opacity-60 group-data-[state=idle]/attachment:opacity-100 group-data-[state=done]/attachment:opacity-100 *:[img]:w-full"
       >
         <img
           alt="Office"
           src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&amp;auto=format&amp;fit=crop&amp;q=80"
         />
       </div>
-      <div
-        data-slot="attachment-content"
-        class="leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1"
-      >
-        <span
-          data-slot="attachment-title"
-          class="font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer"
-          >office-reference.jpg</span
+      <div data-slot="attachment-content">
+        <span data-slot="attachment-title">office-reference.jpg</span
         ><span
           data-slot="attachment-description"
-          class="mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full"
+          class="text-muted-foreground group-data-[state=error]/attachment:text-destructive/80"
           >JPG · 940 KB</span
         >
       </div>
       <div
         data-slot="attachment-actions"
-        class="group-data-[orientation=vertical]/attachment:absolute group-data-[orientation=vertical]/attachment:top-3 group-data-[orientation=vertical]/attachment:right-3 relative z-20 group-data-[orientation=vertical]/attachment:gap-1 flex shrink-0 items-center"
+        class="group-data-[orientation=vertical]/attachment:absolute relative"
       >
         <button
           data-slot="attachment-action"
           data-variant="ghost"
           data-size="icon-xs"
-          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
+          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button hover:bg-muted dark:hover:bg-muted/50 aria-expanded:bg-muted size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
           aria-label="Remove office-reference.jpg"
         >
           <svg
@@ -533,7 +477,6 @@ Set `variant="image"` on `AttachmentMedia` and render an `<img>` inside it. Use 
         rel="noreferrer"
         aria-label="Open office-reference.jpg"
         data-slot="attachment-trigger"
-        class="absolute inset-0 z-10 outline-none"
       ></a>
     </div>
   </div>
@@ -560,12 +503,12 @@ Set `state` to reflect the upload lifecycle. `uploading` and `processing` shimme
     data-state="idle"
     data-size="default"
     data-orientation="horizontal"
-    class="rounded-xl focus-within:ring-1 focus-within:ring-ring/50 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 text-sm min-w-40 items-center w-full"
+    class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 w-full"
   >
     <div
       data-slot="attachment-media"
       data-variant="icon"
-      class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none"
+      class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -583,29 +526,23 @@ Set `state` to reflect the upload lifecycle. `uploading` and `processing` shimme
         <polyline points="12 6 12 12 16 14"></polyline>
       </svg>
     </div>
-    <div
-      data-slot="attachment-content"
-      class="leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1"
-    >
-      <span
-        data-slot="attachment-title"
-        class="font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer"
-        >selected-file.pdf</span
+    <div data-slot="attachment-content">
+      <span data-slot="attachment-title">selected-file.pdf</span
       ><span
         data-slot="attachment-description"
-        class="mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full"
+        class="text-muted-foreground group-data-[state=error]/attachment:text-destructive/80"
         >Ready to upload</span
       >
     </div>
     <div
       data-slot="attachment-actions"
-      class="group-data-[orientation=vertical]/attachment:absolute group-data-[orientation=vertical]/attachment:top-3 group-data-[orientation=vertical]/attachment:right-3 relative z-20 group-data-[orientation=vertical]/attachment:gap-1 flex shrink-0 items-center"
+      class="group-data-[orientation=vertical]/attachment:absolute relative"
     >
       <button
         data-slot="attachment-action"
         data-variant="ghost"
         data-size="icon-xs"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
+        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button hover:bg-muted dark:hover:bg-muted/50 aria-expanded:bg-muted size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
         aria-label="Remove selected-file.pdf"
       >
         <svg
@@ -631,12 +568,12 @@ Set `state` to reflect the upload lifecycle. `uploading` and `processing` shimme
     data-state="uploading"
     data-size="default"
     data-orientation="horizontal"
-    class="rounded-xl focus-within:ring-1 focus-within:ring-ring/50 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 text-sm min-w-40 items-center w-full"
+    class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 w-full"
   >
     <div
       data-slot="attachment-media"
       data-variant="icon"
-      class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none"
+      class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -648,7 +585,7 @@ Set `state` to reflect the upload lifecycle. `uploading` and `processing` shimme
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        class="lucide lucide-loader-circle size-4 animate-spin"
+        class="lucide lucide-loader-circle size-4"
         data-slot="spinner"
         role="status"
         aria-label="Loading"
@@ -656,29 +593,23 @@ Set `state` to reflect the upload lifecycle. `uploading` and `processing` shimme
         <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
       </svg>
     </div>
-    <div
-      data-slot="attachment-content"
-      class="leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1"
-    >
-      <span
-        data-slot="attachment-title"
-        class="font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer"
-        >design-system.zip</span
+    <div data-slot="attachment-content">
+      <span data-slot="attachment-title">design-system.zip</span
       ><span
         data-slot="attachment-description"
-        class="mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full"
+        class="text-muted-foreground group-data-[state=error]/attachment:text-destructive/80"
         >Uploading · 64%</span
       >
     </div>
     <div
       data-slot="attachment-actions"
-      class="group-data-[orientation=vertical]/attachment:absolute group-data-[orientation=vertical]/attachment:top-3 group-data-[orientation=vertical]/attachment:right-3 relative z-20 group-data-[orientation=vertical]/attachment:gap-1 flex shrink-0 items-center"
+      class="group-data-[orientation=vertical]/attachment:absolute relative"
     >
       <button
         data-slot="attachment-action"
         data-variant="ghost"
         data-size="icon-xs"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
+        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button hover:bg-muted dark:hover:bg-muted/50 aria-expanded:bg-muted size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
         aria-label="Cancel upload"
       >
         <svg
@@ -704,12 +635,12 @@ Set `state` to reflect the upload lifecycle. `uploading` and `processing` shimme
     data-state="processing"
     data-size="default"
     data-orientation="horizontal"
-    class="rounded-xl focus-within:ring-1 focus-within:ring-ring/50 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 text-sm min-w-40 items-center w-full"
+    class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 w-full"
   >
     <div
       data-slot="attachment-media"
       data-variant="icon"
-      class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none"
+      class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -730,29 +661,23 @@ Set `state` to reflect the upload lifecycle. `uploading` and `processing` shimme
         <path d="M16 17H8"></path>
       </svg>
     </div>
-    <div
-      data-slot="attachment-content"
-      class="leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1"
-    >
-      <span
-        data-slot="attachment-title"
-        class="font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer"
-        >market-research.pdf</span
+    <div data-slot="attachment-content">
+      <span data-slot="attachment-title">market-research.pdf</span
       ><span
         data-slot="attachment-description"
-        class="mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full"
+        class="text-muted-foreground group-data-[state=error]/attachment:text-destructive/80"
         >Processing document</span
       >
     </div>
     <div
       data-slot="attachment-actions"
-      class="group-data-[orientation=vertical]/attachment:absolute group-data-[orientation=vertical]/attachment:top-3 group-data-[orientation=vertical]/attachment:right-3 relative z-20 group-data-[orientation=vertical]/attachment:gap-1 flex shrink-0 items-center"
+      class="group-data-[orientation=vertical]/attachment:absolute relative"
     >
       <button
         data-slot="attachment-action"
         data-variant="ghost"
         data-size="icon-xs"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
+        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button hover:bg-muted dark:hover:bg-muted/50 aria-expanded:bg-muted size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
         aria-label="Remove market-research.pdf"
       >
         <svg
@@ -778,12 +703,12 @@ Set `state` to reflect the upload lifecycle. `uploading` and `processing` shimme
     data-state="error"
     data-size="default"
     data-orientation="horizontal"
-    class="rounded-xl focus-within:ring-1 focus-within:ring-ring/50 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 text-sm min-w-40 items-center w-full"
+    class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 w-full"
   >
     <div
       data-slot="attachment-media"
       data-variant="icon"
-      class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none"
+      class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -802,29 +727,23 @@ Set `state` to reflect the upload lifecycle. `uploading` and `processing` shimme
         <path d="M12 17h.01"></path>
       </svg>
     </div>
-    <div
-      data-slot="attachment-content"
-      class="leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1"
-    >
-      <span
-        data-slot="attachment-title"
-        class="font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer"
-        >financial-model.xlsx</span
+    <div data-slot="attachment-content">
+      <span data-slot="attachment-title">financial-model.xlsx</span
       ><span
         data-slot="attachment-description"
-        class="mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full"
+        class="text-muted-foreground group-data-[state=error]/attachment:text-destructive/80"
         >Upload failed. Try again.</span
       >
     </div>
     <div
       data-slot="attachment-actions"
-      class="group-data-[orientation=vertical]/attachment:absolute group-data-[orientation=vertical]/attachment:top-3 group-data-[orientation=vertical]/attachment:right-3 relative z-20 group-data-[orientation=vertical]/attachment:gap-1 flex shrink-0 items-center"
+      class="group-data-[orientation=vertical]/attachment:absolute relative"
     >
       <button
         data-slot="attachment-action"
         data-variant="ghost"
         data-size="icon-xs"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
+        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button hover:bg-muted dark:hover:bg-muted/50 aria-expanded:bg-muted size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
         aria-label="Retry upload"
       >
         <svg
@@ -848,7 +767,7 @@ Set `state` to reflect the upload lifecycle. `uploading` and `processing` shimme
         data-slot="attachment-action"
         data-variant="ghost"
         data-size="icon-xs"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
+        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button hover:bg-muted dark:hover:bg-muted/50 aria-expanded:bg-muted size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
         aria-label="Remove financial-model.xlsx"
       >
         <svg
@@ -874,12 +793,12 @@ Set `state` to reflect the upload lifecycle. `uploading` and `processing` shimme
     data-state="done"
     data-size="default"
     data-orientation="horizontal"
-    class="rounded-xl focus-within:ring-1 focus-within:ring-ring/50 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 text-sm min-w-40 items-center w-full"
+    class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 w-full"
   >
     <div
       data-slot="attachment-media"
       data-variant="icon"
-      class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none"
+      class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -896,29 +815,23 @@ Set `state` to reflect the upload lifecycle. `uploading` and `processing` shimme
         <path d="M20 6 9 17l-5-5"></path>
       </svg>
     </div>
-    <div
-      data-slot="attachment-content"
-      class="leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1"
-    >
-      <span
-        data-slot="attachment-title"
-        class="font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer"
-        >uploaded-report.pdf</span
+    <div data-slot="attachment-content">
+      <span data-slot="attachment-title">uploaded-report.pdf</span
       ><span
         data-slot="attachment-description"
-        class="mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full"
+        class="text-muted-foreground group-data-[state=error]/attachment:text-destructive/80"
         >Uploaded · 1.8 MB</span
       >
     </div>
     <div
       data-slot="attachment-actions"
-      class="group-data-[orientation=vertical]/attachment:absolute group-data-[orientation=vertical]/attachment:top-3 group-data-[orientation=vertical]/attachment:right-3 relative z-20 group-data-[orientation=vertical]/attachment:gap-1 flex shrink-0 items-center"
+      class="group-data-[orientation=vertical]/attachment:absolute relative"
     >
       <button
         data-slot="attachment-action"
         data-variant="ghost"
         data-size="icon-xs"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
+        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button hover:bg-muted dark:hover:bg-muted/50 aria-expanded:bg-muted size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
         aria-label="Remove uploaded-report.pdf"
       >
         <svg
@@ -962,12 +875,12 @@ Use `size` to switch between `default`, `sm`, and `xs`.
     data-state="done"
     data-size="default"
     data-orientation="horizontal"
-    class="rounded-xl focus-within:ring-1 focus-within:ring-ring/50 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 text-sm min-w-40 items-center w-full"
+    class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 w-full"
   >
     <div
       data-slot="attachment-media"
       data-variant="icon"
-      class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none"
+      class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -988,17 +901,11 @@ Use `size` to switch between `default`, `sm`, and `xs`.
         <path d="M16 17H8"></path>
       </svg>
     </div>
-    <div
-      data-slot="attachment-content"
-      class="leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1"
-    >
-      <span
-        data-slot="attachment-title"
-        class="font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer"
-        >Default attachment</span
+    <div data-slot="attachment-content">
+      <span data-slot="attachment-title">Default attachment</span
       ><span
         data-slot="attachment-description"
-        class="mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full"
+        class="text-muted-foreground group-data-[state=error]/attachment:text-destructive/80"
         >PDF · 2.4 MB</span
       >
     </div>
@@ -1008,12 +915,12 @@ Use `size` to switch between `default`, `sm`, and `xs`.
     data-state="done"
     data-size="sm"
     data-orientation="horizontal"
-    class="rounded-xl focus-within:ring-1 focus-within:ring-ring/50 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2.5 has-data-[slot=attachment-content]:px-2 has-data-[slot=attachment-content]:py-1.5 has-data-[slot=attachment-media]:p-1.5 text-xs min-w-40 items-center w-full"
+    class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-2 has-data-[slot=attachment-content]:py-1.5 has-data-[slot=attachment-media]:p-1.5 w-full"
   >
     <div
       data-slot="attachment-media"
       data-variant="icon"
-      class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none"
+      class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -1034,17 +941,11 @@ Use `size` to switch between `default`, `sm`, and `xs`.
         <path d="M16 17H8"></path>
       </svg>
     </div>
-    <div
-      data-slot="attachment-content"
-      class="leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1"
-    >
-      <span
-        data-slot="attachment-title"
-        class="font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer"
-        >Small attachment</span
+    <div data-slot="attachment-content">
+      <span data-slot="attachment-title">Small attachment</span
       ><span
         data-slot="attachment-description"
-        class="mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full"
+        class="text-muted-foreground group-data-[state=error]/attachment:text-destructive/80"
         >PDF · 2.4 MB</span
       >
     </div>
@@ -1054,12 +955,12 @@ Use `size` to switch between `default`, `sm`, and `xs`.
     data-state="done"
     data-size="xs"
     data-orientation="horizontal"
-    class="focus-within:ring-1 focus-within:ring-ring/50 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-1.5 has-data-[slot=attachment-content]:px-1.5 has-data-[slot=attachment-content]:py-1 has-data-[slot=attachment-media]:p-1 text-xs rounded-lg min-w-40 items-center w-full"
+    class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-1.5 has-data-[slot=attachment-content]:py-1 has-data-[slot=attachment-media]:p-1 w-full"
   >
     <div
       data-slot="attachment-media"
       data-variant="icon"
-      class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none"
+      class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -1080,15 +981,8 @@ Use `size` to switch between `default`, `sm`, and `xs`.
         <path d="M16 17H8"></path>
       </svg>
     </div>
-    <div
-      data-slot="attachment-content"
-      class="leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1"
-    >
-      <span
-        data-slot="attachment-title"
-        class="font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer"
-        >Extra small attachment</span
-      >
+    <div data-slot="attachment-content">
+      <span data-slot="attachment-title">Extra small attachment</span>
     </div>
   </div>
 </div>
@@ -1109,21 +1003,18 @@ Wrap attachments in `AttachmentGroup` to lay them out in a horizontally scrollab
 {% <codegroup> %}
 ```text,name=attachment-group.html
 <div class="mx-auto w-full max-w-sm py-12">
-  <div
-    data-slot="attachment-group"
-    class="gap-3 scroll-px-1 py-1 flex min-w-0 scroll-fade-x snap-x snap-mandatory scrollbar-none overflow-x-auto overscroll-x-contain *:data-[slot=attachment]:flex-none *:data-[slot=attachment]:snap-start w-full"
-  >
+  <div data-slot="attachment-group" class="w-full">
     <div
       data-slot="attachment"
       data-state="done"
       data-size="default"
       data-orientation="horizontal"
-      class="rounded-xl focus-within:ring-1 focus-within:ring-ring/50 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 text-sm min-w-40 items-center w-64"
+      class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 w-64"
     >
       <div
         data-slot="attachment-media"
         data-variant="icon"
-        class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none"
+        class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -1144,29 +1035,23 @@ Wrap attachments in `AttachmentGroup` to lay them out in a horizontally scrollab
           <path d="M16 17H8"></path>
         </svg>
       </div>
-      <div
-        data-slot="attachment-content"
-        class="leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1"
-      >
-        <span
-          data-slot="attachment-title"
-          class="font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer"
-          >briefing-notes.pdf</span
+      <div data-slot="attachment-content">
+        <span data-slot="attachment-title">briefing-notes.pdf</span
         ><span
           data-slot="attachment-description"
-          class="mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full"
+          class="text-muted-foreground group-data-[state=error]/attachment:text-destructive/80"
           >PDF · 1.4 MB</span
         >
       </div>
       <div
         data-slot="attachment-actions"
-        class="group-data-[orientation=vertical]/attachment:absolute group-data-[orientation=vertical]/attachment:top-3 group-data-[orientation=vertical]/attachment:right-3 relative z-20 group-data-[orientation=vertical]/attachment:gap-1 flex shrink-0 items-center"
+        class="group-data-[orientation=vertical]/attachment:absolute relative"
       >
         <button
           data-slot="attachment-action"
           data-variant="ghost"
           data-size="icon-xs"
-          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
+          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button hover:bg-muted dark:hover:bg-muted/50 aria-expanded:bg-muted size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
           aria-label="Remove briefing-notes.pdf"
         >
           <svg
@@ -1192,41 +1077,35 @@ Wrap attachments in `AttachmentGroup` to lay them out in a horizontally scrollab
       data-state="done"
       data-size="default"
       data-orientation="horizontal"
-      class="rounded-xl focus-within:ring-1 focus-within:ring-ring/50 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 text-sm min-w-40 items-center w-64"
+      class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 w-64"
     >
       <div
         data-slot="attachment-media"
         data-variant="image"
-        class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none opacity-60 group-data-[state=idle]/attachment:opacity-100 group-data-[state=done]/attachment:opacity-100 *:[img]:aspect-square *:[img]:w-full *:[img]:object-cover"
+        class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive opacity-60 group-data-[state=idle]/attachment:opacity-100 group-data-[state=done]/attachment:opacity-100 *:[img]:w-full"
       >
         <img
           alt="workspace.png"
           src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&amp;auto=format&amp;fit=crop&amp;q=80"
         />
       </div>
-      <div
-        data-slot="attachment-content"
-        class="leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1"
-      >
-        <span
-          data-slot="attachment-title"
-          class="font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer"
-          >workspace.png</span
+      <div data-slot="attachment-content">
+        <span data-slot="attachment-title">workspace.png</span
         ><span
           data-slot="attachment-description"
-          class="mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full"
+          class="text-muted-foreground group-data-[state=error]/attachment:text-destructive/80"
           >PNG · 820 KB</span
         >
       </div>
       <div
         data-slot="attachment-actions"
-        class="group-data-[orientation=vertical]/attachment:absolute group-data-[orientation=vertical]/attachment:top-3 group-data-[orientation=vertical]/attachment:right-3 relative z-20 group-data-[orientation=vertical]/attachment:gap-1 flex shrink-0 items-center"
+        class="group-data-[orientation=vertical]/attachment:absolute relative"
       >
         <button
           data-slot="attachment-action"
           data-variant="ghost"
           data-size="icon-xs"
-          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
+          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button hover:bg-muted dark:hover:bg-muted/50 aria-expanded:bg-muted size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
           aria-label="Remove workspace.png"
         >
           <svg
@@ -1252,12 +1131,12 @@ Wrap attachments in `AttachmentGroup` to lay them out in a horizontally scrollab
       data-state="done"
       data-size="default"
       data-orientation="horizontal"
-      class="rounded-xl focus-within:ring-1 focus-within:ring-ring/50 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 text-sm min-w-40 items-center w-64"
+      class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 w-64"
     >
       <div
         data-slot="attachment-media"
         data-variant="icon"
-        class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none"
+        class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -1277,29 +1156,23 @@ Wrap attachments in `AttachmentGroup` to lay them out in a horizontally scrollab
           <path d="M3 15h18"></path>
         </svg>
       </div>
-      <div
-        data-slot="attachment-content"
-        class="leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1"
-      >
-        <span
-          data-slot="attachment-title"
-          class="font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer"
-          >customers.csv</span
+      <div data-slot="attachment-content">
+        <span data-slot="attachment-title">customers.csv</span
         ><span
           data-slot="attachment-description"
-          class="mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full"
+          class="text-muted-foreground group-data-[state=error]/attachment:text-destructive/80"
           >CSV · 18 KB</span
         >
       </div>
       <div
         data-slot="attachment-actions"
-        class="group-data-[orientation=vertical]/attachment:absolute group-data-[orientation=vertical]/attachment:top-3 group-data-[orientation=vertical]/attachment:right-3 relative z-20 group-data-[orientation=vertical]/attachment:gap-1 flex shrink-0 items-center"
+        class="group-data-[orientation=vertical]/attachment:absolute relative"
       >
         <button
           data-slot="attachment-action"
           data-variant="ghost"
           data-size="icon-xs"
-          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
+          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button hover:bg-muted dark:hover:bg-muted/50 aria-expanded:bg-muted size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
           aria-label="Remove customers.csv"
         >
           <svg
@@ -1325,12 +1198,12 @@ Wrap attachments in `AttachmentGroup` to lay them out in a horizontally scrollab
       data-state="done"
       data-size="default"
       data-orientation="horizontal"
-      class="rounded-xl focus-within:ring-1 focus-within:ring-ring/50 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 text-sm min-w-40 items-center w-64"
+      class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 w-64"
     >
       <div
         data-slot="attachment-media"
         data-variant="icon"
-        class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none"
+        class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -1350,29 +1223,23 @@ Wrap attachments in `AttachmentGroup` to lay them out in a horizontally scrollab
           <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"></path>
         </svg>
       </div>
-      <div
-        data-slot="attachment-content"
-        class="leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1"
-      >
-        <span
-          data-slot="attachment-title"
-          class="font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer"
-          >renderer.tsx</span
+      <div data-slot="attachment-content">
+        <span data-slot="attachment-title">renderer.tsx</span
         ><span
           data-slot="attachment-description"
-          class="mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full"
+          class="text-muted-foreground group-data-[state=error]/attachment:text-destructive/80"
           >TSX · 12 KB</span
         >
       </div>
       <div
         data-slot="attachment-actions"
-        class="group-data-[orientation=vertical]/attachment:absolute group-data-[orientation=vertical]/attachment:top-3 group-data-[orientation=vertical]/attachment:right-3 relative z-20 group-data-[orientation=vertical]/attachment:gap-1 flex shrink-0 items-center"
+        class="group-data-[orientation=vertical]/attachment:absolute relative"
       >
         <button
           data-slot="attachment-action"
           data-variant="ghost"
           data-size="icon-xs"
-          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
+          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button hover:bg-muted dark:hover:bg-muted/50 aria-expanded:bg-muted size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
           aria-label="Remove renderer.tsx"
         >
           <svg
@@ -1417,12 +1284,12 @@ Add an `AttachmentTrigger` to make the whole card open a link or dialog. It fill
     data-state="done"
     data-size="default"
     data-orientation="horizontal"
-    class="rounded-xl focus-within:ring-1 focus-within:ring-ring/50 group/attachment relative flex max-w-full shrink-0 flex-wrap border bg-card text-card-foreground transition-colors has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed gap-2 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 text-sm min-w-40 items-center w-full"
+    class="group/attachment bg-card has-[>a,>button]:hover:bg-muted/50 has-data-[slot=attachment-content]:px-2.5 has-data-[slot=attachment-content]:py-2 has-data-[slot=attachment-media]:p-2 w-full"
   >
     <div
       data-slot="attachment-media"
       data-variant="icon"
-      class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! relative flex aspect-square shrink-0 items-center justify-center overflow-hidden group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_svg]:pointer-events-none"
+      class="bg-muted text-foreground w-10 rounded-lg group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md [&_svg:not([class*='size-'])]:size-4 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 group-data-[orientation=vertical]/attachment:w-full group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -1442,29 +1309,23 @@ Add an `AttachmentTrigger` to make the whole card open a link or dialog. It fill
         <circle cx="5" cy="14" r="3"></circle>
       </svg>
     </div>
-    <div
-      data-slot="attachment-content"
-      class="leading-tight group-data-[orientation=vertical]/attachment:px-1 max-w-full min-w-0 flex-1"
-    >
-      <span
-        data-slot="attachment-title"
-        class="font-medium block max-w-full min-w-0 truncate group-data-[state=processing]/attachment:shimmer group-data-[state=uploading]/attachment:shimmer"
-        >research-summary.pdf</span
+    <div data-slot="attachment-content">
+      <span data-slot="attachment-title">research-summary.pdf</span
       ><span
         data-slot="attachment-description"
-        class="mt-0.5 text-xs block min-w-0 truncate text-muted-foreground group-data-[state=error]/attachment:text-destructive/80 max-w-full"
+        class="text-muted-foreground group-data-[state=error]/attachment:text-destructive/80"
         >Open preview dialog</span
       >
     </div>
     <div
       data-slot="attachment-actions"
-      class="group-data-[orientation=vertical]/attachment:absolute group-data-[orientation=vertical]/attachment:top-3 group-data-[orientation=vertical]/attachment:right-3 relative z-20 group-data-[orientation=vertical]/attachment:gap-1 flex shrink-0 items-center"
+      class="group-data-[orientation=vertical]/attachment:absolute relative"
     >
       <button
         data-slot="attachment-action"
         data-variant="ghost"
         data-size="icon-xs"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
+        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button hover:bg-muted dark:hover:bg-muted/50 aria-expanded:bg-muted size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
         aria-label="Copy link"
       >
         <svg
@@ -1486,7 +1347,7 @@ Add an `AttachmentTrigger` to make the whole card open a link or dialog. It fill
         data-slot="attachment-action"
         data-variant="ghost"
         data-size="icon-xs"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
+        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button hover:bg-muted dark:hover:bg-muted/50 aria-expanded:bg-muted size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3"
         aria-label="Remove research-summary.pdf"
       >
         <svg
@@ -1520,12 +1381,7 @@ Add an `AttachmentTrigger` to make the whole card open a link or dialog. It fill
   </div>
 </div>
 <template id="d1-portal">
-  <div
-    data-state="open"
-    data-slot="dialog-overlay"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 bg-black/10 duration-100 supports-backdrop-filter:backdrop-blur-xs fixed inset-0 isolate z-50"
-    style="pointer-events: auto"
-  ></div>
+  <div data-state="open" data-slot="dialog-overlay" style="pointer-events: auto"></div>
   <div
     role="dialog"
     id="d1"
@@ -1533,22 +1389,18 @@ Add an `AttachmentTrigger` to make the whole card open a link or dialog. It fill
     aria-labelledby="d1-title"
     data-state="open"
     data-slot="dialog-content"
-    class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 ring-foreground/10 grid max-w-[calc(100%-2rem)] gap-4 rounded-xl p-4 text-sm ring-1 duration-100 fixed top-1/2 left-1/2 z-50 w-full -translate-x-1/2 -translate-y-1/2 outline-none sm:max-w-md"
+    class="max-w-[calc(100%-2rem)] sm:max-w-md"
     tabindex="-1"
     style="pointer-events: auto"
   >
-    <div data-slot="dialog-header" class="gap-2 flex flex-col">
-      <h2
-        id="d1-title"
-        data-slot="dialog-title"
-        class="text-base leading-none font-medium cn-font-heading"
-      >
+    <div data-slot="dialog-header">
+      <h2 id="d1-title" data-slot="dialog-title" class="text-base leading-none cn-font-heading">
         research-summary.pdf
       </h2>
       <p
         id="d1-desc"
         data-slot="dialog-description"
-        class="text-muted-foreground *:[a]:hover:text-foreground text-sm *:[a]:underline *:[a]:underline-offset-3"
+        class="text-muted-foreground *:[a]:hover:text-foreground"
       >
         The attachment trigger fills the card and opens the dialog, while the actions stay
         independently clickable above it.

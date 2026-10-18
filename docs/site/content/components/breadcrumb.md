@@ -15,17 +15,10 @@ Displays the path to the current resource using a hierarchy of links.
 
 {% <codegroup> %}
 ```text,name=breadcrumb-demo.html
-<nav aria-label="breadcrumb" data-slot="breadcrumb" class="">
-  <ol
-    data-slot="breadcrumb-list"
-    class="text-muted-foreground gap-1.5 text-sm flex flex-wrap items-center wrap-break-word"
-  >
-    <li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center">
-      <a href="#" data-slot="breadcrumb-link" class="hover:text-foreground transition-colors"
-        >Home</a
-      >
-    </li>
-    <li data-slot="breadcrumb-separator" role="presentation" class="[&>svg]:size-3.5">
+<nav aria-label="breadcrumb" data-slot="breadcrumb">
+  <ol data-slot="breadcrumb-list">
+    <li data-slot="breadcrumb-item"><a href="#" data-slot="breadcrumb-link">Home</a></li>
+    <li data-slot="breadcrumb-separator" role="presentation">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -41,7 +34,7 @@ Displays the path to the current resource using a hierarchy of links.
         <path d="m9 18 6-6-6-6"></path>
       </svg>
     </li>
-    <li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center">
+    <li data-slot="breadcrumb-item">
       <button
         data-slot="dropdown-menu-trigger"
         data-variant="ghost"
@@ -54,10 +47,7 @@ Displays the path to the current resource using a hierarchy of links.
         data-state="closed"
         data-radixuigo-menu-trigger="m0"
       >
-        <span
-          data-slot="breadcrumb-ellipsis"
-          role="presentation"
-          class="size-5 [&>svg]:size-4 flex items-center justify-center"
+        <span data-slot="breadcrumb-ellipsis" role="presentation" class="size-5 [&>svg]:size-4"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -77,7 +67,7 @@ Displays the path to the current resource using a hierarchy of links.
         ><span class="sr-only">Toggle menu</span>
       </button>
     </li>
-    <li data-slot="breadcrumb-separator" role="presentation" class="[&>svg]:size-3.5">
+    <li data-slot="breadcrumb-separator" role="presentation">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -93,12 +83,8 @@ Displays the path to the current resource using a hierarchy of links.
         <path d="m9 18 6-6-6-6"></path>
       </svg>
     </li>
-    <li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center">
-      <a href="#" data-slot="breadcrumb-link" class="hover:text-foreground transition-colors"
-        >Components</a
-      >
-    </li>
-    <li data-slot="breadcrumb-separator" role="presentation" class="[&>svg]:size-3.5">
+    <li data-slot="breadcrumb-item"><a href="#" data-slot="breadcrumb-link">Components</a></li>
+    <li data-slot="breadcrumb-separator" role="presentation">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -114,13 +100,8 @@ Displays the path to the current resource using a hierarchy of links.
         <path d="m9 18 6-6-6-6"></path>
       </svg>
     </li>
-    <li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center">
-      <span
-        data-slot="breadcrumb-page"
-        role="link"
-        aria-disabled="true"
-        aria-current="page"
-        class="text-foreground font-normal"
+    <li data-slot="breadcrumb-item">
+      <span data-slot="breadcrumb-page" role="link" aria-disabled="true" aria-current="page"
         >Breadcrumb</span
       >
     </li>
@@ -138,7 +119,7 @@ Displays the path to the current resource using a hierarchy of links.
     id="m0"
     aria-labelledby="m0-trigger"
     data-slot="dropdown-menu-content"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 max-h-(--radix-dropdown-menu-content-available-height) w-(--radix-dropdown-menu-trigger-width) origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden"
+    class="cn-menu-target cn-menu-translucent overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -156,7 +137,7 @@ Displays the path to the current resource using a hierarchy of links.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -167,7 +148,7 @@ Displays the path to the current resource using a hierarchy of links.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -178,7 +159,7 @@ Displays the path to the current resource using a hierarchy of links.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -255,22 +236,10 @@ A basic breadcrumb with a home link and a components link.
 
 {% <codegroup> %}
 ```text,name=breadcrumb-basic.html
-<nav aria-label="breadcrumb" data-slot="breadcrumb" class="">
-  <ol
-    data-slot="breadcrumb-list"
-    class="text-muted-foreground gap-1.5 text-sm flex flex-wrap items-center wrap-break-word"
-  >
-    <li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center">
-      <a data-slot="breadcrumb-link" class="hover:text-foreground transition-colors" href="#"
-        >Home</a
-      >
-    </li>
-    <li
-      data-slot="breadcrumb-separator"
-      role="presentation"
-      aria-hidden="true"
-      class="[&>svg]:size-3.5"
-    >
+<nav aria-label="breadcrumb" data-slot="breadcrumb">
+  <ol data-slot="breadcrumb-list">
+    <li data-slot="breadcrumb-item"><a data-slot="breadcrumb-link" href="#">Home</a></li>
+    <li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -286,17 +255,8 @@ A basic breadcrumb with a home link and a components link.
         <path d="m9 18 6-6-6-6"></path>
       </svg>
     </li>
-    <li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center">
-      <a data-slot="breadcrumb-link" class="hover:text-foreground transition-colors" href="#"
-        >Components</a
-      >
-    </li>
-    <li
-      data-slot="breadcrumb-separator"
-      role="presentation"
-      aria-hidden="true"
-      class="[&>svg]:size-3.5"
-    >
+    <li data-slot="breadcrumb-item"><a data-slot="breadcrumb-link" href="#">Components</a></li>
+    <li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -312,13 +272,8 @@ A basic breadcrumb with a home link and a components link.
         <path d="m9 18 6-6-6-6"></path>
       </svg>
     </li>
-    <li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center">
-      <span
-        data-slot="breadcrumb-page"
-        role="link"
-        aria-disabled="true"
-        aria-current="page"
-        class="text-foreground font-normal"
+    <li data-slot="breadcrumb-item">
+      <span data-slot="breadcrumb-page" role="link" aria-disabled="true" aria-current="page"
         >Breadcrumb</span
       >
     </li>
@@ -340,22 +295,10 @@ Use a custom component as `children` for `data-slot="breadcrumb-separator"` to c
 
 {% <codegroup> %}
 ```text,name=breadcrumb-separator.html
-<nav aria-label="breadcrumb" data-slot="breadcrumb" class="">
-  <ol
-    data-slot="breadcrumb-list"
-    class="text-muted-foreground gap-1.5 text-sm flex flex-wrap items-center wrap-break-word"
-  >
-    <li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center">
-      <a href="/" data-slot="breadcrumb-link" class="hover:text-foreground transition-colors"
-        >Home</a
-      >
-    </li>
-    <li
-      data-slot="breadcrumb-separator"
-      role="presentation"
-      aria-hidden="true"
-      class="[&>svg]:size-3.5"
-    >
+<nav aria-label="breadcrumb" data-slot="breadcrumb">
+  <ol data-slot="breadcrumb-list">
+    <li data-slot="breadcrumb-item"><a href="/" data-slot="breadcrumb-link">Home</a></li>
+    <li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -371,20 +314,10 @@ Use a custom component as `children` for `data-slot="breadcrumb-separator"` to c
         <circle cx="12.1" cy="12.1" r="1"></circle>
       </svg>
     </li>
-    <li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center">
-      <a
-        href="/components"
-        data-slot="breadcrumb-link"
-        class="hover:text-foreground transition-colors"
-        >Components</a
-      >
+    <li data-slot="breadcrumb-item">
+      <a href="/components" data-slot="breadcrumb-link">Components</a>
     </li>
-    <li
-      data-slot="breadcrumb-separator"
-      role="presentation"
-      aria-hidden="true"
-      class="[&>svg]:size-3.5"
-    >
+    <li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -400,13 +333,8 @@ Use a custom component as `children` for `data-slot="breadcrumb-separator"` to c
         <circle cx="12.1" cy="12.1" r="1"></circle>
       </svg>
     </li>
-    <li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center">
-      <span
-        data-slot="breadcrumb-page"
-        role="link"
-        aria-disabled="true"
-        aria-current="page"
-        class="text-foreground font-normal"
+    <li data-slot="breadcrumb-item">
+      <span data-slot="breadcrumb-page" role="link" aria-disabled="true" aria-current="page"
         >Breadcrumb</span
       >
     </li>
@@ -428,17 +356,10 @@ You can compose a `data-slot="breadcrumb-item"` with a dropdown-menu trigger (se
 
 {% <codegroup> %}
 ```text,name=breadcrumb-dropdown.html
-<nav aria-label="breadcrumb" data-slot="breadcrumb" class="">
-  <ol
-    data-slot="breadcrumb-list"
-    class="text-muted-foreground gap-1.5 text-sm flex flex-wrap items-center wrap-break-word"
-  >
-    <li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center">
-      <a href="/" data-slot="breadcrumb-link" class="hover:text-foreground transition-colors"
-        >Home</a
-      >
-    </li>
-    <li data-slot="breadcrumb-separator" role="presentation" class="[&>svg]:size-3.5">
+<nav aria-label="breadcrumb" data-slot="breadcrumb">
+  <ol data-slot="breadcrumb-list">
+    <li data-slot="breadcrumb-item"><a href="/" data-slot="breadcrumb-link">Home</a></li>
+    <li data-slot="breadcrumb-separator" role="presentation">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -454,7 +375,7 @@ You can compose a `data-slot="breadcrumb-item"` with a dropdown-menu trigger (se
         <circle cx="12.1" cy="12.1" r="1"></circle>
       </svg>
     </li>
-    <li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center">
+    <li data-slot="breadcrumb-item">
       <button
         class="flex items-center gap-1"
         type="button"
@@ -481,7 +402,7 @@ You can compose a `data-slot="breadcrumb-item"` with a dropdown-menu trigger (se
         </svg>
       </button>
     </li>
-    <li data-slot="breadcrumb-separator" role="presentation" class="[&>svg]:size-3.5">
+    <li data-slot="breadcrumb-separator" role="presentation">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -497,13 +418,8 @@ You can compose a `data-slot="breadcrumb-item"` with a dropdown-menu trigger (se
         <circle cx="12.1" cy="12.1" r="1"></circle>
       </svg>
     </li>
-    <li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center">
-      <span
-        data-slot="breadcrumb-page"
-        role="link"
-        aria-disabled="true"
-        aria-current="page"
-        class="text-foreground font-normal"
+    <li data-slot="breadcrumb-item">
+      <span data-slot="breadcrumb-page" role="link" aria-disabled="true" aria-current="page"
         >Breadcrumb</span
       >
     </li>
@@ -521,7 +437,7 @@ You can compose a `data-slot="breadcrumb-item"` with a dropdown-menu trigger (se
     id="m0"
     aria-labelledby="m0-trigger"
     data-slot="dropdown-menu-content"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 max-h-(--radix-dropdown-menu-content-available-height) w-(--radix-dropdown-menu-trigger-width) origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden"
+    class="cn-menu-target cn-menu-translucent overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -539,7 +455,7 @@ You can compose a `data-slot="breadcrumb-item"` with a dropdown-menu trigger (se
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -550,7 +466,7 @@ You can compose a `data-slot="breadcrumb-item"` with a dropdown-menu trigger (se
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -561,7 +477,7 @@ You can compose a `data-slot="breadcrumb-item"` with a dropdown-menu trigger (se
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -600,22 +516,10 @@ We provide a `data-slot="breadcrumb-ellipsis"` component to show a collapsed sta
 
 {% <codegroup> %}
 ```text,name=breadcrumb-ellipsis.html
-<nav aria-label="breadcrumb" data-slot="breadcrumb" class="">
-  <ol
-    data-slot="breadcrumb-list"
-    class="text-muted-foreground gap-1.5 text-sm flex flex-wrap items-center wrap-break-word"
-  >
-    <li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center">
-      <a href="/" data-slot="breadcrumb-link" class="hover:text-foreground transition-colors"
-        >Home</a
-      >
-    </li>
-    <li
-      data-slot="breadcrumb-separator"
-      role="presentation"
-      aria-hidden="true"
-      class="[&>svg]:size-3.5"
-    >
+<nav aria-label="breadcrumb" data-slot="breadcrumb">
+  <ol data-slot="breadcrumb-list">
+    <li data-slot="breadcrumb-item"><a href="/" data-slot="breadcrumb-link">Home</a></li>
+    <li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -631,12 +535,12 @@ We provide a `data-slot="breadcrumb-ellipsis"` component to show a collapsed sta
         <path d="m9 18 6-6-6-6"></path>
       </svg>
     </li>
-    <li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center">
+    <li data-slot="breadcrumb-item">
       <span
         data-slot="breadcrumb-ellipsis"
         role="presentation"
         aria-hidden="true"
-        class="size-5 [&>svg]:size-4 flex items-center justify-center"
+        class="size-5 [&>svg]:size-4"
         ><svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -655,12 +559,7 @@ We provide a `data-slot="breadcrumb-ellipsis"` component to show a collapsed sta
         ><span class="sr-only">More</span></span
       >
     </li>
-    <li
-      data-slot="breadcrumb-separator"
-      role="presentation"
-      aria-hidden="true"
-      class="[&>svg]:size-3.5"
-    >
+    <li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -676,20 +575,10 @@ We provide a `data-slot="breadcrumb-ellipsis"` component to show a collapsed sta
         <path d="m9 18 6-6-6-6"></path>
       </svg>
     </li>
-    <li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center">
-      <a
-        href="/docs/components"
-        data-slot="breadcrumb-link"
-        class="hover:text-foreground transition-colors"
-        >Components</a
-      >
+    <li data-slot="breadcrumb-item">
+      <a href="/docs/components" data-slot="breadcrumb-link">Components</a>
     </li>
-    <li
-      data-slot="breadcrumb-separator"
-      role="presentation"
-      aria-hidden="true"
-      class="[&>svg]:size-3.5"
-    >
+    <li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -705,13 +594,8 @@ We provide a `data-slot="breadcrumb-ellipsis"` component to show a collapsed sta
         <path d="m9 18 6-6-6-6"></path>
       </svg>
     </li>
-    <li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center">
-      <span
-        data-slot="breadcrumb-page"
-        role="link"
-        aria-disabled="true"
-        aria-current="page"
-        class="text-foreground font-normal"
+    <li data-slot="breadcrumb-item">
+      <span data-slot="breadcrumb-page" role="link" aria-disabled="true" aria-current="page"
         >Breadcrumb</span
       >
     </li>
@@ -733,22 +617,10 @@ To use a custom link component from your routing library, you can use the `asChi
 
 {% <codegroup> %}
 ```text,name=breadcrumb-link.html
-<nav aria-label="breadcrumb" data-slot="breadcrumb" class="">
-  <ol
-    data-slot="breadcrumb-list"
-    class="text-muted-foreground gap-1.5 text-sm flex flex-wrap items-center wrap-break-word"
-  >
-    <li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center">
-      <a href="/" data-slot="breadcrumb-link" class="hover:text-foreground transition-colors"
-        >Home</a
-      >
-    </li>
-    <li
-      data-slot="breadcrumb-separator"
-      role="presentation"
-      aria-hidden="true"
-      class="[&>svg]:size-3.5"
-    >
+<nav aria-label="breadcrumb" data-slot="breadcrumb">
+  <ol data-slot="breadcrumb-list">
+    <li data-slot="breadcrumb-item"><a href="/" data-slot="breadcrumb-link">Home</a></li>
+    <li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -764,20 +636,10 @@ To use a custom link component from your routing library, you can use the `asChi
         <path d="m9 18 6-6-6-6"></path>
       </svg>
     </li>
-    <li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center">
-      <a
-        href="/components"
-        data-slot="breadcrumb-link"
-        class="hover:text-foreground transition-colors"
-        >Components</a
-      >
+    <li data-slot="breadcrumb-item">
+      <a href="/components" data-slot="breadcrumb-link">Components</a>
     </li>
-    <li
-      data-slot="breadcrumb-separator"
-      role="presentation"
-      aria-hidden="true"
-      class="[&>svg]:size-3.5"
-    >
+    <li data-slot="breadcrumb-separator" role="presentation" aria-hidden="true">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -793,13 +655,8 @@ To use a custom link component from your routing library, you can use the `asChi
         <path d="m9 18 6-6-6-6"></path>
       </svg>
     </li>
-    <li data-slot="breadcrumb-item" class="gap-1 inline-flex items-center">
-      <span
-        data-slot="breadcrumb-page"
-        role="link"
-        aria-disabled="true"
-        aria-current="page"
-        class="text-foreground font-normal"
+    <li data-slot="breadcrumb-item">
+      <span data-slot="breadcrumb-page" role="link" aria-disabled="true" aria-current="page"
         >Breadcrumb</span
       >
     </li>

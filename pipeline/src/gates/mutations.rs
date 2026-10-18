@@ -290,6 +290,26 @@ fn apply_dist_complete_drop_component(root: &Path, f: &[String]) -> Result<(), S
     )
 }
 
+fn apply_docs_code_parity_drop_kept_token(root: &Path, f: &[String]) -> Result<(), String> {
+    // the anchor is the projected tab's D-ordered class tail: the demo
+    // author's own w-full max-w-sm are the tokens the projection keeps
+    mut_replace_once(
+        root,
+        &f[0],
+        r#"group/card w-full max-w-sm""#,
+        r#"group/card w-full""#,
+    )
+}
+
+fn apply_docs_code_parity_drop_slot_utility(root: &Path, f: &[String]) -> Result<(), String> {
+    mut_replace_once(
+        root,
+        &f[0],
+        "@apply bg-muted/50 rounded-b-xl border-t p-(--card-spacing) flex items-center;",
+        "@apply bg-muted/50 rounded-b-xl border-t p-(--card-spacing);",
+    )
+}
+
 fn apply_docs_consistency_code_tab_entity(root: &Path, f: &[String]) -> Result<(), String> {
     mut_replace_once(
         root,
@@ -625,6 +645,22 @@ pub static MUTATIONS: &[Mutation] = &[
         files: &["dist/out.css"],
         resolve: None,
         apply: apply_dist_complete_drop_component,
+    },
+    Mutation {
+        id: "docs-code-parity-drop-kept-token",
+        gate: "docs-code-parity",
+        why: "a demo-author token the projection deliberately keeps (card's max-w-sm) disappears from a built tab — the copy source stops rendering like the preview, in BOTH environments",
+        files: &["docs/site/content/components/card.md"],
+        resolve: None,
+        apply: apply_docs_code_parity_drop_kept_token,
+    },
+    Mutation {
+        id: "docs-code-parity-drop-slot-utility",
+        gate: "docs-code-parity",
+        why: "a utility the projected tabs rely on (card-footer's flex items-center) disappears from the component's @apply source — precompiled out.css still carries it, so ONLY the consumer compile environment goes red",
+        files: &["dist/css/card.css"],
+        resolve: None,
+        apply: apply_docs_code_parity_drop_slot_utility,
     },
     Mutation {
         id: "docs-consistency-code-tab-entity",

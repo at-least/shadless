@@ -40,7 +40,7 @@ Displays a menu to the user — such as a set of actions or functions — trigge
     id="d1"
     aria-labelledby="d1-trigger"
     data-slot="dropdown-menu-content"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 max-h-(--radix-dropdown-menu-content-available-height) w-(--radix-dropdown-menu-trigger-width) origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden"
+    class="cn-menu-target cn-menu-translucent overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -57,7 +57,7 @@ Displays a menu to the user — such as a set of actions or functions — trigge
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
       id="d1-item-1"
       tabindex="-1"
       data-orientation="vertical"
@@ -69,7 +69,7 @@ Displays a menu to the user — such as a set of actions or functions — trigge
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -208,7 +208,7 @@ A basic dropdown menu with labels and separators.
     id="m0"
     aria-labelledby="m0-trigger"
     data-slot="dropdown-menu-content"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 max-h-(--radix-dropdown-menu-content-available-height) w-(--radix-dropdown-menu-trigger-width) origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden"
+    class="cn-menu-target cn-menu-translucent overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -222,17 +222,12 @@ A basic dropdown menu with labels and separators.
     "
   >
     <div role="group" data-slot="dropdown-menu-group">
-      <div
-        data-slot="dropdown-menu-label"
-        class="text-muted-foreground px-1.5 py-1 text-xs font-medium data-inset:pl-7"
-      >
-        My Account
-      </div>
+      <div data-slot="dropdown-menu-label" class="px-1.5 data-inset:pl-7">My Account</div>
       <div
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -243,7 +238,7 @@ A basic dropdown menu with labels and separators.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -254,7 +249,7 @@ A basic dropdown menu with labels and separators.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -262,17 +257,12 @@ A basic dropdown menu with labels and separators.
         Settings
       </div>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="dropdown-menu-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="dropdown-menu-separator"></div>
     <div
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -283,7 +273,7 @@ A basic dropdown menu with labels and separators.
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -296,7 +286,7 @@ A basic dropdown menu with labels and separators.
       data-disabled=""
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -360,7 +350,7 @@ Use `DropdownMenuSub` to nest secondary actions.
     id="m0"
     aria-labelledby="m0-trigger"
     data-slot="dropdown-menu-content"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 max-h-(--radix-dropdown-menu-content-available-height) w-(--radix-dropdown-menu-trigger-width) origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden"
+    class="cn-menu-target cn-menu-translucent overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -378,7 +368,7 @@ Use `DropdownMenuSub` to nest secondary actions.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -393,7 +383,7 @@ Use `DropdownMenuSub` to nest secondary actions.
         aria-controls="m0s0"
         data-state="closed"
         data-slot="dropdown-menu-sub-trigger"
-        class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-hidden select-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="px-1.5 data-inset:pl-7"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -418,14 +408,14 @@ Use `DropdownMenuSub` to nest secondary actions.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
         New Team<span
           data-slot="dropdown-menu-shortcut"
-          class="text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground ml-auto text-xs tracking-widest"
+          class="text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground"
           >⌘+T</span
         >
       </div>
@@ -444,7 +434,7 @@ Use `DropdownMenuSub` to nest secondary actions.
     id="m0s0"
     aria-labelledby="m0-trigger"
     data-slot="dropdown-menu-sub-content"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-[96px] rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-dropdown-menu-content-transform-origin) overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -461,7 +451,7 @@ Use `DropdownMenuSub` to nest secondary actions.
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -472,7 +462,7 @@ Use `DropdownMenuSub` to nest secondary actions.
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -487,7 +477,7 @@ Use `DropdownMenuSub` to nest secondary actions.
       aria-controls="m0s0s0"
       data-state="closed"
       data-slot="dropdown-menu-sub-trigger"
-      class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-hidden select-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="px-1.5 data-inset:pl-7"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -508,17 +498,12 @@ Use `DropdownMenuSub` to nest secondary actions.
         <path d="m9 18 6-6-6-6"></path>
       </svg>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="dropdown-menu-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="dropdown-menu-separator"></div>
     <div
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -539,7 +524,7 @@ Use `DropdownMenuSub` to nest secondary actions.
     id="m0s0s0"
     aria-labelledby="m0s0-trigger"
     data-slot="dropdown-menu-sub-content"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-[96px] rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-dropdown-menu-content-transform-origin) overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -556,7 +541,7 @@ Use `DropdownMenuSub` to nest secondary actions.
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -567,24 +552,19 @@ Use `DropdownMenuSub` to nest secondary actions.
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
     >
       Slack
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="dropdown-menu-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="dropdown-menu-separator"></div>
     <div
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -648,7 +628,7 @@ Add `DropdownMenuShortcut` to show keyboard hints.
     id="m0"
     aria-labelledby="m0-trigger"
     data-slot="dropdown-menu-content"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 max-h-(--radix-dropdown-menu-content-available-height) w-(--radix-dropdown-menu-trigger-width) origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden"
+    class="cn-menu-target cn-menu-translucent overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -662,24 +642,19 @@ Add `DropdownMenuShortcut` to show keyboard hints.
     "
   >
     <div role="group" data-slot="dropdown-menu-group">
-      <div
-        data-slot="dropdown-menu-label"
-        class="text-muted-foreground px-1.5 py-1 text-xs font-medium data-inset:pl-7"
-      >
-        My Account
-      </div>
+      <div data-slot="dropdown-menu-label" class="px-1.5 data-inset:pl-7">My Account</div>
       <div
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
         Profile<span
           data-slot="dropdown-menu-shortcut"
-          class="text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground ml-auto text-xs tracking-widest"
+          class="text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground"
           >⇧⌘P</span
         >
       </div>
@@ -687,14 +662,14 @@ Add `DropdownMenuShortcut` to show keyboard hints.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
         Billing<span
           data-slot="dropdown-menu-shortcut"
-          class="text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground ml-auto text-xs tracking-widest"
+          class="text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground"
           >⌘B</span
         >
       </div>
@@ -702,36 +677,31 @@ Add `DropdownMenuShortcut` to show keyboard hints.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
         Settings<span
           data-slot="dropdown-menu-shortcut"
-          class="text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground ml-auto text-xs tracking-widest"
+          class="text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground"
           >⌘S</span
         >
       </div>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="dropdown-menu-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="dropdown-menu-separator"></div>
     <div
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
     >
       Log out<span
         data-slot="dropdown-menu-shortcut"
-        class="text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground ml-auto text-xs tracking-widest"
+        class="text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground"
         >⇧⌘Q</span
       >
     </div>
@@ -792,7 +762,7 @@ Combine icons with labels for quick scanning.
     id="m0"
     aria-labelledby="m0-trigger"
     data-slot="dropdown-menu-content"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 max-h-(--radix-dropdown-menu-content-available-height) w-(--radix-dropdown-menu-trigger-width) origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden"
+    class="cn-menu-target cn-menu-translucent overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -809,7 +779,7 @@ Combine icons with labels for quick scanning.
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -834,7 +804,7 @@ Combine icons with labels for quick scanning.
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -859,7 +829,7 @@ Combine icons with labels for quick scanning.
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -882,17 +852,12 @@ Combine icons with labels for quick scanning.
         <circle cx="12" cy="12" r="3"></circle></svg
       >Settings
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="dropdown-menu-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="dropdown-menu-separator"></div>
     <div
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="destructive"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -971,7 +936,7 @@ Use `DropdownMenuCheckboxItem` for toggles.
     id="m0"
     aria-labelledby="m0-trigger"
     data-slot="dropdown-menu-content"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 max-h-(--radix-dropdown-menu-content-available-height) origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden w-40"
+    class="cn-menu-target cn-menu-translucent overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden w-40"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -985,25 +950,18 @@ Use `DropdownMenuCheckboxItem` for toggles.
     "
   >
     <div role="group" data-slot="dropdown-menu-group">
-      <div
-        data-slot="dropdown-menu-label"
-        class="text-muted-foreground px-1.5 py-1 text-xs font-medium data-inset:pl-7"
-      >
-        Appearance
-      </div>
+      <div data-slot="dropdown-menu-label" class="px-1.5 data-inset:pl-7">Appearance</div>
       <div
         role="menuitemcheckbox"
         aria-checked="true"
         data-slot="dropdown-menu-checkbox-item"
-        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="pl-1.5 data-inset:pl-7"
         data-state="checked"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        <span
-          class="absolute right-2 flex items-center justify-center pointer-events-none"
-          data-slot="dropdown-menu-checkbox-item-indicator"
+        <span data-slot="dropdown-menu-checkbox-item-indicator"
           ><span data-state="checked"
             ><svg
               xmlns="http://www.w3.org/2000/svg"
@@ -1026,33 +984,25 @@ Use `DropdownMenuCheckboxItem` for toggles.
         data-disabled=""
         aria-checked="false"
         data-slot="dropdown-menu-checkbox-item"
-        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="pl-1.5 data-inset:pl-7"
         data-state="unchecked"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        <span
-          class="absolute right-2 flex items-center justify-center pointer-events-none"
-          data-slot="dropdown-menu-checkbox-item-indicator"
-        ></span
-        >Activity Bar
+        <span data-slot="dropdown-menu-checkbox-item-indicator"></span>Activity Bar
       </div>
       <div
         role="menuitemcheckbox"
         aria-checked="false"
         data-slot="dropdown-menu-checkbox-item"
-        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="pl-1.5 data-inset:pl-7"
         data-state="unchecked"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        <span
-          class="absolute right-2 flex items-center justify-center pointer-events-none"
-          data-slot="dropdown-menu-checkbox-item-indicator"
-        ></span
-        >Panel
+        <span data-slot="dropdown-menu-checkbox-item-indicator"></span>Panel
       </div>
     </div>
   </div>
@@ -1112,7 +1062,7 @@ Add icons to checkbox items.
     id="m0"
     aria-labelledby="m0-trigger"
     data-slot="dropdown-menu-content"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 max-h-(--radix-dropdown-menu-content-available-height) origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden w-48"
+    class="cn-menu-target cn-menu-translucent overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden w-48"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -1126,25 +1076,20 @@ Add icons to checkbox items.
     "
   >
     <div role="group" data-slot="dropdown-menu-group">
-      <div
-        data-slot="dropdown-menu-label"
-        class="text-muted-foreground px-1.5 py-1 text-xs font-medium data-inset:pl-7"
-      >
+      <div data-slot="dropdown-menu-label" class="px-1.5 data-inset:pl-7">
         Notification Preferences
       </div>
       <div
         role="menuitemcheckbox"
         aria-checked="true"
         data-slot="dropdown-menu-checkbox-item"
-        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="pl-1.5 data-inset:pl-7"
         data-state="checked"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        <span
-          class="absolute right-2 flex items-center justify-center pointer-events-none"
-          data-slot="dropdown-menu-checkbox-item-indicator"
+        <span data-slot="dropdown-menu-checkbox-item-indicator"
           ><span data-state="checked"
             ><svg
               xmlns="http://www.w3.org/2000/svg"
@@ -1179,16 +1124,13 @@ Add icons to checkbox items.
         role="menuitemcheckbox"
         aria-checked="false"
         data-slot="dropdown-menu-checkbox-item"
-        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="pl-1.5 data-inset:pl-7"
         data-state="unchecked"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        <span
-          class="absolute right-2 flex items-center justify-center pointer-events-none"
-          data-slot="dropdown-menu-checkbox-item-indicator"
-        ></span
+        <span data-slot="dropdown-menu-checkbox-item-indicator"></span
         ><svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -1208,15 +1150,13 @@ Add icons to checkbox items.
         role="menuitemcheckbox"
         aria-checked="true"
         data-slot="dropdown-menu-checkbox-item"
-        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="pl-1.5 data-inset:pl-7"
         data-state="checked"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        <span
-          class="absolute right-2 flex items-center justify-center pointer-events-none"
-          data-slot="dropdown-menu-checkbox-item-indicator"
+        <span data-slot="dropdown-menu-checkbox-item-indicator"
           ><span data-state="checked"
             ><svg
               xmlns="http://www.w3.org/2000/svg"
@@ -1307,7 +1247,7 @@ Use `DropdownMenuRadioGroup` for exclusive choices.
     id="m0"
     aria-labelledby="m0-trigger"
     data-slot="dropdown-menu-content"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 max-h-(--radix-dropdown-menu-content-available-height) origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden w-32"
+    class="cn-menu-target cn-menu-translucent overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden w-32"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -1321,42 +1261,31 @@ Use `DropdownMenuRadioGroup` for exclusive choices.
     "
   >
     <div role="group" data-slot="dropdown-menu-group">
-      <div
-        data-slot="dropdown-menu-label"
-        class="text-muted-foreground px-1.5 py-1 text-xs font-medium data-inset:pl-7"
-      >
-        Panel Position
-      </div>
+      <div data-slot="dropdown-menu-label" class="px-1.5 data-inset:pl-7">Panel Position</div>
       <div role="group" data-slot="dropdown-menu-radio-group">
         <div
           role="menuitemradio"
           aria-checked="false"
           data-slot="dropdown-menu-radio-item"
-          class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="pl-1.5 data-inset:pl-7"
           data-state="unchecked"
           tabindex="-1"
           data-orientation="vertical"
           data-radix-collection-item=""
         >
-          <span
-            class="absolute right-2 flex items-center justify-center pointer-events-none"
-            data-slot="dropdown-menu-radio-item-indicator"
-          ></span
-          >Top
+          <span data-slot="dropdown-menu-radio-item-indicator"></span>Top
         </div>
         <div
           role="menuitemradio"
           aria-checked="true"
           data-slot="dropdown-menu-radio-item"
-          class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="pl-1.5 data-inset:pl-7"
           data-state="checked"
           tabindex="-1"
           data-orientation="vertical"
           data-radix-collection-item=""
         >
-          <span
-            class="absolute right-2 flex items-center justify-center pointer-events-none"
-            data-slot="dropdown-menu-radio-item-indicator"
+          <span data-slot="dropdown-menu-radio-item-indicator"
             ><span data-state="checked"
               ><svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -1377,17 +1306,13 @@ Use `DropdownMenuRadioGroup` for exclusive choices.
           role="menuitemradio"
           aria-checked="false"
           data-slot="dropdown-menu-radio-item"
-          class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="pl-1.5 data-inset:pl-7"
           data-state="unchecked"
           tabindex="-1"
           data-orientation="vertical"
           data-radix-collection-item=""
         >
-          <span
-            class="absolute right-2 flex items-center justify-center pointer-events-none"
-            data-slot="dropdown-menu-radio-item-indicator"
-          ></span
-          >Right
+          <span data-slot="dropdown-menu-radio-item-indicator"></span>Right
         </div>
       </div>
     </div>
@@ -1448,7 +1373,7 @@ Show radio options with icons.
     id="m0"
     aria-labelledby="m0-trigger"
     data-slot="dropdown-menu-content"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 max-h-(--radix-dropdown-menu-content-available-height) w-(--radix-dropdown-menu-trigger-width) origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden min-w-56"
+    class="cn-menu-target cn-menu-translucent overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden min-w-56"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -1462,10 +1387,7 @@ Show radio options with icons.
     "
   >
     <div role="group" data-slot="dropdown-menu-group">
-      <div
-        data-slot="dropdown-menu-label"
-        class="text-muted-foreground px-1.5 py-1 text-xs font-medium data-inset:pl-7"
-      >
+      <div data-slot="dropdown-menu-label" class="px-1.5 data-inset:pl-7">
         Select Payment Method
       </div>
       <div role="group" data-slot="dropdown-menu-radio-group">
@@ -1473,15 +1395,13 @@ Show radio options with icons.
           role="menuitemradio"
           aria-checked="true"
           data-slot="dropdown-menu-radio-item"
-          class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="pl-1.5 data-inset:pl-7"
           data-state="checked"
           tabindex="-1"
           data-orientation="vertical"
           data-radix-collection-item=""
         >
-          <span
-            class="absolute right-2 flex items-center justify-center pointer-events-none"
-            data-slot="dropdown-menu-radio-item-indicator"
+          <span data-slot="dropdown-menu-radio-item-indicator"
             ><span data-state="checked"
               ><svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -1516,16 +1436,13 @@ Show radio options with icons.
           role="menuitemradio"
           aria-checked="false"
           data-slot="dropdown-menu-radio-item"
-          class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="pl-1.5 data-inset:pl-7"
           data-state="unchecked"
           tabindex="-1"
           data-orientation="vertical"
           data-radix-collection-item=""
         >
-          <span
-            class="absolute right-2 flex items-center justify-center pointer-events-none"
-            data-slot="dropdown-menu-radio-item-indicator"
-          ></span
+          <span data-slot="dropdown-menu-radio-item-indicator"></span
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -1548,16 +1465,13 @@ Show radio options with icons.
           role="menuitemradio"
           aria-checked="false"
           data-slot="dropdown-menu-radio-item"
-          class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="pl-1.5 data-inset:pl-7"
           data-state="unchecked"
           tabindex="-1"
           data-orientation="vertical"
           data-radix-collection-item=""
         >
-          <span
-            class="absolute right-2 flex items-center justify-center pointer-events-none"
-            data-slot="dropdown-menu-radio-item-indicator"
-          ></span
+          <span data-slot="dropdown-menu-radio-item-indicator"></span
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -1638,7 +1552,7 @@ Use `variant="destructive"` for irreversible actions.
     id="m0"
     aria-labelledby="m0-trigger"
     data-slot="dropdown-menu-content"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 max-h-(--radix-dropdown-menu-content-available-height) w-(--radix-dropdown-menu-trigger-width) origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden"
+    class="cn-menu-target cn-menu-translucent overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -1656,7 +1570,7 @@ Use `variant="destructive"` for irreversible actions.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1683,7 +1597,7 @@ Use `variant="destructive"` for irreversible actions.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1706,18 +1620,13 @@ Use `variant="destructive"` for irreversible actions.
         >Share
       </div>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="dropdown-menu-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="dropdown-menu-separator"></div>
     <div role="group" data-slot="dropdown-menu-group">
       <div
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="destructive"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1786,10 +1695,8 @@ An account switcher dropdown triggered by an avatar.
   <span
     data-slot="avatar"
     data-size="default"
-    class="size-8 rounded-full after:rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative flex shrink-0 select-none after:absolute after:inset-0 after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten"
-    ><span
-      data-slot="avatar-fallback"
-      class="bg-muted text-muted-foreground rounded-full flex size-full items-center justify-center text-sm group-data-[size=sm]/avatar:text-xs"
+    class="size-8 data-[size=lg]:size-10 data-[size=sm]:size-6 group/avatar relative after:absolute after:mix-blend-darken dark:after:mix-blend-lighten"
+    ><span data-slot="avatar-fallback" class="size-full text-sm group-data-[size=sm]/avatar:text-xs"
       >LR</span
     ></span
   >
@@ -1806,7 +1713,7 @@ An account switcher dropdown triggered by an avatar.
     id="m0"
     aria-labelledby="m0-trigger"
     data-slot="dropdown-menu-content"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 max-h-(--radix-dropdown-menu-content-available-height) w-(--radix-dropdown-menu-trigger-width) origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden"
+    class="cn-menu-target cn-menu-translucent overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -1824,7 +1731,7 @@ An account switcher dropdown triggered by an avatar.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1851,7 +1758,7 @@ An account switcher dropdown triggered by an avatar.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1876,7 +1783,7 @@ An account switcher dropdown triggered by an avatar.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1900,17 +1807,12 @@ An account switcher dropdown triggered by an avatar.
         >Notifications
       </div>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="dropdown-menu-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="dropdown-menu-separator"></div>
     <div
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -2014,7 +1916,7 @@ A richer example combining groups, icons, and submenus.
     id="m0"
     aria-labelledby="m0-trigger"
     data-slot="dropdown-menu-content"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 max-h-(--radix-dropdown-menu-content-available-height) origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden w-44"
+    class="cn-menu-target cn-menu-translucent overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden w-44"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -2028,17 +1930,12 @@ A richer example combining groups, icons, and submenus.
     "
   >
     <div role="group" data-slot="dropdown-menu-group">
-      <div
-        data-slot="dropdown-menu-label"
-        class="text-muted-foreground px-1.5 py-1 text-xs font-medium data-inset:pl-7"
-      >
-        File
-      </div>
+      <div data-slot="dropdown-menu-label" class="px-1.5 data-inset:pl-7">File</div>
       <div
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -2059,7 +1956,7 @@ A richer example combining groups, icons, and submenus.
           <path d="M14 2v4a2 2 0 0 0 2 2h4"></path></svg
         >New File<span
           data-slot="dropdown-menu-shortcut"
-          class="text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground ml-auto text-xs tracking-widest"
+          class="text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground"
           >⌘N</span
         >
       </div>
@@ -2067,7 +1964,7 @@ A richer example combining groups, icons, and submenus.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -2089,7 +1986,7 @@ A richer example combining groups, icons, and submenus.
           ></path></svg
         >New Folder<span
           data-slot="dropdown-menu-shortcut"
-          class="text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground ml-auto text-xs tracking-widest"
+          class="text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground"
           >⇧⌘N</span
         >
       </div>
@@ -2101,7 +1998,7 @@ A richer example combining groups, icons, and submenus.
         aria-controls="m0s0"
         data-state="closed"
         data-slot="dropdown-menu-sub-trigger"
-        class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-hidden select-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="px-1.5 data-inset:pl-7"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -2137,17 +2034,12 @@ A richer example combining groups, icons, and submenus.
           <path d="m9 18 6-6-6-6"></path>
         </svg>
       </div>
-      <div
-        role="separator"
-        aria-orientation="horizontal"
-        data-slot="dropdown-menu-separator"
-        class="bg-border -mx-1 my-1 h-px"
-      ></div>
+      <div role="separator" aria-orientation="horizontal" data-slot="dropdown-menu-separator"></div>
       <div
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -2171,7 +2063,7 @@ A richer example combining groups, icons, and submenus.
           <path d="M7 3v4a1 1 0 0 0 1 1h7"></path></svg
         >Save<span
           data-slot="dropdown-menu-shortcut"
-          class="text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground ml-auto text-xs tracking-widest"
+          class="text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground"
           >⌘S</span
         >
       </div>
@@ -2179,7 +2071,7 @@ A richer example combining groups, icons, and submenus.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -2201,37 +2093,25 @@ A richer example combining groups, icons, and submenus.
           <line x1="12" x2="12" y1="15" y2="3"></line></svg
         >Export<span
           data-slot="dropdown-menu-shortcut"
-          class="text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground ml-auto text-xs tracking-widest"
+          class="text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground"
           >⇧⌘E</span
         >
       </div>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="dropdown-menu-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="dropdown-menu-separator"></div>
     <div role="group" data-slot="dropdown-menu-group">
-      <div
-        data-slot="dropdown-menu-label"
-        class="text-muted-foreground px-1.5 py-1 text-xs font-medium data-inset:pl-7"
-      >
-        View
-      </div>
+      <div data-slot="dropdown-menu-label" class="px-1.5 data-inset:pl-7">View</div>
       <div
         role="menuitemcheckbox"
         aria-checked="true"
         data-slot="dropdown-menu-checkbox-item"
-        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="pl-1.5 data-inset:pl-7"
         data-state="checked"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        <span
-          class="absolute right-2 flex items-center justify-center pointer-events-none"
-          data-slot="dropdown-menu-checkbox-item-indicator"
+        <span data-slot="dropdown-menu-checkbox-item-indicator"
           ><span data-state="checked"
             ><svg
               xmlns="http://www.w3.org/2000/svg"
@@ -2268,16 +2148,13 @@ A richer example combining groups, icons, and submenus.
         role="menuitemcheckbox"
         aria-checked="false"
         data-slot="dropdown-menu-checkbox-item"
-        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="pl-1.5 data-inset:pl-7"
         data-state="unchecked"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        <span
-          class="absolute right-2 flex items-center justify-center pointer-events-none"
-          data-slot="dropdown-menu-checkbox-item-indicator"
-        ></span
+        <span data-slot="dropdown-menu-checkbox-item-indicator"></span
         ><svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -2303,7 +2180,7 @@ A richer example combining groups, icons, and submenus.
         aria-controls="m0s1"
         data-state="closed"
         data-slot="dropdown-menu-sub-trigger"
-        class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-hidden select-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="px-1.5 data-inset:pl-7"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -2344,24 +2221,14 @@ A richer example combining groups, icons, and submenus.
         </svg>
       </div>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="dropdown-menu-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="dropdown-menu-separator"></div>
     <div role="group" data-slot="dropdown-menu-group">
-      <div
-        data-slot="dropdown-menu-label"
-        class="text-muted-foreground px-1.5 py-1 text-xs font-medium data-inset:pl-7"
-      >
-        Account
-      </div>
+      <div data-slot="dropdown-menu-label" class="px-1.5 data-inset:pl-7">Account</div>
       <div
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -2382,7 +2249,7 @@ A richer example combining groups, icons, and submenus.
           <circle cx="12" cy="7" r="4"></circle></svg
         >Profile<span
           data-slot="dropdown-menu-shortcut"
-          class="text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground ml-auto text-xs tracking-widest"
+          class="text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground"
           >⇧⌘P</span
         >
       </div>
@@ -2390,7 +2257,7 @@ A richer example combining groups, icons, and submenus.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -2419,7 +2286,7 @@ A richer example combining groups, icons, and submenus.
         aria-controls="m0s2"
         data-state="closed"
         data-slot="dropdown-menu-sub-trigger"
-        class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-hidden select-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="px-1.5 data-inset:pl-7"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -2457,18 +2324,13 @@ A richer example combining groups, icons, and submenus.
         </svg>
       </div>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="dropdown-menu-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="dropdown-menu-separator"></div>
     <div role="group" data-slot="dropdown-menu-group">
       <div
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -2494,7 +2356,7 @@ A richer example combining groups, icons, and submenus.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -2519,18 +2381,13 @@ A richer example combining groups, icons, and submenus.
         >Documentation
       </div>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="dropdown-menu-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="dropdown-menu-separator"></div>
     <div role="group" data-slot="dropdown-menu-group">
       <div
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="destructive"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -2552,7 +2409,7 @@ A richer example combining groups, icons, and submenus.
           <line x1="21" x2="9" y1="12" y2="12"></line></svg
         >Sign Out<span
           data-slot="dropdown-menu-shortcut"
-          class="text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground ml-auto text-xs tracking-widest"
+          class="text-muted-foreground group-focus/dropdown-menu-item:text-accent-foreground"
           >⇧⌘Q</span
         >
       </div>
@@ -2571,7 +2428,7 @@ A richer example combining groups, icons, and submenus.
     id="m0s0"
     aria-labelledby="m0-trigger"
     data-slot="dropdown-menu-sub-content"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-[96px] rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-dropdown-menu-content-transform-origin) overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -2585,17 +2442,12 @@ A richer example combining groups, icons, and submenus.
     "
   >
     <div role="group" data-slot="dropdown-menu-group">
-      <div
-        data-slot="dropdown-menu-label"
-        class="text-muted-foreground px-1.5 py-1 text-xs font-medium data-inset:pl-7"
-      >
-        Recent Projects
-      </div>
+      <div data-slot="dropdown-menu-label" class="px-1.5 data-inset:pl-7">Recent Projects</div>
       <div
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -2622,7 +2474,7 @@ A richer example combining groups, icons, and submenus.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -2653,7 +2505,7 @@ A richer example combining groups, icons, and submenus.
         aria-controls="m0s0s0"
         data-state="closed"
         data-slot="dropdown-menu-sub-trigger"
-        class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-hidden select-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="px-1.5 data-inset:pl-7"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -2690,18 +2542,13 @@ A richer example combining groups, icons, and submenus.
         </svg>
       </div>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="dropdown-menu-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="dropdown-menu-separator"></div>
     <div role="group" data-slot="dropdown-menu-group">
       <div
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -2740,7 +2587,7 @@ A richer example combining groups, icons, and submenus.
     id="m0s0s0"
     aria-labelledby="m0s0-trigger"
     data-slot="dropdown-menu-sub-content"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-[96px] rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-dropdown-menu-content-transform-origin) overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -2757,7 +2604,7 @@ A richer example combining groups, icons, and submenus.
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -2784,7 +2631,7 @@ A richer example combining groups, icons, and submenus.
       role="menuitem"
       data-slot="dropdown-menu-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -2821,7 +2668,7 @@ A richer example combining groups, icons, and submenus.
     id="m0s1"
     aria-labelledby="m0-trigger"
     data-slot="dropdown-menu-sub-content"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-[96px] rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-dropdown-menu-content-transform-origin) overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -2835,26 +2682,19 @@ A richer example combining groups, icons, and submenus.
     "
   >
     <div role="group" data-slot="dropdown-menu-group">
-      <div
-        data-slot="dropdown-menu-label"
-        class="text-muted-foreground px-1.5 py-1 text-xs font-medium data-inset:pl-7"
-      >
-        Appearance
-      </div>
+      <div data-slot="dropdown-menu-label" class="px-1.5 data-inset:pl-7">Appearance</div>
       <div role="group" data-slot="dropdown-menu-radio-group">
         <div
           role="menuitemradio"
           aria-checked="true"
           data-slot="dropdown-menu-radio-item"
-          class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="pl-1.5 data-inset:pl-7"
           data-state="checked"
           tabindex="-1"
           data-orientation="vertical"
           data-radix-collection-item=""
         >
-          <span
-            class="absolute right-2 flex items-center justify-center pointer-events-none"
-            data-slot="dropdown-menu-radio-item-indicator"
+          <span data-slot="dropdown-menu-radio-item-indicator"
             ><span data-state="checked"
               ><svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -2896,16 +2736,13 @@ A richer example combining groups, icons, and submenus.
           role="menuitemradio"
           aria-checked="false"
           data-slot="dropdown-menu-radio-item"
-          class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="pl-1.5 data-inset:pl-7"
           data-state="unchecked"
           tabindex="-1"
           data-orientation="vertical"
           data-radix-collection-item=""
         >
-          <span
-            class="absolute right-2 flex items-center justify-center pointer-events-none"
-            data-slot="dropdown-menu-radio-item-indicator"
-          ></span
+          <span data-slot="dropdown-menu-radio-item-indicator"></span
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -2925,16 +2762,13 @@ A richer example combining groups, icons, and submenus.
           role="menuitemradio"
           aria-checked="false"
           data-slot="dropdown-menu-radio-item"
-          class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="pl-1.5 data-inset:pl-7"
           data-state="unchecked"
           tabindex="-1"
           data-orientation="vertical"
           data-radix-collection-item=""
         >
-          <span
-            class="absolute right-2 flex items-center justify-center pointer-events-none"
-            data-slot="dropdown-menu-radio-item-indicator"
-          ></span
+          <span data-slot="dropdown-menu-radio-item-indicator"></span
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -2968,7 +2802,7 @@ A richer example combining groups, icons, and submenus.
     id="m0s2"
     aria-labelledby="m0-trigger"
     data-slot="dropdown-menu-sub-content"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-[96px] rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-dropdown-menu-content-transform-origin) overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -2982,17 +2816,12 @@ A richer example combining groups, icons, and submenus.
     "
   >
     <div role="group" data-slot="dropdown-menu-group">
-      <div
-        data-slot="dropdown-menu-label"
-        class="text-muted-foreground px-1.5 py-1 text-xs font-medium data-inset:pl-7"
-      >
-        Preferences
-      </div>
+      <div data-slot="dropdown-menu-label" class="px-1.5 data-inset:pl-7">Preferences</div>
       <div
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -3024,7 +2853,7 @@ A richer example combining groups, icons, and submenus.
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -3057,7 +2886,7 @@ A richer example combining groups, icons, and submenus.
         aria-controls="m0s2s0"
         data-state="closed"
         data-slot="dropdown-menu-sub-trigger"
-        class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-hidden select-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="px-1.5 data-inset:pl-7"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -3095,18 +2924,13 @@ A richer example combining groups, icons, and submenus.
         </svg>
       </div>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="dropdown-menu-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="dropdown-menu-separator"></div>
     <div role="group" data-slot="dropdown-menu-group">
       <div
         role="menuitem"
         data-slot="dropdown-menu-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/dropdown-menu-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -3143,7 +2967,7 @@ A richer example combining groups, icons, and submenus.
     id="m0s2s0"
     aria-labelledby="m0s2-trigger"
     data-slot="dropdown-menu-sub-content"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground min-w-[96px] rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-dropdown-menu-content-transform-origin) overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -3157,25 +2981,18 @@ A richer example combining groups, icons, and submenus.
     "
   >
     <div role="group" data-slot="dropdown-menu-group">
-      <div
-        data-slot="dropdown-menu-label"
-        class="text-muted-foreground px-1.5 py-1 text-xs font-medium data-inset:pl-7"
-      >
-        Notification Types
-      </div>
+      <div data-slot="dropdown-menu-label" class="px-1.5 data-inset:pl-7">Notification Types</div>
       <div
         role="menuitemcheckbox"
         aria-checked="true"
         data-slot="dropdown-menu-checkbox-item"
-        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="pl-1.5 data-inset:pl-7"
         data-state="checked"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        <span
-          class="absolute right-2 flex items-center justify-center pointer-events-none"
-          data-slot="dropdown-menu-checkbox-item-indicator"
+        <span data-slot="dropdown-menu-checkbox-item-indicator"
           ><span data-state="checked"
             ><svg
               xmlns="http://www.w3.org/2000/svg"
@@ -3212,15 +3029,13 @@ A richer example combining groups, icons, and submenus.
         role="menuitemcheckbox"
         aria-checked="true"
         data-slot="dropdown-menu-checkbox-item"
-        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="pl-1.5 data-inset:pl-7"
         data-state="checked"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
       >
-        <span
-          class="absolute right-2 flex items-center justify-center pointer-events-none"
-          data-slot="dropdown-menu-checkbox-item-indicator"
+        <span data-slot="dropdown-menu-checkbox-item-indicator"
           ><span data-state="checked"
             ><svg
               xmlns="http://www.w3.org/2000/svg"

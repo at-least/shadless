@@ -16,10 +16,10 @@ Use to show a placeholder while content is loading.
 {% <codegroup> %}
 ```text,name=skeleton-demo.html
 <div class="flex items-center gap-4">
-  <div data-slot="skeleton" class="bg-muted animate-pulse h-12 w-12 rounded-full"></div>
+  <div data-slot="skeleton" class="h-12 w-12 rounded-full"></div>
   <div class="space-y-2">
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-[250px]"></div>
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-[200px]"></div>
+    <div data-slot="skeleton" class="h-4 w-[250px]"></div>
+    <div data-slot="skeleton" class="h-4 w-[200px]"></div>
   </div>
 </div>
 ```
@@ -58,10 +58,10 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 {% <codegroup> %}
 ```text,name=skeleton-avatar.html
 <div class="flex w-fit items-center gap-4">
-  <div data-slot="skeleton" class="bg-muted animate-pulse size-10 shrink-0 rounded-full"></div>
+  <div data-slot="skeleton" class="size-10 shrink-0 rounded-full"></div>
   <div class="grid gap-2">
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-[150px]"></div>
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-[100px]"></div>
+    <div data-slot="skeleton" class="h-4 w-[150px]"></div>
+    <div data-slot="skeleton" class="h-4 w-[100px]"></div>
   </div>
 </div>
 ```
@@ -81,17 +81,14 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 <div
   data-slot="card"
   data-size="default"
-  class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col w-full max-w-xs"
+  class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card w-full max-w-xs"
 >
-  <div
-    data-slot="card-header"
-    class="gap-1 rounded-t-xl px-(--card-spacing) [.border-b]:pb-(--card-spacing) group/card-header @container/card-header grid auto-rows-min items-start has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto]"
-  >
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-2/3"></div>
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-1/2"></div>
+  <div data-slot="card-header" class="group/card-header">
+    <div data-slot="skeleton" class="rounded-md h-4 w-2/3"></div>
+    <div data-slot="skeleton" class="rounded-md h-4 w-1/2"></div>
   </div>
-  <div data-slot="card-content" class="px-(--card-spacing)">
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse aspect-video w-full"></div>
+  <div data-slot="card-content">
+    <div data-slot="skeleton" class="rounded-md aspect-video w-full"></div>
   </div>
 </div>
 ```
@@ -109,9 +106,9 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 {% <codegroup> %}
 ```text,name=skeleton-text.html
 <div class="flex w-full max-w-xs flex-col gap-2">
-  <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-full"></div>
-  <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-full"></div>
-  <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-3/4"></div>
+  <div data-slot="skeleton" class="h-4 w-full"></div>
+  <div data-slot="skeleton" class="h-4 w-full"></div>
+  <div data-slot="skeleton" class="h-4 w-3/4"></div>
 </div>
 ```
 {% </codegroup> %}
@@ -129,14 +126,14 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 ```text,name=skeleton-form.html
 <div class="flex w-full max-w-xs flex-col gap-7">
   <div class="flex flex-col gap-3">
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-20"></div>
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-8 w-full"></div>
+    <div data-slot="skeleton" class="h-4 w-20"></div>
+    <div data-slot="skeleton" class="h-8 w-full"></div>
   </div>
   <div class="flex flex-col gap-3">
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-24"></div>
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-8 w-full"></div>
+    <div data-slot="skeleton" class="h-4 w-24"></div>
+    <div data-slot="skeleton" class="h-8 w-full"></div>
   </div>
-  <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-8 w-24"></div>
+  <div data-slot="skeleton" class="h-8 w-24"></div>
 </div>
 ```
 {% </codegroup> %}
@@ -154,29 +151,29 @@ No Tailwind build? Use the precompiled `dist/shadless.full.min.css` (npm: `shadl
 ```text,name=skeleton-table.html
 <div class="flex w-full max-w-sm flex-col gap-2">
   <div class="flex gap-4">
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 flex-1"></div>
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-24"></div>
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-20"></div>
+    <div data-slot="skeleton" class="h-4 flex-1"></div>
+    <div data-slot="skeleton" class="h-4 w-24"></div>
+    <div data-slot="skeleton" class="h-4 w-20"></div>
   </div>
   <div class="flex gap-4">
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 flex-1"></div>
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-24"></div>
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-20"></div>
+    <div data-slot="skeleton" class="h-4 flex-1"></div>
+    <div data-slot="skeleton" class="h-4 w-24"></div>
+    <div data-slot="skeleton" class="h-4 w-20"></div>
   </div>
   <div class="flex gap-4">
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 flex-1"></div>
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-24"></div>
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-20"></div>
+    <div data-slot="skeleton" class="h-4 flex-1"></div>
+    <div data-slot="skeleton" class="h-4 w-24"></div>
+    <div data-slot="skeleton" class="h-4 w-20"></div>
   </div>
   <div class="flex gap-4">
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 flex-1"></div>
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-24"></div>
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-20"></div>
+    <div data-slot="skeleton" class="h-4 flex-1"></div>
+    <div data-slot="skeleton" class="h-4 w-24"></div>
+    <div data-slot="skeleton" class="h-4 w-20"></div>
   </div>
   <div class="flex gap-4">
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 flex-1"></div>
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-24"></div>
-    <div data-slot="skeleton" class="bg-muted rounded-md animate-pulse h-4 w-20"></div>
+    <div data-slot="skeleton" class="h-4 flex-1"></div>
+    <div data-slot="skeleton" class="h-4 w-24"></div>
+    <div data-slot="skeleton" class="h-4 w-20"></div>
   </div>
 </div>
 ```

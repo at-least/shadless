@@ -40,7 +40,7 @@ A popup that displays information related to an element when the element receive
       data-align="center"
       data-state="delayed-open"
       data-slot="tooltip-content"
-      class="data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[state=delayed-open]:animate-in data-[state=delayed-open]:fade-in-0 data-[state=delayed-open]:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:relative **:data-[slot=kbd]:isolate **:data-[slot=kbd]:z-50 **:data-[slot=kbd]:rounded-sm z-50 w-fit max-w-xs origin-(--radix-tooltip-content-transform-origin) bg-foreground text-background"
+      class="rounded-md px-3 has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:rounded-sm"
       style="
         --radix-tooltip-content-transform-origin: var(--radix-popper-transform-origin);
         --radix-tooltip-content-available-width: var(--radix-popper-available-width);
@@ -271,7 +271,7 @@ Use the `side` prop to change the position of the tooltip.
       data-align="center"
       data-state="delayed-open"
       data-slot="tooltip-content"
-      class="data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[state=delayed-open]:animate-in data-[state=delayed-open]:fade-in-0 data-[state=delayed-open]:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:relative **:data-[slot=kbd]:isolate **:data-[slot=kbd]:z-50 **:data-[slot=kbd]:rounded-sm z-50 w-fit max-w-xs origin-(--radix-tooltip-content-transform-origin) bg-foreground text-background"
+      class="rounded-md px-3 has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:rounded-sm"
       style="
         --radix-tooltip-content-transform-origin: var(--radix-popper-transform-origin);
         --radix-tooltip-content-available-width: var(--radix-popper-available-width);
@@ -341,7 +341,7 @@ Use the `side` prop to change the position of the tooltip.
       data-align="center"
       data-state="delayed-open"
       data-slot="tooltip-content"
-      class="data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[state=delayed-open]:animate-in data-[state=delayed-open]:fade-in-0 data-[state=delayed-open]:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:relative **:data-[slot=kbd]:isolate **:data-[slot=kbd]:z-50 **:data-[slot=kbd]:rounded-sm z-50 w-fit max-w-xs origin-(--radix-tooltip-content-transform-origin) bg-foreground text-background"
+      class="rounded-md px-3 has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:rounded-sm"
       style="
         --radix-tooltip-content-transform-origin: var(--radix-popper-transform-origin);
         --radix-tooltip-content-available-width: var(--radix-popper-available-width);
@@ -411,7 +411,7 @@ Use the `side` prop to change the position of the tooltip.
       data-align="center"
       data-state="delayed-open"
       data-slot="tooltip-content"
-      class="data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[state=delayed-open]:animate-in data-[state=delayed-open]:fade-in-0 data-[state=delayed-open]:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:relative **:data-[slot=kbd]:isolate **:data-[slot=kbd]:z-50 **:data-[slot=kbd]:rounded-sm z-50 w-fit max-w-xs origin-(--radix-tooltip-content-transform-origin) bg-foreground text-background"
+      class="rounded-md px-3 has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:rounded-sm"
       style="
         --radix-tooltip-content-transform-origin: var(--radix-popper-transform-origin);
         --radix-tooltip-content-available-width: var(--radix-popper-available-width);
@@ -481,7 +481,7 @@ Use the `side` prop to change the position of the tooltip.
       data-align="center"
       data-state="delayed-open"
       data-slot="tooltip-content"
-      class="data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[state=delayed-open]:animate-in data-[state=delayed-open]:fade-in-0 data-[state=delayed-open]:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:relative **:data-[slot=kbd]:isolate **:data-[slot=kbd]:z-50 **:data-[slot=kbd]:rounded-sm z-50 w-fit max-w-xs origin-(--radix-tooltip-content-transform-origin) bg-foreground text-background"
+      class="rounded-md px-3 has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:rounded-sm"
       style="
         --radix-tooltip-content-transform-origin: var(--radix-popper-transform-origin);
         --radix-tooltip-content-available-width: var(--radix-popper-available-width);
@@ -647,7 +647,7 @@ Use the `side` prop to change the position of the tooltip.
       data-align="center"
       data-state="delayed-open"
       data-slot="tooltip-content"
-      class="data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[state=delayed-open]:animate-in data-[state=delayed-open]:fade-in-0 data-[state=delayed-open]:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:relative **:data-[slot=kbd]:isolate **:data-[slot=kbd]:z-50 **:data-[slot=kbd]:rounded-sm z-50 w-fit max-w-xs origin-(--radix-tooltip-content-transform-origin) bg-foreground text-background"
+      class="rounded-md px-3 has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:rounded-sm"
       style="
         --radix-tooltip-content-transform-origin: var(--radix-popper-transform-origin);
         --radix-tooltip-content-available-width: var(--radix-popper-available-width);
@@ -660,7 +660,7 @@ Use the `side` prop to change the position of the tooltip.
       Save Changes
       <kbd
         data-slot="kbd"
-        class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit min-w-5 gap-1 rounded-sm px-1 font-sans text-xs font-medium [&_svg:not([class*='size-'])]:size-3 pointer-events-none inline-flex items-center justify-center select-none"
+        class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit [&_svg:not([class*='size-'])]:size-3"
         >S</kbd
       ><span
         style="
@@ -697,7 +697,7 @@ Use the `side` prop to change the position of the tooltip.
         >Save Changes
         <kbd
           data-slot="kbd"
-          class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit min-w-5 gap-1 rounded-sm px-1 font-sans text-xs font-medium [&_svg:not([class*='size-'])]:size-3 pointer-events-none inline-flex items-center justify-center select-none"
+          class="bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 h-5 w-fit [&_svg:not([class*='size-'])]:size-3"
           >S</kbd
         ></span
       >
@@ -780,7 +780,7 @@ Show a tooltip on a disabled button by wrapping it with a span.
     data-slot="button"
     data-variant="outline"
     data-size="default"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-8 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2"
     disabled=""
   >
     Disabled
@@ -808,7 +808,7 @@ Show a tooltip on a disabled button by wrapping it with a span.
       data-align="center"
       data-state="delayed-open"
       data-slot="tooltip-content"
-      class="data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[state=delayed-open]:animate-in data-[state=delayed-open]:fade-in-0 data-[state=delayed-open]:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:relative **:data-[slot=kbd]:isolate **:data-[slot=kbd]:z-50 **:data-[slot=kbd]:rounded-sm z-50 w-fit max-w-xs origin-(--radix-tooltip-content-transform-origin) bg-foreground text-background"
+      class="rounded-md px-3 has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:rounded-sm"
       style="
         --radix-tooltip-content-transform-origin: var(--radix-popper-transform-origin);
         --radix-tooltip-content-available-width: var(--radix-popper-available-width);

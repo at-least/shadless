@@ -22,13 +22,12 @@ Displays an indicator showing the completion progress of a task, typically displ
   data-state="indeterminate"
   data-max="100"
   data-slot="progress"
-  class="bg-muted h-1 rounded-full relative flex items-center overflow-x-hidden w-[60%]"
+  class="w-[60%]"
 >
   <div
     data-state="indeterminate"
     data-max="100"
     data-slot="progress-indicator"
-    class="bg-primary size-full flex-1 transition-all"
     style="transform: translateX(-87%)"
   ></div>
 </div>
@@ -79,11 +78,11 @@ Use a `Field` component to add a label to the progress bar.
   role="group"
   data-slot="field"
   data-orientation="vertical"
-  class="data-[invalid=true]:text-destructive gap-2 group/field flex flex-col *:w-full [&>.sr-only]:w-auto w-full max-w-sm"
+  class="group/field *:w-full [&>.sr-only]:w-auto w-full max-w-sm"
 >
   <label
     data-slot="field-label"
-    class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+    class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
     for="progress-upload"
     ><span>Upload progress</span><span class="ml-auto">66%</span></label
   >
@@ -94,14 +93,14 @@ Use a `Field` component to add a label to the progress bar.
     data-state="indeterminate"
     data-max="100"
     data-slot="progress"
-    class="bg-muted h-1 rounded-full relative flex w-full items-center overflow-x-hidden"
+    class="w-full"
     id="progress-upload"
   >
     <div
       data-state="indeterminate"
       data-max="100"
       data-slot="progress-indicator"
-      class="bg-primary size-full flex-1 transition-all"
+      class="size-full"
       style="transform: translateX(-34%)"
     ></div>
   </div>
@@ -130,13 +129,11 @@ A progress bar that can be controlled by a slider.
     data-state="indeterminate"
     data-max="100"
     data-slot="progress"
-    class="bg-muted h-1 rounded-full relative flex w-full items-center overflow-x-hidden"
   >
     <div
       data-state="indeterminate"
       data-max="100"
       data-slot="progress-indicator"
-      class="bg-primary size-full flex-1 transition-all"
       style="transform: translateX(-50%)"
     ></div>
   </div>
@@ -145,16 +142,15 @@ A progress bar that can be controlled by a slider.
     data-orientation="horizontal"
     aria-disabled="false"
     data-slot="slider"
-    class="data-vertical:min-h-40 relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col"
+    class="w-full data-vertical:w-auto"
     style="--radix-slider-thumb-transform: translateX(-50%)"
     ><span
       data-orientation="horizontal"
       data-slot="slider-track"
-      class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"
+      class="data-horizontal:h-1 data-vertical:w-1 data-horizontal:w-full data-vertical:h-full"
       ><span
         data-orientation="horizontal"
         data-slot="slider-range"
-        class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full"
         style="left: 0%; right: 50%"
       ></span></span
     ><span
@@ -171,7 +167,7 @@ A progress bar that can be controlled by a slider.
         data-orientation="horizontal"
         tabindex="0"
         data-slot="slider-thumb"
-        class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+        class="relative after:absolute"
         data-radix-collection-item=""
         aria-valuenow="50"
         style=""

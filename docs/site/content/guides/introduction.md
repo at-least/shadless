@@ -14,7 +14,7 @@ shadless ships shadcn/ui's radix-line components as compiled HTML, CSS, and JS a
 
 ## Open Code
 
-shadless hands you the actual component markup — the same DOM shadcn's JSX renders, written out as HTML, without the JSX wrappers and React hooks. Every example on this site shows it in a code tab under the preview; copy it and adapt any part to fit your design and functionality requirements.
+shadless hands you the actual component markup — the same DOM shadcn's JSX renders, written out as HTML, without the JSX wrappers and React hooks. Every example on this site shows it in a code tab under the preview; copy it and adapt any part to fit your design and functionality requirements. The tab is slot-only — `data-slot`/`data-*` attributes plus only the classes the component stylesheet does not already supply — so importing `shadless` and the component's stylesheet renders it exactly like the preview (`docs-code-parity` proves that, in a consumer build as well as against the precompiled CSS).
 
 - **Full Transparency:** The HTML, the CSS, and the JS runtime are all on disk. Nothing is hidden behind a build step.
 - **Easy Customization:** Edit the markup directly. Slots are marked with `data-slot="…"`; keep them and the shipped styles apply unchanged.
@@ -30,7 +30,7 @@ _The radix-line variants compose consistently. Where shadcn defines a base-nova 
 
 shadless is a code distribution system. It takes the pinned shadcn-ui registry, runs every component through a contract-tested AST→IR→emit pipeline, and emits:
 
-- the markup itself — shown under every example on this site, and shipped in the repo as `docs/demos/*.html`; it is text you copy, so it is deliberately not part of the npm package
+- the markup itself — shown under every example on this site as slot-only markup (the stylesheet supplies the rest), and shipped in the repo as `docs/demos/*.html`, the full inline DOM React renders; it is text you copy, so it is deliberately not part of the npm package
 - `dist/shadless-core.css` + `dist/css/<name>.css` (npm: `shadless` + `shadless/<name>.css`) — the primary consume path: import them into your Tailwind v4 (>= 4.3) build and only the components you use are emitted
 - `dist/shadless.full.css` / `.full.min.css` (npm: `shadless/full.css` / `full.min.css`) — every component precompiled (no-build path)
 - `dist/shadless.js` (npm: `shadless/js`) — the JS base: delegation engine + registry + theme, with the vendored radix kernel inside

@@ -19,7 +19,6 @@ Augments native scroll functionality for custom, cross-browser styling.
   <div
     dir="ltr"
     data-slot="scroll-area"
-    class="relative"
     style="
       position: relative;
       --radix-scroll-area-corner-width: 0px;
@@ -41,7 +40,6 @@ Augments native scroll functionality for custom, cross-browser styling.
     <div
       data-radix-scroll-area-viewport=""
       data-slot="scroll-area-viewport"
-      class="size-full rounded-[inherit] transition-[color,box-shadow] outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1"
       style="overflow: hidden scroll"
     >
       <div style="min-width: 100%; display: table">
@@ -71,7 +69,7 @@ Augments native scroll functionality for custom, cross-browser styling.
       data-orientation="vertical"
       data-state="visible"
       data-slot="scroll-area-scrollbar"
-      class="data-horizontal:h-2.5 data-horizontal:flex-col data-horizontal:border-t data-horizontal:border-t-transparent data-vertical:h-full data-vertical:w-2.5 data-vertical:border-l data-vertical:border-l-transparent flex touch-none p-px transition-colors select-none"
+      class="data-horizontal:h-2.5 data-vertical:h-full"
       style="
         position: absolute;
         top: 0px;
@@ -83,7 +81,6 @@ Augments native scroll functionality for custom, cross-browser styling.
       <div
         data-state="visible"
         data-slot="scroll-area-thumb"
-        class="rounded-full relative flex-1 bg-border"
         style="
           width: var(--radix-scroll-area-thumb-width);
           height: var(--radix-scroll-area-thumb-height);
@@ -188,7 +185,7 @@ Use `ScrollBar` with `orientation="horizontal"` for horizontal scrolling.
 <div
   dir="ltr"
   data-slot="scroll-area"
-  class="relative w-96 rounded-md border whitespace-nowrap"
+  class="w-96 rounded-md border whitespace-nowrap"
   style="
     position: relative;
     --radix-scroll-area-corner-width: 0px;
@@ -205,12 +202,7 @@ Use `ScrollBar` with `orientation="horizontal"` for horizontal scrolling.
       display: none;
     }
   </style>
-  <div
-    data-radix-scroll-area-viewport=""
-    data-slot="scroll-area-viewport"
-    class="size-full rounded-[inherit] transition-[color,box-shadow] outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1"
-    style="overflow: scroll"
-  >
+  <div data-radix-scroll-area-viewport="" data-slot="scroll-area-viewport" style="overflow: scroll">
     <div style="min-width: 100%; display: table">
       <div class="flex w-max space-x-4 p-4">
         <figure class="shrink-0">

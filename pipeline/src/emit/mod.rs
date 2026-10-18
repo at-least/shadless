@@ -3,6 +3,7 @@
 //! slot-keyed CSS, with the static gates.
 
 pub mod build_rtl;
+pub mod compose;
 pub mod css;
 pub mod demo;
 pub mod product_css;
@@ -17,6 +18,7 @@ pub mod default_content;
 pub mod htmlutil;
 pub mod prepaint;
 pub mod tags;
+pub mod writer;
 
 // ------------------------------------------------------- tree build/render
 

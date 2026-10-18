@@ -21,17 +21,16 @@ An input where the user selects a value from within a given range.
     data-orientation="horizontal"
     aria-disabled="false"
     data-slot="slider"
-    class="data-vertical:min-h-40 relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col"
+    class="w-full data-vertical:w-auto"
     id="s1"
     style="--radix-slider-thumb-transform: translateX(-50%)"
     ><span
       data-orientation="horizontal"
       data-slot="slider-track"
-      class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"
+      class="data-horizontal:h-1 data-vertical:w-1 data-horizontal:w-full data-vertical:h-full"
       ><span
         data-orientation="horizontal"
         data-slot="slider-range"
-        class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full"
         style="left: 0%; right: 50%"
       ></span></span
     ><span
@@ -48,7 +47,7 @@ An input where the user selects a value from within a given range.
         data-orientation="horizontal"
         tabindex="0"
         data-slot="slider-thumb"
-        class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+        class="relative after:absolute"
         data-radix-collection-item=""
         aria-valuenow="50"
         style=""
@@ -165,16 +164,15 @@ Use an array with two values for a range slider.
   data-orientation="horizontal"
   aria-disabled="false"
   data-slot="slider"
-  class="data-vertical:min-h-40 relative flex touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col mx-auto w-full max-w-xs"
+  class="data-vertical:w-auto mx-auto w-full max-w-xs"
   style="--radix-slider-thumb-transform: translateX(-50%)"
   ><span
     data-orientation="horizontal"
     data-slot="slider-track"
-    class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"
+    class="data-horizontal:h-1 data-vertical:w-1 data-horizontal:w-full data-vertical:h-full"
     ><span
       data-orientation="horizontal"
       data-slot="slider-range"
-      class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full"
       style="left: 25%; right: 50%"
     ></span></span
   ><span
@@ -191,7 +189,7 @@ Use an array with two values for a range slider.
       data-orientation="horizontal"
       tabindex="0"
       data-slot="slider-thumb"
-      class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+      class="relative after:absolute"
       data-radix-collection-item=""
       aria-label="Minimum"
       aria-valuenow="25"
@@ -211,7 +209,7 @@ Use an array with two values for a range slider.
       data-orientation="horizontal"
       tabindex="0"
       data-slot="slider-thumb"
-      class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+      class="relative after:absolute"
       data-radix-collection-item=""
       aria-label="Maximum"
       aria-valuenow="50"
@@ -289,16 +287,15 @@ Use an array with multiple values for multiple thumbs.
   data-orientation="horizontal"
   aria-disabled="false"
   data-slot="slider"
-  class="data-vertical:min-h-40 relative flex touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col mx-auto w-full max-w-xs"
+  class="data-vertical:w-auto mx-auto w-full max-w-xs"
   style="--radix-slider-thumb-transform: translateX(-50%)"
   ><span
     data-orientation="horizontal"
     data-slot="slider-track"
-    class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"
+    class="data-horizontal:h-1 data-vertical:w-1 data-horizontal:w-full data-vertical:h-full"
     ><span
       data-orientation="horizontal"
       data-slot="slider-range"
-      class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full"
       style="left: 10%; right: 30%"
     ></span></span
   ><span
@@ -316,7 +313,7 @@ Use an array with multiple values for multiple thumbs.
       data-orientation="horizontal"
       tabindex="0"
       data-slot="slider-thumb"
-      class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+      class="relative after:absolute"
       data-radix-collection-item=""
       aria-valuenow="10"
       style=""
@@ -336,7 +333,7 @@ Use an array with multiple values for multiple thumbs.
       data-orientation="horizontal"
       tabindex="0"
       data-slot="slider-thumb"
-      class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+      class="relative after:absolute"
       data-radix-collection-item=""
       aria-valuenow="20"
       style=""
@@ -356,7 +353,7 @@ Use an array with multiple values for multiple thumbs.
       data-orientation="horizontal"
       tabindex="0"
       data-slot="slider-thumb"
-      class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+      class="relative after:absolute"
       data-radix-collection-item=""
       aria-valuenow="70"
       style=""
@@ -433,16 +430,15 @@ Use `orientation="vertical"` for a vertical slider.
     data-orientation="vertical"
     aria-disabled="false"
     data-slot="slider"
-    class="data-vertical:min-h-40 relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col h-40"
+    class="w-full data-vertical:h-full data-vertical:w-auto h-40"
     style="--radix-slider-thumb-transform: translateY(50%)"
     ><span
       data-orientation="vertical"
       data-slot="slider-track"
-      class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"
+      class="data-horizontal:h-1 data-vertical:w-1 data-horizontal:w-full data-vertical:h-full"
       ><span
         data-orientation="vertical"
         data-slot="slider-range"
-        class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full"
         style="bottom: 0%; top: 50%"
       ></span></span
     ><span
@@ -459,7 +455,7 @@ Use `orientation="vertical"` for a vertical slider.
         data-orientation="vertical"
         tabindex="0"
         data-slot="slider-thumb"
-        class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+        class="relative after:absolute"
         data-radix-collection-item=""
         aria-valuenow="50"
         style=""
@@ -468,16 +464,15 @@ Use `orientation="vertical"` for a vertical slider.
     data-orientation="vertical"
     aria-disabled="false"
     data-slot="slider"
-    class="data-vertical:min-h-40 relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col h-40"
+    class="w-full data-vertical:h-full data-vertical:w-auto h-40"
     style="--radix-slider-thumb-transform: translateY(50%)"
     ><span
       data-orientation="vertical"
       data-slot="slider-track"
-      class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"
+      class="data-horizontal:h-1 data-vertical:w-1 data-horizontal:w-full data-vertical:h-full"
       ><span
         data-orientation="vertical"
         data-slot="slider-range"
-        class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full"
         style="bottom: 0%; top: 75%"
       ></span></span
     ><span
@@ -494,7 +489,7 @@ Use `orientation="vertical"` for a vertical slider.
         data-orientation="vertical"
         tabindex="0"
         data-slot="slider-thumb"
-        class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+        class="relative after:absolute"
         data-radix-collection-item=""
         aria-valuenow="25"
         style=""
@@ -567,10 +562,7 @@ Use `orientation="vertical"` for a vertical slider.
 ```text,name=slider-controlled.html
 <div class="mx-auto grid w-full max-w-xs gap-3">
   <div class="flex items-center justify-between gap-2">
-    <label
-      data-slot="label"
-      class="gap-2 text-sm leading-none font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 flex items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed"
-      for="slider-demo-temperature"
+    <label data-slot="label" class="text-sm leading-none" for="slider-demo-temperature"
       >Temperature</label
     ><span class="text-sm text-muted-foreground">0.3, 0.7</span>
   </div>
@@ -579,17 +571,16 @@ Use `orientation="vertical"` for a vertical slider.
     data-orientation="horizontal"
     aria-disabled="false"
     data-slot="slider"
-    class="data-vertical:min-h-40 relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col"
+    class="w-full data-vertical:w-auto"
     id="slider-demo-temperature"
     style="--radix-slider-thumb-transform: translateX(-50%)"
     ><span
       data-orientation="horizontal"
       data-slot="slider-track"
-      class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"
+      class="data-horizontal:h-1 data-vertical:w-1 data-horizontal:w-full data-vertical:h-full"
       ><span
         data-orientation="horizontal"
         data-slot="slider-range"
-        class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full"
         style="left: 30%; right: 30%"
       ></span></span
     ><span
@@ -606,7 +597,7 @@ Use `orientation="vertical"` for a vertical slider.
         data-orientation="horizontal"
         tabindex="0"
         data-slot="slider-thumb"
-        class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+        class="relative after:absolute"
         data-radix-collection-item=""
         aria-label="Minimum"
         aria-valuenow="0.3"
@@ -626,7 +617,7 @@ Use `orientation="vertical"` for a vertical slider.
         data-orientation="horizontal"
         tabindex="0"
         data-slot="slider-thumb"
-        class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+        class="relative after:absolute"
         data-radix-collection-item=""
         aria-label="Maximum"
         aria-valuenow="0.7"
@@ -706,18 +697,17 @@ Use the `disabled` prop to disable the slider.
   aria-disabled="true"
   data-disabled=""
   data-slot="slider"
-  class="data-vertical:min-h-40 relative flex touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:w-auto data-vertical:flex-col mx-auto w-full max-w-xs"
+  class="data-vertical:w-auto mx-auto w-full max-w-xs"
   style="--radix-slider-thumb-transform: translateX(-50%)"
   ><span
     data-disabled=""
     data-orientation="horizontal"
     data-slot="slider-track"
-    class="bg-muted rounded-full data-horizontal:h-1 data-vertical:w-1 relative grow overflow-hidden data-horizontal:w-full data-vertical:h-full"
+    class="data-horizontal:h-1 data-vertical:w-1 data-horizontal:w-full data-vertical:h-full"
     ><span
       data-orientation="horizontal"
       data-disabled=""
       data-slot="slider-range"
-      class="bg-primary absolute select-none data-horizontal:h-full data-vertical:w-full"
       style="left: 0%; right: 50%"
     ></span></span
   ><span
@@ -734,7 +724,7 @@ Use the `disabled` prop to disable the slider.
       data-orientation="horizontal"
       data-disabled=""
       data-slot="slider-thumb"
-      class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
+      class="relative after:absolute"
       data-radix-collection-item=""
       aria-valuenow="50"
       style=""

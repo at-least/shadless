@@ -29,12 +29,7 @@ A window overlaid on either the primary window or another dialog window, renderi
   </button>
 </div>
 <template id="d1-portal">
-  <div
-    data-state="open"
-    data-slot="dialog-overlay"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 bg-black/10 duration-100 supports-backdrop-filter:backdrop-blur-xs fixed inset-0 isolate z-50"
-    style="pointer-events: auto"
-  ></div>
+  <div data-state="open" data-slot="dialog-overlay" style="pointer-events: auto"></div>
   <div
     role="dialog"
     id="d1"
@@ -42,22 +37,18 @@ A window overlaid on either the primary window or another dialog window, renderi
     aria-labelledby="d1-title"
     data-state="open"
     data-slot="dialog-content"
-    class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 ring-foreground/10 grid max-w-[calc(100%-2rem)] gap-4 rounded-xl p-4 text-sm ring-1 duration-100 sm:max-w-sm fixed top-1/2 left-1/2 z-50 w-full -translate-x-1/2 -translate-y-1/2 outline-none"
+    class="max-w-[calc(100%-2rem)] sm:max-w-sm"
     tabindex="-1"
     style="pointer-events: auto"
   >
-    <div data-slot="dialog-header" class="gap-2 flex flex-col">
-      <h2
-        id="d1-title"
-        data-slot="dialog-title"
-        class="text-base leading-none font-medium cn-font-heading"
-      >
+    <div data-slot="dialog-header">
+      <h2 id="d1-title" data-slot="dialog-title" class="text-base leading-none cn-font-heading">
         Are you absolutely sure?
       </h2>
       <p
         id="d1-desc"
         data-slot="dialog-description"
-        class="text-muted-foreground *:[a]:hover:text-foreground text-sm *:[a]:underline *:[a]:underline-offset-3"
+        class="text-muted-foreground *:[a]:hover:text-foreground"
       >
         This action cannot be undone.
       </p>
@@ -190,12 +181,7 @@ Replace the default close control with your own button.
   Share
 </button>
 <template id="d1-portal">
-  <div
-    data-state="open"
-    data-slot="dialog-overlay"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 bg-black/10 duration-100 supports-backdrop-filter:backdrop-blur-xs fixed inset-0 isolate z-50"
-    style="pointer-events: auto"
-  ></div>
+  <div data-state="open" data-slot="dialog-overlay" style="pointer-events: auto"></div>
   <div
     role="dialog"
     id="d1"
@@ -203,46 +189,35 @@ Replace the default close control with your own button.
     aria-labelledby="d1-title"
     data-state="open"
     data-slot="dialog-content"
-    class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 ring-foreground/10 grid max-w-[calc(100%-2rem)] gap-4 rounded-xl p-4 text-sm ring-1 duration-100 fixed top-1/2 left-1/2 z-50 w-full -translate-x-1/2 -translate-y-1/2 outline-none sm:max-w-md"
+    class="max-w-[calc(100%-2rem)] sm:max-w-md"
     tabindex="-1"
     style="pointer-events: auto"
   >
-    <div data-slot="dialog-header" class="gap-2 flex flex-col">
-      <h2
-        id="d1-title"
-        data-slot="dialog-title"
-        class="text-base leading-none font-medium cn-font-heading"
-      >
+    <div data-slot="dialog-header">
+      <h2 id="d1-title" data-slot="dialog-title" class="text-base leading-none cn-font-heading">
         Share link
       </h2>
       <p
         id="d1-desc"
         data-slot="dialog-description"
-        class="text-muted-foreground *:[a]:hover:text-foreground text-sm *:[a]:underline *:[a]:underline-offset-3"
+        class="text-muted-foreground *:[a]:hover:text-foreground"
       >
         Anyone who has this link will be able to view this.
       </p>
     </div>
     <div class="flex items-center gap-2">
       <div class="grid flex-1 gap-2">
-        <label
-          data-slot="label"
-          class="gap-2 text-sm leading-none font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 flex items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed sr-only"
-          for="link"
-          >Link</label
+        <label data-slot="label" class="text-sm leading-none sr-only" for="link">Link</label
         ><input
           data-slot="input"
-          class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium focus-visible:ring-3 aria-invalid:ring-3 md:text-sm w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+          class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
           id="link"
           readonly=""
           value="https://ui.shadcn.com/docs/installation"
         />
       </div>
     </div>
-    <div
-      data-slot="dialog-footer"
-      class="bg-muted/50 -mx-4 -mb-4 rounded-b-xl border-t p-4 flex flex-col-reverse gap-2 sm:flex-row sm:justify-start"
-    >
+    <div data-slot="dialog-footer" class="flex-col-reverse sm:flex-row sm:justify-start">
       <button
         data-slot="dialog-close"
         data-variant="default"
@@ -325,12 +300,7 @@ Use `showCloseButton={false}` to hide the close button.
   No Close Button
 </button>
 <template id="d1-portal">
-  <div
-    data-state="open"
-    data-slot="dialog-overlay"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 bg-black/10 duration-100 supports-backdrop-filter:backdrop-blur-xs fixed inset-0 isolate z-50"
-    style="pointer-events: auto"
-  ></div>
+  <div data-state="open" data-slot="dialog-overlay" style="pointer-events: auto"></div>
   <div
     role="dialog"
     id="d1"
@@ -338,22 +308,18 @@ Use `showCloseButton={false}` to hide the close button.
     aria-labelledby="d1-title"
     data-state="open"
     data-slot="dialog-content"
-    class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 ring-foreground/10 grid max-w-[calc(100%-2rem)] gap-4 rounded-xl p-4 text-sm ring-1 duration-100 sm:max-w-sm fixed top-1/2 left-1/2 z-50 w-full -translate-x-1/2 -translate-y-1/2 outline-none"
+    class="max-w-[calc(100%-2rem)] sm:max-w-sm"
     tabindex="-1"
     style="pointer-events: auto"
   >
-    <div data-slot="dialog-header" class="gap-2 flex flex-col">
-      <h2
-        id="d1-title"
-        data-slot="dialog-title"
-        class="text-base leading-none font-medium cn-font-heading"
-      >
+    <div data-slot="dialog-header">
+      <h2 id="d1-title" data-slot="dialog-title" class="text-base leading-none cn-font-heading">
         No Close Button
       </h2>
       <p
         id="d1-desc"
         data-slot="dialog-description"
-        class="text-muted-foreground *:[a]:hover:text-foreground text-sm *:[a]:underline *:[a]:underline-offset-3"
+        class="text-muted-foreground *:[a]:hover:text-foreground"
       >
         This dialog doesn't have a close button in the top-right corner.
       </p>
@@ -407,12 +373,7 @@ Keep actions visible while the content scrolls.
   Sticky Footer
 </button>
 <template id="d1-portal">
-  <div
-    data-state="open"
-    data-slot="dialog-overlay"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 bg-black/10 duration-100 supports-backdrop-filter:backdrop-blur-xs fixed inset-0 isolate z-50"
-    style="pointer-events: auto"
-  ></div>
+  <div data-state="open" data-slot="dialog-overlay" style="pointer-events: auto"></div>
   <div
     role="dialog"
     id="d1"
@@ -420,22 +381,18 @@ Keep actions visible while the content scrolls.
     aria-labelledby="d1-title"
     data-state="open"
     data-slot="dialog-content"
-    class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 ring-foreground/10 grid max-w-[calc(100%-2rem)] gap-4 rounded-xl p-4 text-sm ring-1 duration-100 sm:max-w-sm fixed top-1/2 left-1/2 z-50 w-full -translate-x-1/2 -translate-y-1/2 outline-none"
+    class="max-w-[calc(100%-2rem)] sm:max-w-sm"
     tabindex="-1"
     style="pointer-events: auto"
   >
-    <div data-slot="dialog-header" class="gap-2 flex flex-col">
-      <h2
-        id="d1-title"
-        data-slot="dialog-title"
-        class="text-base leading-none font-medium cn-font-heading"
-      >
+    <div data-slot="dialog-header">
+      <h2 id="d1-title" data-slot="dialog-title" class="text-base leading-none cn-font-heading">
         Sticky Footer
       </h2>
       <p
         id="d1-desc"
         data-slot="dialog-description"
-        class="text-muted-foreground *:[a]:hover:text-foreground text-sm *:[a]:underline *:[a]:underline-offset-3"
+        class="text-muted-foreground *:[a]:hover:text-foreground"
       >
         This dialog has a sticky footer that stays visible while the content scrolls.
       </p>
@@ -512,10 +469,7 @@ Keep actions visible while the content scrolls.
         cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
       </p>
     </div>
-    <div
-      data-slot="dialog-footer"
-      class="bg-muted/50 -mx-4 -mb-4 rounded-b-xl border-t p-4 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"
-    >
+    <div data-slot="dialog-footer" class="flex-col-reverse sm:flex-row">
       <button
         data-slot="dialog-close"
         data-variant="outline"
@@ -598,12 +552,7 @@ Long content can scroll while the header stays in view.
   Scrollable Content
 </button>
 <template id="d1-portal">
-  <div
-    data-state="open"
-    data-slot="dialog-overlay"
-    class="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 bg-black/10 duration-100 supports-backdrop-filter:backdrop-blur-xs fixed inset-0 isolate z-50"
-    style="pointer-events: auto"
-  ></div>
+  <div data-state="open" data-slot="dialog-overlay" style="pointer-events: auto"></div>
   <div
     role="dialog"
     id="d1"
@@ -611,22 +560,18 @@ Long content can scroll while the header stays in view.
     aria-labelledby="d1-title"
     data-state="open"
     data-slot="dialog-content"
-    class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 ring-foreground/10 grid max-w-[calc(100%-2rem)] gap-4 rounded-xl p-4 text-sm ring-1 duration-100 sm:max-w-sm fixed top-1/2 left-1/2 z-50 w-full -translate-x-1/2 -translate-y-1/2 outline-none"
+    class="max-w-[calc(100%-2rem)] sm:max-w-sm"
     tabindex="-1"
     style="pointer-events: auto"
   >
-    <div data-slot="dialog-header" class="gap-2 flex flex-col">
-      <h2
-        id="d1-title"
-        data-slot="dialog-title"
-        class="text-base leading-none font-medium cn-font-heading"
-      >
+    <div data-slot="dialog-header">
+      <h2 id="d1-title" data-slot="dialog-title" class="text-base leading-none cn-font-heading">
         Scrollable Content
       </h2>
       <p
         id="d1-desc"
         data-slot="dialog-description"
-        class="text-muted-foreground *:[a]:hover:text-foreground text-sm *:[a]:underline *:[a]:underline-offset-3"
+        class="text-muted-foreground *:[a]:hover:text-foreground"
       >
         This is a dialog with scrollable content.
       </p>

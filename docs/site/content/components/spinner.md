@@ -20,13 +20,9 @@ An indicator that can be used to show a loading state.
     data-slot="item"
     data-variant="muted"
     data-size="default"
-    class="[a]:hover:bg-muted rounded-lg border text-sm group/item flex w-full flex-wrap items-center transition-colors duration-100 outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 [a]:transition-colors bg-muted/50 border-transparent gap-2.5 px-3 py-2.5"
+    class="[a]:hover:bg-muted group/item focus-visible:border-ring bg-muted/50 border-transparent"
   >
-    <div
-      data-slot="item-media"
-      data-variant="default"
-      class="gap-2 group-has-data-[slot=item-description]/item:translate-y-0.5 group-has-data-[slot=item-description]/item:self-start flex shrink-0 items-center justify-center [&_svg]:pointer-events-none bg-transparent"
-    >
+    <div data-slot="item-media" data-variant="default">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -37,7 +33,7 @@ An indicator that can be used to show a loading state.
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        class="lucide lucide-loader-circle size-4 animate-spin"
+        class="lucide lucide-loader-circle"
         data-slot="spinner"
         role="status"
         aria-label="Loading"
@@ -47,18 +43,15 @@ An indicator that can be used to show a loading state.
     </div>
     <div
       data-slot="item-content"
-      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-1 flex-col [&+[data-slot=item-content]]:flex-none"
+      class="gap-1 group-data-[size=xs]/item:gap-0 flex-1 [&+[data-slot=item-content]]:flex-none"
     >
-      <div
-        data-slot="item-title"
-        class="gap-2 text-sm leading-snug font-medium underline-offset-4 w-fit items-center line-clamp-1"
-      >
+      <div data-slot="item-title" class="text-sm leading-snug line-clamp-1">
         Processing payment...
       </div>
     </div>
     <div
       data-slot="item-content"
-      class="gap-1 group-data-[size=xs]/item:gap-0 flex flex-col [&+[data-slot=item-content]]:flex-none flex-none justify-end"
+      class="gap-1 group-data-[size=xs]/item:gap-0 [&+[data-slot=item-content]]:flex-none flex-none justify-end"
     >
       <span class="text-sm tabular-nums">$100.00</span>
     </div>
@@ -162,7 +155,7 @@ Use the `size-*` utility class to change the size of the spinner.
     stroke-width="2"
     stroke-linecap="round"
     stroke-linejoin="round"
-    class="lucide lucide-loader-circle animate-spin size-3"
+    class="lucide lucide-loader-circle size-3"
     data-slot="spinner"
     role="status"
     aria-label="Loading"
@@ -178,7 +171,7 @@ Use the `size-*` utility class to change the size of the spinner.
     stroke-width="2"
     stroke-linecap="round"
     stroke-linejoin="round"
-    class="lucide lucide-loader-circle animate-spin size-4"
+    class="lucide lucide-loader-circle"
     data-slot="spinner"
     role="status"
     aria-label="Loading"
@@ -194,7 +187,7 @@ Use the `size-*` utility class to change the size of the spinner.
     stroke-width="2"
     stroke-linecap="round"
     stroke-linejoin="round"
-    class="lucide lucide-loader-circle animate-spin size-6"
+    class="lucide lucide-loader-circle size-6"
     data-slot="spinner"
     role="status"
     aria-label="Loading"
@@ -210,7 +203,7 @@ Use the `size-*` utility class to change the size of the spinner.
     stroke-width="2"
     stroke-linecap="round"
     stroke-linejoin="round"
-    class="lucide lucide-loader-circle animate-spin size-8"
+    class="lucide lucide-loader-circle size-8"
     data-slot="spinner"
     role="status"
     aria-label="Loading"
@@ -239,7 +232,7 @@ Add a spinner to a button to indicate a loading state. Place the `data-slot="spi
     data-slot="button"
     data-variant="default"
     data-size="sm"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/80 h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button bg-primary hover:bg-primary/80 h-7 rounded-[min(var(--radius-md),12px)] px-2.5 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
     disabled=""
   >
     <svg
@@ -252,7 +245,7 @@ Add a spinner to a button to indicate a loading state. Place the `data-slot="spi
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      class="lucide lucide-loader-circle size-4 animate-spin"
+      class="lucide lucide-loader-circle size-4"
       data-slot="spinner"
       role="status"
       aria-label="Loading"
@@ -264,7 +257,7 @@ Add a spinner to a button to indicate a loading state. Place the `data-slot="spi
     data-slot="button"
     data-variant="outline"
     data-size="sm"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-7 rounded-[min(var(--radius-md),12px)] px-2.5 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
     disabled=""
   >
     <svg
@@ -277,7 +270,7 @@ Add a spinner to a button to indicate a loading state. Place the `data-slot="spi
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      class="lucide lucide-loader-circle size-4 animate-spin"
+      class="lucide lucide-loader-circle size-4"
       data-slot="spinner"
       role="status"
       aria-label="Loading"
@@ -289,7 +282,7 @@ Add a spinner to a button to indicate a loading state. Place the `data-slot="spi
     data-slot="button"
     data-variant="secondary"
     data-size="sm"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button bg-secondary hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary h-7 rounded-[min(var(--radius-md),12px)] px-2.5 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
     disabled=""
   >
     <svg
@@ -302,7 +295,7 @@ Add a spinner to a button to indicate a loading state. Place the `data-slot="spi
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      class="lucide lucide-loader-circle size-4 animate-spin"
+      class="lucide lucide-loader-circle size-4"
       data-slot="spinner"
       role="status"
       aria-label="Loading"
@@ -332,7 +325,7 @@ Add a spinner to a badge to indicate a loading state. Place the `data-slot="spin
   <span
     data-slot="badge"
     data-variant="default"
-    class="h-5 gap-1 rounded-4xl border border-transparent px-2 py-0.5 text-xs font-medium transition-all has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge inline-flex w-fit shrink-0 items-center justify-center overflow-hidden whitespace-nowrap focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&>svg]:pointer-events-none bg-primary text-primary-foreground [a]:hover:bg-primary/80"
+    class="h-5 border-transparent px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 bg-primary [a]:hover:bg-primary/80"
     ><svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -343,7 +336,7 @@ Add a spinner to a badge to indicate a loading state. Place the `data-slot="spin
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      class="lucide lucide-loader-circle size-4 animate-spin"
+      class="lucide lucide-loader-circle size-4"
       data-slot="spinner"
       role="status"
       aria-label="Loading"
@@ -354,7 +347,7 @@ Add a spinner to a badge to indicate a loading state. Place the `data-slot="spin
   ><span
     data-slot="badge"
     data-variant="secondary"
-    class="h-5 gap-1 rounded-4xl border border-transparent px-2 py-0.5 text-xs font-medium transition-all has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge inline-flex w-fit shrink-0 items-center justify-center overflow-hidden whitespace-nowrap focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&>svg]:pointer-events-none bg-secondary text-secondary-foreground [a]:hover:bg-secondary/80"
+    class="h-5 border-transparent px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 bg-secondary [a]:hover:bg-secondary/80"
     ><svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -365,7 +358,7 @@ Add a spinner to a badge to indicate a loading state. Place the `data-slot="spin
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      class="lucide lucide-loader-circle size-4 animate-spin"
+      class="lucide lucide-loader-circle size-4"
       data-slot="spinner"
       role="status"
       aria-label="Loading"
@@ -376,7 +369,7 @@ Add a spinner to a badge to indicate a loading state. Place the `data-slot="spin
   ><span
     data-slot="badge"
     data-variant="outline"
-    class="h-5 gap-1 rounded-4xl border px-2 py-0.5 text-xs font-medium transition-all has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge inline-flex w-fit shrink-0 items-center justify-center overflow-hidden whitespace-nowrap focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&>svg]:pointer-events-none border-border text-foreground [a]:hover:bg-muted [a]:hover:text-muted-foreground"
+    class="h-5 px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&>svg]:size-3! group/badge w-fit focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 border-border text-foreground [a]:hover:text-muted-foreground"
     ><svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -387,7 +380,7 @@ Add a spinner to a badge to indicate a loading state. Place the `data-slot="spin
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      class="lucide lucide-loader-circle size-4 animate-spin"
+      class="lucide lucide-loader-circle size-4"
       data-slot="spinner"
       role="status"
       aria-label="Loading"
@@ -415,11 +408,11 @@ Add a spinner to a badge to indicate a loading state. Place the `data-slot="spin
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 rounded-lg border transition-colors in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-disabled:opacity-50 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 relative flex w-full min-w-0 items-center outline-none has-[>textarea]:h-auto"
+    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto"
   >
     <input
       data-slot="input-group-control"
-      class="border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium md:text-sm w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 rounded-none border-0 bg-transparent shadow-none ring-0 focus-visible:ring-0 disabled:bg-transparent aria-invalid:ring-0 dark:bg-transparent dark:disabled:bg-transparent flex-1"
+      class="border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium md:text-sm w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
       placeholder="Send a message..."
       disabled=""
     />
@@ -427,7 +420,7 @@ Add a spinner to a badge to indicate a loading state. Place the `data-slot="spin
       role="group"
       data-slot="input-group-addon"
       data-align="inline-end"
-      class="text-muted-foreground h-auto gap-2 py-1.5 text-sm font-medium group-data-[disabled=true]/input-group:opacity-50 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 flex cursor-text items-center justify-center select-none pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem] order-last"
+      class="h-auto py-1.5 [&>svg:not([class*='size-'])]:size-4 pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem]"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -439,7 +432,7 @@ Add a spinner to a badge to indicate a loading state. Place the `data-slot="spin
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        class="lucide lucide-loader-circle size-4 animate-spin"
+        class="lucide lucide-loader-circle"
         data-slot="spinner"
         role="status"
         aria-label="Loading"
@@ -451,11 +444,11 @@ Add a spinner to a badge to indicate a loading state. Place the `data-slot="spin
   <div
     data-slot="input-group"
     role="group"
-    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 rounded-lg border transition-colors in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-disabled:opacity-50 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 relative flex w-full min-w-0 items-center outline-none has-[>textarea]:h-auto"
+    class="group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>textarea]:h-auto"
   >
     <textarea
       data-slot="input-group-control"
-      class="border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 px-2.5 text-base transition-colors md:text-sm flex field-sizing-content min-h-16 w-full outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 rounded-none border-0 bg-transparent py-2 shadow-none ring-0 focus-visible:ring-0 disabled:bg-transparent aria-invalid:ring-0 dark:bg-transparent dark:disabled:bg-transparent flex-1 resize-none"
+      class="border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 px-2.5 text-base transition-colors md:text-sm flex field-sizing-content min-h-16 w-full outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 py-2 resize-none"
       placeholder="Send a message..."
       disabled=""
     ></textarea>
@@ -463,7 +456,7 @@ Add a spinner to a badge to indicate a loading state. Place the `data-slot="spin
       role="group"
       data-slot="input-group-addon"
       data-align="block-end"
-      class="text-muted-foreground h-auto gap-2 py-1.5 text-sm font-medium group-data-[disabled=true]/input-group:opacity-50 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 flex cursor-text items-center select-none px-2.5 pb-2 group-has-[>input]/input-group:pb-2 [.border-t]:pt-2 order-last w-full justify-start"
+      class="h-auto py-1.5 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4 px-2.5 pb-2 group-has-[>input]/input-group:pb-2 [.border-t]:pt-2 w-full"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -475,7 +468,7 @@ Add a spinner to a badge to indicate a loading state. Place the `data-slot="spin
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        class="lucide lucide-loader-circle size-4 animate-spin"
+        class="lucide lucide-loader-circle"
         data-slot="spinner"
         role="status"
         aria-label="Loading"
@@ -522,15 +515,12 @@ Add a spinner to a badge to indicate a loading state. Place the `data-slot="spin
 
 {% <codegroup> %}
 ```text,name=spinner-empty.html
-<div
-  data-slot="empty"
-  class="gap-4 rounded-xl border-dashed p-6 flex min-w-0 flex-1 flex-col items-center justify-center text-center text-balance w-full"
->
-  <div data-slot="empty-header" class="gap-2 flex max-w-sm flex-col items-center">
+<div data-slot="empty">
+  <div data-slot="empty-header">
     <div
       data-slot="empty-icon"
       data-variant="icon"
-      class="mb-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 bg-muted text-foreground flex size-8 shrink-0 items-center justify-center rounded-lg [&_svg:not([class*='size-'])]:size-4"
+      class="size-8 [&_svg:not([class*='size-'])]:size-4"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -542,7 +532,7 @@ Add a spinner to a badge to indicate a loading state. Place the `data-slot="spin
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        class="lucide lucide-loader-circle size-4 animate-spin"
+        class="lucide lucide-loader-circle"
         data-slot="spinner"
         role="status"
         aria-label="Loading"
@@ -550,25 +540,17 @@ Add a spinner to a badge to indicate a loading state. Place the `data-slot="spin
         <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
       </svg>
     </div>
-    <div data-slot="empty-title" class="text-sm font-medium tracking-tight cn-font-heading">
-      Processing your request
-    </div>
-    <div
-      data-slot="empty-description"
-      class="text-sm/relaxed text-muted-foreground [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
-    >
+    <div data-slot="empty-title" class="cn-font-heading">Processing your request</div>
+    <div data-slot="empty-description" class="text-muted-foreground [&>a:hover]:text-primary">
       Please wait while we process your request. Do not refresh the page.
     </div>
   </div>
-  <div
-    data-slot="empty-content"
-    class="gap-2.5 text-sm flex w-full max-w-sm min-w-0 flex-col items-center text-balance"
-  >
+  <div data-slot="empty-content">
     <button
       data-slot="button"
       data-variant="outline"
       data-size="sm"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
+      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted h-7 rounded-[min(var(--radius-md),12px)] px-2.5 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5"
     >
       Cancel
     </button>

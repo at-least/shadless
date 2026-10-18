@@ -60,6 +60,7 @@ docs-catalog           STALE
 docs-upstream-mirror   STALE
 docs-build             STALE
 docs-consistency       STALE
+docs-code-parity       STALE
 docs-fidelity          STALE
 docs-site              STALE
 docs-smoke             STALE

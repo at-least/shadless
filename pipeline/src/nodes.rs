@@ -528,6 +528,33 @@ pub fn all_go() -> Vec<Node> {
             ],
         ),
         node(
+            "docs-code-parity",
+            "gate",
+            "full",
+            &["docs-build", "demo-css", "demo", "product-css", "build-js"],
+            &[&["./build/pipeline", "docs-code-parity"]],
+            Some(&[
+                "pipeline/docs_code_parity.go",
+                "pipeline/docs_code_parity_collect.js",
+                "pipeline/browser_shell.go",
+                "tools/browser-shell.mjs",
+                "docs/site/content/**",
+                "docs/demos/**",
+                "dist/components/**",
+                "dist/out.css",
+                "dist/css/**",
+                "dist/shadless-core.css",
+                "package.json",
+                "node_modules/@tailwindcss/cli/dist/index.mjs",
+            ]),
+            None,
+            "the code tab is the copy source: under every non-RTL preview the committed tab must render element-for-element identically to the raw demo markup it was projected from — zero diffs, no baseline — under the precompiled out.css AND under a fresh consumer compile (@import shadless + every component css, tailwind's content scan restricted to each side's own text), in both themes and directions; the consumer environment exists because precompiled out.css cannot see a utility dropped from a dist/css @apply — only a compile from the @apply sources goes red on it",
+            &[
+                "docs-code-parity-drop-kept-token",
+                "docs-code-parity-drop-slot-utility",
+            ],
+        ),
+        node(
             "docs-fidelity", "gate", "fast",
             &["docs-build", "build-js"],
             &[&["./build/pipeline", "docs-fidelity"]],
@@ -667,8 +694,9 @@ const TOOLS_FILE_DEPS: &[(&str, &[&str])] = &[
     ("css_direction_update", &["gates"]),
     ("demo_parity", &["oracle"]),
     ("demo_smoke", &["emit", "oracle"]),
-    ("docs_build", &["emit"]),
+    ("docs_build", &["emit", "twmerge"]),
     ("docs_catalog", &[]),
+    ("docs_code_parity", &["emit", "oracle"]),
     ("docs_consistency", &["emit"]),
     ("docs_fidelity", &["emit"]),
     ("docs_smoke", &["emit", "oracle"]),
@@ -695,6 +723,7 @@ const TOOLS_FILE_INTRA: &[(&str, &[&str])] = &[
     ("demo_parity", &["parity_baseline"]),
     ("docs_build", &["docs_transforms"]),
     ("docs_catalog", &["docs_transforms"]),
+    ("docs_code_parity", &["parity_baseline"]),
     ("docs_consistency", &["docs_transforms"]),
     ("docs_fidelity", &["docs_transforms"]),
     ("overlay", &["docs_transforms"]),
@@ -743,6 +772,7 @@ const NODE_ENTRIES: &[(&str, &[&str])] = &[
     ("docs-catalog", &["tools:docs_catalog"]),
     ("docs-upstream-mirror", &["tools:docs_upstream_mirror"]),
     ("docs-build", &["tools:docs_build"]),
+    ("docs-code-parity", &["tools:docs_code_parity"]),
     ("docs-consistency", &["tools:docs_consistency"]),
     ("docs-fidelity", &["tools:docs_fidelity"]),
     ("docs-smoke", &["tools:docs_smoke"]),
@@ -908,7 +938,8 @@ pub const VERBS: &[&str] = &[
     "coverage", "ledger", "audit-boundary", "oracle-css", "docs-catalog",
     "docs-upstream-mirror", "ir-diff", "css-direction", "upstream",
     "resolve-skins", "rtl-dict", "docs-consistency", "docs-build",
-    "docs-fidelity", "example-fixture", "example-golden", "contract",
+    "docs-fidelity", "docs-code-parity", "example-fixture", "example-golden",
+    "contract",
     "contracts", "upstream-snapshot", "demo-smoke", "docs-smoke", "overlay",
     "interactivity-sweep", "demo-parity", "style-parity", "path-parity",
 ];
@@ -1096,9 +1127,9 @@ mod self_host_tests {
     #[test]
     fn all_go_is_the_go_verbatim_shape() {
         let g = all_go();
-        assert_eq!(g.len(), 41, "nodes.go declares 41 nodes");
+        assert_eq!(g.len(), 42, "the graph declares 42 nodes");
         let gates = g.iter().filter(|n| n.kind == "gate").count();
-        assert_eq!(gates, 24, "nodes.go declares 24 gates");
+        assert_eq!(gates, 25, "the graph declares 25 gates");
         // Spot-checks against the Go source, verbatim (nodes.go:122-148, 518-524):
         let pin = g.iter().find(|n| n.id == "pin").unwrap();
         assert_eq!(
@@ -1137,8 +1168,8 @@ mod self_host_tests {
     fn self_hosted_table_spawns_no_go() {
         let go = all_go();
         let g: Vec<Node> = go.iter().cloned().map(self_host).collect();
-        assert_eq!(g.len(), 41);
-        assert_eq!(g.iter().filter(|n| n.kind == "gate").count(), 24);
+        assert_eq!(g.len(), 42);
+        assert_eq!(g.iter().filter(|n| n.kind == "gate").count(), 25);
         for n in &g {
             for (i, cmd) in n.run.iter().enumerate() {
                 assert!(

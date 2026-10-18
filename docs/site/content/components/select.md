@@ -26,7 +26,7 @@ Displays a list of options for the user to pick from—triggered by a button.
     data-state="closed"
     data-slot="select-trigger"
     data-size="default"
-    class="border-input data-placeholder:text-muted-foreground dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 gap-1.5 rounded-lg border bg-transparent py-2 pr-2 pl-2.5 text-sm transition-colors select-none focus-visible:ring-3 aria-invalid:ring-3 data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:gap-1.5 [&_svg:not([class*='size-'])]:size-4 flex w-fit items-center justify-between whitespace-nowrap outline-none disabled:cursor-not-allowed disabled:opacity-50 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center [&_svg]:pointer-events-none [&_svg]:shrink-0"
+    class="border-input dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg bg-transparent data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] [&_svg:not([class*='size-'])]:size-4 flex w-fit *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex"
     id="s1-trigger"
   >
     <span data-slot="select-value" style="pointer-events: none">Apple</span
@@ -89,7 +89,7 @@ Displays a list of options for the user to pick from—triggered by a button.
         data-state="checked"
         tabindex="-1"
         data-slot="select-item"
-        class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
         data-radix-collection-item=""
         data-highlighted=""
       >
@@ -117,7 +117,7 @@ Displays a list of options for the user to pick from—triggered by a button.
         data-state="unchecked"
         tabindex="-1"
         data-slot="select-item"
-        class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
         data-radix-collection-item=""
       >
         <span
@@ -321,27 +321,24 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
 ```text,name=select-align-item.html
 <div
   data-slot="field-group"
-  class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group @container/field-group flex flex-col w-full max-w-xs"
+  class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group max-w-xs"
 >
   <div
     role="group"
     data-slot="field"
     data-orientation="horizontal"
-    class="data-[invalid=true]:text-destructive gap-2 group/field flex w-full flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+    class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
   >
-    <div
-      data-slot="field-content"
-      class="gap-0.5 group/field-content flex flex-1 flex-col leading-snug"
-    >
+    <div data-slot="field-content" class="gap-0.5 group/field-content">
       <label
         data-slot="field-label"
-        class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+        class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
         for="align-item"
         >Align Item</label
       >
       <p
         data-slot="field-description"
-        class="text-muted-foreground text-left text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal font-normal group-has-data-horizontal/field:text-balance last:mt-0 nth-last-2:-mt-1 [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
+        class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
       >
         Toggle to align the item with the trigger.
       </p>
@@ -354,13 +351,13 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
       value="on"
       data-slot="switch"
       data-size="default"
-      class="data-checked:bg-primary data-unchecked:bg-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 dark:data-unchecked:bg-input/80 shrink-0 rounded-full border border-transparent focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:border-transparent data-[size=default]:h-[18.4px] data-[size=default]:w-[32px] data-[size=sm]:h-[14px] data-[size=sm]:w-[24px] peer group/switch relative inline-flex items-center transition-all outline-none after:absolute after:-inset-x-3 after:-inset-y-2 data-disabled:cursor-not-allowed data-disabled:opacity-50"
+      class="data-checked:bg-primary data-unchecked:bg-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 dark:data-unchecked:bg-input/80 border-transparent focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:border-transparent data-[size=default]:h-[18.4px] data-[size=default]:w-[32px] data-[size=sm]:h-[14px] data-[size=sm]:w-[24px] peer group/switch relative after:absolute"
       id="align-item"
     >
       <span
         data-state="checked"
         data-slot="switch-thumb"
-        class="bg-background dark:data-unchecked:bg-foreground dark:data-checked:bg-primary-foreground rounded-full group-data-[size=default]/switch:size-4 group-data-[size=sm]/switch:size-3 group-data-[size=default]/switch:data-checked:translate-x-[calc(100%-2px)] group-data-[size=sm]/switch:data-checked:translate-x-[calc(100%-2px)] group-data-[size=default]/switch:data-unchecked:translate-x-0 group-data-[size=sm]/switch:data-unchecked:translate-x-0 pointer-events-none block ring-0 transition-transform"
+        class="bg-background dark:data-unchecked:bg-foreground dark:data-checked:bg-primary-foreground group-data-[size=default]/switch:size-4 group-data-[size=sm]/switch:size-3 group-data-[size=default]/switch:data-checked:translate-x-[calc(100%-2px)] group-data-[size=sm]/switch:data-checked:translate-x-[calc(100%-2px)] group-data-[size=default]/switch:data-unchecked:translate-x-0 group-data-[size=sm]/switch:data-unchecked:translate-x-0"
       ></span>
     </button>
   </div>
@@ -368,7 +365,7 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
     role="group"
     data-slot="field"
     data-orientation="vertical"
-    class="data-[invalid=true]:text-destructive gap-2 group/field flex w-full flex-col *:w-full [&>.sr-only]:w-auto"
+    class="gap-2 group/field w-full *:w-full [&>.sr-only]:w-auto"
   >
     <button
       type="button"
@@ -380,7 +377,7 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
       data-state="closed"
       data-slot="select-trigger"
       data-size="default"
-      class="border-input data-placeholder:text-muted-foreground dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 gap-1.5 rounded-lg border bg-transparent py-2 pr-2 pl-2.5 text-sm transition-colors select-none focus-visible:ring-3 aria-invalid:ring-3 data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:gap-1.5 [&_svg:not([class*='size-'])]:size-4 flex w-fit items-center justify-between whitespace-nowrap outline-none disabled:cursor-not-allowed disabled:opacity-50 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="border-input dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 gap-1.5 rounded-lg bg-transparent data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:gap-1.5 [&_svg:not([class*='size-'])]:size-4 flex w-fit *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex"
       id="s0-trigger"
     >
       <span data-slot="select-value" style="pointer-events: none">Banana</span
@@ -437,12 +434,7 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
       class="data-[position=popper]:h-(--radix-select-trigger-height) data-[position=popper]:w-full data-[position=popper]:min-w-(--radix-select-trigger-width)"
       style="position: relative; flex: 1 1 0%; overflow: hidden auto"
     >
-      <div
-        role="group"
-        aria-labelledby="s0-trigger"
-        data-slot="select-group"
-        class="scroll-my-1 p-1"
-      >
+      <div role="group" aria-labelledby="s0-trigger" data-slot="select-group">
         <div
           role="option"
           aria-labelledby="s0-e0"
@@ -450,7 +442,7 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -465,7 +457,7 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
           data-state="checked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
           data-highlighted=""
         >
@@ -493,7 +485,7 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -508,7 +500,7 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -523,7 +515,7 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -704,7 +696,7 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
   data-placeholder=""
   data-slot="select-trigger"
   data-size="default"
-  class="border-input data-placeholder:text-muted-foreground dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 gap-1.5 rounded-lg border bg-transparent py-2 pr-2 pl-2.5 text-sm transition-colors select-none focus-visible:ring-3 aria-invalid:ring-3 data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:gap-1.5 [&_svg:not([class*='size-'])]:size-4 flex items-center justify-between whitespace-nowrap outline-none disabled:cursor-not-allowed disabled:opacity-50 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center [&_svg]:pointer-events-none [&_svg]:shrink-0 w-full max-w-48"
+  class="border-input dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg bg-transparent data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] [&_svg:not([class*='size-'])]:size-4 flex *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex w-full max-w-48"
   id="s0-trigger"
 >
   <span data-slot="select-value" style="pointer-events: none">Select a fruit</span
@@ -742,11 +734,7 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
       pointer-events: auto;
     "
   >
-    <div
-      data-slot="select-scroll-up-button"
-      class="bg-popover z-10 flex cursor-default items-center justify-center py-1 [&_svg:not([class*='size-'])]:size-4"
-      style="flex-shrink: 0"
-    >
+    <div data-slot="select-scroll-up-button" style="flex-shrink: 0">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -779,10 +767,8 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
       class="data-[position=popper]:h-(--radix-select-trigger-height) data-[position=popper]:w-full data-[position=popper]:min-w-(--radix-select-trigger-width)"
       style="position: relative; flex: 1 1 0%; overflow: hidden auto"
     >
-      <div role="group" aria-labelledby="s0-e0" data-slot="select-group" class="scroll-my-1 p-1">
-        <div id="s0-e0" data-slot="select-label" class="text-muted-foreground px-1.5 py-1 text-xs">
-          Fruits
-        </div>
+      <div role="group" aria-labelledby="s0-e0" data-slot="select-group">
+        <div id="s0-e0" data-slot="select-label">Fruits</div>
         <div
           role="option"
           aria-labelledby="s0-e1"
@@ -790,7 +776,7 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
           data-highlighted=""
         >
@@ -806,7 +792,7 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -821,7 +807,7 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -830,11 +816,9 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
           ><span id="s0-e3">Blueberry</span>
         </div>
       </div>
-      <div data-slot="select-separator" class="bg-border -mx-1 my-1 h-px pointer-events-none"></div>
-      <div role="group" aria-labelledby="s0-e4" data-slot="select-group" class="scroll-my-1 p-1">
-        <div id="s0-e4" data-slot="select-label" class="text-muted-foreground px-1.5 py-1 text-xs">
-          Vegetables
-        </div>
+      <div data-slot="select-separator"></div>
+      <div role="group" aria-labelledby="s0-e4" data-slot="select-group">
+        <div id="s0-e4" data-slot="select-label">Vegetables</div>
         <div
           role="option"
           aria-labelledby="s0-e5"
@@ -842,7 +826,7 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -857,7 +841,7 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -872,7 +856,7 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1024,7 +1008,7 @@ A select with many items that scrolls.
   data-placeholder=""
   data-slot="select-trigger"
   data-size="default"
-  class="border-input data-placeholder:text-muted-foreground dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 gap-1.5 rounded-lg border bg-transparent py-2 pr-2 pl-2.5 text-sm transition-colors select-none focus-visible:ring-3 aria-invalid:ring-3 data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:gap-1.5 [&_svg:not([class*='size-'])]:size-4 flex items-center justify-between whitespace-nowrap outline-none disabled:cursor-not-allowed disabled:opacity-50 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center [&_svg]:pointer-events-none [&_svg]:shrink-0 w-full max-w-64"
+  class="border-input dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg bg-transparent data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] [&_svg:not([class*='size-'])]:size-4 flex *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex w-full max-w-64"
   id="s0-trigger"
 >
   <span data-slot="select-value" style="pointer-events: none">Select a timezone</span
@@ -1062,11 +1046,7 @@ A select with many items that scrolls.
       pointer-events: auto;
     "
   >
-    <div
-      data-slot="select-scroll-up-button"
-      class="bg-popover z-10 flex cursor-default items-center justify-center py-1 [&_svg:not([class*='size-'])]:size-4"
-      style="flex-shrink: 0"
-    >
+    <div data-slot="select-scroll-up-button" style="flex-shrink: 0">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -1099,10 +1079,8 @@ A select with many items that scrolls.
       class="data-[position=popper]:h-(--radix-select-trigger-height) data-[position=popper]:w-full data-[position=popper]:min-w-(--radix-select-trigger-width)"
       style="position: relative; flex: 1 1 0%; overflow: hidden auto"
     >
-      <div role="group" aria-labelledby="s0-e0" data-slot="select-group" class="scroll-my-1 p-1">
-        <div id="s0-e0" data-slot="select-label" class="text-muted-foreground px-1.5 py-1 text-xs">
-          North America
-        </div>
+      <div role="group" aria-labelledby="s0-e0" data-slot="select-group">
+        <div id="s0-e0" data-slot="select-label">North America</div>
         <div
           role="option"
           aria-labelledby="s0-e1"
@@ -1110,7 +1088,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
           data-highlighted=""
         >
@@ -1126,7 +1104,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1141,7 +1119,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1156,7 +1134,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1171,7 +1149,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1186,7 +1164,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1195,10 +1173,8 @@ A select with many items that scrolls.
           ><span id="s0-e6">Hawaii Standard Time</span>
         </div>
       </div>
-      <div role="group" aria-labelledby="s0-e7" data-slot="select-group" class="scroll-my-1 p-1">
-        <div id="s0-e7" data-slot="select-label" class="text-muted-foreground px-1.5 py-1 text-xs">
-          Europe &amp; Africa
-        </div>
+      <div role="group" aria-labelledby="s0-e7" data-slot="select-group">
+        <div id="s0-e7" data-slot="select-label">Europe &amp; Africa</div>
         <div
           role="option"
           aria-labelledby="s0-e8"
@@ -1206,7 +1182,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1221,7 +1197,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1236,7 +1212,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1251,7 +1227,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1266,7 +1242,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1281,7 +1257,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1290,10 +1266,8 @@ A select with many items that scrolls.
           ><span id="s0-e13">East Africa Time</span>
         </div>
       </div>
-      <div role="group" aria-labelledby="s0-e14" data-slot="select-group" class="scroll-my-1 p-1">
-        <div id="s0-e14" data-slot="select-label" class="text-muted-foreground px-1.5 py-1 text-xs">
-          Asia
-        </div>
+      <div role="group" aria-labelledby="s0-e14" data-slot="select-group">
+        <div id="s0-e14" data-slot="select-label">Asia</div>
         <div
           role="option"
           aria-labelledby="s0-e15"
@@ -1301,7 +1275,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1316,7 +1290,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1331,7 +1305,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1346,7 +1320,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1361,7 +1335,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1376,7 +1350,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1385,10 +1359,8 @@ A select with many items that scrolls.
           ><span id="s0-e20">Indonesia Central Standard Time</span>
         </div>
       </div>
-      <div role="group" aria-labelledby="s0-e21" data-slot="select-group" class="scroll-my-1 p-1">
-        <div id="s0-e21" data-slot="select-label" class="text-muted-foreground px-1.5 py-1 text-xs">
-          Australia &amp; Pacific
-        </div>
+      <div role="group" aria-labelledby="s0-e21" data-slot="select-group">
+        <div id="s0-e21" data-slot="select-label">Australia &amp; Pacific</div>
         <div
           role="option"
           aria-labelledby="s0-e22"
@@ -1396,7 +1368,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1411,7 +1383,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1426,7 +1398,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1441,7 +1413,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1456,7 +1428,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1465,10 +1437,8 @@ A select with many items that scrolls.
           ><span id="s0-e26">Fiji Time</span>
         </div>
       </div>
-      <div role="group" aria-labelledby="s0-e27" data-slot="select-group" class="scroll-my-1 p-1">
-        <div id="s0-e27" data-slot="select-label" class="text-muted-foreground px-1.5 py-1 text-xs">
-          South America
-        </div>
+      <div role="group" aria-labelledby="s0-e27" data-slot="select-group">
+        <div id="s0-e27" data-slot="select-label">South America</div>
         <div
           role="option"
           aria-labelledby="s0-e28"
@@ -1476,7 +1446,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1491,7 +1461,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1506,7 +1476,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1521,7 +1491,7 @@ A select with many items that scrolls.
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1672,7 +1642,7 @@ A select with many items that scrolls.
   data-placeholder=""
   data-slot="select-trigger"
   data-size="default"
-  class="border-input data-placeholder:text-muted-foreground dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 gap-1.5 rounded-lg border bg-transparent py-2 pr-2 pl-2.5 text-sm transition-colors select-none focus-visible:ring-3 aria-invalid:ring-3 data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:gap-1.5 [&_svg:not([class*='size-'])]:size-4 flex items-center justify-between whitespace-nowrap outline-none disabled:cursor-not-allowed disabled:opacity-50 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center [&_svg]:pointer-events-none [&_svg]:shrink-0 w-full max-w-48"
+  class="border-input dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg bg-transparent data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] [&_svg:not([class*='size-'])]:size-4 flex *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex w-full max-w-48"
   id="s0-trigger"
 >
   <span data-slot="select-value" style="pointer-events: none">Select a fruit</span
@@ -1833,12 +1803,12 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
   role="group"
   data-slot="field"
   data-orientation="vertical"
-  class="data-[invalid=true]:text-destructive gap-2 group/field flex flex-col *:w-full [&>.sr-only]:w-auto w-full max-w-48"
+  class="group/field *:w-full [&>.sr-only]:w-auto w-full max-w-48"
   data-invalid="true"
 >
   <label
     data-slot="field-label"
-    class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+    class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
     >Fruit</label
   ><button
     type="button"
@@ -1851,7 +1821,7 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
     data-placeholder=""
     data-slot="select-trigger"
     data-size="default"
-    class="border-input data-placeholder:text-muted-foreground dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 gap-1.5 rounded-lg border bg-transparent py-2 pr-2 pl-2.5 text-sm transition-colors select-none focus-visible:ring-3 aria-invalid:ring-3 data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:gap-1.5 [&_svg:not([class*='size-'])]:size-4 flex w-fit items-center justify-between whitespace-nowrap outline-none disabled:cursor-not-allowed disabled:opacity-50 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center [&_svg]:pointer-events-none [&_svg]:shrink-0"
+    class="border-input dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg bg-transparent data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] [&_svg:not([class*='size-'])]:size-4 flex w-fit *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex"
     aria-invalid="true"
     id="s0-trigger"
   >
@@ -1871,9 +1841,7 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
       <path d="m6 9 6 6 6-6"></path>
     </svg>
   </button>
-  <div role="alert" data-slot="field-error" class="text-destructive text-sm font-normal">
-    Please select a fruit.
-  </div>
+  <div role="alert" data-slot="field-error">Please select a fruit.</div>
 </div>
 <template id="s0-tpl">
   <div
@@ -1911,12 +1879,7 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
       class="data-[position=popper]:h-(--radix-select-trigger-height) data-[position=popper]:w-full data-[position=popper]:min-w-(--radix-select-trigger-width)"
       style="position: relative; flex: 1 1 0%; overflow: hidden auto"
     >
-      <div
-        role="group"
-        aria-labelledby="s0-trigger"
-        data-slot="select-group"
-        class="scroll-my-1 p-1"
-      >
+      <div role="group" aria-labelledby="s0-trigger" data-slot="select-group">
         <div
           role="option"
           aria-labelledby="s0-e0"
@@ -1924,7 +1887,7 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
           data-highlighted=""
         >
@@ -1940,7 +1903,7 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span
@@ -1955,7 +1918,7 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
           data-state="unchecked"
           tabindex="-1"
           data-slot="select-item"
-          class="focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2 relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+          class="gap-1.5 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2 w-full"
           data-radix-collection-item=""
         >
           <span

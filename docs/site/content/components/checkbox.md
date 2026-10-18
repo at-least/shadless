@@ -17,13 +17,13 @@ A control that allows the user to toggle between checked and not checked.
 ```text,name=checkbox-demo.html
 <div
   data-slot="field-group"
-  class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group @container/field-group flex w-full flex-col max-w-sm"
+  class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group max-w-sm"
 >
   <div
     role="group"
     data-slot="field"
     data-orientation="horizontal"
-    class="data-[invalid=true]:text-destructive gap-2 group/field flex w-full flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+    class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
   >
     <button
       type="button"
@@ -32,13 +32,10 @@ A control that allows the user to toggle between checked and not checked.
       data-state="unchecked"
       value="on"
       data-slot="checkbox"
-      class="border-input dark:bg-input/30 data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 flex size-4 items-center justify-center rounded-[4px] border transition-colors group-has-disabled/field:opacity-50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative shrink-0 outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50"
+      class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
       id="terms-checkbox"
     ></button
-    ><label
-      data-slot="label"
-      class="gap-2 text-sm leading-none font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 flex items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed"
-      for="terms-checkbox"
+    ><label data-slot="label" class="gap-2 text-sm leading-none" for="terms-checkbox"
       >Accept terms and conditions</label
     >
   </div>
@@ -46,7 +43,7 @@ A control that allows the user to toggle between checked and not checked.
     role="group"
     data-slot="field"
     data-orientation="horizontal"
-    class="data-[invalid=true]:text-destructive gap-2 group/field flex w-full flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+    class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
   >
     <button
       type="button"
@@ -55,14 +52,10 @@ A control that allows the user to toggle between checked and not checked.
       data-state="checked"
       value="on"
       data-slot="checkbox"
-      class="border-input dark:bg-input/30 data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 flex size-4 items-center justify-center rounded-[4px] border transition-colors group-has-disabled/field:opacity-50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative shrink-0 outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50"
+      class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
       id="terms-checkbox-2"
     >
-      <span
-        data-state="checked"
-        data-slot="checkbox-indicator"
-        class="[&>svg]:size-3.5 grid place-content-center text-current transition-none"
-        style="pointer-events: none"
+      <span data-state="checked" data-slot="checkbox-indicator" style="pointer-events: none"
         ><svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -78,19 +71,16 @@ A control that allows the user to toggle between checked and not checked.
           <path d="M20 6 9 17l-5-5"></path></svg
       ></span>
     </button>
-    <div
-      data-slot="field-content"
-      class="gap-0.5 group/field-content flex flex-1 flex-col leading-snug"
-    >
+    <div data-slot="field-content" class="gap-0.5 group/field-content">
       <label
         data-slot="field-label"
-        class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+        class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
         for="terms-checkbox-2"
         >Accept terms and conditions</label
       >
       <p
         data-slot="field-description"
-        class="text-muted-foreground text-left text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal font-normal group-has-data-horizontal/field:text-balance last:mt-0 nth-last-2:-mt-1 [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
+        class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
       >
         By clicking this checkbox, you agree to the terms.
       </p>
@@ -100,7 +90,7 @@ A control that allows the user to toggle between checked and not checked.
     role="group"
     data-slot="field"
     data-orientation="horizontal"
-    class="data-[invalid=true]:text-destructive gap-2 group/field flex w-full flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+    class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
     data-disabled="true"
   >
     <button
@@ -112,24 +102,24 @@ A control that allows the user to toggle between checked and not checked.
       disabled=""
       value="on"
       data-slot="checkbox"
-      class="border-input dark:bg-input/30 data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 flex size-4 items-center justify-center rounded-[4px] border transition-colors group-has-disabled/field:opacity-50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative shrink-0 outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50"
+      class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
       id="toggle-checkbox"
     ></button
     ><label
       data-slot="field-label"
-      class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+      class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
       for="toggle-checkbox"
       >Enable notifications</label
     >
   </div>
   <label
     data-slot="field-label"
-    class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+    class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
     ><div
       role="group"
       data-slot="field"
       data-orientation="horizontal"
-      class="data-[invalid=true]:text-destructive gap-2 group/field flex w-full flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+      class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
     >
       <button
         type="button"
@@ -138,22 +128,16 @@ A control that allows the user to toggle between checked and not checked.
         data-state="unchecked"
         value="on"
         data-slot="checkbox"
-        class="border-input dark:bg-input/30 data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 flex size-4 items-center justify-center rounded-[4px] border transition-colors group-has-disabled/field:opacity-50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative shrink-0 outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50"
+        class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
         id="toggle-checkbox-2"
       ></button>
-      <div
-        data-slot="field-content"
-        class="gap-0.5 group/field-content flex flex-1 flex-col leading-snug"
-      >
-        <div
-          data-slot="field-label"
-          class="gap-2 text-sm font-medium group-data-[disabled=true]/field:opacity-50 flex w-fit items-center"
-        >
+      <div data-slot="field-content" class="gap-0.5 group/field-content">
+        <div data-slot="field-label" class="gap-2 text-sm font-medium items-center">
           Enable notifications
         </div>
         <p
           data-slot="field-description"
-          class="text-muted-foreground text-left text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal font-normal group-has-data-horizontal/field:text-balance last:mt-0 nth-last-2:-mt-1 [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
+          class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
         >
           You can enable or disable notifications at any time.
         </p>
@@ -264,13 +248,13 @@ show the invalid styles.
 ```text,name=checkbox-invalid.html
 <div
   data-slot="field-group"
-  class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group @container/field-group flex flex-col mx-auto w-56"
+  class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group mx-auto w-56"
 >
   <div
     role="group"
     data-slot="field"
     data-orientation="horizontal"
-    class="data-[invalid=true]:text-destructive gap-2 group/field flex w-full flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+    class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
     data-invalid="true"
   >
     <button
@@ -280,13 +264,13 @@ show the invalid styles.
       data-state="unchecked"
       value="on"
       data-slot="checkbox"
-      class="border-input dark:bg-input/30 data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 flex size-4 items-center justify-center rounded-[4px] border transition-colors group-has-disabled/field:opacity-50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative shrink-0 outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50"
+      class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
       id="terms-checkbox-invalid"
       aria-invalid="true"
     ></button
     ><label
       data-slot="field-label"
-      class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+      class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
       for="terms-checkbox-invalid"
       >Accept terms and conditions</label
     >
@@ -352,13 +336,13 @@ Pair the checkbox with `Field` and `FieldLabel` for proper layout and labeling.
 ```text,name=checkbox-basic.html
 <div
   data-slot="field-group"
-  class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group @container/field-group flex flex-col mx-auto w-56"
+  class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group mx-auto w-56"
 >
   <div
     role="group"
     data-slot="field"
     data-orientation="horizontal"
-    class="data-[invalid=true]:text-destructive gap-2 group/field flex w-full flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+    class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
   >
     <button
       type="button"
@@ -367,12 +351,12 @@ Pair the checkbox with `Field` and `FieldLabel` for proper layout and labeling.
       data-state="unchecked"
       value="on"
       data-slot="checkbox"
-      class="border-input dark:bg-input/30 data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 flex size-4 items-center justify-center rounded-[4px] border transition-colors group-has-disabled/field:opacity-50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative shrink-0 outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50"
+      class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
       id="terms-checkbox-basic"
     ></button
     ><label
       data-slot="field-label"
-      class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+      class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
       for="terms-checkbox-basic"
       >Accept terms and conditions</label
     >
@@ -438,13 +422,13 @@ Use `FieldContent` and `FieldDescription` for helper text.
 ```text,name=checkbox-description.html
 <div
   data-slot="field-group"
-  class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group @container/field-group flex flex-col mx-auto w-72"
+  class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group mx-auto w-72"
 >
   <div
     role="group"
     data-slot="field"
     data-orientation="horizontal"
-    class="data-[invalid=true]:text-destructive gap-2 group/field flex w-full flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+    class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
   >
     <button
       type="button"
@@ -453,14 +437,10 @@ Use `FieldContent` and `FieldDescription` for helper text.
       data-state="checked"
       value="on"
       data-slot="checkbox"
-      class="border-input dark:bg-input/30 data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 flex size-4 items-center justify-center rounded-[4px] border transition-colors group-has-disabled/field:opacity-50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative shrink-0 outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50"
+      class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
       id="terms-checkbox-desc"
     >
-      <span
-        data-state="checked"
-        data-slot="checkbox-indicator"
-        class="[&>svg]:size-3.5 grid place-content-center text-current transition-none"
-        style="pointer-events: none"
+      <span data-state="checked" data-slot="checkbox-indicator" style="pointer-events: none"
         ><svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -476,19 +456,16 @@ Use `FieldContent` and `FieldDescription` for helper text.
           <path d="M20 6 9 17l-5-5"></path></svg
       ></span>
     </button>
-    <div
-      data-slot="field-content"
-      class="gap-0.5 group/field-content flex flex-1 flex-col leading-snug"
-    >
+    <div data-slot="field-content" class="gap-0.5 group/field-content">
       <label
         data-slot="field-label"
-        class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+        class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
         for="terms-checkbox-desc"
         >Accept terms and conditions</label
       >
       <p
         data-slot="field-description"
-        class="text-muted-foreground text-left text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal font-normal group-has-data-horizontal/field:text-balance last:mt-0 nth-last-2:-mt-1 [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
+        class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
       >
         By clicking this checkbox, you agree to the terms and conditions.
       </p>
@@ -555,13 +532,13 @@ Use the `disabled` prop to prevent interaction and add the `data-disabled` attri
 ```text,name=checkbox-disabled.html
 <div
   data-slot="field-group"
-  class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group @container/field-group flex flex-col mx-auto w-56"
+  class="gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group mx-auto w-56"
 >
   <div
     role="group"
     data-slot="field"
     data-orientation="horizontal"
-    class="data-[invalid=true]:text-destructive gap-2 group/field flex w-full flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+    class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
     data-disabled="true"
   >
     <button
@@ -573,12 +550,12 @@ Use the `disabled` prop to prevent interaction and add the `data-disabled` attri
       disabled=""
       value="on"
       data-slot="checkbox"
-      class="border-input dark:bg-input/30 data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 flex size-4 items-center justify-center rounded-[4px] border transition-colors group-has-disabled/field:opacity-50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative shrink-0 outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50"
+      class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
       id="toggle-checkbox-disabled"
     ></button
     ><label
       data-slot="field-label"
-      class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
+      class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col"
       for="toggle-checkbox-disabled"
       >Enable notifications</label
     >
@@ -644,30 +621,30 @@ Use multiple fields to create a checkbox list.
 ```text,name=checkbox-group.html
 <fieldset
   data-slot="field-set"
-  class="gap-4 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3 flex flex-col"
+  class="gap-4 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3"
 >
   <legend
     data-slot="field-legend"
     data-variant="label"
-    class="mb-1.5 font-medium data-[variant=label]:text-sm data-[variant=legend]:text-base"
+    class="data-[variant=label]:text-sm data-[variant=legend]:text-base"
   >
     Show these items on the desktop:
   </legend>
   <p
     data-slot="field-description"
-    class="text-muted-foreground text-left text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal font-normal group-has-data-horizontal/field:text-balance last:mt-0 nth-last-2:-mt-1 [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary"
+    class="text-muted-foreground text-sm [[data-variant=legend]+&]:-mt-1.5 leading-normal last:mt-0 nth-last-2:-mt-1 [&>a:hover]:text-primary"
   >
     Select the items you want to show on the desktop.
   </p>
   <div
     data-slot="field-group"
-    class="data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group @container/field-group flex w-full flex-col gap-3"
+    class="data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group gap-3"
   >
     <div
       role="group"
       data-slot="field"
       data-orientation="horizontal"
-      class="data-[invalid=true]:text-destructive gap-2 group/field flex w-full flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+      class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
     >
       <button
         type="button"
@@ -676,14 +653,10 @@ Use multiple fields to create a checkbox list.
         data-state="checked"
         value="on"
         data-slot="checkbox"
-        class="border-input dark:bg-input/30 data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 flex size-4 items-center justify-center rounded-[4px] border transition-colors group-has-disabled/field:opacity-50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative shrink-0 outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50"
+        class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
         id="finder-pref-9k2-hard-disks-ljj-checkbox"
       >
-        <span
-          data-state="checked"
-          data-slot="checkbox-indicator"
-          class="[&>svg]:size-3.5 grid place-content-center text-current transition-none"
-          style="pointer-events: none"
+        <span data-state="checked" data-slot="checkbox-indicator" style="pointer-events: none"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -700,7 +673,7 @@ Use multiple fields to create a checkbox list.
         ></span></button
       ><label
         data-slot="field-label"
-        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
         for="finder-pref-9k2-hard-disks-ljj-checkbox"
         >Hard disks</label
       >
@@ -709,7 +682,7 @@ Use multiple fields to create a checkbox list.
       role="group"
       data-slot="field"
       data-orientation="horizontal"
-      class="data-[invalid=true]:text-destructive gap-2 group/field flex w-full flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+      class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
     >
       <button
         type="button"
@@ -718,14 +691,10 @@ Use multiple fields to create a checkbox list.
         data-state="checked"
         value="on"
         data-slot="checkbox"
-        class="border-input dark:bg-input/30 data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 flex size-4 items-center justify-center rounded-[4px] border transition-colors group-has-disabled/field:opacity-50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative shrink-0 outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50"
+        class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
         id="finder-pref-9k2-external-disks-1yg-checkbox"
       >
-        <span
-          data-state="checked"
-          data-slot="checkbox-indicator"
-          class="[&>svg]:size-3.5 grid place-content-center text-current transition-none"
-          style="pointer-events: none"
+        <span data-state="checked" data-slot="checkbox-indicator" style="pointer-events: none"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -742,7 +711,7 @@ Use multiple fields to create a checkbox list.
         ></span></button
       ><label
         data-slot="field-label"
-        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
         for="finder-pref-9k2-external-disks-1yg-checkbox"
         >External disks</label
       >
@@ -751,7 +720,7 @@ Use multiple fields to create a checkbox list.
       role="group"
       data-slot="field"
       data-orientation="horizontal"
-      class="data-[invalid=true]:text-destructive gap-2 group/field flex w-full flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+      class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
     >
       <button
         type="button"
@@ -760,12 +729,12 @@ Use multiple fields to create a checkbox list.
         data-state="unchecked"
         value="on"
         data-slot="checkbox"
-        class="border-input dark:bg-input/30 data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 flex size-4 items-center justify-center rounded-[4px] border transition-colors group-has-disabled/field:opacity-50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative shrink-0 outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50"
+        class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
         id="finder-pref-9k2-cds-dvds-fzt-checkbox"
       ></button
       ><label
         data-slot="field-label"
-        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
         for="finder-pref-9k2-cds-dvds-fzt-checkbox"
         >CDs, DVDs, and iPods</label
       >
@@ -774,7 +743,7 @@ Use multiple fields to create a checkbox list.
       role="group"
       data-slot="field"
       data-orientation="horizontal"
-      class="data-[invalid=true]:text-destructive gap-2 group/field flex w-full flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+      class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
     >
       <button
         type="button"
@@ -783,12 +752,12 @@ Use multiple fields to create a checkbox list.
         data-state="unchecked"
         value="on"
         data-slot="checkbox"
-        class="border-input dark:bg-input/30 data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 flex size-4 items-center justify-center rounded-[4px] border transition-colors group-has-disabled/field:opacity-50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative shrink-0 outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50"
+        class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
         id="finder-pref-9k2-connected-servers-6l2-checkbox"
       ></button
       ><label
         data-slot="field-label"
-        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
+        class="text-sm group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label w-fit has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col font-normal"
         for="finder-pref-9k2-connected-servers-6l2-checkbox"
         >Connected servers</label
       >
@@ -851,17 +820,14 @@ Use multiple fields to create a checkbox list.
 
 {% <codegroup> %}
 ```text,name=checkbox-table.html
-<div data-slot="table-container" class="relative w-full overflow-x-auto">
-  <table data-slot="table" class="w-full caption-bottom text-sm">
-    <thead data-slot="table-header" class="[&_tr]:border-b">
+<div data-slot="table-container">
+  <table data-slot="table">
+    <thead data-slot="table-header">
       <tr
         data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors has-aria-expanded:bg-muted/50"
+        class="hover:bg-muted/50 data-[state=selected]:bg-muted has-aria-expanded:bg-muted/50"
       >
-        <th
-          data-slot="table-head"
-          class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 w-8"
-        >
+        <th data-slot="table-head" class="px-2 [&:has([role=checkbox])]:pr-0 w-8">
           <button
             type="button"
             role="checkbox"
@@ -869,40 +835,22 @@ Use multiple fields to create a checkbox list.
             data-state="unchecked"
             value="on"
             data-slot="checkbox"
-            class="border-input dark:bg-input/30 data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 flex size-4 items-center justify-center rounded-[4px] border transition-colors group-has-disabled/field:opacity-50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative shrink-0 outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50"
+            class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
             id="select-all-checkbox"
           ></button>
         </th>
-        <th
-          data-slot="table-head"
-          class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0"
-        >
-          Name
-        </th>
-        <th
-          data-slot="table-head"
-          class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0"
-        >
-          Email
-        </th>
-        <th
-          data-slot="table-head"
-          class="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0"
-        >
-          Role
-        </th>
+        <th data-slot="table-head" class="px-2 [&:has([role=checkbox])]:pr-0">Name</th>
+        <th data-slot="table-head" class="px-2 [&:has([role=checkbox])]:pr-0">Email</th>
+        <th data-slot="table-head" class="px-2 [&:has([role=checkbox])]:pr-0">Role</th>
       </tr>
     </thead>
-    <tbody data-slot="table-body" class="[&_tr:last-child]:border-0">
+    <tbody data-slot="table-body">
       <tr
         data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors has-aria-expanded:bg-muted/50"
+        class="hover:bg-muted/50 data-[state=selected]:bg-muted has-aria-expanded:bg-muted/50"
         data-state="selected"
       >
-        <td
-          data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
-        >
+        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">
           <button
             type="button"
             role="checkbox"
@@ -910,14 +858,10 @@ Use multiple fields to create a checkbox list.
             data-state="checked"
             value="on"
             data-slot="checkbox"
-            class="border-input dark:bg-input/30 data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 flex size-4 items-center justify-center rounded-[4px] border transition-colors group-has-disabled/field:opacity-50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative shrink-0 outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50"
+            class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
             id="row-1-checkbox"
           >
-            <span
-              data-state="checked"
-              data-slot="checkbox-indicator"
-              class="[&>svg]:size-3.5 grid place-content-center text-current transition-none"
-              style="pointer-events: none"
+            <span data-state="checked" data-slot="checkbox-indicator" style="pointer-events: none"
               ><svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -934,33 +878,19 @@ Use multiple fields to create a checkbox list.
             ></span>
           </button>
         </td>
-        <td
-          data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 font-medium"
-        >
+        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 font-medium">
           Sarah Chen
         </td>
-        <td
-          data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
-        >
+        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">
           sarah.chen@example.com
         </td>
-        <td
-          data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
-        >
-          Admin
-        </td>
+        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">Admin</td>
       </tr>
       <tr
         data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors has-aria-expanded:bg-muted/50"
+        class="hover:bg-muted/50 data-[state=selected]:bg-muted has-aria-expanded:bg-muted/50"
       >
-        <td
-          data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
-        >
+        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">
           <button
             type="button"
             role="checkbox"
@@ -968,37 +898,23 @@ Use multiple fields to create a checkbox list.
             data-state="unchecked"
             value="on"
             data-slot="checkbox"
-            class="border-input dark:bg-input/30 data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 flex size-4 items-center justify-center rounded-[4px] border transition-colors group-has-disabled/field:opacity-50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative shrink-0 outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50"
+            class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
             id="row-2-checkbox"
           ></button>
         </td>
-        <td
-          data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 font-medium"
-        >
+        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 font-medium">
           Marcus Rodriguez
         </td>
-        <td
-          data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
-        >
+        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">
           marcus.rodriguez@example.com
         </td>
-        <td
-          data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
-        >
-          User
-        </td>
+        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">User</td>
       </tr>
       <tr
         data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors has-aria-expanded:bg-muted/50"
+        class="hover:bg-muted/50 data-[state=selected]:bg-muted has-aria-expanded:bg-muted/50"
       >
-        <td
-          data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
-        >
+        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">
           <button
             type="button"
             role="checkbox"
@@ -1006,37 +922,23 @@ Use multiple fields to create a checkbox list.
             data-state="unchecked"
             value="on"
             data-slot="checkbox"
-            class="border-input dark:bg-input/30 data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 flex size-4 items-center justify-center rounded-[4px] border transition-colors group-has-disabled/field:opacity-50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative shrink-0 outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50"
+            class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
             id="row-3-checkbox"
           ></button>
         </td>
-        <td
-          data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 font-medium"
-        >
+        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 font-medium">
           Priya Patel
         </td>
-        <td
-          data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
-        >
+        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">
           priya.patel@example.com
         </td>
-        <td
-          data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
-        >
-          User
-        </td>
+        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">User</td>
       </tr>
       <tr
         data-slot="table-row"
-        class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors has-aria-expanded:bg-muted/50"
+        class="hover:bg-muted/50 data-[state=selected]:bg-muted has-aria-expanded:bg-muted/50"
       >
-        <td
-          data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
-        >
+        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">
           <button
             type="button"
             role="checkbox"
@@ -1044,28 +946,17 @@ Use multiple fields to create a checkbox list.
             data-state="unchecked"
             value="on"
             data-slot="checkbox"
-            class="border-input dark:bg-input/30 data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 flex size-4 items-center justify-center rounded-[4px] border transition-colors group-has-disabled/field:opacity-50 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative shrink-0 outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50"
+            class="border-input dark:bg-input/30 data-checked:bg-primary dark:data-checked:bg-primary data-checked:border-primary aria-invalid:aria-checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 focus-visible:ring-3 aria-invalid:ring-3 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input group-has-[:focus-visible]/field-label:data-checked:border-primary peer relative after:absolute"
             id="row-4-checkbox"
           ></button>
         </td>
-        <td
-          data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 font-medium"
-        >
+        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0 font-medium">
           David Kim
         </td>
-        <td
-          data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
-        >
+        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">
           david.kim@example.com
         </td>
-        <td
-          data-slot="table-cell"
-          class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
-        >
-          Editor
-        </td>
+        <td data-slot="table-cell" class="p-2 [&:has([role=checkbox])]:pr-0">Editor</td>
       </tr>
     </tbody>
   </table>

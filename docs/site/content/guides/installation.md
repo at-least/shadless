@@ -25,9 +25,14 @@ nothing else.
 The component **markup** is not in the package, by design: it is text you copy
 into your own page and edit, not a module you import. Every example on this
 site shows its markup in a code tab under the preview — that is the copy
-source. (Working from a clone instead of npm? The same files are
-`docs/demos/*.html`, and `dist/components/<name>.html` holds one minimal page
-per component.)
+source, and it is **slot-only markup**: the `data-slot`/`data-*` attributes
+plus only the classes the component stylesheet does not already supply.
+Import `shadless` and the component's stylesheet and it renders exactly like
+the preview — machine-checked (`docs-code-parity`) in a consumer build as
+well as against the precompiled CSS. The preview iframe itself renders the
+full inline DOM shadcn's React produces. (Working from a clone instead of
+npm? Those files are `docs/demos/*.html`, and `dist/components/<name>.html`
+holds one minimal slot-only page per component.)
 
 {% <tip kind="tip" title="" no_title={false}> %}
 The library is a mechanical conversion of the pinned
@@ -60,8 +65,16 @@ consumer and asserts zero leakage from non-imported components).
 
 **Copy the markup you need from the code tab under any example on that component's page.**
 
-The markup carries plain utilities inline; your build's content scan picks
-them up like any class you wrote yourself.
+The tab is slot-only: the `data-slot`/`data-*` attributes are the contract —
+keep them — and the classes already in the tab are only the ones the
+component stylesheet does not supply. Customize by adding utilities (they
+sit in the utilities layer and win over the component styles) or by setting
+the documented `data-*` attributes; either way your build's content scan
+picks the tab's classes up like any class you wrote yourself. RTL examples
+keep their inline utilities in the tab — their logical-direction tokens
+(`pe-8`, `ps-1.5`, `end-2`, …) exist only inline, so nothing is subtracted
+there. Where each slot's default look is written down: the component's
+**API Reference** section embeds its stylesheet verbatim.
 
 **Where the component has behavior, load its JavaScript exactly as its demo page does.**
 

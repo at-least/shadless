@@ -20,39 +20,17 @@ component.
 
 {% <codegroup> %}
 ```text,name=native-select-demo.html
-<div
-  class="group/native-select relative w-fit has-[select:disabled]:opacity-50"
-  data-slot="native-select-wrapper"
-  data-size="default"
->
+<div class="group/native-select" data-slot="native-select-wrapper" data-size="default">
   <select
     data-slot="native-select"
     data-size="default"
-    class="border-input placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 w-full min-w-0 appearance-none rounded-lg border bg-transparent py-1 pr-8 pl-2.5 text-sm transition-colors select-none focus-visible:ring-3 aria-invalid:ring-3 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] data-[size=sm]:py-0.5 outline-none disabled:pointer-events-none disabled:cursor-not-allowed"
+    class="border-input placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 rounded-lg bg-transparent py-1 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] data-[size=sm]:py-0.5"
   >
-    <option data-slot="native-select-option" class="bg-[Canvas] text-[CanvasText]" value="">
-      Select status
-    </option>
-    <option data-slot="native-select-option" class="bg-[Canvas] text-[CanvasText]" value="todo">
-      Todo
-    </option>
-    <option
-      data-slot="native-select-option"
-      class="bg-[Canvas] text-[CanvasText]"
-      value="in-progress"
-    >
-      In Progress
-    </option>
-    <option data-slot="native-select-option" class="bg-[Canvas] text-[CanvasText]" value="done">
-      Done
-    </option>
-    <option
-      data-slot="native-select-option"
-      class="bg-[Canvas] text-[CanvasText]"
-      value="cancelled"
-    >
-      Cancelled
-    </option></select
+    <option data-slot="native-select-option" value="">Select status</option>
+    <option data-slot="native-select-option" value="todo">Todo</option>
+    <option data-slot="native-select-option" value="in-progress">In Progress</option>
+    <option data-slot="native-select-option" value="done">Done</option>
+    <option data-slot="native-select-option" value="cancelled">Cancelled</option></select
   ><svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -63,7 +41,7 @@ component.
     stroke-width="2"
     stroke-linecap="round"
     stroke-linejoin="round"
-    class="lucide lucide-chevron-down text-muted-foreground top-1/2 right-2.5 size-4 -translate-y-1/2 pointer-events-none absolute select-none"
+    class="lucide lucide-chevron-down"
     aria-hidden="true"
     data-slot="native-select-icon"
   >
@@ -119,95 +97,27 @@ Use `NativeSelectOptGroup` to organize options into categories.
 
 {% <codegroup> %}
 ```text,name=native-select-groups.html
-<div
-  class="group/native-select relative w-fit has-[select:disabled]:opacity-50"
-  data-slot="native-select-wrapper"
-  data-size="default"
->
+<div class="group/native-select" data-slot="native-select-wrapper" data-size="default">
   <select
     data-slot="native-select"
     data-size="default"
-    class="border-input placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 w-full min-w-0 appearance-none rounded-lg border bg-transparent py-1 pr-8 pl-2.5 text-sm transition-colors select-none focus-visible:ring-3 aria-invalid:ring-3 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] data-[size=sm]:py-0.5 outline-none disabled:pointer-events-none disabled:cursor-not-allowed"
+    class="border-input placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 rounded-lg bg-transparent py-1 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] data-[size=sm]:py-0.5"
   >
-    <option data-slot="native-select-option" class="bg-[Canvas] text-[CanvasText]" value="">
-      Select department
-    </option>
-    <optgroup
-      data-slot="native-select-optgroup"
-      class="bg-[Canvas] text-[CanvasText]"
-      label="Engineering"
-    >
-      <option
-        data-slot="native-select-option"
-        class="bg-[Canvas] text-[CanvasText]"
-        value="frontend"
-      >
-        Frontend
-      </option>
-      <option
-        data-slot="native-select-option"
-        class="bg-[Canvas] text-[CanvasText]"
-        value="backend"
-      >
-        Backend
-      </option>
-      <option data-slot="native-select-option" class="bg-[Canvas] text-[CanvasText]" value="devops">
-        DevOps
-      </option>
+    <option data-slot="native-select-option" value="">Select department</option>
+    <optgroup data-slot="native-select-optgroup" label="Engineering">
+      <option data-slot="native-select-option" value="frontend">Frontend</option>
+      <option data-slot="native-select-option" value="backend">Backend</option>
+      <option data-slot="native-select-option" value="devops">DevOps</option>
     </optgroup>
-    <optgroup
-      data-slot="native-select-optgroup"
-      class="bg-[Canvas] text-[CanvasText]"
-      label="Sales"
-    >
-      <option
-        data-slot="native-select-option"
-        class="bg-[Canvas] text-[CanvasText]"
-        value="sales-rep"
-      >
-        Sales Rep
-      </option>
-      <option
-        data-slot="native-select-option"
-        class="bg-[Canvas] text-[CanvasText]"
-        value="account-manager"
-      >
-        Account Manager
-      </option>
-      <option
-        data-slot="native-select-option"
-        class="bg-[Canvas] text-[CanvasText]"
-        value="sales-director"
-      >
-        Sales Director
-      </option>
+    <optgroup data-slot="native-select-optgroup" label="Sales">
+      <option data-slot="native-select-option" value="sales-rep">Sales Rep</option>
+      <option data-slot="native-select-option" value="account-manager">Account Manager</option>
+      <option data-slot="native-select-option" value="sales-director">Sales Director</option>
     </optgroup>
-    <optgroup
-      data-slot="native-select-optgroup"
-      class="bg-[Canvas] text-[CanvasText]"
-      label="Operations"
-    >
-      <option
-        data-slot="native-select-option"
-        class="bg-[Canvas] text-[CanvasText]"
-        value="support"
-      >
-        Customer Support
-      </option>
-      <option
-        data-slot="native-select-option"
-        class="bg-[Canvas] text-[CanvasText]"
-        value="product-manager"
-      >
-        Product Manager
-      </option>
-      <option
-        data-slot="native-select-option"
-        class="bg-[Canvas] text-[CanvasText]"
-        value="ops-manager"
-      >
-        Operations Manager
-      </option>
+    <optgroup data-slot="native-select-optgroup" label="Operations">
+      <option data-slot="native-select-option" value="support">Customer Support</option>
+      <option data-slot="native-select-option" value="product-manager">Product Manager</option>
+      <option data-slot="native-select-option" value="ops-manager">Operations Manager</option>
     </optgroup></select
   ><svg
     xmlns="http://www.w3.org/2000/svg"
@@ -219,7 +129,7 @@ Use `NativeSelectOptGroup` to organize options into categories.
     stroke-width="2"
     stroke-linecap="round"
     stroke-linejoin="round"
-    class="lucide lucide-chevron-down text-muted-foreground top-1/2 right-2.5 size-4 -translate-y-1/2 pointer-events-none absolute select-none"
+    class="lucide lucide-chevron-down"
     aria-hidden="true"
     data-slot="native-select-icon"
   >
@@ -242,33 +152,17 @@ Add the `disabled` prop to the `NativeSelect` component to disable the select.
 
 {% <codegroup> %}
 ```text,name=native-select-disabled.html
-<div
-  class="group/native-select relative w-fit has-[select:disabled]:opacity-50"
-  data-slot="native-select-wrapper"
-  data-size="default"
->
+<div class="group/native-select" data-slot="native-select-wrapper" data-size="default">
   <select
     data-slot="native-select"
     data-size="default"
-    class="border-input placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 w-full min-w-0 appearance-none rounded-lg border bg-transparent py-1 pr-8 pl-2.5 text-sm transition-colors select-none focus-visible:ring-3 aria-invalid:ring-3 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] data-[size=sm]:py-0.5 outline-none disabled:pointer-events-none disabled:cursor-not-allowed"
+    class="border-input placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 rounded-lg bg-transparent py-1 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] data-[size=sm]:py-0.5"
     disabled=""
   >
-    <option data-slot="native-select-option" class="bg-[Canvas] text-[CanvasText]" value="">
-      Disabled
-    </option>
-    <option data-slot="native-select-option" class="bg-[Canvas] text-[CanvasText]" value="apple">
-      Apple
-    </option>
-    <option data-slot="native-select-option" class="bg-[Canvas] text-[CanvasText]" value="banana">
-      Banana
-    </option>
-    <option
-      data-slot="native-select-option"
-      class="bg-[Canvas] text-[CanvasText]"
-      value="blueberry"
-    >
-      Blueberry
-    </option></select
+    <option data-slot="native-select-option" value="">Disabled</option>
+    <option data-slot="native-select-option" value="apple">Apple</option>
+    <option data-slot="native-select-option" value="banana">Banana</option>
+    <option data-slot="native-select-option" value="blueberry">Blueberry</option></select
   ><svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -279,7 +173,7 @@ Add the `disabled` prop to the `NativeSelect` component to disable the select.
     stroke-width="2"
     stroke-linecap="round"
     stroke-linejoin="round"
-    class="lucide lucide-chevron-down text-muted-foreground top-1/2 right-2.5 size-4 -translate-y-1/2 pointer-events-none absolute select-none"
+    class="lucide lucide-chevron-down"
     aria-hidden="true"
     data-slot="native-select-icon"
   >
@@ -302,33 +196,17 @@ Use `aria-invalid` to show validation errors and the `data-invalid` attribute to
 
 {% <codegroup> %}
 ```text,name=native-select-invalid.html
-<div
-  class="group/native-select relative w-fit has-[select:disabled]:opacity-50"
-  data-slot="native-select-wrapper"
-  data-size="default"
->
+<div class="group/native-select" data-slot="native-select-wrapper" data-size="default">
   <select
     data-slot="native-select"
     data-size="default"
-    class="border-input placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 w-full min-w-0 appearance-none rounded-lg border bg-transparent py-1 pr-8 pl-2.5 text-sm transition-colors select-none focus-visible:ring-3 aria-invalid:ring-3 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] data-[size=sm]:py-0.5 outline-none disabled:pointer-events-none disabled:cursor-not-allowed"
+    class="border-input placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-8 rounded-lg bg-transparent py-1 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] data-[size=sm]:py-0.5"
     aria-invalid="true"
   >
-    <option data-slot="native-select-option" class="bg-[Canvas] text-[CanvasText]" value="">
-      Error state
-    </option>
-    <option data-slot="native-select-option" class="bg-[Canvas] text-[CanvasText]" value="apple">
-      Apple
-    </option>
-    <option data-slot="native-select-option" class="bg-[Canvas] text-[CanvasText]" value="banana">
-      Banana
-    </option>
-    <option
-      data-slot="native-select-option"
-      class="bg-[Canvas] text-[CanvasText]"
-      value="blueberry"
-    >
-      Blueberry
-    </option></select
+    <option data-slot="native-select-option" value="">Error state</option>
+    <option data-slot="native-select-option" value="apple">Apple</option>
+    <option data-slot="native-select-option" value="banana">Banana</option>
+    <option data-slot="native-select-option" value="blueberry">Blueberry</option></select
   ><svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -339,7 +217,7 @@ Use `aria-invalid` to show validation errors and the `data-invalid` attribute to
     stroke-width="2"
     stroke-linecap="round"
     stroke-linejoin="round"
-    class="lucide lucide-chevron-down text-muted-foreground top-1/2 right-2.5 size-4 -translate-y-1/2 pointer-events-none absolute select-none"
+    class="lucide lucide-chevron-down"
     aria-hidden="true"
     data-slot="native-select-icon"
   >

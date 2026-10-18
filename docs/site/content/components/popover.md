@@ -52,7 +52,6 @@ Displays rich content in a portal, triggered by a button.
       role="dialog"
       id="p1"
       data-slot="popover-content"
-      class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 flex flex-col gap-2.5 rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 w-72 origin-(--radix-popover-content-transform-origin) outline-hidden"
       tabindex="-1"
       style="
         --radix-popover-content-transform-origin: var(--radix-popper-transform-origin);
@@ -62,9 +61,9 @@ Displays rich content in a portal, triggered by a button.
         --radix-popover-trigger-height: var(--radix-popper-anchor-height);
       "
     >
-      <div data-slot="popover-header" class="flex flex-col gap-0.5 text-sm">
-        <div data-slot="popover-title" class="font-medium">Dimensions</div>
-        <p data-slot="popover-description" class="text-muted-foreground">Set the dimensions.</p>
+      <div data-slot="popover-header">
+        <div data-slot="popover-title">Dimensions</div>
+        <p data-slot="popover-description">Set the dimensions.</p>
       </div>
     </div>
   </div>
@@ -233,7 +232,6 @@ A simple popover with a header, title, and description.
       role="dialog"
       id="k0"
       data-slot="popover-content"
-      class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 flex flex-col gap-2.5 rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 w-72 origin-(--radix-popover-content-transform-origin) outline-hidden"
       tabindex="-1"
       style="
         --radix-popover-content-transform-origin: var(--radix-popper-transform-origin);
@@ -243,11 +241,9 @@ A simple popover with a header, title, and description.
         --radix-popover-trigger-height: var(--radix-popper-anchor-height);
       "
     >
-      <div data-slot="popover-header" class="flex flex-col gap-0.5 text-sm">
-        <div data-slot="popover-title" class="font-medium">Dimensions</div>
-        <p data-slot="popover-description" class="text-muted-foreground">
-          Set the dimensions for the layer.
-        </p>
+      <div data-slot="popover-header">
+        <div data-slot="popover-title">Dimensions</div>
+        <p data-slot="popover-description">Set the dimensions for the layer.</p>
       </div>
     </div>
   </div>
@@ -392,7 +388,7 @@ Use the `align` prop on `PopoverContent` to control the horizontal alignment.
       role="dialog"
       id="k0"
       data-slot="popover-content"
-      class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 flex flex-col gap-2.5 rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-popover-content-transform-origin) outline-hidden w-40"
+      class="w-40"
       tabindex="-1"
       style="
         --radix-popover-content-transform-origin: var(--radix-popper-transform-origin);
@@ -430,7 +426,7 @@ Use the `align` prop on `PopoverContent` to control the horizontal alignment.
       role="dialog"
       id="k1"
       data-slot="popover-content"
-      class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 flex flex-col gap-2.5 rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-popover-content-transform-origin) outline-hidden w-40"
+      class="w-40"
       tabindex="-1"
       style="
         --radix-popover-content-transform-origin: var(--radix-popper-transform-origin);
@@ -468,7 +464,7 @@ Use the `align` prop on `PopoverContent` to control the horizontal alignment.
       role="dialog"
       id="k2"
       data-slot="popover-content"
-      class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 flex flex-col gap-2.5 rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-popover-content-transform-origin) outline-hidden w-40"
+      class="w-40"
       tabindex="-1"
       style="
         --radix-popover-content-transform-origin: var(--radix-popper-transform-origin);
@@ -594,7 +590,7 @@ A popover with form fields inside.
       role="dialog"
       id="k0"
       data-slot="popover-content"
-      class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 flex flex-col gap-2.5 rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 origin-(--radix-popover-content-transform-origin) outline-hidden w-64"
+      class="w-64"
       tabindex="-1"
       style="
         --radix-popover-content-transform-origin: var(--radix-popper-transform-origin);
@@ -604,30 +600,28 @@ A popover with form fields inside.
         --radix-popover-trigger-height: var(--radix-popper-anchor-height);
       "
     >
-      <div data-slot="popover-header" class="flex flex-col gap-0.5 text-sm">
-        <div data-slot="popover-title" class="font-medium">Dimensions</div>
-        <p data-slot="popover-description" class="text-muted-foreground">
-          Set the dimensions for the layer.
-        </p>
+      <div data-slot="popover-header">
+        <div data-slot="popover-title">Dimensions</div>
+        <p data-slot="popover-description">Set the dimensions for the layer.</p>
       </div>
       <div
         data-slot="field-group"
-        class="data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group @container/field-group flex w-full flex-col gap-4"
+        class="data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4 group/field-group gap-4"
       >
         <div
           role="group"
           data-slot="field"
           data-orientation="horizontal"
-          class="data-[invalid=true]:text-destructive gap-2 group/field flex w-full flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+          class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
         >
           <label
             data-slot="field-label"
-            class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col w-1/2"
+            class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col w-1/2"
             for="width"
             >Width</label
           ><input
             data-slot="input"
-            class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium focus-visible:ring-3 aria-invalid:ring-3 md:text-sm w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+            class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
             id="width"
             value="100%"
           />
@@ -636,16 +630,16 @@ A popover with form fields inside.
           role="group"
           data-slot="field"
           data-orientation="horizontal"
-          class="data-[invalid=true]:text-destructive gap-2 group/field flex w-full flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px"
+          class="gap-2 group/field items-center has-[>[data-slot=field-content]]:items-start"
         >
           <label
             data-slot="field-label"
-            class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label flex has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col w-1/2"
+            class="text-sm font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50 items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 gap-2 leading-snug has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 *:data-[slot=field]:p-2.5 group/field-label peer/field-label has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col w-1/2"
             for="height"
             >Height</label
           ><input
             data-slot="input"
-            class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium focus-visible:ring-3 aria-invalid:ring-3 md:text-sm w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+            class="dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 border bg-transparent text-base file:h-6 file:text-sm md:text-sm file:border-0 file:bg-transparent file:text-foreground placeholder:text-muted-foreground"
             id="height"
             value="25px"
           />

@@ -6,7 +6,44 @@ upstream is `src/registry/pin.json`; re-pins land through the upstream drill
 
 ## Unreleased
 
+### Changed
+- Docs: the code tab under every non-RTL preview is **slot-only markup** —
+  the `data-slot`/`data-*` attributes plus only the classes the component
+  stylesheet does not already supply (the example's own layout/size
+  choices, group/peer markers, anything the CSS cannot reproduce). Copy the
+  tab, import `shadless` and the component's stylesheet, and you get exactly
+  the preview; customize by adding utilities (they sit in the utilities
+  layer and win over the component styles) or by setting the documented
+  `data-*` attributes. The preview iframe keeps rendering the full inline
+  DOM shadcn's React produces (`docs/demos/*.html`), and RTL examples keep
+  every class in their tabs — their logical-direction utilities exist only
+  inline. Token count on slotted elements across the docs corpus drops from
+  50,929 to 26,284.
+
+### Added
+- `docs-code-parity`, a full-tier browser gate: for every built page and
+  every ` ```text,name=… ` code tab — RTL tabs included, which keep every
+  class and are compared against their `-rtl` demo sources — the committed
+  tab text must render element-for-element identically to the raw demo
+  markup it was projected from — zero diffs, no baseline — under the
+  precompiled `dist/out.css` AND under a fresh consumer compile
+  (`@import "shadless"` + every component stylesheet, Tailwind's content
+  scan restricted to each side's own text, proven by a control compile).
+  Both themes and directions, 28 computed properties per element. The
+  element walk also covers `<template>` contents (the portal DOM), which
+  do not render and are therefore asserted structurally (element counts
+  and tag sequences) rather than by computed style.
+
 ### Fixed
+- Docs: the copy-source formatting no longer reflows text inside
+  white-space-sensitive subtrees. Prettier's html printer cannot see the
+  `whitespace-pre*` utilities a class list carries, so its rewrap and
+  element gaps rendered as extra line boxes inside any `pre`/`pre-line`/
+  `pre-wrap` subtree — the bubble-collapsible tab rendered 300px tall
+  against the preview's 209px. The generator now formats such subtrees
+  the one way prettier leaves byte-for-byte (as `<pre>` content) and
+  restores the real tags on its output; the shipped tab carries no trace
+  of the detour.
 - Docs: the copyable code tab under every preview no longer carries HTML
   entity escapes inside `class` attributes. The tab's source is the demo
   page's browser serialization, which ships `[&amp;_svg]` and

@@ -19,12 +19,9 @@ Displays an inline status, system note, bordered row, or labeled separator in a 
   <div
     data-slot="marker"
     data-variant="default"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
+    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
   >
-    <span
-      data-slot="marker-icon"
-      aria-hidden="true"
-      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
+    <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -41,22 +38,15 @@ Displays an inline status, system note, bordered row, or labeled separator in a 
         <circle cx="18" cy="6" r="3"></circle>
         <circle cx="6" cy="18" r="3"></circle>
         <path d="M18 9a9 9 0 0 1-9 9"></path></svg></span
-    ><span
-      data-slot="marker-content"
-      class="group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word"
-      >Switched to a new branch</span
-    >
+    ><span data-slot="marker-content">Switched to a new branch</span>
   </div>
   <div
     data-slot="marker"
     data-variant="default"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
+    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
     role="status"
   >
-    <span
-      data-slot="marker-icon"
-      aria-hidden="true"
-      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
+    <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -67,38 +57,27 @@ Displays an inline status, system note, bordered row, or labeled separator in a 
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        class="lucide lucide-loader-circle size-4 animate-spin"
+        class="lucide lucide-loader-circle"
         data-slot="spinner"
         role="status"
         aria-label="Loading"
       >
         <path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg></span
-    ><span
-      data-slot="marker-content"
-      class="group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word shimmer"
-      >Thinking...</span
-    >
+    ><span data-slot="marker-content" class="shimmer">Thinking...</span>
   </div>
   <div
     data-slot="marker"
     data-variant="separator"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
+    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full before:h-px after:h-px"
   >
-    <span
-      data-slot="marker-content"
-      class="group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word"
-      >Conversation compacted</span
-    >
+    <span data-slot="marker-content">Conversation compacted</span>
   </div>
   <div
     data-slot="marker"
     data-variant="default"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
+    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
   >
-    <span
-      data-slot="marker-icon"
-      aria-hidden="true"
-      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
+    <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -113,11 +92,7 @@ Displays an inline status, system note, bordered row, or labeled separator in a 
       >
         <circle cx="11" cy="11" r="8"></circle>
         <path d="m21 21-4.3-4.3"></path></svg></span
-    ><span
-      data-slot="marker-content"
-      class="group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word"
-      >Explored 4 files</span
-    >
+    ><span data-slot="marker-content">Explored 4 files</span>
   </div>
 </div>
 ```
@@ -181,35 +156,23 @@ Use `variant` to switch between an inline marker, bordered row, and labeled sepa
   <div
     data-slot="marker"
     data-variant="default"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
+    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
   >
-    <span
-      data-slot="marker-content"
-      class="group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word"
-      >A default marker for inline notes.</span
-    >
+    <span data-slot="marker-content">A default marker for inline notes.</span>
   </div>
   <div
     data-slot="marker"
     data-variant="separator"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
+    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full before:h-px after:h-px"
   >
-    <span
-      data-slot="marker-content"
-      class="group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word"
-      >A separator marker</span
-    >
+    <span data-slot="marker-content">A separator marker</span>
   </div>
   <div
     data-slot="marker"
     data-variant="border"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center border-b border-border pb-2"
+    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
   >
-    <span
-      data-slot="marker-content"
-      class="group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word"
-      >A border marker for row boundaries.</span
-    >
+    <span data-slot="marker-content">A border marker for row boundaries.</span>
   </div>
 </div>
 ```
@@ -238,13 +201,10 @@ Set `role="status"` and include a [`Spinner`](/components/spinner) for streaming
   <div
     data-slot="marker"
     data-variant="default"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
+    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
     role="status"
   >
-    <span
-      data-slot="marker-icon"
-      aria-hidden="true"
-      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
+    <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -255,28 +215,21 @@ Set `role="status"` and include a [`Spinner`](/components/spinner) for streaming
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        class="lucide lucide-loader-circle size-4 animate-spin"
+        class="lucide lucide-loader-circle"
         data-slot="spinner"
         role="status"
         aria-label="Loading"
       >
         <path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg></span
-    ><span
-      data-slot="marker-content"
-      class="group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word"
-      >Compacting conversation</span
-    >
+    ><span data-slot="marker-content">Compacting conversation</span>
   </div>
   <div
     data-slot="marker"
     data-variant="separator"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
+    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full before:h-px after:h-px"
     role="status"
   >
-    <span
-      data-slot="marker-icon"
-      aria-hidden="true"
-      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
+    <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -287,17 +240,13 @@ Set `role="status"` and include a [`Spinner`](/components/spinner) for streaming
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        class="lucide lucide-loader-circle size-4 animate-spin"
+        class="lucide lucide-loader-circle"
         data-slot="spinner"
         role="status"
         aria-label="Loading"
       >
         <path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg></span
-    ><span
-      data-slot="marker-content"
-      class="group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word"
-      >Running tests</span
-    >
+    ><span data-slot="marker-content">Running tests</span>
   </div>
 </div>
 ```
@@ -320,26 +269,18 @@ Add the [`shimmer`](/guides/shimmer) utility class to `MarkerContent` for an ani
   <div
     data-slot="marker"
     data-variant="default"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
+    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
     role="status"
   >
-    <span
-      data-slot="marker-content"
-      class="group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word shimmer"
-      >Thinking...</span
-    >
+    <span data-slot="marker-content" class="shimmer">Thinking...</span>
   </div>
   <div
     data-slot="marker"
     data-variant="separator"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
+    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full before:h-px after:h-px"
     role="status"
   >
-    <span
-      data-slot="marker-content"
-      class="group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word shimmer"
-      >Reading 4 files</span
-    >
+    <span data-slot="marker-content" class="shimmer">Reading 4 files</span>
   </div>
 </div>
 ```
@@ -362,35 +303,23 @@ Use the `separator` variant for labeled dividers, such as dates or section break
   <div
     data-slot="marker"
     data-variant="separator"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
+    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full before:h-px after:h-px"
   >
-    <span
-      data-slot="marker-content"
-      class="group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word"
-      >Today</span
-    >
+    <span data-slot="marker-content">Today</span>
   </div>
   <div
     data-slot="marker"
     data-variant="separator"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
+    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full before:h-px after:h-px"
   >
-    <span
-      data-slot="marker-content"
-      class="group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word"
-      >Worked for 42s</span
-    >
+    <span data-slot="marker-content">Worked for 42s</span>
   </div>
   <div
     data-slot="marker"
     data-variant="separator"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
+    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full before:h-px after:h-px"
   >
-    <span
-      data-slot="marker-content"
-      class="group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word"
-      >Conversation compacted</span
-    >
+    <span data-slot="marker-content">Conversation compacted</span>
   </div>
 </div>
 ```
@@ -413,12 +342,9 @@ Use the `border` variant for status rows that should keep the default marker ali
   <div
     data-slot="marker"
     data-variant="border"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center border-b border-border pb-2"
+    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
   >
-    <span
-      data-slot="marker-icon"
-      aria-hidden="true"
-      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
+    <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -435,21 +361,14 @@ Use the `border` variant for status rows that should keep the default marker ali
         <circle cx="18" cy="6" r="3"></circle>
         <circle cx="6" cy="18" r="3"></circle>
         <path d="M18 9a9 9 0 0 1-9 9"></path></svg></span
-    ><span
-      data-slot="marker-content"
-      class="group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word"
-      >Switched to release-candidate</span
-    >
+    ><span data-slot="marker-content">Switched to release-candidate</span>
   </div>
   <div
     data-slot="marker"
     data-variant="border"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center border-b border-border pb-2"
+    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
   >
-    <span
-      data-slot="marker-icon"
-      aria-hidden="true"
-      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
+    <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -464,21 +383,14 @@ Use the `border` variant for status rows that should keep the default marker ali
       >
         <circle cx="11" cy="11" r="8"></circle>
         <path d="m21 21-4.3-4.3"></path></svg></span
-    ><span
-      data-slot="marker-content"
-      class="group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word"
-      >Reviewed 8 related files</span
-    >
+    ><span data-slot="marker-content">Reviewed 8 related files</span>
   </div>
   <div
     data-slot="marker"
     data-variant="border"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center border-b border-border pb-2"
+    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
   >
-    <span
-      data-slot="marker-icon"
-      aria-hidden="true"
-      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
+    <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -496,11 +408,7 @@ Use the `border` variant for status rows that should keep the default marker ali
         <path d="M10 9H8"></path>
         <path d="M16 13H8"></path>
         <path d="M16 17H8"></path></svg></span
-    ><span
-      data-slot="marker-content"
-      class="group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word"
-      >Opened implementation notes</span
-    >
+    ><span data-slot="marker-content">Opened implementation notes</span>
   </div>
 </div>
 ```
@@ -523,12 +431,9 @@ Use `MarkerIcon` to render an icon alongside the content. Use `flex-col` to stac
   <div
     data-slot="marker"
     data-variant="default"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
+    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
   >
-    <span
-      data-slot="marker-icon"
-      aria-hidden="true"
-      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
+    <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -545,21 +450,14 @@ Use `MarkerIcon` to render an icon alongside the content. Use `flex-col` to stac
         <circle cx="18" cy="6" r="3"></circle>
         <circle cx="6" cy="18" r="3"></circle>
         <path d="M18 9a9 9 0 0 1-9 9"></path></svg></span
-    ><span
-      data-slot="marker-content"
-      class="group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word"
-      >Switched to a new branch</span
-    >
+    ><span data-slot="marker-content">Switched to a new branch</span>
   </div>
   <div
     data-slot="marker"
     data-variant="separator"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1"
+    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full before:h-px after:h-px"
   >
-    <span
-      data-slot="marker-icon"
-      aria-hidden="true"
-      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
+    <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -574,21 +472,14 @@ Use `MarkerIcon` to render an icon alongside the content. Use `flex-col` to stac
       >
         <circle cx="11" cy="11" r="8"></circle>
         <path d="m21 21-4.3-4.3"></path></svg></span
-    ><span
-      data-slot="marker-content"
-      class="group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word"
-      >Explored 4 files</span
-    >
+    ><span data-slot="marker-content">Explored 4 files</span>
   </div>
   <div
     data-slot="marker"
     data-variant="default"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center flex-col"
+    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full flex-col"
   >
-    <span
-      data-slot="marker-icon"
-      aria-hidden="true"
-      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
+    <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -606,11 +497,7 @@ Use `MarkerIcon` to render an icon alongside the content. Use `flex-col` to stac
         <path
           d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3"
         ></path></svg></span
-    ><span
-      data-slot="marker-content"
-      class="group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word"
-      >Syncing completed</span
-    >
+    ><span data-slot="marker-content">Syncing completed</span>
   </div>
 </div>
 ```
@@ -634,11 +521,8 @@ Turn a marker into a link or button by putting `data-slot="marker"` on the `<a>`
     href="#links-and-buttons"
     data-slot="marker"
     data-variant="default"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
-    ><span
-      data-slot="marker-icon"
-      aria-hidden="true"
-      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
+    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full"
+    ><span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -655,21 +539,14 @@ Turn a marker into a link or button by putting `data-slot="marker"` on the `<a>`
         <circle cx="18" cy="6" r="3"></circle>
         <circle cx="6" cy="18" r="3"></circle>
         <path d="M18 9a9 9 0 0 1-9 9"></path></svg></span
-    ><span
-      data-slot="marker-content"
-      class="group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word"
-      >View the pull request</span
-    ></a
+    ><span data-slot="marker-content">View the pull request</span></a
   ><button
     type="button"
-    class="gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center transition-colors hover:text-foreground"
+    class="text-muted-foreground [a]:hover:text-foreground [&_svg:not([class*='size-'])]:size-4 group/marker w-full transition-colors hover:text-foreground"
     data-slot="marker"
     data-variant="default"
   >
-    <span
-      data-slot="marker-icon"
-      aria-hidden="true"
-      class="size-4 [&_svg:not([class*='size-'])]:size-4 shrink-0"
+    <span data-slot="marker-icon" aria-hidden="true"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -684,11 +561,7 @@ Turn a marker into a link or button by putting `data-slot="marker"` on the `<a>`
       >
         <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
         <path d="M3 3v5h5"></path></svg></span
-    ><span
-      data-slot="marker-content"
-      class="group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3 min-w-0 wrap-break-word"
-      >Revert this change</span
-    >
+    ><span data-slot="marker-content">Revert this change</span>
   </button>
 </div>
 ```

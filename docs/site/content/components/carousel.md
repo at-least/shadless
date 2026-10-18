@@ -16,24 +16,19 @@ A carousel with motion and swipe built using Embla.
 {% <codegroup> %}
 ```text,name=carousel-demo.html
 <div
-  class="relative w-full max-w-[12rem] sm:max-w-xs"
+  class="w-full max-w-[12rem] sm:max-w-xs"
   role="region"
   aria-roledescription="carousel"
   data-slot="carousel"
 >
-  <div class="overflow-hidden" data-slot="carousel-content">
+  <div data-slot="carousel-content">
     <div class="flex -ml-4" style="transform: translate3d(0px, 0px, 0px)">
-      <div
-        role="group"
-        aria-roledescription="slide"
-        data-slot="carousel-item"
-        class="min-w-0 shrink-0 grow-0 basis-full pl-4"
-      >
+      <div role="group" aria-roledescription="slide" data-slot="carousel-item">
         <div class="p-1">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div
               data-slot="card-content"
@@ -44,17 +39,12 @@ A carousel with motion and swipe built using Embla.
           </div>
         </div>
       </div>
-      <div
-        role="group"
-        aria-roledescription="slide"
-        data-slot="carousel-item"
-        class="min-w-0 shrink-0 grow-0 basis-full pl-4"
-      >
+      <div role="group" aria-roledescription="slide" data-slot="carousel-item">
         <div class="p-1">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div
               data-slot="card-content"
@@ -65,17 +55,12 @@ A carousel with motion and swipe built using Embla.
           </div>
         </div>
       </div>
-      <div
-        role="group"
-        aria-roledescription="slide"
-        data-slot="carousel-item"
-        class="min-w-0 shrink-0 grow-0 basis-full pl-4"
-      >
+      <div role="group" aria-roledescription="slide" data-slot="carousel-item">
         <div class="p-1">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div
               data-slot="card-content"
@@ -86,17 +71,12 @@ A carousel with motion and swipe built using Embla.
           </div>
         </div>
       </div>
-      <div
-        role="group"
-        aria-roledescription="slide"
-        data-slot="carousel-item"
-        class="min-w-0 shrink-0 grow-0 basis-full pl-4"
-      >
+      <div role="group" aria-roledescription="slide" data-slot="carousel-item">
         <div class="p-1">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div
               data-slot="card-content"
@@ -107,17 +87,12 @@ A carousel with motion and swipe built using Embla.
           </div>
         </div>
       </div>
-      <div
-        role="group"
-        aria-roledescription="slide"
-        data-slot="carousel-item"
-        class="min-w-0 shrink-0 grow-0 basis-full pl-4"
-      >
+      <div role="group" aria-roledescription="slide" data-slot="carousel-item">
         <div class="p-1">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div
               data-slot="card-content"
@@ -134,7 +109,7 @@ A carousel with motion and swipe built using Embla.
     data-slot="carousel-previous"
     data-variant="outline"
     data-size="icon-sm"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -left-12 my-auto"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-7 in-data-[slot=button-group]:rounded-lg rounded-full"
     disabled=""
   >
     <svg
@@ -155,7 +130,7 @@ A carousel with motion and swipe built using Embla.
     data-slot="carousel-next"
     data-variant="outline"
     data-size="icon-sm"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -right-12 my-auto"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-7 in-data-[slot=button-group]:rounded-lg rounded-full"
     disabled=""
   >
     <svg
@@ -1924,24 +1899,24 @@ To set the size of the items, you can use the `basis` utility class on the `data
 {% <codegroup> %}
 ```text,name=carousel-size.html
 <div
-  class="relative w-full max-w-[12rem] sm:max-w-xs md:max-w-sm"
+  class="w-full max-w-[12rem] sm:max-w-xs md:max-w-sm"
   role="region"
   aria-roledescription="carousel"
   data-slot="carousel"
 >
-  <div class="overflow-hidden" data-slot="carousel-content">
+  <div data-slot="carousel-content">
     <div class="flex -ml-4" style="transform: translate3d(0px, 0px, 0px)">
       <div
         role="group"
         aria-roledescription="slide"
         data-slot="carousel-item"
-        class="min-w-0 shrink-0 grow-0 pl-4 basis-1/2 lg:basis-1/3"
+        class="basis-1/2 lg:basis-1/3"
       >
         <div class="p-1">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div
               data-slot="card-content"
@@ -1956,13 +1931,13 @@ To set the size of the items, you can use the `basis` utility class on the `data
         role="group"
         aria-roledescription="slide"
         data-slot="carousel-item"
-        class="min-w-0 shrink-0 grow-0 pl-4 basis-1/2 lg:basis-1/3"
+        class="basis-1/2 lg:basis-1/3"
       >
         <div class="p-1">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div
               data-slot="card-content"
@@ -1977,13 +1952,13 @@ To set the size of the items, you can use the `basis` utility class on the `data
         role="group"
         aria-roledescription="slide"
         data-slot="carousel-item"
-        class="min-w-0 shrink-0 grow-0 pl-4 basis-1/2 lg:basis-1/3"
+        class="basis-1/2 lg:basis-1/3"
       >
         <div class="p-1">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div
               data-slot="card-content"
@@ -1998,13 +1973,13 @@ To set the size of the items, you can use the `basis` utility class on the `data
         role="group"
         aria-roledescription="slide"
         data-slot="carousel-item"
-        class="min-w-0 shrink-0 grow-0 pl-4 basis-1/2 lg:basis-1/3"
+        class="basis-1/2 lg:basis-1/3"
       >
         <div class="p-1">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div
               data-slot="card-content"
@@ -2019,13 +1994,13 @@ To set the size of the items, you can use the `basis` utility class on the `data
         role="group"
         aria-roledescription="slide"
         data-slot="carousel-item"
-        class="min-w-0 shrink-0 grow-0 pl-4 basis-1/2 lg:basis-1/3"
+        class="basis-1/2 lg:basis-1/3"
       >
         <div class="p-1">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div
               data-slot="card-content"
@@ -2042,7 +2017,7 @@ To set the size of the items, you can use the `basis` utility class on the `data
     data-slot="carousel-previous"
     data-variant="outline"
     data-size="icon-sm"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -left-12 my-auto"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-7 in-data-[slot=button-group]:rounded-lg rounded-full"
     disabled=""
   >
     <svg
@@ -2063,7 +2038,7 @@ To set the size of the items, you can use the `basis` utility class on the `data
     data-slot="carousel-next"
     data-variant="outline"
     data-size="icon-sm"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -right-12 my-auto"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-7 in-data-[slot=button-group]:rounded-lg rounded-full"
     disabled=""
   >
     <svg
@@ -3798,24 +3773,24 @@ To set the spacing between the items, we use a `pl-[VALUE]` utility on the `data
 {% <codegroup> %}
 ```text,name=carousel-spacing.html
 <div
-  class="relative w-full max-w-[12rem] sm:max-w-xs md:max-w-sm"
+  class="w-full max-w-[12rem] sm:max-w-xs md:max-w-sm"
   role="region"
   aria-roledescription="carousel"
   data-slot="carousel"
 >
-  <div class="overflow-hidden" data-slot="carousel-content">
+  <div data-slot="carousel-content">
     <div class="flex -ml-1" style="transform: translate3d(0px, 0px, 0px)">
       <div
         role="group"
         aria-roledescription="slide"
         data-slot="carousel-item"
-        class="min-w-0 shrink-0 grow-0 basis-1/2 pl-1 lg:basis-1/3"
+        class="basis-1/2 pl-1 lg:basis-1/3"
       >
         <div class="p-1">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div
               data-slot="card-content"
@@ -3830,13 +3805,13 @@ To set the spacing between the items, we use a `pl-[VALUE]` utility on the `data
         role="group"
         aria-roledescription="slide"
         data-slot="carousel-item"
-        class="min-w-0 shrink-0 grow-0 basis-1/2 pl-1 lg:basis-1/3"
+        class="basis-1/2 pl-1 lg:basis-1/3"
       >
         <div class="p-1">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div
               data-slot="card-content"
@@ -3851,13 +3826,13 @@ To set the spacing between the items, we use a `pl-[VALUE]` utility on the `data
         role="group"
         aria-roledescription="slide"
         data-slot="carousel-item"
-        class="min-w-0 shrink-0 grow-0 basis-1/2 pl-1 lg:basis-1/3"
+        class="basis-1/2 pl-1 lg:basis-1/3"
       >
         <div class="p-1">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div
               data-slot="card-content"
@@ -3872,13 +3847,13 @@ To set the spacing between the items, we use a `pl-[VALUE]` utility on the `data
         role="group"
         aria-roledescription="slide"
         data-slot="carousel-item"
-        class="min-w-0 shrink-0 grow-0 basis-1/2 pl-1 lg:basis-1/3"
+        class="basis-1/2 pl-1 lg:basis-1/3"
       >
         <div class="p-1">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div
               data-slot="card-content"
@@ -3893,13 +3868,13 @@ To set the spacing between the items, we use a `pl-[VALUE]` utility on the `data
         role="group"
         aria-roledescription="slide"
         data-slot="carousel-item"
-        class="min-w-0 shrink-0 grow-0 basis-1/2 pl-1 lg:basis-1/3"
+        class="basis-1/2 pl-1 lg:basis-1/3"
       >
         <div class="p-1">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div
               data-slot="card-content"
@@ -3916,7 +3891,7 @@ To set the spacing between the items, we use a `pl-[VALUE]` utility on the `data
     data-slot="carousel-previous"
     data-variant="outline"
     data-size="icon-sm"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -left-12 my-auto"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-7 in-data-[slot=button-group]:rounded-lg rounded-full"
     disabled=""
   >
     <svg
@@ -3937,7 +3912,7 @@ To set the spacing between the items, we use a `pl-[VALUE]` utility on the `data
     data-slot="carousel-next"
     data-variant="outline"
     data-size="icon-sm"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -right-12 my-auto"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-7 in-data-[slot=button-group]:rounded-lg rounded-full"
     disabled=""
   >
     <svg
@@ -5669,13 +5644,8 @@ Use the `orientation` prop to set the orientation of the carousel.
 
 {% <codegroup> %}
 ```text,name=carousel-orientation.html
-<div
-  class="relative w-full max-w-xs"
-  role="region"
-  aria-roledescription="carousel"
-  data-slot="carousel"
->
-  <div class="overflow-hidden" data-slot="carousel-content">
+<div class="w-full max-w-xs" role="region" aria-roledescription="carousel" data-slot="carousel">
+  <div data-slot="carousel-content">
     <div class="flex flex-col -mt-1 h-[270px]" style="transform: translate3d(0px, 0px, 0px)">
       <div
         role="group"
@@ -5687,7 +5657,7 @@ Use the `orientation` prop to set the orientation of the carousel.
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div data-slot="card-content" class="flex items-center justify-center p-6">
               <span class="text-3xl font-semibold">1</span>
@@ -5705,7 +5675,7 @@ Use the `orientation` prop to set the orientation of the carousel.
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div data-slot="card-content" class="flex items-center justify-center p-6">
               <span class="text-3xl font-semibold">2</span>
@@ -5723,7 +5693,7 @@ Use the `orientation` prop to set the orientation of the carousel.
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div data-slot="card-content" class="flex items-center justify-center p-6">
               <span class="text-3xl font-semibold">3</span>
@@ -5741,7 +5711,7 @@ Use the `orientation` prop to set the orientation of the carousel.
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div data-slot="card-content" class="flex items-center justify-center p-6">
               <span class="text-3xl font-semibold">4</span>
@@ -5759,7 +5729,7 @@ Use the `orientation` prop to set the orientation of the carousel.
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div data-slot="card-content" class="flex items-center justify-center p-6">
               <span class="text-3xl font-semibold">5</span>
@@ -7523,24 +7493,14 @@ Use a state and the `setApi` props to get an instance of the carousel API.
 {% <codegroup> %}
 ```text,name=carousel-api.html
 <div class="mx-auto max-w-[10rem] sm:max-w-xs">
-  <div
-    class="relative w-full max-w-xs"
-    role="region"
-    aria-roledescription="carousel"
-    data-slot="carousel"
-  >
-    <div class="overflow-hidden" data-slot="carousel-content">
+  <div class="w-full max-w-xs" role="region" aria-roledescription="carousel" data-slot="carousel">
+    <div data-slot="carousel-content">
       <div class="flex -ml-4" style="transform: translate3d(0px, 0px, 0px)">
-        <div
-          role="group"
-          aria-roledescription="slide"
-          data-slot="carousel-item"
-          class="min-w-0 shrink-0 grow-0 basis-full pl-4"
-        >
+        <div role="group" aria-roledescription="slide" data-slot="carousel-item">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col m-px"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card m-px"
           >
             <div
               data-slot="card-content"
@@ -7550,16 +7510,11 @@ Use a state and the `setApi` props to get an instance of the carousel API.
             </div>
           </div>
         </div>
-        <div
-          role="group"
-          aria-roledescription="slide"
-          data-slot="carousel-item"
-          class="min-w-0 shrink-0 grow-0 basis-full pl-4"
-        >
+        <div role="group" aria-roledescription="slide" data-slot="carousel-item">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col m-px"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card m-px"
           >
             <div
               data-slot="card-content"
@@ -7569,16 +7524,11 @@ Use a state and the `setApi` props to get an instance of the carousel API.
             </div>
           </div>
         </div>
-        <div
-          role="group"
-          aria-roledescription="slide"
-          data-slot="carousel-item"
-          class="min-w-0 shrink-0 grow-0 basis-full pl-4"
-        >
+        <div role="group" aria-roledescription="slide" data-slot="carousel-item">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col m-px"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card m-px"
           >
             <div
               data-slot="card-content"
@@ -7588,16 +7538,11 @@ Use a state and the `setApi` props to get an instance of the carousel API.
             </div>
           </div>
         </div>
-        <div
-          role="group"
-          aria-roledescription="slide"
-          data-slot="carousel-item"
-          class="min-w-0 shrink-0 grow-0 basis-full pl-4"
-        >
+        <div role="group" aria-roledescription="slide" data-slot="carousel-item">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col m-px"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card m-px"
           >
             <div
               data-slot="card-content"
@@ -7607,16 +7552,11 @@ Use a state and the `setApi` props to get an instance of the carousel API.
             </div>
           </div>
         </div>
-        <div
-          role="group"
-          aria-roledescription="slide"
-          data-slot="carousel-item"
-          class="min-w-0 shrink-0 grow-0 basis-full pl-4"
-        >
+        <div role="group" aria-roledescription="slide" data-slot="carousel-item">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col m-px"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card m-px"
           >
             <div
               data-slot="card-content"
@@ -7632,7 +7572,7 @@ Use a state and the `setApi` props to get an instance of the carousel API.
       data-slot="carousel-previous"
       data-variant="outline"
       data-size="icon-sm"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -left-12 my-auto"
+      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-7 in-data-[slot=button-group]:rounded-lg rounded-full"
       disabled=""
     >
       <svg
@@ -7653,7 +7593,7 @@ Use a state and the `setApi` props to get an instance of the carousel API.
       data-slot="carousel-next"
       data-variant="outline"
       data-size="icon-sm"
-      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -right-12 my-auto"
+      class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-7 in-data-[slot=button-group]:rounded-lg rounded-full"
       disabled=""
     >
       <svg
@@ -9391,24 +9331,19 @@ Plugins are an Embla concept (`EmblaCarousel(viewport, options, plugins)`) — s
 {% <codegroup> %}
 ```text,name=carousel-plugin.html
 <div
-  class="relative w-full max-w-[10rem] sm:max-w-xs"
+  class="w-full max-w-[10rem] sm:max-w-xs"
   role="region"
   aria-roledescription="carousel"
   data-slot="carousel"
 >
-  <div class="overflow-hidden" data-slot="carousel-content">
+  <div data-slot="carousel-content">
     <div class="flex -ml-4" style="transform: translate3d(0px, 0px, 0px)">
-      <div
-        role="group"
-        aria-roledescription="slide"
-        data-slot="carousel-item"
-        class="min-w-0 shrink-0 grow-0 basis-full pl-4"
-      >
+      <div role="group" aria-roledescription="slide" data-slot="carousel-item">
         <div class="p-1">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div
               data-slot="card-content"
@@ -9419,17 +9354,12 @@ Plugins are an Embla concept (`EmblaCarousel(viewport, options, plugins)`) — s
           </div>
         </div>
       </div>
-      <div
-        role="group"
-        aria-roledescription="slide"
-        data-slot="carousel-item"
-        class="min-w-0 shrink-0 grow-0 basis-full pl-4"
-      >
+      <div role="group" aria-roledescription="slide" data-slot="carousel-item">
         <div class="p-1">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div
               data-slot="card-content"
@@ -9440,17 +9370,12 @@ Plugins are an Embla concept (`EmblaCarousel(viewport, options, plugins)`) — s
           </div>
         </div>
       </div>
-      <div
-        role="group"
-        aria-roledescription="slide"
-        data-slot="carousel-item"
-        class="min-w-0 shrink-0 grow-0 basis-full pl-4"
-      >
+      <div role="group" aria-roledescription="slide" data-slot="carousel-item">
         <div class="p-1">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div
               data-slot="card-content"
@@ -9461,17 +9386,12 @@ Plugins are an Embla concept (`EmblaCarousel(viewport, options, plugins)`) — s
           </div>
         </div>
       </div>
-      <div
-        role="group"
-        aria-roledescription="slide"
-        data-slot="carousel-item"
-        class="min-w-0 shrink-0 grow-0 basis-full pl-4"
-      >
+      <div role="group" aria-roledescription="slide" data-slot="carousel-item">
         <div class="p-1">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div
               data-slot="card-content"
@@ -9482,17 +9402,12 @@ Plugins are an Embla concept (`EmblaCarousel(viewport, options, plugins)`) — s
           </div>
         </div>
       </div>
-      <div
-        role="group"
-        aria-roledescription="slide"
-        data-slot="carousel-item"
-        class="min-w-0 shrink-0 grow-0 basis-full pl-4"
-      >
+      <div role="group" aria-roledescription="slide" data-slot="carousel-item">
         <div class="p-1">
           <div
             data-slot="card"
             data-size="default"
-            class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col"
+            class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card"
           >
             <div
               data-slot="card-content"
@@ -9509,7 +9424,7 @@ Plugins are an Embla concept (`EmblaCarousel(viewport, options, plugins)`) — s
     data-slot="carousel-previous"
     data-variant="outline"
     data-size="icon-sm"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -left-12 my-auto"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-7 in-data-[slot=button-group]:rounded-lg rounded-full"
     disabled=""
   >
     <svg
@@ -9530,7 +9445,7 @@ Plugins are an Embla concept (`EmblaCarousel(viewport, options, plugins)`) — s
     data-slot="carousel-next"
     data-variant="outline"
     data-size="icon-sm"
-    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground size-7 in-data-[slot=button-group]:rounded-lg rounded-full absolute touch-manipulation inset-y-0 -right-12 my-auto"
+    class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 [&_svg:not([class*='size-'])]:size-4 group/button border-border bg-background hover:bg-muted dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted size-7 in-data-[slot=button-group]:rounded-lg rounded-full"
     disabled=""
   >
     <svg

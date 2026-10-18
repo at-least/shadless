@@ -18,7 +18,7 @@ A visually persistent menu common in desktop applications that provides quick ac
 <div
   role="menubar"
   data-slot="menubar"
-  class="h-8 gap-0.5 rounded-lg border p-[3px] flex items-center w-72"
+  class="w-72"
   tabindex="0"
   data-orientation="horizontal"
   style="outline: none"
@@ -31,7 +31,6 @@ A visually persistent menu common in desktop applications that provides quick ac
     aria-expanded="false"
     data-state="closed"
     data-slot="menubar-trigger"
-    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
     tabindex="-1"
     data-orientation="horizontal"
     data-radix-collection-item=""
@@ -46,7 +45,6 @@ A visually persistent menu common in desktop applications that provides quick ac
     aria-expanded="false"
     data-state="closed"
     data-slot="menubar-trigger"
-    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
     tabindex="-1"
     data-orientation="horizontal"
     data-radix-collection-item=""
@@ -61,7 +59,6 @@ A visually persistent menu common in desktop applications that provides quick ac
     aria-expanded="false"
     data-state="closed"
     data-slot="menubar-trigger"
-    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
     tabindex="-1"
     data-orientation="horizontal"
     data-radix-collection-item=""
@@ -76,7 +73,6 @@ A visually persistent menu common in desktop applications that provides quick ac
     aria-expanded="false"
     data-state="closed"
     data-slot="menubar-trigger"
-    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
     tabindex="0"
     data-orientation="horizontal"
     data-radix-collection-item=""
@@ -99,7 +95,7 @@ A visually persistent menu common in desktop applications that provides quick ac
     aria-labelledby="m0-trigger"
     data-radix-menubar-content=""
     data-slot="menubar-content"
-    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -116,7 +112,7 @@ A visually persistent menu common in desktop applications that provides quick ac
         role="menuitem"
         data-slot="menubar-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -124,7 +120,7 @@ A visually persistent menu common in desktop applications that provides quick ac
         New Tab
         <span
           data-slot="menubar-shortcut"
-          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground"
           >⌘T</span
         >
       </div>
@@ -132,7 +128,7 @@ A visually persistent menu common in desktop applications that provides quick ac
         role="menuitem"
         data-slot="menubar-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -140,7 +136,7 @@ A visually persistent menu common in desktop applications that provides quick ac
         New Window
         <span
           data-slot="menubar-shortcut"
-          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground"
           >⌘N</span
         >
       </div>
@@ -150,7 +146,7 @@ A visually persistent menu common in desktop applications that provides quick ac
         data-disabled=""
         data-slot="menubar-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -158,12 +154,7 @@ A visually persistent menu common in desktop applications that provides quick ac
         New Incognito Window
       </div>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="menubar-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="menubar-separator"></div>
     <div role="group" data-slot="menubar-group">
       <div
         role="menuitem"
@@ -174,7 +165,7 @@ A visually persistent menu common in desktop applications that provides quick ac
         data-state="closed"
         data-radix-menubar-subtrigger=""
         data-slot="menubar-sub-trigger"
-        class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-none select-none"
+        class="px-1.5 data-inset:pl-7"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -196,18 +187,13 @@ A visually persistent menu common in desktop applications that provides quick ac
         </svg>
       </div>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="menubar-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="menubar-separator"></div>
     <div role="group" data-slot="menubar-group">
       <div
         role="menuitem"
         data-slot="menubar-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -215,7 +201,7 @@ A visually persistent menu common in desktop applications that provides quick ac
         Print...
         <span
           data-slot="menubar-shortcut"
-          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground"
           >⌘P</span
         >
       </div>
@@ -235,7 +221,7 @@ A visually persistent menu common in desktop applications that provides quick ac
     aria-labelledby="m0-trigger"
     data-radix-menubar-content=""
     data-slot="menubar-sub-content"
-    class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-32 rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -252,7 +238,7 @@ A visually persistent menu common in desktop applications that provides quick ac
         role="menuitem"
         data-slot="menubar-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -263,7 +249,7 @@ A visually persistent menu common in desktop applications that provides quick ac
         role="menuitem"
         data-slot="menubar-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -274,7 +260,7 @@ A visually persistent menu common in desktop applications that provides quick ac
         role="menuitem"
         data-slot="menubar-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -297,7 +283,7 @@ A visually persistent menu common in desktop applications that provides quick ac
     aria-labelledby="m1-trigger"
     data-radix-menubar-content=""
     data-slot="menubar-content"
-    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -314,7 +300,7 @@ A visually persistent menu common in desktop applications that provides quick ac
         role="menuitem"
         data-slot="menubar-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -322,7 +308,7 @@ A visually persistent menu common in desktop applications that provides quick ac
         Undo
         <span
           data-slot="menubar-shortcut"
-          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground"
           >⌘Z</span
         >
       </div>
@@ -330,7 +316,7 @@ A visually persistent menu common in desktop applications that provides quick ac
         role="menuitem"
         data-slot="menubar-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -338,17 +324,12 @@ A visually persistent menu common in desktop applications that provides quick ac
         Redo
         <span
           data-slot="menubar-shortcut"
-          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground"
           >⇧⌘Z</span
         >
       </div>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="menubar-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="menubar-separator"></div>
     <div role="group" data-slot="menubar-group">
       <div
         role="menuitem"
@@ -359,7 +340,7 @@ A visually persistent menu common in desktop applications that provides quick ac
         data-state="closed"
         data-radix-menubar-subtrigger=""
         data-slot="menubar-sub-trigger"
-        class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-none select-none"
+        class="px-1.5 data-inset:pl-7"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -381,18 +362,13 @@ A visually persistent menu common in desktop applications that provides quick ac
         </svg>
       </div>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="menubar-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="menubar-separator"></div>
     <div role="group" data-slot="menubar-group">
       <div
         role="menuitem"
         data-slot="menubar-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -403,7 +379,7 @@ A visually persistent menu common in desktop applications that provides quick ac
         role="menuitem"
         data-slot="menubar-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -414,7 +390,7 @@ A visually persistent menu common in desktop applications that provides quick ac
         role="menuitem"
         data-slot="menubar-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -437,7 +413,7 @@ A visually persistent menu common in desktop applications that provides quick ac
     aria-labelledby="m1-trigger"
     data-radix-menubar-content=""
     data-slot="menubar-sub-content"
-    class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-32 rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -454,7 +430,7 @@ A visually persistent menu common in desktop applications that provides quick ac
         role="menuitem"
         data-slot="menubar-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -462,18 +438,13 @@ A visually persistent menu common in desktop applications that provides quick ac
         Search the web
       </div>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="menubar-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="menubar-separator"></div>
     <div role="group" data-slot="menubar-group">
       <div
         role="menuitem"
         data-slot="menubar-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -484,7 +455,7 @@ A visually persistent menu common in desktop applications that provides quick ac
         role="menuitem"
         data-slot="menubar-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -495,7 +466,7 @@ A visually persistent menu common in desktop applications that provides quick ac
         role="menuitem"
         data-slot="menubar-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -518,7 +489,7 @@ A visually persistent menu common in desktop applications that provides quick ac
     aria-labelledby="m2-trigger"
     data-radix-menubar-content=""
     data-slot="menubar-content"
-    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden w-44"
+    class="cn-menu-target cn-menu-translucent w-44"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -535,7 +506,6 @@ A visually persistent menu common in desktop applications that provides quick ac
         role="menuitemcheckbox"
         aria-checked="false"
         data-slot="menubar-checkbox-item"
-        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
         data-state="unchecked"
         tabindex="-1"
         data-orientation="vertical"
@@ -550,7 +520,6 @@ A visually persistent menu common in desktop applications that provides quick ac
         role="menuitemcheckbox"
         aria-checked="true"
         data-slot="menubar-checkbox-item"
-        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
         data-state="checked"
         tabindex="-1"
         data-orientation="vertical"
@@ -575,19 +544,14 @@ A visually persistent menu common in desktop applications that provides quick ac
         >Full URLs
       </div>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="menubar-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="menubar-separator"></div>
     <div role="group" data-slot="menubar-group">
       <div
         role="menuitem"
         data-slot="menubar-item"
         data-inset="true"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -595,7 +559,7 @@ A visually persistent menu common in desktop applications that provides quick ac
         Reload
         <span
           data-slot="menubar-shortcut"
-          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground"
           >⌘R</span
         >
       </div>
@@ -606,7 +570,7 @@ A visually persistent menu common in desktop applications that provides quick ac
         data-slot="menubar-item"
         data-inset="true"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -614,24 +578,19 @@ A visually persistent menu common in desktop applications that provides quick ac
         Force Reload
         <span
           data-slot="menubar-shortcut"
-          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+          class="text-muted-foreground group-focus/menubar-item:text-accent-foreground"
           >⇧⌘R</span
         >
       </div>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="menubar-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="menubar-separator"></div>
     <div role="group" data-slot="menubar-group">
       <div
         role="menuitem"
         data-slot="menubar-item"
         data-inset="true"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -639,19 +598,14 @@ A visually persistent menu common in desktop applications that provides quick ac
         Toggle Fullscreen
       </div>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="menubar-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="menubar-separator"></div>
     <div role="group" data-slot="menubar-group">
       <div
         role="menuitem"
         data-slot="menubar-item"
         data-inset="true"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -674,7 +628,7 @@ A visually persistent menu common in desktop applications that provides quick ac
     aria-labelledby="m3-trigger"
     data-radix-menubar-content=""
     data-slot="menubar-content"
-    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -691,7 +645,6 @@ A visually persistent menu common in desktop applications that provides quick ac
         role="menuitemradio"
         aria-checked="false"
         data-slot="menubar-radio-item"
-        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
         data-state="unchecked"
         tabindex="-1"
         data-orientation="vertical"
@@ -706,7 +659,6 @@ A visually persistent menu common in desktop applications that provides quick ac
         role="menuitemradio"
         aria-checked="true"
         data-slot="menubar-radio-item"
-        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
         data-state="checked"
         tabindex="-1"
         data-orientation="vertical"
@@ -734,7 +686,6 @@ A visually persistent menu common in desktop applications that provides quick ac
         role="menuitemradio"
         aria-checked="false"
         data-slot="menubar-radio-item"
-        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
         data-state="unchecked"
         tabindex="-1"
         data-orientation="vertical"
@@ -746,19 +697,14 @@ A visually persistent menu common in desktop applications that provides quick ac
         >Luis
       </div>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="menubar-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="menubar-separator"></div>
     <div role="group" data-slot="menubar-group">
       <div
         role="menuitem"
         data-slot="menubar-item"
         data-inset="true"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -766,19 +712,14 @@ A visually persistent menu common in desktop applications that provides quick ac
         Edit...
       </div>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="menubar-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="menubar-separator"></div>
     <div role="group" data-slot="menubar-group">
       <div
         role="menuitem"
         data-slot="menubar-item"
         data-inset="true"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -1086,7 +1027,7 @@ Use `MenubarCheckboxItem` for toggleable options.
 <div
   role="menubar"
   data-slot="menubar"
-  class="h-8 gap-0.5 rounded-lg border p-[3px] flex items-center w-72"
+  class="w-72"
   tabindex="0"
   data-orientation="horizontal"
   style="outline: none"
@@ -1099,7 +1040,6 @@ Use `MenubarCheckboxItem` for toggleable options.
     aria-expanded="false"
     data-state="closed"
     data-slot="menubar-trigger"
-    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
     tabindex="-1"
     data-orientation="horizontal"
     data-radix-collection-item=""
@@ -1114,7 +1054,6 @@ Use `MenubarCheckboxItem` for toggleable options.
     aria-expanded="false"
     data-state="closed"
     data-slot="menubar-trigger"
-    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
     tabindex="0"
     data-orientation="horizontal"
     data-radix-collection-item=""
@@ -1137,7 +1076,7 @@ Use `MenubarCheckboxItem` for toggleable options.
     aria-labelledby="m0-trigger"
     data-radix-menubar-content=""
     data-slot="menubar-content"
-    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden w-64"
+    class="cn-menu-target cn-menu-translucent w-64"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -1153,7 +1092,6 @@ Use `MenubarCheckboxItem` for toggleable options.
       role="menuitemcheckbox"
       aria-checked="false"
       data-slot="menubar-checkbox-item"
-      class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
       data-state="unchecked"
       tabindex="-1"
       data-orientation="vertical"
@@ -1168,7 +1106,6 @@ Use `MenubarCheckboxItem` for toggleable options.
       role="menuitemcheckbox"
       aria-checked="true"
       data-slot="menubar-checkbox-item"
-      class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
       data-state="checked"
       tabindex="-1"
       data-orientation="vertical"
@@ -1192,18 +1129,13 @@ Use `MenubarCheckboxItem` for toggleable options.
             <path d="M20 6 9 17l-5-5"></path></svg></span></span
       >Always Show Full URLs
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="menubar-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="menubar-separator"></div>
     <div
       role="menuitem"
       data-slot="menubar-item"
       data-inset="true"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -1211,7 +1143,7 @@ Use `MenubarCheckboxItem` for toggleable options.
       Reload
       <span
         data-slot="menubar-shortcut"
-        class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+        class="text-muted-foreground group-focus/menubar-item:text-accent-foreground"
         >⌘R</span
       >
     </div>
@@ -1222,7 +1154,7 @@ Use `MenubarCheckboxItem` for toggleable options.
       data-slot="menubar-item"
       data-inset="true"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -1230,7 +1162,7 @@ Use `MenubarCheckboxItem` for toggleable options.
       Force Reload
       <span
         data-slot="menubar-shortcut"
-        class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+        class="text-muted-foreground group-focus/menubar-item:text-accent-foreground"
         >⇧⌘R</span
       >
     </div>
@@ -1249,7 +1181,7 @@ Use `MenubarCheckboxItem` for toggleable options.
     aria-labelledby="m1-trigger"
     data-radix-menubar-content=""
     data-slot="menubar-content"
-    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -1265,7 +1197,6 @@ Use `MenubarCheckboxItem` for toggleable options.
       role="menuitemcheckbox"
       aria-checked="true"
       data-slot="menubar-checkbox-item"
-      class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
       data-state="checked"
       tabindex="-1"
       data-orientation="vertical"
@@ -1293,7 +1224,6 @@ Use `MenubarCheckboxItem` for toggleable options.
       role="menuitemcheckbox"
       aria-checked="false"
       data-slot="menubar-checkbox-item"
-      class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
       data-state="unchecked"
       tabindex="-1"
       data-orientation="vertical"
@@ -1308,7 +1238,6 @@ Use `MenubarCheckboxItem` for toggleable options.
       role="menuitemcheckbox"
       aria-checked="false"
       data-slot="menubar-checkbox-item"
-      class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-inset:pl-7 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
       data-state="unchecked"
       tabindex="-1"
       data-orientation="vertical"
@@ -1536,7 +1465,7 @@ Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
 <div
   role="menubar"
   data-slot="menubar"
-  class="h-8 gap-0.5 rounded-lg border p-[3px] flex items-center w-72"
+  class="w-72"
   tabindex="0"
   data-orientation="horizontal"
   style="outline: none"
@@ -1549,7 +1478,6 @@ Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
     aria-expanded="false"
     data-state="closed"
     data-slot="menubar-trigger"
-    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
     tabindex="-1"
     data-orientation="horizontal"
     data-radix-collection-item=""
@@ -1564,7 +1492,6 @@ Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
     aria-expanded="false"
     data-state="closed"
     data-slot="menubar-trigger"
-    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
     tabindex="0"
     data-orientation="horizontal"
     data-radix-collection-item=""
@@ -1587,7 +1514,7 @@ Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
     aria-labelledby="m0-trigger"
     data-radix-menubar-content=""
     data-slot="menubar-content"
-    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -1604,7 +1531,6 @@ Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
         role="menuitemradio"
         aria-checked="false"
         data-slot="menubar-radio-item"
-        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
         data-state="unchecked"
         tabindex="-1"
         data-orientation="vertical"
@@ -1619,7 +1545,6 @@ Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
         role="menuitemradio"
         aria-checked="true"
         data-slot="menubar-radio-item"
-        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
         data-state="checked"
         tabindex="-1"
         data-orientation="vertical"
@@ -1647,7 +1572,6 @@ Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
         role="menuitemradio"
         aria-checked="false"
         data-slot="menubar-radio-item"
-        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
         data-state="unchecked"
         tabindex="-1"
         data-orientation="vertical"
@@ -1659,18 +1583,13 @@ Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
         >Luis
       </div>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="menubar-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="menubar-separator"></div>
     <div
       role="menuitem"
       data-slot="menubar-item"
       data-inset="true"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -1682,7 +1601,7 @@ Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
       data-slot="menubar-item"
       data-inset="true"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -1704,7 +1623,7 @@ Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
     aria-labelledby="m1-trigger"
     data-radix-menubar-content=""
     data-slot="menubar-content"
-    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -1721,7 +1640,6 @@ Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
         role="menuitemradio"
         aria-checked="false"
         data-slot="menubar-radio-item"
-        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
         data-state="unchecked"
         tabindex="-1"
         data-orientation="vertical"
@@ -1736,7 +1654,6 @@ Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
         role="menuitemradio"
         aria-checked="false"
         data-slot="menubar-radio-item"
-        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
         data-state="unchecked"
         tabindex="-1"
         data-orientation="vertical"
@@ -1751,7 +1668,6 @@ Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
         role="menuitemradio"
         aria-checked="true"
         data-slot="menubar-radio-item"
-        class="focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md py-1 pr-1.5 pl-7 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
         data-state="checked"
         tabindex="-1"
         data-orientation="vertical"
@@ -1993,7 +1909,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
 <div
   role="menubar"
   data-slot="menubar"
-  class="h-8 gap-0.5 rounded-lg border p-[3px] flex items-center w-72"
+  class="w-72"
   tabindex="0"
   data-orientation="horizontal"
   style="outline: none"
@@ -2006,7 +1922,6 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
     aria-expanded="false"
     data-state="closed"
     data-slot="menubar-trigger"
-    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
     tabindex="-1"
     data-orientation="horizontal"
     data-radix-collection-item=""
@@ -2021,7 +1936,6 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
     aria-expanded="false"
     data-state="closed"
     data-slot="menubar-trigger"
-    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
     tabindex="0"
     data-orientation="horizontal"
     data-radix-collection-item=""
@@ -2044,7 +1958,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
     aria-labelledby="m0-trigger"
     data-radix-menubar-content=""
     data-slot="menubar-content"
-    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -2065,7 +1979,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
       data-state="closed"
       data-radix-menubar-subtrigger=""
       data-slot="menubar-sub-trigger"
-      class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-none select-none"
+      class="px-1.5 data-inset:pl-7"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -2086,17 +2000,12 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
         <path d="m9 18 6-6-6-6"></path>
       </svg>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="menubar-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="menubar-separator"></div>
     <div
       role="menuitem"
       data-slot="menubar-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -2104,7 +2013,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
       Print...
       <span
         data-slot="menubar-shortcut"
-        class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+        class="text-muted-foreground group-focus/menubar-item:text-accent-foreground"
         >⌘P</span
       >
     </div>
@@ -2123,7 +2032,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
     aria-labelledby="m0-trigger"
     data-radix-menubar-content=""
     data-slot="menubar-sub-content"
-    class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-32 rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -2139,7 +2048,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
       role="menuitem"
       data-slot="menubar-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -2150,7 +2059,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
       role="menuitem"
       data-slot="menubar-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -2161,7 +2070,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
       role="menuitem"
       data-slot="menubar-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -2183,7 +2092,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
     aria-labelledby="m1-trigger"
     data-radix-menubar-content=""
     data-slot="menubar-content"
-    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -2199,7 +2108,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
       role="menuitem"
       data-slot="menubar-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -2207,7 +2116,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
       Undo
       <span
         data-slot="menubar-shortcut"
-        class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+        class="text-muted-foreground group-focus/menubar-item:text-accent-foreground"
         >⌘Z</span
       >
     </div>
@@ -2215,7 +2124,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
       role="menuitem"
       data-slot="menubar-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -2223,16 +2132,11 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
       Redo
       <span
         data-slot="menubar-shortcut"
-        class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+        class="text-muted-foreground group-focus/menubar-item:text-accent-foreground"
         >⇧⌘Z</span
       >
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="menubar-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="menubar-separator"></div>
     <div
       role="menuitem"
       id="m1s0-trigger"
@@ -2242,7 +2146,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
       data-state="closed"
       data-radix-menubar-subtrigger=""
       data-slot="menubar-sub-trigger"
-      class="focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 flex cursor-default items-center outline-none select-none"
+      class="px-1.5 data-inset:pl-7"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -2263,17 +2167,12 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
         <path d="m9 18 6-6-6-6"></path>
       </svg>
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="menubar-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="menubar-separator"></div>
     <div
       role="menuitem"
       data-slot="menubar-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -2284,7 +2183,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
       role="menuitem"
       data-slot="menubar-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -2295,7 +2194,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
       role="menuitem"
       data-slot="menubar-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -2317,7 +2216,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
     aria-labelledby="m1-trigger"
     data-radix-menubar-content=""
     data-slot="menubar-sub-content"
-    class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-32 rounded-lg p-1 shadow-lg ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -2333,7 +2232,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
       role="menuitem"
       data-slot="menubar-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -2344,7 +2243,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
       role="menuitem"
       data-slot="menubar-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -2355,7 +2254,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
       role="menuitem"
       data-slot="menubar-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -2577,7 +2476,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
 <div
   role="menubar"
   data-slot="menubar"
-  class="h-8 gap-0.5 rounded-lg border p-[3px] flex items-center w-72"
+  class="w-72"
   tabindex="0"
   data-orientation="horizontal"
   style="outline: none"
@@ -2590,7 +2489,6 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
     aria-expanded="false"
     data-state="closed"
     data-slot="menubar-trigger"
-    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
     tabindex="-1"
     data-orientation="horizontal"
     data-radix-collection-item=""
@@ -2605,7 +2503,6 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
     aria-expanded="false"
     data-state="closed"
     data-slot="menubar-trigger"
-    class="hover:bg-muted aria-expanded:bg-muted rounded-sm px-1.5 py-[2px] text-sm font-medium flex items-center outline-hidden select-none"
     tabindex="0"
     data-orientation="horizontal"
     data-radix-collection-item=""
@@ -2628,7 +2525,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
     aria-labelledby="m0-trigger"
     data-radix-menubar-content=""
     data-slot="menubar-content"
-    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -2644,7 +2541,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
       role="menuitem"
       data-slot="menubar-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -2666,7 +2563,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
       >New File
       <span
         data-slot="menubar-shortcut"
-        class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+        class="text-muted-foreground group-focus/menubar-item:text-accent-foreground"
         >⌘N</span
       >
     </div>
@@ -2674,7 +2571,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
       role="menuitem"
       data-slot="menubar-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -2696,17 +2593,12 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
         ></path></svg
       >Open Folder
     </div>
-    <div
-      role="separator"
-      aria-orientation="horizontal"
-      data-slot="menubar-separator"
-      class="bg-border -mx-1 my-1 h-px"
-    ></div>
+    <div role="separator" aria-orientation="horizontal" data-slot="menubar-separator"></div>
     <div
       role="menuitem"
       data-slot="menubar-item"
       data-variant="default"
-      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+      class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
       tabindex="-1"
       data-orientation="vertical"
       data-radix-collection-item=""
@@ -2731,7 +2623,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
       >Save
       <span
         data-slot="menubar-shortcut"
-        class="text-muted-foreground group-focus/menubar-item:text-accent-foreground text-xs tracking-widest ml-auto"
+        class="text-muted-foreground group-focus/menubar-item:text-accent-foreground"
         >⌘S</span
       >
     </div>
@@ -2750,7 +2642,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
     aria-labelledby="m1-trigger"
     data-radix-menubar-content=""
     data-slot="menubar-content"
-    class="bg-popover text-popover-foreground data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 min-w-36 rounded-lg p-1 shadow-md ring-1 duration-100 cn-menu-target cn-menu-translucent z-50 origin-(--radix-menubar-content-transform-origin) overflow-hidden"
+    class="cn-menu-target cn-menu-translucent"
     tabindex="-1"
     data-orientation="vertical"
     style="
@@ -2767,7 +2659,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
         role="menuitem"
         data-slot="menubar-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -2794,7 +2686,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
         role="menuitem"
         data-slot="menubar-item"
         data-variant="default"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""
@@ -2816,17 +2708,12 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
           <path d="M12 17h.01"></path></svg
         >Help
       </div>
-      <div
-        role="separator"
-        aria-orientation="horizontal"
-        data-slot="menubar-separator"
-        class="bg-border -mx-1 my-1 h-px"
-      ></div>
+      <div role="separator" aria-orientation="horizontal" data-slot="menubar-separator"></div>
       <div
         role="menuitem"
         data-slot="menubar-item"
         data-variant="destructive"
-        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-disabled:opacity-50 data-inset:pl-7 [&_svg:not([class*='size-'])]:size-4 group/menubar-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        class="focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:text-destructive! not-data-[variant=destructive]:focus:**:text-accent-foreground px-1.5 data-inset:pl-7 group/menubar-item"
         tabindex="-1"
         data-orientation="vertical"
         data-radix-collection-item=""

@@ -10,6 +10,7 @@ pub mod docs_transforms;
 pub mod demo_smoke;
 pub mod docs_build;
 pub mod docs_catalog;
+pub mod docs_code_parity;
 pub mod docs_consistency;
 pub mod docs_fidelity;
 pub mod docs_smoke;

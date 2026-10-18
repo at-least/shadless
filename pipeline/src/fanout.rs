@@ -93,8 +93,8 @@ mod tests {
             fs::write(comp.join(name), "").unwrap();
         }
         let list = expand_fanout(&tmp, crate::nodes::all()).unwrap();
-        // 40 authored nodes + 2 shards replacing contracts
-        assert_eq!(list.len(), 42);
+        // 41 authored nodes + 2 shards replacing contracts
+        assert_eq!(list.len(), 43);
         let shards: Vec<&Node> = list.iter().filter(|n| n.id.starts_with("contracts:")).collect();
         assert_eq!(
             shards.iter().map(|n| n.id.as_str()).collect::<Vec<_>>(),

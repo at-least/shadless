@@ -19,10 +19,15 @@ npm install shadless
 No dependencies — the package is compiled CSS and vanilla JS, nothing else.
 
 The component **markup** is deliberately not in the package: it is text you
-copy and edit, not a file you import. Get it from this repo — every example's
-markup is in `docs/demos/*.html`, rendered with a copyable code tab by the
-docs site (`npm run docs && npm run docs:preview`), and `dist/components/`
-holds one minimal page per component.
+copy and edit, not a file you import. The copy source is the code tab under
+every example on the docs site (`npm run docs && npm run docs:preview`) —
+**slot-only markup**: the `data-slot`/`data-*` attributes plus only the
+classes the component stylesheet does not already supply. Import `shadless`
+and the component's stylesheet and it renders exactly like the preview
+(`docs-code-parity` proves that, in a consumer build as well as against the
+precompiled CSS). The preview iframe itself renders the full inline DOM
+shadcn's React produces — `docs/demos/*.html` in the repo — and
+`dist/components/` holds one minimal slot-only page per component.
 
 Primary path — your own Tailwind v4 build, >= 4.3 (tree-shaken to exactly the
 components you import; machine-checked by the repo's consumer-sim gate, which
@@ -34,8 +39,10 @@ the peer range declares):
 @import "shadless/button.css"; /* each component you use, one import    */
 ```
 
-…plus the markup (inline utilities — your content scan picks them up) and,
-where the component has behavior, its JS. No build? `shadless/full.min.css`
+…plus the markup — slot-only: keep the `data-slot` attributes, add utilities
+for your own choices (they sit in the utilities layer and win over the
+component styles), or set the documented `data-*` attributes — and, where the
+component has behavior, its JS. No build? `shadless/full.min.css`
 ships every component precompiled as the zero-setup alternative.
 
 | Export | What it is |
@@ -143,6 +150,12 @@ green once.
   state, with referenced child slots rendered on both sides
   (`path-parity`); every component stylesheet compiles alone
   (`consumer-sim`).
+- **Copy-source parity.** Every code tab must render element-for-element
+  identically to the raw demo markup it was written from — zero diffs, no
+  baseline — under the precompiled CSS and under a fresh consumer compile,
+  in both themes and directions (`docs-code-parity`). The tab under every
+  non-RTL preview is slot-only markup; RTL examples keep every class: their
+  logical-direction utilities exist only inline.
 - **Reproducible.** The committed `dist/` and `docs/` must equal a fresh
   pipeline run — the only authority on hand-edited outputs.
 - **Manual interventions are audited, not remembered.** Every rule table,

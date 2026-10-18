@@ -15,13 +15,8 @@ A vertically stacked set of interactive headings that each reveal a section of c
 
 {% <codegroup> %}
 ```text,name=accordion-demo.html
-<div data-slot="accordion" class="flex w-full flex-col max-w-lg" data-orientation="vertical">
-  <div
-    data-state="open"
-    data-orientation="vertical"
-    data-slot="accordion-item"
-    class="not-last:border-b"
-  >
+<div data-slot="accordion" class="max-w-lg" data-orientation="vertical">
+  <div data-state="open" data-orientation="vertical" data-slot="accordion-item">
     <h3 data-orientation="vertical" data-state="open" class="flex">
       <button
         type="button"
@@ -31,7 +26,7 @@ A vertically stacked set of interactive headings that each reveal a section of c
         data-orientation="vertical"
         id="radix-a2"
         data-slot="accordion-trigger"
-        class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
+        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
         data-radix-collection-item=""
       >
         What are your shipping options?<svg
@@ -44,7 +39,7 @@ A vertically stacked set of interactive headings that each reveal a section of c
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-down pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
+          class="lucide lucide-chevron-down group-aria-expanded/accordion-trigger:hidden"
           data-slot="accordion-trigger-icon"
         >
           <path d="m6 9 6 6 6-6"></path></svg
@@ -58,7 +53,7 @@ A vertically stacked set of interactive headings that each reveal a section of c
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-up pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
+          class="lucide lucide-chevron-up hidden group-aria-expanded/accordion-trigger:inline"
           data-slot="accordion-trigger-icon"
         >
           <path d="m18 15-6-6-6 6"></path>
@@ -72,7 +67,6 @@ A vertically stacked set of interactive headings that each reveal a section of c
       aria-labelledby="radix-a2"
       data-orientation="vertical"
       data-slot="accordion-content"
-      class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
       style="
         --radix-accordion-content-height: var(--radix-collapsible-content-height);
         --radix-accordion-content-width: var(--radix-collapsible-content-width);
@@ -90,12 +84,7 @@ A vertically stacked set of interactive headings that each reveal a section of c
       </div>
     </div>
   </div>
-  <div
-    data-state="closed"
-    data-orientation="vertical"
-    data-slot="accordion-item"
-    class="not-last:border-b"
-  >
+  <div data-state="closed" data-orientation="vertical" data-slot="accordion-item">
     <h3 data-orientation="vertical" data-state="closed" class="flex">
       <button
         type="button"
@@ -105,7 +94,7 @@ A vertically stacked set of interactive headings that each reveal a section of c
         data-orientation="vertical"
         id="radix-a4"
         data-slot="accordion-trigger"
-        class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
+        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
         data-radix-collection-item=""
       >
         What is your return policy?<svg
@@ -118,7 +107,7 @@ A vertically stacked set of interactive headings that each reveal a section of c
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-down pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
+          class="lucide lucide-chevron-down group-aria-expanded/accordion-trigger:hidden"
           data-slot="accordion-trigger-icon"
         >
           <path d="m6 9 6 6 6-6"></path></svg
@@ -132,7 +121,7 @@ A vertically stacked set of interactive headings that each reveal a section of c
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-up pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
+          class="lucide lucide-chevron-up hidden group-aria-expanded/accordion-trigger:inline"
           data-slot="accordion-trigger-icon"
         >
           <path d="m18 15-6-6-6 6"></path>
@@ -147,19 +136,13 @@ A vertically stacked set of interactive headings that each reveal a section of c
       aria-labelledby="radix-a4"
       data-orientation="vertical"
       data-slot="accordion-content"
-      class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
       style="
         --radix-accordion-content-height: var(--radix-collapsible-content-height);
         --radix-accordion-content-width: var(--radix-collapsible-content-width);
       "
     ></div>
   </div>
-  <div
-    data-state="closed"
-    data-orientation="vertical"
-    data-slot="accordion-item"
-    class="not-last:border-b"
-  >
+  <div data-state="closed" data-orientation="vertical" data-slot="accordion-item">
     <h3 data-orientation="vertical" data-state="closed" class="flex">
       <button
         type="button"
@@ -169,7 +152,7 @@ A vertically stacked set of interactive headings that each reveal a section of c
         data-orientation="vertical"
         id="radix-a6"
         data-slot="accordion-trigger"
-        class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
+        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
         data-radix-collection-item=""
       >
         How can I contact customer support?<svg
@@ -182,7 +165,7 @@ A vertically stacked set of interactive headings that each reveal a section of c
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-down pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
+          class="lucide lucide-chevron-down group-aria-expanded/accordion-trigger:hidden"
           data-slot="accordion-trigger-icon"
         >
           <path d="m6 9 6 6 6-6"></path></svg
@@ -196,7 +179,7 @@ A vertically stacked set of interactive headings that each reveal a section of c
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-up pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
+          class="lucide lucide-chevron-up hidden group-aria-expanded/accordion-trigger:inline"
           data-slot="accordion-trigger-icon"
         >
           <path d="m18 15-6-6-6 6"></path>
@@ -211,7 +194,6 @@ A vertically stacked set of interactive headings that each reveal a section of c
       aria-labelledby="radix-a6"
       data-orientation="vertical"
       data-slot="accordion-content"
-      class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
       style="
         --radix-accordion-content-height: var(--radix-collapsible-content-height);
         --radix-accordion-content-width: var(--radix-collapsible-content-width);
@@ -341,13 +323,8 @@ A basic accordion that shows one item at a time. The first item is open by defau
 
 {% <codegroup> %}
 ```text,name=accordion-basic.html
-<div data-slot="accordion" class="flex w-full flex-col max-w-lg" data-orientation="vertical">
-  <div
-    data-state="open"
-    data-orientation="vertical"
-    data-slot="accordion-item"
-    class="not-last:border-b"
-  >
+<div data-slot="accordion" class="max-w-lg" data-orientation="vertical">
+  <div data-state="open" data-orientation="vertical" data-slot="accordion-item">
     <h3 data-orientation="vertical" data-state="open" class="flex">
       <button
         type="button"
@@ -357,7 +334,7 @@ A basic accordion that shows one item at a time. The first item is open by defau
         data-orientation="vertical"
         id="radix-a2"
         data-slot="accordion-trigger"
-        class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
+        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
         data-radix-collection-item=""
       >
         How do I reset my password?<svg
@@ -370,7 +347,7 @@ A basic accordion that shows one item at a time. The first item is open by defau
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-down pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
+          class="lucide lucide-chevron-down group-aria-expanded/accordion-trigger:hidden"
           data-slot="accordion-trigger-icon"
         >
           <path d="m6 9 6 6 6-6"></path></svg
@@ -384,7 +361,7 @@ A basic accordion that shows one item at a time. The first item is open by defau
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-up pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
+          class="lucide lucide-chevron-up hidden group-aria-expanded/accordion-trigger:inline"
           data-slot="accordion-trigger-icon"
         >
           <path d="m18 15-6-6-6 6"></path>
@@ -398,7 +375,6 @@ A basic accordion that shows one item at a time. The first item is open by defau
       aria-labelledby="radix-a2"
       data-orientation="vertical"
       data-slot="accordion-content"
-      class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
       style="
         --radix-accordion-content-height: var(--radix-collapsible-content-height);
         --radix-accordion-content-width: var(--radix-collapsible-content-width);
@@ -416,12 +392,7 @@ A basic accordion that shows one item at a time. The first item is open by defau
       </div>
     </div>
   </div>
-  <div
-    data-state="closed"
-    data-orientation="vertical"
-    data-slot="accordion-item"
-    class="not-last:border-b"
-  >
+  <div data-state="closed" data-orientation="vertical" data-slot="accordion-item">
     <h3 data-orientation="vertical" data-state="closed" class="flex">
       <button
         type="button"
@@ -431,7 +402,7 @@ A basic accordion that shows one item at a time. The first item is open by defau
         data-orientation="vertical"
         id="radix-a4"
         data-slot="accordion-trigger"
-        class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
+        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
         data-radix-collection-item=""
       >
         Can I change my subscription plan?<svg
@@ -444,7 +415,7 @@ A basic accordion that shows one item at a time. The first item is open by defau
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-down pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
+          class="lucide lucide-chevron-down group-aria-expanded/accordion-trigger:hidden"
           data-slot="accordion-trigger-icon"
         >
           <path d="m6 9 6 6 6-6"></path></svg
@@ -458,7 +429,7 @@ A basic accordion that shows one item at a time. The first item is open by defau
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-up pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
+          class="lucide lucide-chevron-up hidden group-aria-expanded/accordion-trigger:inline"
           data-slot="accordion-trigger-icon"
         >
           <path d="m18 15-6-6-6 6"></path>
@@ -473,19 +444,13 @@ A basic accordion that shows one item at a time. The first item is open by defau
       aria-labelledby="radix-a4"
       data-orientation="vertical"
       data-slot="accordion-content"
-      class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
       style="
         --radix-accordion-content-height: var(--radix-collapsible-content-height);
         --radix-accordion-content-width: var(--radix-collapsible-content-width);
       "
     ></div>
   </div>
-  <div
-    data-state="closed"
-    data-orientation="vertical"
-    data-slot="accordion-item"
-    class="not-last:border-b"
-  >
+  <div data-state="closed" data-orientation="vertical" data-slot="accordion-item">
     <h3 data-orientation="vertical" data-state="closed" class="flex">
       <button
         type="button"
@@ -495,7 +460,7 @@ A basic accordion that shows one item at a time. The first item is open by defau
         data-orientation="vertical"
         id="radix-a6"
         data-slot="accordion-trigger"
-        class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
+        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
         data-radix-collection-item=""
       >
         What payment methods do you accept?<svg
@@ -508,7 +473,7 @@ A basic accordion that shows one item at a time. The first item is open by defau
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-down pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
+          class="lucide lucide-chevron-down group-aria-expanded/accordion-trigger:hidden"
           data-slot="accordion-trigger-icon"
         >
           <path d="m6 9 6 6 6-6"></path></svg
@@ -522,7 +487,7 @@ A basic accordion that shows one item at a time. The first item is open by defau
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-up pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
+          class="lucide lucide-chevron-up hidden group-aria-expanded/accordion-trigger:inline"
           data-slot="accordion-trigger-icon"
         >
           <path d="m18 15-6-6-6 6"></path>
@@ -537,7 +502,6 @@ A basic accordion that shows one item at a time. The first item is open by defau
       aria-labelledby="radix-a6"
       data-orientation="vertical"
       data-slot="accordion-content"
-      class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
       style="
         --radix-accordion-content-height: var(--radix-collapsible-content-height);
         --radix-accordion-content-width: var(--radix-collapsible-content-width);
@@ -618,18 +582,8 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
 
 {% <codegroup> %}
 ```text,name=accordion-multiple.html
-<div
-  data-slot="accordion"
-  data-type="multiple"
-  class="flex w-full flex-col max-w-lg"
-  data-orientation="vertical"
->
-  <div
-    data-state="open"
-    data-orientation="vertical"
-    data-slot="accordion-item"
-    class="not-last:border-b"
-  >
+<div data-slot="accordion" data-type="multiple" class="max-w-lg" data-orientation="vertical">
+  <div data-state="open" data-orientation="vertical" data-slot="accordion-item">
     <h3 data-orientation="vertical" data-state="open" class="flex">
       <button
         type="button"
@@ -639,7 +593,7 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
         data-orientation="vertical"
         id="radix-a2"
         data-slot="accordion-trigger"
-        class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
+        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
         data-radix-collection-item=""
       >
         Notification Settings<svg
@@ -652,7 +606,7 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-down pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
+          class="lucide lucide-chevron-down group-aria-expanded/accordion-trigger:hidden"
           data-slot="accordion-trigger-icon"
         >
           <path d="m6 9 6 6 6-6"></path></svg
@@ -666,7 +620,7 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-up pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
+          class="lucide lucide-chevron-up hidden group-aria-expanded/accordion-trigger:inline"
           data-slot="accordion-trigger-icon"
         >
           <path d="m18 15-6-6-6 6"></path>
@@ -680,7 +634,6 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
       aria-labelledby="radix-a2"
       data-orientation="vertical"
       data-slot="accordion-content"
-      class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
       style="
         --radix-accordion-content-height: var(--radix-collapsible-content-height);
         --radix-accordion-content-width: var(--radix-collapsible-content-width);
@@ -698,12 +651,7 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
       </div>
     </div>
   </div>
-  <div
-    data-state="closed"
-    data-orientation="vertical"
-    data-slot="accordion-item"
-    class="not-last:border-b"
-  >
+  <div data-state="closed" data-orientation="vertical" data-slot="accordion-item">
     <h3 data-orientation="vertical" data-state="closed" class="flex">
       <button
         type="button"
@@ -713,7 +661,7 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
         data-orientation="vertical"
         id="radix-a4"
         data-slot="accordion-trigger"
-        class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
+        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
         data-radix-collection-item=""
       >
         Privacy &amp; Security<svg
@@ -726,7 +674,7 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-down pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
+          class="lucide lucide-chevron-down group-aria-expanded/accordion-trigger:hidden"
           data-slot="accordion-trigger-icon"
         >
           <path d="m6 9 6 6 6-6"></path></svg
@@ -740,7 +688,7 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-up pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
+          class="lucide lucide-chevron-up hidden group-aria-expanded/accordion-trigger:inline"
           data-slot="accordion-trigger-icon"
         >
           <path d="m18 15-6-6-6 6"></path>
@@ -755,19 +703,13 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
       aria-labelledby="radix-a4"
       data-orientation="vertical"
       data-slot="accordion-content"
-      class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
       style="
         --radix-accordion-content-height: var(--radix-collapsible-content-height);
         --radix-accordion-content-width: var(--radix-collapsible-content-width);
       "
     ></div>
   </div>
-  <div
-    data-state="closed"
-    data-orientation="vertical"
-    data-slot="accordion-item"
-    class="not-last:border-b"
-  >
+  <div data-state="closed" data-orientation="vertical" data-slot="accordion-item">
     <h3 data-orientation="vertical" data-state="closed" class="flex">
       <button
         type="button"
@@ -777,7 +719,7 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
         data-orientation="vertical"
         id="radix-a6"
         data-slot="accordion-trigger"
-        class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
+        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
         data-radix-collection-item=""
       >
         Billing &amp; Subscription<svg
@@ -790,7 +732,7 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-down pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
+          class="lucide lucide-chevron-down group-aria-expanded/accordion-trigger:hidden"
           data-slot="accordion-trigger-icon"
         >
           <path d="m6 9 6 6 6-6"></path></svg
@@ -804,7 +746,7 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-up pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
+          class="lucide lucide-chevron-up hidden group-aria-expanded/accordion-trigger:inline"
           data-slot="accordion-trigger-icon"
         >
           <path d="m18 15-6-6-6 6"></path>
@@ -819,7 +761,6 @@ Use `type="multiple"` to allow multiple items to be open at the same time.
       aria-labelledby="radix-a6"
       data-orientation="vertical"
       data-slot="accordion-content"
-      class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
       style="
         --radix-accordion-content-height: var(--radix-collapsible-content-height);
         --radix-accordion-content-width: var(--radix-collapsible-content-width);
@@ -900,13 +841,8 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
 
 {% <codegroup> %}
 ```text,name=accordion-disabled.html
-<div data-slot="accordion" class="flex flex-col w-full" data-orientation="vertical">
-  <div
-    data-state="closed"
-    data-orientation="vertical"
-    data-slot="accordion-item"
-    class="not-last:border-b"
-  >
+<div data-slot="accordion" data-orientation="vertical">
+  <div data-state="closed" data-orientation="vertical" data-slot="accordion-item">
     <h3 data-orientation="vertical" data-state="closed" class="flex">
       <button
         type="button"
@@ -916,7 +852,7 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
         data-orientation="vertical"
         id="radix-a2"
         data-slot="accordion-trigger"
-        class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
+        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
         data-radix-collection-item=""
       >
         Can I access my account history?<svg
@@ -929,7 +865,7 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-down pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
+          class="lucide lucide-chevron-down group-aria-expanded/accordion-trigger:hidden"
           data-slot="accordion-trigger-icon"
         >
           <path d="m6 9 6 6 6-6"></path></svg
@@ -943,7 +879,7 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-up pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
+          class="lucide lucide-chevron-up hidden group-aria-expanded/accordion-trigger:inline"
           data-slot="accordion-trigger-icon"
         >
           <path d="m18 15-6-6-6 6"></path>
@@ -958,20 +894,13 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
       aria-labelledby="radix-a2"
       data-orientation="vertical"
       data-slot="accordion-content"
-      class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
       style="
         --radix-accordion-content-height: var(--radix-collapsible-content-height);
         --radix-accordion-content-width: var(--radix-collapsible-content-width);
       "
     ></div>
   </div>
-  <div
-    data-state="closed"
-    data-disabled=""
-    data-orientation="vertical"
-    data-slot="accordion-item"
-    class="not-last:border-b"
-  >
+  <div data-state="closed" data-disabled="" data-orientation="vertical" data-slot="accordion-item">
     <h3 data-orientation="vertical" data-state="closed" data-disabled="" class="flex">
       <button
         type="button"
@@ -983,7 +912,7 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
         data-orientation="vertical"
         id="radix-a4"
         data-slot="accordion-trigger"
-        class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
+        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
         data-radix-collection-item=""
       >
         Premium feature information<svg
@@ -996,7 +925,7 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-down pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
+          class="lucide lucide-chevron-down group-aria-expanded/accordion-trigger:hidden"
           data-slot="accordion-trigger-icon"
         >
           <path d="m6 9 6 6 6-6"></path></svg
@@ -1010,7 +939,7 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-up pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
+          class="lucide lucide-chevron-up hidden group-aria-expanded/accordion-trigger:inline"
           data-slot="accordion-trigger-icon"
         >
           <path d="m18 15-6-6-6 6"></path>
@@ -1026,19 +955,13 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
       aria-labelledby="radix-a4"
       data-orientation="vertical"
       data-slot="accordion-content"
-      class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
       style="
         --radix-accordion-content-height: var(--radix-collapsible-content-height);
         --radix-accordion-content-width: var(--radix-collapsible-content-width);
       "
     ></div>
   </div>
-  <div
-    data-state="closed"
-    data-orientation="vertical"
-    data-slot="accordion-item"
-    class="not-last:border-b"
-  >
+  <div data-state="closed" data-orientation="vertical" data-slot="accordion-item">
     <h3 data-orientation="vertical" data-state="closed" class="flex">
       <button
         type="button"
@@ -1048,7 +971,7 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
         data-orientation="vertical"
         id="radix-a6"
         data-slot="accordion-trigger"
-        class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
+        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
         data-radix-collection-item=""
       >
         How do I update my email address?<svg
@@ -1061,7 +984,7 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-down pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
+          class="lucide lucide-chevron-down group-aria-expanded/accordion-trigger:hidden"
           data-slot="accordion-trigger-icon"
         >
           <path d="m6 9 6 6 6-6"></path></svg
@@ -1075,7 +998,7 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-up pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
+          class="lucide lucide-chevron-up hidden group-aria-expanded/accordion-trigger:inline"
           data-slot="accordion-trigger-icon"
         >
           <path d="m18 15-6-6-6 6"></path>
@@ -1090,7 +1013,6 @@ Use the `disabled` prop on `AccordionItem` to disable individual items.
       aria-labelledby="radix-a6"
       data-orientation="vertical"
       data-slot="accordion-content"
-      class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
       style="
         --radix-accordion-content-height: var(--radix-collapsible-content-height);
         --radix-accordion-content-width: var(--radix-collapsible-content-width);
@@ -1171,11 +1093,7 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
 
 {% <codegroup> %}
 ```text,name=accordion-borders.html
-<div
-  data-slot="accordion"
-  class="flex w-full flex-col max-w-lg rounded-lg border"
-  data-orientation="vertical"
->
+<div data-slot="accordion" class="max-w-lg rounded-lg border" data-orientation="vertical">
   <div
     data-state="open"
     data-orientation="vertical"
@@ -1191,7 +1109,7 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
         data-orientation="vertical"
         id="radix-a2"
         data-slot="accordion-trigger"
-        class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
+        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
         data-radix-collection-item=""
       >
         How does billing work?<svg
@@ -1204,7 +1122,7 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-down pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
+          class="lucide lucide-chevron-down group-aria-expanded/accordion-trigger:hidden"
           data-slot="accordion-trigger-icon"
         >
           <path d="m6 9 6 6 6-6"></path></svg
@@ -1218,7 +1136,7 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-up pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
+          class="lucide lucide-chevron-up hidden group-aria-expanded/accordion-trigger:inline"
           data-slot="accordion-trigger-icon"
         >
           <path d="m18 15-6-6-6 6"></path>
@@ -1232,7 +1150,6 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
       aria-labelledby="radix-a2"
       data-orientation="vertical"
       data-slot="accordion-content"
-      class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
       style="
         --radix-accordion-content-height: var(--radix-collapsible-content-height);
         --radix-accordion-content-width: var(--radix-collapsible-content-width);
@@ -1266,7 +1183,7 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
         data-orientation="vertical"
         id="radix-a4"
         data-slot="accordion-trigger"
-        class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
+        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
         data-radix-collection-item=""
       >
         Is my data secure?<svg
@@ -1279,7 +1196,7 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-down pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
+          class="lucide lucide-chevron-down group-aria-expanded/accordion-trigger:hidden"
           data-slot="accordion-trigger-icon"
         >
           <path d="m6 9 6 6 6-6"></path></svg
@@ -1293,7 +1210,7 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-up pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
+          class="lucide lucide-chevron-up hidden group-aria-expanded/accordion-trigger:inline"
           data-slot="accordion-trigger-icon"
         >
           <path d="m18 15-6-6-6 6"></path>
@@ -1308,7 +1225,6 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
       aria-labelledby="radix-a4"
       data-orientation="vertical"
       data-slot="accordion-content"
-      class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
       style="
         --radix-accordion-content-height: var(--radix-collapsible-content-height);
         --radix-accordion-content-width: var(--radix-collapsible-content-width);
@@ -1330,7 +1246,7 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
         data-orientation="vertical"
         id="radix-a6"
         data-slot="accordion-trigger"
-        class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
+        class="focus-visible:border-ring focus-visible:after:border-ring group/accordion-trigger border-transparent"
         data-radix-collection-item=""
       >
         What integrations do you support?<svg
@@ -1343,7 +1259,7 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-down pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
+          class="lucide lucide-chevron-down group-aria-expanded/accordion-trigger:hidden"
           data-slot="accordion-trigger-icon"
         >
           <path d="m6 9 6 6 6-6"></path></svg
@@ -1357,7 +1273,7 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-chevron-up pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
+          class="lucide lucide-chevron-up hidden group-aria-expanded/accordion-trigger:inline"
           data-slot="accordion-trigger-icon"
         >
           <path d="m18 15-6-6-6 6"></path>
@@ -1372,7 +1288,6 @@ Add `border` to the `Accordion` and `border-b last:border-b-0` to the `Accordion
       aria-labelledby="radix-a6"
       data-orientation="vertical"
       data-slot="accordion-content"
-      class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
       style="
         --radix-accordion-content-height: var(--radix-collapsible-content-height);
         --radix-accordion-content-width: var(--radix-collapsible-content-width);
@@ -1456,30 +1371,22 @@ Wrap the `Accordion` in a `Card` component.
 <div
   data-slot="card"
   data-size="default"
-  class="ring-foreground/10 bg-card text-card-foreground gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm ring-1 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col w-full max-w-sm"
+  class="rounded-xl py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card w-full max-w-sm"
 >
-  <div
-    data-slot="card-header"
-    class="gap-1 rounded-t-xl px-(--card-spacing) [.border-b]:pb-(--card-spacing) group/card-header @container/card-header grid auto-rows-min items-start has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto]"
-  >
+  <div data-slot="card-header" class="group/card-header">
     <div
       data-slot="card-title"
-      class="text-base leading-snug font-medium group-data-[size=sm]/card:text-sm cn-font-heading"
+      class="text-base leading-snug group-data-[size=sm]/card:text-sm cn-font-heading"
     >
       Subscription &amp; Billing
     </div>
-    <div data-slot="card-description" class="text-muted-foreground text-sm">
+    <div data-slot="card-description">
       Common questions about your account, plans, payments and cancellations.
     </div>
   </div>
-  <div data-slot="card-content" class="px-(--card-spacing)">
-    <div data-slot="accordion" class="flex w-full flex-col" data-orientation="vertical">
-      <div
-        data-state="open"
-        data-orientation="vertical"
-        data-slot="accordion-item"
-        class="not-last:border-b"
-      >
+  <div data-slot="card-content">
+    <div data-slot="accordion" data-orientation="vertical">
+      <div data-state="open" data-orientation="vertical" data-slot="accordion-item">
         <h3 data-orientation="vertical" data-state="open" class="flex">
           <button
             type="button"
@@ -1489,7 +1396,7 @@ Wrap the `Accordion` in a `Card` component.
             data-orientation="vertical"
             id="radix-a2"
             data-slot="accordion-trigger"
-            class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
+            class="focus-visible:border-ring focus-visible:after:border-ring rounded-lg group/accordion-trigger border-transparent"
             data-radix-collection-item=""
           >
             What subscription plans do you offer?<svg
@@ -1502,7 +1409,7 @@ Wrap the `Accordion` in a `Card` component.
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="lucide lucide-chevron-down pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
+              class="lucide lucide-chevron-down group-aria-expanded/accordion-trigger:hidden"
               data-slot="accordion-trigger-icon"
             >
               <path d="m6 9 6 6 6-6"></path></svg
@@ -1516,7 +1423,7 @@ Wrap the `Accordion` in a `Card` component.
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="lucide lucide-chevron-up pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
+              class="lucide lucide-chevron-up hidden group-aria-expanded/accordion-trigger:inline"
               data-slot="accordion-trigger-icon"
             >
               <path d="m18 15-6-6-6 6"></path>
@@ -1530,7 +1437,6 @@ Wrap the `Accordion` in a `Card` component.
           aria-labelledby="radix-a2"
           data-orientation="vertical"
           data-slot="accordion-content"
-          class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
           style="
             --radix-accordion-content-height: var(--radix-collapsible-content-height);
             --radix-accordion-content-width: var(--radix-collapsible-content-width);
@@ -1549,12 +1455,7 @@ Wrap the `Accordion` in a `Card` component.
           </div>
         </div>
       </div>
-      <div
-        data-state="closed"
-        data-orientation="vertical"
-        data-slot="accordion-item"
-        class="not-last:border-b"
-      >
+      <div data-state="closed" data-orientation="vertical" data-slot="accordion-item">
         <h3 data-orientation="vertical" data-state="closed" class="flex">
           <button
             type="button"
@@ -1564,7 +1465,7 @@ Wrap the `Accordion` in a `Card` component.
             data-orientation="vertical"
             id="radix-a4"
             data-slot="accordion-trigger"
-            class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
+            class="focus-visible:border-ring focus-visible:after:border-ring rounded-lg group/accordion-trigger border-transparent"
             data-radix-collection-item=""
           >
             How does billing work?<svg
@@ -1577,7 +1478,7 @@ Wrap the `Accordion` in a `Card` component.
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="lucide lucide-chevron-down pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
+              class="lucide lucide-chevron-down group-aria-expanded/accordion-trigger:hidden"
               data-slot="accordion-trigger-icon"
             >
               <path d="m6 9 6 6 6-6"></path></svg
@@ -1591,7 +1492,7 @@ Wrap the `Accordion` in a `Card` component.
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="lucide lucide-chevron-up pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
+              class="lucide lucide-chevron-up hidden group-aria-expanded/accordion-trigger:inline"
               data-slot="accordion-trigger-icon"
             >
               <path d="m18 15-6-6-6 6"></path>
@@ -1606,19 +1507,13 @@ Wrap the `Accordion` in a `Card` component.
           aria-labelledby="radix-a4"
           data-orientation="vertical"
           data-slot="accordion-content"
-          class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
           style="
             --radix-accordion-content-height: var(--radix-collapsible-content-height);
             --radix-accordion-content-width: var(--radix-collapsible-content-width);
           "
         ></div>
       </div>
-      <div
-        data-state="closed"
-        data-orientation="vertical"
-        data-slot="accordion-item"
-        class="not-last:border-b"
-      >
+      <div data-state="closed" data-orientation="vertical" data-slot="accordion-item">
         <h3 data-orientation="vertical" data-state="closed" class="flex">
           <button
             type="button"
@@ -1628,7 +1523,7 @@ Wrap the `Accordion` in a `Card` component.
             data-orientation="vertical"
             id="radix-a6"
             data-slot="accordion-trigger"
-            class="focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:after:border-ring **:data-[slot=accordion-trigger-icon]:text-muted-foreground rounded-lg py-2.5 text-left text-sm font-medium hover:underline focus-visible:ring-3 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none disabled:pointer-events-none disabled:opacity-50"
+            class="focus-visible:border-ring focus-visible:after:border-ring rounded-lg group/accordion-trigger border-transparent"
             data-radix-collection-item=""
           >
             How do I cancel my subscription?<svg
@@ -1641,7 +1536,7 @@ Wrap the `Accordion` in a `Card` component.
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="lucide lucide-chevron-down pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
+              class="lucide lucide-chevron-down group-aria-expanded/accordion-trigger:hidden"
               data-slot="accordion-trigger-icon"
             >
               <path d="m6 9 6 6 6-6"></path></svg
@@ -1655,7 +1550,7 @@ Wrap the `Accordion` in a `Card` component.
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="lucide lucide-chevron-up pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
+              class="lucide lucide-chevron-up hidden group-aria-expanded/accordion-trigger:inline"
               data-slot="accordion-trigger-icon"
             >
               <path d="m18 15-6-6-6 6"></path>
@@ -1670,7 +1565,6 @@ Wrap the `Accordion` in a `Card` component.
           aria-labelledby="radix-a6"
           data-orientation="vertical"
           data-slot="accordion-content"
-          class="data-open:animate-accordion-down data-closed:animate-accordion-up text-sm overflow-hidden"
           style="
             --radix-accordion-content-height: var(--radix-collapsible-content-height);
             --radix-accordion-content-width: var(--radix-collapsible-content-width);

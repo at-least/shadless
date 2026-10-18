@@ -61,6 +61,7 @@ docs-upstream-mirror   STALE
 docs-build             STALE
 docs-site              STALE
 docs-consistency       STALE
+docs-code-parity       STALE
 docs-fidelity          STALE
 docs-smoke             STALE
 interactivity-sweep    STALE

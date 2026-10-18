@@ -24,7 +24,7 @@ Visually or semantically separates content.
     data-orientation="horizontal"
     role="none"
     data-slot="separator"
-    class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch"
+    class="data-horizontal:w-full data-vertical:w-px"
   ></div>
   <div>A set of beautifully designed components that you can customize, extend, and build on.</div>
 </div>
@@ -77,14 +77,14 @@ Use `orientation="vertical"` for a vertical separator.
     data-orientation="vertical"
     role="none"
     data-slot="separator"
-    class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch"
+    class="data-horizontal:w-full data-vertical:w-px"
   ></div>
   <div>Docs</div>
   <div
     data-orientation="vertical"
     role="none"
     data-slot="separator"
-    class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch"
+    class="data-horizontal:w-full data-vertical:w-px"
   ></div>
   <div>Source</div>
 </div>
@@ -113,7 +113,7 @@ Vertical separators between menu items with descriptions.
     data-orientation="vertical"
     role="none"
     data-slot="separator"
-    class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch"
+    class="data-horizontal:w-full data-vertical:w-px"
   ></div>
   <div class="flex flex-col gap-1">
     <span class="font-medium">Account</span
@@ -123,7 +123,7 @@ Vertical separators between menu items with descriptions.
     data-orientation="vertical"
     role="none"
     data-slot="separator"
-    class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch hidden md:block"
+    class="data-horizontal:w-full data-vertical:w-px hidden md:block"
   ></div>
   <div class="hidden flex-col gap-1 md:flex">
     <span class="font-medium">Help</span
@@ -155,7 +155,7 @@ Horizontal separators between list items.
     data-orientation="horizontal"
     role="none"
     data-slot="separator"
-    class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch"
+    class="data-horizontal:w-full data-vertical:w-px"
   ></div>
   <dl class="flex items-center justify-between">
     <dt>Item 2</dt>
@@ -165,7 +165,7 @@ Horizontal separators between list items.
     data-orientation="horizontal"
     role="none"
     data-slot="separator"
-    class="shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch"
+    class="data-horizontal:w-full data-vertical:w-px"
   ></div>
   <dl class="flex items-center justify-between">
     <dt>Item 3</dt>

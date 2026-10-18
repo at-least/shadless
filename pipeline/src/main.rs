@@ -476,6 +476,9 @@ fn main() {
                 &std::env::current_dir().unwrap_or_default(),
             ),
         ),
+        "docs-code-parity" => std::process::exit(pipeline::tools::docs_code_parity::run_docs_code_parity(
+            &std::env::current_dir().unwrap_or_default(),
+        )),
         "docs-build" => std::process::exit(pipeline::tools::docs_build::run_docs_build(
             &std::env::current_dir().unwrap_or_default(),
         )),
@@ -768,7 +771,8 @@ mod verb_surface {
         "convert", "pin", "coverage", "ledger", "audit-boundary", "oracle-css",
         "docs-catalog", "docs-upstream-mirror", "ir-diff", "css-direction",
         "upstream", "resolve-skins", "rtl-dict", "docs-consistency",
-        "docs-build", "docs-fidelity", "example-fixture", "example-golden",
+        "docs-build", "docs-fidelity", "docs-code-parity", "example-fixture",
+        "example-golden",
         "contract", "contracts", "upstream-snapshot", "demo-smoke", "docs-smoke",
         "overlay", "interactivity-sweep", "demo-parity", "style-parity",
         "path-parity",

@@ -780,79 +780,1002 @@ fn preview_markdown(
     ))
 }
 
-/// unescape_class_attrs rewrites ONLY the values of `class="…"` attributes:
-/// `&amp;` → `&`, `&gt;` → `>`, `&lt;` → `<`. Everything else — text nodes,
-/// other attributes, other entities — is copied through untouched.
-///
-/// `&amp;` stays escaped when the next character is ASCII alphanumeric or
-/// `#`: decoded and re-parsed, that pair would start a character reference
-/// (`&amp;copy;` → `©`, `&amp;#38;` → `&`) and change the class token.
-/// Raw `<` and `>` inside a quoted attribute value never reparse as markup,
-/// so `&lt;`/`&gt;` are always safe to unescape.
-fn unescape_class_attrs(html: &str) -> String {
-    let b = html.as_bytes();
-    let mut out = String::with_capacity(html.len());
-    let mut i = 0usize; // byte cursor
-    let mut copied = 0usize; // start of the not-yet-copied run
-    while i < b.len() {
-        let at_class_attr =
-            b[i..].starts_with(b"class=\"") && (i == 0 || b[i - 1].is_ascii_whitespace());
-        if !at_class_attr {
-            i += 1;
-            continue;
+// ---- the slot-only code-tab projection -------------------------------------
+//
+// The tab under every non-RTL preview used to carry the demo's full
+// inline-utility DOM — what React's cn() renders (~16 tokens per slotted
+// element), duplicating what shadless/<name>.css already applies through
+// [data-slot] selectors. The projection rewrites each slotted element to
+// SLOT-ONLY markup: same DOM, same attributes, but the class list keeps
+// only the tokens the component stylesheet does NOT already supply (the
+// demo author's own layout/size choices, group/peer markers, anything the
+// CSS cannot reproduce). docs-code-parity proves the projected tab renders
+// exactly like the original markup, in a consumer build as well as under
+// the precompiled CSS.
+
+/// One IR element registered under a data-slot name. Slot names are
+/// mostly component-namespaced; the measured collisions (7 names, all
+/// intra-IR) are resolved per element, in walk order.
+struct SlotEntry {
+    ir: usize, // index into SlotIndex::irs
+    fn_: String,
+    el: usize, // index of the element inside IrFn::elements
+}
+
+/// What the component CSS supplies to a slot's `[data-slot]` rule. For a
+/// non-cva slot carried by MORE than one IR element, css.rs only puts the
+/// tokens ALL those elements share under `[data-slot=…]`; each element's
+/// rest lands behind an anchor class (`.accordion-trigger-icon-2`) that
+/// exists only in the static-tier markup — the demo DOM (and therefore the
+/// projected tab) never carries it. Dropping an anchor-keyed token from the
+/// tab loses it: the accordion's second trigger icon stopped rendering
+/// `hidden` at rest and docs-code-parity went red. A slot ABSENT from the
+/// map (every cva slot, whose base+value rules carry the full set) means
+/// "everything supplied".
+struct SlotIndex {
+    irs: Vec<crate::emit::css::CssIrComponent>,
+    cva_slots: Vec<HashMap<String, crate::emit::css::CvaTable>>,
+    slots: HashMap<String, Vec<SlotEntry>>,
+    supply: Vec<HashMap<String, std::collections::HashSet<String>>>,
+}
+
+impl SlotIndex {
+    /// Every generated/ir component that SHIPS CSS (the same filter
+    /// path-parity applies: a tab is only rewritten when the component's
+    /// stylesheet exists for the consumer to import). IRs that fail to
+    /// parse fail the build — the projection refusing one silently would
+    /// leave component tokens inline across a whole component's tabs.
+    fn load(root: &Path) -> SlotIndex {
+        let mut names: Vec<String> = Vec::new();
+        if let Ok(ents) = std::fs::read_dir(root.join("generated/ir")) {
+            for e in ents.flatten() {
+                let n = e.file_name().to_string_lossy().into_owned();
+                if n.ends_with(".json") {
+                    names.push(n);
+                }
+            }
         }
-        let vstart = i + "class=\"".len();
-        let Some(vrel) = b[vstart..].iter().position(|&c| c == b'"') else {
-            break; // unterminated attribute: copy the remainder verbatim
+        names.sort();
+        let mut out = SlotIndex {
+            irs: Vec::new(),
+            cva_slots: Vec::new(),
+            slots: HashMap::new(),
+            supply: Vec::new(),
         };
-        let vend = vstart + vrel;
-        out.push_str(&html[copied..vstart]);
-        out.push_str(&unescape_class_value(&html[vstart..vend]));
-        // resume the plain copy at the closing quote so it lands in the next run
-        i = vend;
-        copied = vend;
+        for f in &names {
+            let name = f.trim_end_matches(".json");
+            if !root.join("dist/css").join(format!("{}.css", name)).exists() {
+                continue;
+            }
+            let b = std::fs::read_to_string(root.join("generated/ir").join(f))
+                .unwrap_or_else(|e| panic!("projection: reading generated/ir/{f}: {e}"));
+            let mut v: serde_json::Value = serde_json::from_str(&b)
+                .unwrap_or_else(|e| panic!("projection: parsing generated/ir/{f}: {e}"));
+            crate::emit::css::drop_nulls(&mut v);
+            let ir: crate::emit::css::CssIrComponent = serde_json::from_value(v)
+                .unwrap_or_else(|e| panic!("projection: decoding generated/ir/{f}: {e}"));
+            let cva = crate::emit::css::cva_slot(&ir);
+            let mut cva_slots: HashMap<String, crate::emit::css::CvaTable> = HashMap::new();
+            for (table, slot) in cva.values() {
+                if !slot.is_empty() {
+                    cva_slots.insert(slot.clone(), table.clone());
+                }
+            }
+            let ir_idx = out.irs.len();
+            for c in &ir.components {
+                for (ei, el) in c.elements.iter().enumerate() {
+                    if el.slot.is_empty() {
+                        continue;
+                    }
+                    out.slots
+                        .entry(el.slot.clone())
+                        .or_default()
+                        .push(SlotEntry {
+                            ir: ir_idx,
+                            fn_: c.fn_.clone(),
+                            el: ei,
+                        });
+                }
+            }
+            // The [data-slot] supply per slot, mirroring css.rs pass 1:
+            // cva slots are fully covered by their base+value rules; other
+            // slots supply the INTERSECTION of their elements' applied
+            // tokens (empty-class elements never enter a rule at all).
+            let mut acc: HashMap<String, std::collections::HashSet<String>> = HashMap::new();
+            for c in &ir.components {
+                for el in &c.elements {
+                    if el.classes.is_empty() || el.slot.is_empty() {
+                        continue;
+                    }
+                    if cva_slots.contains_key(&el.slot) {
+                        continue; // Supply::All
+                    }
+                    let applied: std::collections::HashSet<String> =
+                        crate::emit::css::split_markers(&el.classes.join(" "))
+                            .apply
+                            .split_whitespace()
+                            .map(|t| t.to_string())
+                            .collect();
+                    acc.entry(el.slot.clone())
+                        .and_modify(|prev| prev.retain(|t| applied.contains(t)))
+                        .or_insert(applied);
+                }
+            }
+            out.supply.push(acc);
+            out.irs.push(ir);
+            out.cva_slots.push(cva_slots);
+        }
+        out
     }
-    out.push_str(&html[copied..]);
+}
+
+#[derive(Default)]
+struct ProjectMetrics {
+    files_projected: usize,
+    files_rtl_exempt: usize,
+    slotted: usize,        // elements on an indexed slot
+    unindexed_slot: usize, // data-slot with no index entry — kept verbatim
+    tokens_before: usize,  // on indexed slotted elements
+    tokens_after: usize,
+    zero_class_after: usize, // slotted elements left with no class at all
+    fallback_inconsistent: usize, // no consistent candidate — all of D kept
+    collision_ties: usize,   // multi-candidate slots resolved by walk-order tie
+    closure_kept_tokens: usize, // tokens moved back into K by the layer closure
+}
+
+/// The RTL demo family, derived from what the pipeline actually defines:
+/// build-rtl's own manifest (build/rtl-langs.json: `<name>-rtl` → the
+/// languages it emitted; the ar base file is `<name>-rtl.html`, the others
+/// `<name>-rtl-<lang>.html`) plus every `-rtl` demoPath the catalog hands a
+/// preview (the oracle-rendered `-rtl` pages, e.g. menubar-rtl, that
+/// predate build-rtl's family). A demo file whose stem contains `-rtl` but
+/// is NOT in the derived set fails the build — an unexpected family shape
+/// must stop the pipeline, not silently pick a treatment.
+fn rtl_exempt_stems(root: &Path, demo_stems: &[String]) -> std::collections::HashSet<String> {
+    let mut out = std::collections::HashSet::new();
+    let mb = std::fs::read_to_string(root.join("build/rtl-langs.json"))
+        .unwrap_or_else(|e| panic!("projection: reading build/rtl-langs.json: {e}"));
+    let manifest: HashMap<String, Vec<String>> = serde_json::from_str(&mb)
+        .unwrap_or_else(|e| panic!("projection: parsing build/rtl-langs.json: {e}"));
+    for (key, langs) in &manifest {
+        out.insert(key.clone());
+        for l in langs {
+            out.insert(format!("{key}-{l}"));
+        }
+    }
+    let cb = std::fs::read_to_string(root.join("docs/catalog.json"))
+        .unwrap_or_else(|e| panic!("projection: reading docs/catalog.json: {e}"));
+    #[derive(serde::Deserialize)]
+    struct Catalog {
+        #[serde(default)]
+        previews: Vec<CatalogPreview>,
+    }
+    #[derive(serde::Deserialize)]
+    struct CatalogPreview {
+        #[serde(default, rename = "demoPath")]
+        demo_path: Option<String>,
+    }
+    let catalog: Catalog = serde_json::from_str(&cb)
+        .unwrap_or_else(|e| panic!("projection: parsing docs/catalog.json: {e}"));
+    for p in &catalog.previews {
+        if let Some(path) = &p.demo_path
+            && path.contains("-rtl")
+        {
+            let stem = std::path::Path::new(path)
+                .file_stem()
+                .map(|s| s.to_string_lossy().into_owned())
+                .unwrap_or_default();
+            out.insert(stem);
+        }
+    }
+    for stem in demo_stems {
+        if stem.contains("-rtl") && !out.contains(stem) {
+            panic!(
+                "projection: demo file {stem}.html matches -rtl but neither build/rtl-langs.json \
+                 nor docs/catalog.json defines it — the RTL exemption set is out of date"
+            );
+        }
+    }
     out
 }
 
-fn unescape_class_value(v: &str) -> String {
-    let b = v.as_bytes();
-    let mut out = String::with_capacity(v.len());
-    let mut i = 0usize;
-    while i < b.len() {
-        if b[i] == b'&' {
-            if v[i..].starts_with("&amp;") {
-                let hazardous = b
-                    .get(i + "&amp;".len())
-                    .is_some_and(|c| c.is_ascii_alphanumeric() || *c == b'#');
-                if hazardous {
-                    out.push_str("&amp;");
-                } else {
-                    out.push('&');
-                }
-                i += "&amp;".len();
-                continue;
-            }
-            if v[i..].starts_with("&gt;") {
-                out.push('>');
-                i += "&gt;".len();
-                continue;
-            }
-            if v[i..].starts_with("&lt;") {
-                out.push('<');
-                i += "&lt;".len();
-                continue;
+/// An element's attribute lookup over the parsed DOM.
+fn attr_of(e: &markup5ever_rcdom::Handle, name: &str) -> Option<String> {
+    if let markup5ever_rcdom::NodeData::Element { attrs, .. } = &e.data {
+        for a in attrs.borrow().iter() {
+            if &*a.name.local == name {
+                return Some(a.value.to_string());
             }
         }
-        let ch = v[i..]
-            .chars()
-            .next()
-            .expect("class-value cursor left a char boundary");
-        out.push(ch);
-        i += ch.len_utf8();
     }
-    out
+    None
+}
+
+/// The context stack: every ancestor's `data-<axis>=<value>` attributes,
+/// innermost last. Only cvaRef (context) axes may look up it — a
+/// generalized ancestor fallback mis-styleS a button-group inside a
+/// vertical Field (measured in the scout prototype).
+type CtxStack = Vec<(String, String)>;
+
+fn push_ctx(e: &markup5ever_rcdom::Handle, ctx: &mut CtxStack) -> usize {
+    let mut pushed = 0usize;
+    if let markup5ever_rcdom::NodeData::Element { attrs, .. } = &e.data {
+        for a in attrs.borrow().iter() {
+            let name = a.name.local.to_string();
+            if let Some(axis) = name.strip_prefix("data-") {
+                if axis == "slot" {
+                    continue;
+                }
+                ctx.push((axis.to_string(), a.value.to_string()));
+                pushed += 1;
+            }
+        }
+    }
+    pushed
+}
+
+/// sel for one candidate: the element's own `data-<axis>` attributes; an
+/// own-table axis without its attribute stays UNSET (classes_of then uses
+/// the table default, mirroring the CSS `:not([data-axis])` arm); only
+/// cvaRef axes may fall back to the nearest ancestor carrying the axis.
+fn build_sel(
+    ir: &crate::emit::css::CssIrComponent,
+    cva_slots: &HashMap<String, crate::emit::css::CvaTable>,
+    slot: &str,
+    e: &markup5ever_rcdom::Handle,
+    ctx: &CtxStack,
+) -> HashMap<String, String> {
+    let mut sel: HashMap<String, String> = HashMap::new();
+    let mut own_axes: Vec<String> = Vec::new();
+    if let Some(table) = cva_slots.get(slot) {
+        own_axes.extend(table.axis_order());
+    }
+    let mut ctx_axes: Vec<String> = Vec::new();
+    for r in &ir.cva_refs {
+        if r.slot == slot {
+            ctx_axes.extend(r.dyn_axes.iter().cloned());
+        }
+    }
+    for ax in &own_axes {
+        if let Some(v) = attr_of(e, &format!("data-{ax}")) {
+            sel.insert(ax.clone(), v);
+        }
+    }
+    for ax in &ctx_axes {
+        if sel.contains_key(ax) {
+            continue;
+        }
+        if let Some(v) = attr_of(e, &format!("data-{ax}")) {
+            sel.insert(ax.clone(), v);
+            continue;
+        }
+        if let Some((_, v)) = ctx.iter().rev().find(|(a, _)| a == ax) {
+            sel.insert(ax.clone(), v.clone());
+        }
+    }
+    sel
+}
+
+/// The candidate's M: what React rendered for this slot under sel.
+fn candidate_classes(
+    index: &SlotIndex,
+    entry: &SlotEntry,
+    slot: &str,
+    e: &markup5ever_rcdom::Handle,
+    ctx: &CtxStack,
+) -> String {
+    let ir = &index.irs[entry.ir];
+    let sel = build_sel(ir, &index.cva_slots[entry.ir], slot, e, ctx);
+    let c = ir
+        .components
+        .iter()
+        .find(|c| c.fn_ == entry.fn_)
+        .unwrap_or_else(|| panic!("projection: ir fn {} vanished", entry.fn_));
+    let el = &c.elements[entry.el];
+    crate::emit::compose::classes_of(ir, &index.cva_slots[entry.ir], c, el, &sel)
+}
+
+/// x is consistent with D iff every applied token x is either in D or
+/// overridden by D (twMerge(x + " " + D) no longer contains x — React's
+/// cn(base, className) order).
+fn consistent_with(d_tokens: &[String], x: &str) -> bool {
+    if d_tokens.iter().any(|t| t == x) {
+        return true;
+    }
+    let merged = crate::twmerge::merge(&format!("{} {}", x, d_tokens.join(" ")));
+    !merged.split_whitespace().any(|t| t == x)
+}
+
+/// Strip variant prefixes and the important modifier: split on top-level
+/// `:` outside `[]`/`()`, take the last segment, drop a leading/trailing
+/// `!`. The layer closure compares bases because ANY utilities-layer token
+/// beats a components-layer token on the same element and property,
+/// regardless of variants.
+fn base_token(t: &str) -> &str {
+    let bytes = t.as_bytes();
+    let mut depth = 0i32;
+    let mut last_colon = None;
+    for (i, &c) in bytes.iter().enumerate() {
+        match c {
+            b'[' | b'(' => depth += 1,
+            b']' | b')' => depth -= 1,
+            b':' if depth == 0 => last_colon = Some(i),
+            _ => {}
+        }
+    }
+    let seg = match last_colon {
+        Some(i) => &t[i + 1..],
+        None => t,
+    };
+    let seg = seg.strip_prefix('!').unwrap_or(seg);
+    seg.strip_suffix('!').unwrap_or(seg)
+}
+
+/// Does this token's selector TARGET DESCENDANTS? `[&_svg]`, `[&>input]`,
+/// `*:data-[slot=…]`, `**:` do — the only kept tokens whose utilities-layer
+/// win can flip a descendant's dropped token, or whose own loss to a
+/// descendant's kept utility the closure must restore. A plain utility on
+/// an ancestor (`w-full`, `flex`) styles ITS OWN element only: an ancestor
+/// carrying w-full never competes with a descendant's w-fit, so it is not
+/// a conflict.
+fn targets_descendants(t: &str) -> bool {
+    t.contains("[&") || t.starts_with('*')
+}
+
+/// Would the projected element render `x` and `k` differently from the
+/// original, where both were inline utilities? Two tokens CONFLICT iff a
+/// twMerge in either direction drops one of them — same property,
+/// different value, so which one wins is order-dependent. Equal bases
+/// never conflict: same utility, same declarations, order irrelevant.
+/// Variants are stripped first (base_token) because ANY utilities-layer
+/// token beats a components-layer one regardless of variants once the
+/// layers differ.
+fn conflicts(x: &str, k: &str) -> bool {
+    let (xb, kb) = (base_token(x), base_token(k));
+    let m1 = crate::twmerge::merge(&format!("{xb} {kb}"));
+    let m2 = crate::twmerge::merge(&format!("{kb} {xb}"));
+    let has = |m: &str, t: &str| m.split_whitespace().any(|s| s == t);
+    !has(&m1, xb) || !has(&m1, kb) || !has(&m2, xb) || !has(&m2, kb)
+}
+
+struct Projected {
+    kept: Vec<String>,
+    dropped: Vec<String>,
+}
+
+fn project_element(
+    e: &markup5ever_rcdom::Handle,
+    slot: &str,
+    d_tokens: &[String],
+    index: &SlotIndex,
+    ctx: &CtxStack,
+    m: &mut ProjectMetrics,
+) -> Projected {
+    let candidates = match index.slots.get(slot) {
+        Some(c) => c,
+        None => {
+            m.unindexed_slot += 1;
+            return Projected {
+                kept: d_tokens.to_vec(),
+                dropped: Vec::new(),
+            };
+        }
+    };
+    m.slotted += 1;
+    m.tokens_before += d_tokens.len();
+
+    let dset: std::collections::HashSet<&String> = d_tokens.iter().collect();
+    let d_markers = crate::emit::css::split_markers(&d_tokens.join(" ")).markers;
+
+    // CONSISTENCY: a candidate whose full applied set M the demo DOM
+    // plausibly rendered. No consistent candidate means our M is NOT what
+    // React rendered (a non-default conditional branch, an unexpected sel)
+    // — dropping anything would be a guess, so all of D stays.
+    let mut best: Option<(&SlotEntry, Vec<String>, usize)> = None; // (entry, A, overlap)
+    let mut best_tie = false;
+    for entry in candidates {
+        let m_cls = candidate_classes(index, entry, slot, e, ctx);
+        let a_toks = crate::emit::css::split_markers(&m_cls).apply;
+        let a: Vec<String> = a_toks.split_whitespace().map(|s| s.to_string()).collect();
+        if !a.iter().all(|x| consistent_with(d_tokens, x)) {
+            continue;
+        }
+        let overlap = a.iter().filter(|x| dset.contains(*x)).count();
+        match &best {
+            None => best = Some((entry, a, overlap)),
+            Some((_, _, bo)) => {
+                if overlap > *bo {
+                    best = Some((entry, a, overlap));
+                    best_tie = false;
+                } else if overlap == *bo {
+                    best_tie = true;
+                }
+            }
+        }
+    }
+    let Some((entry, a_toks, _)) = best else {
+        m.fallback_inconsistent += 1;
+        m.tokens_after += d_tokens.len();
+        return Projected {
+            kept: d_tokens.to_vec(),
+            dropped: Vec::new(),
+        };
+    };
+    if best_tie {
+        m.collision_ties += 1;
+    }
+    // What the CSS actually supplies to the projected markup: the slot-rule
+    // intersection, not the full composed set (Supply above).
+    let supplied = index.supply[entry.ir].get(slot);
+    let a: std::collections::HashSet<&String> = a_toks
+        .iter()
+        .filter(|t| supplied.is_none_or(|s| s.contains(*t)))
+        .collect();
+
+    // K = markers of D ∪ (D ∖ A), in D's order, first occurrence wins.
+    let mut kept: Vec<String> = Vec::new();
+    let mut seen: std::collections::HashSet<&String> = std::collections::HashSet::new();
+    let mut dropped: Vec<String> = Vec::new();
+    for t in d_tokens {
+        if !seen.insert(t) {
+            continue;
+        }
+        if d_markers.iter().any(|x| x == t) || !a.contains(t) {
+            kept.push(t.clone());
+        } else {
+            dropped.push(t.clone());
+        }
+    }
+
+    // LAYER CLOSURE: every dropped token would arrive from the component
+    // CSS in @layer components, where ANY kept utilities-layer token with
+    // a conflicting base beats it regardless of variants. Move conflicted
+    // tokens back into K, to a fixpoint. Over-keeping is always safe.
+    //
+    // The second source is the component CSS's own order: in the original
+    // markup x sat inline in the utilities layer and beat EVERY component
+    // token with a conflicting base; after the projection x and its
+    // conflict both come from ONE @apply rule, where the emitter's
+    // declaration order decides — and can flip the winner (measured:
+    // item-title's line-clamp-1 lost to the rule's own trailing `flex`).
+    // So x also stays whenever ANOTHER supplied token conflicts with it.
+    // A is post-twMerge, so such pairs are exactly the order-dependent
+    // ones (line-clamp-1 + flex merges to both in that order, drops flex
+    // in the other).
+    loop {
+        let mut changed = false;
+        for x in dropped.clone() {
+            if kept.iter().any(|t| t == &x) {
+                continue;
+            }
+            let kept_conflict = kept
+                .iter()
+                .filter(|k| !d_markers.iter().any(|dm| dm == *k))
+                .any(|k| conflicts(&x, k));
+            let css_conflict = a
+                .iter()
+                .filter(|y| y.as_str() != x)
+                .any(|y| conflicts(&x, y));
+            if kept_conflict || css_conflict {
+                kept.push(x.clone());
+                dropped.retain(|t| t != &x);
+                m.closure_kept_tokens += 1;
+                changed = true;
+            }
+        }
+        if !changed {
+            break;
+        }
+    }
+
+    Projected { kept, dropped }
+}
+
+/// Parse a demo body fragment: a full-document parse, then the <body>
+/// element. The RcDom must outlive the Handle, so both come back together.
+fn parse_body_fragment(
+    body_text: &str,
+) -> Result<(markup5ever_rcdom::RcDom, markup5ever_rcdom::Handle), String> {
+    use html5ever::tendril::TendrilSink;
+    use markup5ever_rcdom::NodeData;
+    let full = format!("<!doctype html><html><body>{body_text}</body></html>");
+    let dom: markup5ever_rcdom::RcDom = html5ever::parse_document(
+        markup5ever_rcdom::RcDom::default(),
+        html5ever::ParseOpts::default(),
+    )
+    .one(full.as_str());
+    let html_el = dom
+        .document
+        .children
+        .borrow()
+        .iter()
+        .find(|c| matches!(&c.data, NodeData::Element { name, .. } if name.local == html5ever::local_name!("html")))
+        .ok_or("projection: parsed document has no <html>")?
+        .clone();
+    let body = html_el
+        .children
+        .borrow()
+        .iter()
+        .find(|c| matches!(&c.data, NodeData::Element { name, .. } if name.local == html5ever::local_name!("body")))
+        .ok_or("projection: parsed document has no <body>")?
+        .clone();
+    Ok((dom, body))
+}
+
+/// Walk the parsed body: project every element's class attribute, then
+/// serialize the (mutated) children through the code-tab writer.
+fn project_body(
+    body_text: &str,
+    index: &SlotIndex,
+    m: &mut ProjectMetrics,
+) -> Result<String, String> {
+    use markup5ever_rcdom::NodeData;
+    let (_dom, body) = parse_body_fragment(body_text)?;
+
+    // pass 1: compute every element's kept/dropped sets (same-element
+    // closure inside project_element), in document order
+    let mut states: Vec<ElemState> = Vec::new();
+    {
+        fn walk1(
+            n: &markup5ever_rcdom::Handle,
+            index: &SlotIndex,
+            ctx: &mut CtxStack,
+            m: &mut ProjectMetrics,
+            states: &mut Vec<ElemState>,
+        ) {
+            let mut pushed = 0usize;
+            if let NodeData::Element { .. } = &n.data {
+                pushed = push_ctx(n, ctx);
+                let slot = attr_of(n, "data-slot").unwrap_or_default();
+                let class_value = attr_of(n, "class");
+                if !slot.is_empty() {
+                    let d: Vec<String> = class_value
+                        .as_deref()
+                        .unwrap_or("")
+                        .split_whitespace()
+                        .map(|s| s.to_string())
+                        .collect();
+                    // indexed slots are rewritten; unindexed slots and
+                    // non-slotted elements keep their classes verbatim
+                    let p = project_element(n, &slot, &d, index, ctx, m);
+                    states.push(ElemState {
+                        el: n.clone(),
+                        d,
+                        kept: p.kept,
+                        dropped: p.dropped,
+                    });
+                }
+            }
+            for c in n.children.borrow().iter() {
+                walk1(c, index, ctx, m, states);
+            }
+            if let NodeData::Element {
+                template_contents, ..
+            } = &n.data
+                && let Some(tc) = template_contents.borrow().as_ref()
+            {
+                for c in tc.children.borrow().iter() {
+                    walk1(c, index, ctx, m, states);
+                }
+            }
+            for _ in 0..pushed {
+                ctx.pop();
+            }
+        }
+        let mut ctx: CtxStack = Vec::new();
+        walk1(&body, index, &mut ctx, m, &mut states);
+    }
+
+    // pass 2: the closure across elements, to a fixpoint. A kept token on
+    // one element can defeat a dropped one on another (a button's kept
+    // `[&_svg:not([class*='size-'])]:size-3.5` matching a spinner's dropped
+    // `size-4`), and a dropped token on an ancestor can be beaten by a
+    // descendant's kept one once the layers differ (the input-group's
+    // supplied `has-[>…]:[&>input]:pl-1.5` against the control's kept
+    // `px-2.5`). In the original markup BOTH sides sat inline in the
+    // utilities layer; after the projection only the kept side does, and
+    // the layer order flips the winner. Conflicted tokens move back into
+    // K — over-keeping is always safe — until nothing moves.
+    fn settle(
+        states: &mut [ElemState],
+        ancestors: &[usize],
+        b: usize,
+        m: &mut ProjectMetrics,
+    ) -> bool {
+        let mut moved = false;
+        for &a in ancestors {
+            let from_a: Vec<String> = states[a].dropped.clone();
+            for x in from_a {
+                if states[a].kept.iter().any(|t| t == &x) {
+                    continue;
+                }
+                if targets_descendants(&x) && states[b].kept.iter().any(|k| conflicts(&x, k)) {
+                    states[a].kept.push(x.clone());
+                    states[a].dropped.retain(|t| t != &x);
+                    m.closure_kept_tokens += 1;
+                    moved = true;
+                }
+            }
+            let from_b: Vec<String> = states[b].dropped.clone();
+            for x in from_b {
+                if states[b].kept.iter().any(|t| t == &x) {
+                    continue;
+                }
+                if states[a]
+                    .kept
+                    .iter()
+                    .any(|k| targets_descendants(k) && conflicts(&x, k))
+                {
+                    states[b].kept.push(x.clone());
+                    states[b].dropped.retain(|t| t != &x);
+                    m.closure_kept_tokens += 1;
+                    moved = true;
+                }
+            }
+        }
+        moved
+    }
+    fn walk2(
+        n: &markup5ever_rcdom::Handle,
+        ancestors: &mut Vec<usize>,
+        states: &mut Vec<ElemState>,
+        m: &mut ProjectMetrics,
+    ) -> bool {
+        let mut moved = false;
+        let mut here: Option<usize> = None;
+        if let NodeData::Element { .. } = &n.data
+            && let Some(i) = states.iter().position(|st| std::rc::Rc::ptr_eq(&st.el, n))
+        {
+            here = Some(i);
+            moved |= settle(states, ancestors, i, m);
+        }
+        if let Some(i) = here {
+            ancestors.push(i);
+        }
+        for c in n.children.borrow().iter() {
+            moved |= walk2(c, ancestors, states, m);
+        }
+        if let NodeData::Element {
+            template_contents, ..
+        } = &n.data
+            && let Some(tc) = template_contents.borrow().as_ref()
+        {
+            for c in tc.children.borrow().iter() {
+                moved |= walk2(c, ancestors, states, m);
+            }
+        }
+        if here.is_some() {
+            ancestors.pop();
+        }
+        moved
+    }
+    {
+        // moves are monotone (tokens only travel dropped -> kept), so the
+        // sweep terminates; the bound just caps the walk
+        let mut ancestors: Vec<usize> = Vec::new();
+        for _ in 0..64 {
+            if !walk2(&body, &mut ancestors, &mut states, m) {
+                break;
+            }
+        }
+    }
+
+    // pass 3: write the settled kept sets back and serialize
+    for st in &states {
+        if let NodeData::Element { attrs, .. } = &st.el.data {
+            let mut ab = attrs.borrow_mut();
+            if let Some(ci) = ab.iter().position(|a| &*a.name.local == "class") {
+                if st.kept.is_empty() {
+                    ab.remove(ci);
+                } else {
+                    ab[ci].value = st.ordered_kept().join(" ").into();
+                }
+            }
+        }
+    }
+    for st in &states {
+        m.tokens_after += st.kept.len();
+        if st.kept.is_empty() {
+            m.zero_class_after += 1;
+        }
+    }
+    Ok(crate::emit::writer::serialize_children(&body))
+}
+
+struct ElemState {
+    el: markup5ever_rcdom::Handle,
+    d: Vec<String>,
+    kept: Vec<String>,
+    dropped: Vec<String>,
+}
+
+impl ElemState {
+    /// The final kept set in D's order. The closure appends to `kept`; the
+    /// class attribute keeps every token where the demo author wrote it.
+    /// Every kept token is in D by construction (markers and D∖A come from
+    /// D, the closure moves dropped tokens of D back), so a leftover would
+    /// mean a token silently vanishing from the tab — that is an invariant
+    /// break and fails loudly.
+    fn ordered_kept(&self) -> Vec<String> {
+        if self.kept == self.d {
+            return self.d.clone(); // fallback paths: D verbatim, duplicates included
+        }
+        let kset: std::collections::HashSet<&String> = self.kept.iter().collect();
+        let mut seen = std::collections::HashSet::new();
+        let mut out: Vec<String> = Vec::new();
+        for t in &self.d {
+            if kset.contains(t) && seen.insert(t) {
+                out.push(t.clone());
+            }
+        }
+        let lost: Vec<&String> = self.kept.iter().filter(|k| !self.d.contains(*k)).collect();
+        assert!(
+            lost.is_empty() && out.len() == self.kept.len(),
+            "projection: kept token(s) {lost:?} outside D — closure invariant broken"
+        );
+        out
+    }
+}
+
+// ---- whitespace-sensitive subtrees survive prettier verbatim ---------------
+//
+// The tab is prettier-formatted text, but prettier's html printer cannot
+// see what a class list does to white-space: it reflows text and inserts
+// element-separating whitespace, and inside any white-space:pre* subtree
+// that output renders EXTRA line boxes and grows (bubble-collapsible's
+// pre-line bubble rendered 300.25px tall against the demo's 209.25px — the one
+// docs-code-parity family no prettier option removes). Prettier prints
+// <pre> (and textarea) content VERBATIM, so the formatting runs in three
+// steps: every at-rest pre-like element is renamed to <pre> with its real
+// tag in a marker attribute (stamp_pre_like), prettier formats the
+// renamed fragment, and the tags are restored on prettier's output
+// (strip_pre_like). The shipped tab carries no trace; the subtree's bytes
+// survive formatting exactly.
+
+/// Marker attribute carrying a stamped element's real tag name. Never
+/// ships: strip_pre_like removes it from prettier's output.
+const PRE_WS_MARK: &str = "data-shadless-tab-pre";
+
+/// Does this class list put the element in a pre-like white-space AT REST?
+/// Only unvarianted tokens count (`hover:whitespace-pre-line` never applies
+/// at rest), and only the ones mapping to a `pre*` value:
+/// `whitespace-pre[-line|-wrap]` and the `[white-space:pre…]` arbitrary
+/// form. `whitespace-nowrap` collapses a formatter's newlines to single
+/// spaces exactly like `normal` does, so it is not pre-like.
+fn is_at_rest_pre_like(class_value: &str) -> bool {
+    for t in class_value.split_whitespace() {
+        let t = t.strip_prefix('!').unwrap_or(t);
+        let t = t.strip_suffix('!').unwrap_or(t);
+        // variant-scoped: a top-level `:` outside []/() (colons INSIDE an
+        // arbitrary value are part of the value)
+        if base_token(t) != t {
+            continue;
+        }
+        if matches!(
+            t,
+            "whitespace-pre" | "whitespace-pre-line" | "whitespace-pre-wrap"
+        ) {
+            return true;
+        }
+        if let Some(v) = t
+            .strip_prefix("[white-space:")
+            .and_then(|s| s.strip_suffix(']'))
+        {
+            let v = v.replace('_', " ");
+            if v == "pre" || v.starts_with("pre-line") || v.starts_with("pre-wrap") {
+                return true;
+            }
+        }
+    }
+    false
+}
+
+/// rcdom element names are plain fields behind a shared Rc — a tag rename
+/// is a rebuild-and-swap, not a mutation. Builds a copy of `src` with
+/// `new_local` as its tag and `attrs` as its attributes, moves the
+/// children over (parent pointers re-pointed; the old child list cleared),
+/// and swaps the copy into `src`'s parent. `src` stays alive for the
+/// caller (both stamp and strip still read it).
+fn element_retagged(
+    src: &markup5ever_rcdom::Handle,
+    new_local: html5ever::LocalName,
+    attrs: Vec<html5ever::Attribute>,
+) -> markup5ever_rcdom::Handle {
+    use markup5ever_rcdom::{Node, NodeData};
+    let NodeData::Element {
+        name,
+        template_contents,
+        mathml_annotation_xml_integration_point,
+        ..
+    } = &src.data
+    else {
+        panic!("retag: not an element");
+    };
+    let nn = Node::new(NodeData::Element {
+        name: html5ever::QualName::new(None, name.ns.clone(), new_local),
+        attrs: std::cell::RefCell::new(attrs),
+        template_contents: template_contents.clone(),
+        mathml_annotation_xml_integration_point: *mathml_annotation_xml_integration_point,
+    });
+    let moved: Vec<markup5ever_rcdom::Handle> = src.children.borrow().clone();
+    src.children.borrow_mut().clear();
+    for c in moved {
+        c.parent.set(Some(std::rc::Rc::downgrade(&nn)));
+        nn.children.borrow_mut().push(c);
+    }
+    let parent = src
+        .parent
+        .take()
+        .and_then(|w| w.upgrade())
+        .expect("retag: element without a parent");
+    let mut ch = parent.children.borrow_mut();
+    let pos = ch
+        .iter()
+        .position(|c| std::rc::Rc::ptr_eq(c, src))
+        .expect("retag: element not in its parent's child list");
+    nn.parent.set(Some(std::rc::Rc::downgrade(&parent)));
+    ch[pos] = nn.clone();
+    nn
+}
+
+/// Rename every at-rest pre-like element (see is_at_rest_pre_like) to
+/// `<pre>`, recording the real tag in the marker attribute. Returns how
+/// many elements were stamped — 0 means the item can go to prettier as-is.
+fn stamp_pre_like(body: &markup5ever_rcdom::Handle) -> usize {
+    use markup5ever_rcdom::NodeData;
+    // Sites are collected before any swap: the Handles stay valid (the
+    // children are shared Rcs, only the parent element is replaced).
+    fn collect(n: &markup5ever_rcdom::Handle, sites: &mut Vec<markup5ever_rcdom::Handle>) {
+        for c in n.children.borrow().iter() {
+            if let NodeData::Element { attrs, .. } = &c.data {
+                let pre_like = attrs
+                    .borrow()
+                    .iter()
+                    .find(|a| &*a.name.local == "class")
+                    .is_some_and(|a| is_at_rest_pre_like(&a.value));
+                if pre_like {
+                    sites.push(c.clone());
+                }
+            }
+            collect(c, sites);
+            if let NodeData::Element {
+                template_contents, ..
+            } = &c.data
+                && let Some(tc) = template_contents.borrow().as_ref()
+            {
+                collect(tc, sites);
+            }
+        }
+    }
+    let mut sites = Vec::new();
+    collect(body, &mut sites);
+    for s in &sites {
+        let NodeData::Element { name, attrs, .. } = &s.data else {
+            unreachable!("collect only pushes elements");
+        };
+        let mut ab: Vec<html5ever::Attribute> = attrs.borrow().clone();
+        ab.push(html5ever::Attribute {
+            name: html5ever::QualName::new(
+                None,
+                html5ever::ns!(),
+                html5ever::LocalName::from(PRE_WS_MARK),
+            ),
+            value: name.local.to_string().into(),
+        });
+        element_retagged(s, html5ever::LocalName::from("pre"), ab);
+    }
+    sites.len()
+}
+
+/// Undo stamp_pre_like on prettier's output. The formatted text is parsed
+/// and walked IN LOCKSTEP with the stamped tree (a formatter reformats, it
+/// does not restructure — a different element count or tag is a formatter
+/// bug and fails loudly): stamped elements go back to their real tag, the
+/// marker is dropped, and a leading newline the HTML parser discards right
+/// after `<pre>` (the spec's ignore-first-newline rule) is put back from
+/// the stamped tree so the shipped tab keeps the demo's text node.
+fn strip_pre_like(
+    stamped_body: &markup5ever_rcdom::Handle,
+    formatted_text: &str,
+) -> Result<String, String> {
+    use markup5ever_rcdom::NodeData;
+    let (_dom, fbody) = parse_body_fragment(formatted_text)?;
+    fn elements(n: &markup5ever_rcdom::Handle, out: &mut Vec<markup5ever_rcdom::Handle>) {
+        for c in n.children.borrow().iter() {
+            if let NodeData::Element { .. } = &c.data {
+                out.push(c.clone());
+            }
+            elements(c, out);
+            if let NodeData::Element {
+                template_contents, ..
+            } = &c.data
+                && let Some(tc) = template_contents.borrow().as_ref()
+            {
+                elements(tc, out);
+            }
+        }
+    }
+    let (mut sa, mut fa) = (Vec::new(), Vec::new());
+    elements(stamped_body, &mut sa);
+    elements(&fbody, &mut fa);
+    if sa.len() != fa.len() {
+        return Err(format!(
+            "pre-like strip: the formatter restructured the DOM ({} stamped elements vs {} formatted)",
+            sa.len(),
+            fa.len()
+        ));
+    }
+    let local = |h: &markup5ever_rcdom::Handle| match &h.data {
+        NodeData::Element { name, .. } => name.local.to_string(),
+        _ => String::new(),
+    };
+    for (s, f) in sa.iter().zip(fa.iter()) {
+        // On the stamped tree the site IS the renamed <pre> (the original
+        // element was replaced); its marker holds the real tag. The marker
+        // must survive formatting on both sides or the sites disagree.
+        let (sm, fm) = (attr_of(s, PRE_WS_MARK), attr_of(f, PRE_WS_MARK));
+        match (&sm, &fm) {
+            (Some(orig), Some(forig)) => {
+                if orig != forig {
+                    return Err(format!(
+                        "pre-like strip: stamped <{orig}> came back marked <{forig}>"
+                    ));
+                }
+                let kept: Vec<html5ever::Attribute> = match &f.data {
+                    NodeData::Element { attrs, .. } => attrs
+                        .borrow()
+                        .iter()
+                        .filter(|a| &*a.name.local != PRE_WS_MARK)
+                        .cloned()
+                        .collect(),
+                    _ => unreachable!("attr_of only matches elements"),
+                };
+                // The parser dropped the newline right after <pre>; the
+                // stamped tree still has it, so put it back — BEFORE the
+                // retag moves f's children to the replacement.
+                let sc = s.children.borrow();
+                if let Some(first) = sc.first()
+                    && let NodeData::Text { contents } = &first.data
+                    && contents.borrow().starts_with('\n')
+                {
+                    drop(sc);
+                    let fc = f.children.borrow();
+                    match fc.first() {
+                        Some(ff) => match &ff.data {
+                            NodeData::Text { contents } => {
+                                if !contents.borrow().starts_with('\n') {
+                                    let restored = format!("\n{}", contents.borrow());
+                                    *contents.borrow_mut() = restored.as_str().into();
+                                }
+                            }
+                            _ => panic!(
+                                "pre-like strip: the formatter replaced the element's first text child"
+                            ),
+                        },
+                        None => panic!(
+                            "pre-like strip: the formatter dropped the element's first text child"
+                        ),
+                    }
+                }
+                element_retagged(f, html5ever::LocalName::from(orig.as_str()), kept);
+            }
+            (None, None) => {
+                let (sname, fname) = (local(s), local(f));
+                if sname != fname {
+                    return Err(format!(
+                        "pre-like strip: element <{sname}> came back as <{fname}>"
+                    ));
+                }
+            }
+            _ => {
+                return Err(format!(
+                    "pre-like strip: stamp marker lost or gained on <{}>",
+                    local(f)
+                ));
+            }
+        }
+    }
+    Ok(crate::emit::writer::serialize_children(&fbody))
 }
 
 fn demo_source(ctx: &DocsBuildCtx, file: &str) -> String {
@@ -1232,22 +2155,122 @@ pub fn run_docs_build(root: &Path) -> i32 {
             items.push((n, body));
         }
     }
-    let mut markup = match prettier_batch(&items) {
+    // The code tab is SLOT-ONLY markup: every tab source is parsed, each
+    // slotted element keeps only the classes the component stylesheet does
+    // not already supply, and the result is serialized raw (the writer
+    // keeps `&` unescaped wherever it cannot start a character reference —
+    // a consumer's Tailwind scan must read `[&_a]`, not `&amp;_a`; prettier
+    // preserves entities verbatim). RTL demos are exempt: their tab keeps
+    // every class, because build-rtl rewrote their utilities into logical
+    // forms (pe-8, ps-1.5, end-2, …) that dist/css does not carry.
+    crate::emit::load_skin();
+    let slot_index = SlotIndex::load(root);
+    let demo_stems: Vec<String> = items
+        .iter()
+        .map(|(n, _)| n.trim_end_matches(".html").to_string())
+        .collect();
+    let rtl_stems = rtl_exempt_stems(root, &demo_stems);
+    let mut metrics = ProjectMetrics::default();
+    let mut projected_items: Vec<(String, String)> = Vec::new();
+    for (n, body) in &items {
+        let stem = n.trim_end_matches(".html");
+        if rtl_stems.contains(stem) {
+            metrics.files_rtl_exempt += 1;
+            // The exemption is real, not emergent: the RTL tab keeps EVERY
+            // class. build-rtl rewrote their utilities into logical forms
+            // (pe-8, ps-1.5, end-2, …) that dist/css does not carry, so the
+            // projection has nothing honest to subtract — it is serialized
+            // through the code-tab writer (same attribute escaping as every
+            // tab) with the projection off, and no metrics are recorded.
+            match parse_body_fragment(body) {
+                Ok((_dom, b)) => {
+                    projected_items.push((n.clone(), crate::emit::writer::serialize_children(&b)))
+                }
+                Err(e) => {
+                    eprintln!("docs-build: {}: {}", n, e);
+                    return 1;
+                }
+            }
+        } else {
+            metrics.files_projected += 1;
+            match project_body(body, &slot_index, &mut metrics) {
+                Ok(p) => projected_items.push((n.clone(), p)),
+                Err(e) => {
+                    eprintln!("docs-build: {}: {}", n, e);
+                    return 1;
+                }
+            }
+        }
+    }
+    println!(
+        "code-tab projection: {} files projected, {} RTL files exempt (every class kept); {} indexed slotted elements: {} → {} class tokens ({} now classless, {:.1}% no class), {} unindexed slots kept verbatim, {} inconsistent-fallback elements kept whole, {} collision ties, {} closure-kept tokens",
+        metrics.files_projected,
+        metrics.files_rtl_exempt,
+        metrics.slotted,
+        metrics.tokens_before,
+        metrics.tokens_after,
+        metrics.zero_class_after,
+        if metrics.slotted > 0 {
+            100.0 * metrics.zero_class_after as f64 / metrics.slotted as f64
+        } else {
+            0.0
+        },
+        metrics.unindexed_slot,
+        metrics.fallback_inconsistent,
+        metrics.collision_ties,
+        metrics.closure_kept_tokens,
+    );
+
+    // Prettier cannot see white-space:pre* utility classes; inside such a
+    // subtree its reflow renders extra line boxes (see the stamp_pre_like
+    // comment above). Items carrying one take the stamp -> prettier ->
+    // strip detour; every other item goes through byte-identically to
+    // before.
+    let mut stamped: HashMap<String, (markup5ever_rcdom::RcDom, markup5ever_rcdom::Handle)> =
+        HashMap::new();
+    let mut prettier_items: Vec<(String, String)> = Vec::new();
+    for (n, text) in &projected_items {
+        if text.contains("whitespace-pre") {
+            match parse_body_fragment(text) {
+                Ok((dom, b)) => {
+                    if stamp_pre_like(&b) > 0 {
+                        let t = crate::emit::writer::serialize_children(&b);
+                        stamped.insert(n.clone(), (dom, b));
+                        prettier_items.push((n.clone(), t));
+                        continue;
+                    }
+                }
+                Err(e) => {
+                    eprintln!("docs-build: {}: {}", n, e);
+                    return 1;
+                }
+            }
+        }
+        prettier_items.push((n.clone(), text.clone()));
+    }
+    let pretty = match prettier_batch(&prettier_items) {
         Ok(m) => m,
         Err(e) => {
             eprintln!("docs-build: prettier: {}", e);
             return 1;
         }
     };
-    // The demo bytes are Chromium innerHTML serializations, which escape
-    // & < > inside attribute values (`[&amp;_svg]`, `has-[&gt;svg]`). Legal
-    // HTML that renders fine in the served iframe — but the code tab is text
-    // a consumer copies and their Tailwind build content-scans, and a scan
-    // extracts nothing from an escaped bracket utility. prettier preserves
-    // both forms verbatim (measured: it never re-escapes), so the raw forms
-    // go into the tab after formatting.
-    for v in markup.values_mut() {
-        *v = unescape_class_attrs(v);
+    let mut markup: HashMap<String, String> = HashMap::new();
+    for (n, formatted) in &pretty {
+        match stamped.get(n) {
+            Some((_, b)) => match strip_pre_like(b, formatted) {
+                Ok(t) => {
+                    markup.insert(n.clone(), t);
+                }
+                Err(e) => {
+                    eprintln!("docs-build: {}: {}", n, e);
+                    return 1;
+                }
+            },
+            None => {
+                markup.insert(n.clone(), formatted.clone());
+            }
+        }
     }
 
     let mut ctx = DocsBuildCtx {
@@ -1381,7 +2404,7 @@ pub fn run_docs_build(root: &Path) -> i32 {
     // TOML frontmatter: the vitepress_home tables are TOML, and a YAML block
     // cannot carry them (the pages keep YAML — Zola accepts either per file)
     let home = format!(
-        "+++\ntemplate = \"index.html\"\n[extra.vitepress_home]\ntext = \"shadless\"\ntagline = \"shadcn/ui as static HTML and a vanilla runtime — no React. Copy the markup, load the stylesheets, done.\"\n[[extra.vitepress_home.actions]]\ntext = \"Get Started\"\ntheme = \"brand\"\nlink = \"/guides/introduction/\"\n\n[[extra.vitepress_home.actions]]\ntext = \"Components\"\ntheme = \"alt\"\nlink = \"/components/\"\n\n[[extra.vitepress_home.features]]\ntitle = \"Static HTML\"\ndetails = \"Every component is markup + CSS you copy — data-slot attributes, Tailwind utilities, no framework.\"\n\n[[extra.vitepress_home.features]]\ntitle = \"Vanilla runtime\"\ndetails = \"A dependency-free JS base wires the interactive pieces; shadless.init(root) for content added later.\"\n\n[[extra.vitepress_home.features]]\ntitle = \"shadcn/ui, ported\"\ndetails = \"{} components mirrored from the pinned upstream registry, plus the guides that still apply.\"\n+++\n",
+        "+++\ntemplate = \"index.html\"\n[extra.vitepress_home]\ntext = \"shadless\"\ntagline = \"shadcn/ui as static HTML and a vanilla runtime — no React. Copy the markup, load the stylesheets, done.\"\n[[extra.vitepress_home.actions]]\ntext = \"Get Started\"\ntheme = \"brand\"\nlink = \"/guides/introduction/\"\n\n[[extra.vitepress_home.actions]]\ntext = \"Components\"\ntheme = \"alt\"\nlink = \"/components/\"\n\n[[extra.vitepress_home.features]]\ntitle = \"Static HTML\"\ndetails = \"Every component is markup + CSS you copy — data-slot attributes plus only the utilities you add; the stylesheet supplies the rest. No framework.\"\n\n[[extra.vitepress_home.features]]\ntitle = \"Vanilla runtime\"\ndetails = \"A dependency-free JS base wires the interactive pieces; shadless.init(root) for content added later.\"\n\n[[extra.vitepress_home.features]]\ntitle = \"shadcn/ui, ported\"\ndetails = \"{} components mirrored from the pinned upstream registry, plus the guides that still apply.\"\n+++\n",
         mirror_set_cache.len()
     );
     if let Err(e) = std::fs::write(root.join(CONTENT_ROOT).join("_index.md"), home) {
@@ -1605,93 +2628,391 @@ fn prettier_batch(items: &[(String, String)]) -> Result<HashMap<String, String>,
 
 #[cfg(test)]
 mod tests {
-    use super::unescape_class_attrs;
+    use super::{base_token, conflicts};
 
     #[test]
-    fn unit_unescape_class_attrs_bracket_utilities() {
-        // the exact shapes the Chromium serializations ship
+    fn unit_base_token_strips_variants_and_important() {
+        assert_eq!(base_token("px-2"), "px-2");
+        assert_eq!(base_token("hover:px-2"), "px-2");
+        assert_eq!(base_token("dark:sm:hover:px-2"), "px-2");
+        assert_eq!(base_token("!px-2"), "px-2");
+        assert_eq!(base_token("px-2!"), "px-2");
+        assert_eq!(base_token("hover:!px-2"), "px-2");
+        // colons inside arbitrary values are not variant separators
         assert_eq!(
-            unescape_class_attrs(r#"<span class="[&amp;_svg]:pointer-events-none">x</span>"#),
-            r#"<span class="[&_svg]:pointer-events-none">x</span>"#
+            base_token("bg-[color-mix(in_oklch,var(--a),var(--b)_5%)]"),
+            "bg-[color-mix(in_oklch,var(--a),var(--b)_5%)]"
         );
         assert_eq!(
-            unescape_class_attrs(r#"<div class="grid has-[&gt;svg]:grid-cols-[auto_1fr]">x</div>"#),
-            r#"<div class="grid has-[>svg]:grid-cols-[auto_1fr]">x</div>"#
+            base_token("md:bg-[url(https://x/y)]"),
+            "bg-[url(https://x/y)]"
         );
-        assert_eq!(
-            unescape_class_attrs(r#"<div class="[&lt;svg]:size-4">x</div>"#),
-            r#"<div class="[<svg]:size-4">x</div>"#
+        assert_eq!(base_token("[&_a]:underline"), "underline");
+    }
+
+    #[test]
+    fn unit_supply_limits_what_a_multi_element_slot_drops() {
+        // css.rs pass 1: for a non-cva slot with two differently-classed
+        // elements, only the COMMON tokens go under [data-slot]; the rest
+        // is anchor-keyed and must stay inline in the projected tab — the
+        // demo DOM carries no anchor classes.
+        use std::collections::{HashMap, HashSet};
+
+        use super::{SlotEntry, SlotIndex};
+        use crate::emit::css::{CssIrComponent, IrEl, IrFn};
+        let mk_el = |slot: &str, classes: &[&str]| IrEl {
+            tag: "svg".to_string(),
+            slot: slot.to_string(),
+            classes: classes.iter().map(|c| c.to_string()).collect(),
+            ..Default::default()
+        };
+        let ir = CssIrComponent {
+            name: "accordion".to_string(),
+            components: vec![IrFn {
+                fn_: "AccordionTrigger".to_string(),
+                export: true,
+                elements: vec![
+                    mk_el(
+                        "accordion-trigger-icon",
+                        &[
+                            "pointer-events-none",
+                            "shrink-0",
+                            "group-aria-expanded/accordion-trigger:hidden",
+                        ],
+                    ),
+                    mk_el(
+                        "accordion-trigger-icon",
+                        &[
+                            "pointer-events-none",
+                            "hidden",
+                            "shrink-0",
+                            "group-aria-expanded/accordion-trigger:inline",
+                        ],
+                    ),
+                ],
+            }],
+            ..Default::default()
+        };
+        let mut index = SlotIndex {
+            irs: vec![ir],
+            cva_slots: vec![HashMap::new()],
+            slots: HashMap::new(),
+            supply: Vec::new(),
+        };
+        index.slots.insert(
+            "accordion-trigger-icon".to_string(),
+            vec![
+                SlotEntry {
+                    ir: 0,
+                    fn_: "AccordionTrigger".to_string(),
+                    el: 0,
+                },
+                SlotEntry {
+                    ir: 0,
+                    fn_: "AccordionTrigger".to_string(),
+                    el: 1,
+                },
+            ],
+        );
+        let mut sup: HashMap<String, HashSet<String>> = HashMap::new();
+        sup.insert(
+            "accordion-trigger-icon".to_string(),
+            ["pointer-events-none".to_string(), "shrink-0".to_string()]
+                .into_iter()
+                .collect(),
+        );
+        index.supply.push(sup);
+
+        // the second icon: `hidden` is anchor-keyed — it must SURVIVE the
+        // projection even though the candidate's full M contains it
+        let html = r#"<div><svg class="lucide lucide-chevron-up pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline" data-slot="accordion-trigger-icon"></svg></div>"#;
+        let mut m = super::ProjectMetrics::default();
+        let out = super::project_body(html, &index, &mut m).expect("projects");
+        // `hidden` and the :inline variant are anchor-keyed — they must
+        // survive the projection even though the candidate's full M carries
+        // them
+        assert!(
+            out.contains(
+                "lucide lucide-chevron-up hidden group-aria-expanded/accordion-trigger:inline"
+            ),
+            "anchor-keyed tokens must stay inline: {out}"
+        );
+        // the shared tokens drop (the [data-slot] rule supplies them)
+        assert!(
+            !out.contains("pointer-events-none") && !out.contains("shrink-0"),
+            "slot-supplied tokens still drop: {out}"
         );
     }
 
     #[test]
-    fn unit_unescape_class_attrs_keeps_reference_shaped_escapes() {
-        // `&amp;` + alnum would reparse as a character reference — stays escaped
-        assert_eq!(
-            unescape_class_attrs(r#"<div class="a&amp;copy">"#),
-            r#"<div class="a&amp;copy">"#
+    fn unit_conflicts_catches_layer_flips() {
+        // same property, different value: a twMerge in either direction
+        // drops one, so which wins is order-dependent
+        assert!(conflicts("px-(--card-spacing)", "p-6"));
+        assert!(conflicts("p-6", "px-(--card-spacing)"));
+        // the order-dependent pair the css-order closure exists for
+        assert!(conflicts("line-clamp-1", "flex"));
+        assert!(conflicts("flex", "line-clamp-1"));
+        // equal bases are the SAME declarations — order can never matter
+        assert!(!conflicts("hover:bg-muted", "bg-muted"));
+        assert!(!conflicts("p-6", "p-6"));
+        // unrelated properties never conflict
+        assert!(!conflicts("rounded-xl", "gap-4"));
+    }
+
+    /// One-slot index whose candidate M is exactly `m_classes` (no cva, no
+    /// axes — classes_of returns the element's classes) with the given
+    /// [data-slot] supply.
+    fn single_slot_index(slot: &str, m_classes: &[&str], supply: &[&str]) -> super::SlotIndex {
+        use crate::emit::css::{CssIrComponent, IrEl, IrFn};
+        use std::collections::{HashMap, HashSet};
+        let ir = CssIrComponent {
+            name: "test".to_string(),
+            components: vec![IrFn {
+                fn_: "Test".to_string(),
+                export: true,
+                elements: vec![IrEl {
+                    tag: "div".to_string(),
+                    slot: slot.to_string(),
+                    classes: m_classes.iter().map(|c| c.to_string()).collect(),
+                    ..Default::default()
+                }],
+            }],
+            ..Default::default()
+        };
+        let mut index = super::SlotIndex {
+            irs: vec![ir],
+            cva_slots: vec![HashMap::new()],
+            slots: HashMap::new(),
+            supply: Vec::new(),
+        };
+        index.slots.insert(
+            slot.to_string(),
+            vec![super::SlotEntry {
+                ir: 0,
+                fn_: "Test".to_string(),
+                el: 0,
+            }],
         );
-        assert_eq!(
-            unescape_class_attrs(r#"<div class="a&amp;#38;b">"#),
-            r#"<div class="a&amp;#38;b">"#
+        let mut sup: HashMap<String, HashSet<String>> = HashMap::new();
+        sup.insert(
+            slot.to_string(),
+            supply.iter().map(|c| c.to_string()).collect(),
         );
-        // …while a trailing or punctuation-followed `&amp;` decodes
-        assert_eq!(
-            unescape_class_attrs(r#"<div class="a&amp;">"#),
-            r#"<div class="a&">"#
+        index.supply.push(sup);
+        index
+    }
+
+    #[test]
+    fn unit_consistency_fallback_keeps_unrendered_candidates() {
+        // The candidate's M carries `shrink-0`, but the demo DOM never
+        // rendered it (D has gap-2 instead and nothing overrides it): our M
+        // is not what React rendered for this element, so dropping anything
+        // would be a guess — all of D stays. Deleting the consistency rule
+        // makes the projection subtract shrink-0-supplied tokens anyway and
+        // this test fails.
+        let index = single_slot_index(
+            "test-icon",
+            &["pointer-events-none", "shrink-0"],
+            &["pointer-events-none", "shrink-0"],
         );
-        assert_eq!(
-            unescape_class_attrs(r#"<div class="a&amp;_b">"#),
-            r#"<div class="a&_b">"#
-        );
-        // longest match first: `&amp;gt;` is the ENTITY &gt; (DOM value `&gt;`),
-        // not a `&gt;` to strip
-        assert_eq!(
-            unescape_class_attrs(r#"<div class="a&amp;gt;b">"#),
-            r#"<div class="a&amp;gt;b">"#
+        let html =
+            r#"<div><span data-slot="test-icon" class="pointer-events-none gap-2"></span></div>"#;
+        let mut m = super::ProjectMetrics::default();
+        let out = super::project_body(html, &index, &mut m).expect("projects");
+        assert_eq!(m.fallback_inconsistent, 1, "{out}");
+        assert!(
+            out.contains(r#"class="pointer-events-none gap-2""#),
+            "unrendered candidate must keep all of D: {out}"
         );
     }
 
     #[test]
-    fn unit_unescape_class_attrs_touches_class_values_only() {
-        // text outside class untouched
-        assert_eq!(
-            unescape_class_attrs("<p>a &amp; b &lt; c &gt; d</p>"),
-            "<p>a &amp; b &lt; c &gt; d</p>"
+    fn unit_closure_keeps_dropped_token_conflicting_with_a_kept_one() {
+        // `w-px` is supplied by the [data-slot] rule and dropped from the
+        // tab — but the demo author's own `sm:w-full` stays inline, and in
+        // the original BOTH sat in the utilities layer where order decided.
+        // After the projection w-px would come from @layer components,
+        // which ANY kept utilities-layer token with a conflicting base
+        // beats — so the closure moves w-px back into K. Deleting the
+        // same-element closure makes this test fail.
+        let index = single_slot_index(
+            "test-trigger",
+            &["w-px", "rounded-md"],
+            &["w-px", "rounded-md"],
         );
-        // other attributes untouched
-        assert_eq!(
-            unescape_class_attrs(r#"<a href="/x?a=1&amp;b=2" title="&lt;i&gt;" class="g">l</a>"#),
-            r#"<a href="/x?a=1&amp;b=2" title="&lt;i&gt;" class="g">l</a>"#
+        let html = r#"<div><button data-slot="test-trigger" class="w-px sm:w-full rounded-md"></button></div>"#;
+        let mut m = super::ProjectMetrics::default();
+        let out = super::project_body(html, &index, &mut m).expect("projects");
+        assert!(
+            out.contains(r#"class="w-px sm:w-full""#),
+            "w-px conflicts with the kept sm:w-full and must stay: {out}"
         );
-        // a class-suffixed attribute is not a class attribute
-        assert_eq!(
-            unescape_class_attrs(r#"<div data-class="&amp;#38;">"#),
-            r#"<div data-class="&amp;#38;">"#
+        // rounded-md conflicts with nothing kept or supplied — it still drops
+        assert!(!out.contains("rounded-md"), "{out}");
+    }
+
+    #[test]
+    fn unit_closure_keeps_dropped_token_conflicting_with_another_supplied_one() {
+        // The item-title shape: the [data-slot] rule applies line-clamp-1
+        // AND flex in one @apply, where the emitter's declaration order
+        // decides a pair that was order-dependent inline (line-clamp-1 sets
+        // display: -webkit-box, flex sets display: flex). The demo DOM
+        // carries line-clamp-1; dropping it hands the win to the rule's own
+        // trailing flex, so the closure keeps it. Deleting the css-conflict
+        // arm empties K entirely and this test fails.
+        let index = single_slot_index(
+            "test-title",
+            &["line-clamp-1", "flex"],
+            &["line-clamp-1", "flex"],
+        );
+        let html = r#"<div><span data-slot="test-title" class="line-clamp-1"></span></div>"#;
+        let mut m = super::ProjectMetrics::default();
+        let out = super::project_body(html, &index, &mut m).expect("projects");
+        assert!(
+            out.contains(r#"class="line-clamp-1""#),
+            "line-clamp-1 conflicts with the rule's own flex and must stay: {out}"
         );
     }
 
     #[test]
-    fn unit_unescape_class_attrs_shapes() {
-        // multiple class attributes in one document
-        assert_eq!(
-            unescape_class_attrs(r#"<a class="x&amp;_y"></a><b class="p&gt;q"></b>"#),
-            r#"<a class="x&_y"></a><b class="p>q"></b>"#
+    fn unit_closure_cross_element_keeps_descendant_targeted_token() {
+        // The spinner shape: the trigger's kept-side token
+        // `[&_svg]:size-4` targets descendants; the icon's own `size-3`
+        // stays inline. In the original both sat inline (specificity gave
+        // the trigger's token the icon); after the projection the icon's
+        // size-3 would come from @layer components and the layer order
+        // flips the winner — so the closure moves the trigger's token back.
+        // Deleting the cross-element settle makes this test fail.
+        use crate::emit::css::{CssIrComponent, IrEl, IrFn};
+        use std::collections::{HashMap, HashSet};
+        let ir = CssIrComponent {
+            name: "test".to_string(),
+            components: vec![IrFn {
+                fn_: "Test".to_string(),
+                export: true,
+                elements: vec![
+                    IrEl {
+                        tag: "button".to_string(),
+                        slot: "test-trigger".to_string(),
+                        classes: vec!["[&_svg]:size-4".to_string(), "inline-flex".to_string()],
+                        ..Default::default()
+                    },
+                    IrEl {
+                        tag: "svg".to_string(),
+                        slot: "test-icon".to_string(),
+                        classes: vec!["size-4".to_string()],
+                        ..Default::default()
+                    },
+                ],
+            }],
+            ..Default::default()
+        };
+        let mut index = super::SlotIndex {
+            irs: vec![ir],
+            cva_slots: vec![HashMap::new()],
+            slots: HashMap::new(),
+            supply: Vec::new(),
+        };
+        index.slots.insert(
+            "test-trigger".to_string(),
+            vec![super::SlotEntry {
+                ir: 0,
+                fn_: "Test".to_string(),
+                el: 0,
+            }],
         );
-        // non-ASCII passes through byte-exact
-        assert_eq!(
-            unescape_class_attrs(r#"<div class="grü&amp;ße">ß</div>"#),
-            r#"<div class="grü&ße">ß</div>"#
+        index.slots.insert(
+            "test-icon".to_string(),
+            vec![super::SlotEntry {
+                ir: 0,
+                fn_: "Test".to_string(),
+                el: 1,
+            }],
         );
-        // empty value, no class attribute at all, unterminated attribute
-        assert_eq!(
-            unescape_class_attrs(r#"<div class="">"#),
-            r#"<div class="">"#
+        let mut sup: HashMap<String, HashSet<String>> = HashMap::new();
+        sup.insert(
+            "test-trigger".to_string(),
+            ["[&_svg]:size-4".to_string(), "inline-flex".to_string()]
+                .into_iter()
+                .collect(),
         );
-        assert_eq!(unescape_class_attrs("<div>plain</div>"), "<div>plain</div>");
-        assert_eq!(
-            unescape_class_attrs(r#"<div class="open"#),
-            r#"<div class="open"#
+        sup.insert(
+            "test-icon".to_string(),
+            ["size-4".to_string()].into_iter().collect(),
         );
+        index.supply.push(sup);
+
+        let html = r#"<div><button data-slot="test-trigger" class="[&_svg]:size-4 inline-flex"><svg data-slot="test-icon" class="size-3"></svg></button></div>"#;
+        let mut m = super::ProjectMetrics::default();
+        let out = super::project_body(html, &index, &mut m).expect("projects");
+        // inline-flex is supplied by the [data-slot] rule and drops;
+        // the descendant-targeting token survives the closure
+        assert!(
+            out.contains("[&_svg]:size-4") && !out.contains("inline-flex"),
+            "the descendant-targeting token must survive the cross-element closure: {out}"
+        );
+        assert!(
+            out.contains(r#"class="size-3""#),
+            "the icon's own override stays: {out}"
+        );
+    }
+
+    #[test]
+    fn unit_at_rest_pre_like_shape() {
+        use super::is_at_rest_pre_like;
+        assert!(is_at_rest_pre_like("whitespace-pre"));
+        assert!(is_at_rest_pre_like("whitespace-pre-line"));
+        assert!(is_at_rest_pre_like("whitespace-pre-wrap"));
+        assert!(is_at_rest_pre_like("rounded-xl whitespace-pre-line px-3"));
+        assert!(is_at_rest_pre_like("[white-space:pre]"));
+        assert!(is_at_rest_pre_like("[white-space:pre-line]"));
+        // variant-scoped utilities never apply at rest
+        assert!(!is_at_rest_pre_like("hover:whitespace-pre-line"));
+        // nowrap collapses newlines to spaces exactly like normal
+        assert!(!is_at_rest_pre_like("whitespace-nowrap"));
+        assert!(!is_at_rest_pre_like("whitespace-normal"));
+    }
+
+    #[test]
+    fn unit_pre_ws_stamp_strip_roundtrip() {
+        use super::{PRE_WS_MARK, parse_body_fragment, stamp_pre_like, strip_pre_like};
+        let html = "<div><div data-slot=\"bubble-content\" class=\"rounded-xl whitespace-pre-line px-3\"><div>one.\ntwo.</div><button type=\"button\">more</button></div></div>";
+        let (dom, body) = parse_body_fragment(html).expect("parses");
+        let _ = &dom; // alive for the whole call
+        assert_eq!(stamp_pre_like(&body), 1);
+        let stamped = crate::emit::writer::serialize_children(&body);
+        assert!(
+            stamped.starts_with("<div><pre ") && stamped.contains("data-shadless-tab-pre=\"div\""),
+            "the element is formatted as pre with its real tag in the marker: {stamped}"
+        );
+        // a formatter that changes nothing round-trips byte-for-byte
+        let out = strip_pre_like(&body, &stamped).expect("strips");
+        assert_eq!(out, html);
+        assert!(!out.contains(PRE_WS_MARK) && !out.contains("<pre"), "{out}");
+    }
+
+    #[test]
+    fn unit_pre_ws_restores_leading_newline() {
+        use super::{parse_body_fragment, stamp_pre_like, strip_pre_like};
+        // The HTML parser drops the newline immediately after a <pre> start
+        // tag; prettier prints one back so ITS output reparses to the tree
+        // it got — but the strip reparses with the ORIGINAL tag pending, so
+        // the newline must be restored from the stamped tree or the
+        // shipped tab loses the demo's leading blank line.
+        let html = "<div><p class=\"whitespace-pre-line\">\nfirst\nsecond</p></div>";
+        let (dom, body) = parse_body_fragment(html).expect("parses");
+        let _ = &dom;
+        assert_eq!(stamp_pre_like(&body), 1);
+        let stamped = crate::emit::writer::serialize_children(&body);
+        // prettier's parse drops it, its printer adds one back after the
+        // open tag — simulate exactly that output
+        let dropped = stamped.replacen(">\nfirst", ">first", 1);
+        assert_ne!(dropped, stamped, "fixture must carry a leading newline");
+        let start = dropped.find("<pre").expect("stamped element");
+        let open_end = start + dropped[start..].find('>').expect("open tag end") + 1;
+        let prettier_out = format!("{}\n{}", &dropped[..open_end], &dropped[open_end..]);
+        let out = strip_pre_like(&body, &prettier_out).expect("strips");
+        assert_eq!(out, html, "the leading newline must come back");
     }
 }

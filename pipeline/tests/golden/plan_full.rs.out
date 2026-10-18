@@ -60,6 +60,7 @@ docs-catalog
 docs-upstream-mirror
 docs-build
 docs-consistency
+docs-code-parity
 docs-fidelity
 docs-site
 docs-smoke

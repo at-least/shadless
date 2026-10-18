@@ -61,6 +61,7 @@ build docs-upstream-mirror             [fast]  needs: pin
 build docs-build                       [full]  needs: docs-catalog, docs-upstream-mirror, demo-css, build-js
 build docs-site                        [full]  needs: docs-build
 GATE  docs-consistency                 [full (self fast)]  needs: docs-build, build-js
+GATE  docs-code-parity                 [full]  needs: docs-build, demo-css, demo, product-css, build-js
 GATE  docs-fidelity                    [full (self fast)]  needs: docs-build, build-js
 GATE  docs-smoke                       [full]  needs: docs-site, build-js
 GATE  interactivity-sweep              [full]  needs: docs-build, build-js
@@ -68,4 +69,4 @@ GATE  reproducible                     [full]  needs: docs-build, product-build,
 GATE  golden-gate                      [full]  needs: example-oracle, build-js
 GATE  example-gate                     [full]  needs: docs-build, build-js
 
-69 nodes (52 gates)
+70 nodes (53 gates)

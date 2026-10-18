@@ -20,25 +20,25 @@ Displays conversational content in a message bubble. Supports variants, alignmen
     data-slot="bubble"
     data-variant="default"
     data-align="end"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-primary *:data-[slot=bubble-content]:text-primary-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-primary [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       Hey there! what's up?
     </div>
   </div>
-  <div data-slot="bubble-group" class="gap-2 flex min-w-0 flex-col">
+  <div data-slot="bubble-group">
     <div
       data-slot="bubble"
       data-variant="muted"
       data-align="start"
-      class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
+      class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
     >
       <div
         data-slot="bubble-content"
-        class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+        class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
       >
         Hey! Want to see chat bubbles?
       </div>
@@ -47,11 +47,11 @@ Displays conversational content in a message bubble. Supports variants, alignmen
       data-slot="bubble"
       data-variant="muted"
       data-align="start"
-      class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
+      class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
     >
       <div
         data-slot="bubble-content"
-        class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+        class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
       >
         I can group messages, switch sides, and keep the whole thread easy to scan.
       </div>
@@ -59,7 +59,7 @@ Displays conversational content in a message bubble. Supports variants, alignmen
         data-slot="bubble-reactions"
         data-align="end"
         data-side="bottom"
-        class="rounded-full ring-3 ring-card bg-muted shrink-0 gap-1 px-1.5 py-0.5 has-[button]:p-0 text-sm absolute z-10 flex w-fit items-center justify-center bottom-0 translate-y-3/4 right-3"
+        class="bg-muted px-1.5 py-0.5 has-[button]:p-0"
         role="img"
         aria-label="Reaction: thumbs up"
       >
@@ -71,11 +71,11 @@ Displays conversational content in a message bubble. Supports variants, alignmen
     data-slot="bubble"
     data-variant="default"
     data-align="end"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-primary *:data-[slot=bubble-content]:text-primary-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-primary [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       Sure. Hit me with your best demo.
     </div>
@@ -84,11 +84,11 @@ Displays conversational content in a message bubble. Supports variants, alignmen
     data-slot="bubble"
     data-variant="muted"
     data-align="start"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       Yes. You are reading a demo that is demoing itself. Very meta. Very on-brand.
     </div>
@@ -96,7 +96,7 @@ Displays conversational content in a message bubble. Supports variants, alignmen
       data-slot="bubble-reactions"
       data-align="end"
       data-side="bottom"
-      class="rounded-full ring-3 ring-card bg-muted shrink-0 gap-1 px-1.5 py-0.5 has-[button]:p-0 text-sm absolute z-10 flex w-fit items-center justify-center bottom-0 translate-y-3/4 right-3"
+      class="bg-muted px-1.5 py-0.5 has-[button]:p-0"
       role="img"
       aria-label="Reactions: thumbs up, fire, eyes, and 2 more"
     >
@@ -169,11 +169,11 @@ Use `variant` to change the visual treatment of the bubble.
     data-slot="bubble"
     data-variant="default"
     data-align="start"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-primary *:data-[slot=bubble-content]:text-primary-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-primary [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       This is the default primary bubble.
     </div>
@@ -182,11 +182,11 @@ Use `variant` to change the visual treatment of the bubble.
     data-slot="bubble"
     data-variant="secondary"
     data-align="end"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-secondary *:data-[slot=bubble-content]:text-secondary-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)]"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-secondary [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)]"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       This is the secondary variant.
     </div>
@@ -195,11 +195,11 @@ Use `variant` to change the visual treatment of the bubble.
     data-slot="bubble"
     data-variant="muted"
     data-align="start"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       This one is muted. It uses a lower emphasis color for the chat bubble.
     </div>
@@ -207,7 +207,7 @@ Use `variant` to change the visual treatment of the bubble.
       data-slot="bubble-reactions"
       data-align="end"
       data-side="bottom"
-      class="rounded-full ring-3 ring-card bg-muted shrink-0 gap-1 px-1.5 py-0.5 has-[button]:p-0 text-sm absolute z-10 flex w-fit items-center justify-center bottom-0 translate-y-3/4 right-3"
+      class="bg-muted px-1.5 py-0.5 has-[button]:p-0"
       role="img"
       aria-label="Reaction: thumbs up"
     >
@@ -218,11 +218,11 @@ Use `variant` to change the visual treatment of the bubble.
     data-slot="bubble"
     data-variant="tinted"
     data-align="end"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-[oklch(from_var(--primary)_0.93_calc(c*0.4)_h)] dark:*:data-[slot=bubble-content]:bg-[oklch(from_var(--primary)_0.3_calc(c*0.4)_h)] *:data-[slot=bubble-content]:text-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[oklch(from_var(--primary)_0.88_calc(c*0.5)_h)] dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-[oklch(from_var(--primary)_0.35_calc(c*0.5)_h)]"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-[oklch(from_var(--primary)_0.93_calc(c*0.4)_h)] dark:*:data-[slot=bubble-content]:bg-[oklch(from_var(--primary)_0.3_calc(c*0.4)_h)] [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[oklch(from_var(--primary)_0.88_calc(c*0.5)_h)] dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-[oklch(from_var(--primary)_0.35_calc(c*0.5)_h)]"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       This one is tinted. The tint is a softer color derived from the primary color.
     </div>
@@ -231,11 +231,11 @@ Use `variant` to change the visual treatment of the bubble.
     data-slot="bubble"
     data-variant="outline"
     data-align="start"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-background *:data-[slot=bubble-content]:border-border [&>[data-slot=bubble-content]:is(button,a):hover]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:text-foreground dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-input/30"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-background *:data-[slot=bubble-content]:border-border [&>[data-slot=bubble-content]:is(button,a):hover]:bg-muted dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-input/30"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       We can also use an outlined variant.
     </div>
@@ -244,11 +244,11 @@ Use `variant` to change the visual treatment of the bubble.
     data-slot="bubble"
     data-variant="destructive"
     data-align="end"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-destructive/10 dark:*:data-[slot=bubble-content]:bg-destructive/20 *:data-[slot=bubble-content]:text-destructive [&>[data-slot=bubble-content]:is(button,a):hover]:bg-destructive/20 dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-destructive/30"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-destructive/10 dark:*:data-[slot=bubble-content]:bg-destructive/20 [&>[data-slot=bubble-content]:is(button,a):hover]:bg-destructive/20 dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-destructive/30"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       Or a destructive variant with a reaction.
     </div>
@@ -256,7 +256,7 @@ Use `variant` to change the visual treatment of the bubble.
       data-slot="bubble-reactions"
       data-align="end"
       data-side="bottom"
-      class="rounded-full ring-3 ring-card bg-muted shrink-0 gap-1 px-1.5 py-0.5 has-[button]:p-0 text-sm absolute z-10 flex w-fit items-center justify-center bottom-0 translate-y-3/4 right-3"
+      class="bg-muted px-1.5 py-0.5 has-[button]:p-0"
       role="img"
       aria-label="Reaction: fire"
     >
@@ -267,11 +267,11 @@ Use `variant` to change the visual treatment of the bubble.
     data-slot="bubble"
     data-variant="ghost"
     data-align="start"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:rounded-none *:data-[slot=bubble-content]:bg-transparent *:data-[slot=bubble-content]:p-0 [&>[data-slot=bubble-content]:is(button,a):hover]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:text-foreground dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-muted/50 border-none"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-transparent [&>[data-slot=bubble-content]:is(button,a):hover]:bg-muted dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-muted/50"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       <div data-slot="markdown">
         Ghost bubbles work for assistant text, **markdown**, and other content that should not be
@@ -315,11 +315,11 @@ Use `align` on `Bubble` to align the bubble to the start or end of the conversat
     data-slot="bubble"
     data-variant="muted"
     data-align="start"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       This bubble is aligned to the start. This is the default alignment.
     </div>
@@ -328,11 +328,11 @@ Use `align` on `Bubble` to align the bubble to the start or end of the conversat
     data-slot="bubble"
     data-variant="default"
     data-align="end"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-primary *:data-[slot=bubble-content]:text-primary-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-primary [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       This bubble is aligned to the end. Use this for user messages.
     </div>
@@ -374,25 +374,25 @@ BubbleGroup
     data-slot="bubble"
     data-variant="muted"
     data-align="start"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       Can you tell me what's the issue?
     </div>
   </div>
-  <div data-slot="bubble-group" class="gap-2 flex min-w-0 flex-col">
+  <div data-slot="bubble-group">
     <div
       data-slot="bubble"
       data-variant="default"
       data-align="end"
-      class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-primary *:data-[slot=bubble-content]:text-primary-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
+      class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-primary [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
     >
       <div
         data-slot="bubble-content"
-        class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+        class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
       >
         You tell me!
       </div>
@@ -401,11 +401,11 @@ BubbleGroup
       data-slot="bubble"
       data-variant="default"
       data-align="end"
-      class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-primary *:data-[slot=bubble-content]:text-primary-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
+      class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-primary [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
     >
       <div
         data-slot="bubble-content"
-        class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+        class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
       >
         It worked yesterday. You broke it!
       </div>
@@ -414,11 +414,11 @@ BubbleGroup
       data-slot="bubble"
       data-variant="default"
       data-align="end"
-      class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-primary *:data-[slot=bubble-content]:text-primary-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
+      class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-primary [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
     >
       <div
         data-slot="bubble-content"
-        class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+        class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
       >
         Find the bug and fix it.
       </div>
@@ -426,7 +426,7 @@ BubbleGroup
         data-slot="bubble-reactions"
         data-align="start"
         data-side="bottom"
-        class="rounded-full ring-3 ring-card bg-muted shrink-0 gap-1 px-1.5 py-0.5 has-[button]:p-0 text-sm absolute z-10 flex w-fit items-center justify-center bottom-0 translate-y-3/4 left-3"
+        class="bg-muted px-1.5 py-0.5 has-[button]:p-0"
         aria-label="Reactions: eyes"
       >
         <span>👀</span>
@@ -437,11 +437,11 @@ BubbleGroup
     data-slot="bubble"
     data-variant="muted"
     data-align="start"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       Want me to diff yesterday's you against today's you? It's a bit embarrassing.
     </div>
@@ -468,25 +468,25 @@ You can turn a bubble into a link or button by using the `asChild` prop on `Bubb
     data-slot="bubble"
     data-variant="muted"
     data-align="start"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       How can I help you today?
     </div>
   </div>
-  <div data-slot="bubble-group" class="gap-2 flex min-w-0 flex-col">
+  <div data-slot="bubble-group">
     <div
       data-slot="bubble"
       data-variant="tinted"
       data-align="end"
-      class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-[oklch(from_var(--primary)_0.93_calc(c*0.4)_h)] dark:*:data-[slot=bubble-content]:bg-[oklch(from_var(--primary)_0.3_calc(c*0.4)_h)] *:data-[slot=bubble-content]:text-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[oklch(from_var(--primary)_0.88_calc(c*0.5)_h)] dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-[oklch(from_var(--primary)_0.35_calc(c*0.5)_h)]"
+      class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-[oklch(from_var(--primary)_0.93_calc(c*0.4)_h)] dark:*:data-[slot=bubble-content]:bg-[oklch(from_var(--primary)_0.3_calc(c*0.4)_h)] [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[oklch(from_var(--primary)_0.88_calc(c*0.5)_h)] dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-[oklch(from_var(--primary)_0.35_calc(c*0.5)_h)]"
     >
       <button
         data-slot="bubble-content"
-        class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+        class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
       >
         I forgot my password
       </button>
@@ -495,11 +495,11 @@ You can turn a bubble into a link or button by using the `asChild` prop on `Bubb
       data-slot="bubble"
       data-variant="tinted"
       data-align="end"
-      class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-[oklch(from_var(--primary)_0.93_calc(c*0.4)_h)] dark:*:data-[slot=bubble-content]:bg-[oklch(from_var(--primary)_0.3_calc(c*0.4)_h)] *:data-[slot=bubble-content]:text-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[oklch(from_var(--primary)_0.88_calc(c*0.5)_h)] dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-[oklch(from_var(--primary)_0.35_calc(c*0.5)_h)]"
+      class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-[oklch(from_var(--primary)_0.93_calc(c*0.4)_h)] dark:*:data-[slot=bubble-content]:bg-[oklch(from_var(--primary)_0.3_calc(c*0.4)_h)] [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[oklch(from_var(--primary)_0.88_calc(c*0.5)_h)] dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-[oklch(from_var(--primary)_0.35_calc(c*0.5)_h)]"
     >
       <button
         data-slot="bubble-content"
-        class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+        class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
       >
         I need help with my subscription
       </button>
@@ -508,11 +508,11 @@ You can turn a bubble into a link or button by using the `asChild` prop on `Bubb
       data-slot="bubble"
       data-variant="tinted"
       data-align="end"
-      class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-[oklch(from_var(--primary)_0.93_calc(c*0.4)_h)] dark:*:data-[slot=bubble-content]:bg-[oklch(from_var(--primary)_0.3_calc(c*0.4)_h)] *:data-[slot=bubble-content]:text-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[oklch(from_var(--primary)_0.88_calc(c*0.5)_h)] dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-[oklch(from_var(--primary)_0.35_calc(c*0.5)_h)]"
+      class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-[oklch(from_var(--primary)_0.93_calc(c*0.4)_h)] dark:*:data-[slot=bubble-content]:bg-[oklch(from_var(--primary)_0.3_calc(c*0.4)_h)] [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[oklch(from_var(--primary)_0.88_calc(c*0.5)_h)] dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-[oklch(from_var(--primary)_0.35_calc(c*0.5)_h)]"
     >
       <button
         data-slot="bubble-content"
-        class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+        class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
       >
         Something else. Talk to a human.
       </button>
@@ -540,11 +540,11 @@ Use `BubbleReactions` for bubble reactions. You can use it to display reactions 
     data-slot="bubble"
     data-variant="muted"
     data-align="end"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       I don't need tests, I know my code works.
     </div>
@@ -552,7 +552,7 @@ Use `BubbleReactions` for bubble reactions. You can use it to display reactions 
       data-slot="bubble-reactions"
       data-align="start"
       data-side="bottom"
-      class="rounded-full ring-3 ring-card bg-muted shrink-0 gap-1 px-1.5 py-0.5 has-[button]:p-0 text-sm absolute z-10 flex w-fit items-center justify-center bottom-0 translate-y-3/4 left-3"
+      class="bg-muted px-1.5 py-0.5 has-[button]:p-0"
       role="img"
       aria-label="Reactions: thumbs up, surprised"
     >
@@ -563,11 +563,11 @@ Use `BubbleReactions` for bubble reactions. You can use it to display reactions 
     data-slot="bubble"
     data-variant="muted"
     data-align="start"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       Bold. Fine I'll add some tests. I'll let you know when they're done.
     </div>
@@ -575,7 +575,7 @@ Use `BubbleReactions` for bubble reactions. You can use it to display reactions 
       data-slot="bubble-reactions"
       data-align="end"
       data-side="bottom"
-      class="rounded-full ring-3 ring-card bg-muted shrink-0 gap-1 px-1.5 py-0.5 has-[button]:p-0 text-sm absolute z-10 flex w-fit items-center justify-center bottom-0 translate-y-3/4 right-3"
+      class="bg-muted px-1.5 py-0.5 has-[button]:p-0"
       role="img"
       aria-label="Reactions: eyes, rocket, and 2 more"
     >
@@ -586,11 +586,11 @@ Use `BubbleReactions` for bubble reactions. You can use it to display reactions 
     data-slot="bubble"
     data-variant="default"
     data-align="end"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-primary *:data-[slot=bubble-content]:text-primary-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-primary [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       Tests passed on the first try. All 142 of them. Looking good!
     </div>
@@ -598,7 +598,7 @@ Use `BubbleReactions` for bubble reactions. You can use it to display reactions 
       data-slot="bubble-reactions"
       data-align="start"
       data-side="top"
-      class="rounded-full ring-3 ring-card bg-muted shrink-0 gap-1 px-1.5 py-0.5 has-[button]:p-0 text-sm absolute z-10 flex w-fit items-center justify-center top-0 -translate-y-3/4 left-3"
+      class="bg-muted px-1.5 py-0.5 has-[button]:p-0"
       role="img"
       aria-label="Reactions: party popper, clapping hands"
     >
@@ -609,11 +609,11 @@ Use `BubbleReactions` for bubble reactions. You can use it to display reactions 
     data-slot="bubble"
     data-variant="destructive"
     data-align="start"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-destructive/10 dark:*:data-[slot=bubble-content]:bg-destructive/20 *:data-[slot=bubble-content]:text-destructive [&>[data-slot=bubble-content]:is(button,a):hover]:bg-destructive/20 dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-destructive/30"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-destructive/10 dark:*:data-[slot=bubble-content]:bg-destructive/20 [&>[data-slot=bubble-content]:is(button,a):hover]:bg-destructive/20 dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-destructive/30"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       Are you sure I can run this command?
     </div>
@@ -621,13 +621,13 @@ Use `BubbleReactions` for bubble reactions. You can use it to display reactions 
       data-slot="bubble-reactions"
       data-align="end"
       data-side="bottom"
-      class="rounded-full ring-3 ring-card bg-muted shrink-0 gap-1 px-1.5 py-0.5 has-[button]:p-0 text-sm absolute z-10 flex w-fit items-center justify-center bottom-0 translate-y-3/4 right-3"
+      class="bg-muted px-1.5 py-0.5 has-[button]:p-0"
     >
       <button
         data-slot="button"
         data-variant="ghost"
         data-size="xs"
-        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border border-transparent bg-clip-padding font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground h-6 gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3"
+        class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 border-transparent group/button hover:bg-muted dark:hover:bg-muted/50 aria-expanded:bg-muted h-6 rounded-[min(var(--radius-md),10px)] px-2 in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3"
       >
         Yes, run it
       </button>
@@ -651,63 +651,15 @@ Long bubble content can be composed with [`Collapsible`](/components/collapsible
 {% <codegroup> %}
 ```text,name=bubble-collapsible.html
 <div class="flex w-full max-w-sm flex-col gap-8 py-12">
-  <div
-    data-slot="bubble"
-    data-variant="muted"
-    data-align="start"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
-  >
-    <div
-      data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
-    >
+  <div data-slot="bubble" data-variant="muted" data-align="start" class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]">
+    <div data-slot="bubble-content" class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring">
       How can I help you today?
     </div>
   </div>
-  <div
-    data-slot="bubble"
-    data-variant="muted"
-    data-align="end"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]"
-  >
-    <div
-      data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors whitespace-pre-line"
-    >
-      <div data-state="closed" data-slot="collapsible">
-        <div>
-          The accessibility review found two focus states that were visually too subtle in dark
-          mode. I checked the dialog, menu, and drawer paths because each one renders focusable
-          control...
-        </div>
-        <button
-          data-slot="collapsible-trigger"
-          data-variant="link"
-          data-size="default"
-          class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 underline-offset-4 hover:underline h-8 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 gap-1 p-0 text-muted-foreground"
-          type="button"
-          aria-controls="radix-a1"
-          aria-expanded="false"
-          data-state="closed"
-        >
-          Show more<svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="lucide lucide-chevron-down group-data-open/button:rotate-180"
-            data-icon="inline-end"
-          >
-            <path d="m6 9 6 6 6-6"></path>
-          </svg>
-        </button>
-      </div>
-    </div>
+  <div data-slot="bubble" data-variant="muted" data-align="end" class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]">
+    <div data-slot="bubble-content" class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring whitespace-pre-line"><div data-state="closed" data-slot="collapsible"><div>The accessibility review found two focus states that were visually too subtle in dark mode.
+
+I checked the dialog, menu, and drawer paths because each one renders focusable control...</div><button data-slot="collapsible-trigger" data-variant="link" data-size="default" class="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 underline-offset-4 hover:underline h-8 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 gap-1 p-0 text-muted-foreground" type="button" aria-controls="radix-a1" aria-expanded="false" data-state="closed">Show more<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down group-data-open/button:rotate-180" data-icon="inline-end"><path d="m6 9 6 6 6-6"></path></svg></button></div></div>
   </div>
 </div>
 ```
@@ -760,11 +712,11 @@ Wrap a bubble in a [`Tooltip`](/components/tooltip) to reveal metadata on hover,
     data-slot="bubble"
     data-variant="secondary"
     data-align="start"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-secondary *:data-[slot=bubble-content]:text-secondary-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)]"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-secondary [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)]"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       Did you remove the stale route?
     </div>
@@ -773,11 +725,11 @@ Wrap a bubble in a [`Tooltip`](/components/tooltip) to reveal metadata on hover,
     data-slot="bubble"
     data-variant="default"
     data-align="end"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-primary *:data-[slot=bubble-content]:text-primary-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-primary *:data-[slot=bubble-content]:text-primary-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       Yes, removed it from the registry.
     </div>
@@ -785,7 +737,7 @@ Wrap a bubble in a [`Tooltip`](/components/tooltip) to reveal metadata on hover,
       data-slot="bubble-reactions"
       data-align="end"
       data-side="bottom"
-      class="rounded-full ring-3 ring-card bg-muted shrink-0 gap-1 has-[button]:p-0 text-sm absolute z-10 flex w-fit items-center justify-center bottom-0 translate-y-3/4 right-3 p-0"
+      class="bg-muted has-[button]:p-0 p-0"
     >
       <button
         data-slot="tooltip-trigger"
@@ -835,7 +787,7 @@ Wrap a bubble in a [`Tooltip`](/components/tooltip) to reveal metadata on hover,
       data-align="center"
       data-state="delayed-open"
       data-slot="tooltip-content"
-      class="data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[state=delayed-open]:animate-in data-[state=delayed-open]:fade-in-0 data-[state=delayed-open]:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:relative **:data-[slot=kbd]:isolate **:data-[slot=kbd]:z-50 **:data-[slot=kbd]:rounded-sm z-50 w-fit max-w-xs origin-(--radix-tooltip-content-transform-origin) bg-foreground text-background"
+      class="rounded-md px-3 has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:rounded-sm"
       style="
         --radix-tooltip-content-transform-origin: var(--radix-popper-transform-origin);
         --radix-tooltip-content-available-width: var(--radix-popper-available-width);
@@ -952,11 +904,11 @@ Pair a bubble with a [`Popover`](/components/popover) to surface more informatio
     data-slot="bubble"
     data-variant="default"
     data-align="end"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-primary *:data-[slot=bubble-content]:text-primary-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-primary [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       Run the build script.
     </div>
@@ -965,11 +917,11 @@ Pair a bubble with a [`Popover`](/components/popover) to surface more informatio
     data-slot="bubble"
     data-variant="destructive"
     data-align="start"
-    class="gap-1 data-[align=end]:self-end max-w-[80%] data-[variant=ghost]:max-w-full group-data-[align=end]/message:self-end group/bubble relative flex w-fit min-w-0 flex-col *:data-[slot=bubble-content]:bg-destructive/10 dark:*:data-[slot=bubble-content]:bg-destructive/20 *:data-[slot=bubble-content]:text-destructive [&>[data-slot=bubble-content]:is(button,a):hover]:bg-destructive/20 dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-destructive/30"
+    class="max-w-[80%] data-[variant=ghost]:max-w-full group/bubble *:data-[slot=bubble-content]:bg-destructive/10 dark:*:data-[slot=bubble-content]:bg-destructive/20 *:data-[slot=bubble-content]:text-destructive [&>[data-slot=bubble-content]:is(button,a):hover]:bg-destructive/20 dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-destructive/30"
   >
     <div
       data-slot="bubble-content"
-      class="rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50 group-data-[align=end]/bubble:self-end w-fit max-w-full min-w-0 overflow-hidden wrap-break-word [button]:text-left [button,a]:transition-colors"
+      class="border-transparent text-sm leading-relaxed [button,a]:focus-visible:border-ring"
     >
       Failed to run the command.
     </div>
@@ -977,7 +929,7 @@ Pair a bubble with a [`Popover`](/components/popover) to surface more informatio
       data-slot="bubble-reactions"
       data-align="end"
       data-side="bottom"
-      class="rounded-full ring-3 ring-card bg-muted shrink-0 gap-1 px-1.5 py-0.5 has-[button]:p-0 text-sm absolute z-10 flex w-fit items-center justify-center bottom-0 translate-y-3/4 right-3"
+      class="bg-muted px-1.5 py-0.5 has-[button]:p-0"
     >
       <button
         data-slot="popover-trigger"
@@ -1036,7 +988,6 @@ Pair a bubble with a [`Popover`](/components/popover) to surface more informatio
       role="dialog"
       id="k0"
       data-slot="popover-content"
-      class="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 flex flex-col gap-2.5 rounded-lg p-2.5 text-sm shadow-md ring-1 duration-100 z-50 w-72 origin-(--radix-popover-content-transform-origin) outline-hidden"
       tabindex="-1"
       style="
         --radix-popover-content-transform-origin: var(--radix-popper-transform-origin);
@@ -1046,11 +997,9 @@ Pair a bubble with a [`Popover`](/components/popover) to surface more informatio
         --radix-popover-trigger-height: var(--radix-popper-anchor-height);
       "
     >
-      <div data-slot="popover-header" class="flex flex-col gap-0.5 text-sm">
-        <div data-slot="popover-title" class="font-medium text-sm">
-          Command failed with exit code 1
-        </div>
-        <p data-slot="popover-description" class="text-muted-foreground text-sm">
+      <div data-slot="popover-header">
+        <div data-slot="popover-title" class="text-sm">Command failed with exit code 1</div>
+        <p data-slot="popover-description" class="text-sm">
           ENOENT: no such file or directory, open pnpm-lock.yaml
         </p>
       </div>
