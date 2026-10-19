@@ -759,6 +759,60 @@ window.__esm = { default: shadless, get, theme, init, named: Object.keys(ns).sor
     t.ok("select handle: unmatched selector does not throw", !threw, threw && threw.message)
     t.eq("select handle: unmatched selector is a no-op, not a silent clear", sel.value(), "A")
   }
+  // select: radix renders the check (ItemIndicator) only inside the selected
+  // item, in the empty wrapper every option starts with. The kernel flips
+  // aria-selected; the check must follow it — browser-reproduced on
+  // dist/components/select.html: pick Banana and the check stayed on Apple.
+  {
+    const WRAP = `<span class="pointer-events-none absolute right-2 flex size-4 items-center justify-center">`
+    const CHECK = `<span><svg class="lucide lucide-check"><path d="M20 6 9 17l-5-5"></path></svg></span>`
+    const opt = (v, on) => `<div role="option" aria-selected="${on}" data-state="${on ? "checked" : "unchecked"}" data-value="${v}">${WRAP}${on ? CHECK : ""}</span><span>${v}</span></div>`
+    const page = (k, first, tpl) => `
+<button type="button" data-slot="select-trigger" id="${k}-trigger"><span data-slot="select-value">x</span></button>
+<template id="${k}-tpl"><div data-slot="select-content"><div data-slot="select-viewport">${opt("A", first)}${opt("B", false)}${opt("C", false)}</div></div></template>${tpl ? `<template data-for="select-item-indicator">${CHECK}</template>` : ""}`
+    // where the check sits: "<value>" per option holding it in its wrapper
+    const checks = (doc) => [...doc.querySelectorAll("[role=option]")]
+      .filter((o) => o.firstElementChild.querySelector("svg")).map((o) => o.getAttribute("data-value")).join(",")
+
+    const dom = bootKernel(page("s7", true, false), ["select"])
+    dom.window.shadless.initAll()
+    const doc = dom.window.document
+    const sel = dom.window.shadless.get("#s7-trigger")
+    sel.open()
+    t.eq("select indicator: the initially selected item holds the check", checks(doc), "A")
+    sel.select("[data-value=B]")
+    sel.open()
+    t.eq("select indicator: the check moves with the selection", checks(doc), "B")
+    t.eq("select indicator: in the wrapper, as React nests it",
+      doc.querySelector("[data-value=B]").firstElementChild.innerHTML, CHECK)
+
+    // no item selected at first: nothing to move, the template supplies it
+    const dom2 = bootKernel(page("s8", false, true), ["select"])
+    dom2.window.shadless.initAll()
+    const doc2 = dom2.window.document
+    const sel2 = dom2.window.shadless.get("#s8-trigger")
+    sel2.open()
+    t.eq("select indicator: no selection, no check", checks(doc2), "")
+    sel2.select("[data-value=C]")
+    sel2.open()
+    t.eq("select indicator: mounted from the template on the first pick", checks(doc2), "C")
+    sel2.select("[data-value=A]")
+    sel2.open()
+    t.eq("select indicator: then moved, never duplicated", checks(doc2), "A")
+
+    // radix writes aria-selected only while the selected item is also
+    // highlighted (isSelected && isFocused); data-state="checked" is the
+    // selection. A page harvested unfocused (button-group-select) still
+    // has its selection — and its check, which must move.
+    const dom3 = bootKernel(page("s6", true, false).replace(`aria-selected="true"`, `aria-selected="false"`), ["select"])
+    dom3.window.shadless.initAll()
+    const doc3 = dom3.window.document
+    const sel3 = dom3.window.shadless.get("#s6-trigger")
+    t.eq("select: data-state=checked is the selection when aria-selected is not written", sel3.value(), "A")
+    sel3.select("[data-value=B]")
+    sel3.open()
+    t.eq("select indicator: moves from a data-state=checked item", checks(doc3), "B")
+  }
   // dialog family: a template missing the content slot degrades to closed, no TypeError
   {
     const dom = bootKernel(`

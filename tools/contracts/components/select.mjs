@@ -43,5 +43,16 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@
   scenarios: ["escape", "outside-click", "mouse-click:[data-slot=select-trigger]", "click:[role=option]", "key:ArrowDown+key:Enter",
     "closed:focus:[data-slot=select-trigger]+key:Enter",
     "closed:focus:[data-slot=select-trigger]+key: ",
-    "closed:focus:[data-slot=select-trigger]+key:ArrowDown"],
+    "closed:focus:[data-slot=select-trigger]+key:ArrowDown",
+    // pick the other item and reopen: the check must have moved with it
+    "click:[role=option][data-state=unchecked]+mouse-click:[data-slot=select-trigger]"],
+
+  // open/closed, and while open each item's state and whether it shows the
+  // check (radix mounts the ItemIndicator in the selected item only)
+  stateProbe: `
+var c = document.querySelector("[data-slot=select-content]");
+!c ? "closes" : "open " + Array.prototype.map.call(c.querySelectorAll("[role=option]"), function (o) {
+  return o.textContent.trim() + ":" + o.getAttribute("data-state") + ":" + (o.querySelector("svg") ? "check" : "-");
+}).join(",");
+`,
 }

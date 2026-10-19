@@ -165,17 +165,29 @@ Displays a list of options for the user to pick from—triggered by a button.
         onClosed: function () { shadless.h.lockBody(false); shadless.h.emit(trigger, "close", "select"); },
       });
 
-      // the selected option: its value is `value` / `data-value` / id (the
-      // React value prop never reaches the DOM, so authors add data-value);
-      // with none of those the label text stands in — value and label are
-      // then equal, never silently different
-      var selected = content.querySelector("[role=option][aria-selected=true]");
+      // the selected option (data-state="checked": radix writes aria-selected
+      // only while the selected item is also highlighted): its value is
+      // `value` / `data-value` / id (the React value prop never reaches the
+      // DOM, so authors add data-value); with none of those the label text
+      // stands in — value and label are then equal, never silently different
+      var selected = content.querySelector("[role=option][aria-selected=true], [role=option][data-state=checked]");
       var labelOf = function (item) { return item ? (item.textContent || "").trim() : null; };
       var valueOf = function (item) { return item ? (shadless.h.itemValue(item) || labelOf(item)) : null; };
+      // radix renders the check (ItemIndicator) only inside the selected item,
+      // in the wrapper every option starts with; the kernel flips only the
+      // attributes, so the check moves here — or, when no item held one yet,
+      // mounts from <template data-for="select-item-indicator">
+      var moveIndicator = function (item) {
+        if (item === selected) return;
+        var ind = selected && selected.firstElementChild && selected.firstElementChild.firstElementChild;
+        if (!ind) ind = shadless.h.cloneTemplate(shadless.h.findTemplate(null, "select-item-indicator"));
+        if (ind && item.firstElementChild) item.firstElementChild.appendChild(ind);
+      };
       var kernelSelect = handles.select;
       handles.select = function (item) {
         var before = valueOf(selected);
         kernelSelect(item);
+        moveIndicator(item);
         selected = item;
         shadless.h.syncForm(trigger);
         var after = valueOf(item);
@@ -186,7 +198,7 @@ Displays a list of options for the user to pick from—triggered by a button.
         read: function () { return valueOf(selected) },
         write: function (v) {
           var items = content.querySelectorAll("[role=option]");
-          for (var i = 0; i < items.length; i++) if (valueOf(items[i]) === v) { kernelSelect(items[i]); selected = items[i]; return; }
+          for (var i = 0; i < items.length; i++) if (valueOf(items[i]) === v) { kernelSelect(items[i]); moveIndicator(items[i]); selected = items[i]; return; }
         },
       });
 
@@ -278,6 +290,7 @@ The glue is data-driven: it scans the page for the markup shape below and wires 
 | --- | --- |
 | `<button data-slot="select-trigger" id="<k>-trigger">` | opens on click / Enter / Space / arrows; the `data-slot="select-value"` child shows the selection |
 | `<template id="<k>-tpl">` | holds the `data-slot="select-content"` listbox subtree |
+| `<template data-for="select-item-indicator">` | the check: it sits in the selected option's first child (the empty indicator span every option starts with) and moves there on each pick; with no option selected at first, the first pick mounts it from this template |
 
 Content that React would render inside the component's portal lives in the `<template>`; the glue clones it into `<body>` while open and removes it on close, exactly as radix mounts and unmounts.
 
@@ -552,17 +565,29 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
         onClosed: function () { shadless.h.lockBody(false); shadless.h.emit(trigger, "close", "select"); },
       });
 
-      // the selected option: its value is `value` / `data-value` / id (the
-      // React value prop never reaches the DOM, so authors add data-value);
-      // with none of those the label text stands in — value and label are
-      // then equal, never silently different
-      var selected = content.querySelector("[role=option][aria-selected=true]");
+      // the selected option (data-state="checked": radix writes aria-selected
+      // only while the selected item is also highlighted): its value is
+      // `value` / `data-value` / id (the React value prop never reaches the
+      // DOM, so authors add data-value); with none of those the label text
+      // stands in — value and label are then equal, never silently different
+      var selected = content.querySelector("[role=option][aria-selected=true], [role=option][data-state=checked]");
       var labelOf = function (item) { return item ? (item.textContent || "").trim() : null; };
       var valueOf = function (item) { return item ? (shadless.h.itemValue(item) || labelOf(item)) : null; };
+      // radix renders the check (ItemIndicator) only inside the selected item,
+      // in the wrapper every option starts with; the kernel flips only the
+      // attributes, so the check moves here — or, when no item held one yet,
+      // mounts from <template data-for="select-item-indicator">
+      var moveIndicator = function (item) {
+        if (item === selected) return;
+        var ind = selected && selected.firstElementChild && selected.firstElementChild.firstElementChild;
+        if (!ind) ind = shadless.h.cloneTemplate(shadless.h.findTemplate(null, "select-item-indicator"));
+        if (ind && item.firstElementChild) item.firstElementChild.appendChild(ind);
+      };
       var kernelSelect = handles.select;
       handles.select = function (item) {
         var before = valueOf(selected);
         kernelSelect(item);
+        moveIndicator(item);
         selected = item;
         shadless.h.syncForm(trigger);
         var after = valueOf(item);
@@ -573,7 +598,7 @@ Use the `position` prop on `SelectContent` to control alignment. When `position=
         read: function () { return valueOf(selected) },
         write: function (v) {
           var items = content.querySelectorAll("[role=option]");
-          for (var i = 0; i < items.length; i++) if (valueOf(items[i]) === v) { kernelSelect(items[i]); selected = items[i]; return; }
+          for (var i = 0; i < items.length; i++) if (valueOf(items[i]) === v) { kernelSelect(items[i]); moveIndicator(items[i]); selected = items[i]; return; }
         },
       });
 
@@ -847,6 +872,23 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
     </div>
   </div>
 </template>
+<template data-for="select-item-indicator">
+  <span
+    ><svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-check pointer-events-none"
+    >
+      <path d="M20 6 9 17l-5-5"></path></svg
+  ></span>
+</template>
 ```
 
 ```js,name=behavior
@@ -887,17 +929,29 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
         onClosed: function () { shadless.h.lockBody(false); shadless.h.emit(trigger, "close", "select"); },
       });
 
-      // the selected option: its value is `value` / `data-value` / id (the
-      // React value prop never reaches the DOM, so authors add data-value);
-      // with none of those the label text stands in — value and label are
-      // then equal, never silently different
-      var selected = content.querySelector("[role=option][aria-selected=true]");
+      // the selected option (data-state="checked": radix writes aria-selected
+      // only while the selected item is also highlighted): its value is
+      // `value` / `data-value` / id (the React value prop never reaches the
+      // DOM, so authors add data-value); with none of those the label text
+      // stands in — value and label are then equal, never silently different
+      var selected = content.querySelector("[role=option][aria-selected=true], [role=option][data-state=checked]");
       var labelOf = function (item) { return item ? (item.textContent || "").trim() : null; };
       var valueOf = function (item) { return item ? (shadless.h.itemValue(item) || labelOf(item)) : null; };
+      // radix renders the check (ItemIndicator) only inside the selected item,
+      // in the wrapper every option starts with; the kernel flips only the
+      // attributes, so the check moves here — or, when no item held one yet,
+      // mounts from <template data-for="select-item-indicator">
+      var moveIndicator = function (item) {
+        if (item === selected) return;
+        var ind = selected && selected.firstElementChild && selected.firstElementChild.firstElementChild;
+        if (!ind) ind = shadless.h.cloneTemplate(shadless.h.findTemplate(null, "select-item-indicator"));
+        if (ind && item.firstElementChild) item.firstElementChild.appendChild(ind);
+      };
       var kernelSelect = handles.select;
       handles.select = function (item) {
         var before = valueOf(selected);
         kernelSelect(item);
+        moveIndicator(item);
         selected = item;
         shadless.h.syncForm(trigger);
         var after = valueOf(item);
@@ -908,7 +962,7 @@ Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
         read: function () { return valueOf(selected) },
         write: function (v) {
           var items = content.querySelectorAll("[role=option]");
-          for (var i = 0; i < items.length; i++) if (valueOf(items[i]) === v) { kernelSelect(items[i]); selected = items[i]; return; }
+          for (var i = 0; i < items.length; i++) if (valueOf(items[i]) === v) { kernelSelect(items[i]); moveIndicator(items[i]); selected = items[i]; return; }
         },
       });
 
@@ -1455,6 +1509,23 @@ A select with many items that scrolls.
     </div>
   </div>
 </template>
+<template data-for="select-item-indicator">
+  <span
+    ><svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-check pointer-events-none"
+    >
+      <path d="M20 6 9 17l-5-5"></path></svg
+  ></span>
+</template>
 ```
 
 ```js,name=behavior
@@ -1495,17 +1566,29 @@ A select with many items that scrolls.
         onClosed: function () { shadless.h.lockBody(false); shadless.h.emit(trigger, "close", "select"); },
       });
 
-      // the selected option: its value is `value` / `data-value` / id (the
-      // React value prop never reaches the DOM, so authors add data-value);
-      // with none of those the label text stands in — value and label are
-      // then equal, never silently different
-      var selected = content.querySelector("[role=option][aria-selected=true]");
+      // the selected option (data-state="checked": radix writes aria-selected
+      // only while the selected item is also highlighted): its value is
+      // `value` / `data-value` / id (the React value prop never reaches the
+      // DOM, so authors add data-value); with none of those the label text
+      // stands in — value and label are then equal, never silently different
+      var selected = content.querySelector("[role=option][aria-selected=true], [role=option][data-state=checked]");
       var labelOf = function (item) { return item ? (item.textContent || "").trim() : null; };
       var valueOf = function (item) { return item ? (shadless.h.itemValue(item) || labelOf(item)) : null; };
+      // radix renders the check (ItemIndicator) only inside the selected item,
+      // in the wrapper every option starts with; the kernel flips only the
+      // attributes, so the check moves here — or, when no item held one yet,
+      // mounts from <template data-for="select-item-indicator">
+      var moveIndicator = function (item) {
+        if (item === selected) return;
+        var ind = selected && selected.firstElementChild && selected.firstElementChild.firstElementChild;
+        if (!ind) ind = shadless.h.cloneTemplate(shadless.h.findTemplate(null, "select-item-indicator"));
+        if (ind && item.firstElementChild) item.firstElementChild.appendChild(ind);
+      };
       var kernelSelect = handles.select;
       handles.select = function (item) {
         var before = valueOf(selected);
         kernelSelect(item);
+        moveIndicator(item);
         selected = item;
         shadless.h.syncForm(trigger);
         var after = valueOf(item);
@@ -1516,7 +1599,7 @@ A select with many items that scrolls.
         read: function () { return valueOf(selected) },
         write: function (v) {
           var items = content.querySelectorAll("[role=option]");
-          for (var i = 0; i < items.length; i++) if (valueOf(items[i]) === v) { kernelSelect(items[i]); selected = items[i]; return; }
+          for (var i = 0; i < items.length; i++) if (valueOf(items[i]) === v) { kernelSelect(items[i]); moveIndicator(items[i]); selected = items[i]; return; }
         },
       });
 
@@ -1653,17 +1736,29 @@ A select with many items that scrolls.
         onClosed: function () { shadless.h.lockBody(false); shadless.h.emit(trigger, "close", "select"); },
       });
 
-      // the selected option: its value is `value` / `data-value` / id (the
-      // React value prop never reaches the DOM, so authors add data-value);
-      // with none of those the label text stands in — value and label are
-      // then equal, never silently different
-      var selected = content.querySelector("[role=option][aria-selected=true]");
+      // the selected option (data-state="checked": radix writes aria-selected
+      // only while the selected item is also highlighted): its value is
+      // `value` / `data-value` / id (the React value prop never reaches the
+      // DOM, so authors add data-value); with none of those the label text
+      // stands in — value and label are then equal, never silently different
+      var selected = content.querySelector("[role=option][aria-selected=true], [role=option][data-state=checked]");
       var labelOf = function (item) { return item ? (item.textContent || "").trim() : null; };
       var valueOf = function (item) { return item ? (shadless.h.itemValue(item) || labelOf(item)) : null; };
+      // radix renders the check (ItemIndicator) only inside the selected item,
+      // in the wrapper every option starts with; the kernel flips only the
+      // attributes, so the check moves here — or, when no item held one yet,
+      // mounts from <template data-for="select-item-indicator">
+      var moveIndicator = function (item) {
+        if (item === selected) return;
+        var ind = selected && selected.firstElementChild && selected.firstElementChild.firstElementChild;
+        if (!ind) ind = shadless.h.cloneTemplate(shadless.h.findTemplate(null, "select-item-indicator"));
+        if (ind && item.firstElementChild) item.firstElementChild.appendChild(ind);
+      };
       var kernelSelect = handles.select;
       handles.select = function (item) {
         var before = valueOf(selected);
         kernelSelect(item);
+        moveIndicator(item);
         selected = item;
         shadless.h.syncForm(trigger);
         var after = valueOf(item);
@@ -1674,7 +1769,7 @@ A select with many items that scrolls.
         read: function () { return valueOf(selected) },
         write: function (v) {
           var items = content.querySelectorAll("[role=option]");
-          for (var i = 0; i < items.length; i++) if (valueOf(items[i]) === v) { kernelSelect(items[i]); selected = items[i]; return; }
+          for (var i = 0; i < items.length; i++) if (valueOf(items[i]) === v) { kernelSelect(items[i]); moveIndicator(items[i]); selected = items[i]; return; }
         },
       });
 
@@ -1879,6 +1974,23 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
     </div>
   </div>
 </template>
+<template data-for="select-item-indicator">
+  <span
+    ><svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-check pointer-events-none"
+    >
+      <path d="M20 6 9 17l-5-5"></path></svg
+  ></span>
+</template>
 ```
 
 ```js,name=behavior
@@ -1919,17 +2031,29 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
         onClosed: function () { shadless.h.lockBody(false); shadless.h.emit(trigger, "close", "select"); },
       });
 
-      // the selected option: its value is `value` / `data-value` / id (the
-      // React value prop never reaches the DOM, so authors add data-value);
-      // with none of those the label text stands in — value and label are
-      // then equal, never silently different
-      var selected = content.querySelector("[role=option][aria-selected=true]");
+      // the selected option (data-state="checked": radix writes aria-selected
+      // only while the selected item is also highlighted): its value is
+      // `value` / `data-value` / id (the React value prop never reaches the
+      // DOM, so authors add data-value); with none of those the label text
+      // stands in — value and label are then equal, never silently different
+      var selected = content.querySelector("[role=option][aria-selected=true], [role=option][data-state=checked]");
       var labelOf = function (item) { return item ? (item.textContent || "").trim() : null; };
       var valueOf = function (item) { return item ? (shadless.h.itemValue(item) || labelOf(item)) : null; };
+      // radix renders the check (ItemIndicator) only inside the selected item,
+      // in the wrapper every option starts with; the kernel flips only the
+      // attributes, so the check moves here — or, when no item held one yet,
+      // mounts from <template data-for="select-item-indicator">
+      var moveIndicator = function (item) {
+        if (item === selected) return;
+        var ind = selected && selected.firstElementChild && selected.firstElementChild.firstElementChild;
+        if (!ind) ind = shadless.h.cloneTemplate(shadless.h.findTemplate(null, "select-item-indicator"));
+        if (ind && item.firstElementChild) item.firstElementChild.appendChild(ind);
+      };
       var kernelSelect = handles.select;
       handles.select = function (item) {
         var before = valueOf(selected);
         kernelSelect(item);
+        moveIndicator(item);
         selected = item;
         shadless.h.syncForm(trigger);
         var after = valueOf(item);
@@ -1940,7 +2064,7 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
         read: function () { return valueOf(selected) },
         write: function (v) {
           var items = content.querySelectorAll("[role=option]");
-          for (var i = 0; i < items.length; i++) if (valueOf(items[i]) === v) { kernelSelect(items[i]); selected = items[i]; return; }
+          for (var i = 0; i < items.length; i++) if (valueOf(items[i]) === v) { kernelSelect(items[i]); moveIndicator(items[i]); selected = items[i]; return; }
         },
       });
 
@@ -2230,6 +2354,23 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
     </div>
   </div>
 </template>
+<template data-for="select-item-indicator">
+  <span
+    ><svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-check pointer-events-none"
+    >
+      <path d="M20 6 9 17l-5-5"></path></svg
+  ></span>
+</template>
 ```
 
 ```js,name=behavior
@@ -2270,17 +2411,29 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
         onClosed: function () { shadless.h.lockBody(false); shadless.h.emit(trigger, "close", "select"); },
       });
 
-      // the selected option: its value is `value` / `data-value` / id (the
-      // React value prop never reaches the DOM, so authors add data-value);
-      // with none of those the label text stands in — value and label are
-      // then equal, never silently different
-      var selected = content.querySelector("[role=option][aria-selected=true]");
+      // the selected option (data-state="checked": radix writes aria-selected
+      // only while the selected item is also highlighted): its value is
+      // `value` / `data-value` / id (the React value prop never reaches the
+      // DOM, so authors add data-value); with none of those the label text
+      // stands in — value and label are then equal, never silently different
+      var selected = content.querySelector("[role=option][aria-selected=true], [role=option][data-state=checked]");
       var labelOf = function (item) { return item ? (item.textContent || "").trim() : null; };
       var valueOf = function (item) { return item ? (shadless.h.itemValue(item) || labelOf(item)) : null; };
+      // radix renders the check (ItemIndicator) only inside the selected item,
+      // in the wrapper every option starts with; the kernel flips only the
+      // attributes, so the check moves here — or, when no item held one yet,
+      // mounts from <template data-for="select-item-indicator">
+      var moveIndicator = function (item) {
+        if (item === selected) return;
+        var ind = selected && selected.firstElementChild && selected.firstElementChild.firstElementChild;
+        if (!ind) ind = shadless.h.cloneTemplate(shadless.h.findTemplate(null, "select-item-indicator"));
+        if (ind && item.firstElementChild) item.firstElementChild.appendChild(ind);
+      };
       var kernelSelect = handles.select;
       handles.select = function (item) {
         var before = valueOf(selected);
         kernelSelect(item);
+        moveIndicator(item);
         selected = item;
         shadless.h.syncForm(trigger);
         var after = valueOf(item);
@@ -2291,7 +2444,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
         read: function () { return valueOf(selected) },
         write: function (v) {
           var items = content.querySelectorAll("[role=option]");
-          for (var i = 0; i < items.length; i++) if (valueOf(items[i]) === v) { kernelSelect(items[i]); selected = items[i]; return; }
+          for (var i = 0; i < items.length; i++) if (valueOf(items[i]) === v) { kernelSelect(items[i]); moveIndicator(items[i]); selected = items[i]; return; }
         },
       });
 

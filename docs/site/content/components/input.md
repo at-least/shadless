@@ -884,17 +884,29 @@ A full form example with multiple inputs, a select, and a button.
         onClosed: function () { shadless.h.lockBody(false); shadless.h.emit(trigger, "close", "select"); },
       });
 
-      // the selected option: its value is `value` / `data-value` / id (the
-      // React value prop never reaches the DOM, so authors add data-value);
-      // with none of those the label text stands in — value and label are
-      // then equal, never silently different
-      var selected = content.querySelector("[role=option][aria-selected=true]");
+      // the selected option (data-state="checked": radix writes aria-selected
+      // only while the selected item is also highlighted): its value is
+      // `value` / `data-value` / id (the React value prop never reaches the
+      // DOM, so authors add data-value); with none of those the label text
+      // stands in — value and label are then equal, never silently different
+      var selected = content.querySelector("[role=option][aria-selected=true], [role=option][data-state=checked]");
       var labelOf = function (item) { return item ? (item.textContent || "").trim() : null; };
       var valueOf = function (item) { return item ? (shadless.h.itemValue(item) || labelOf(item)) : null; };
+      // radix renders the check (ItemIndicator) only inside the selected item,
+      // in the wrapper every option starts with; the kernel flips only the
+      // attributes, so the check moves here — or, when no item held one yet,
+      // mounts from <template data-for="select-item-indicator">
+      var moveIndicator = function (item) {
+        if (item === selected) return;
+        var ind = selected && selected.firstElementChild && selected.firstElementChild.firstElementChild;
+        if (!ind) ind = shadless.h.cloneTemplate(shadless.h.findTemplate(null, "select-item-indicator"));
+        if (ind && item.firstElementChild) item.firstElementChild.appendChild(ind);
+      };
       var kernelSelect = handles.select;
       handles.select = function (item) {
         var before = valueOf(selected);
         kernelSelect(item);
+        moveIndicator(item);
         selected = item;
         shadless.h.syncForm(trigger);
         var after = valueOf(item);
@@ -905,7 +917,7 @@ A full form example with multiple inputs, a select, and a button.
         read: function () { return valueOf(selected) },
         write: function (v) {
           var items = content.querySelectorAll("[role=option]");
-          for (var i = 0; i < items.length; i++) if (valueOf(items[i]) === v) { kernelSelect(items[i]); selected = items[i]; return; }
+          for (var i = 0; i < items.length; i++) if (valueOf(items[i]) === v) { kernelSelect(items[i]); moveIndicator(items[i]); selected = items[i]; return; }
         },
       });
 

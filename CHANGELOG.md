@@ -114,6 +114,18 @@ upstream is `src/registry/pin.json`; re-pins land through the upstream drill
 - Roving focus (radio-group, toggle-group, accordion, tabs) skips disabled
   items — a radio-group with nothing checked could check a disabled item —
   and swaps the horizontal arrows under `dir="rtl"`.
+- Select: picking an item left the check on the item that lost the
+  selection — the kernel flips `aria-selected`/`data-state` only, while radix
+  renders the check (its ItemIndicator) inside the selected item alone — and
+  a select with nothing selected at first never showed a check after a pick.
+  The runtime now moves the check into the picked item's indicator span, and
+  a page whose select starts unselected carries
+  `<template data-for="select-item-indicator">` (the check React mounts,
+  harvested from the oracle) that the first pick mounts. The selected item
+  is now the one with `data-state="checked"` even when `aria-selected` is
+  `"false"` (radix writes it only while that item is also highlighted, so
+  the button-group example reported no `value()`). The `contracts` gate
+  now compares where the check sits after a pick against React.
 - Docs: the input, pagination, skeleton, spinner, table and textarea pages
   had no API Reference — upstream gives them none — so the stylesheet embed
   every component page promises was missing from exactly those six. A page

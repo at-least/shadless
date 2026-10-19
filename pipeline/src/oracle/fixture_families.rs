@@ -146,6 +146,9 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
                     content_sel
                 ),
             )?;
+            if comp == "select" {
+                select_check_follows_pick(page, &sel, &content_sel)?;
+            }
             let n = page.loc_count("", &format!("[data-slot=\"{}-sub-trigger\"]", comp))?;
             if n > 0 {
                 if let Some(b) = page
@@ -765,8 +768,28 @@ fn menu_select(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
                 .into_owned()
         ));
     }
-    out.templates = tpls.join("\n");
     let first_enabled = enabled.iter().position(|e| *e);
+    // radix renders a select's check (ItemIndicator) only inside the selected
+    // item, so a page with nothing selected harvests none and could never
+    // show one after a pick: pick an item in the oracle (the body is already
+    // captured) and harvest the check it renders
+    if is_select
+        && !templates_
+            .iter()
+            .any(|t| t.html.contains("data-state=\"checked\""))
+        && let Some(i) = first_enabled
+    {
+        tpls.push(format!(
+            "<template data-for=\"select-item-indicator\">\n{}\n</template>",
+            ef_strip_radix_ids(&harvest_select_indicator(
+                ctx.page,
+                &trigger_sel,
+                i,
+                &content_sel
+            )?)
+        ));
+    }
+    out.templates = tpls.join("\n");
     let comp2 = comp.clone();
     let contextmenu2 = ctx.fam.open == "contextmenu";
     let trigger_id = first_enabled.map(id_of);
@@ -778,6 +801,82 @@ fn menu_select(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
     });
     let _ = fam_attr;
     Ok(())
+}
+
+/// On the open select: pick an enabled item that is not selected, reopen,
+/// and require the check in that item's wrapper and in no other — the page
+/// must show the check where React would, whether its fixture started with
+/// a selection (the check moves) or without (it mounts from the template).
+fn select_check_follows_pick(page: &BPage, trigger: &str, content_sel: &str) -> Result<(), String> {
+    let pick = format!(
+        "{} [role=option]:not([data-disabled]):not([data-state=checked])",
+        content_sel
+    );
+    if page.loc_count("", &pick)? == 0 {
+        return Ok(());
+    }
+    page.loc_click("", &pick, 0, "left")
+        .map_err(|e| e.to_string())?;
+    let _ = page.wait_for_timeout(500);
+    page.loc_click("", trigger, 0, "left")
+        .map_err(|e| e.to_string())?;
+    let _ = page.wait_for_timeout(500);
+    let v = page
+        .evaluate_fn_arg(
+            r##"(sel) => [...document.querySelectorAll(sel + " [role=option]")].map((o) => o.getAttribute("data-state") + ":" + (o.firstElementChild?.childElementCount ?? 0)).join(",")"##,
+            json!(content_sel),
+        )
+        .map_err(|e| e.to_string())?;
+    let got = v.as_str().unwrap_or("").to_string();
+    let items: Vec<&str> = got.split(',').collect();
+    let ok = items
+        .iter()
+        .all(|o| *o == "checked:1" || *o == "unchecked:0");
+    if !ok || !items.contains(&"checked:1") {
+        return Err(format!(
+            "select: after a pick the check is not in the picked item alone (data-state:checks per item = {})",
+            got
+        ));
+    }
+    Ok(())
+}
+
+/// Select the first enabled item of the `index`th select in the oracle and
+/// return the indicator radix then mounts in it: the selected item's
+/// wrapper's child, as the fixtures carry it.
+fn harvest_select_indicator(
+    page: &BPage,
+    trigger_sel: &str,
+    index: usize,
+    content_sel: &str,
+) -> Result<String, String> {
+    let trigger = format!("#root {}", trigger_sel);
+    let live = format!("{}:not([data-ef-harvested])", content_sel);
+    page.loc_click("", &trigger, index as i64, "left")
+        .map_err(|e| e.to_string())?;
+    let _ = page.wait_for_timeout(500);
+    page.loc_click(
+        "",
+        &format!("{} [role=option]:not([data-disabled])", live),
+        0,
+        "left",
+    )
+    .map_err(|e| e.to_string())?;
+    let _ = page.wait_for_timeout(500);
+    page.loc_click("", &trigger, index as i64, "left")
+        .map_err(|e| e.to_string())?;
+    let _ = page.wait_for_timeout(500);
+    let v = page
+        .evaluate_fn_arg(
+            r##"(sel) => document.querySelector(sel + " [role=option][data-state=checked]")?.firstElementChild?.firstElementChild?.outerHTML ?? null"##,
+            json!(live),
+        )
+        .map_err(|e| e.to_string())?;
+    page.key_press("Escape").map_err(|e| e.to_string())?;
+    let _ = page.wait_for_timeout(400);
+    v.as_str()
+        .map(str::to_string)
+        .ok_or_else(|| "select: the picked item mounted no indicator in the oracle".to_string())
 }
 
 fn nav(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {

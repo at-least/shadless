@@ -2164,6 +2164,10 @@ pub fn protocol_mdx(comp: &str) -> String {
                 "`<template id=\"<k>-tpl\">`".to_string(),
                 format!("holds the `data-slot=\"{}\"` listbox subtree", c),
             ));
+            rows.push((
+                "`<template data-for=\"select-item-indicator\">`".to_string(),
+                "the check: it sits in the selected option's first child (the empty indicator span every option starts with) and moves there on each pick; with no option selected at first, the first pick mounts it from this template".to_string(),
+            ));
         }
         "nav" => {
             rows.push((
