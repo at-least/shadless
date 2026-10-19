@@ -1001,16 +1001,18 @@ fn self_host(n: Node) -> Node {
     // tailwind path. Keep in sync with the Command::new sites in jsbuild.rs,
     // convert/mod.rs, emit/tw.rs, tools/oracle_css.rs, oracle/oracle_lib.rs
     // and the npx tsc invocation in the typecheck node.
-    const EXTRA_INPUTS: &[(&str, &str)] = &[("example-oracle", "overlays/**")];
-    if let Some((_, extra)) = EXTRA_INPUTS.iter().find(|(nid, _)| *nid == id) {
-        match n.inputs.as_mut() {
-            Some(inputs) => {
-                inputs.push(extra.to_string());
-                inputs.sort();
-                inputs.dedup();
-            }
-            None => n.inputs = Some(vec![extra.to_string()]),
-        }
+    // Reads the Go table never declared. docs-catalog scans the upstream
+    // radix mdx and the guide pages (tools/docs_catalog.rs scan_set,
+    // GUIDE_SOURCES), which nothing on its needs-chain declares either.
+    const EXTRA_INPUTS: &[(&str, &[&str])] = &[
+        ("example-oracle", &["overlays/**"]),
+        ("docs-catalog", &[UPSTREAM_DOCS_GLOB, "docs/content/**"]),
+    ];
+    if let Some((_, extras)) = EXTRA_INPUTS.iter().find(|(nid, _)| *nid == id) {
+        let inputs = n.inputs.get_or_insert_with(Vec::new);
+        inputs.extend(extras.iter().map(|e| e.to_string()));
+        inputs.sort();
+        inputs.dedup();
     }
     const TOOLCHAIN_INPUTS: &[(&str, &str)] = &[
         ("build-js", "node_modules/.bin/esbuild"),
@@ -1132,6 +1134,38 @@ mod self_host_tests {
                 .any(|p| p == crate::emit::tw::TwCli::dev().script()),
             "consumer-sim executes the dev CLI by script path but does not declare it"
         );
+    }
+
+    /// docs-catalog scans the upstream radix mdx (tools/docs_catalog.rs
+    /// scan_set) and the guide pages (GUIDE_SOURCES), and no node on its
+    /// needs-chain declares either. Measured on a scratch tree: with both
+    /// edited the node key stayed byte-identical and `run docs-catalog`
+    /// skipped while a direct run wrote a different catalog.
+    #[test]
+    fn unit_docs_catalog_inputs_cover_the_mdx_it_scans() {
+        let root = crate::tree_root();
+        if !root.join("docs/content").is_dir() {
+            if std::env::var_os("CI").is_some() {
+                panic!("CI: required tree input missing (skip: no shadless tree)");
+            }
+            eprintln!("skip: no shadless tree");
+            return;
+        }
+        let g: Vec<Node> = all_go().into_iter().map(self_host).collect();
+        let n = g.iter().find(|n| n.id == "docs-catalog").unwrap();
+        let files = crate::glob::files(&root, n.inputs.as_deref().unwrap_or(&[])).unwrap();
+        for f in [
+            "docs/content/installation.mdx",
+            "docs/content/dark-mode.mdx",
+            ".upstream/shadcn-ui/apps/v4/content/docs/components/radix/alert.mdx",
+            ".upstream/shadcn-ui/apps/v4/content/docs/rtl/index.mdx",
+            ".upstream/shadcn-ui/apps/v4/content/docs/utils/shimmer.mdx",
+        ] {
+            assert!(
+                files.iter().any(|e| e == f),
+                "docs-catalog reads {f} but does not declare it — an edit leaves the catalog falsely fresh"
+            );
+        }
     }
 
     #[test]
