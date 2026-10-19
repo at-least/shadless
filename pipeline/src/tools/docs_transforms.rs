@@ -2683,7 +2683,10 @@ pub struct DocsMeta {
 
 #[cfg(test)]
 mod tests {
-    use super::{rewrite_leaked_jsx_fences, shift_highlight_refs};
+    use super::{
+        jsx_overrides, load_slot_markers, rewrite_leaked_jsx_fences, shift_highlight_refs,
+    };
+    use regex::Regex;
 
     /// The leaked-JSX projection rendered `<tag data-slot="slot">` with no
     /// class, so the marker classes React's own component renders on every
@@ -2720,6 +2723,37 @@ mod tests {
             out2.contains("<div data-slot=\"field\" class=\"group/field extra\""),
             "projected field lost the authored className or the marker:\n{out2}"
         );
+    }
+
+    /// The asChild overrides tell the reader to put a slot on their own
+    /// element; where the slot has markers the sentence must name them, or
+    /// following the prose (not the example below it) drops them.
+    #[test]
+    fn unit_override_prose_names_the_markers_of_the_slot_it_teaches() {
+        let root = crate::tree_root();
+        if !root.join("dist/css/vocabulary.json").exists() {
+            if std::env::var_os("CI").is_some() {
+                panic!("CI: required tree input missing (skip: no shadless tree)");
+            }
+            eprintln!("skip: no shadless tree");
+            return;
+        }
+        let markers = load_slot_markers(&root).expect("vocabulary loads");
+        let re = Regex::new(r#"put(?:ting)? `data-slot="([a-z-]+)"`[^.]*"#).unwrap();
+        let mut taught = 0;
+        for (page, _, repl) in jsx_overrides() {
+            for m in re.captures_iter(repl) {
+                taught += 1;
+                for mk in &markers[&m[1]] {
+                    assert!(
+                        m[0].contains(mk.as_str()),
+                        "{page}: {:?} does not name the marker {mk}",
+                        &m[0]
+                    );
+                }
+            }
+        }
+        assert!(taught >= 4, "the asChild sentences moved: {taught} found");
     }
 
     /// A reversed range ({5-2}) is malformed but the JS callback still

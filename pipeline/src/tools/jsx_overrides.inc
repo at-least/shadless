@@ -474,7 +474,7 @@ The `direction` option accepts `"ltr"` or `"rtl"` and should match the `dir` pro
   </a>
 </Item>
 ```
-"#, r#"shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The hover and focus states apply to the anchor.
+"#, r#"shadless has no `asChild` — put `data-slot="item"` and its required class `group/item` on the anchor itself. The hover and focus states apply to the anchor.
 
 <ComponentPreview styleName="radix-nova" name="item-link" />
 
@@ -511,7 +511,7 @@ export function MarkerLinkDemo() {
   )
 }
 ```
-"##, r##"Turn a marker into a link or button by putting `data-slot="marker"` on the `<a>` or `<button>` itself — shadless has no `asChild`.
+"##, r##"Turn a marker into a link or button by putting `data-slot="marker"` and its required class `group/marker` on the `<a>` or `<button>` itself — shadless has no `asChild`.
 
 <ComponentPreview
   styleName="radix-rhea"
@@ -537,7 +537,7 @@ export function MarkerLinkDemo() {
   </a>
 </Marker>
 ```
-"#, r#"When a marker links or triggers an action, put `data-slot="marker"` on a real `<button>` or `<a>` so it is focusable and exposes the correct role. The accessible name comes from the marker text.
+"#, r#"When a marker links or triggers an action, put `data-slot="marker"` and its required class `group/marker` on a real `<button>` or `<a>` so it is focusable and exposes the correct role. The accessible name comes from the marker text.
 
 ```html showLineNumbers
 <a data-slot="marker" class="group/marker" href="/files">

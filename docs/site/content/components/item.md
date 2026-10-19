@@ -904,7 +904,7 @@ Use `ItemHeader` to add a header above the item content.
 
 ## Link
 
-shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The hover and focus states apply to the anchor.
+shadless has no `asChild` — put `data-slot="item"` and its required class `group/item` on the anchor itself. The hover and focus states apply to the anchor.
 
 {% <demo name="item-link" status="authored"> %}
 <iframe class="demo" src="/demos/item-link.html" title="item-link" data-status="authored" loading="lazy"></iframe>

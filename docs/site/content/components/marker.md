@@ -422,7 +422,7 @@ Use `MarkerIcon` to render an icon alongside the content. Use `flex-col` to stac
 
 ## Links and Buttons
 
-Turn a marker into a link or button by putting `data-slot="marker"` on the `<a>` or `<button>` itself — shadless has no `asChild`.
+Turn a marker into a link or button by putting `data-slot="marker"` and its required class `group/marker` on the `<a>` or `<button>` itself — shadless has no `asChild`.
 
 {% <demo name="marker-link-button" status="authored"> %}
 <iframe class="demo" src="/demos/marker-link-button.html" title="marker-link-button" data-status="authored" loading="lazy"></iframe>
@@ -547,7 +547,7 @@ A bordered marker keeps the same semantics as the default marker. The bottom bor
 
 ### Interactive Markers
 
-When a marker links or triggers an action, put `data-slot="marker"` on a real `<button>` or `<a>` so it is focusable and exposes the correct role. The accessible name comes from the marker text.
+When a marker links or triggers an action, put `data-slot="marker"` and its required class `group/marker` on a real `<button>` or `<a>` so it is focusable and exposes the correct role. The accessible name comes from the marker text.
 
 ```html showLineNumbers
 <a data-slot="marker" class="group/marker" href="/files">
