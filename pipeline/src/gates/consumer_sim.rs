@@ -18,7 +18,7 @@
 //! pins range and toolchain together and compiles on both.
 
 use regex::Regex;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::sync::{Arc, LazyLock, Mutex};
 
 static RE_CORE_IMPORT: LazyLock<Regex> =
@@ -257,6 +257,15 @@ fn install_consumer(root: &Path, sim: &Path, tw_target: &Path) -> Result<(), Str
     Ok(())
 }
 
+/// One consumer scratch dir under the OS temp dir, as the guard whose drop
+/// deletes it; the gate holds it to its end.
+fn sim_scratch(prefix: &str) -> Result<tempfile::TempDir, String> {
+    tempfile::Builder::new()
+        .prefix(prefix)
+        .tempdir()
+        .map_err(|e| format!("FAIL  consumer-sim: {}", e))
+}
+
 pub fn gate_consumer_sim(root: &Path) -> Result<(), String> {
     // 0. the floor claim, checked BEFORE any compile: package.json's peer
     // range must be `^X.Y.Z` and its bottom must BE the floor toolchain. A
@@ -279,12 +288,8 @@ pub fn gate_consumer_sim(root: &Path) -> Result<(), String> {
     parse_version(&dev_version, "dev CLI version")
         .map_err(|e| format!("FAIL  consumer-sim: {e}"))?;
 
-    let sim = tempfile::Builder::new()
-        .prefix("shadless-consumer-sim-")
-        .tempdir()
-        .map_err(|e| format!("FAIL  consumer-sim: {}", e))?
-        .keep(); // kept alive through the gate; removed at return
-    let sim: PathBuf = sim;
+    let sim_dir = sim_scratch("shadless-consumer-sim-")?;
+    let sim = sim_dir.path();
 
     // 1. core self-containment
     let core = std::fs::read_to_string(root.join("dist/shadless-core.css"))
@@ -302,7 +307,7 @@ pub fn gate_consumer_sim(root: &Path) -> Result<(), String> {
         ));
     }
 
-    install_consumer(root, &sim, &root.join("node_modules/tailwindcss"))?;
+    install_consumer(root, sim, &root.join("node_modules/tailwindcss"))?;
 
     let entry = sim.join("entry.css");
     let out_css = sim.join("out.css");
@@ -391,7 +396,7 @@ pub fn gate_consumer_sim(root: &Path) -> Result<(), String> {
 
     let dev_run = compile_each(
         root,
-        &sim,
+        sim,
         crate::emit::tw::TwCli::dev(),
         to_compile.clone(),
         &dev_version,
@@ -410,16 +415,12 @@ pub fn gate_consumer_sim(root: &Path) -> Result<(), String> {
         ));
     }
 
-    let fsim = tempfile::Builder::new()
-        .prefix("shadless-consumer-floor-sim-")
-        .tempdir()
-        .map_err(|e| format!("FAIL  consumer-sim: {}", e))?
-        .keep();
-    let fsim: PathBuf = fsim;
-    install_consumer(root, &fsim, &root.join(FLOOR_TW))?;
+    let fsim_dir = sim_scratch("shadless-consumer-floor-sim-")?;
+    let fsim = fsim_dir.path();
+    install_consumer(root, fsim, &root.join(FLOOR_TW))?;
     let floor_run = compile_each(
         root,
-        &fsim,
+        fsim,
         crate::emit::tw::TwCli::floor(),
         to_compile,
         &floor_version,
@@ -507,5 +508,23 @@ mod tests {
                 "peer range {range:?} must fail the gate, not mean \"no floor\""
             );
         }
+    }
+
+    /// Every gate run made two scratch consumers with `.tempdir()?.keep()`,
+    /// which disables the delete — a green run left ~3MB in the temp dir.
+    #[test]
+    fn unit_sim_scratch_is_deleted_when_its_guard_drops() {
+        let guard = sim_scratch("shadless-sim-scratch-test-").unwrap();
+        let path = guard.path().to_path_buf();
+        assert!(
+            path.is_dir(),
+            "the scratch dir exists while the guard is held"
+        );
+        drop(guard);
+        assert!(
+            !path.exists(),
+            "{} survived its guard: the scratch dir leaks",
+            path.display()
+        );
     }
 }
