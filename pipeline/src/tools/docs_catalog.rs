@@ -86,9 +86,12 @@ fn scan_set(root: &Path, key: &str, dir: &str) -> Result<ScanResult, String> {
         dir: dir.to_string(),
         ..ScanResult::default()
     };
-    let ents = std::fs::read_dir(root.join(dir)).map_err(|e| e.to_string())?;
-    for e in ents.flatten() {
-        let n = e.file_name().to_string_lossy().into_owned();
+    // The walk feeds docs/catalog.json's committed bytes (preview order =
+    // first-seen order), so it must be sorted: readdir order is
+    // filesystem-dependent (fsutil's doc), and an unsorted walk made a forced
+    // regeneration reorder the file with an identical preview set. An
+    // unreadable entry is a hard error now, like every other sorted walker.
+    for n in crate::fsutil::sorted_read_dir(&root.join(dir))? {
         if !n.ends_with(".mdx") {
             continue;
         }
@@ -647,4 +650,39 @@ pub fn run_docs_catalog(root: &Path) -> i32 {
         flags.len()
     );
     0
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// scan_set consumed std::fs::read_dir unsorted, so docs/catalog.json's
+    /// preview order was readdir order: the same 473 previews in a different
+    /// order when the tree sits on ext4 (hash order) instead of btrfs
+    /// (insertion order) — measured 2026-10-19 on a copy of the tree.
+    /// fsutil's own doc states the invariant: a directory walk that reaches
+    /// committed bytes must be sorted before it is consumed.
+    #[test]
+    fn unit_scan_set_walks_the_directory_sorted() {
+        let root = crate::fsutil::temp_root("docs-catalog-sorted");
+        let dir = root.join("radix");
+        std::fs::create_dir_all(&dir).unwrap();
+        // created out of order: insertion-order filesystems (btrfs) and
+        // hash-order ones (ext4) both return an unsorted walk
+        let names = [
+            "q.mdx", "b.mdx", "y.mdx", "d.mdx", "k.mdx", "a.mdx", "p.mdx", "f.mdx", "t.mdx",
+            "c.mdx", "n.mdx", "z.mdx", "e.mdx", "l.mdx", "u.mdx", "g.mdx",
+        ];
+        for n in names {
+            std::fs::write(dir.join(n), "<ComponentPreview name=\"x-demo\" />\n").unwrap();
+        }
+        let r = scan_set(&root, "components/radix", "radix").expect("scan_set scans");
+        let order: Vec<String> = r.previews.iter().map(|p| p.component.clone()).collect();
+        let mut sorted = order.clone();
+        sorted.sort();
+        assert_eq!(
+            order, sorted,
+            "scan_set must walk the directory in sorted filename order (readdir order was: {order:?})"
+        );
+    }
 }
