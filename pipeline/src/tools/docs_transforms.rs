@@ -34,6 +34,8 @@ static RE_H2_CHANGELOG: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"(?m)^## Changelog$").unwrap());
 static RE_API_REF_LEAK: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"(?m)^[ \t]*\|.*\||^### ").unwrap());
+pub static RE_API_REF_HEADING: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?m)^## API Reference[ \t]*\n").unwrap());
 static RE_IMPORT_FROM: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r#"from\s+"[@/][^"]+"\s*;?\s*$"#).unwrap());
 static RE_TSX_META: LazyLock<Regex> =
@@ -1347,11 +1349,19 @@ pub fn mdx_page_facts(
     if drop_composition_section {
         src = without_composition_section(&src);
     }
-    if drop_api_reference_section {
-        src = without_api_reference_section(name, &src);
-    }
+    // the changelog goes first, as in the builder: its span runs to the end
+    // of the file, where a synthesized API Reference lands
     if drop_changelog_section {
         src = without_changelog_section(&src);
+    }
+    if drop_api_reference_section {
+        // the dropped section keeps its heading; a page upstream gave none
+        // gains the one docs_build synthesizes for a shipped stylesheet
+        let has_heading = RE_API_REF_HEADING.is_match(&src);
+        src = without_api_reference_section(name, &src);
+        if !has_heading && ships_stylesheet(root, name) {
+            src = format!("{}\n## API Reference\n", src.trim_end_matches('\n'));
+        }
     }
     if let Some(s) = locate_message_scroller_js_span(&fence_shadow(&src)) {
         src = replace_span(&src, s, &message_scroller_js_note());
@@ -1447,6 +1457,11 @@ pub fn without_usage_section(raw: &str) -> String {
 
 pub fn without_composition_section(raw: &str) -> String {
     without_located(raw, &locate_composition_span, "## Composition\n")
+}
+
+/// The component ships `dist/css/<comp>.css` — its page must embed it.
+pub fn ships_stylesheet(root: &Path, comp: &str) -> bool {
+    root.join("dist/css").join(format!("{}.css", comp)).exists()
 }
 
 pub fn without_api_reference_section(comp: &str, raw: &str) -> String {

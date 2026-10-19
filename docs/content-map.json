@@ -243,6 +243,7 @@
       "disposition": "adapted",
       "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
       "sections": [
+        "api-reference",
         "installation",
         "usage"
       ]
@@ -361,6 +362,7 @@
       "disposition": "adapted",
       "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
       "sections": [
+        "api-reference",
         "composition",
         "installation",
         "usage"
@@ -446,6 +448,7 @@
       "disposition": "adapted",
       "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
       "sections": [
+        "api-reference",
         "installation",
         "usage"
       ]
@@ -465,6 +468,7 @@
       "disposition": "adapted",
       "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
       "sections": [
+        "api-reference",
         "installation",
         "usage"
       ]
@@ -484,6 +488,7 @@
       "disposition": "adapted",
       "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
       "sections": [
+        "api-reference",
         "composition",
         "installation",
         "usage"
@@ -505,6 +510,7 @@
       "disposition": "adapted",
       "notes": "radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)",
       "sections": [
+        "api-reference",
         "installation",
         "usage"
       ]

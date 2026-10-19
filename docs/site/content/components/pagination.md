@@ -704,3 +704,32 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 {% </codegroup> %}
 
 {% </demo> %}
+
+## API Reference
+
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+
+| Slot |
+| --- |
+| `data-slot="pagination"` |
+| `data-slot="pagination-content"` |
+| `data-slot="pagination-item"` |
+| `data-slot="pagination-link"` |
+| `data-slot="pagination-ellipsis"` |
+
+**The stylesheet** — `shadless/pagination.css`, the exact bytes of `dist/css/pagination.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, so this is the authoritative default look of each slot:
+
+```css
+/* pagination */
+@layer components {
+  .pagination-link { @apply focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8; }
+  .pagination-previous { @apply focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8 pl-1.5!; }
+  .pagination-previous-span { @apply hidden sm:block; }
+  .pagination-next { @apply focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground size-8 pr-1.5!; }
+  .pagination-next-span { @apply hidden sm:block; }
+  .pagination-ellipsis-span { @apply sr-only; }
+  [data-slot="pagination"] { @apply mx-auto flex w-full justify-center; }
+  [data-slot="pagination-content"] { @apply gap-0.5 flex items-center; }
+  [data-slot="pagination-ellipsis"] { @apply size-8 [&_svg:not([class*='size-'])]:size-4 flex items-center justify-center; }
+}
+```

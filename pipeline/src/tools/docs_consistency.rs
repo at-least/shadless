@@ -479,7 +479,6 @@ pub fn run_docs_consistency(root: &Path) -> i32 {
             .filter_map(|c| c.get(1).map(|m| m.as_str()))
             .filter(|c| c.contains("data-slot="))
             .collect();
-        let has_api_reference = b.split('\n').any(|l| l == "## API Reference");
         embeds_checked += embeds.len();
         if embeds.len() > 1 {
             add_problem(
@@ -527,12 +526,12 @@ pub fn run_docs_consistency(root: &Path) -> i32 {
                     &mut problems,
                 );
             }
-        } else if css_b.is_some() && has_api_reference {
+        } else if css_b.is_some() {
             add_problem(
                 "css-embed",
                 f,
                 format!(
-                    "the page has an API Reference but no stylesheet embed ({} exists)",
+                    "the page ships a stylesheet but embeds none ({} exists)",
                     css_path.display()
                 ),
                 &mut problems,

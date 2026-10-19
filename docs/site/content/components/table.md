@@ -806,3 +806,36 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 {% </codegroup> %}
 
 {% </demo> %}
+
+## API Reference
+
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+
+| Slot |
+| --- |
+| `data-slot="table-container"` |
+| `data-slot="table"` |
+| `data-slot="table-header"` |
+| `data-slot="table-body"` |
+| `data-slot="table-footer"` |
+| `data-slot="table-row"` |
+| `data-slot="table-head"` |
+| `data-slot="table-cell"` |
+| `data-slot="table-caption"` |
+
+**The stylesheet** — `shadless/table.css`, the exact bytes of `dist/css/table.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, so this is the authoritative default look of each slot:
+
+```css
+/* table */
+@layer components {
+  [data-slot="table-container"] { @apply relative w-full overflow-x-auto; }
+  [data-slot="table"] { @apply w-full caption-bottom text-sm; }
+  [data-slot="table-header"] { @apply [&_tr]:border-b; }
+  [data-slot="table-body"] { @apply [&_tr:last-child]:border-0; }
+  [data-slot="table-footer"] { @apply bg-muted/50 border-t font-medium [&>tr]:last:border-b-0; }
+  [data-slot="table-row"] { @apply hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors has-aria-expanded:bg-muted/50; }
+  [data-slot="table-head"] { @apply text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0; }
+  [data-slot="table-cell"] { @apply p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0; }
+  [data-slot="table-caption"] { @apply text-muted-foreground mt-4 text-sm; }
+}
+```

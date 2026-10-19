@@ -114,6 +114,13 @@ upstream is `src/registry/pin.json`; re-pins land through the upstream drill
 - Roving focus (radio-group, toggle-group, accordion, tabs) skips disabled
   items — a radio-group with nothing checked could check a disabled item —
   and swaps the horizontal arrows under `dir="rtl"`.
+- Docs: the input, pagination, skeleton, spinner, table and textarea pages
+  had no API Reference — upstream gives them none — so the stylesheet embed
+  every component page promises was missing from exactly those six. A page
+  whose component ships `shadless/<name>.css` now always gets the section
+  (slot table and the byte-exact stylesheet), and `docs-consistency`
+  requires the embed on every such page instead of only on pages that
+  already had the heading.
 
 ### Added
 - Docs: every component page's API Reference embeds the component's

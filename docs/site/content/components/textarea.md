@@ -217,3 +217,20 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 {% </codegroup> %}
 
 {% </demo> %}
+
+## API Reference
+
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+
+| Slot |
+| --- |
+| `data-slot="textarea"` |
+
+**The stylesheet** — `shadless/textarea.css`, the exact bytes of `dist/css/textarea.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, so this is the authoritative default look of each slot:
+
+```css
+/* textarea */
+@layer components {
+  [data-slot="textarea"] { @apply border-input dark:bg-input/30 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 rounded-lg border bg-transparent px-2.5 py-2 text-base transition-colors focus-visible:ring-3 aria-invalid:ring-3 md:text-sm flex field-sizing-content min-h-16 w-full outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50; }
+}
+```

@@ -603,3 +603,20 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 {% </codegroup> %}
 
 {% </demo> %}
+
+## API Reference
+
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+
+| Slot |
+| --- |
+| `data-slot="spinner"` |
+
+**The stylesheet** — `shadless/spinner.css`, the exact bytes of `dist/css/spinner.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, so this is the authoritative default look of each slot:
+
+```css
+/* spinner */
+@layer components {
+  [data-slot="spinner"] { @apply size-4 animate-spin; }
+}
+```

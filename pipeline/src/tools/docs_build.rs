@@ -12,14 +12,15 @@ use std::path::Path;
 use std::sync::{LazyLock, OnceLock};
 
 use super::docs_transforms::{
-    Guide, RE_DATA_SLOT_ATTR, RE_DATA_SLOT_SET, api_reference_mdx, apply_jsx_overrides,
-    apply_text_adjustments, cva_axis_rows, drop_react_import_fences, extract_demo_scripts,
-    fence_shadow, fm_string, grey_components, guides, locate_api_reference_span,
-    locate_changelog_span, locate_code_tabs_spans, locate_composition_span, locate_install_section,
-    locate_message_scroller_js_span, locate_rtl_framework_span, locate_rtl_migrate_span,
-    locate_usage_span, message_scroller_js_note, parse_frontmatter, protocol_mdx,
-    read_demo_scripts, replace_span, resolve_docs_route, rewrite_inline_jsx_mentions,
-    rewrite_leaked_jsx_fences, rewrite_utility_jsx_fences, rtl_framework_note, scan_guide_previews,
+    Guide, RE_API_REF_HEADING, RE_DATA_SLOT_ATTR, RE_DATA_SLOT_SET, api_reference_mdx,
+    apply_jsx_overrides, apply_text_adjustments, cva_axis_rows, drop_react_import_fences,
+    extract_demo_scripts, fence_shadow, fm_string, grey_components, guides,
+    locate_api_reference_span, locate_changelog_span, locate_code_tabs_spans,
+    locate_composition_span, locate_install_section, locate_message_scroller_js_span,
+    locate_rtl_framework_span, locate_rtl_migrate_span, locate_usage_span,
+    message_scroller_js_note, parse_frontmatter, protocol_mdx, read_demo_scripts, replace_span,
+    resolve_docs_route, rewrite_inline_jsx_mentions, rewrite_leaked_jsx_fences,
+    rewrite_utility_jsx_fences, rtl_framework_note, scan_guide_previews, ships_stylesheet,
     strip_imports, strip_imports_from_mixed_fences, trivial_mdx,
 };
 use crate::jsonorder::{Json, JsonObj, json_string};
@@ -58,8 +59,6 @@ static RE_SCRIPT_BLOCK: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"(?s)<script.*?</script>").unwrap());
 static RE_FM_BLOCK: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"(?s)^---\n.*?\n---\n").unwrap());
-static RE_API_REF_HEADING: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"(?m)^## API Reference[ \t]*\n").unwrap());
 static RE_INIT_ALL: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"shadless\.initAll\(\)").unwrap());
 static RE_RADIX_LEGACY_PATH: LazyLock<Regex> =
@@ -579,9 +578,15 @@ impl DocsBuildCtx {
         raw: &str,
         seen: &mut Vec<String>,
     ) -> String {
-        let Some(m) = RE_API_REF_HEADING.find(raw) else {
+        // An upstream page without the section (input, pagination, skeleton,
+        // spinner, table, textarea) still gets one when the component ships a
+        // stylesheet: the embed is the only place the page shows it. It
+        // closes the page, where every upstream-carried section sits;
+        // mdx_page_facts mirrors this for docs-fidelity.
+        let heading = RE_API_REF_HEADING.find(raw);
+        if heading.is_none() && !ships_stylesheet(root, name) {
             return raw.to_string();
-        };
+        }
         seen.push("api-reference".to_string());
         let mut slots: Vec<String> = Vec::new();
         let mut axes: Vec<super::docs_transforms::CvaAxisRow> = Vec::new();
@@ -616,8 +621,14 @@ impl DocsBuildCtx {
                 &raw[s.end..]
             );
         }
-        let at = m.end();
-        format!("{}\n{}{}", &raw[..at], extra, &raw[at..])
+        match heading {
+            Some(m) => format!("{}\n{}{}", &raw[..m.end()], extra, &raw[m.end()..]),
+            None => format!(
+                "{}\n\n## API Reference\n\n{}\n",
+                raw.trim_end_matches('\n'),
+                extra
+            ),
+        }
     }
 
     fn component_transform(
@@ -643,10 +654,12 @@ impl DocsBuildCtx {
             out = replace_span(&out, u, &self.usage_mdx(name));
         }
         out = self.composition_transform(name, &out, &mut seen);
-        out = self.api_reference_transform(root, name, &out, &mut seen);
+        // before api_reference_transform: the Changelog span runs to the end
+        // of the file and would swallow a section appended there
         if let Some(s) = locate_changelog_span(&fence_shadow(&out)) {
             out = replace_span(&out, s, "");
         }
+        out = self.api_reference_transform(root, name, &out, &mut seen);
         if let Some(s) = locate_message_scroller_js_span(&fence_shadow(&out)) {
             out = replace_span(&out, s, &message_scroller_js_note());
         }

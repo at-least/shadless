@@ -203,3 +203,20 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 {% </codegroup> %}
 
 {% </demo> %}
+
+## API Reference
+
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+
+| Slot |
+| --- |
+| `data-slot="skeleton"` |
+
+**The stylesheet** — `shadless/skeleton.css`, the exact bytes of `dist/css/skeleton.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, so this is the authoritative default look of each slot:
+
+```css
+/* skeleton */
+@layer components {
+  [data-slot="skeleton"] { @apply bg-muted rounded-md animate-pulse; }
+}
+```
