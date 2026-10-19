@@ -1,3 +1,4 @@
+src/runtime/check.mjs
 src/runtime/components/accordion.js
 src/runtime/components/alert-dialog.js
 src/runtime/components/avatar.js

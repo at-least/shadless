@@ -477,6 +477,15 @@ fn apply_pack_broken_export(root: &Path, f: &[String]) -> Result<(), String> {
     )
 }
 
+fn apply_pack_bin_target_missing(root: &Path, f: &[String]) -> Result<(), String> {
+    mut_replace_once(
+        root,
+        &f[0],
+        "\"dist/bin/shadless-check.mjs\"",
+        "\"dist/bin/shadless-check.MISSING.mjs\"",
+    )
+}
+
 fn apply_pack_readme_grey_drift(root: &Path, f: &[String]) -> Result<(), String> {
     mut_replace_once(
         root,
@@ -547,6 +556,32 @@ fn apply_unit_break_pure_fn(root: &Path, f: &[String]) -> Result<(), String> {
         &f[0],
         "apply: toks.filter((t) => !MARKER.test(t) &&",
         "apply: toks.filter((t) => (true) &&",
+    )
+}
+
+/// Drops a cva value from the emitted vocabulary — the corpus now carries
+/// data-variant values the vocabulary does not list, so the checker's
+/// unknown-value rule must error and the unit suite must go red. The anchor
+/// is button's own block (badge's values list is identical; the component
+/// line makes it unique).
+fn apply_unit_vocabulary_value_dropped(root: &Path, f: &[String]) -> Result<(), String> {
+    mut_replace_once(
+        root,
+        &f[0],
+        "            \"link\",\n            \"outline\",\n            \"secondary\"\n          ]\n        }\n      },\n      \"component\": \"button\",",
+        "            \"link\",\n            \"secondary\"\n          ]\n        }\n      },\n      \"component\": \"button\",",
+    )
+}
+
+/// Disables the checker's unknown-value rule in the SHIPPED checker (the
+/// unit suite reads dist/bin, the file npm's bin resolves) — the suite's
+/// crafted-input assertion must go red.
+fn apply_unit_checker_rule_disabled(root: &Path, f: &[String]) -> Result<(), String> {
+    mut_replace_once(
+        root,
+        &f[0],
+        "          if (!info.values.includes(v)) {",
+        "          if (false && !info.values.includes(v)) {",
     )
 }
 
@@ -798,6 +833,14 @@ pub static MUTATIONS: &[Mutation] = &[
         apply: apply_script_refs_dead_node_call,
     },
     Mutation {
+        id: "pack-bin-target-missing",
+        gate: "pack",
+        why: "package.json's bin target names a file the package does not carry — `npx shadless-check` would fail only on the consumer's machine, after install",
+        files: &["package.json"],
+        resolve: None,
+        apply: apply_pack_bin_target_missing,
+    },
+    Mutation {
         id: "pack-broken-export",
         gate: "pack",
         why: "package.json exports point at a file the tarball does not carry (a README-documented specifier that cannot resolve)",
@@ -868,6 +911,22 @@ pub static MUTATIONS: &[Mutation] = &[
         files: &["src/emitter/css.mjs"],
         resolve: None,
         apply: apply_unit_break_pure_fn,
+    },
+    Mutation {
+        id: "unit-checker-rule-disabled",
+        gate: "unit",
+        why: "the shipped checker's unknown-value rule is disabled — a typo'd data-variant would silently render the default again, exactly the failure the checker exists to catch (the suite reads the shipped dist/bin file, so that is what mutates)",
+        files: &["dist/bin/shadless-check.mjs"],
+        resolve: None,
+        apply: apply_unit_checker_rule_disabled,
+    },
+    Mutation {
+        id: "unit-vocabulary-value-dropped",
+        gate: "unit",
+        why: "the emitted vocabulary loses a cva value (outline) that shipped markup still carries — the checker must error on the corpus and the unit suite must go red",
+        files: &["dist/css/vocabulary.json"],
+        resolve: None,
+        apply: apply_unit_vocabulary_value_dropped,
     },
     Mutation {
         id: "typecheck-break-ir-contract",

@@ -97,10 +97,16 @@ pub fn all_go() -> Vec<Node> {
                 "vendor/**", "package.json", "dist/esm/**", "dist/shadless.js", "probes/h4/globals.css",
                 ".upstream/shadcn-ui/apps/v4/registry/styles/style-nova.css", "pipeline/*.go",
                 "pipeline/internal/**", "docs/example-oracle.json", "docs/example-fixture-targets.json",
+                "dist/bin/**", "dist/css/vocabulary.json", "docs/demos/**", "dist/components/**",
+                "docs/site/content/**",
             ]),
             None,
             "seconds-level guard over the pure functions cleanup rounds touch; born from a dead-code delete in rewritePaths that only surfaced minutes later",
-            &["unit-break-pure-fn"],
+            &[
+                "unit-break-pure-fn",
+                "unit-vocabulary-value-dropped",
+                "unit-checker-rule-disabled",
+            ],
         ),
         node(
             "typecheck", "gate", "fast",
@@ -149,8 +155,12 @@ pub fn all_go() -> Vec<Node> {
             &[&["go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestPack$", "."]],
             Some(&["pipeline/gate_pack.go", "pipeline/gates_test.go", "package.json", "README.md", "dist/**"]),
             None,
-            "the npm surface — exports map, tarball contents, README specifiers, an empty dependencies — must agree: a bare-string ./runtime.min export served an IIFE to `import`, README documented a specifier that does not resolve, and a React-free package installed React through dependencies",
-            &["pack-broken-export", "pack-readme-grey-drift"],
+            "the npm surface — exports map, bin targets, tarball contents, README specifiers, an empty dependencies — must agree: a bare-string ./runtime.min export served an IIFE to `import`, README documented a specifier that does not resolve, and a React-free package installed React through dependencies",
+            &[
+                "pack-bin-target-missing",
+                "pack-broken-export",
+                "pack-readme-grey-drift",
+            ],
         ),
         node(
             "coverage", "gate", "fast",
@@ -217,8 +227,8 @@ pub fn all_go() -> Vec<Node> {
             &[],
             &[&["./build/pipeline", "build-js"]],
             Some(&["pipeline/jsbuild.go", "src/runtime/**", "vendor/**"]),
-            Some(&["dist/shadless.js", "dist/js", "dist/shadless.min.js", "dist/esm"]),
-            "the JS surface: dist/shadless.js (kernel + base) and dist/js/<name>.js per component",
+            Some(&["dist/shadless.js", "dist/js", "dist/shadless.min.js", "dist/esm", "dist/bin"]),
+            "the JS surface: dist/shadless.js (kernel + base), dist/js/<name>.js per component, and dist/bin/shadless-check.mjs (the authored markup checker, copied verbatim)",
             &[],
         ),
         node(

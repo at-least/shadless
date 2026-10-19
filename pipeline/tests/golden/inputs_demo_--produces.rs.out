@@ -74,5 +74,6 @@ dist/css/textarea.css
 dist/css/toggle-group.css
 dist/css/toggle.css
 dist/css/tooltip.css
+dist/css/vocabulary.json
 dist/demo-index.html
 dist/globals.css

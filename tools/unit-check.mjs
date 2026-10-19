@@ -17,16 +17,18 @@
 // harness — the assertions go with the implementation, so there is never a
 // JS test standing over a Rust function. The `unit` node runs everything.
 import { makeT } from "./unit/harness.mjs"
+import * as checker from "./unit/checker.mjs"
 import * as css from "./unit/css.mjs"
 import * as emitter from "./unit/emitter.mjs"
 import * as runtime from "./unit/runtime.mjs"
 import * as types from "./unit/types.mjs"
 
 const suites = [
-    ["css", css],
+  ["checker", checker],
+  ["css", css],
   ["emitter", emitter],
   ["runtime", runtime],
-    
+
   ["types", types],
 ]
 

@@ -22,6 +22,21 @@ upstream is `src/registry/pin.json`; re-pins land through the upstream drill
   drop from 50,929 to 13,096; 46% of them carry no class at all.
 
 ### Added
+- `shadless-check`, a static, offline, zero-dependency markup checker for the
+  slot-only contract, plus the artifact it checks against:
+  `shadless/vocabulary.json` — generated from the IR by the same pipeline run
+  that emits `dist/css` (every `data-slot` of every shipped component,
+  the `data-<axis>` values and default each slot accepts from its cva table,
+  the marker classes every render of a slot carries — group/peer markers and
+  the skin classes a shipped stylesheet rule keys on). `npx
+  shadless-check <file|dir>...` flags a `data-variant`/`data-size` value the
+  slot does not list, `data-variant`/`data-size` on an element with no
+  `data-slot`, a duplicated attribute on one start tag, an unknown
+  `data-slot` (warning — authoring hooks exist), and a missing required
+  marker class (warning); exit 1 on errors (warnings with `--strict`), 2 on
+  usage errors. It checks the cva axes listed in `vocabulary.json`; hook-only
+  attributes whose full value set no table names (e.g. `card data-size`) are
+  deliberately not axes.
 - `docs-code-parity`, a full-tier browser gate: for every built page and
   every ` ```text,name=… ` code tab — RTL tabs included, which keep every
   class and are compared against their `-rtl` demo sources — the committed

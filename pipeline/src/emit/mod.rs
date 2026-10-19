@@ -8,6 +8,7 @@ pub mod css;
 pub mod demo;
 pub mod product_css;
 pub mod tw;
+pub mod vocabulary;
 
 use std::collections::{HashMap, HashSet};
 

@@ -76,6 +76,30 @@ keep their inline utilities in the tab — their logical-direction tokens
 there. Where each slot's default look is written down: the component's
 **API Reference** section embeds its stylesheet verbatim.
 
+**Check the markup against the attribute vocabulary.**
+
+The contract is static, so it is statically checkable — offline, with no
+dependencies (Node >= 20 built-ins only):
+
+```bash
+npx shadless-check src             # a directory is recursed; --strict, --json available
+```
+
+`shadless-check` reads `shadless/vocabulary.json` — generated from the same
+source the stylesheets are generated from — and reports, per file and line:
+a `data-variant`/`data-size` value the slot does not list, `data-variant` or
+`data-size` on an element with no `data-slot`, the same attribute twice on one
+start tag (HTML keeps only the first one), a `data-slot` the vocabulary does
+not know, and a missing required class (a card without `group/card` silently
+loses every `group-data-[size=…]/card:*` rule). It checks the cva axes listed
+in `shadless/vocabulary.json`; a `data-*` attribute that exists only as a
+styling hook no table names the value set of (e.g. `card data-size`) is not an
+axis and is not checked. A start tag that never closes before end of file
+(a browser drops it whole) is reported once as `truncated` instead of being
+checked. Exit code 1 when errors are found (warnings count
+with `--strict`), 2 on usage errors, 0 otherwise; `--json` prints the findings
+as a JSON array — easy to wire into CI or an editor.
+
 **Where the component has behavior, load its JavaScript exactly as its demo page does.**
 
 Static components (alert, badge, card, table, …) need no JS at all.
@@ -114,10 +138,12 @@ instead of by path.
 | --- | --- | --- |
 | `dist/shadless-core.css` | `shadless` | theme vars, `@theme`, animate layer — the tailwind entry source |
 | `dist/css/<name>.css` | `shadless/<name>.css` | per-component slot styles (`@apply` source) |
+| `dist/css/vocabulary.json` | `shadless/vocabulary.json` | the attribute vocabulary: every `data-slot`, the `data-<axis>` values each slot accepts, the markers every render of a slot carries |
 | `dist/shadless.full.css` / `.full.min.css` | `shadless/full.css` / `full.min.css` | every component precompiled into one stylesheet (no-build path; `.min` for production) |
 | `dist/shadless.js` / `.min.js` | `shadless/js` / `js.min` | the JS base: delegation engine, registry, theme, the vendored radix kernel. `js.min` is the minified `<script>` build; under `import` both specifiers resolve to the one ES-module base |
 | `dist/js/<name>.js` | `shadless/js/<name>` | one behavior file per interactive component (carousel bundles the embla engine) |
 | `dist/esm/shadless.mjs`, `dist/esm/<name>.mjs` | `shadless/esm/<name>` | the same two as ES modules, for bundlers and `<script type="module">` |
+| `dist/bin/shadless-check.mjs` | `shadless-check` (bin) | the markup checker — the check step above |
 
 Component markup is not on this list — see [Install](#install) above for where
 to copy it from.

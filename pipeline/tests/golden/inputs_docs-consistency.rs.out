@@ -185,6 +185,7 @@ dist/css/textarea.css
 dist/css/toggle-group.css
 dist/css/toggle.css
 dist/css/tooltip.css
+dist/css/vocabulary.json
 docs/demos/accordion-basic.html
 docs/demos/accordion-borders.html
 docs/demos/accordion-card.html

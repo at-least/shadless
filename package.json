@@ -15,6 +15,9 @@
     "**/*.css"
   ],
   "style": "./dist/shadless.full.css",
+  "bin": {
+    "shadless-check": "dist/bin/shadless-check.mjs"
+  },
   "exports": {
     ".": "./dist/shadless-core.css",
     "./full.css": "./dist/shadless.full.css",
@@ -39,6 +42,7 @@
     }
   },
   "files": [
+    "dist/bin/",
     "dist/css/",
     "dist/js/",
     "dist/esm/",

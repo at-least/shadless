@@ -1,4 +1,5 @@
 build/rtl-langs.json
+dist/bin/shadless-check.mjs
 dist/components/accordion-rtl-en.html
 dist/components/accordion-rtl-he.html
 dist/components/accordion.html
@@ -186,6 +187,7 @@ dist/css/textarea.css
 dist/css/toggle-group.css
 dist/css/toggle.css
 dist/css/tooltip.css
+dist/css/vocabulary.json
 dist/demo-index.html
 dist/esm/accordion.d.ts
 dist/esm/accordion.mjs

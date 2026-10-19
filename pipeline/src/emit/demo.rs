@@ -110,7 +110,7 @@ fn field_demo_html() -> &'static str {
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-struct RegTier {
+pub(crate) struct RegTier {
     #[serde(default)]
     tier: String,
     #[serde(default)]
@@ -122,15 +122,17 @@ struct RegTier {
 }
 
 
-pub fn run_demo() -> Result<(), String> {
-    let root = std::env::current_dir().map_err(|e| e.to_string())?;
-    let root_s = root.to_string_lossy().into_owned();
-    let _ = &root_s;
-    load_skin();
-    std::fs::create_dir_all(root.join("dist/components")).map_err(|e| format!("demo: {}", e))?;
+/// `shipped_irs`'s return: the shipped IR set in sorted-filename order plus
+/// the tiers table (run_demo reads each component's fixture from it).
+pub(crate) type ShippedIrs = (Vec<(String, CssIrComponent)>, HashMap<String, RegTier>);
 
-    // tiers + shipped set (dispatch is tier-based; emit:true covers the
-    // exceptions)
+/// The shipped IR set — exactly what the demo node emits pages, CSS and the
+/// attribute vocabulary from (dispatch is tier-based; tiers.json emit:true
+/// covers the exceptions), in sorted-filename order, with the count
+/// assertion so no caller can skip it. Lives outside run_demo so emit::
+/// vocabulary's unit_ test enforces the vocabulary's scope against the SAME
+/// set the emitter ships, instead of a second hand-rolled filter.
+pub(crate) fn shipped_irs(root: &std::path::Path) -> Result<ShippedIrs, String> {
     let tiers_b = std::fs::read_to_string(root.join("src/registry/tiers.json"))
         .map_err(|e| format!("demo: {}", e))?;
     let reg_tiers: HashMap<String, RegTier> =
@@ -138,8 +140,7 @@ pub fn run_demo() -> Result<(), String> {
     let shipped_tier = |tier: &str| tier == "static" || tier == "kernel" || tier == "trivial-js";
 
     let ir_dir = root.join("generated/ir");
-    let mut file_order: Vec<String> = Vec::new(); // ReadDir order: sorted filenames
-    let mut ir_all: HashMap<String, CssIrComponent> = HashMap::new();
+    let mut shipped: Vec<(String, CssIrComponent)> = Vec::new(); // ReadDir order: sorted filenames
     let mut ents: Vec<String> = Vec::new();
     for e in std::fs::read_dir(&ir_dir).map_err(|e| format!("demo: {}", e))? {
         let e = e.map_err(|e| e.to_string())?;
@@ -163,24 +164,36 @@ pub fn run_demo() -> Result<(), String> {
             ));
         }
         if shipped_tier(&ir.tier) || reg_tiers.get(&ir.name).map(|t| t.emit).unwrap_or(false) {
-            file_order.push(ir.name.clone());
-            ir_all.insert(ir.name.clone(), ir);
+            shipped.push((ir.name.clone(), ir));
         }
     }
-    let mut names = file_order.clone();
-    names.sort();
     // count assertion derives from the same predicate, so the two cannot disagree
     let expected = reg_tiers
         .values()
         .filter(|t| shipped_tier(&t.tier) || t.emit)
         .count();
-    if ir_all.len() != expected {
+    if shipped.len() != expected {
         return Err(format!(
             "expected {} emitted components (static/kernel/trivial-js + tiers.json emit:true), got {}",
             expected,
-            ir_all.len()
+            shipped.len()
         ));
     }
+    Ok((shipped, reg_tiers))
+}
+
+pub fn run_demo() -> Result<(), String> {
+    let root = std::env::current_dir().map_err(|e| e.to_string())?;
+    let root_s = root.to_string_lossy().into_owned();
+    let _ = &root_s;
+    load_skin();
+    std::fs::create_dir_all(root.join("dist/components")).map_err(|e| format!("demo: {}", e))?;
+
+    let (shipped, reg_tiers) = shipped_irs(&root)?;
+    let file_order: Vec<String> = shipped.iter().map(|(n, _)| n.clone()).collect();
+    let ir_all: HashMap<String, CssIrComponent> = shipped.into_iter().collect();
+    let mut names = file_order.clone();
+    names.sort();
 
     // ---- 1. unified globals.css ----
     let base_b = std::fs::read_to_string(root.join("probes/h4/globals.css"))
@@ -224,6 +237,20 @@ pub fn run_demo() -> Result<(), String> {
             }
         }
     }
+
+    // ---- 2. the attribute vocabulary ----
+    // ir_all carries exactly the shipped set (static/kernel/trivial-js +
+    // tiers.json emit:true) in sorted order; build_vocabulary refuses a slot
+    // name carried by two of them rather than encoding an ambiguity.
+    let vocab_irs: Vec<(&str, &super::css::CssIrComponent)> =
+        names.iter().map(|n| (n.as_str(), &ir_all[n])).collect();
+    let vocab =
+        super::vocabulary::build_vocabulary(&vocab_irs).map_err(|e| format!("demo: {}", e))?;
+    std::fs::write(
+        root.join("dist/css/vocabulary.json"),
+        super::vocabulary::to_json(&vocab),
+    )
+    .map_err(|e| format!("demo: {}", e))?;
     let srcs: Vec<String> = DEMO_SOURCES
         .iter()
         .map(|d| format!("@source \"{}\";", d))
@@ -287,8 +314,10 @@ pub fn run_demo() -> Result<(), String> {
         .map_err(|e| format!("demo: {}", e))?;
         emitted += 1;
     }
-    if emitted != expected {
-        return Err(format!("emitted {}, expected {}", emitted, expected));
+    if emitted != names.len() {
+        // names is the shipped set, whose size shipped_irs already asserted
+        // equals the tiers-derived count
+        return Err(format!("emitted {}, expected {}", emitted, names.len()));
     }
 
     // ---- 4. demo index ----

@@ -45,14 +45,33 @@ component styles), or set the documented `data-*` attributes — and, where the
 component has behavior, its JS. No build? `shadless/full.min.css`
 ships every component precompiled as the zero-setup alternative.
 
+The attribute vocabulary is machine-checkable. `npx shadless-check <files…>`
+(a directory argument is recursed; static, offline, zero dependencies — Node
+>= 20 built-ins only) reads
+`shadless/vocabulary.json` — generated from the same IR the stylesheets are
+generated from — and flags markup that breaks the slot-only contract:
+a `data-variant`/`data-size` value the slot does not list, `data-variant` or
+`data-size` on an element with no `data-slot`, the same attribute twice on one
+start tag (HTML keeps only the first), a `data-slot` the vocabulary does not
+know, and a missing required class (`group/card` on a card — without it every
+`group-data-[size=…]/card:*` rule dies silently). It checks the cva axes
+listed in `shadless/vocabulary.json`; a `data-*` attribute that exists only as
+a styling hook no table names the value set of (e.g. `card data-size`) is not
+an axis and is not checked. A start tag that never closes before end of file
+(a browser drops it whole) is reported once as `truncated` instead of being
+checked. Exit 1 when errors are found (or warnings, with `--strict`), 2 on
+usage errors, 0 otherwise; `--json` prints the findings as JSON.
+
 | Export | What it is |
 |---|---|
 | `shadless` | theme + animate layer (self-contained — needs only your tailwindcss, >= 4.3) |
 | `shadless/<name>.css` | per-component `@apply` source, one import per component you use |
+| `shadless/vocabulary.json` | the attribute vocabulary: every `data-slot`, the `data-<axis>` values each slot accepts, the markers every render of a slot carries — what `shadless-check` reads |
 | `shadless/full.css` / `shadless/full.min.css` | every component precompiled (no-build path) |
 | `shadless/js` / `js.min` | the JS base: engine + registry + theme (+ the vendored radix kernel), auto-initialises. `<script>` gets the IIFE (`window.shadless`), and `js.min` is the minified one. Under `import` both resolve to the same ES module — `dist/esm/shadless.mjs`, `export default shadless` + named `init`, `get`, `theme`, … — because there is exactly one ES-module base for every component file to register on; minify it in your own bundle |
 | `shadless/js/<name>` | one behavior file per interactive component, registers with the base; `shadless.get(el)` returns its handle (`open()`, `close()`, `toggle()`, `isOpen()`; tabs `activate(i)`; slider `values()` / `setValue()`; carousel the embla api; select `select(item)` / `value()` / `label()` / `selected()`). Under `import` each file is a module that imports the base itself, so import order does not matter |
 | `shadless/esm/<name>` | the ES-module files by explicit path (`shadless.mjs` is the base) |
+| `shadless-check` (npm bin) | the markup checker CLI described above — `npx shadless-check <file|dir>...`, offline, zero dependencies |
 
 ```js
 // bundler / <script type="module">

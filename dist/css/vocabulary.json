@@ -1,0 +1,1628 @@
+{
+  "axisAttributes": [
+    "align",
+    "orientation",
+    "side",
+    "size",
+    "variant"
+  ],
+  "schema": 1,
+  "slotRefs": [
+    "checkbox-group",
+    "combobox-content"
+  ],
+  "slots": {
+    "accordion": {
+      "axes": {},
+      "component": "accordion",
+      "markers": []
+    },
+    "accordion-content": {
+      "axes": {},
+      "component": "accordion",
+      "markers": []
+    },
+    "accordion-item": {
+      "axes": {},
+      "component": "accordion",
+      "markers": []
+    },
+    "accordion-trigger": {
+      "axes": {},
+      "component": "accordion",
+      "markers": [
+        "group/accordion-trigger"
+      ]
+    },
+    "accordion-trigger-icon": {
+      "axes": {},
+      "component": "accordion",
+      "markers": []
+    },
+    "alert": {
+      "axes": {
+        "variant": {
+          "default": "default",
+          "values": [
+            "default",
+            "destructive"
+          ]
+        }
+      },
+      "component": "alert",
+      "markers": [
+        "group/alert"
+      ]
+    },
+    "alert-action": {
+      "axes": {},
+      "component": "alert",
+      "markers": []
+    },
+    "alert-description": {
+      "axes": {},
+      "component": "alert",
+      "markers": []
+    },
+    "alert-dialog": {
+      "axes": {},
+      "component": "alert-dialog",
+      "markers": []
+    },
+    "alert-dialog-action": {
+      "axes": {},
+      "component": "alert-dialog",
+      "markers": []
+    },
+    "alert-dialog-cancel": {
+      "axes": {},
+      "component": "alert-dialog",
+      "markers": []
+    },
+    "alert-dialog-content": {
+      "axes": {},
+      "component": "alert-dialog",
+      "markers": [
+        "group/alert-dialog-content"
+      ]
+    },
+    "alert-dialog-description": {
+      "axes": {},
+      "component": "alert-dialog",
+      "markers": []
+    },
+    "alert-dialog-footer": {
+      "axes": {},
+      "component": "alert-dialog",
+      "markers": []
+    },
+    "alert-dialog-header": {
+      "axes": {},
+      "component": "alert-dialog",
+      "markers": []
+    },
+    "alert-dialog-media": {
+      "axes": {},
+      "component": "alert-dialog",
+      "markers": []
+    },
+    "alert-dialog-overlay": {
+      "axes": {},
+      "component": "alert-dialog",
+      "markers": []
+    },
+    "alert-dialog-portal": {
+      "axes": {},
+      "component": "alert-dialog",
+      "markers": []
+    },
+    "alert-dialog-title": {
+      "axes": {},
+      "component": "alert-dialog",
+      "markers": []
+    },
+    "alert-dialog-trigger": {
+      "axes": {},
+      "component": "alert-dialog",
+      "markers": []
+    },
+    "alert-title": {
+      "axes": {},
+      "component": "alert",
+      "markers": []
+    },
+    "aspect-ratio": {
+      "axes": {},
+      "component": "aspect-ratio",
+      "markers": []
+    },
+    "attachment": {
+      "axes": {
+        "orientation": {
+          "default": "horizontal",
+          "values": [
+            "horizontal",
+            "vertical"
+          ]
+        },
+        "size": {
+          "default": "default",
+          "values": [
+            "default",
+            "sm",
+            "xs"
+          ]
+        }
+      },
+      "component": "attachment",
+      "markers": [
+        "group/attachment"
+      ]
+    },
+    "attachment-action": {
+      "axes": {},
+      "component": "attachment",
+      "markers": [
+        "group/button"
+      ]
+    },
+    "attachment-actions": {
+      "axes": {},
+      "component": "attachment",
+      "markers": []
+    },
+    "attachment-content": {
+      "axes": {},
+      "component": "attachment",
+      "markers": []
+    },
+    "attachment-description": {
+      "axes": {},
+      "component": "attachment",
+      "markers": []
+    },
+    "attachment-group": {
+      "axes": {},
+      "component": "attachment",
+      "markers": []
+    },
+    "attachment-media": {
+      "axes": {
+        "variant": {
+          "default": "icon",
+          "values": [
+            "icon",
+            "image"
+          ]
+        }
+      },
+      "component": "attachment",
+      "markers": []
+    },
+    "attachment-title": {
+      "axes": {},
+      "component": "attachment",
+      "markers": []
+    },
+    "attachment-trigger": {
+      "axes": {},
+      "component": "attachment",
+      "markers": []
+    },
+    "avatar": {
+      "axes": {},
+      "component": "avatar",
+      "markers": [
+        "group/avatar"
+      ]
+    },
+    "avatar-badge": {
+      "axes": {},
+      "component": "avatar",
+      "markers": []
+    },
+    "avatar-fallback": {
+      "axes": {},
+      "component": "avatar",
+      "markers": []
+    },
+    "avatar-group": {
+      "axes": {},
+      "component": "avatar",
+      "markers": [
+        "group/avatar-group"
+      ]
+    },
+    "avatar-group-count": {
+      "axes": {},
+      "component": "avatar",
+      "markers": []
+    },
+    "avatar-image": {
+      "axes": {},
+      "component": "avatar",
+      "markers": []
+    },
+    "badge": {
+      "axes": {
+        "variant": {
+          "default": "default",
+          "values": [
+            "default",
+            "destructive",
+            "ghost",
+            "link",
+            "outline",
+            "secondary"
+          ]
+        }
+      },
+      "component": "badge",
+      "markers": [
+        "group/badge"
+      ]
+    },
+    "breadcrumb": {
+      "axes": {},
+      "component": "breadcrumb",
+      "markers": []
+    },
+    "breadcrumb-ellipsis": {
+      "axes": {},
+      "component": "breadcrumb",
+      "markers": []
+    },
+    "breadcrumb-item": {
+      "axes": {},
+      "component": "breadcrumb",
+      "markers": []
+    },
+    "breadcrumb-link": {
+      "axes": {},
+      "component": "breadcrumb",
+      "markers": []
+    },
+    "breadcrumb-list": {
+      "axes": {},
+      "component": "breadcrumb",
+      "markers": []
+    },
+    "breadcrumb-page": {
+      "axes": {},
+      "component": "breadcrumb",
+      "markers": []
+    },
+    "breadcrumb-separator": {
+      "axes": {},
+      "component": "breadcrumb",
+      "markers": []
+    },
+    "bubble": {
+      "axes": {
+        "variant": {
+          "default": "default",
+          "values": [
+            "default",
+            "destructive",
+            "ghost",
+            "muted",
+            "outline",
+            "secondary",
+            "tinted"
+          ]
+        }
+      },
+      "component": "bubble",
+      "markers": [
+        "group/bubble"
+      ]
+    },
+    "bubble-content": {
+      "axes": {},
+      "component": "bubble",
+      "markers": []
+    },
+    "bubble-group": {
+      "axes": {},
+      "component": "bubble",
+      "markers": []
+    },
+    "bubble-reactions": {
+      "axes": {
+        "align": {
+          "default": "end",
+          "values": [
+            "end",
+            "start"
+          ]
+        },
+        "side": {
+          "default": "bottom",
+          "values": [
+            "bottom",
+            "top"
+          ]
+        }
+      },
+      "component": "bubble",
+      "markers": []
+    },
+    "button": {
+      "axes": {
+        "size": {
+          "default": "default",
+          "values": [
+            "default",
+            "icon",
+            "icon-lg",
+            "icon-sm",
+            "icon-xs",
+            "lg",
+            "sm",
+            "xs"
+          ]
+        },
+        "variant": {
+          "default": "default",
+          "values": [
+            "default",
+            "destructive",
+            "ghost",
+            "link",
+            "outline",
+            "secondary"
+          ]
+        }
+      },
+      "component": "button",
+      "markers": [
+        "group/button"
+      ]
+    },
+    "button-group": {
+      "axes": {
+        "orientation": {
+          "default": "horizontal",
+          "values": [
+            "horizontal",
+            "vertical"
+          ]
+        }
+      },
+      "component": "button-group",
+      "markers": [
+        "group/button-group"
+      ]
+    },
+    "button-group-separator": {
+      "axes": {},
+      "component": "button-group",
+      "markers": []
+    },
+    "card": {
+      "axes": {},
+      "component": "card",
+      "markers": [
+        "group/card"
+      ]
+    },
+    "card-action": {
+      "axes": {},
+      "component": "card",
+      "markers": []
+    },
+    "card-content": {
+      "axes": {},
+      "component": "card",
+      "markers": []
+    },
+    "card-description": {
+      "axes": {},
+      "component": "card",
+      "markers": []
+    },
+    "card-footer": {
+      "axes": {},
+      "component": "card",
+      "markers": []
+    },
+    "card-header": {
+      "axes": {},
+      "component": "card",
+      "markers": [
+        "group/card-header"
+      ]
+    },
+    "card-title": {
+      "axes": {},
+      "component": "card",
+      "markers": []
+    },
+    "carousel": {
+      "axes": {},
+      "component": "carousel",
+      "markers": []
+    },
+    "carousel-content": {
+      "axes": {},
+      "component": "carousel",
+      "markers": []
+    },
+    "carousel-item": {
+      "axes": {},
+      "component": "carousel",
+      "markers": []
+    },
+    "carousel-next": {
+      "axes": {},
+      "component": "carousel",
+      "markers": [
+        "group/button"
+      ]
+    },
+    "carousel-previous": {
+      "axes": {},
+      "component": "carousel",
+      "markers": [
+        "group/button"
+      ]
+    },
+    "checkbox": {
+      "axes": {},
+      "component": "checkbox",
+      "markers": [
+        "peer"
+      ]
+    },
+    "checkbox-indicator": {
+      "axes": {},
+      "component": "checkbox",
+      "markers": []
+    },
+    "collapsible": {
+      "axes": {},
+      "component": "collapsible",
+      "markers": []
+    },
+    "collapsible-content": {
+      "axes": {},
+      "component": "collapsible",
+      "markers": []
+    },
+    "collapsible-trigger": {
+      "axes": {},
+      "component": "collapsible",
+      "markers": []
+    },
+    "context-menu": {
+      "axes": {},
+      "component": "context-menu",
+      "markers": []
+    },
+    "context-menu-checkbox-item": {
+      "axes": {},
+      "component": "context-menu",
+      "markers": []
+    },
+    "context-menu-content": {
+      "axes": {},
+      "component": "context-menu",
+      "markers": [
+        "cn-menu-translucent"
+      ]
+    },
+    "context-menu-group": {
+      "axes": {},
+      "component": "context-menu",
+      "markers": []
+    },
+    "context-menu-item": {
+      "axes": {},
+      "component": "context-menu",
+      "markers": [
+        "group/context-menu-item"
+      ]
+    },
+    "context-menu-label": {
+      "axes": {},
+      "component": "context-menu",
+      "markers": []
+    },
+    "context-menu-portal": {
+      "axes": {},
+      "component": "context-menu",
+      "markers": []
+    },
+    "context-menu-radio-group": {
+      "axes": {},
+      "component": "context-menu",
+      "markers": []
+    },
+    "context-menu-radio-item": {
+      "axes": {},
+      "component": "context-menu",
+      "markers": []
+    },
+    "context-menu-separator": {
+      "axes": {},
+      "component": "context-menu",
+      "markers": []
+    },
+    "context-menu-shortcut": {
+      "axes": {},
+      "component": "context-menu",
+      "markers": []
+    },
+    "context-menu-sub": {
+      "axes": {},
+      "component": "context-menu",
+      "markers": []
+    },
+    "context-menu-sub-content": {
+      "axes": {},
+      "component": "context-menu",
+      "markers": [
+        "cn-menu-translucent"
+      ]
+    },
+    "context-menu-sub-trigger": {
+      "axes": {},
+      "component": "context-menu",
+      "markers": []
+    },
+    "context-menu-trigger": {
+      "axes": {},
+      "component": "context-menu",
+      "markers": []
+    },
+    "dialog": {
+      "axes": {},
+      "component": "dialog",
+      "markers": []
+    },
+    "dialog-close": {
+      "axes": {},
+      "component": "dialog",
+      "markers": []
+    },
+    "dialog-content": {
+      "axes": {},
+      "component": "dialog",
+      "markers": []
+    },
+    "dialog-description": {
+      "axes": {},
+      "component": "dialog",
+      "markers": []
+    },
+    "dialog-footer": {
+      "axes": {},
+      "component": "dialog",
+      "markers": []
+    },
+    "dialog-header": {
+      "axes": {},
+      "component": "dialog",
+      "markers": []
+    },
+    "dialog-overlay": {
+      "axes": {},
+      "component": "dialog",
+      "markers": []
+    },
+    "dialog-portal": {
+      "axes": {},
+      "component": "dialog",
+      "markers": []
+    },
+    "dialog-title": {
+      "axes": {},
+      "component": "dialog",
+      "markers": []
+    },
+    "dialog-trigger": {
+      "axes": {},
+      "component": "dialog",
+      "markers": []
+    },
+    "dropdown-menu": {
+      "axes": {},
+      "component": "dropdown-menu",
+      "markers": []
+    },
+    "dropdown-menu-checkbox-item": {
+      "axes": {},
+      "component": "dropdown-menu",
+      "markers": []
+    },
+    "dropdown-menu-checkbox-item-indicator": {
+      "axes": {},
+      "component": "dropdown-menu",
+      "markers": []
+    },
+    "dropdown-menu-content": {
+      "axes": {},
+      "component": "dropdown-menu",
+      "markers": [
+        "cn-menu-translucent"
+      ]
+    },
+    "dropdown-menu-group": {
+      "axes": {},
+      "component": "dropdown-menu",
+      "markers": []
+    },
+    "dropdown-menu-item": {
+      "axes": {},
+      "component": "dropdown-menu",
+      "markers": [
+        "group/dropdown-menu-item"
+      ]
+    },
+    "dropdown-menu-label": {
+      "axes": {},
+      "component": "dropdown-menu",
+      "markers": []
+    },
+    "dropdown-menu-portal": {
+      "axes": {},
+      "component": "dropdown-menu",
+      "markers": []
+    },
+    "dropdown-menu-radio-group": {
+      "axes": {},
+      "component": "dropdown-menu",
+      "markers": []
+    },
+    "dropdown-menu-radio-item": {
+      "axes": {},
+      "component": "dropdown-menu",
+      "markers": []
+    },
+    "dropdown-menu-radio-item-indicator": {
+      "axes": {},
+      "component": "dropdown-menu",
+      "markers": []
+    },
+    "dropdown-menu-separator": {
+      "axes": {},
+      "component": "dropdown-menu",
+      "markers": []
+    },
+    "dropdown-menu-shortcut": {
+      "axes": {},
+      "component": "dropdown-menu",
+      "markers": []
+    },
+    "dropdown-menu-sub": {
+      "axes": {},
+      "component": "dropdown-menu",
+      "markers": []
+    },
+    "dropdown-menu-sub-content": {
+      "axes": {},
+      "component": "dropdown-menu",
+      "markers": [
+        "cn-menu-translucent"
+      ]
+    },
+    "dropdown-menu-sub-trigger": {
+      "axes": {},
+      "component": "dropdown-menu",
+      "markers": []
+    },
+    "dropdown-menu-trigger": {
+      "axes": {},
+      "component": "dropdown-menu",
+      "markers": []
+    },
+    "empty": {
+      "axes": {},
+      "component": "empty",
+      "markers": []
+    },
+    "empty-content": {
+      "axes": {},
+      "component": "empty",
+      "markers": []
+    },
+    "empty-description": {
+      "axes": {},
+      "component": "empty",
+      "markers": []
+    },
+    "empty-header": {
+      "axes": {},
+      "component": "empty",
+      "markers": []
+    },
+    "empty-icon": {
+      "axes": {
+        "variant": {
+          "default": "default",
+          "values": [
+            "default",
+            "icon"
+          ]
+        }
+      },
+      "component": "empty",
+      "markers": []
+    },
+    "empty-title": {
+      "axes": {},
+      "component": "empty",
+      "markers": []
+    },
+    "field": {
+      "axes": {
+        "orientation": {
+          "default": "vertical",
+          "values": [
+            "horizontal",
+            "responsive",
+            "vertical"
+          ]
+        }
+      },
+      "component": "field",
+      "markers": [
+        "group/field"
+      ]
+    },
+    "field-content": {
+      "axes": {},
+      "component": "field",
+      "markers": [
+        "group/field-content"
+      ]
+    },
+    "field-description": {
+      "axes": {},
+      "component": "field",
+      "markers": []
+    },
+    "field-error": {
+      "axes": {},
+      "component": "field",
+      "markers": []
+    },
+    "field-group": {
+      "axes": {},
+      "component": "field",
+      "markers": [
+        "group/field-group"
+      ]
+    },
+    "field-label": {
+      "axes": {},
+      "component": "field",
+      "markers": []
+    },
+    "field-legend": {
+      "axes": {},
+      "component": "field",
+      "markers": []
+    },
+    "field-separator": {
+      "axes": {},
+      "component": "field",
+      "markers": []
+    },
+    "field-separator-content": {
+      "axes": {},
+      "component": "field",
+      "markers": []
+    },
+    "field-set": {
+      "axes": {},
+      "component": "field",
+      "markers": []
+    },
+    "hover-card": {
+      "axes": {},
+      "component": "hover-card",
+      "markers": []
+    },
+    "hover-card-content": {
+      "axes": {},
+      "component": "hover-card",
+      "markers": []
+    },
+    "hover-card-portal": {
+      "axes": {},
+      "component": "hover-card",
+      "markers": []
+    },
+    "hover-card-trigger": {
+      "axes": {},
+      "component": "hover-card",
+      "markers": []
+    },
+    "input": {
+      "axes": {},
+      "component": "input",
+      "markers": []
+    },
+    "input-group": {
+      "axes": {},
+      "component": "input-group",
+      "markers": [
+        "group/input-group"
+      ]
+    },
+    "input-group-addon": {
+      "axes": {
+        "align": {
+          "default": "inline-start",
+          "values": [
+            "block-end",
+            "block-start",
+            "inline-end",
+            "inline-start"
+          ]
+        }
+      },
+      "component": "input-group",
+      "markers": []
+    },
+    "input-group-control": {
+      "axes": {},
+      "component": "input-group",
+      "markers": []
+    },
+    "item": {
+      "axes": {
+        "size": {
+          "default": "default",
+          "values": [
+            "default",
+            "sm",
+            "xs"
+          ]
+        },
+        "variant": {
+          "default": "default",
+          "values": [
+            "default",
+            "muted",
+            "outline"
+          ]
+        }
+      },
+      "component": "item",
+      "markers": [
+        "group/item"
+      ]
+    },
+    "item-actions": {
+      "axes": {},
+      "component": "item",
+      "markers": []
+    },
+    "item-content": {
+      "axes": {},
+      "component": "item",
+      "markers": []
+    },
+    "item-description": {
+      "axes": {},
+      "component": "item",
+      "markers": []
+    },
+    "item-footer": {
+      "axes": {},
+      "component": "item",
+      "markers": []
+    },
+    "item-group": {
+      "axes": {},
+      "component": "item",
+      "markers": [
+        "group/item-group"
+      ]
+    },
+    "item-header": {
+      "axes": {},
+      "component": "item",
+      "markers": []
+    },
+    "item-media": {
+      "axes": {
+        "variant": {
+          "default": "default",
+          "values": [
+            "default",
+            "icon",
+            "image"
+          ]
+        }
+      },
+      "component": "item",
+      "markers": []
+    },
+    "item-separator": {
+      "axes": {},
+      "component": "item",
+      "markers": []
+    },
+    "item-title": {
+      "axes": {},
+      "component": "item",
+      "markers": []
+    },
+    "kbd": {
+      "axes": {},
+      "component": "kbd",
+      "markers": []
+    },
+    "kbd-group": {
+      "axes": {},
+      "component": "kbd",
+      "markers": []
+    },
+    "label": {
+      "axes": {},
+      "component": "label",
+      "markers": []
+    },
+    "marker": {
+      "axes": {
+        "variant": {
+          "default": "default",
+          "values": [
+            "border",
+            "default",
+            "separator"
+          ]
+        }
+      },
+      "component": "marker",
+      "markers": [
+        "group/marker"
+      ]
+    },
+    "marker-content": {
+      "axes": {},
+      "component": "marker",
+      "markers": []
+    },
+    "marker-icon": {
+      "axes": {},
+      "component": "marker",
+      "markers": []
+    },
+    "menubar": {
+      "axes": {},
+      "component": "menubar",
+      "markers": []
+    },
+    "menubar-checkbox-item": {
+      "axes": {},
+      "component": "menubar",
+      "markers": []
+    },
+    "menubar-content": {
+      "axes": {},
+      "component": "menubar",
+      "markers": [
+        "cn-menu-translucent"
+      ]
+    },
+    "menubar-group": {
+      "axes": {},
+      "component": "menubar",
+      "markers": []
+    },
+    "menubar-item": {
+      "axes": {},
+      "component": "menubar",
+      "markers": [
+        "group/menubar-item"
+      ]
+    },
+    "menubar-label": {
+      "axes": {},
+      "component": "menubar",
+      "markers": []
+    },
+    "menubar-menu": {
+      "axes": {},
+      "component": "menubar",
+      "markers": []
+    },
+    "menubar-portal": {
+      "axes": {},
+      "component": "menubar",
+      "markers": []
+    },
+    "menubar-radio-group": {
+      "axes": {},
+      "component": "menubar",
+      "markers": []
+    },
+    "menubar-radio-item": {
+      "axes": {},
+      "component": "menubar",
+      "markers": []
+    },
+    "menubar-separator": {
+      "axes": {},
+      "component": "menubar",
+      "markers": []
+    },
+    "menubar-shortcut": {
+      "axes": {},
+      "component": "menubar",
+      "markers": []
+    },
+    "menubar-sub": {
+      "axes": {},
+      "component": "menubar",
+      "markers": []
+    },
+    "menubar-sub-content": {
+      "axes": {},
+      "component": "menubar",
+      "markers": [
+        "cn-menu-translucent"
+      ]
+    },
+    "menubar-sub-trigger": {
+      "axes": {},
+      "component": "menubar",
+      "markers": []
+    },
+    "menubar-trigger": {
+      "axes": {},
+      "component": "menubar",
+      "markers": []
+    },
+    "message": {
+      "axes": {},
+      "component": "message",
+      "markers": [
+        "group/message"
+      ]
+    },
+    "message-avatar": {
+      "axes": {},
+      "component": "message",
+      "markers": []
+    },
+    "message-content": {
+      "axes": {},
+      "component": "message",
+      "markers": []
+    },
+    "message-footer": {
+      "axes": {},
+      "component": "message",
+      "markers": []
+    },
+    "message-group": {
+      "axes": {},
+      "component": "message",
+      "markers": []
+    },
+    "message-header": {
+      "axes": {},
+      "component": "message",
+      "markers": []
+    },
+    "message-scroller": {
+      "axes": {},
+      "component": "message-scroller",
+      "markers": [
+        "group/message-scroller"
+      ]
+    },
+    "message-scroller-button": {
+      "axes": {},
+      "component": "message-scroller",
+      "markers": []
+    },
+    "message-scroller-content": {
+      "axes": {},
+      "component": "message-scroller",
+      "markers": []
+    },
+    "message-scroller-item": {
+      "axes": {},
+      "component": "message-scroller",
+      "markers": []
+    },
+    "message-scroller-viewport": {
+      "axes": {},
+      "component": "message-scroller",
+      "markers": []
+    },
+    "native-select": {
+      "axes": {},
+      "component": "native-select",
+      "markers": []
+    },
+    "native-select-icon": {
+      "axes": {},
+      "component": "native-select",
+      "markers": []
+    },
+    "native-select-optgroup": {
+      "axes": {},
+      "component": "native-select",
+      "markers": []
+    },
+    "native-select-option": {
+      "axes": {},
+      "component": "native-select",
+      "markers": []
+    },
+    "native-select-wrapper": {
+      "axes": {},
+      "component": "native-select",
+      "markers": [
+        "group/native-select"
+      ]
+    },
+    "navigation-menu": {
+      "axes": {},
+      "component": "navigation-menu",
+      "markers": [
+        "group/navigation-menu"
+      ]
+    },
+    "navigation-menu-content": {
+      "axes": {},
+      "component": "navigation-menu",
+      "markers": []
+    },
+    "navigation-menu-indicator": {
+      "axes": {},
+      "component": "navigation-menu",
+      "markers": []
+    },
+    "navigation-menu-item": {
+      "axes": {},
+      "component": "navigation-menu",
+      "markers": []
+    },
+    "navigation-menu-link": {
+      "axes": {},
+      "component": "navigation-menu",
+      "markers": []
+    },
+    "navigation-menu-list": {
+      "axes": {},
+      "component": "navigation-menu",
+      "markers": [
+        "group"
+      ]
+    },
+    "navigation-menu-trigger": {
+      "axes": {},
+      "component": "navigation-menu",
+      "markers": [
+        "group",
+        "group/navigation-menu-trigger"
+      ]
+    },
+    "navigation-menu-viewport": {
+      "axes": {},
+      "component": "navigation-menu",
+      "markers": []
+    },
+    "pagination": {
+      "axes": {},
+      "component": "pagination",
+      "markers": []
+    },
+    "pagination-content": {
+      "axes": {},
+      "component": "pagination",
+      "markers": []
+    },
+    "pagination-ellipsis": {
+      "axes": {},
+      "component": "pagination",
+      "markers": []
+    },
+    "pagination-item": {
+      "axes": {},
+      "component": "pagination",
+      "markers": []
+    },
+    "pagination-link": {
+      "axes": {},
+      "component": "pagination",
+      "markers": []
+    },
+    "popover": {
+      "axes": {},
+      "component": "popover",
+      "markers": []
+    },
+    "popover-anchor": {
+      "axes": {},
+      "component": "popover",
+      "markers": []
+    },
+    "popover-content": {
+      "axes": {},
+      "component": "popover",
+      "markers": []
+    },
+    "popover-description": {
+      "axes": {},
+      "component": "popover",
+      "markers": []
+    },
+    "popover-header": {
+      "axes": {},
+      "component": "popover",
+      "markers": []
+    },
+    "popover-title": {
+      "axes": {},
+      "component": "popover",
+      "markers": []
+    },
+    "popover-trigger": {
+      "axes": {},
+      "component": "popover",
+      "markers": []
+    },
+    "progress": {
+      "axes": {},
+      "component": "progress",
+      "markers": []
+    },
+    "progress-indicator": {
+      "axes": {},
+      "component": "progress",
+      "markers": []
+    },
+    "radio-group": {
+      "axes": {},
+      "component": "radio-group",
+      "markers": []
+    },
+    "radio-group-indicator": {
+      "axes": {},
+      "component": "radio-group",
+      "markers": []
+    },
+    "radio-group-item": {
+      "axes": {},
+      "component": "radio-group",
+      "markers": [
+        "group/radio-group-item",
+        "peer"
+      ]
+    },
+    "scroll-area": {
+      "axes": {},
+      "component": "scroll-area",
+      "markers": []
+    },
+    "scroll-area-scrollbar": {
+      "axes": {},
+      "component": "scroll-area",
+      "markers": []
+    },
+    "scroll-area-thumb": {
+      "axes": {},
+      "component": "scroll-area",
+      "markers": []
+    },
+    "scroll-area-viewport": {
+      "axes": {},
+      "component": "scroll-area",
+      "markers": []
+    },
+    "select": {
+      "axes": {},
+      "component": "select",
+      "markers": []
+    },
+    "select-content": {
+      "axes": {},
+      "component": "select",
+      "markers": [
+        "cn-menu-translucent"
+      ]
+    },
+    "select-group": {
+      "axes": {},
+      "component": "select",
+      "markers": []
+    },
+    "select-item": {
+      "axes": {},
+      "component": "select",
+      "markers": []
+    },
+    "select-label": {
+      "axes": {},
+      "component": "select",
+      "markers": []
+    },
+    "select-scroll-down-button": {
+      "axes": {},
+      "component": "select",
+      "markers": []
+    },
+    "select-scroll-up-button": {
+      "axes": {},
+      "component": "select",
+      "markers": []
+    },
+    "select-separator": {
+      "axes": {},
+      "component": "select",
+      "markers": []
+    },
+    "select-trigger": {
+      "axes": {},
+      "component": "select",
+      "markers": []
+    },
+    "select-value": {
+      "axes": {},
+      "component": "select",
+      "markers": []
+    },
+    "separator": {
+      "axes": {},
+      "component": "separator",
+      "markers": []
+    },
+    "sheet": {
+      "axes": {},
+      "component": "sheet",
+      "markers": []
+    },
+    "sheet-close": {
+      "axes": {},
+      "component": "sheet",
+      "markers": []
+    },
+    "sheet-content": {
+      "axes": {},
+      "component": "sheet",
+      "markers": []
+    },
+    "sheet-description": {
+      "axes": {},
+      "component": "sheet",
+      "markers": []
+    },
+    "sheet-footer": {
+      "axes": {},
+      "component": "sheet",
+      "markers": []
+    },
+    "sheet-header": {
+      "axes": {},
+      "component": "sheet",
+      "markers": []
+    },
+    "sheet-overlay": {
+      "axes": {},
+      "component": "sheet",
+      "markers": []
+    },
+    "sheet-portal": {
+      "axes": {},
+      "component": "sheet",
+      "markers": []
+    },
+    "sheet-title": {
+      "axes": {},
+      "component": "sheet",
+      "markers": []
+    },
+    "sheet-trigger": {
+      "axes": {},
+      "component": "sheet",
+      "markers": []
+    },
+    "skeleton": {
+      "axes": {},
+      "component": "skeleton",
+      "markers": []
+    },
+    "slider": {
+      "axes": {},
+      "component": "slider",
+      "markers": []
+    },
+    "slider-range": {
+      "axes": {},
+      "component": "slider",
+      "markers": []
+    },
+    "slider-thumb": {
+      "axes": {},
+      "component": "slider",
+      "markers": []
+    },
+    "slider-track": {
+      "axes": {},
+      "component": "slider",
+      "markers": []
+    },
+    "spinner": {
+      "axes": {},
+      "component": "spinner",
+      "markers": []
+    },
+    "switch": {
+      "axes": {},
+      "component": "switch",
+      "markers": [
+        "group/switch",
+        "peer"
+      ]
+    },
+    "switch-thumb": {
+      "axes": {},
+      "component": "switch",
+      "markers": []
+    },
+    "table": {
+      "axes": {},
+      "component": "table",
+      "markers": []
+    },
+    "table-body": {
+      "axes": {},
+      "component": "table",
+      "markers": []
+    },
+    "table-caption": {
+      "axes": {},
+      "component": "table",
+      "markers": []
+    },
+    "table-cell": {
+      "axes": {},
+      "component": "table",
+      "markers": []
+    },
+    "table-container": {
+      "axes": {},
+      "component": "table",
+      "markers": []
+    },
+    "table-footer": {
+      "axes": {},
+      "component": "table",
+      "markers": []
+    },
+    "table-head": {
+      "axes": {},
+      "component": "table",
+      "markers": []
+    },
+    "table-header": {
+      "axes": {},
+      "component": "table",
+      "markers": []
+    },
+    "table-row": {
+      "axes": {},
+      "component": "table",
+      "markers": []
+    },
+    "tabs": {
+      "axes": {},
+      "component": "tabs",
+      "markers": [
+        "group/tabs"
+      ]
+    },
+    "tabs-content": {
+      "axes": {},
+      "component": "tabs",
+      "markers": []
+    },
+    "tabs-list": {
+      "axes": {
+        "variant": {
+          "default": "default",
+          "values": [
+            "default",
+            "line"
+          ]
+        }
+      },
+      "component": "tabs",
+      "markers": [
+        "group/tabs-list"
+      ]
+    },
+    "tabs-trigger": {
+      "axes": {},
+      "component": "tabs",
+      "markers": []
+    },
+    "textarea": {
+      "axes": {},
+      "component": "textarea",
+      "markers": []
+    },
+    "toggle": {
+      "axes": {
+        "size": {
+          "default": "default",
+          "values": [
+            "default",
+            "lg",
+            "sm"
+          ]
+        },
+        "variant": {
+          "default": "default",
+          "values": [
+            "default",
+            "outline"
+          ]
+        }
+      },
+      "component": "toggle",
+      "markers": [
+        "group/toggle"
+      ]
+    },
+    "toggle-group": {
+      "axes": {},
+      "component": "toggle-group",
+      "markers": [
+        "group/toggle-group"
+      ]
+    },
+    "toggle-group-item": {
+      "axes": {
+        "size": {
+          "default": "default",
+          "values": [
+            "default",
+            "lg",
+            "sm"
+          ]
+        },
+        "variant": {
+          "default": "default",
+          "values": [
+            "default",
+            "outline"
+          ]
+        }
+      },
+      "component": "toggle-group",
+      "markers": [
+        "group/toggle"
+      ]
+    },
+    "tooltip": {
+      "axes": {},
+      "component": "tooltip",
+      "markers": []
+    },
+    "tooltip-content": {
+      "axes": {},
+      "component": "tooltip",
+      "markers": []
+    },
+    "tooltip-provider": {
+      "axes": {},
+      "component": "tooltip",
+      "markers": []
+    },
+    "tooltip-trigger": {
+      "axes": {},
+      "component": "tooltip",
+      "markers": []
+    }
+  }
+}

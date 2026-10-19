@@ -6,6 +6,7 @@
 //!   dist/js/<name>.js      src/runtime/components/<name>.js
 //!   dist/esm/shadless.mjs  the ONLY ES-module base
 //!   dist/esm/<name>.mjs    `import "./shadless.mjs"` + the component file
+//!   dist/bin/shadless-check.mjs  src/runtime/check.mjs, verbatim
 //!
 //! Minification spawns the pinned node_modules esbuild binary — the Go
 //! in-process api.Transform with these exact options was proven byte-identical
@@ -88,16 +89,20 @@ pub fn build_js(root: &Path) -> Result<Vec<String>, String> {
     let min_base = minify(root, &base)?;
     write("shadless.min.js", &min_base)?;
 
-    // dist/js and dist/esm are rebuilt from scratch: a component deleted
-    // upstream must not leave its file behind, where the pack gate would keep
-    // shipping it.
-    for d in ["js", "esm"] {
+    // dist/js, dist/esm and dist/bin are rebuilt from scratch: a component
+    // deleted upstream must not leave its file behind, where the pack gate
+    // would keep shipping it.
+    for d in ["js", "esm", "bin"] {
         let p = root.join("dist").join(d);
         if p.exists() {
             std::fs::remove_dir_all(&p).map_err(|e| e.to_string())?;
         }
         std::fs::create_dir_all(&p).map_err(|e| e.to_string())?;
     }
+
+    // dist/bin/shadless-check.mjs — the authored checker, copied verbatim
+    // (no minify: it is a debugging tool; its bytes are its own docs).
+    write("bin/shadless-check.mjs", &read("src/runtime/check.mjs")?)?;
 
     let esm = esm_base(&kernel, &core);
     write("esm/shadless.mjs", &esm)?;

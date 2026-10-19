@@ -2,7 +2,8 @@
 //!
 //! Checks (no network — `npm pack --dry-run --json` lists the tarball):
 //!   1. dependencies is empty (a React-free library must not install React);
-//!   2. every export target exists on disk AND is in the tarball;
+//!   2. every export target AND every `bin` target exists on disk AND is in
+//!      the tarball;
 //!   3. every `shadless…` specifier the README documents resolves through the
 //!      exports map;
 //!   4. the tarball carries nothing outside the product surface.
@@ -22,7 +23,7 @@ static RE_SPEC_IMPORT: LazyLock<Regex> = LazyLock::new(|| {
 });
 static RE_ALLOWED: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
-            r"^(package\.json|README\.md|CHANGELOG\.md|LICENSE|dist/(css|js|esm)/[^/]+|dist/shadless(-core|\.full(\.min)?)?\.(css|js)|dist/shadless\.min\.js)$",
+            r"^(package\.json|README\.md|CHANGELOG\.md|LICENSE|dist/(bin|css|js|esm)/[^/]+|dist/shadless(-core|\.full(\.min)?)?\.(css|js)|dist/shadless\.min\.js)$",
         )
         .unwrap()
 });
@@ -153,6 +154,22 @@ pub fn gate_pack(root: &Path) -> Result<(), String> {
             "style".to_string(),
             vec![style.strip_prefix("./").unwrap_or(style).to_string()],
         );
+    }
+    // every bin target must exist AND be packed: `shadless-check` resolving
+    // through node_modules/.bin to a missing file would fail only on the
+    // consumer's machine. Registered like an export target so the check
+    // below (disk + tarball) covers it.
+    if let Some(bin) = pkg.get("bin").and_then(|v| v.as_object()) {
+        let mut names: Vec<&String> = bin.keys().collect();
+        names.sort();
+        for name in names {
+            let Some(target) = bin[name].as_str() else {
+                fail.push(format!("bin {name} does not name a file"));
+                continue;
+            };
+            let target = target.strip_prefix("./").unwrap_or(target);
+            targets.insert(format!("bin [{name}]"), vec![target.to_string()]);
+        }
     }
     // the `import` condition must resolve to a real ES module
     for k in &export_keys {

@@ -87,6 +87,7 @@ src/registry/upstream-snapshot/toast.json
 src/registry/upstream-snapshot/toggle-group.json
 src/registry/upstream-snapshot/toggle.json
 src/registry/upstream-snapshot/tooltip.json
+src/runtime/check.mjs
 src/runtime/components/accordion.js
 src/runtime/components/alert-dialog.js
 src/runtime/components/avatar.js
