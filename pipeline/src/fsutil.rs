@@ -15,21 +15,35 @@ pub fn sorted_read_dir(dir: &std::path::Path) -> Result<Vec<String>, String> {
     Ok(out)
 }
 
-/// Created, unique throwaway directory under the system temp dir — the
-/// collision-safe recipe (pid + subsec nanos) the test fixtures share.
+/// Created, unique throwaway directory under the system temp dir, the one
+/// the test fixtures share: it derefs to its path and is deleted when it
+/// drops, so hold it for as long as the test uses the path.
 #[cfg(test)]
-pub fn temp_root(purpose: &str) -> std::path::PathBuf {
-    let root = std::env::temp_dir().join(format!(
-        "shadless-{}-{}-{}",
-        purpose,
-        std::process::id(),
-        std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .unwrap()
-            .subsec_nanos()
-    ));
-    std::fs::create_dir_all(&root).unwrap();
-    root
+pub fn temp_root(purpose: &str) -> TempRoot {
+    TempRoot(
+        tempfile::Builder::new()
+            .prefix(&format!("shadless-{}-", purpose))
+            .tempdir()
+            .unwrap(),
+    )
+}
+
+#[cfg(test)]
+pub struct TempRoot(tempfile::TempDir);
+
+#[cfg(test)]
+impl AsRef<std::path::Path> for TempRoot {
+    fn as_ref(&self) -> &std::path::Path {
+        self.0.path()
+    }
+}
+
+#[cfg(test)]
+impl std::ops::Deref for TempRoot {
+    type Target = std::path::Path;
+    fn deref(&self) -> &std::path::Path {
+        self.0.path()
+    }
 }
 
 /// The emitter exemption sets — src/registry/emitter-exemptions.json, the
@@ -104,5 +118,20 @@ pub fn go_path_err(op: &str, path: impl AsRef<std::path::Path>, e: &std::io::Err
     match e.raw_os_error().and_then(go_strerror) {
         Some(msg) => format!("{} {}: {}", op, path.as_ref().display(), msg),
         None => format!("{} {}: {}", op, path.as_ref().display(), e),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    /// Every test fixture root used to survive its test: a cargo test run
+    /// left ~20 shadless-* dirs in the temp dir (2006 shadless-mut-test
+    /// ones when measured).
+    #[test]
+    fn unit_temp_root_is_deleted_when_it_drops() {
+        let root = super::temp_root("temp-root-test");
+        let path = root.to_path_buf();
+        assert!(path.is_dir(), "the root exists while it is held");
+        drop(root);
+        assert!(!path.exists(), "{} survived its test", path.display());
     }
 }

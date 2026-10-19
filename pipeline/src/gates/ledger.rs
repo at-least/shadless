@@ -975,9 +975,8 @@ mod tests {
         assert!(!budget_checked_by_coverage("coverage.other"));
         assert!(!budget_checked_by_coverage("demo-parity.dirty-cells"));
     }
-    use std::path::PathBuf;
 
-    fn tree(files: &[(&str, &str)]) -> PathBuf {
+    fn tree(files: &[(&str, &str)]) -> crate::fsutil::TempRoot {
         let root = crate::fsutil::temp_root("ledger-test");
         for (p, c) in files {
             let full = root.join(p);

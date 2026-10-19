@@ -1426,9 +1426,8 @@ pub fn meta_wiring(g: &crate::graph::Graph, muts: &[&'static Mutation]) -> Vec<S
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::path::PathBuf;
 
-    fn tree(files: &[(&str, &str)]) -> PathBuf {
+    fn tree(files: &[(&str, &str)]) -> crate::fsutil::TempRoot {
         let root = crate::fsutil::temp_root("mut-test");
         for (p, c) in files {
             let full = root.join(p);
@@ -1682,7 +1681,7 @@ mod tests {
         let _serial = ACTIVE_TEST_LOCK.lock().unwrap_or_else(|e| e.into_inner());
         let root = tree(&[("a.txt", "original")]);
         let snap = take_snapshot(&root, &["a.txt".to_string()]).unwrap();
-        let root_c = root.clone();
+        let root_c = root.to_path_buf();
         set_active_restore(move || snap.restore_at(&root_c));
         std::fs::write(root.join("a.txt"), b"mutated").unwrap();
         restore_active_mutation().unwrap();
