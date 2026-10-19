@@ -976,7 +976,7 @@ shadless has no `asChild` — put `data-slot="item"` on the anchor itself. The h
 {% </demo> %}
 
 ```html showLineNumbers
-<a data-slot="item" href="/dashboard">
+<a data-slot="item" class="group/item" href="/dashboard">
   <div data-slot="item-media" data-variant="icon">
     <!-- lucide "home" icon -->
   </div>

@@ -3,12 +3,12 @@
 <link rel="stylesheet" href="../out.css"></head>
 <body class="p-8">
   <div class="mx-auto flex flex-col gap-4 w-full max-w-sm">
-    <div data-slot="card" class="w-full" style="height:35rem;gap:0">
-      <div data-slot="card-header" class="border-b" style="gap:calc(var(--spacing)*1)">
+    <div data-slot="card" class="w-full group/card" style="height:35rem;gap:0">
+      <div data-slot="card-header" class="border-b group/card-header" style="gap:calc(var(--spacing)*1)">
         <div data-slot="card-title">Commands</div>
         <div data-slot="card-description">Drive the transcript from outside.</div>
         <div data-slot="card-action">
-          <button data-slot="button" type="button" data-variant="secondary" id="d1-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-radixuigo-menu-trigger="d1">Jump to...</button>
+          <button data-slot="button" class="group/button" type="button" data-variant="secondary" id="d1-trigger" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-radixuigo-menu-trigger="d1">Jump to...</button>
         </div>
       </div>
       <div data-slot="card-content" class="flex-1 min-h-0" style="overflow:hidden;padding:0">
@@ -27,12 +27,12 @@
     <p class="text-center text-xs" style="color:var(--muted-foreground);padding-inline:calc(var(--spacing)*0.5)">Use the controls to jump to any message in the conversation.</p>
   </div>
   <template id="d1-tpl">
-    <div data-slot="dropdown-menu-content" id="d1" role="menu" tabindex="-1" data-state="closed" dir="ltr" aria-orientation="vertical" data-orientation="vertical" aria-labelledby="d1-trigger" style="width:calc(var(--spacing)*40)">
+    <div data-slot="dropdown-menu-content" class="cn-menu-translucent" id="d1" role="menu" tabindex="-1" data-state="closed" dir="ltr" aria-orientation="vertical" data-orientation="vertical" aria-labelledby="d1-trigger" style="width:calc(var(--spacing)*40)">
       <div data-slot="dropdown-menu-label">Conversations</div>
-      <div data-slot="dropdown-menu-item" role="menuitem" tabindex="-1" data-variant="default" data-orientation="vertical" data-jump="command-activation"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">We're seeing activation dip after workspace creation...</span></div>
-      <div data-slot="dropdown-menu-item" role="menuitem" tabindex="-1" data-variant="default" data-orientation="vertical" data-jump="command-compare"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">What should I compare before we change the onboarding...</span></div>
-      <div data-slot="dropdown-menu-item" role="menuitem" tabindex="-1" data-variant="default" data-orientation="vertical" data-jump="command-experiment"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">Can you turn that into an experiment?</span></div>
-      <div data-slot="dropdown-menu-item" role="menuitem" tabindex="-1" data-variant="default" data-orientation="vertical" data-jump="command-risk"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">What's the risk if we delay the invite prompt?</span></div>
+      <div data-slot="dropdown-menu-item" class="group/dropdown-menu-item" role="menuitem" tabindex="-1" data-variant="default" data-orientation="vertical" data-jump="command-activation"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">We're seeing activation dip after workspace creation...</span></div>
+      <div data-slot="dropdown-menu-item" class="group/dropdown-menu-item" role="menuitem" tabindex="-1" data-variant="default" data-orientation="vertical" data-jump="command-compare"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">What should I compare before we change the onboarding...</span></div>
+      <div data-slot="dropdown-menu-item" class="group/dropdown-menu-item" role="menuitem" tabindex="-1" data-variant="default" data-orientation="vertical" data-jump="command-experiment"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">Can you turn that into an experiment?</span></div>
+      <div data-slot="dropdown-menu-item" class="group/dropdown-menu-item" role="menuitem" tabindex="-1" data-variant="default" data-orientation="vertical" data-jump="command-risk"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">What's the risk if we delay the invite prompt?</span></div>
     </div>
   </template>
   <script src="../shadless.js"></script>

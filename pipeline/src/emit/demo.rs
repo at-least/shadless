@@ -82,7 +82,7 @@ fn field_demo_html() -> &'static str {
   <fieldset data-slot="field-set">
     <legend data-slot="field-legend" data-variant="legend">Login</legend>
 
-    <div data-slot="field-group">
+    <div data-slot="field-group" class="group/field-group">
       <div data-slot="field" class="group/field" data-orientation="vertical">
         <div data-slot="field-content" class="group/field-content">
           <label data-slot="field-label" class="group/field-label peer/field-label" for="email">Email</label>

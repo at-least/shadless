@@ -11,7 +11,7 @@ vec![
 </Dialog>
 ```
 "#, r#"```html showLineNumbers
-<div data-slot="attachment">
+<div data-slot="attachment" class="group/attachment">
   <!-- media, content, actions -->
   <button data-slot="dialog-trigger" id="<k>-trigger" aria-label="Preview research-summary.pdf"></button>
 </div>
@@ -43,7 +43,7 @@ vec![
 </Bubble>
 ```
 "#, r#"```html showLineNumbers
-<div data-slot="bubble" data-variant="muted" data-align="end">
+<div data-slot="bubble" class="group/bubble" data-variant="muted" data-align="end">
   <button type="button" data-slot="bubble-content">
     I forgot my password
   </button>
@@ -398,8 +398,8 @@ The `direction` option accepts `"ltr"` or `"rtl"` and should match the `dir` pro
     <div data-slot="carousel-item">...</div>
     <div data-slot="carousel-item">...</div>
   </div>
-  <button data-slot="carousel-previous" class="rtl:rotate-180"></button>
-  <button data-slot="carousel-next" class="rtl:rotate-180"></button>
+  <button data-slot="carousel-previous" class="group/button rtl:rotate-180"></button>
+  <button data-slot="carousel-next" class="group/button rtl:rotate-180"></button>
 </div>
 ```
 "#),
@@ -479,7 +479,7 @@ The `direction` option accepts `"ltr"` or `"rtl"` and should match the `dir` pro
 <ComponentPreview styleName="radix-nova" name="item-link" />
 
 ```html showLineNumbers
-<a data-slot="item" href="/dashboard">
+<a data-slot="item" class="group/item" href="/dashboard">
   <div data-slot="item-media" data-variant="icon">
     <!-- lucide "home" icon -->
   </div>
@@ -520,7 +520,7 @@ export function MarkerLinkDemo() {
 />
 
 ```html showLineNumbers
-<a data-slot="marker" href="#">
+<a data-slot="marker" class="group/marker" href="#">
   <span data-slot="marker-content">View the pull request</span>
 </a>
 ```
@@ -540,7 +540,7 @@ export function MarkerLinkDemo() {
 "#, r#"When a marker links or triggers an action, put `data-slot="marker"` on a real `<button>` or `<a>` so it is focusable and exposes the correct role. The accessible name comes from the marker text.
 
 ```html showLineNumbers
-<a data-slot="marker" href="/files">
+<a data-slot="marker" class="group/marker" href="/files">
   <span data-slot="marker-icon"><!-- lucide "file-text" icon --></span>
   <span data-slot="marker-content">Explored 4 files</span>
 </a>

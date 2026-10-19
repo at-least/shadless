@@ -31,7 +31,7 @@
       "reason": "(component/slot/property @ path @ theme @ dir) cells where slot-only markup via css-import or full.css computes differently from React under upstream css; zero at shadcn@4.19.0"
     },
     "style-parity.dirty-cells": {
-      "max": 210,
+      "max": 202,
       "target": 0,
       "class": "debt",
       "reason": "(component, slot#n, property) cells where the shipped fixture's computed style differs from the React oracle; fix fixtures toward oracle values, --record, shrink"

@@ -1736,7 +1736,7 @@ A select with many items that scrolls.
 Add the `data-invalid` attribute to the `Field` component and the `aria-invalid` attribute to the `SelectTrigger` component to show an error state.
 
 ```html
-<div data-slot="field" data-invalid>
+<div data-slot="field" class="group/field" data-invalid>
   <label data-slot="field-label">Fruit</label>
   <button data-slot="select-trigger" aria-invalid>
     <span data-slot="select-value" />

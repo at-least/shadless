@@ -853,7 +853,7 @@ When reactions are interactive, render buttons instead and give icon-only button
 
 ```html
 <div data-slot="bubble-reactions">
-  <button data-slot="button" aria-label="Thumbs up" data-variant="secondary" data-size="icon-xs">
+  <button data-slot="button" class="group/button" aria-label="Thumbs up" data-variant="secondary" data-size="icon-xs">
     <!-- lucide "thumbs-up" icon -->
   </button>
 </div>
@@ -864,7 +864,7 @@ When reactions are interactive, render buttons instead and give icon-only button
 When a bubble is clickable, render it as a real `<button>` or `<a>` with the `asChild` prop so it is focusable and exposes the correct role. `BubbleContent` ships a visible focus ring for interactive elements, and the accessible name comes from the bubble text. No extra label is needed.
 
 ```html showLineNumbers
-<div data-slot="bubble" data-variant="muted" data-align="end">
+<div data-slot="bubble" class="group/bubble" data-variant="muted" data-align="end">
   <button type="button" data-slot="bubble-content">
     I forgot my password
   </button>

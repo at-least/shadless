@@ -481,7 +481,7 @@ Turn a marker into a link or button by putting `data-slot="marker"` on the `<a>`
 {% </demo> %}
 
 ```html showLineNumbers
-<a data-slot="marker" href="#">
+<a data-slot="marker" class="group/marker" href="#">
   <span data-slot="marker-content">View the pull request</span>
 </a>
 ```
@@ -495,7 +495,7 @@ Turn a marker into a link or button by putting `data-slot="marker"` on the `<a>`
 For streaming or progress markers such as "Thinking..." or a running tool, set `role="status"` so assistive tech announces the update as it appears. `Marker` forwards `role` to the underlying element.
 
 ```html
-<div data-slot="marker" role="status">
+<div data-slot="marker" class="group/marker" role="status">
   <!-- lucide "marker" icon -->
     <svg data-slot="spinner" />
   <!-- lucide "marker" icon -->
@@ -508,7 +508,7 @@ For streaming or progress markers such as "Thinking..." or a running tool, set `
 A separator that carries text, such as a date or a section label, needs no role. The divider lines are decorative CSS pseudo-elements, and the text is announced as ordinary content.
 
 ```html
-<div data-slot="marker" data-variant="separator">
+<div data-slot="marker" class="group/marker" data-variant="separator">
   <span data-slot="marker-content">Today</span>
 </div>
 ```
@@ -525,7 +525,7 @@ announced. Reserve `role="separator"` for a divider with no meaningful text.
 A bordered marker keeps the same semantics as the default marker. The bottom border is decorative, so choose `role="status"`, `asChild`, or no role based on the marker's purpose.
 
 ```html
-<div data-slot="marker" data-variant="border">
+<div data-slot="marker" class="group/marker" data-variant="border">
   <!-- lucide "marker" icon -->
     <!-- lucide "file-text" icon -->
   <!-- lucide "marker" icon -->
@@ -538,7 +538,7 @@ A bordered marker keeps the same semantics as the default marker. The bottom bor
 `MarkerIcon` is decorative and hidden from assistive tech with `aria-hidden`, so the adjacent `MarkerContent` carries the meaning. For an icon-only marker, provide an `aria-label` or visible text so it is not announced as empty.
 
 ```html
-<div data-slot="marker" aria-label="Synced">
+<div data-slot="marker" class="group/marker" aria-label="Synced">
   <!-- lucide "marker" icon -->
     <!-- lucide "check" icon -->
   <!-- lucide "marker" icon -->
@@ -550,7 +550,7 @@ A bordered marker keeps the same semantics as the default marker. The bottom bor
 When a marker links or triggers an action, put `data-slot="marker"` on a real `<button>` or `<a>` so it is focusable and exposes the correct role. The accessible name comes from the marker text.
 
 ```html showLineNumbers
-<a data-slot="marker" href="/files">
+<a data-slot="marker" class="group/marker" href="/files">
   <span data-slot="marker-icon"><!-- lucide "file-text" icon --></span>
   <span data-slot="marker-content">Explored 4 files</span>
 </a>

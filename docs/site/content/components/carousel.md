@@ -12893,8 +12893,8 @@ When localizing the carousel for RTL languages, set `dir="rtl"` on the carousel 
     <div data-slot="carousel-item">...</div>
     <div data-slot="carousel-item">...</div>
   </div>
-  <button data-slot="carousel-previous" class="rtl:rotate-180"></button>
-  <button data-slot="carousel-next" class="rtl:rotate-180"></button>
+  <button data-slot="carousel-previous" class="group/button rtl:rotate-180"></button>
+  <button data-slot="carousel-next" class="group/button rtl:rotate-180"></button>
 </div>
 ```
 

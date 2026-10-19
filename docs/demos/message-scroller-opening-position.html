@@ -3,8 +3,8 @@
 <link rel="stylesheet" href="../out.css"></head>
 <body class="p-8">
   <div class="mx-auto flex flex-col gap-4 w-full max-w-sm">
-    <div data-slot="card" class="w-full" style="height:35rem;gap:0">
-      <div data-slot="card-header" class="border-b" style="gap:calc(var(--spacing)*1)">
+    <div data-slot="card" class="w-full group/card" style="height:35rem;gap:0">
+      <div data-slot="card-header" class="border-b group/card-header" style="gap:calc(var(--spacing)*1)">
         <div data-slot="card-title">Opening Position</div>
         <div data-slot="card-description">Choose where a saved transcript opens.</div>
       </div>
@@ -22,7 +22,7 @@
       </div>
       <div data-slot="card-footer" class="border-t" style="justify-content:center">
         <div data-slot="tabs" data-orientation="horizontal" dir="ltr" class="group/tabs" style="width:100%">
-          <div data-slot="tabs-list" role="tablist" aria-orientation="horizontal" data-orientation="horizontal" data-variant="default" style="width:100%">
+          <div data-slot="tabs-list" class="group/tabs-list" role="tablist" aria-orientation="horizontal" data-orientation="horizontal" data-variant="default" style="width:100%">
             <button data-slot="tabs-trigger" type="button" role="tab" data-pos="start" aria-selected="false" data-state="inactive">start</button>
             <button data-slot="tabs-trigger" type="button" role="tab" data-pos="end" aria-selected="false" data-state="inactive">end</button>
             <button data-slot="tabs-trigger" type="button" role="tab" data-pos="last-anchor" aria-selected="true" data-state="active">last-anchor</button>

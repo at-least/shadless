@@ -526,7 +526,10 @@ fn atoi_safe(s: &str) -> Option<usize> {
 // ---------------------------------------------------------------- utility-guide JSX fences
 
 const SHIMMER_MARKER_JSX: &str = "```tsx\n<Marker role=\"status\">\n  <MarkerIcon>\n    <Spinner />\n  </MarkerIcon>\n  <MarkerContent className=\"shimmer\">Thinking&hellip;</MarkerContent>\n</Marker>\n```";
-const SHIMMER_MARKER_HTML: &str = "```html\n<div data-slot=\"marker\" role=\"status\">\n  <span data-slot=\"marker-icon\"><!-- Spinner markup — see /components/spinner --></span>\n  <span data-slot=\"marker-content\" class=\"shimmer\">Thinking&hellip;</span>\n</div>\n```";
+// The HTML twin carries the slot's marker (group/marker): React renders it on
+// every Marker, so the copyable fence must too. The JSX twin above stays
+// upstream's verbatim text — it is only the replace anchor.
+const SHIMMER_MARKER_HTML: &str = "```html\n<div data-slot=\"marker\" class=\"group/marker\" role=\"status\">\n  <span data-slot=\"marker-icon\"><!-- Spinner markup — see /components/spinner --></span>\n  <span data-slot=\"marker-content\" class=\"shimmer\">Thinking&hellip;</span>\n</div>\n```";
 
 /// rewriteUtilityJsxFences converts those specific fences to plain HTML: fence
 /// lang tsx -> html, className= -> class=, and the JSX comment placeholder
@@ -739,6 +742,39 @@ pub fn load_jsx_tag_index(root: &Path) -> Result<&'static HashMap<String, JsxTag
     Ok(IDX.get_or_init(|| idx))
 }
 
+#[derive(Deserialize)]
+struct VocabularyFile {
+    slots: HashMap<String, VocabularySlot>,
+}
+
+#[derive(Deserialize)]
+struct VocabularySlot {
+    markers: Vec<String>,
+}
+
+/// loadSlotMarkers maps a slot name to the marker tokens EVERY render of the
+/// slot carries, read from the shipped dist/css/vocabulary.json — the same
+/// file shadless-check enforces. React's own components render the markers
+/// on every render (upstream mdx spells `<Field>`, React ships
+/// `class="group/field …"`), and the projected html fence is what a user
+/// copies from the rendered site, so the projection must carry them.
+pub fn load_slot_markers(root: &Path) -> Result<&'static HashMap<String, Vec<String>>, String> {
+    static MARKERS: OnceLock<HashMap<String, Vec<String>>> = OnceLock::new();
+    if let Some(m) = MARKERS.get() {
+        return Ok(m);
+    }
+    let p = root.join("dist/css/vocabulary.json");
+    let b = std::fs::read_to_string(&p).map_err(|e| format!("{}: {}", p.display(), e))?;
+    let v: VocabularyFile =
+        serde_json::from_str(&b).map_err(|e| format!("{}: {}", p.display(), e))?;
+    let m: HashMap<String, Vec<String>> = v
+        .slots
+        .into_iter()
+        .map(|(slot, s)| (slot, s.markers))
+        .collect();
+    Ok(MARKERS.get_or_init(|| m))
+}
+
 /// kebabIconName: "ChevronLeftIcon" -> "chevron-left" — matches lucide's own
 /// kebab-case icon ids, which is what dist markup's `lucide-<id>` class uses.
 pub fn kebab_icon_name(fn_: &str) -> String {
@@ -802,10 +838,45 @@ pub fn rewrite_jsx_attrs(fn_: &str, attrs: &str, info: &JsxTagInfo) -> Result<St
     Ok(format!(" {}", out.join(" ")))
 }
 
+/// withMarkers merges the slot's vocabulary markers into a projected open
+/// tag's attribute text — React's own component renders them on every render,
+/// so the slot-only projection carries them too. Tokens an authored className
+/// already had are kept; markers lead, render_tree's class order in emit.
+fn with_markers(a: &str, slot: &str, markers: &HashMap<String, Vec<String>>) -> String {
+    static RE_CLASS_VALUE: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r#" class="([^"]*)""#).unwrap());
+    let Some(ms) = markers.get(slot) else {
+        return a.to_string();
+    };
+    let Some(c) = RE_CLASS_VALUE.captures(a) else {
+        if ms.is_empty() {
+            return a.to_string();
+        }
+        return format!(" class=\"{}\"{}", ms.join(" "), a);
+    };
+    let existing: Vec<&str> = c[1].split_whitespace().collect();
+    let missing: Vec<&str> = ms
+        .iter()
+        .filter(|m| !existing.contains(&m.as_str()))
+        .map(|m| m.as_str())
+        .collect();
+    if missing.is_empty() {
+        return a.to_string();
+    }
+    let mut all: Vec<&str> = missing;
+    all.extend(existing);
+    a.replacen(
+        c.get(0).unwrap().as_str(),
+        &format!(" class=\"{}\"", all.join(" ")),
+        1,
+    )
+}
+
 /// rewriteJsxTagsInLine mechanically rewrites JSX tags on one fence line.
 pub fn rewrite_jsx_tags_in_line(
     line: &str,
     idx: &HashMap<String, JsxTagInfo>,
+    markers: &HashMap<String, Vec<String>>,
 ) -> Result<String, String> {
     let mut out_err: Option<String> = None;
     let out = RE_JSX_TAG
@@ -836,7 +907,12 @@ pub fn rewrite_jsx_tags_in_line(
             attrs = attrs.trim_end_matches(' ').to_string();
             match rewrite_jsx_attrs(fn_, &attrs, info) {
                 Ok(a) => {
-                    let open = format!("<{} data-slot=\"{}\"{}", info.tag, info.slot, a);
+                    let open = format!(
+                        "<{} data-slot=\"{}\"{}",
+                        info.tag,
+                        info.slot,
+                        with_markers(&a, &info.slot, markers)
+                    );
                     if self_close {
                         format!("{} />", open)
                     } else {
@@ -861,6 +937,7 @@ pub fn rewrite_jsx_tags_in_line(
 /// illustrating a prop or composition with real React JSX.
 pub fn rewrite_leaked_jsx_fences(page: &str, raw: &str, root: &Path) -> Result<String, String> {
     let idx = load_jsx_tag_index(root)?;
+    let markers = load_slot_markers(root)?;
     let lines: Vec<&str> = raw.split('\n').collect();
     let mut out: Vec<String> = Vec::new();
     let mut in_fence = false;
@@ -896,7 +973,7 @@ pub fn rewrite_leaked_jsx_fences(page: &str, raw: &str, root: &Path) -> Result<S
                 format!("<!-- {} -->", caps.get(1).unwrap().as_str())
             })
             .into_owned();
-        let rewritten = rewrite_jsx_tags_in_line(&line, idx).map_err(|e| {
+        let rewritten = rewrite_jsx_tags_in_line(&line, idx, markers).map_err(|e| {
             format!(
                 "{}: leaked fence at line {}: {} — needs a docs_overrides.go entry: {:?}",
                 page,
@@ -2591,7 +2668,44 @@ pub struct DocsMeta {
 
 #[cfg(test)]
 mod tests {
-    use super::shift_highlight_refs;
+    use super::{rewrite_leaked_jsx_fences, shift_highlight_refs};
+
+    /// The leaked-JSX projection rendered `<tag data-slot="slot">` with no
+    /// class, so the marker classes React's own component renders on every
+    /// render never reached the copyable html fences of the generated docs
+    /// (measured 2026-10-19: 17 of the 25 missing-marker findings over the
+    /// docs/site/content html fences; the other 8 were hand-written html —
+    /// 7 in jsx_overrides.inc, 1 in SHIMMER_MARKER_HTML). The projection
+    /// must add the slot's vocabulary markers, keeping tokens an authored
+    /// className already carried.
+    #[test]
+    fn unit_leaked_jsx_projection_carries_vocabulary_markers() {
+        let root = crate::tree_root();
+        if !root.join("generated/ir").exists() {
+            if std::env::var_os("CI").is_some() {
+                panic!("CI: required tree input missing (skip: no shadless tree)");
+            }
+            eprintln!("skip: no shadless tree");
+            return;
+        }
+        let raw = "```tsx\n<ButtonGroup aria-label=\"Button group\">\n  <Button>Button 1</Button>\n  <Button>Button 2</Button>\n</ButtonGroup>\n```";
+        let out = rewrite_leaked_jsx_fences("button-group", raw, &root).expect("fence rewrites");
+        assert!(
+            out.contains("<div data-slot=\"button-group\" class=\"group/button-group\""),
+            "projected button-group lacks its marker:\n{out}"
+        );
+        assert!(
+            out.contains("<button data-slot=\"button\" class=\"group/button\">"),
+            "projected buttons lack their marker:\n{out}"
+        );
+        // tokens an authored className carried survive the merge
+        let raw2 = "```tsx\n<Field className=\"extra\">\n  <FieldLabel>Your email address</FieldLabel>\n</Field>\n```";
+        let out2 = rewrite_leaked_jsx_fences("field", raw2, &root).expect("fence rewrites");
+        assert!(
+            out2.contains("<div data-slot=\"field\" class=\"group/field extra\""),
+            "projected field lost the authored className or the marker:\n{out2}"
+        );
+    }
 
     /// A reversed range ({5-2}) is malformed but the JS callback still
     /// subtracts both endpoints; the port must print the negative the JS

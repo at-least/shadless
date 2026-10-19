@@ -111,7 +111,7 @@ re-recording also fails, so slack cannot be silently re-spent.
 | `golden.exempt-demos` | 147 | 0 | demos exempt from the golden dual-hop: external-dep tombstones (permanent until a vanilla port exists) + deploy-lag families (dissolve on re-pin) |
 | `interactivity.dead-families` | 1 | 0 | example families still shipping as static oracle snapshots (dead buttons); each needs its glue protocol mapped into `./build/pipeline example-fixture` |
 | `path-parity.dirty-cells` | 0 | 0 | (component/slot/property @ path @ theme @ dir) cells where slot-only markup via css-import or full.css computes differently from React under upstream css; zero at shadcn@4.19.0 |
-| `style-parity.dirty-cells` | 210 | 0 | (component, slot#n, property) cells where the shipped fixture's computed style differs from the React oracle; fix fixtures toward oracle values, --record, shrink |
+| `style-parity.dirty-cells` | 202 | 0 | (component, slot#n, property) cells where the shipped fixture's computed style differs from the React oracle; fix fixtures toward oracle values, --record, shrink |
 
 ## Work items
 

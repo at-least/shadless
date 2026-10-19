@@ -648,7 +648,7 @@ Action buttons in `MessageFooter` are usually icon-only, so give each one an `ar
 
 ```html
 <div data-slot="message-footer">
-  <button data-slot="button" data-variant="ghost" data-size="icon" aria-label="Copy">
+  <button data-slot="button" class="group/button" data-variant="ghost" data-size="icon" aria-label="Copy">
     <!-- lucide "copy" icon -->
   </button>
 </div>
@@ -659,8 +659,8 @@ Action buttons in `MessageFooter` are usually icon-only, so give each one an `ar
 For in-progress messages, use a [`Marker`](/components/marker) with `role="status"` so assistive tech announces the update as it appears.
 
 ```html
-<div data-slot="message">
-  <div data-slot="marker" role="status">
+<div data-slot="message" class="group/message">
+  <div data-slot="marker" class="group/marker" role="status">
     <!-- lucide "marker" icon -->
       <svg data-slot="spinner" />
     <!-- lucide "marker" icon -->

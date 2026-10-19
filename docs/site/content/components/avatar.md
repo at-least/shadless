@@ -226,7 +226,7 @@ Use the `AvatarBadge` component to add a badge to the avatar. The badge is posit
 Use the `className` prop to add custom styles to the badge such as custom colors, sizes, etc.
 
 ```html
-<span data-slot="avatar">
+<span data-slot="avatar" class="group/avatar">
   <img data-slot="avatar-image" src="https://github.com/shadcn.png" alt="@shadcn" />
   <span data-slot="avatar-fallback">CN</span>
   <span data-slot="avatar-badge" class="bg-green-600 dark:bg-green-800" />

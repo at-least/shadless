@@ -20,9 +20,10 @@ framework.
 
 {% <codegroup> %}
 ```text,name=mode-toggle.html
-<span data-slot="button-group">
+<span data-slot="button-group" class="group/button-group">
   <button
     data-slot="button"
+    class="group/button"
     data-variant="outline"
     data-size="icon"
     id="mt-sun"
@@ -51,6 +52,7 @@ framework.
   </button>
   <button
     data-slot="button"
+    class="group/button"
     data-variant="outline"
     data-size="icon"
     id="mt-moon"

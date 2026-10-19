@@ -113,7 +113,7 @@ For form fields, use the [Field](/components/field) component which
 includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
 
 ```html
-<div data-slot="field">
+<div data-slot="field" class="group/field">
   <label data-slot="field-label" for="email">Your email address</label>
   <input data-slot="input" id="email" />
 </div>

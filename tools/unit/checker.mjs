@@ -45,14 +45,33 @@ export async function run(t) {
   for (const f of readdirSync(root("dist/components"), { withFileTypes: true }).sort((a, b) => (a.name < b.name ? -1 : 1))) {
     if (f.name.endsWith(".html")) scan(read(`dist/components/${f.name}`), `dist/components/${f.name}`)
   }
-  const fence = /```text,name=(\S+)\n(.*?)^```/gms
   const walkTabs = (dir, rel) => {
     for (const e of readdirSync(new URL(`${dir}/`, root("")), { withFileTypes: true }).sort((a, b) => (a.name < b.name ? -1 : 1))) {
       const p = `${dir}/${e.name}`
       if (e.isDirectory()) walkTabs(p, `${rel}/${e.name}`)
       else if (e.name.endsWith(".md")) {
+        // One line-paired pass over every fence: an opening ``` line pairs
+        // with the next line that starts with ```.
         const text = read(p)
-        for (const m of text.matchAll(fence)) scan(m[2], `${rel}/${e.name} ${m[1]}`)
+        const lines = text.split("\n")
+        let i = 0
+        while (i < lines.length) {
+          const open = /^```([A-Za-z0-9_-]*)/.exec(lines[i])
+          if (!open) { i++; continue }
+          let j = i + 1
+          while (j < lines.length && !lines[j].startsWith("```")) j++
+          const body = lines.slice(i + 1, j).join("\n")
+          const nm = open[1] === "text" ? /^text,name=(\S+)/.exec(lines[i].slice(3)) : null
+          if (nm) scan(body, `${rel}/${e.name} ${nm[1]}`)
+          // html fences are copy source too — the rendered site serves them
+          // as copyable blocks. Measured 2026-10-19: they carried 25
+          // missing-marker findings (17 from upstream's teaching snippets,
+          // projected by rewrite_leaked_jsx_fences without the markers React
+          // renders; 8 from hand-written html: jsx_overrides.inc and the
+          // shimmer guide's SHIMMER_MARKER_HTML).
+          else if (open[1] === "html") scan(body, `${rel}/${e.name} html`)
+          i = j + 1
+        }
       }
     }
   }
@@ -60,118 +79,28 @@ export async function run(t) {
 
   t.ok(got.every((k) => !k.includes("|error|")), `corpus carries zero errors (got ${got.filter((k) => k.includes("|error|")).length})`)
 
-  // Every entry is a measured, legitimate corpus fact (2026-10-19):
-  //  - message-scroller-* / mode-toggle demos + their tabs (and the
-  //    dark-mode guide's tab): hand-authored composition markup written
-  //    before the vocabulary existed; the author omitted the marker classes
-  //    React renders (IR cva base / skin markers). Tab and demo agree with
-  //    each other — docs-code-parity proves that — so the pages are
-  //    self-consistent; they deviate from React only in these markers.
-  //    cn-menu-translucent is among them (a skin class with a skin body —
-  //    the shipped menu stylesheets key a rule on it); cn-menu-target and
-  //    cn-font-heading are NOT: no packaged stylesheet rule keys on them
-  //    (cn-font-heading's only rule is the docs site's globals.css), so the
-  //    vocabulary does not demand them.
-  //  - dist/components/{accordion,avatar,card,carousel,checkbox,empty,
-  //    field,radio-group,switch,toggle,toggle-group}.html: the minimal
-  //    slot-only pages projected from the probes/t7 fixtures (initial
-  //    commit), which predate the markers. The emitter's own render adds
-  //    markers from the same vocabulary, so the static-tier pages (card,
-  //    empty, field) are clean where they come from emit.
-  //  - data-slot="markdown": authoring hook inside bubble-content (unstyled,
-  //    not a slot) — the reason unknown-slot is a warning, not an error.
-  //  - data-slot="select-item-indicator": hand-authored element in the
-  //    message-scroller-animation demo, likewise unstyled.
-  const expected = [
+  // The ONE remaining corpus fact (2026-10-19, post Stage-4):
+  //  - data-slot="markdown" is an upstream authoring hook inside
+  //    bubble-content — upstream's own Markdown component renders
+  //    <Streamdown data-slot="markdown"> (.upstream/shadcn-ui/apps/v4/
+  //    components/markdown.tsx) and the pinned bubble-variants example uses
+  //    it; it is unstyled (not a slot), which is why unknown-slot is a
+  //    warning, not an error. Both the authored demo page and its generated
+  //    docs tab carry it.
+  // Everything else the corpus used to miss was fixed AT ITS SOURCE in
+  // Stage 4 and must stay fixed: the hand-authored demo pages'
+  // markers (docs/demos/mode-toggle + message-scroller-*, and the
+  // docs-build tab generated from mode-toggle), the probes/t7|t8 fixture
+  // markers the demo node passes through, the emitter's default-content
+  // card-header (emit::default_content), the docs' html fences (the leaked-JSX
+  // projection now adds each slot's vocabulary markers; the hand-written html
+  // in jsx_overrides.inc and SHIMMER_MARKER_HTML carries them), and the invented
+  // data-slot="select-item-indicator" in message-scroller-animation
+  // (replaced with the unslotted indicator span the shipped select renders).
+  const expectedAll = [
     "docs/demos/bubble-variants.html|unknown-slot|data-slot=\"markdown\" is not in the vocabulary (shadless/vocabulary.json)", // authoring hook, not a slot
-    "docs/demos/mode-toggle.html|missing-marker|class is missing \"group/button-group\" — every data-slot=\"button-group\" element carries it (button-group)",
-    "docs/demos/mode-toggle.html|missing-marker|class is missing \"group/button\" — every data-slot=\"button\" element carries it (button)",
-    "docs/demos/mode-toggle.html|missing-marker|class is missing \"group/button\" — every data-slot=\"button\" element carries it (button)",
-    "dist/components/accordion.html|missing-marker|class is missing \"group/accordion-trigger\" — every data-slot=\"accordion-trigger\" element carries it (accordion)",
-    "dist/components/accordion.html|missing-marker|class is missing \"group/accordion-trigger\" — every data-slot=\"accordion-trigger\" element carries it (accordion)",
-    "dist/components/avatar.html|missing-marker|class is missing \"group/avatar\" — every data-slot=\"avatar\" element carries it (avatar)",
-    "dist/components/avatar.html|missing-marker|class is missing \"group/avatar\" — every data-slot=\"avatar\" element carries it (avatar)",
-    "dist/components/card.html|missing-marker|class is missing \"group/card-header\" — every data-slot=\"card-header\" element carries it (card)",
-    "dist/components/carousel.html|missing-marker|class is missing \"group/button\" — every data-slot=\"carousel-previous\" element carries it (carousel)",
-    "dist/components/carousel.html|missing-marker|class is missing \"group/button\" — every data-slot=\"carousel-next\" element carries it (carousel)",
-    "dist/components/checkbox.html|missing-marker|class is missing \"peer\" — every data-slot=\"checkbox\" element carries it (checkbox)",
-    "dist/components/field.html|missing-marker|class is missing \"group/field-group\" — every data-slot=\"field-group\" element carries it (field)",
-    "dist/components/radio-group.html|missing-marker|class is missing \"group/radio-group-item\" — every data-slot=\"radio-group-item\" element carries it (radio-group)",
-    "dist/components/radio-group.html|missing-marker|class is missing \"peer\" — every data-slot=\"radio-group-item\" element carries it (radio-group)",
-    "dist/components/radio-group.html|missing-marker|class is missing \"group/radio-group-item\" — every data-slot=\"radio-group-item\" element carries it (radio-group)",
-    "dist/components/radio-group.html|missing-marker|class is missing \"peer\" — every data-slot=\"radio-group-item\" element carries it (radio-group)",
-    "dist/components/switch.html|missing-marker|class is missing \"group/switch\" — every data-slot=\"switch\" element carries it (switch)",
-    "dist/components/switch.html|missing-marker|class is missing \"peer\" — every data-slot=\"switch\" element carries it (switch)",
-    "dist/components/toggle-group.html|missing-marker|class is missing \"group/toggle-group\" — every data-slot=\"toggle-group\" element carries it (toggle-group)",
-    "dist/components/toggle-group.html|missing-marker|class is missing \"group/toggle\" — every data-slot=\"toggle-group-item\" element carries it (toggle-group)",
-    "dist/components/toggle-group.html|missing-marker|class is missing \"group/toggle\" — every data-slot=\"toggle-group-item\" element carries it (toggle-group)",
-    "dist/components/toggle.html|missing-marker|class is missing \"group/toggle\" — every data-slot=\"toggle\" element carries it (toggle)",
-    "docs/site/content/components/bubble.md bubble-variants.html|unknown-slot|data-slot=\"markdown\" is not in the vocabulary (shadless/vocabulary.json)", // authoring hook, not a slot
-    "docs/site/content/guides/dark-mode.md mode-toggle.html|missing-marker|class is missing \"group/button-group\" — every data-slot=\"button-group\" element carries it (button-group)",
-    "docs/site/content/guides/dark-mode.md mode-toggle.html|missing-marker|class is missing \"group/button\" — every data-slot=\"button\" element carries it (button)",
-    "docs/site/content/guides/dark-mode.md mode-toggle.html|missing-marker|class is missing \"group/button\" — every data-slot=\"button\" element carries it (button)",
+    "docs/site/content/components/bubble.md bubble-variants.html|unknown-slot|data-slot=\"markdown\" is not in the vocabulary (shadless/vocabulary.json)", // same hook, generated tab
   ]
-  // expand the message-scroller cluster (identical shape per file; spelled
-  // out below from the shipped checker so nothing is hand-transcribed)
-  const COMPONENT_OF = {
-    button: "button",
-    "toggle-group": "toggle-group",
-    "toggle-group-item": "toggle-group",
-    "card": "card",
-    "card-header": "card",
-    "tabs-list": "tabs",
-    "select-content": "select",
-    "dropdown-menu-content": "dropdown-menu",
-    "dropdown-menu-item": "dropdown-menu",
-  }
-  const demo = (name, slot, marker, n = 1) =>
-    Array.from({ length: n }, () =>
-      `docs/demos/message-scroller-${name}.html|missing-marker|class is missing "${marker}" — every data-slot="${slot}" element carries it (${COMPONENT_OF[slot]})`)
-  const ms = [
-    ...demo("anchoring", "card", "group/card"),
-    ...demo("anchoring", "card-header", "group/card-header"),
-    ...demo("anchoring", "button", "group/button"),
-    ...demo("anchoring", "toggle-group", "group/toggle-group"),
-    ...demo("anchoring", "toggle-group-item", "group/toggle", 2),
-    ...demo("anchoring", "button", "group/button"),
-    ...demo("animation", "card", "group/card"),
-    ...demo("animation", "card-header", "group/card-header"),
-    ...demo("animation", "button", "group/button"),
-    ...demo("animation", "button", "group/button"),
-    ...demo("animation", "select-content", "cn-menu-translucent"),
-    ...Array.from({ length: 3 }, () =>
-      "docs/demos/message-scroller-animation.html|unknown-slot|data-slot=\"select-item-indicator\" is not in the vocabulary (shadless/vocabulary.json)"), // hand-authored element, unstyled
-    ...demo("commands", "card", "group/card"),
-    ...demo("commands", "card-header", "group/card-header"),
-    ...demo("commands", "button", "group/button"),
-    ...demo("commands", "dropdown-menu-content", "cn-menu-translucent"),
-    ...demo("commands", "dropdown-menu-item", "group/dropdown-menu-item", 4),
-    ...demo("group-chat", "card", "group/card"),
-    ...demo("group-chat", "card-header", "group/card-header"),
-    ...demo("group-chat", "button", "group/button", 2),
-    ...demo("load-history", "card", "group/card"),
-    ...demo("load-history", "card-header", "group/card-header"),
-    ...demo("load-history", "button", "group/button", 2),
-    ...demo("opening-position", "card", "group/card"),
-    ...demo("opening-position", "card-header", "group/card-header"),
-    ...demo("opening-position", "tabs-list", "group/tabs-list"),
-    ...demo("previous-context", "card", "group/card"),
-    ...demo("previous-context", "card-header", "group/card-header"),
-    ...demo("previous-context", "button", "group/button", 3),
-    ...demo("previous-context", "dropdown-menu-content", "cn-menu-translucent"),
-    ...demo("previous-context", "dropdown-menu-item", "group/dropdown-menu-item", 4),
-    ...demo("scrollable", "card", "group/card"),
-    ...demo("scrollable", "card-header", "group/card-header"),
-    ...demo("streaming", "card", "group/card"),
-    ...demo("streaming", "card-header", "group/card-header"),
-    ...demo("streaming", "button", "group/button"),
-    ...demo("streaming", "button", "group/button", 2),
-    ...demo("streaming", "dropdown-menu-content", "cn-menu-translucent"),
-    ...demo("streaming", "dropdown-menu-item", "group/dropdown-menu-item", 4),
-    ...demo("visibility", "card", "group/card"),
-    ...demo("visibility", "card-header", "group/card-header"),
-  ]
-  const expectedAll = [...expected, ...ms]
   const key = (s) => [...s].sort()
   t.eq("corpus warnings are exactly the measured set", key(got), key(expectedAll))
 

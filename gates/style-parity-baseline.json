@@ -1,7 +1,6 @@
 {
  "pin": "shadcn@4.19.0",
- "note": "Cells where the shadless fixture's computed style differs from the React oracle, with the two values as recorded. This list may only shrink and the values are pinned; see gates/ledger.mjs budget style-parity.dirty-cells.",
- "flaky": [],
+ "note": "Cells where the shadless fixture's computed style differs from the React oracle, with the two values as recorded. This list may only shrink and the values are pinned; see the ledger budget style-parity.dirty-cells.",
  "cells": [
   {
    "id": "accordion-multiple/accordion-trigger#1/min-width",
@@ -1012,46 +1011,6 @@
    "id": "slider/slider-track#1@light@rtl/width",
    "oracle": "300px",
    "shadless": "1280px"
-  },
-  {
-   "id": "switch/switch-thumb#1/height",
-   "oracle": "16px",
-   "shadless": "0px"
-  },
-  {
-   "id": "switch/switch-thumb#1/width",
-   "oracle": "16px",
-   "shadless": "0px"
-  },
-  {
-   "id": "switch/switch-thumb#1@dark@ltr/height",
-   "oracle": "16px",
-   "shadless": "0px"
-  },
-  {
-   "id": "switch/switch-thumb#1@dark@ltr/width",
-   "oracle": "16px",
-   "shadless": "0px"
-  },
-  {
-   "id": "switch/switch-thumb#1@dark@rtl/height",
-   "oracle": "16px",
-   "shadless": "0px"
-  },
-  {
-   "id": "switch/switch-thumb#1@dark@rtl/width",
-   "oracle": "16px",
-   "shadless": "0px"
-  },
-  {
-   "id": "switch/switch-thumb#1@light@rtl/height",
-   "oracle": "16px",
-   "shadless": "0px"
-  },
-  {
-   "id": "switch/switch-thumb#1@light@rtl/width",
-   "oracle": "16px",
-   "shadless": "0px"
   }
  ]
 }

@@ -60,7 +60,7 @@ The shimmer composes with any component that renders text. A common pattern is a
 <div class="demo-missing" data-demo="shimmer-marker" data-status="unavailable">demo not available in shadless (base-style demo) — <code>shimmer-marker</code></div>
 
 ```html
-<div data-slot="marker" role="status">
+<div data-slot="marker" class="group/marker" role="status">
   <span data-slot="marker-icon"><!-- Spinner markup — see /components/spinner --></span>
   <span data-slot="marker-content" class="shimmer">Thinking&hellip;</span>
 </div>

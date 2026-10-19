@@ -51,6 +51,24 @@ upstream is `src/registry/pin.json`; re-pins land through the upstream drill
   and tag sequences) rather than by computed style.
 
 ### Fixed
+- The marker classes that make the designed states render were missing from
+  most hand-authored demo pages and every probe fixture, so shipped pages
+  deviated from what React renders: the switch thumb computed to 0×0 at
+  rest (invisible), the accordion chevron never hid on expand, opened
+  dropdown/select menus rendered opaque instead of translucent (no `::before`
+  overlay, unstyled separators), and the active tab had no shadow. Fixed at
+  the sources (the `docs/demos` pages, the `probes/t7|t8` fixtures the demo
+  node passes through, the emitter's inline field fixture and its
+  default-content card header — that one rendered `card-header` without
+  `group/card-header` while the same page's standalone one carried it) and
+  the demo pages' invented `data-slot="select-item-indicator"` replaced with
+  the unslotted indicator span the shipped select renders. The docs' copyable
+  html fences lacked the same markers (`<div data-slot="field">` without
+  `group/field`, and 24 more): the projection of upstream's JSX snippets now
+  adds each slot's markers from `vocabulary.json`, and the hand-written
+  override snippets carry them. The shipped corpus, html fences included,
+  now passes `shadless-check` with exactly two findings, both the upstream
+  `data-slot="markdown"` authoring hook in the bubble-variants example.
 - Docs: the copy-source formatting no longer reflows text inside
   white-space-sensitive subtrees. Prettier's html printer cannot see the
   `whitespace-pre*` utilities a class list carries, so its rewrap and

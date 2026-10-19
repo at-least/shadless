@@ -487,9 +487,9 @@ button-group
 - Use `aria-label` or `aria-labelledby` to label the button group.
 
 ```html
-<div data-slot="button-group" aria-label="Button group">
-  <button data-slot="button">Button 1</button>
-  <button data-slot="button">Button 2</button>
+<div data-slot="button-group" class="group/button-group" aria-label="Button group">
+  <button data-slot="button" class="group/button">Button 1</button>
+  <button data-slot="button" class="group/button">Button 2</button>
 </div>
 ```
 

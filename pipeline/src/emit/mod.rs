@@ -972,4 +972,96 @@ mod tests {
             "<div class=\"a&quot;b\"></div>"
         );
     }
+
+    /// defaultInner REPLACES the root's content verbatim (render_tree's
+    /// `is_root && !default_inner.is_empty()` branch), so the hand-written
+    /// default_content strings bypass every marker render_tree would have
+    /// added from the vocabulary. Stage 4 measured exactly that hole: the
+    /// composed card's card-header rendered without group/card-header while
+    /// the same page's standalone CardHeader root carried it. The emitter's
+    /// own default content must meet the same contract the shipped checker
+    /// enforces on the corpus: every render of a marker-bearing slot carries
+    /// its markers.
+    #[test]
+    fn unit_default_content_inner_carries_vocabulary_markers() {
+        use html5ever::tendril::TendrilSink;
+        use markup5ever_rcdom::{Handle, NodeData, RcDom};
+        fn attrs_of(e: &Handle) -> Vec<(String, String)> {
+            match &e.data {
+                NodeData::Element { attrs, .. } => attrs
+                    .borrow()
+                    .iter()
+                    .map(|a| (a.name.local.to_string(), a.value.to_string()))
+                    .collect(),
+                _ => Vec::new(),
+            }
+        }
+        fn walk(n: &Handle, out: &mut Vec<Vec<(String, String)>>) {
+            if let NodeData::Element { .. } = &n.data {
+                out.push(attrs_of(n));
+            }
+            for c in n.children.borrow().iter() {
+                walk(c, out);
+            }
+        }
+
+        let root = crate::tree_root();
+        if !root.join("generated/ir").exists() {
+            if std::env::var_os("CI").is_some() {
+                panic!("CI: required tree input missing (skip: no shadless tree)");
+            }
+            eprintln!("skip: no shadless tree");
+            return;
+        }
+        let (irs, _) = crate::emit::demo::shipped_irs(&root).expect("shipped IRs load");
+        let pairs: Vec<(&str, &CssIrComponent)> =
+            irs.iter().map(|(n, ir)| (n.as_str(), ir)).collect();
+        let vocab = vocabulary::build_vocabulary(&pairs).expect("vocabulary builds");
+        let content = default_content::default_content();
+        let mut errs: Vec<String> = Vec::new();
+        for (comp, fns) in content.iter() {
+            for (fn_, entry) in fns.iter() {
+                if entry.inner.is_empty() {
+                    continue;
+                }
+                let dom = html5ever::parse_document(RcDom::default(), Default::default())
+                    .one(entry.inner.as_str());
+                let mut els: Vec<Vec<(String, String)>> = Vec::new();
+                walk(&dom.document, &mut els);
+                for attrs in els {
+                    let Some(slot_name) =
+                        attrs.iter().find(|(k, _)| k == "data-slot").map(|(_, v)| v)
+                    else {
+                        continue;
+                    };
+                    let Some(slot) = vocab.slots.get(slot_name) else {
+                        // unknown slots are the checker's unknown-slot
+                        // warning, not this contract
+                        continue;
+                    };
+                    if slot.markers.is_empty() {
+                        continue;
+                    }
+                    let classes = attrs
+                        .iter()
+                        .find(|(k, _)| k == "class")
+                        .map(|(_, v)| v.as_str())
+                        .unwrap_or("");
+                    for m in &slot.markers {
+                        if !classes.split_whitespace().any(|t| t == m) {
+                            errs.push(format!(
+                                "[{}.{}] data-slot=\"{}\" is missing marker \"{}\"",
+                                comp, fn_, slot_name, m
+                            ));
+                        }
+                    }
+                }
+            }
+        }
+        assert!(
+            errs.is_empty(),
+            "default content renders markerless slots:\n{}",
+            errs.join("\n")
+        );
+    }
 }

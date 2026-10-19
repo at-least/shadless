@@ -879,7 +879,7 @@ field
 The `Field` family is designed for composing accessible forms. A typical field is structured as follows:
 
 ```html
-<div data-slot="field">
+<div data-slot="field" class="group/field">
   <label data-slot="field-label" for="input-id">Label</label>
   <!-- Input, Select, Switch, etc. -->
   <p data-slot="field-description">Optional helper text.</p>
@@ -3337,7 +3337,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 - Render `FieldError` immediately after the control or inside `FieldContent` to keep error messages aligned with the field.
 
 ```html
-<div data-slot="field" data-invalid>
+<div data-slot="field" class="group/field" data-invalid>
   <label data-slot="field-label" for="email">Email</label>
   <input data-slot="input" id="email" type="email" aria-invalid />
   <div data-slot="field-error">Enter a valid email address.</div>

@@ -1322,7 +1322,7 @@ Add an `AttachmentTrigger` to make the whole card open a link or dialog. It fill
 {% </demo> %}
 
 ```html showLineNumbers
-<div data-slot="attachment">
+<div data-slot="attachment" class="group/attachment">
   <!-- media, content, actions -->
   <button data-slot="dialog-trigger" id="<k>-trigger" aria-label="Preview research-summary.pdf"></button>
 </div>
@@ -1340,7 +1340,7 @@ Add an `AttachmentTrigger` to make the whole card open a link or dialog. It fill
 `AttachmentAction` is usually icon-only, so give each one an `aria-label` describing the action and its target.
 
 ```html
-<button data-slot="attachment-action" aria-label="Remove sales-dashboard.pdf">
+<button data-slot="attachment-action" class="group/button" aria-label="Remove sales-dashboard.pdf">
   <!-- lucide "x" icon -->
 </button>
 ```
