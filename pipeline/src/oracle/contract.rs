@@ -58,7 +58,7 @@ pub struct Cdef {
 
 /// Go tolerates `null` for any field (json.Unmarshal leaves the default);
 /// serde does not — same drop_nulls normalization the emit chain uses.
-fn drop_nulls(v: Value) -> Value {
+pub(crate) fn drop_nulls(v: Value) -> Value {
     match v {
         Value::Object(m) => Value::Object(
             m.into_iter()

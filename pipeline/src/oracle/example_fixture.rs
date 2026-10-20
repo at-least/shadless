@@ -43,6 +43,12 @@ pub struct EfDef {
     pub oracle_css: String,
 }
 
+/// A contract def as tools/browser-shell.mjs projects it (every field it
+/// does not set is null — read as the field's default, as contract.rs does).
+fn ef_def_from(v: serde_json::Value) -> Result<EfDef, String> {
+    serde_json::from_value(super::contract::drop_nulls(v)).map_err(|e| e.to_string())
+}
+
 pub struct EfTarget {
     pub name: String,
     pub families: Vec<String>,
@@ -289,8 +295,8 @@ fn run_with_shell(
             let res = shell.call(&json!({
                 "op": "loadContractDef", "file": format!("file://{}", abs)
             }))?;
-            let def: EfDef = serde_json::from_value(res.get("def").cloned().unwrap_or(json!({})))
-                .unwrap_or_default();
+            let def = ef_def_from(res.get("def").cloned().unwrap_or(json!({})))
+                .map_err(|e| format!("tools/contracts/components/{}: {}", f, e))?;
             let comp = f
                 .trim_end_matches(".mjs")
                 .trim_end_matches("-multiple")
@@ -502,8 +508,8 @@ fn build_one_page(
             .call(&json!({"op": "loadContractDef", "file": format!("file://{}", abs)}))
             .map_err(|e| e.to_string())?;
         Some(
-            serde_json::from_value(res.get("def").cloned().unwrap_or(json!({})))
-                .unwrap_or_default(),
+            ef_def_from(res.get("def").cloned().unwrap_or(json!({})))
+                .map_err(|e| format!("{}: {}", file, e))?,
         )
     } else {
         None
@@ -866,6 +872,21 @@ pub fn word_trigger_prefix(id: &str) -> Option<String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// The shell projects a field a def leaves out as null; a null failed
+    /// the String field and `unwrap_or_default` turned the error into an
+    /// empty def, whose empty shadlessPage skipped the target — so 12 of
+    /// the 14 src/kernel fixtures (every def without oracleCss) were never
+    /// regenerated, and "2 interactive pages emitted" read as a pass.
+    #[test]
+    fn unit_a_contract_def_with_unset_fields_loads() {
+        let def = ef_def_from(json!({
+            "usage": "u", "imports": "i", "open": null,
+            "shadlessPage": "src/kernel/dialog.html", "oracleCss": null,
+        }))
+        .unwrap();
+        assert_eq!(def.shadless_page, "src/kernel/dialog.html");
+    }
 
     #[test]
     fn contract_cache_names_discriminate_by_recorder() {
