@@ -406,26 +406,16 @@ pub fn run_docs_catalog(root: &Path) -> i32 {
             p.demo_path = authored_file;
             p_author += 1;
         } else if has_authored_file {
-            // kernel-tier -demo: the authored file exists (the oracle ran), but
-            // the iframe must point at the dist fixture, not the oracle static
-            // DOM (which cannot open popups). Strip the oracle artifact so the
-            // next oracle run sees the dist fixture as canonical.
-            if let Err(e) = std::fs::remove_file(root.join(&authored_file)) {
-                return fail(e.to_string());
-            }
-            if !direct.is_empty() {
-                p.status = "existing-dist".to_string();
-                p.demo_path = direct;
-                p_existing += 1;
-            } else if !d.is_empty() {
-                p.status = "existing-dist".to_string();
-                p.demo_path = d;
-                p_existing += 1;
-            } else {
-                p.status = "to-author".to_string();
-                p.demo_path = authored_file;
-                p_to_author += 1;
-            }
+            // kernel-tier -demo: its iframe must be the dist fixture, not an
+            // oracle static DOM (which cannot open popups), and example-oracle
+            // never writes one (ora_load_targets skips kernel demos). This
+            // used to delete the file silently — another node's output this
+            // node does not produce; a stray one is a decision for a person.
+            eprintln!(
+                "FAIL catalog: {} is kernel-tier but {} exists — kernel demos render from the dist fixture; delete the file",
+                p.name, authored_file
+            );
+            return 1;
         } else if prev_authored.contains(&p.name) {
             // inconsistency: previously authored but the file is gone — loud,
             // not silent (a deleted demo must be a decision, not an accident)

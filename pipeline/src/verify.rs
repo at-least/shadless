@@ -6,7 +6,7 @@
 //! -test.testlogfile` records every file the test binary opened, and
 //! tools/fs-record.mjs (injected via NODE_OPTIONS) records node-side reads.
 
-use crate::glob::{files, glob_to_regexp, literal_prefix};
+use crate::glob::{files, glob_to_regexp, literal_prefix, names};
 use crate::graph::Graph;
 use crate::key::hash_file;
 use crate::nodes::Node;
@@ -39,10 +39,11 @@ pub fn input_universe(root: &Path, g: &Graph) -> Result<BTreeMap<String, String>
 pub struct Violation {
     pub path: String,
     pub readers: Vec<String>, // nodes declaring path as an input
+    pub deleted: bool,
 }
 
-/// Files that changed across a node's run, are read by somebody, and are not
-/// covered by that node's `produces`.
+/// Files that changed or disappeared across a node's run, are read by
+/// somebody, and are not covered by that node's `produces`.
 pub fn undeclared_writes(
     root: &Path,
     g: &Graph,
@@ -101,6 +102,26 @@ pub fn undeclared_writes(
         out.push(Violation {
             path: path.clone(),
             readers,
+            deleted: false,
+        });
+    }
+    // a deletion: the file no longer expands from anyone's inputs, so its
+    // readers are the nodes whose patterns name it
+    for path in before.keys() {
+        if after.contains_key(path) || covered(path) {
+            continue;
+        }
+        let mut readers: Vec<String> = Vec::new();
+        for id in g.ids() {
+            let m = g.node(id).expect("ids are graph nodes");
+            if !m.never_fresh() && names(m.inputs.as_deref().unwrap_or(&[]), path)? {
+                readers.push(id.clone());
+            }
+        }
+        out.push(Violation {
+            path: path.clone(),
+            readers,
+            deleted: true,
         });
     }
     out.sort_by(|a, b| a.path.cmp(&b.path));
@@ -119,8 +140,9 @@ pub fn report_violations(id: &str, vs: &[Violation]) {
     );
     for v in vs {
         println!(
-            "      {}   (declared as an input by: [{}])",
+            "      {}{}   (declared as an input by: [{}])",
             v.path,
+            if v.deleted { " (deleted)" } else { "" },
             v.readers.join(" ")
         );
     }
@@ -428,6 +450,34 @@ mod tests {
         let vs = undeclared_writes(&t, &g, writer, &before, &after).unwrap();
         assert_eq!(vs.len(), 1);
         assert_eq!(vs[0].path, "read.txt");
+        assert_eq!(vs[0].readers, vec!["reader".to_string()]);
+    }
+
+    /// The check walked only the after-universe, so a node deleting a file
+    /// another node reads went unseen — docs-catalog removed
+    /// docs/demos/<kernel>-demo.html, an example-oracle output, while
+    /// declaring only docs/catalog.json.
+    #[test]
+    fn undeclared_writes_counts_a_deleted_input() {
+        let t = crate::fsutil::temp_root("rs-verify5");
+        fs::create_dir_all(t.join("declared.out")).unwrap();
+        fs::write(t.join("read.txt"), "v1").unwrap();
+        fs::write(t.join("declared.out/old.txt"), "v1").unwrap();
+        let reader = mnode("reader", &[], Some(&["read.txt", "declared.out/**"]), None);
+        let writer = mnode("writer", &[], Some(&["other.txt"]), Some(&["declared.out"]));
+        let g = Graph::new(vec![reader, writer]).unwrap();
+        let writer = g.node("writer").unwrap();
+
+        let before = input_universe(&t, &g).unwrap();
+        // writer deletes a watched input it does not produce, plus one it covers
+        fs::remove_file(t.join("read.txt")).unwrap();
+        fs::remove_file(t.join("declared.out/old.txt")).unwrap();
+        let after = input_universe(&t, &g).unwrap();
+
+        let vs = undeclared_writes(&t, &g, writer, &before, &after).unwrap();
+        assert_eq!(vs.len(), 1, "the deletion of read.txt went unseen");
+        assert_eq!(vs[0].path, "read.txt");
+        assert!(vs[0].deleted);
         assert_eq!(vs[0].readers, vec!["reader".to_string()]);
     }
 }

@@ -133,6 +133,27 @@ pub fn files(root: &Path, patterns: &[String]) -> Result<Vec<String>, String> {
     Ok(include)
 }
 
+/// Whether `files(root, patterns)` would list `path`, decided from the
+/// patterns alone — for a path that no longer exists (a deleted input). A
+/// fully literal pattern names itself or, as a directory, everything under it.
+pub fn names(patterns: &[String], path: &str) -> Result<bool, String> {
+    let mut named = false;
+    for p in patterns {
+        if let Some(rest) = p.strip_prefix('!') {
+            if glob_to_regexp(rest)?.is_match(path) {
+                return Ok(false);
+            }
+            continue;
+        }
+        named |= if literal_prefix(p) == *p {
+            path == p || path.starts_with(&format!("{}/", p))
+        } else {
+            glob_to_regexp(p)?.is_match(path)
+        };
+    }
+    Ok(named)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -176,6 +197,30 @@ mod tests {
             s(&["sub/c.txt", "sub/deep/d.txt"])
         );
         assert_eq!(expand(&t, "?.txt").unwrap(), s(&["a.txt"]));
+    }
+
+    #[test]
+    fn names_agrees_with_files() {
+        let t = tree();
+        let all = s(&[
+            "a.txt",
+            "b.md",
+            "sub/c.txt",
+            "sub/deep/d.txt",
+            ".hidden/h.txt",
+        ]);
+        for pats in [
+            s(&["*.txt"]),
+            s(&["sub"]),
+            s(&["a.txt", ".hidden/**"]),
+            s(&["**/c.txt"]),
+            s(&["sub/**", "!sub/deep/**"]),
+        ] {
+            let listed = files(&t, &pats).unwrap();
+            for p in &all {
+                assert_eq!(names(&pats, p).unwrap(), listed.contains(p), "{pats:?} {p}");
+            }
+        }
     }
 
     #[test]
