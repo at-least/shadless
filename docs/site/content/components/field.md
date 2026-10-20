@@ -748,12 +748,18 @@ Combine labels, controls, and help text to compose accessible form fields and gr
       // DOM, so authors add data-value); with none of those the label text
       // stands in — value and label are then equal, never silently different
       var selected = content.querySelector("[role=option][aria-selected=true], [role=option][data-state=checked]");
+      // the kernel finds the selection by aria-selected (it opens on it)
+      if (selected) selected.setAttribute("aria-selected", "true");
+      // a trigger showing its placeholder (radix: data-placeholder while no
+      // value) — what a form reset returns to
+      var placeholder = valueNode && trigger.hasAttribute("data-placeholder") ? valueNode.textContent : null;
       var labelOf = function (item) { return item ? (item.textContent || "").trim() : null; };
       var valueOf = function (item) { return item ? (shadless.h.itemValue(item) || labelOf(item)) : null; };
       // radix renders the check (ItemIndicator) only inside the selected item,
       // in the wrapper every option starts with; the kernel flips only the
       // attributes, so the check moves here — or, when no item held one yet,
-      // mounts from <template data-for="select-item-indicator">
+      // mounts from <template data-for="select-item-indicator"> (one per page,
+      // shared by its selects — the harvest emits the same check for each)
       var moveIndicator = function (item) {
         if (item === selected) return;
         var ind = selected && selected.firstElementChild && selected.firstElementChild.firstElementChild;
@@ -761,11 +767,15 @@ Combine labels, controls, and help text to compose accessible form fields and gr
         if (ind && item.firstElementChild) item.firstElementChild.appendChild(ind);
       };
       var kernelSelect = handles.select;
-      handles.select = function (item) {
-        var before = valueOf(selected);
+      var pick = function (item) {
         kernelSelect(item);
         moveIndicator(item);
         selected = item;
+        trigger.removeAttribute("data-placeholder");
+      };
+      handles.select = function (item) {
+        var before = valueOf(selected);
+        pick(item);
         shadless.h.syncForm(trigger);
         var after = valueOf(item);
         if (after !== before) shadless.h.emit(trigger, "change", "select", { value: after, label: labelOf(item), item: item });
@@ -775,7 +785,23 @@ Combine labels, controls, and help text to compose accessible form fields and gr
         read: function () { return valueOf(selected) },
         write: function (v) {
           var items = content.querySelectorAll("[role=option]");
-          for (var i = 0; i < items.length; i++) if (valueOf(items[i]) === v) { kernelSelect(items[i]); moveIndicator(items[i]); selected = items[i]; return; }
+          if (v === null) {
+            // reset to a select that started with nothing selected: no item
+            // selected, no check, the placeholder back
+            for (var j = 0; j < items.length; j++) {
+              items[j].setAttribute("aria-selected", "false");
+              items[j].setAttribute("data-state", "unchecked");
+            }
+            var ind = selected && selected.firstElementChild && selected.firstElementChild.firstElementChild;
+            if (ind) ind.remove();
+            selected = null;
+            if (placeholder !== null) {
+              valueNode.textContent = placeholder;
+              trigger.setAttribute("data-placeholder", "");
+            }
+            return;
+          }
+          for (var i = 0; i < items.length; i++) if (valueOf(items[i]) === v) { pick(items[i]); return; }
         },
       });
 
@@ -1283,12 +1309,18 @@ See the Form documentation for building forms with the `Field` component and Rea
       // DOM, so authors add data-value); with none of those the label text
       // stands in — value and label are then equal, never silently different
       var selected = content.querySelector("[role=option][aria-selected=true], [role=option][data-state=checked]");
+      // the kernel finds the selection by aria-selected (it opens on it)
+      if (selected) selected.setAttribute("aria-selected", "true");
+      // a trigger showing its placeholder (radix: data-placeholder while no
+      // value) — what a form reset returns to
+      var placeholder = valueNode && trigger.hasAttribute("data-placeholder") ? valueNode.textContent : null;
       var labelOf = function (item) { return item ? (item.textContent || "").trim() : null; };
       var valueOf = function (item) { return item ? (shadless.h.itemValue(item) || labelOf(item)) : null; };
       // radix renders the check (ItemIndicator) only inside the selected item,
       // in the wrapper every option starts with; the kernel flips only the
       // attributes, so the check moves here — or, when no item held one yet,
-      // mounts from <template data-for="select-item-indicator">
+      // mounts from <template data-for="select-item-indicator"> (one per page,
+      // shared by its selects — the harvest emits the same check for each)
       var moveIndicator = function (item) {
         if (item === selected) return;
         var ind = selected && selected.firstElementChild && selected.firstElementChild.firstElementChild;
@@ -1296,11 +1328,15 @@ See the Form documentation for building forms with the `Field` component and Rea
         if (ind && item.firstElementChild) item.firstElementChild.appendChild(ind);
       };
       var kernelSelect = handles.select;
-      handles.select = function (item) {
-        var before = valueOf(selected);
+      var pick = function (item) {
         kernelSelect(item);
         moveIndicator(item);
         selected = item;
+        trigger.removeAttribute("data-placeholder");
+      };
+      handles.select = function (item) {
+        var before = valueOf(selected);
+        pick(item);
         shadless.h.syncForm(trigger);
         var after = valueOf(item);
         if (after !== before) shadless.h.emit(trigger, "change", "select", { value: after, label: labelOf(item), item: item });
@@ -1310,7 +1346,23 @@ See the Form documentation for building forms with the `Field` component and Rea
         read: function () { return valueOf(selected) },
         write: function (v) {
           var items = content.querySelectorAll("[role=option]");
-          for (var i = 0; i < items.length; i++) if (valueOf(items[i]) === v) { kernelSelect(items[i]); moveIndicator(items[i]); selected = items[i]; return; }
+          if (v === null) {
+            // reset to a select that started with nothing selected: no item
+            // selected, no check, the placeholder back
+            for (var j = 0; j < items.length; j++) {
+              items[j].setAttribute("aria-selected", "false");
+              items[j].setAttribute("data-state", "unchecked");
+            }
+            var ind = selected && selected.firstElementChild && selected.firstElementChild.firstElementChild;
+            if (ind) ind.remove();
+            selected = null;
+            if (placeholder !== null) {
+              valueNode.textContent = placeholder;
+              trigger.setAttribute("data-placeholder", "");
+            }
+            return;
+          }
+          for (var i = 0; i < items.length; i++) if (valueOf(items[i]) === v) { pick(items[i]); return; }
         },
       });
 
@@ -3221,12 +3273,18 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       // DOM, so authors add data-value); with none of those the label text
       // stands in — value and label are then equal, never silently different
       var selected = content.querySelector("[role=option][aria-selected=true], [role=option][data-state=checked]");
+      // the kernel finds the selection by aria-selected (it opens on it)
+      if (selected) selected.setAttribute("aria-selected", "true");
+      // a trigger showing its placeholder (radix: data-placeholder while no
+      // value) — what a form reset returns to
+      var placeholder = valueNode && trigger.hasAttribute("data-placeholder") ? valueNode.textContent : null;
       var labelOf = function (item) { return item ? (item.textContent || "").trim() : null; };
       var valueOf = function (item) { return item ? (shadless.h.itemValue(item) || labelOf(item)) : null; };
       // radix renders the check (ItemIndicator) only inside the selected item,
       // in the wrapper every option starts with; the kernel flips only the
       // attributes, so the check moves here — or, when no item held one yet,
-      // mounts from <template data-for="select-item-indicator">
+      // mounts from <template data-for="select-item-indicator"> (one per page,
+      // shared by its selects — the harvest emits the same check for each)
       var moveIndicator = function (item) {
         if (item === selected) return;
         var ind = selected && selected.firstElementChild && selected.firstElementChild.firstElementChild;
@@ -3234,11 +3292,15 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
         if (ind && item.firstElementChild) item.firstElementChild.appendChild(ind);
       };
       var kernelSelect = handles.select;
-      handles.select = function (item) {
-        var before = valueOf(selected);
+      var pick = function (item) {
         kernelSelect(item);
         moveIndicator(item);
         selected = item;
+        trigger.removeAttribute("data-placeholder");
+      };
+      handles.select = function (item) {
+        var before = valueOf(selected);
+        pick(item);
         shadless.h.syncForm(trigger);
         var after = valueOf(item);
         if (after !== before) shadless.h.emit(trigger, "change", "select", { value: after, label: labelOf(item), item: item });
@@ -3248,7 +3310,23 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
         read: function () { return valueOf(selected) },
         write: function (v) {
           var items = content.querySelectorAll("[role=option]");
-          for (var i = 0; i < items.length; i++) if (valueOf(items[i]) === v) { kernelSelect(items[i]); moveIndicator(items[i]); selected = items[i]; return; }
+          if (v === null) {
+            // reset to a select that started with nothing selected: no item
+            // selected, no check, the placeholder back
+            for (var j = 0; j < items.length; j++) {
+              items[j].setAttribute("aria-selected", "false");
+              items[j].setAttribute("data-state", "unchecked");
+            }
+            var ind = selected && selected.firstElementChild && selected.firstElementChild.firstElementChild;
+            if (ind) ind.remove();
+            selected = null;
+            if (placeholder !== null) {
+              valueNode.textContent = placeholder;
+              trigger.setAttribute("data-placeholder", "");
+            }
+            return;
+          }
+          for (var i = 0; i < items.length; i++) if (valueOf(items[i]) === v) { pick(items[i]); return; }
         },
       });
 

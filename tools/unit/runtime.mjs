@@ -812,6 +812,30 @@ window.__esm = { default: shadless, get, theme, init, named: Object.keys(ns).sor
     sel3.select("[data-value=B]")
     sel3.open()
     t.eq("select indicator: moves from a data-state=checked item", checks(doc3), "B")
+    // ...and the kernel, which finds the selection by aria-selected, opens
+    // on it (highlighted, as radix focuses the selected item on open)
+    const dom4 = bootKernel(page("s5", true, false).replace(`aria-selected="true"`, `aria-selected="false"`), ["select"])
+    dom4.window.shadless.initAll()
+    dom4.window.shadless.get("#s5-trigger").open()
+    t.ok("select: the data-state=checked item is highlighted on open",
+      dom4.window.document.querySelector("[data-value=A]").hasAttribute("data-highlighted"))
+
+    // a select on its placeholder: radix drops data-placeholder (the muted
+    // text) once a value exists, and a form reset brings the placeholder back
+    const dom5 = bootKernel(`<form>${page("s4", false, true).replace(`<button type="button" data-slot="select-trigger" id="s4-trigger"><span data-slot="select-value">x</span>`,
+      `<button type="button" data-slot="select-trigger" id="s4-trigger" name="fruit" data-placeholder=""><span data-slot="select-value">Pick a fruit</span>`)}</form>`, ["select"])
+    dom5.window.shadless.initAll()
+    const doc5 = dom5.window.document
+    const trig5 = doc5.getElementById("s4-trigger")
+    const sel5 = dom5.window.shadless.get("#s4-trigger")
+    sel5.open(); sel5.select("[data-value=B]")
+    t.eq("select: a pick drops data-placeholder", trig5.hasAttribute("data-placeholder"), false)
+    doc5.querySelector("form").reset()
+    await tick()
+    sel5.open()
+    t.eq("select: form reset returns a placeholder select to no value",
+      [sel5.value(), checks(doc5), trig5.querySelector("[data-slot=select-value]").textContent, trig5.hasAttribute("data-placeholder")],
+      [null, "", "Pick a fruit", true])
   }
   // dialog family: a template missing the content slot degrades to closed, no TypeError
   {

@@ -128,8 +128,12 @@ upstream is `src/registry/pin.json`; re-pins land through the upstream drill
   harvested from the oracle) that the first pick mounts. The selected item
   is now the one with `data-state="checked"` even when `aria-selected` is
   `"false"` (radix writes it only while that item is also highlighted, so
-  the button-group example reported no `value()`). The `contracts` gate
-  now compares where the check sits after a pick against React.
+  the button-group example reported no `value()`), and the select opens
+  highlighting it. A pick drops the trigger's `data-placeholder` as radix
+  does — the picked value no longer renders in the muted placeholder color
+  — and `form.reset()` returns a select that started on its placeholder to
+  no value, no check and the placeholder text. The `contracts` gate now
+  compares where the check sits after a pick against React.
 - `shadless-check` reports on the elements a browser builds, where its scan
   used to diverge (Chromium-measured on 78 crafted shapes; the shipped
   checker agreed on 18 of the first 35): inside svg/math it follows the
