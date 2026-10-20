@@ -411,6 +411,12 @@ mod tests {
                 if writer == id || before.contains(writer) {
                     continue;
                 }
+                let hits: Vec<&String> = reads.iter().filter(|f| files.contains(*f)).collect();
+                let Some(f) = hits.first() else {
+                    continue;
+                };
+                // an entry counts only where the read it was audited for
+                // still happens
                 if feedback(id, writer) && g.waits_for(writer).contains(id) {
                     used.extend(FEEDBACK.iter().copied().filter(|(fr, fw)| {
                         *fr == id
@@ -418,13 +424,10 @@ mod tests {
                     }));
                     continue;
                 }
-                if let Some(f) = reads.iter().find(|f| files.contains(*f)) {
-                    let n = reads.iter().filter(|f| files.contains(*f)).count();
-                    unordered.push(format!(
-                        "{id} reads {f} (+{} more) written by {writer}",
-                        n - 1
-                    ));
-                }
+                unordered.push(format!(
+                    "{id} reads {f} (+{} more) written by {writer}",
+                    hits.len() - 1
+                ));
             }
         }
         assert!(
