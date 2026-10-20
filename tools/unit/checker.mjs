@@ -159,9 +159,24 @@ export async function run(t) {
   f = first(`<div data-slot="t" data-size="">x</div>`, noDefaultVocab)
   t.eq("empty value without default errors", [f?.rule, f?.line, f?.col], ["unknown-value", 1, 20])
 
-  // an axis the slot's vocabulary does not list is skipped (card's data-size
-  // exists only as an in-@apply hook — decision: cva axes only)
-  t.eq("non-vocabulary axis is skipped", findings(`<div data-slot="card" class="group/card" data-size="sm">x</div>`), [])
+  // an author-set axis no cva table names is checked from the upstream prop
+  // union (card renders data-size={size}, size?: "default" | "sm"; its CSS
+  // keys on it only as an in-@apply data-[size=sm] hook)
+  t.eq("prop-union axis: a wrong value errors",
+    findings(`<div data-slot="card" class="group/card" data-size="huge">x</div>`).map((x) => [x.rule, x.col]),
+    [["unknown-value", 42]])
+  t.eq("prop-union axis: the union's values and the defaulted empty value are silent", [
+    findings(`<div data-slot="card" class="group/card" data-size="sm">x</div>`),
+    findings(`<div data-slot="card" class="group/card" data-size="default">x</div>`),
+    findings(`<div data-slot="card" class="group/card" data-size="">x</div>`)], [[], [], []])
+  t.eq("prop-union axis: a menu-item variant typo errors",
+    findings(`<div data-slot="dropdown-menu-item" class="group/dropdown-menu-item" data-variant="destructve">x</div>`).map((x) => [x.rule, x.col]),
+    [["unknown-value", 70]])
+  // the value set is the prop's type, not the CSS hooks: toggle-group types
+  // size as VariantProps<typeof toggleVariants> (default|lg|sm) while its
+  // stylesheet hooks only data-[size=sm]
+  t.eq("prop-union axis: a typed value with no CSS hook stays legal",
+    findings(`<div data-slot="toggle-group" class="group/toggle-group" data-size="lg">x</div>`), [])
 
   // <template> contents are markup
   f = first(`<div><template><button data-variant="lg"></template></div>`)
@@ -487,10 +502,43 @@ export async function run(t) {
   t.eq("CSS (slot,axis,value) pairs are in the vocabulary",
     [...cssPairs].filter((p) => !vocabPairs.has(p)), [])
 
-  // the converse holds except the measured empty-apply values (the emitter
-  // skips a value whose @apply resolves empty, so attachment-media icon and
-  // marker default are invisible in selectors by construction)
-  const missing = [...vocabPairs].filter((p) => !cssPairs.has(p))
+  // The axes the upstream renders from a typed prop (IR element dataAxes)
+  // reach the CSS only as in-@apply hooks — data-[size=sm] in the slot's own
+  // rule, group-data-[size=sm]/card in a descendant's — never as
+  // [data-axis=v] selectors, and a hook names only the values the CSS styles
+  // (toggle-group hooks size sm, its prop types default|lg|sm). So: every
+  // hooked value of a prop axis is listed, and the selector census below
+  // covers the cva axes alone.
+  const propAxes = new Set()
+  for (const f of readdirSync(root("generated/ir")).sort()) {
+    for (const c of JSON.parse(read(`generated/ir/${f}`)).components) {
+      for (const e of c.elements) for (const axis of Object.keys(e.dataAxes ?? {})) propAxes.add(`${e.slot}|${axis}`)
+    }
+  }
+  const unlisted = []
+  let hooks = 0
+  for (const f of readdirSync(root("dist/css")).sort()) {
+    if (!f.endsWith(".css")) continue
+    for (const m of read(`dist/css/${f}`).matchAll(/^  \[data-slot="([^"]+)"\] \{ @apply (.+?); \}$/gm)) {
+      for (const h of m[2].matchAll(/(?:^|[\s:])(group-)?data-\[([a-z-]+)=([^\]]+)\](?:\/([a-z-]+))?/g)) {
+        const slot = h[1] ? h[4] : m[1]
+        if (slot === undefined || !propAxes.has(`${slot}|${h[2]}`)) continue
+        hooks++
+        if (!vocabPairs.has(`${slot}|${h[2]}|${h[3]}`)) unlisted.push(`${f}: ${h[0].trim()}`)
+      }
+    }
+  }
+  t.eq("every prop-axis value the CSS hooks is in the vocabulary", unlisted, [])
+  t.ok("the prop-axis hook census sees the hooks", hooks > 0, `${hooks} hooks`)
+
+  // the converse holds for the cva axes (those with a selector; a prop axis
+  // can be one too, attachment-media variant) except the measured
+  // empty-apply values (the emitter skips a value whose @apply resolves
+  // empty, so attachment-media icon and marker default are invisible in
+  // selectors by construction)
+  const axisOf = (p) => p.split("|").slice(0, 2).join("|")
+  const cvaAxes = new Set([...cssPairs].map(axisOf))
+  const missing = [...vocabPairs].filter((p) => !cssPairs.has(p) && (cvaAxes.has(axisOf(p)) || !propAxes.has(axisOf(p))))
   t.eq("vocabulary values missing from CSS are exactly the measured empty-apply ones",
     missing, ["attachment-media|variant|icon", "marker|variant|default"])
 

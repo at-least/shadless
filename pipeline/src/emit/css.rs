@@ -69,6 +69,20 @@ pub struct IrFn {
     pub elements: Vec<IrEl>,
 }
 
+/// One author-set axis the upstream fn renders as `data-<axis>={param}` from
+/// a typed prop: the JSON is `{"default": string|null, "values": string[]}` —
+/// the same shape the vocabulary carries per axis. Recorded by the converter
+/// from the pinned TSX's prop union (a literal union, a `VariantProps` table
+/// or a `Pick` of one); boolean/number/externally-typed params record nothing
+/// (presence semantics or values not derivable from the pinned tree).
+#[derive(Deserialize, Clone, Default, serde::Serialize)]
+pub struct IrDataAxis {
+    #[serde(default)]
+    pub default: Option<String>,
+    #[serde(default)]
+    pub values: Vec<String>,
+}
+
 #[derive(Deserialize, Clone, Default)]
 pub struct IrEl {
     #[serde(default)]
@@ -81,6 +95,8 @@ pub struct IrEl {
     pub spread: bool,
     #[serde(default)]
     pub children: Vec<String>,
+    #[serde(rename = "dataAxes", default)]
+    pub data_axes: std::collections::BTreeMap<String, IrDataAxis>,
 }
 
 #[derive(Deserialize, Clone, Default)]

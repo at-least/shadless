@@ -29,14 +29,18 @@ upstream is `src/registry/pin.json`; re-pins land through the upstream drill
   the `data-<axis>` values and default each slot accepts from its cva table,
   the marker classes every render of a slot carries — group/peer markers and
   the skin classes a shipped stylesheet rule keys on). `npx
-  shadless-check <file|dir>...` flags a `data-variant`/`data-size` value the
-  slot does not list, `data-variant`/`data-size` on an element with no
+  shadless-check <file|dir>...` flags a `data-<axis>` value the slot does
+  not list, `data-variant`/`data-size` on an element with no
   `data-slot`, a duplicated attribute on one start tag, an unknown
   `data-slot` (warning — authoring hooks exist), and a missing required
   marker class (warning); exit 1 on errors (warnings with `--strict`), 2 on
-  usage errors. It checks the cva axes listed in `vocabulary.json`; hook-only
-  attributes whose full value set no table names (e.g. `card data-size`) are
-  deliberately not axes.
+  usage errors. It checks every axis `vocabulary.json` lists: the cva tables
+  and the `data-*` props the upstream renders from a typed value union
+  (`card data-size`, `select-trigger data-size`, the menu items'
+  `data-variant`, `field-legend data-variant`, `bubble`/`message`
+  `data-align`, … — 20 slot-axes that exist in the CSS only as in-`@apply`
+  hooks, so no table names their full value set); runtime state and boolean
+  or numeric props are not axes.
 - `docs-code-parity`, a full-tier browser gate: for every built page and
   every ` ```text,name=… ` code tab — RTL tabs included, which keep every
   class and are compared against their `-rtl` demo sources — the committed

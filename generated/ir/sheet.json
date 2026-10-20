@@ -113,7 +113,18 @@
      "children": [
       "{children}",
       "OPT?"
-     ]
+     ],
+     "dataAxes": {
+      "side": {
+       "default": "right",
+       "values": [
+        "bottom",
+        "left",
+        "right",
+        "top"
+       ]
+      }
+     }
     },
     {
      "tag": "SheetPrimitive.Close",

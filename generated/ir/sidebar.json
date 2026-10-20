@@ -160,7 +160,24 @@
       "expr",
       "<div slot=sidebar-gap class=[5]>",
       "<div slot=sidebar-container class=[3]>"
-     ]
+     ],
+     "dataAxes": {
+      "variant": {
+       "default": "sidebar",
+       "values": [
+        "floating",
+        "inset",
+        "sidebar"
+       ]
+      },
+      "side": {
+       "default": "left",
+       "values": [
+        "left",
+        "right"
+       ]
+      }
+     }
     },
     {
      "tag": "div",
@@ -186,7 +203,16 @@
      "spread": true,
      "children": [
       "<div slot=sidebar-inner class=[1]>"
-     ]
+     ],
+     "dataAxes": {
+      "side": {
+       "default": "left",
+       "values": [
+        "left",
+        "right"
+       ]
+      }
+     }
     },
     {
      "tag": "div",
@@ -457,7 +483,17 @@
       "h-8 text-sm"
      ],
      "spread": true,
-     "children": []
+     "children": [],
+     "dataAxes": {
+      "size": {
+       "default": "default",
+       "values": [
+        "default",
+        "lg",
+        "sm"
+       ]
+      }
+     }
     },
     {
      "tag": "Tooltip",
@@ -595,7 +631,16 @@
       "text-sidebar-foreground ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground active:bg-sidebar-accent active:text-sidebar-accent-foreground [&>svg]:text-sidebar-accent-foreground data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground h-7 gap-2 rounded-md px-2 focus-visible:ring-2 data-[size=md]:text-sm data-[size=sm]:text-xs [&>svg]:size-4 flex min-w-0 -translate-x-px items-center overflow-hidden outline-hidden group-data-[collapsible=icon]:hidden disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:shrink-0"
      ],
      "spread": true,
-     "children": []
+     "children": [],
+     "dataAxes": {
+      "size": {
+       "default": "md",
+       "values": [
+        "md",
+        "sm"
+       ]
+      }
+     }
     }
    ]
   }

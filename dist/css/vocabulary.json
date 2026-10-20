@@ -4,6 +4,7 @@
     "orientation",
     "side",
     "size",
+    "state",
     "variant"
   ],
   "schema": 1,
@@ -80,7 +81,15 @@
       "markers": []
     },
     "alert-dialog-content": {
-      "axes": {},
+      "axes": {
+        "size": {
+          "default": "default",
+          "values": [
+            "default",
+            "sm"
+          ]
+        }
+      },
       "component": "alert-dialog",
       "markers": [
         "group/alert-dialog-content"
@@ -152,6 +161,16 @@
             "sm",
             "xs"
           ]
+        },
+        "state": {
+          "default": "done",
+          "values": [
+            "done",
+            "error",
+            "idle",
+            "processing",
+            "uploading"
+          ]
         }
       },
       "component": "attachment",
@@ -210,7 +229,16 @@
       "markers": []
     },
     "avatar": {
-      "axes": {},
+      "axes": {
+        "size": {
+          "default": "default",
+          "values": [
+            "default",
+            "lg",
+            "sm"
+          ]
+        }
+      },
       "component": "avatar",
       "markers": [
         "group/avatar"
@@ -299,6 +327,13 @@
     },
     "bubble": {
       "axes": {
+        "align": {
+          "default": "start",
+          "values": [
+            "end",
+            "start"
+          ]
+        },
         "variant": {
           "default": "default",
           "values": [
@@ -400,7 +435,15 @@
       "markers": []
     },
     "card": {
-      "axes": {},
+      "axes": {
+        "size": {
+          "default": "default",
+          "values": [
+            "default",
+            "sm"
+          ]
+        }
+      },
       "component": "card",
       "markers": [
         "group/card"
@@ -517,7 +560,15 @@
       "markers": []
     },
     "context-menu-item": {
-      "axes": {},
+      "axes": {
+        "variant": {
+          "default": "default",
+          "values": [
+            "default",
+            "destructive"
+          ]
+        }
+      },
       "component": "context-menu",
       "markers": [
         "group/context-menu-item"
@@ -653,7 +704,15 @@
       "markers": []
     },
     "dropdown-menu-item": {
-      "axes": {},
+      "axes": {
+        "variant": {
+          "default": "default",
+          "values": [
+            "default",
+            "destructive"
+          ]
+        }
+      },
       "component": "dropdown-menu",
       "markers": [
         "group/dropdown-menu-item"
@@ -800,7 +859,15 @@
       "markers": []
     },
     "field-legend": {
-      "axes": {},
+      "axes": {
+        "variant": {
+          "default": "legend",
+          "values": [
+            "label",
+            "legend"
+          ]
+        }
+      },
       "component": "field",
       "markers": []
     },
@@ -1015,7 +1082,15 @@
       "markers": []
     },
     "menubar-item": {
-      "axes": {},
+      "axes": {
+        "variant": {
+          "default": "default",
+          "values": [
+            "default",
+            "destructive"
+          ]
+        }
+      },
       "component": "menubar",
       "markers": [
         "group/menubar-item"
@@ -1079,7 +1154,15 @@
       "markers": []
     },
     "message": {
-      "axes": {},
+      "axes": {
+        "align": {
+          "default": "start",
+          "values": [
+            "end",
+            "start"
+          ]
+        }
+      },
       "component": "message",
       "markers": [
         "group/message"
@@ -1118,7 +1201,32 @@
       ]
     },
     "message-scroller-button": {
-      "axes": {},
+      "axes": {
+        "size": {
+          "default": "icon-sm",
+          "values": [
+            "default",
+            "icon",
+            "icon-lg",
+            "icon-sm",
+            "icon-xs",
+            "lg",
+            "sm",
+            "xs"
+          ]
+        },
+        "variant": {
+          "default": "secondary",
+          "values": [
+            "default",
+            "destructive",
+            "ghost",
+            "link",
+            "outline",
+            "secondary"
+          ]
+        }
+      },
       "component": "message-scroller",
       "markers": []
     },
@@ -1138,7 +1246,15 @@
       "markers": []
     },
     "native-select": {
-      "axes": {},
+      "axes": {
+        "size": {
+          "default": "default",
+          "values": [
+            "default",
+            "sm"
+          ]
+        }
+      },
       "component": "native-select",
       "markers": []
     },
@@ -1158,7 +1274,15 @@
       "markers": []
     },
     "native-select-wrapper": {
-      "axes": {},
+      "axes": {
+        "size": {
+          "default": "default",
+          "values": [
+            "default",
+            "sm"
+          ]
+        }
+      },
       "component": "native-select",
       "markers": [
         "group/native-select"
@@ -1362,7 +1486,15 @@
       "markers": []
     },
     "select-trigger": {
-      "axes": {},
+      "axes": {
+        "size": {
+          "default": "default",
+          "values": [
+            "default",
+            "sm"
+          ]
+        }
+      },
       "component": "select",
       "markers": []
     },
@@ -1387,7 +1519,17 @@
       "markers": []
     },
     "sheet-content": {
-      "axes": {},
+      "axes": {
+        "side": {
+          "default": "right",
+          "values": [
+            "bottom",
+            "left",
+            "right",
+            "top"
+          ]
+        }
+      },
       "component": "sheet",
       "markers": []
     },
@@ -1457,7 +1599,15 @@
       "markers": []
     },
     "switch": {
-      "axes": {},
+      "axes": {
+        "size": {
+          "default": "default",
+          "values": [
+            "default",
+            "sm"
+          ]
+        }
+      },
       "component": "switch",
       "markers": [
         "group/switch",
@@ -1575,7 +1725,30 @@
       ]
     },
     "toggle-group": {
-      "axes": {},
+      "axes": {
+        "orientation": {
+          "default": "horizontal",
+          "values": [
+            "horizontal",
+            "vertical"
+          ]
+        },
+        "size": {
+          "default": null,
+          "values": [
+            "default",
+            "lg",
+            "sm"
+          ]
+        },
+        "variant": {
+          "default": null,
+          "values": [
+            "default",
+            "outline"
+          ]
+        }
+      },
       "component": "toggle-group",
       "markers": [
         "group/toggle-group"

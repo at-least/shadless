@@ -38,7 +38,16 @@
       "text-sm gap-2 group/message relative flex w-full min-w-0 data-[align=end]:flex-row-reverse"
      ],
      "spread": true,
-     "children": []
+     "children": [],
+     "dataAxes": {
+      "align": {
+       "default": "start",
+       "values": [
+        "end",
+        "start"
+       ]
+      }
+     }
     }
    ]
   },

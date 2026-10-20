@@ -76,7 +76,28 @@
       "*:data-[slot=bubble-content]:bg-primary *:data-[slot=bubble-content]:text-primary-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80"
      ],
      "spread": true,
-     "children": []
+     "children": [],
+     "dataAxes": {
+      "variant": {
+       "default": "default",
+       "values": [
+        "default",
+        "destructive",
+        "ghost",
+        "muted",
+        "outline",
+        "secondary",
+        "tinted"
+       ]
+      },
+      "align": {
+       "default": "start",
+       "values": [
+        "end",
+        "start"
+       ]
+      }
+     }
     }
    ]
   },
@@ -108,7 +129,23 @@
       "right-3"
      ],
      "spread": true,
-     "children": []
+     "children": [],
+     "dataAxes": {
+      "align": {
+       "default": "end",
+       "values": [
+        "end",
+        "start"
+       ]
+      },
+      "side": {
+       "default": "bottom",
+       "values": [
+        "bottom",
+        "top"
+       ]
+      }
+     }
     }
    ]
   }

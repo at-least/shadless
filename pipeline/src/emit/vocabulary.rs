@@ -20,13 +20,13 @@
 //! targets `data-slot="collapsible-trigger"`); leaving them out would make
 //! the checker warn on the product's own markup.
 //!
-//! Axes: cva tables only. A `data-<axis>` that exists only as an in-@apply
-//! hook (card `data-[size=sm]`, select-trigger `data-[size=default|sm]`,
-//! field-legend `data-[variant=…]`, dropdown-menu-item
-//! `data-[variant=destructive]`, …) is deliberately NOT an axis: React sets
-//! such values with no table naming the full set, so checking them would
-//! produce false errors. The checker documents this ("checks the cva axes
-//! listed in vocabulary.json").
+//! Axes: the cva tables, plus every `data-<axis>={param}` the upstream
+//! renders from a typed prop (card `data-size`, select-trigger `data-size`,
+//! field-legend and dropdown-menu-item `data-variant`, …), whose value union
+//! the converter records as element `dataAxes` — those exist in the shipped
+//! CSS only as in-@apply hooks (`data-[size=sm]`), which never name the full
+//! set. Runtime state (`data-state` set by radix or the kernel) and boolean
+//! or numeric props are not axes.
 //!
 //! Output is byte-stable: keys inserted sorted, arrays sorted, two-space
 //! indent, trailing newline.
@@ -85,21 +85,31 @@ fn table_axes(
             .and_then(|d| d.get(&axis))
             .cloned()
             .or_else(|| table.defaults.get(&axis).cloned());
-        match out.get_mut(&axis) {
-            Some((seen, def_slot)) => {
-                for v in values {
-                    if !seen.contains(&v) {
-                        seen.push(v);
-                    }
-                }
-                seen.sort();
-                if def_slot.is_none() {
-                    *def_slot = def;
+        merge_axis(out, axis, values, def);
+    }
+}
+
+/// One axis into a slot's axes: values unioned (sorted), first default wins.
+fn merge_axis(
+    out: &mut BTreeMap<String, (Vec<String>, Option<String>)>,
+    axis: String,
+    values: Vec<String>,
+    def: Option<String>,
+) {
+    match out.get_mut(&axis) {
+        Some((seen, def_slot)) => {
+            for v in values {
+                if !seen.contains(&v) {
+                    seen.push(v);
                 }
             }
-            None => {
-                out.insert(axis, (values, def));
+            seen.sort();
+            if def_slot.is_none() {
+                *def_slot = def;
             }
+        }
+        None => {
+            out.insert(axis, (values, def));
         }
     }
 }
@@ -143,6 +153,17 @@ pub fn build_vocabulary(irs: &[(&str, &CssIrComponent)]) -> Result<Vocabulary, S
                     "vocabulary: slot {:?} is carried by shipped IRs {:?} and {:?} — per-slot axes/markers would be ambiguous; name one slot differently",
                     slot, entry.component, name
                 ));
+            }
+            // author-set axes no cva table names (card data-size, menu-item
+            // data-variant, …): the converter records the prop union of each
+            // data-<axis>={param} the upstream renders as element dataAxes
+            for e in els {
+                for (axis, info) in &e.data_axes {
+                    axis_attributes.insert(axis.clone());
+                    let mut values = info.values.clone();
+                    values.sort();
+                    merge_axis(&mut entry.axes, axis.clone(), values, info.default.clone());
+                }
             }
             // markers = intersection of split_markers over EVERY element,
             // narrowed to group/peer markers and skin tokens with a skin
@@ -487,6 +508,115 @@ mod tests {
             }
         }
         assert!(checked > 0, "the shipped IRs carry element slots");
+    }
+
+    #[test]
+    fn unit_author_set_data_axes_from_the_ir_reach_the_vocabulary() {
+        // The hook-only gap: card renders data-size={size} from the typed
+        // prop `size?: "default" | "sm"`, and the shipped CSS keys on
+        // [data-size=sm] (dist/css/card.css) — but no cva table names the
+        // axis, so the vocabulary carried no card.size and the checker
+        // accepted data-size="huge" silently. The converter records the
+        // JSX data-<axis>={param} props with their prop-union values as
+        // element dataAxes; build_vocabulary folds them into the slot's
+        // axes so the checker's unknown-value rule covers them.
+        let root = crate::tree_root();
+        if !root.join("generated/ir").exists() {
+            if std::env::var_os("CI").is_some() {
+                panic!("CI: required tree input missing (skip: no shadless tree)");
+            }
+            eprintln!("skip: no shadless tree");
+            return;
+        }
+        let irs = crate::emit::demo::shipped_irs(&root)
+            .expect("the shipped IR set loads")
+            .0;
+        let mut names: Vec<String> = irs.iter().map(|(n, _)| n.clone()).collect();
+        names.sort();
+        let by_name: std::collections::HashMap<&str, &CssIrComponent> =
+            irs.iter().map(|(n, ir)| (n.as_str(), ir)).collect();
+        let pairs: Vec<(&str, &CssIrComponent)> = names
+            .iter()
+            .map(|n| (n.as_str(), by_name[n.as_str()]))
+            .collect();
+        let v = build_vocabulary(&pairs).expect("builds");
+        let expect = |slot: &str, axis: &str, values: &[&str], def: Option<&str>| {
+            let entry = v
+                .slots
+                .get(slot)
+                .unwrap_or_else(|| panic!("slot {slot} missing from the vocabulary"));
+            let got = entry
+                .axes
+                .get(axis)
+                .unwrap_or_else(|| panic!("slot {slot} carries no {axis} axis — the upstream data-{axis} prop union did not reach the vocabulary"));
+            let want: Vec<String> = values.iter().map(|s| s.to_string()).collect();
+            assert_eq!(got.0, want, "slot {slot} axis {axis} values");
+            assert_eq!(got.1.as_deref(), def, "slot {slot} axis {axis} default");
+        };
+        expect("card", "size", &["default", "sm"], Some("default"));
+        expect(
+            "alert-dialog-content",
+            "size",
+            &["default", "sm"],
+            Some("default"),
+        );
+        expect("avatar", "size", &["default", "lg", "sm"], Some("default"));
+        expect("switch", "size", &["default", "sm"], Some("default"));
+        expect("native-select", "size", &["default", "sm"], Some("default"));
+        expect(
+            "native-select-wrapper",
+            "size",
+            &["default", "sm"],
+            Some("default"),
+        );
+        expect(
+            "select-trigger",
+            "size",
+            &["default", "sm"],
+            Some("default"),
+        );
+        expect(
+            "dropdown-menu-item",
+            "variant",
+            &["default", "destructive"],
+            Some("default"),
+        );
+        expect(
+            "context-menu-item",
+            "variant",
+            &["default", "destructive"],
+            Some("default"),
+        );
+        expect(
+            "menubar-item",
+            "variant",
+            &["default", "destructive"],
+            Some("default"),
+        );
+        // select-item is deliberately absent: upstream SelectItem renders NO
+        // data-variant JSX — its data-[variant=destructive] CSS hook can only
+        // fire through a spread prop, so no value set is claimed there
+        expect(
+            "field-legend",
+            "variant",
+            &["label", "legend"],
+            Some("legend"),
+        );
+        expect("bubble", "align", &["end", "start"], Some("start"));
+        expect("message", "align", &["end", "start"], Some("start"));
+        expect(
+            "attachment",
+            "state",
+            &["done", "error", "idle", "processing", "uploading"],
+            Some("done"),
+        );
+        expect(
+            "sheet-content",
+            "side",
+            &["bottom", "left", "right", "top"],
+            Some("right"),
+        );
+        expect("toggle-group", "size", &["default", "lg", "sm"], None);
     }
 
     #[test]

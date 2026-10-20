@@ -26,7 +26,16 @@
      "spread": true,
      "children": [
       "<SwitchPrimitive.Thumb slot=switch-thumb class=[1]>"
-     ]
+     ],
+     "dataAxes": {
+      "size": {
+       "default": "default",
+       "values": [
+        "default",
+        "sm"
+       ]
+      }
+     }
     },
     {
      "tag": "SwitchPrimitive.Thumb",

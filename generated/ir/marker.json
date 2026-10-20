@@ -39,7 +39,17 @@
       "gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left group/marker relative flex w-full items-center"
      ],
      "spread": true,
-     "children": []
+     "children": [],
+     "dataAxes": {
+      "variant": {
+       "default": "default",
+       "values": [
+        "border",
+        "default",
+        "separator"
+       ]
+      }
+     }
     }
    ]
   },

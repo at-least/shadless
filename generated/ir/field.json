@@ -55,7 +55,16 @@
       "mb-1.5 font-medium data-[variant=label]:text-sm data-[variant=legend]:text-base"
      ],
      "spread": true,
-     "children": []
+     "children": [],
+     "dataAxes": {
+      "variant": {
+       "default": "legend",
+       "values": [
+        "label",
+        "legend"
+       ]
+      }
+     }
     }
    ]
   },
@@ -89,6 +98,16 @@
      "children": [],
      "attrs": {
       "role": "group"
+     },
+     "dataAxes": {
+      "orientation": {
+       "default": "vertical",
+       "values": [
+        "horizontal",
+        "responsive",
+        "vertical"
+       ]
+      }
      }
     }
    ]

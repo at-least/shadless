@@ -42,6 +42,15 @@
      "children": [],
      "attrs": {
       "role": "group"
+     },
+     "dataAxes": {
+      "orientation": {
+       "default": null,
+       "values": [
+        "horizontal",
+        "vertical"
+       ]
+      }
      }
     }
    ]

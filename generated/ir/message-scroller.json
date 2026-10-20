@@ -101,7 +101,33 @@
      "spread": true,
      "children": [
       "OPT?"
-     ]
+     ],
+     "dataAxes": {
+      "variant": {
+       "default": "secondary",
+       "values": [
+        "default",
+        "destructive",
+        "ghost",
+        "link",
+        "outline",
+        "secondary"
+       ]
+      },
+      "size": {
+       "default": "icon-sm",
+       "values": [
+        "default",
+        "icon",
+        "icon-lg",
+        "icon-sm",
+        "icon-xs",
+        "lg",
+        "sm",
+        "xs"
+       ]
+      }
+     }
     },
     {
      "tag": "Button",

@@ -14,18 +14,17 @@
 //
 // What is checked (severities fixed by measurement over the shipped corpus —
 // 5,276+1,657 slotted elements run before these were frozen):
-//   error   unknown-value       data-<axis>="<v>" where <axis> is a cva axis of
-//                               the slot and <v> is not one of its values. The
+//   error   unknown-value       data-<axis>="<v>" where <axis> is an axis of the
+//                               slot and <v> is not one of its values. The
 //                               empty value is accepted exactly when the axis
 //                               has a default (the stylesheet's default twin
-//                               selects [data-axis=""]). Axes NOT in the slot's
-//                               vocabulary are skipped: card data-size,
-//                               select-trigger data-size, field-legend and
-//                               dropdown-menu-item data-variant exist only as
-//                               in-@apply hooks whose full value set no table
-//                               names — checking them would produce false
-//                               errors, so the checker covers exactly the cva
-//                               axes listed in vocabulary.json.
+//                               selects [data-axis=""]). A slot's axes are its
+//                               cva tables plus the data-<axis>={prop} the
+//                               upstream renders from a typed prop (card
+//                               data-size, menu-item data-variant: in-@apply
+//                               hooks in the CSS, the value set from the prop's
+//                               type); runtime state and boolean/numeric props
+//                               are not axes and are not checked.
 //   error   axis-without-slot   data-variant or data-size on an element with no
 //                               data-slot (data-orientation is runtime state on
 //                               many elements and is exempt).

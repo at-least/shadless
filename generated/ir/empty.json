@@ -67,7 +67,16 @@
       "bg-transparent"
      ],
      "spread": true,
-     "children": []
+     "children": [],
+     "dataAxes": {
+      "variant": {
+       "default": "default",
+       "values": [
+        "default",
+        "icon"
+       ]
+      }
+     }
     }
    ]
   },

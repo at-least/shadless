@@ -28,7 +28,31 @@
      "spread": true,
      "children": [
       "<ToggleGroupContext.Provider>"
-     ]
+     ],
+     "dataAxes": {
+      "variant": {
+       "default": null,
+       "values": [
+        "default",
+        "outline"
+       ]
+      },
+      "size": {
+       "default": null,
+       "values": [
+        "default",
+        "lg",
+        "sm"
+       ]
+      },
+      "orientation": {
+       "default": "horizontal",
+       "values": [
+        "horizontal",
+        "vertical"
+       ]
+      }
+     }
     },
     {
      "tag": "ToggleGroupContext.Provider",

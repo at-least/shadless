@@ -69,7 +69,16 @@
      "children": [
       "{children}",
       "<SelectPrimitive.Icon>"
-     ]
+     ],
+     "dataAxes": {
+      "size": {
+       "default": "default",
+       "values": [
+        "default",
+        "sm"
+       ]
+      }
+     }
     },
     {
      "tag": "SelectPrimitive.Icon",

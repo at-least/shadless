@@ -54,7 +54,16 @@
       "bg-muted"
      ],
      "spread": true,
-     "children": []
+     "children": [],
+     "dataAxes": {
+      "variant": {
+       "default": "default",
+       "values": [
+        "default",
+        "line"
+       ]
+      }
+     }
     }
    ]
   },

@@ -206,6 +206,19 @@ pub struct CvComponent {
 }
 
 /// resolve context (fileCtx + extractFn's ctx in one)
+/// The pinned-source lookups the author-set data-* axes (dataAxes) read:
+/// every `function X(` signature (file, balanced-paren signature text incl.
+/// its type annotation — dataAxes reads OTHER files' signatures through it,
+/// `Pick<...typeof Button, "variant" | "size">`), every file's ORIGINAL
+/// source (the `type` alias bodies annotations reference, NativeSelectProps)
+/// and every cva table by name, exported or file-local (the
+/// `VariantProps<typeof T>` lookups).
+pub struct DataAxesLookups<'a> {
+    pub fn_sigs: &'a HashMap<String, (String, String)>,
+    pub srcs: &'a HashMap<String, String>,
+    pub tables: &'a HashMap<String, cva::CvTable>,
+}
+
 pub struct CvCtx<'a> {
     pub file: &'a mut CvFile,
     pub reg: &'a CvReg,
@@ -216,6 +229,7 @@ pub struct CvCtx<'a> {
     pub body_start: usize,
     pub body_end: usize,
     pub ref_keys: &'a mut HashSet<String>,
+    pub axes: &'a DataAxesLookups<'a>,
 }
 
 #[derive(Clone)]
@@ -344,6 +358,7 @@ fn convert_file(
     src: &str,
     js: &str,
     reg: &mut CvReg,
+    lookups: &DataAxesLookups<'_>,
 ) -> Result<CvFile, String> {
     let mut f = CvFile {
         name: name.to_string(),
@@ -445,6 +460,7 @@ fn convert_file(
                 body_start: d.body[0],
                 body_end: d.body[1],
                 ref_keys: &mut file_ref_keys,
+                axes: lookups,
             };
             for k in 0..pairs.len() {
                 if pairs[k].fn_index != pi as isize {
@@ -461,6 +477,244 @@ fn convert_file(
     f.tier = tier_of(name, &f.imports);
     cv_same_file_wrap(&mut f);
     Ok(f)
+}
+
+// ------------------------------------------------- dataAxes (author-set axes)
+
+/// The balanced-paren signature text of `function <name>(` in `src`, the
+/// span holding the destructuring AND its type annotation (the annotation
+/// lives inside the parens: `...props }: Type)`). Strings/comments masked so
+/// parens inside them cannot unbalance the count.
+fn cv_fn_sig_text(src: &str, fn_at: usize) -> Option<String> {
+    let bytes = src.as_bytes();
+    let mut i = fn_at;
+    while i < bytes.len() && bytes[i] != b'(' {
+        i += 1;
+    }
+    if i >= bytes.len() {
+        return None;
+    }
+    let op = i;
+    let mut depth = 0usize;
+    while i < bytes.len() {
+        let e = cv_mask_end(src, i);
+        if e > 0 {
+            i = e;
+            continue;
+        }
+        match bytes[i] {
+            b'(' => depth += 1,
+            b')' => {
+                depth -= 1;
+                if depth == 0 {
+                    return Some(src[op + 1..i].to_string());
+                }
+            }
+            _ => {}
+        }
+        i += 1;
+    }
+    None
+}
+
+/// The destructured parameter names (top level of the signature's object
+/// pattern): `function Card({ className, size = "default", ...props }: T)` ->
+/// ["className", "size", "props"].
+fn cv_fn_params(sig: &str) -> Vec<String> {
+    let bytes = sig.as_bytes();
+    let start = match sig.find('{') {
+        Some(i) => i,
+        None => return Vec::new(),
+    };
+    let mut depth = 0usize;
+    let mut end = sig.len();
+    let mut i = start;
+    while i < bytes.len() {
+        match bytes[i] {
+            b'{' => depth += 1,
+            b'}' => {
+                depth -= 1;
+                if depth == 0 {
+                    end = i;
+                    break;
+                }
+            }
+            _ => {}
+        }
+        i += 1;
+    }
+    sig[start + 1..end]
+        .split(',')
+        .filter_map(|piece| {
+            let name = piece.split('=').next()?.trim();
+            let name = name.split(':').next()?.trim();
+            if name.is_empty()
+                || name.starts_with("...")
+                || !name
+                    .chars()
+                    .all(|c| c.is_alphanumeric() || c == '_' || c == '$')
+            {
+                return None;
+            }
+            Some(name.to_string())
+        })
+        .collect()
+}
+
+static CV_STRING_LIT_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r#""([^"]*)""#).unwrap());
+
+static CV_VARIANT_PROPS_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r#"VariantProps<\s*typeof\s+([A-Za-z_$][A-Za-z0-9_$]*)\s*>"#).unwrap()
+});
+
+static CV_PICK_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(
+        r#"Pick<\s*React\.ComponentProps<\s*typeof\s+([A-Za-z_$][A-Za-z0-9_$]*)\s*>\s*,\s*([^>]+)>"#,
+    )
+    .unwrap()
+});
+
+static CV_EXTERNAL_PROPS_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"ComponentProps<\s*typeof\s+[A-Za-z_$][A-Za-z0-9_$]*\.").unwrap());
+
+/// Top-level `type X = ...` declarations of one pinned file: the body runs
+/// from the declaration line to the next top-level item (`type`/`function`/
+/// `const`/`export` at column 0) or EOF — the regex crate has no lookahead
+/// and the declarations do not all end in `;`.
+fn cv_alias_bodies(src: &str) -> Vec<(String, String)> {
+    let lines: Vec<&str> = src.lines().collect();
+    let mut out: Vec<(String, String)> = Vec::new();
+    let mut open: Option<(String, usize)> = None;
+    for (idx, line) in lines.iter().enumerate() {
+        let trimmed = line.trim_start();
+        let opens_item = trimmed.starts_with("type ")
+            || trimmed.starts_with("function ")
+            || trimmed.starts_with("const ")
+            || trimmed.starts_with("export ");
+        if opens_item && let Some((name, start)) = open.take() {
+            out.push((name, lines[start..idx].join("\n")));
+        }
+        if open.is_none() && trimmed.starts_with("type ") {
+            let rest = &trimmed["type ".len()..];
+            let name: String = rest
+                .chars()
+                .take_while(|c| c.is_alphanumeric() || *c == '_' || *c == '$')
+                .collect();
+            if name.chars().next().is_some_and(|c| c.is_ascii_uppercase()) {
+                open = Some((name, idx));
+            }
+        }
+    }
+    if let Some((name, start)) = open.take() {
+        out.push((name, lines[start..].join("\n")));
+    }
+    out
+}
+
+fn cv_table_axis_values(table: &CvTable, axis: &str) -> Option<Vec<String>> {
+    let a = table.axes.iter().find(|a| a.axis == axis)?;
+    // kv.k is the value name; kv.v is its class string
+    let mut vs: Vec<String> = a.values.iter().map(|kv| kv.k.clone()).collect();
+    vs.sort();
+    Some(vs)
+}
+
+/// The value union of `axis` found anywhere in one signature: the literal
+/// string union on a param of that name, a `VariantProps<typeof T>` table
+/// axis, a `Pick<...typeof X, ...>` forward resolved through X's signature,
+/// or a same-file `type` alias wrapping any of those. `boolean`/`number`
+/// params (presence or unbounded values) and externally-typed params (a
+/// Radix primitive's props) return Ok(None) — the axis stays unchecked,
+/// exactly as before dataAxes existed. A param of that name none of the
+/// rules classify is Err: a re-pinned upstream shape must be classified,
+/// not silently dropped.
+fn cv_axis_values_in_sig(
+    lookups: &DataAxesLookups<'_>,
+    file: &str,
+    sig: &str,
+    axis: &str,
+    depth: usize,
+) -> Result<Option<Vec<String>>, String> {
+    if depth > 4 {
+        return Err(format!(
+            "dataAxes: Pick chain for axis {:?} deeper than 4 — classify the new upstream shape",
+            axis
+        ));
+    }
+    // 1. literal union on the param (same name as the axis in every pinned
+    // data-<axis>={param} render — measured at shadcn@4.19.0)
+    let ann_re = Regex::new(&format!(
+        r#"(?:^|[{{\n,])\s*{}\??:\s*([^,\n}}]+)"#,
+        regex::escape(axis)
+    ))
+    .unwrap();
+    if let Some(m) = ann_re.captures(sig) {
+        let t = m.get(1).unwrap().as_str();
+        let lits: Vec<String> = CV_STRING_LIT_RE
+            .captures_iter(t)
+            .map(|c| c[1].to_string())
+            .collect();
+        if !lits.is_empty() {
+            let mut vs = lits;
+            vs.sort();
+            vs.dedup();
+            return Ok(Some(vs));
+        }
+        if t.trim() == "boolean" || t.trim() == "number" {
+            return Ok(None);
+        }
+        if t.contains("ComponentProps") || t.contains("ForwardedRef") {
+            return Ok(None); // external (Radix primitive) typing
+        }
+    }
+    // 2. VariantProps<typeof T> — the table's own axis values (the registry
+    // holds every pinned table, exported or file-local)
+    for c in CV_VARIANT_PROPS_RE.captures_iter(sig) {
+        if let Some(vs) = lookups
+            .tables
+            .get(&c[1])
+            .and_then(|t| cv_table_axis_values(t, axis))
+        {
+            return Ok(Some(vs));
+        }
+    }
+    // 3. Pick<React.ComponentProps<typeof X>, "a" | "b"> — X's signature
+    if let Some(c) = CV_PICK_RE.captures(sig) {
+        let picks: Vec<String> = CV_STRING_LIT_RE
+            .captures_iter(&c[2])
+            .map(|m| m[1].to_string())
+            .collect();
+        if picks.iter().any(|n| n == axis)
+            && let Some((ofile, xsig)) = lookups.fn_sigs.get(&c[1])
+            && let Some(vs) = cv_axis_values_in_sig(lookups, ofile, xsig, axis, depth + 1)?
+        {
+            return Ok(Some(vs));
+        }
+    }
+    // 4. a same-file `type` alias referenced from this signature
+    // (native-select: `type NativeSelectProps = Omit<..., "size"> & { size?: ... }`)
+    if let Some(file_src) = lookups.srcs.get(file) {
+        for (alias, body) in cv_alias_bodies(file_src) {
+            if sig.contains(&format!(": {}", alias))
+                && let Some(vs) = cv_axis_values_in_sig(lookups, file, &body, axis, depth + 1)?
+            {
+                return Ok(Some(vs));
+            }
+        }
+    }
+    // a Radix primitive's props (typeof Namespace.Component) are external:
+    // their value domains live outside the pinned tree
+    if CV_EXTERNAL_PROPS_RE.is_match(sig) {
+        return Ok(None);
+    }
+    // unclassified: is there even a param of that name?
+    if cv_fn_params(sig).iter().any(|p| p == axis) {
+        return Err(format!(
+            "dataAxes: data-{}={{}} renders from a param whose annotation no rule classifies — classify it (literal union | VariantProps | Pick | boolean | number | external)",
+            axis
+        ));
+    }
+    Ok(None)
 }
 
 /// Builds one element record + its conditionals from a paired
@@ -488,6 +742,16 @@ fn cv_process_element(
     let mut classes: Vec<String> = Vec::new();
     let mut spread = false;
     let mut attrs = JsonObj::new();
+    // author-set data-* axes: data-<axis>={param} rendered from a typed
+    // param. The value union comes from the ORIGINAL signature (the
+    // downgraded JS erased the annotations): literal union, VariantProps
+    // table, Pick forward or same-file alias. These become the element's
+    // dataAxes — the vocabulary folds them into the slot's axes, so the
+    // checker validates values the shipped CSS keys on even where no cva
+    // table exists (card data-size, menu-item data-variant, ...).
+    let sig: Option<String> = ctx.axes.fn_sigs.get(&ctx.fn_name).map(|(_, s)| s.clone());
+    let params = sig.as_deref().map(cv_fn_params).unwrap_or_default();
+    let mut data_axes = JsonObj::new();
     for p in &props {
         if p.spread {
             spread = true;
@@ -506,6 +770,36 @@ fn cv_process_element(
             let n = cv_parse_expr(&p.val);
             if n.kind == "str" {
                 attrs = attrs.add(&p.key, Json::Str(n.str));
+            }
+        }
+        if let Some(axis) = p.key.strip_prefix("data-") {
+            let n = cv_parse_expr(&p.val);
+            if n.kind == "ident" && params.iter().any(|x| x == &n.ident) {
+                match cv_axis_values_in_sig(
+                    ctx.axes,
+                    &ctx.file.name,
+                    sig.as_deref().unwrap_or(""),
+                    axis,
+                    0,
+                ) {
+                    Ok(Some(values)) => {
+                        let entry = JsonObj::new()
+                            .add(
+                                "default",
+                                match ctx.param_defaults.get(&n.ident) {
+                                    Some(d) if !d.is_empty() => Json::Str(d.clone()),
+                                    _ => Json::Null,
+                                },
+                            )
+                            .add(
+                                "values",
+                                Json::Arr(values.into_iter().map(Json::Str).collect()),
+                            );
+                        data_axes = data_axes.add(axis, Json::from_obj(entry));
+                    }
+                    Ok(None) => {}
+                    Err(e) => return Err(e),
+                }
             }
         }
     }
@@ -604,6 +898,9 @@ fn cv_process_element(
         // additive and omitted when empty, so 60 of the 61 IR files are
         // unchanged
         o = o.add("attrs", Json::from_obj(attrs));
+    }
+    if !data_axes.is_empty() {
+        o = o.add("dataAxes", Json::from_obj(data_axes));
     }
     // child-cond: an expression-container child that is a logical or
     // conditional; then class-cond inside className cn() args
@@ -1790,8 +2087,49 @@ pub fn run_convert() -> Result<(), String> {
         src_of.insert(name.clone(), b);
         js_of.insert(name.clone(), js);
     }
+    // every `function X(` signature in the ORIGINAL sources — the downgraded
+    // JS erased the type annotations, and the author-set data-* axes
+    // (element dataAxes) read the prop unions from the original text
+    let mut fn_sigs: HashMap<String, (String, String)> = HashMap::new();
+    for name in &files {
+        let src = &src_of[name];
+        let mut from = 0usize;
+        while let Some(rel) = src[from..].find("\nfunction ") {
+            let at = from + rel + 1;
+            let rest = &src[at + "function ".len()..];
+            let name_end = rest
+                .find(|c: char| !(c.is_alphanumeric() || c == '_' || c == '$'))
+                .unwrap_or(rest.len());
+            let fname = &rest[..name_end];
+            if fname
+                .chars()
+                .next()
+                .is_some_and(|c| c.is_ascii_uppercase() || c == '_' || c == '$')
+                && let Some(sig) = cv_fn_sig_text(src, at)
+            {
+                fn_sigs.insert(fname.to_string(), (name.clone(), sig));
+            }
+            from = at + "function ".len();
+        }
+    }
     let (mut reg, global_keys) = cva::cv_build_reg(&files, &js_of);
     reg.pin_commit = pin_commit.clone();
+    // every pinned cva table by name, exported or file-local — VariantProps
+    // references file-local tables too (attachmentVariants)
+    let mut table_registry: HashMap<String, cva::CvTable> = HashMap::new();
+    for name in &files {
+        let tables = cva::cv_tables_of(&js_of[name]);
+        for tname in tables.names.clone() {
+            if let Some(t) = tables.get(&tname) {
+                table_registry.insert(tname.clone(), t.clone());
+            }
+        }
+    }
+    let lookups = DataAxesLookups {
+        fn_sigs: &fn_sigs,
+        srcs: &src_of,
+        tables: &table_registry,
+    };
     let all_src_joined = files
         .iter()
         .map(|n| src_of[n].as_str())
@@ -1836,7 +2174,7 @@ pub fn run_convert() -> Result<(), String> {
             fail = true;
         }
 
-        let ir = match convert_file(&root, name, src, js, &mut reg) {
+        let ir = match convert_file(&root, name, src, js, &mut reg, &lookups) {
             Ok(ir) => ir,
             Err(e) => {
                 eprintln!("FAIL convert[{}]: {}", name, e);

@@ -43,7 +43,20 @@
       "bg-primary text-primary-foreground [a]:hover:bg-primary/80"
      ],
      "spread": true,
-     "children": []
+     "children": [],
+     "dataAxes": {
+      "variant": {
+       "default": "default",
+       "values": [
+        "default",
+        "destructive",
+        "ghost",
+        "link",
+        "outline",
+        "secondary"
+       ]
+      }
+     }
     }
    ]
   }

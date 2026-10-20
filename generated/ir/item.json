@@ -94,7 +94,25 @@
       "gap-2.5 px-3 py-2.5"
      ],
      "spread": true,
-     "children": []
+     "children": [],
+     "dataAxes": {
+      "variant": {
+       "default": "default",
+       "values": [
+        "default",
+        "muted",
+        "outline"
+       ]
+      },
+      "size": {
+       "default": "default",
+       "values": [
+        "default",
+        "sm",
+        "xs"
+       ]
+      }
+     }
     }
    ]
   },
@@ -110,7 +128,17 @@
       "bg-transparent"
      ],
      "spread": true,
-     "children": []
+     "children": [],
+     "dataAxes": {
+      "variant": {
+       "default": "default",
+       "values": [
+        "default",
+        "icon",
+        "image"
+       ]
+      }
+     }
     }
    ]
   },

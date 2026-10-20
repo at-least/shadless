@@ -276,7 +276,33 @@
      "spread": true,
      "children": [
       "OPT?"
-     ]
+     ],
+     "dataAxes": {
+      "size": {
+       "default": "default",
+       "values": [
+        "default",
+        "icon",
+        "icon-lg",
+        "icon-sm",
+        "icon-xs",
+        "lg",
+        "sm",
+        "xs"
+       ]
+      },
+      "variant": {
+       "default": "outline",
+       "values": [
+        "default",
+        "destructive",
+        "ghost",
+        "link",
+        "outline",
+        "secondary"
+       ]
+      }
+     }
     }
    ]
   },
@@ -296,7 +322,33 @@
      "spread": true,
      "children": [
       "OPT?"
-     ]
+     ],
+     "dataAxes": {
+      "size": {
+       "default": "default",
+       "values": [
+        "default",
+        "icon",
+        "icon-lg",
+        "icon-sm",
+        "icon-xs",
+        "lg",
+        "sm",
+        "xs"
+       ]
+      },
+      "variant": {
+       "default": "outline",
+       "values": [
+        "default",
+        "destructive",
+        "ghost",
+        "link",
+        "outline",
+        "secondary"
+       ]
+      }
+     }
     }
    ]
   },
@@ -316,7 +368,33 @@
      "spread": true,
      "children": [
       "OPT?"
-     ]
+     ],
+     "dataAxes": {
+      "size": {
+       "default": "default",
+       "values": [
+        "default",
+        "icon",
+        "icon-lg",
+        "icon-sm",
+        "icon-xs",
+        "lg",
+        "sm",
+        "xs"
+       ]
+      },
+      "variant": {
+       "default": "default",
+       "values": [
+        "default",
+        "destructive",
+        "ghost",
+        "link",
+        "outline",
+        "secondary"
+       ]
+      }
+     }
     }
    ]
   },
@@ -336,7 +414,33 @@
      "spread": true,
      "children": [
       "OPT?"
-     ]
+     ],
+     "dataAxes": {
+      "size": {
+       "default": "default",
+       "values": [
+        "default",
+        "icon",
+        "icon-lg",
+        "icon-sm",
+        "icon-xs",
+        "lg",
+        "sm",
+        "xs"
+       ]
+      },
+      "variant": {
+       "default": "default",
+       "values": [
+        "default",
+        "destructive",
+        "ghost",
+        "link",
+        "outline",
+        "secondary"
+       ]
+      }
+     }
     }
    ]
   }
