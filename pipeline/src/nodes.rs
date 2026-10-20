@@ -1034,13 +1034,15 @@ fn self_host(n: Node) -> Node {
         // it — whoever owns it must not silently be every build's compiler.
         // DEV_NODE_INPUTS is TwCli::dev()'s script plus the core packages
         // the compile runs, so this table cannot drift from the Command::new
-        // site. consumer-sim's floor tree is declared in the Go table.
-        ("demo", crate::emit::tw::DEV_NODE_INPUTS),
+        // site. consumer-sim's floor tree is declared in the Go table;
+        // path-parity compiles through a `pipeline tw` child; demo writes
+        // the css sources and compiles nothing (demo-css does).
         ("demo-css", crate::emit::tw::DEV_NODE_INPUTS),
         ("product-build", crate::emit::tw::DEV_NODE_INPUTS),
         ("oracle-css", crate::emit::tw::DEV_NODE_INPUTS),
         ("consumer-sim", crate::emit::tw::DEV_NODE_INPUTS),
         ("docs-code-parity", crate::emit::tw::DEV_NODE_INPUTS),
+        ("path-parity", crate::emit::tw::DEV_NODE_INPUTS),
         ("example-oracle", &["node_modules/.bin/esbuild"]),
         ("example-fixture", &["node_modules/.bin/esbuild"]),
         ("contract-fixture", &["node_modules/.bin/esbuild"]),
@@ -1158,7 +1160,6 @@ mod self_host_tests {
             ("build-js", "node_modules/.bin/esbuild"),
             ("convert", "node_modules/.bin/esbuild"),
             ("typecheck", "node_modules/.bin/tsc"),
-            ("demo", crate::emit::tw::TwCli::dev().script()),
             ("demo-css", crate::emit::tw::TwCli::dev().script()),
             ("product-build", crate::emit::tw::TwCli::dev().script()),
             ("oracle-css", crate::emit::tw::TwCli::dev().script()),
@@ -1205,12 +1206,12 @@ mod self_host_tests {
     fn unit_tw_compilers_declare_the_core_engine() {
         let g: Vec<Node> = all_go().into_iter().map(self_host).collect();
         for id in [
-            "demo",
             "demo-css",
             "product-build",
             "oracle-css",
             "consumer-sim",
             "docs-code-parity",
+            "path-parity",
         ] {
             let n = g.iter().find(|n| n.id == id).unwrap();
             let inputs = n.inputs.as_deref().unwrap_or(&[]);

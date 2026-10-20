@@ -41,11 +41,13 @@ fn is_repo_root(dir: &Path) -> bool {
 /// script (`TwCli::dev()` runs element 0) and the packages it takes the
 /// compiler from — the root tailwindcss (also what `@import "tailwindcss"`
 /// resolves to), @tailwindcss/node, and @tailwindcss/oxide with its native
-/// binaries. An strace of a compile reads 57 files there; @tailwindcss/cli
-/// nests none of them. Whole packages: their dist chunk names are
-/// content-hashed per release.
+/// binaries — @tailwindcss/cli nests none of them — plus the CLI's own
+/// package.json files it reads. Whole packages: their dist chunk names are
+/// content-hashed per release. Not declared: the transitive JS a compile
+/// also runs (lightningcss and its native, enhanced-resolve, jiti, ...).
 pub const DEV_NODE_INPUTS: &[&str] = &[
     "node_modules/@tailwindcss/cli/dist/index.mjs",
+    "node_modules/@tailwindcss/cli/**",
     "node_modules/tailwindcss/**",
     "node_modules/@tailwindcss/node/**",
     "node_modules/@tailwindcss/oxide*/**",
