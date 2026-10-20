@@ -200,7 +200,10 @@ mod tests {
         let t = tmp("fold");
         fs::write(t.join("c.txt"), "child").unwrap();
         let child = mnode("child", &[], Some(&["c.txt"]), None);
-        let mut parent = mnode("parent", &["child"], Some(&["c.txt"]), None);
+        // the parent declares nothing itself: the child's content can only
+        // reach its key through the dependency key (declaring c.txt here too
+        // kept this test green with dependency folding deleted)
+        let mut parent = mnode("parent", &["child"], Some(&[]), None);
         parent.needs = vec!["child".to_string()];
         let g1 = Graph::new(vec![parent.clone(), child.clone()]).unwrap();
         let k1 = Keyer::new(&t, &g1).key("parent").unwrap().unwrap();

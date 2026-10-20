@@ -10,24 +10,32 @@
 //! `go-parity-final` tag (gate_parity.rs, the old opt-in Go cross-check,
 //! was deleted when the Go engine was removed).
 //!
-//! The replay compares what the committed tree decides. A case or key row
-//! that folds an untracked file — docs/site/public from a local zola build,
-//! build/, tools/contracts/out, node_modules, the nested .upstream checkout
-//! — is local state: `inputs` lists are compared without untracked paths,
-//! and key rows whose node (or a node it needs) declares an untracked input,
-//! or produces an untracked file, are not compared. A zola rebuild reddened
-//! this test with no committed change (0319f1f re-recorded it).
+//! The replay compares what the tracked files decide (`git ls-files`: their
+//! working-tree content, so an uncommitted edit to one still reddens it, as
+//! it should). A case or key row that folds an untracked file —
+//! docs/site/public from a local zola build, build/, tools/contracts/out,
+//! node_modules, the nested .upstream checkout — is local state: `inputs`
+//! lists are compared without untracked paths, and key rows whose node (or
+//! a node it needs) declares an untracked input, or produces an untracked
+//! file, are not compared. A zola rebuild reddened this test with no
+//! committed change (0319f1f re-recorded it). Dependency-key folding is
+//! covered by key.rs's tests: none of the rows compared today has needs.
+//!
+//! `status` cases read the untracked stamp store too, but the stamps a
+//! normal (self-hosted) run writes never carry a go-mirror key — every
+//! node's key differs between the two tables (measured 2026-10-21: 0 of
+//! 70 equal) — so these cases replay as recorded.
 //!
 //! Layout (flat, one slug per case — see gen_golden.sh):
 //!   <slug>.cmd        the argv, one line, space-separated
 //!   <slug>.rs.out / .rs.err / .rs.code   the recorded verdict
 //!   keys.rs.txt       the __keys dump over the real tree
 
-use std::collections::HashSet;
+use std::collections::{BTreeMap, HashSet};
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
-/// What a fresh clone of the tree holds.
+/// The tracked files (what a fresh clone of the tree holds).
 fn tracked_paths(root: &Path) -> HashSet<String> {
     let out = Command::new("git")
         .arg("-C")
@@ -48,32 +56,33 @@ fn tracked_paths(root: &Path) -> HashSet<String> {
         .collect()
 }
 
-/// Nodes whose `__keys` row folds an untracked file: through its own
+/// Nodes whose `__keys` row folds an untracked file — through its own
 /// declared inputs or those of a node it needs (dependency keys fold up), or
-/// through its produces (the row's outputs digest).
-fn local_state_rows(root: &Path, tracked: &HashSet<String>) -> HashSet<String> {
+/// through its produces (the row's outputs digest) — each with the file.
+fn local_state_rows(root: &Path, tracked: &HashSet<String>) -> BTreeMap<String, String> {
     let g = pipeline::graph::load_graph_at(root).expect("graph loads");
     let untracked = |patterns: Option<&[String]>| {
         pipeline::glob::files(root, patterns.unwrap_or(&[]))
             .expect("patterns expand")
-            .iter()
-            .any(|f| !tracked.contains(f))
+            .into_iter()
+            .find(|f| !tracked.contains(f))
     };
-    let key_hit: HashSet<&String> = g
+    let key_hit: BTreeMap<&String, String> = g
         .ids()
         .iter()
-        .filter(|id| untracked(g.node(id).unwrap().inputs.as_deref()))
+        .filter_map(|id| Some((id, untracked(g.node(id).unwrap().inputs.as_deref())?)))
         .collect();
     g.ids()
         .iter()
-        .filter(|id| {
-            untracked(g.node(id).unwrap().produces.as_deref())
-                || g.plan(&[id.to_string()])
+        .filter_map(|id| {
+            let why = untracked(g.node(id).unwrap().produces.as_deref()).or_else(|| {
+                g.plan(std::slice::from_ref(id))
                     .unwrap()
                     .iter()
-                    .any(|n| key_hit.contains(&n.id))
+                    .find_map(|n| key_hit.get(&n.id).cloned())
+            })?;
+            Some((id.clone(), why))
         })
-        .cloned()
         .collect()
 }
 
@@ -201,7 +210,7 @@ fn golden_matrix_replays() {
     let committed_rows = |dump: &[u8]| -> Vec<String> {
         String::from_utf8_lossy(dump)
             .lines()
-            .filter(|l| !local.contains(l.split('\t').next().unwrap()))
+            .filter(|l| !local.contains_key(l.split('\t').next().unwrap()))
             .map(str::to_string)
             .collect()
     };
@@ -210,19 +219,23 @@ fn golden_matrix_replays() {
         committed_rows(&keys_now.stdout),
     );
     eprintln!(
-        "keys: {} committed-tree rows compared, {} local-state rows skipped",
+        "keys: {} tracked-tree rows compared, {} local-state rows skipped",
         rec.len(),
         local.len()
     );
-    // build-js, ledger, script-refs and typecheck fold only tracked files
-    // (2026-10-20); fewer rows means the layer stopped checking key folding
+    // build-js, ledger, script-refs and typecheck qualify today; with none
+    // left the layer would compare nothing
     assert!(
-        rec.len() >= 4,
-        "only {} key rows are a function of the committed tree — re-check local_state_rows",
-        rec.len()
+        !rec.is_empty(),
+        "every key row folds an untracked file, so none is compared:\n  {}",
+        local
+            .iter()
+            .map(|(id, f)| format!("{id}: {f}"))
+            .collect::<Vec<_>>()
+            .join("\n  ")
     );
     assert!(
         now == rec,
-        "__keys output diverges from the recorded keys golden on the committed-tree rows — key folding drifted"
+        "__keys output diverges from the recorded keys golden on the tracked-tree rows — key folding drifted"
     );
 }
