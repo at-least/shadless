@@ -55,8 +55,7 @@
 // foreignObject/desc/title, math annotation-xml with a text/html-ish
 // encoding, the MathML text integration points mi/mo/mn/ms/mtext — raw
 // text switches there, and a CDATA section becomes a bogus comment to the
-// first '>' at an HTML integration point while it stays a CDATA section at
-// a text integration point), the WHATWG breakout list (an HTML start tag
+// first '>'), the WHATWG breakout list (an HTML start tag
 // such as <div>/<p>/<span> inside svg/math pops the foreign elements and
 // is reprocessed under HTML rules), and the end-tag pops (</svg> closes
 // the svg through a desc or foreignObject; an end tag no tracked foreign
@@ -118,16 +117,15 @@ const RAW_TEXT_TAGS = new Set([
  * exactly like their parent, so tracking them would change nothing. `ns` is
  * the namespace the browser builds them in: foreignObject/desc/title
  * integrate only in svg, annotation-xml/mi/mo/mn/ms/mtext only in math
- * (`<svg><desc>` and `<math><foreignObject>` are plain foreign elements).
+ * (`<math><desc>` and `<math><foreignObject>` are plain foreign elements).
  * `htmlIntegration` (svg foreignObject/desc/title; math annotation-xml with
  * an encoding of text/html or application/xhtml+xml) marks an HTML
  * integration point: a browser parses its CONTENT as HTML again — raw-text
  * elements switch there, plaintext runs to EOF, and a `<![CDATA[` section is
  * a bogus comment running to the first `>`. `textIntegration` (math
- * mi/mo/mn/ms/mtext) applies HTML rules to start tags too, but a CDATA
- * section STAYS a CDATA section there (parse5-measured; the WHATWG
- * tokenizer's CDATA rule only leaves foreign content at HTML integration
- * points).
+ * mi/mo/mn/ms/mtext) does the same (Chromium- and parse5-measured); the
+ * two differ only in which tags return to foreign rules (mglyph/malignmark
+ * at a text integration point).
  * @typedef {{
  *   tag: string,
  *   ns: "svg" | "math",
@@ -144,10 +142,11 @@ const FOREIGN_PUSH = new Set([
 // foreign content pops the foreign elements until the nearest integration
 // point (else all of them) and is reprocessed under HTML rules
 // (parse5-measured — after it, raw text is raw text and CDATA is a bogus
-// comment again). font breaks out only with a color attribute.
+// comment again). font breaks out only with a color, face or size
+// attribute.
 const BREAKOUT_TAGS = new Set([
   "b", "big", "blockquote", "body", "br", "center", "code", "dd", "div",
-  "dl", "dt", "em", "embed", "h1", "h2", "h3", "h4", "h5", "h6", "head",
+  "dl", "dt", "em", "embed", "font", "h1", "h2", "h3", "h4", "h5", "h6", "head",
   "hr", "i", "img", "li", "listing", "menu", "meta", "nobr", "ol", "p",
   "pre", "ruby", "s", "small", "span", "strong", "strike", "sub", "sup",
   "table", "tt", "u", "ul", "var",
@@ -155,11 +154,12 @@ const BREAKOUT_TAGS = new Set([
 
 // The table-family start tags a browser builds NO element for while no
 // <table> or <template> is open (Chromium-measured; a template's content
-// builds them — <template><td> keeps the td).
+// builds them — <template><td> keeps the td). head and frame build nothing
+// in body content wherever they sit.
 const TABLE_DROPPED = new Set([
-  "caption", "col", "colgroup", "frame", "head", "tbody", "td", "tfoot",
-  "th", "thead", "tr",
+  "caption", "col", "colgroup", "tbody", "td", "tfoot", "th", "thead", "tr",
 ])
+const ALWAYS_DROPPED = new Set(["frame", "head"])
 
 /**
  * The shipped vocabulary. Fails loudly when absent, unreadable, or not the
@@ -203,11 +203,10 @@ export function loadVocabulary() {
  * Decodes the entities a copied attribute value can carry: the named four
  * plus decimal/hex numeric references, both x cases, with an optional
  * semicolon (browsers decode these the same way — parse5-measured). A
- * documented narrowing: semicolon-less NAMED references (`&amp` without
- * `;`) stay literal, where a browser decodes the legacy names in attribute
- * values — the full legacy follow-character table is not worth carrying for
- * token matching. NUL, surrogates and references above U+10FFFF become
- * U+FFFD, never a crash.
+ * documented narrowing: every other NAMED reference stays literal (`&sol;`,
+ * and `&amp` without `;`), where a browser decodes every name — the
+ * full table is not worth carrying for token matching. NUL, surrogates and
+ * references above U+10FFFF become U+FFFD, never a crash.
  * @param {string} v
  * @returns {string}
  */
@@ -385,12 +384,13 @@ export function checkSource(text, vocabulary, file) {
   /** @type {("table" | "template")[]} */
   const tableMarkers = []
   /** a </table> or </template> closes everything opened inside it; no-op
-   * when none is open
+   * when none is open, and a </table> inside a template opened after the
+   * table is ignored (the template ends table scope — Chromium-measured)
    * @param {"table" | "template"} kind
    */
   const popTable = (kind) => {
     const k = tableMarkers.lastIndexOf(kind)
-    if (k >= 0) tableMarkers.length = k
+    if (k >= 0 && !(kind === "table" && tableMarkers.indexOf("template", k) >= 0)) tableMarkers.length = k
   }
   /** does a browser tokenize the next tokens under HTML rules (raw-text
    * elements switch, plaintext runs to EOF, a CDATA section is a bogus
@@ -399,12 +399,6 @@ export function checkSource(text, vocabulary, file) {
   const htmlMode = () => {
     const top = foreign[foreign.length - 1]
     return top === undefined || top.htmlIntegration || top.textIntegration
-  }
-  /** is a <![CDATA[ section one token running to ]]>? False at an HTML
-   * integration point, where it is a bogus comment to the first `>` */
-  const cdataMode = () => {
-    const top = foreign[foreign.length - 1]
-    return top !== undefined && !top.htmlIntegration
   }
   /** a breakout start tag pops foreign elements until the nearest
    * integration point (else all of them) — the tag itself is reprocessed
@@ -431,11 +425,11 @@ export function checkSource(text, vocabulary, file) {
       i = m ? lt + 4 + m.index + m[0].length : n
       continue
     }
-    if (cdataMode() && text.startsWith("<![CDATA[", lt)) {
+    if (!htmlMode() && text.startsWith("<![CDATA[", lt)) {
       // a CDATA section in foreign content is one token: everything to the
       // closing ]]>, or to EOF when it never closes (parse5-measured). At
-      // an HTML integration point it is a bogus comment instead (the
-      // generic <! branch below) — parse5-measured.
+      // an integration point it is a bogus comment instead (the generic <!
+      // branch below) — Chromium- and parse5-measured.
       const close = text.indexOf("]]>", lt + 9)
       i = close >= 0 ? close + 3 : n
       continue
@@ -509,7 +503,7 @@ export function checkSource(text, vocabulary, file) {
       inHtml = false
     }
     if (!inHtml && BREAKOUT_TAGS.has(lower) &&
-        (lower !== "font" || byLower.has("color"))) {
+        (lower !== "font" || byLower.has("color") || byLower.has("face") || byLower.has("size"))) {
       // an HTML start tag in the breakout list pops foreign elements until
       // the nearest integration point (or all of them) and is reprocessed
       // under HTML rules (parse5-measured)
@@ -522,7 +516,7 @@ export function checkSource(text, vocabulary, file) {
     let dropped = false
     if (inHtml) {
       if (lower === "table" || lower === "template") tableMarkers.push(lower)
-      else if (TABLE_DROPPED.has(lower) && tableMarkers.length === 0) dropped = true
+      else if (ALWAYS_DROPPED.has(lower) || (TABLE_DROPPED.has(lower) && tableMarkers.length === 0)) dropped = true
     }
 
     if (!dropped && !selfClosed &&
@@ -549,7 +543,7 @@ export function checkSource(text, vocabulary, file) {
           (ns === "svg" && (lower === "foreignobject" || lower === "desc" || lower === "title")) ||
           (ns === "math" && lower === "annotation-xml" &&
             ["text/html", "application/xhtml+xml"].includes(
-              (byLower.get("encoding")?.value ?? "").toLowerCase())),
+              decodeEntities(byLower.get("encoding")?.value ?? "").toLowerCase())),
         textIntegration: ns === "math" &&
           (lower === "mi" || lower === "mo" || lower === "mn" || lower === "ms" || lower === "mtext"),
       })

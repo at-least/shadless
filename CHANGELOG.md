@@ -131,15 +131,16 @@ upstream is `src/registry/pin.json`; re-pins land through the upstream drill
   the button-group example reported no `value()`). The `contracts` gate
   now compares where the check sits after a pick against React.
 - `shadless-check` reports on the elements a browser builds, where its scan
-  used to diverge (Chromium-measured on 69 crafted shapes; the shipped
+  used to diverge (Chromium-measured on 78 crafted shapes; the shipped
   checker agreed on 18 of the first 35): inside svg/math it follows the
   integration points whose content is HTML again (`foreignObject`, `desc`,
   `title`, `annotation-xml` with an HTML encoding, `mi`/`mo`/`mn`/`ms`/
-  `mtext` — a `<style>` or `<textarea>` there is raw text, a `<![CDATA[` at
-  an HTML integration point is a bogus comment), the HTML start tags that
-  break out of foreign content, and end tags that close only what they
-  name. A `<td>`/`<tr>`/`<tbody>`/… outside any `<table>` or `<template>`
-  builds nothing and is no longer checked. Content inside a `<select>` is
+  `mtext` — a `<style>` or `<textarea>` there is raw text, a `<![CDATA[`
+  there is a bogus comment), the HTML start tags that break out of foreign
+  content (`font` only with `color`/`face`/`size`), and end tags that close
+  only what they name. A `<td>`/`<tr>`/`<tbody>`/… outside any `<table>` or
+  `<template>`, and `<head>`/`<frame>` anywhere in body content, build
+  nothing and are no longer checked. Content inside a `<select>` is
   checked as before: the HTML standard now parses it like any body content.
 - Docs: the input, pagination, skeleton, spinner, table and textarea pages
   had no API Reference — upstream gives them none — so the stylesheet embed

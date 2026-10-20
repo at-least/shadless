@@ -77,7 +77,7 @@ export async function run(t) {
   }
   walkTabs("docs/site/content", "docs/site/content")
 
-  t.ok(got.every((k) => !k.includes("|error|")), `corpus carries zero errors (got ${got.filter((k) => k.includes("|error|")).length})`)
+  t.ok(`corpus carries zero errors (got ${got.filter((k) => k.includes("|error|")).length})`, got.every((k) => !k.includes("|error|")))
 
   // The ONE remaining corpus fact (2026-10-19, post Stage-4):
   //  - data-slot="markdown" is an upstream authoring hook inside
@@ -111,7 +111,7 @@ export async function run(t) {
   // typo'd data-variant — data-variant starts at column 25
   let f = first(`<div data-slot="button" data-variant="outlined">x</div>`)
   t.eq("unknown-value position", [f?.line, f?.col, f?.rule], [1, 25, "unknown-value"])
-  t.ok(f?.severity === "error", "unknown-value is an error")
+  t.ok("unknown-value is an error", f?.severity === "error")
 
   // multi-line tag: line/col follow the attribute, not the tag
   const multi = findings(`<div\n  data-slot="button"\n  data-variant="outlined">x</div>`)
@@ -184,7 +184,7 @@ export async function run(t) {
 
   // entities decode in values
   f = first(`<div data-slot="nope&quot;x">y</div>`)
-  t.ok(f?.message.includes(`data-slot="nope"x"`), `entity decoded: ${f?.message}`)
+  t.ok(`entity decoded: ${f?.message}`, f?.message.includes(`data-slot="nope"x"`))
 
   // single-quoted, unquoted and boolean attribute forms
   t.eq("single-quoted", [first(`<div data-slot='nope'>y</div>`)?.col], [6])
@@ -227,11 +227,11 @@ export async function run(t) {
   // numeric references decode like a browser: the semicolon is optional and
   // NUL/surrogates become U+FFFD
   f = first(`<div data-slot="nope&#x27x">y</div>`)
-  t.ok(f?.message.includes(`data-slot="nope'x"`), `semicolon-less numeric ref decodes: ${f?.message}`)
+  t.ok(`semicolon-less numeric ref decodes: ${f?.message}`, f?.message.includes(`data-slot="nope'x"`))
   f = first(`<div data-slot="nope&#0x">y</div>`)
-  t.ok(f?.message.includes(`data-slot="nope�x"`), `NUL becomes U+FFFD: ${f?.message}`)
+  t.ok(`NUL becomes U+FFFD: ${f?.message}`, f?.message.includes(`data-slot="nope�x"`))
   f = first(`<div data-slot="nope&#xd800x">y</div>`)
-  t.ok(f?.message.includes(`data-slot="nope�x"`), `surrogate becomes U+FFFD: ${f?.message}`)
+  t.ok(`surrogate becomes U+FFFD: ${f?.message}`, f?.message.includes(`data-slot="nope�x"`))
 
   // ---- verifier round 2: foreign content, line breaks, entities, CLI ----
   // svg/math foreign content (parse5-measured): the tokenizer has no raw
@@ -260,7 +260,7 @@ export async function run(t) {
   // (browsers decode the legacy attribute names); only the marker-bearing
   // shapes above must decode
   f = first(`<div data-slot="nope&amp">y</div>`)
-  t.ok(f?.message.includes(`data-slot="nope&amp"`), `semicolon-less named ref stays literal: ${f?.message}`)
+  t.ok(`semicolon-less named ref stays literal: ${f?.message}`, f?.message.includes(`data-slot="nope&amp"`))
 
   // ---- verifier round 4: the raw-text family, end-tag quoting, CR ---------
   // every element whose content a browser parses as RAW TEXT (scripting on,
@@ -329,8 +329,9 @@ export async function run(t) {
 
     let r = run([tmp])
     t.eq("exit 1 on errors", r.status, 1)
-    t.ok(r.stdout.includes(`bad.html:1:25: error: data-variant="outlined" is not a value of button's variant axis`), `finding line format: ${r.stdout.split("\n")[0]}`)
-    t.ok(r.stdout.trimEnd().endsWith("shadless-check: 3 files, 1 errors, 0 warnings"), `summary line: ${r.stdout.split("\n").at(-2)}`)
+    t.ok(`finding line format: ${r.stdout.split("\n")[0]}`, r.stdout.includes(`bad.html:1:25: error: data-variant="outlined" is not a value of button's variant axis`))
+    // bad.html's button also lacks group/button: 1 error + 2 warnings
+    t.eq("summary line", r.stdout.trimEnd().split("\n").at(-1), "shadless-check: 3 files, 1 errors, 2 warnings")
 
     r = run([join(tmp, "warn.html")])
     t.eq("warnings alone exit 0", r.status, 0)
@@ -351,30 +352,30 @@ export async function run(t) {
     writeFileSync(join(tmp, "nested", "sub", "inner.html"), `<div data-slot="alert" data-variant="nope">nested</div>\n`)
     r = run([join(tmp, "nested")])
     t.eq("directory recurses into subdirectories", r.status, 1)
-    t.ok(r.stdout.includes(join(tmp, "nested", "sub", "inner.html")), `nested file scanned: ${r.stdout.split("\n")[0]}`)
-    t.ok(r.stdout.includes("2 files, 1 errors"), `summary counts the nested file: ${r.stdout.split("\n").at(-2)}`)
+    t.ok(`nested file scanned: ${r.stdout.split("\n")[0]}`, r.stdout.includes(join(tmp, "nested", "sub", "inner.html")))
+    t.ok(`summary counts the nested file: ${r.stdout.split("\n").at(-2)}`, r.stdout.includes("2 files, 1 errors"))
 
     // a numeric reference above U+10FFFF decodes literally — the CLI reports
     // the finding instead of dying in the catch-all
     writeFileSync(join(tmp, "big-entity.html"), `<div data-slot="button" class="group/button" data-variant="&#x110000;">x</div>\n`)
     r = run([join(tmp, "big-entity.html")])
     t.eq("entity above U+10FFFF does not crash the CLI", r.status, 1)
-    t.ok(r.stdout.includes("unknown-value"), `finding reported: ${r.stdout.split("\n")[0]}`)
+    t.ok(`finding reported: ${r.stdout.split("\n")[0]}`, r.stdout.includes("unknown-value"))
 
     // the same real path twice — directly, and once directly plus once via
     // its directory — is scanned once (dedupe keeps first-seen order)
     writeFileSync(join(tmp, "dupe.html"), `<div data-slot="button" data-variant="outlined">x</div>\n`)
     r = run([join(tmp, "dupe.html"), join(tmp, "dupe.html")])
     t.eq("duplicate file args scan once", (r.stdout.match(/unknown-value/g) ?? []).length, 1)
-    t.ok(r.stdout.trimEnd().endsWith("shadless-check: 1 files, 1 errors, 0 warnings"), `dedupe summary: ${r.stdout.split("\n").at(-2)}`)
+    t.eq("dedupe summary", r.stdout.trimEnd().split("\n").at(-1), "shadless-check: 1 files, 1 errors, 1 warnings")
     mkdirSync(join(tmp, "dedupe"))
     writeFileSync(join(tmp, "dedupe", "d.html"), `<div data-slot="button" data-variant="outlined">x</div>\n`)
     r = run([join(tmp, "dedupe", "d.html"), join(tmp, "dedupe")])
-    t.ok(r.stdout.trimEnd().endsWith("shadless-check: 1 files, 1 errors, 0 warnings"), `file+dir dedupe summary: ${r.stdout.split("\n").at(-2)}`)
+    t.eq("file+dir dedupe summary", r.stdout.trimEnd().split("\n").at(-1), "shadless-check: 1 files, 1 errors, 1 warnings")
 
     r = run([])
     t.eq("no inputs exits 2", r.status, 2)
-    t.ok(r.stderr.includes("usage:"), "usage goes to stderr")
+    t.ok("usage goes to stderr", r.stderr.includes("usage:"))
     r = run(["--bogus", tmp])
     t.eq("unknown option exits 2", r.status, 2)
     r = run([join(tmp, "nope.html")])
@@ -386,8 +387,8 @@ export async function run(t) {
     mkdirSync(lone)
     cpSync(new URL("../../dist/bin/shadless-check.mjs", import.meta.url).pathname, join(lone, "shadless-check.mjs"))
     r = spawnSync(process.execPath, [join(lone, "shadless-check.mjs"), join(tmp, "clean.html")], { encoding: "utf8" })
-    t.ok(r.status !== 0, "missing vocabulary exits non-zero")
-    t.ok((r.stderr ?? "").includes("cannot read the attribute vocabulary"), `crash message: ${(r.stderr ?? "").split("\n")[0]}`)
+    t.ok("missing vocabulary exits non-zero", r.status !== 0)
+    t.ok(`crash message: ${(r.stderr ?? "").split("\n")[0]}`, (r.stderr ?? "").includes("cannot read the attribute vocabulary"))
 
     // loadVocabulary enforces the contract fields it documents: a dropped or
     // wrong-typed axisAttributes crashes instead of silently checking
@@ -571,6 +572,12 @@ export async function run(t) {
     findings(`<table><div data-slot="card"></div></table>`).map((x) => x.rule), ["missing-marker"])
   t.eq("td in a template is built (body rules)",
     findings(`<template><td data-slot="card"></td></template>`).map((x) => x.rule), ["missing-marker"])
+  t.eq("head and frame build nothing, even inside a table or template",
+    [findings(`<table><head data-slot="card"></head></table>`),
+      findings(`<template><frame data-slot="card"></template>`)], [[], []])
+  t.eq("</table> inside a template opened after the table is ignored",
+    findings(`<table><template></table></template><td data-slot="card"></td>`).map((x) => x.rule),
+    ["missing-marker"])
   t.eq("table closes at </table>",
     findings(`<table><tr><td>x</td></tr></table><div data-variant="bad">y</div>`).map((x) => x.rule),
     ["axis-without-slot"])
@@ -602,8 +609,13 @@ export async function run(t) {
   t.eq("CDATA inside svg desc is a bogus comment to the first >",
     findings(`<svg><desc><![CDATA[x><div data-variant="bad">]]></svg>`).map((x) => x.rule),
     ["axis-without-slot"])
-  t.eq("CDATA inside math mi stays a CDATA section",
+  t.eq("CDATA inside math mi is a bogus comment: it swallows a tag only up to the first >",
     findings(`<math><mi><![CDATA[<div data-variant="bad">]]></mi></math>`), [])
+  t.eq("CDATA inside math mi is a bogus comment: a tag after its first > is built",
+    findings(`<math><mi><![CDATA[x><div data-variant="bad"]]></mi></math>`).map((x) => x.rule),
+    ["axis-without-slot"])
+  t.eq("an entity-encoded text/html encoding is still an integration point",
+    findings(`<math><annotation-xml encoding="&#116;ext/html"><style><div data-slot="card"></style></annotation-xml></math>`), [])
   // foreign-content breakout: an HTML start tag pops the foreign elements
   t.eq("p breaks out; a later title is HTML raw text",
     findings(`<svg><p><title><div data-slot="button" data-variant="outlined"></title></svg>`), [])
@@ -615,6 +627,14 @@ export async function run(t) {
   t.eq("HTML tag inside an integration point does not pop the svg",
     findings(`<svg><desc><div data-slot="card"></div></desc></svg>`).map((x) => x.rule),
     ["missing-marker"])
+  t.eq("font with color breaks out; a later style is raw text",
+    findings(`<svg><font color="red"><style><div data-variant="bad"></style></svg>`), [])
+  t.eq("font with face or size breaks out too",
+    [findings(`<svg><font face="x"><style><div data-variant="bad"></style></svg>`),
+      findings(`<svg><font size="2"><style><div data-variant="bad"></style></svg>`)], [[], []])
+  t.eq("font without those attributes stays foreign (style is markup)",
+    findings(`<svg><font><style><div data-variant="bad"></style></svg>`).map((x) => x.rule),
+    ["axis-without-slot"])
   t.eq("mglyph returns to foreign mode inside mi",
     findings(`<math><mi><mglyph><style><div data-slot="card"></style></mglyph></mi></math>`).map((x) => x.rule),
     ["missing-marker"])
