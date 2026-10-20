@@ -12900,7 +12900,7 @@ When localizing the carousel for RTL languages, set `dir="rtl"` on the carousel 
 
 ## API Reference
 
-**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup, or an anchor class where upstream renders no slot; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 
 | Slot |
 | --- |
@@ -12912,7 +12912,7 @@ When localizing the carousel for RTL languages, set `dir="rtl"` on the carousel 
 
 **Runtime:** `shadless.get(el)` (element or selector, any element inside the instance) → the embla api (`scrollNext()`, `scrollTo(i)`, `on("select", …)`). Markup protocol: see Installation → Behavior protocol.
 
-**The stylesheet** — `shadless/carousel.css`, the exact bytes of `dist/css/carousel.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, so this is the authoritative default look of each slot:
+**The stylesheet** — `shadless/carousel.css`, the exact bytes of `dist/css/carousel.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, or on the anchor class of an element with no slot (`.carousel-content-div`, `.carousel-next-span`, `.carousel-previous-span`), so this is the authoritative default look of each slot:
 
 ```css
 /* carousel */

@@ -158,9 +158,10 @@ upstream is `src/registry/pin.json`; re-pins land through the upstream drill
 - Docs: every component page's API Reference embeds the component's
   stylesheet (`shadless/<name>.css`) verbatim in a `css` fence, introduced
   as the authoritative default look of each slot — every rule keys on the
-  `data-slot` / `data-*` attributes the tables above list, so a reader (or
-  an LLM agent) can see what each `data-slot` does by default without
-  opening the package. The embed is checked byte-exact against
+  `data-slot` / `data-*` attributes the tables above list, or on the anchor
+  class of an element upstream renders with no slot (18 stylesheets have
+  some, and the page names them), so a reader (or an LLM agent) can see
+  what each `data-slot` does by default without opening the package. The embed is checked byte-exact against
   `dist/css/<name>.css` by `docs-consistency`, and code tabs are checked
   for re-escaped class attributes.
 - Forms: a checkbox, switch, radio-group root, select trigger or slider

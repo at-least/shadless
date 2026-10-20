@@ -3858,7 +3858,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ## API Reference
 
-**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup, or an anchor class where upstream renders no slot; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 
 | Slot |
 | --- |
@@ -3877,7 +3877,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 **Runtime:** `shadless.get(el)` (element or selector, any element inside the instance) → `open()`, `close()`, `toggle()`, `isOpen()`; the trigger dispatches `shadless:open` / `shadless:close`. Markup protocol: see Installation → Behavior protocol.
 
-**The stylesheet** — `shadless/menubar.css`, the exact bytes of `dist/css/menubar.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, so this is the authoritative default look of each slot:
+**The stylesheet** — `shadless/menubar.css`, the exact bytes of `dist/css/menubar.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, or on the anchor class of an element with no slot (`.cn-menu-translucent`, `.menubar-checkbox-item-span`, `.menubar-radio-item-span`, `.menubar-sub-trigger-icon-placeholder`), so this is the authoritative default look of each slot:
 
 ```css
 /* menubar */

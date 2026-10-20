@@ -1910,7 +1910,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ## API Reference
 
-**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup, or an anchor class where upstream renders no slot; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 
 | Slot |
 | --- |
@@ -1922,7 +1922,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 **Runtime:** root `data-type="single|multiple"`; each `accordion-trigger` carries `aria-expanded` + `data-state="open|closed"` and `aria-controls` → its `accordion-content`, which is `hidden` while closed (kept in the DOM — radix unmounts it). Keys: arrows / Home / End move focus between triggers (rtl-aware); Enter / Space / click toggles. Each trigger dispatches `shadless:open` / `shadless:close` (a sibling closed by single mode gets its own `close`). No handle — `shadless.get(el)` returns `null`; `el.click()` is the driver.
 
-**The stylesheet** — `shadless/accordion.css`, the exact bytes of `dist/css/accordion.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, so this is the authoritative default look of each slot:
+**The stylesheet** — `shadless/accordion.css`, the exact bytes of `dist/css/accordion.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, or on the anchor class of an element with no slot (`.accordion-content-div`, `.accordion-trigger-icon-2`, `.accordion-trigger-icon`, `.accordion-trigger`), so this is the authoritative default look of each slot:
 
 ```css
 /* accordion */

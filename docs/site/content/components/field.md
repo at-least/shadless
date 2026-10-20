@@ -3517,7 +3517,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ## API Reference
 
-**shadless surface** — every node is a `data-slot` attribute in the shipped markup.
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup, or an anchor class where upstream renders no slot.
 
 | Slot |
 | --- |
@@ -3538,7 +3538,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 | --- | --- | --- | --- |
 | `field` | `data-orientation` | `vertical`, `horizontal`, `responsive` | `vertical` |
 
-**The stylesheet** — `shadless/field.css`, the exact bytes of `dist/css/field.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, so this is the authoritative default look of each slot:
+**The stylesheet** — `shadless/field.css`, the exact bytes of `dist/css/field.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, or on the anchor class of an element with no slot (`.field-error`, `.field-separator-separator`), so this is the authoritative default look of each slot:
 
 ```css
 /* field */

@@ -1270,7 +1270,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 ## API Reference
 
-**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
+**shadless surface** — every node is a `data-slot` attribute in the shipped markup, or an anchor class where upstream renders no slot; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.
 
 | Slot |
 | --- |
@@ -1280,7 +1280,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 
 **Runtime:** `role="radiogroup"` root; items are `role="radio"` with `aria-checked` + `data-state`, the checked one carries the `radio-group-indicator` mounted from `<template data-for="radio-group-indicator">`; an item's value is its `value` / `data-value` attribute or id. Keys: arrows / Home / End move focus over enabled items (rtl-aware); with nothing checked an arrow also checks its target (radix). The root dispatches `shadless:change` (`detail: { value, item }`). Forms: a `name` attribute on the root submits the checked item's value. No handle — `shadless.get(el)` returns `null`; `el.click()` is the driver.
 
-**The stylesheet** — `shadless/radio-group.css`, the exact bytes of `dist/css/radio-group.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, so this is the authoritative default look of each slot:
+**The stylesheet** — `shadless/radio-group.css`, the exact bytes of `dist/css/radio-group.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, or on the anchor class of an element with no slot (`.radio-group-item-span`), so this is the authoritative default look of each slot:
 
 ```css
 /* radio-group */

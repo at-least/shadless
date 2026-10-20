@@ -2401,15 +2401,36 @@ pub fn api_reference_mdx(
     let t = trivial(comp);
     let f = family(comp);
     // The stylesheet itself, verbatim: every rule keys on the data-slot /
-    // data-* attributes the tables above list, so the default look of each
-    // slot is readable (by a person or an LLM agent) without opening the
-    // package. Checked byte-for-byte against the file by docs-consistency.
+    // data-* attributes the tables above list — or, for an element upstream
+    // renders with no slot, on the anchor class the emitter gives it — so
+    // the default look of each slot is readable (by a person or an LLM
+    // agent) without opening the package. Checked byte-for-byte against the
+    // file by docs-consistency.
     let mut stylesheet = String::new();
+    let mut anchors: Vec<String> = Vec::new();
     let css_path = root.join("dist/css").join(format!("{}.css", comp));
     if let Ok(b) = std::fs::read_to_string(&css_path) {
         let css = b.strip_suffix('\n').unwrap_or(b.as_str());
+        for l in css.lines() {
+            if let Some(rule) = l.trim_start().strip_prefix('.')
+                && let Some(name) = rule.split([' ', '{', ':']).next()
+            {
+                anchors.push(format!("`.{}`", name));
+            }
+        }
+        anchors.sort();
+        anchors.dedup();
+        let keys = if anchors.is_empty() {
+            "Every rule keys on the `data-slot` / `data-*` attributes in the tables above"
+                .to_string()
+        } else {
+            format!(
+                "Every rule keys on the `data-slot` / `data-*` attributes in the tables above, or on the anchor class of an element with no slot ({})",
+                anchors.join(", ")
+            )
+        };
         stylesheet = format!(
-            "\n**The stylesheet** — `shadless/{c}.css`, the exact bytes of `dist/css/{c}.css`, verbatim. Every rule keys on the `data-slot` / `data-*` attributes in the tables above, so this is the authoritative default look of each slot:\n\n```css\n{css}\n```\n",
+            "\n**The stylesheet** — `shadless/{c}.css`, the exact bytes of `dist/css/{c}.css`, verbatim. {keys}, so this is the authoritative default look of each slot:\n\n```css\n{css}\n```\n",
             c = comp
         );
     }
@@ -2487,10 +2508,18 @@ pub fn api_reference_mdx(
     if slot_table.is_empty() && runtime.is_empty() && stylesheet.is_empty() {
         return String::new();
     }
-    let preamble = if leaked {
-        "\n**shadless surface** — every node is a `data-slot` attribute in the shipped markup.\n"
+    let nodes = if anchors.is_empty() {
+        "every node is a `data-slot` attribute in the shipped markup"
     } else {
-        "\n**shadless surface** — every node is a `data-slot` attribute in the shipped markup; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.\n"
+        "every node is a `data-slot` attribute in the shipped markup, or an anchor class where upstream renders no slot"
+    };
+    let preamble = if leaked {
+        format!("\n**shadless surface** — {}.\n", nodes)
+    } else {
+        format!(
+            "\n**shadless surface** — {}; state lives in the attributes radix renders (`data-state`, `aria-*`), never in classes.\n",
+            nodes
+        )
     };
     format!("{}{}{}{}", preamble, slot_table, runtime, stylesheet)
 }
