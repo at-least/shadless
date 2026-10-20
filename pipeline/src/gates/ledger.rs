@@ -520,6 +520,13 @@ pub fn class_of_golden_reason(r: &str) -> &'static str {
 // ---------------------------------------------------------------- verify
 
 pub fn gate_ledger(root: &Path) -> Result<(), String> {
+    gate_ledger_rendered_at(root, &root.join(RENDERED_PATH))
+}
+
+/// The ledger gate with the human render read from `rendered_path` — the
+/// drift test points it at a scratch copy instead of tampering the
+/// committed one, which a concurrently running test reads.
+fn gate_ledger_rendered_at(root: &Path, rendered_path: &Path) -> Result<(), String> {
     let l = read_ledger(root)?;
     let sources = collect_source_ids(root)?;
     let in_sources: HashSet<&str> = sources.iter().map(|s| s.id.as_str()).collect();
@@ -567,8 +574,7 @@ pub fn gate_ledger(root: &Path) -> Result<(), String> {
     // The human render must match this ledger byte-for-byte — a ledger edit
     // without `make ledger-render` used to ship an EXEMPTIONS.md documenting
     // budgets and classes that no longer existed, green forever.
-    let rendered_path = root.join(RENDERED_PATH);
-    let committed = match std::fs::read(&rendered_path) {
+    let committed = match std::fs::read(rendered_path) {
         Ok(b) => String::from_utf8_lossy(&b).into_owned(),
         Err(e) if e.kind() == std::io::ErrorKind::NotFound => {
             return Err(format!(
@@ -960,10 +966,6 @@ fn budget_checked_by_coverage(name: &str) -> bool {
 mod tests {
     use super::*;
 
-    /// The real-tree ledger tests tamper the one committed EXEMPTIONS.md;
-    /// serialize them so they cannot see each other's tampered state.
-    static RENDER_TEST_LOCK: std::sync::Mutex<()> = std::sync::Mutex::new(());
-
     /// coverage.uncovered-cells is the only budget the coverage gate checks
     /// itself; anything else named coverage.* has no checker and must fail
     /// the ledger gate instead of riding the prefix past it.
@@ -1285,7 +1287,6 @@ mod tests {
     /// Go TestLedger: gate(t, gateLedger) on the real tree.
     #[test]
     fn ledger_on_real_tree() {
-        let _serial = RENDER_TEST_LOCK.lock().unwrap_or_else(|e| e.into_inner());
         let root = crate::tree_root();
         if !root.join(GOLDEN_EX_PATH).exists() {
             if std::env::var_os("CI").is_some() {
@@ -1300,12 +1301,13 @@ mod tests {
     /// EXEMPTIONS.md is the human render of gates/ledger.json, and its header
     /// claims the two "cannot drift" — a claim nothing enforced: a ledger
     /// edit without `make ledger-render` used to stay green forever. The
-    /// gate must fail while the render is stale, and pass again once the
-    /// original bytes are back.
+    /// gate must fail while the render is stale, and pass on the committed
+    /// bytes. Both run on a scratch copy: this test used to write the
+    /// committed file, and under nextest (a process per test, so the
+    /// in-process lock it took serialized nothing) ledger_on_real_tree read
+    /// it mid-tamper and failed.
     #[test]
     fn gate_ledger_fails_when_render_drifts() {
-        // both real-tree ledger tests touch the one committed EXEMPTIONS.md
-        let _serial = RENDER_TEST_LOCK.lock().unwrap_or_else(|e| e.into_inner());
         let root = crate::tree_root();
         if !root.join(GOLDEN_EX_PATH).exists() {
             if std::env::var_os("CI").is_some() {
@@ -1314,25 +1316,26 @@ mod tests {
             eprintln!("skip: no shadless tree");
             return;
         }
-        let rendered_path = root.join(RENDERED_PATH);
-        let original = std::fs::read_to_string(&rendered_path).expect("EXEMPTIONS.md exists");
-        std::fs::write(
-            &rendered_path,
-            format!(
-                "{}\n(unrelated hand edit that the ledger never rendered)\n",
-                original
-            ),
-        )
-        .unwrap();
-        let out = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| gate_ledger(&root)));
-        std::fs::write(&rendered_path, original).expect("restore EXEMPTIONS.md");
-        let res = match out {
-            Ok(r) => r,
-            Err(_) => panic!("gate_ledger panicked under a drifted render"),
-        };
+        let committed_path = root.join(RENDERED_PATH);
+        let committed = std::fs::read(&committed_path).expect("EXEMPTIONS.md exists");
+        let scratch = tempfile::tempdir().unwrap();
+        let copy = scratch.path().join(RENDERED_PATH);
+        std::fs::write(&copy, &committed).unwrap();
         assert!(
-            res.is_err(),
+            gate_ledger_rendered_at(&root, &copy).is_ok(),
+            "the gate fails on a byte copy of the committed render"
+        );
+        let mut drifted = committed.clone();
+        drifted.extend_from_slice(b"\n(unrelated hand edit that the ledger never rendered)\n");
+        std::fs::write(&copy, drifted).unwrap();
+        assert!(
+            gate_ledger_rendered_at(&root, &copy).is_err(),
             "gate_ledger stayed green while EXEMPTIONS.md had drifted from gates/ledger.json"
+        );
+        assert_eq!(
+            std::fs::read(&committed_path).unwrap(),
+            committed,
+            "the drift test wrote the committed EXEMPTIONS.md"
         );
     }
 }
