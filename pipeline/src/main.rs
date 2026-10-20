@@ -283,7 +283,7 @@ fn run_command(args: &[String]) -> Result<(), String> {
         eprintln!(
             "\n{} undeclared write(s): a node is driving the graph's freshness {}",
             counts.violations,
-            "through a file it does not admit to producing. Fix `produces`, or stop writing there."
+            "through a file it does not admit to producing. Fix `produces`, or stop writing or deleting there."
         );
     }
     if counts.bad_reads > 0 {

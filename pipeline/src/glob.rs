@@ -136,6 +136,8 @@ pub fn files(root: &Path, patterns: &[String]) -> Result<Vec<String>, String> {
 /// Whether `files(root, patterns)` would list `path`, decided from the
 /// patterns alone — for a path that no longer exists (a deleted input). A
 /// fully literal pattern names itself or, as a directory, everything under it.
+/// Registry-shaped patterns only: `""`, `"."` and a trailing `/`, which
+/// files() expands to a whole directory, name nothing here.
 pub fn names(patterns: &[String], path: &str) -> Result<bool, String> {
     let mut named = false;
     for p in patterns {

@@ -411,6 +411,9 @@ pub fn run_docs_catalog(root: &Path) -> i32 {
             // never writes one (ora_load_targets skips kernel demos). This
             // used to delete the file silently — another node's output this
             // node does not produce; a stray one is a decision for a person.
+            // In a run that includes example-oracle its stale sweep has
+            // already removed one (it is not among the oracle's targets), so
+            // this fires when docs-catalog runs without it.
             eprintln!(
                 "FAIL catalog: {} is kernel-tier but {} exists — kernel demos render from the dist fixture; delete the file",
                 p.name, authored_file

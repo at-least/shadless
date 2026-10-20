@@ -6,7 +6,7 @@
 //! -test.testlogfile` records every file the test binary opened, and
 //! tools/fs-record.mjs (injected via NODE_OPTIONS) records node-side reads.
 
-use crate::glob::{files, glob_to_regexp, literal_prefix, names};
+use crate::glob::{files, literal_prefix, names};
 use crate::graph::Graph;
 use crate::key::hash_file;
 use crate::nodes::Node;
@@ -52,34 +52,17 @@ pub fn undeclared_writes(
     after: &BTreeMap<String, String>,
 ) -> Result<Vec<Violation>, String> {
     let produces: &[String] = n.produces.as_deref().unwrap_or(&[]);
-    let produced = files(root, produces)?;
-    let declared: HashSet<&String> = produced.iter().collect();
-    // `produces` may name a directory that did not exist before the run, so
-    // also treat anything under a declared literal prefix as covered.
-    let covered = |p: &str| -> bool {
-        if declared.contains(&p.to_string()) {
-            return true;
-        }
-        for pat in produces {
-            if let Ok(re) = glob_to_regexp(pat) {
-                if re.is_match(p) {
-                    return true;
-                }
-            }
-            let lp = literal_prefix(pat);
-            if lp == *pat && p.len() > lp.len() + 1 && p.starts_with(&format!("{}/", lp)) {
-                return true;
-            }
-        }
-        false
-    };
+    // decided from the patterns, as files() would list the path: a literal
+    // directory covers what it holds (it may not have existed before the
+    // run), and a `!` entry is a path the node declares it does not write
+    let covered = |p: &str| names(produces, p);
 
     let mut out: Vec<Violation> = Vec::new();
     for (path, h) in after {
         if before.get(path).map(String::as_str) == Some(h) {
             continue;
         }
-        if covered(path) {
+        if covered(path)? {
             continue;
         }
         let mut readers: Vec<String> = Vec::new();
@@ -106,9 +89,12 @@ pub fn undeclared_writes(
         });
     }
     // a deletion: the file no longer expands from anyone's inputs, so its
-    // readers are the nodes whose patterns name it
+    // readers are the nodes whose patterns name it. No reader-less skip as
+    // above: `before` is the inputs' files() and names() mirrors files() for
+    // registry patterns, so every path has a reader — an empty list would
+    // mean the two disagree, and that must stay loud
     for path in before.keys() {
-        if after.contains_key(path) || covered(path) {
+        if after.contains_key(path) || covered(path)? {
             continue;
         }
         let mut readers: Vec<String> = Vec::new();
@@ -134,7 +120,7 @@ pub fn report_violations(id: &str, vs: &[Violation]) {
         return;
     }
     println!(
-        "  ⚠ {} wrote {} file(s) it does not declare in `produces`:",
+        "  ⚠ {} wrote or deleted {} file(s) it does not declare in `produces`:",
         id,
         vs.len()
     );
@@ -479,5 +465,43 @@ mod tests {
         assert_eq!(vs[0].path, "read.txt");
         assert!(vs[0].deleted);
         assert_eq!(vs[0].readers, vec!["reader".to_string()]);
+    }
+
+    /// A `!` entry in produces says the node does NOT write there
+    /// (example-oracle: docs/demos/*.html but not the -rtl- pages demo-rtl
+    /// writes); the include glob alone used to cover those paths, so a
+    /// change or deletion there passed the check.
+    #[test]
+    fn undeclared_writes_honors_produces_exclusions() {
+        let t = crate::fsutil::temp_root("rs-verify6");
+        fs::create_dir_all(t.join("demos")).unwrap();
+        for f in ["demos/a.html", "demos/a-rtl-he.html", "demos/b-rtl-he.html"] {
+            fs::write(t.join(f), "v1").unwrap();
+        }
+        let reader = mnode("reader", &[], Some(&["demos/**"]), None);
+        let writer = mnode(
+            "writer",
+            &[],
+            Some(&["other.txt"]),
+            Some(&["demos/*.html", "!demos/*-rtl-*.html"]),
+        );
+        let g = Graph::new(vec![reader, writer]).unwrap();
+        let writer = g.node("writer").unwrap();
+
+        let before = input_universe(&t, &g).unwrap();
+        fs::write(t.join("demos/a.html"), "v2").unwrap(); // its own
+        fs::write(t.join("demos/a-rtl-he.html"), "v2").unwrap();
+        fs::remove_file(t.join("demos/b-rtl-he.html")).unwrap();
+        let after = input_universe(&t, &g).unwrap();
+
+        let vs = undeclared_writes(&t, &g, writer, &before, &after).unwrap();
+        let got: Vec<(&str, bool)> = vs.iter().map(|v| (v.path.as_str(), v.deleted)).collect();
+        assert_eq!(
+            got,
+            vec![
+                ("demos/a-rtl-he.html", false),
+                ("demos/b-rtl-he.html", true)
+            ]
+        );
     }
 }
