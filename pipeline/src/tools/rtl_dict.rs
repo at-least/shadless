@@ -45,6 +45,12 @@ pub fn run_rtl_dict() -> i32 {
 }
 
 fn run_rtl_dict_at(root: &Path) -> i32 {
+    run_rtl_dict_to(root, &root.join(RTL_DICT_OUT))
+}
+
+/// rtl-dict with the dictionary file at `out` (read for the engine-owned
+/// languages, then rewritten) — the parity test points it at a scratch copy.
+fn run_rtl_dict_to(root: &Path, out_path: &Path) -> i32 {
     let examples_dir = root.join(RTL_DICT_EXAMPLES);
     let entries = match std::fs::read_dir(&examples_dir) {
         Ok(e) => e,
@@ -150,7 +156,7 @@ fn run_rtl_dict_at(root: &Path) -> i32 {
     // upstream ships (en/ar/he); engine-owned dictionaries (fa) live in the
     // committed file and are preserved verbatim through regeneration. The
     // parity test on the real tree proves the round-trip byte-stable.
-    if let Ok(committed) = std::fs::read_to_string(root.join(RTL_DICT_OUT)) {
+    if let Ok(committed) = std::fs::read_to_string(out_path) {
         if let Ok(prev) = serde_json::from_str::<
             HashMap<String, serde_json::Map<String, serde_json::Value>>,
         >(&committed) {
@@ -210,7 +216,7 @@ fn run_rtl_dict_at(root: &Path) -> i32 {
         write_langs_json(&mut out, &dicts[name], 1);
     }
     out.push_str("\n}\n");
-    if let Err(e) = std::fs::write(root.join(RTL_DICT_OUT), out.as_bytes()) {
+    if let Err(e) = std::fs::write(out_path, out.as_bytes()) {
         eprintln!("rtl-dict: {}", go_fs_err(RTL_DICT_OUT, &e));
         return 1;
     }
@@ -773,12 +779,11 @@ mod tests {
     /// rtl-dict; the port must produce byte-identical output or the whole RTL
     /// demo family shifts underneath gates that hash it. (Go's
     /// TestUnitRtlDictParity is a subprocess test; here the port runs
-    /// in-process against the real tree and the written file is byte-compared
-    /// to the committed one, then the original is restored.)
+    /// in-process against the real tree, writing a scratch copy that is
+    /// byte-compared to the committed file.)
     #[test]
     fn rtl_dict_parity_on_real_tree() {
         let root = crate::tree_root();
-        let out_path = root.join(RTL_DICT_OUT);
         if !root.join(RTL_DICT_EXAMPLES).exists() {
             if std::env::var_os("CI").is_some() {
                 panic!("CI: required tree input missing (no pinned upstream checkout)");
@@ -786,30 +791,28 @@ mod tests {
             eprintln!("skip: no pinned upstream checkout");
             return;
         }
-        let committed = match std::fs::read(&out_path) {
-            Ok(b) => b,
-            Err(e) => {
-                eprintln!("skip: {}", e);
-                return;
-            }
-        };
-        // restore the committed bytes no matter how the run ends
-        struct Restore {
-            path: std::path::PathBuf,
-            bytes: Vec<u8>,
-        }
-        impl Drop for Restore {
-            fn drop(&mut self) {
-                let _ = std::fs::write(&self.path, &self.bytes);
-            }
-        }
-        let _guard = Restore {
-            path: out_path.clone(),
-            bytes: committed.clone(),
-        };
-        let rc = run_rtl_dict_at(&root);
+        let committed =
+            std::fs::read(root.join(RTL_DICT_OUT)).expect("the committed dictionary reads");
+        let mtime = std::fs::metadata(root.join(RTL_DICT_OUT))
+            .unwrap()
+            .modified()
+            .unwrap();
+        // on a scratch copy: the committed file stays untouched, so a test
+        // reading it under nextest (a process per test) never sees a write
+        let scratch = tempfile::tempdir().unwrap();
+        let out_path = scratch.path().join("rtl-translations.json");
+        std::fs::write(&out_path, &committed).unwrap();
+        let rc = run_rtl_dict_to(&root, &out_path);
         assert_eq!(rc, 0, "rtl-dict must exit 0 on the real tree");
         let got = std::fs::read(&out_path).expect("rtl-dict wrote the file");
+        assert_eq!(
+            std::fs::metadata(root.join(RTL_DICT_OUT))
+                .unwrap()
+                .modified()
+                .unwrap(),
+            mtime,
+            "the parity test wrote the committed {RTL_DICT_OUT} — under nextest another test can read it mid-write"
+        );
         if got != committed {
             let first = got.iter().zip(committed.iter()).position(|(a, b)| a != b);
             panic!(
