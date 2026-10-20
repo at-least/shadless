@@ -96,7 +96,14 @@ mod tests {
         for name in ["dialog.mjs", "button.mjs", "readme.txt"] {
             fs::write(comp.join(name), "").unwrap();
         }
-        let list = expand_fanout(&tmp, crate::nodes::all()).unwrap();
+        let mut nodes = crate::nodes::all();
+        // an after edge toward the split node is rewired like needs
+        nodes
+            .iter_mut()
+            .find(|n| n.id == "reproducible")
+            .unwrap()
+            .after = vec!["contracts".to_string()];
+        let list = expand_fanout(&tmp, nodes).unwrap();
         // 41 authored nodes + 2 shards replacing contracts
         assert_eq!(list.len(), 43);
         let shards: Vec<&Node> = list.iter().filter(|n| n.id.starts_with("contracts:")).collect();
@@ -129,6 +136,10 @@ mod tests {
             .as_deref()
             .unwrap()
             .contains(&"tools/contracts/components/**".to_string()));
+        assert_eq!(
+            list.iter().find(|n| n.id == "reproducible").unwrap().after,
+            vec!["contracts:button".to_string(), "contracts:dialog".to_string()]
+        );
         // style-parity's needs rewired to every shard, in sorted order
         let sp = list.iter().find(|n| n.id == "style-parity").unwrap();
         assert_eq!(

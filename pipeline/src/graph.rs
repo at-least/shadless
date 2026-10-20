@@ -354,8 +354,11 @@ mod tests {
     /// whatever is on disk mid-run — unit read dist/css/vocabulary.json
     /// before demo rewrote it, and a full run went red on a stale file.
     /// A writer that itself waits for the reader is a feedback edge (the
-    /// reader takes the previous run's output, by design) and cannot be
-    /// ordered.
+    /// reader takes the previous run's output) and cannot be ordered; only
+    /// the audited ones in FEEDBACK are allowed, so a new one fails until
+    /// someone decides it is by design. The check sees the outputs on disk
+    /// now: a writer whose first output does not exist yet is invisible to
+    /// it until a run creates it.
     #[test]
     fn unit_a_node_reading_another_nodes_output_runs_after_it() {
         let root = crate::tree_root();
@@ -378,6 +381,25 @@ mod tests {
                 ))
             })
             .collect();
+        // (reader, writer; a trailing ':' matches every fanout shard)
+        const FEEDBACK: &[(&str, &str)] = &[
+            // the selftest scratch copies the previous dist/out.css
+            ("contract-fixture", "demo-css"),
+            ("example-fixture", "demo-css"),
+            // the committed catalog bounds what the stale-page sweep deletes
+            ("example-oracle", "docs-catalog"),
+            // @source scans the contract pages for classes
+            ("demo-css", "contracts:"),
+            // src/** covers src/kernel; convert opens it only under
+            // resolve-skins --fixtures, which no node passes
+            ("convert", "contract-fixture"),
+        ];
+        let feedback = |r: &str, w: &str| {
+            FEEDBACK
+                .iter()
+                .any(|(fr, fw)| *fr == r && (*fw == w || (fw.ends_with(':') && w.starts_with(fw))))
+        };
+        let mut used: HashSet<(&str, &str)> = HashSet::new();
         let mut unordered: Vec<String> = Vec::new();
         for id in g.ids() {
             let Some(inputs) = g.node(id).unwrap().inputs.as_deref() else {
@@ -386,7 +408,14 @@ mod tests {
             let reads = crate::glob::files(&root, inputs).unwrap();
             let before = g.waits_for(id);
             for (writer, files) in &produced {
-                if writer == id || before.contains(writer) || g.waits_for(writer).contains(id) {
+                if writer == id || before.contains(writer) {
+                    continue;
+                }
+                if feedback(id, writer) && g.waits_for(writer).contains(id) {
+                    used.extend(FEEDBACK.iter().copied().filter(|(fr, fw)| {
+                        *fr == id
+                            && (*fw == writer || (fw.ends_with(':') && writer.starts_with(fw)))
+                    }));
                     continue;
                 }
                 if let Some(f) = reads.iter().find(|f| files.contains(*f)) {
@@ -402,6 +431,11 @@ mod tests {
             unordered.is_empty(),
             "reads of another node's output with nothing ordering the reader after the writer:\n  {}",
             unordered.join("\n  ")
+        );
+        let stale: Vec<_> = FEEDBACK.iter().filter(|p| !used.contains(*p)).collect();
+        assert!(
+            stale.is_empty(),
+            "FEEDBACK entries that no longer occur: {stale:?}"
         );
     }
 }

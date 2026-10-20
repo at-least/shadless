@@ -955,7 +955,9 @@ mod tests {
             mutations: vec![],
             after: vec![],
         };
-        let writer = sh("writer", "sleep 0.3 && printf new > data.txt");
+        // a broken edge goes green only if the reader is held up longer
+        // than this sleep
+        let writer = sh("writer", "sleep 1 && printf new > data.txt");
         let mut reader = sh("reader", "test \"$(cat data.txt)\" = new");
         reader.after = vec!["writer".to_string()];
         let mut alone = sh("alone", "true");
