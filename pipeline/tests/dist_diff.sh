@@ -12,7 +12,9 @@ if git status --short dist/ | grep -q .; then
   echo "ABORT: committed dist/ is dirty"; exit 2
 fi
 # The snapshot lives in a private scratch dir, and dist/ is restored from it
-# however the script ends: a fixed /tmp name outlived every run, and an
+# on every exit the script sees (Ctrl-C included; not SIGKILL, and not
+# writes by a process that outlives the script — the dirty-tree check above
+# stops the next run then): a fixed /tmp name outlived every run, and an
 # interrupted run left the engine's dist/ in place with the only pristine
 # copy in /tmp.
 SCRATCH="$(mktemp -d "${TMPDIR:-/tmp}/shadless-dist-diff-XXXXXX")" || exit 2

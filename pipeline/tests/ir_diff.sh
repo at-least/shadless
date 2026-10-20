@@ -23,9 +23,10 @@ if git status --short generated/ | grep -q .; then
 fi
 
 # The snapshot lives in a private scratch dir, and generated/ir is restored
-# from it however the script ends (unless --keep): a fixed /tmp name
-# outlived every run, and an interrupted run left the converted tree in
-# place with the only pristine copy in /tmp.
+# from it on every exit the script sees (unless --keep; Ctrl-C included,
+# not SIGKILL — the dirty-tree check above stops the next run then): a
+# fixed /tmp name outlived every run, and an interrupted run left the
+# converted tree in place with the only pristine copy in /tmp.
 SCRATCH="$(mktemp -d "${TMPDIR:-/tmp}/shadless-ir-diff-XXXXXX")" || exit 2
 BEFORE="$SCRATCH/ir-before"
 trap 'trap "" INT TERM; rm -rf "$SCRATCH"' EXIT # until the snapshot is whole
@@ -38,15 +39,21 @@ fi
 rc=$?
 
 total=0; pass=0; fail=0
-while IFS= read -r f; do
-  rel="${f#generated/ir/}"
+# the union of both trees, as in dist_diff.sh: walking only the post-run
+# tree never sees an IR file convert DELETED
+while IFS= read -r rel; do
+  f="generated/ir/$rel"
   total=$((total+1))
-  if [ -f "$BEFORE/$rel" ] && cmp -s "$BEFORE/$rel" "$f"; then
+  if [ -f "$BEFORE/$rel" ] && [ -f "$f" ] && cmp -s "$BEFORE/$rel" "$f"; then
     pass=$((pass+1))
   else
     fail=$((fail+1))
     if [ $fail -le 8 ]; then
-      echo "DIFF: $rel"
+      if [ ! -f "$f" ]; then
+        echo "DIFF: $rel (deleted by convert)"
+      else
+        echo "DIFF: $rel"
+      fi
       if [ -f "$BEFORE/$rel" ] && [ -f "$f" ]; then
         cmp "$BEFORE/$rel" "$f" | head -2
         # first divergent byte with context from both sides
@@ -58,7 +65,11 @@ while IFS= read -r f; do
       fi
     fi
   fi
-done < <(find generated/ir -name '*.json' | sort)
+done < <(
+  { (cd generated/ir && find . -name '*.json' -printf '%P\n')
+    (cd "$BEFORE" && find . -name '*.json' -printf '%P\n')
+  } | sort -u
+)
 
 echo "== IR: $pass/$total byte-identical, $fail differ (convert exit=$rc) =="
 # the EXIT trap restores the committed tree — the measurement must not
