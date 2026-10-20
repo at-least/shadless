@@ -63,6 +63,13 @@ struct Owned {
     out: String,
 }
 
+/// The oracle-owned pages. Unreadable JSON is an error: read as no pages,
+/// every recorded cell looked fixed and the gate asked to record the win —
+/// which would have written an empty baseline.
+fn owned_pages(json: &str) -> Result<Vec<Owned>, String> {
+    serde_json::from_str(json).map_err(|e| e.to_string())
+}
+
 pub fn run_demo_parity(root: &Path, record: bool, details: bool) -> i32 {
     let ob = match std::fs::read_to_string(root.join("docs/example-oracle.json")) {
         Ok(b) => b,
@@ -71,7 +78,13 @@ pub fn run_demo_parity(root: &Path, record: bool, details: bool) -> i32 {
             return 1;
         }
     };
-    let owned: Vec<Owned> = serde_json::from_str(&ob).unwrap_or_default();
+    let owned = match owned_pages(&ob) {
+        Ok(o) => o,
+        Err(e) => {
+            eprintln!("demo-parity: docs/example-oracle.json: {}", e);
+            return 1;
+        }
+    };
     let oracle_css =
         std::fs::read_to_string(root.join("build/gates/oracle.css")).unwrap_or_default();
     let out_css = std::fs::read_to_string(root.join("dist/out.css")).unwrap_or_default();
@@ -246,4 +259,17 @@ pub fn run_demo_parity(root: &Path, record: bool, details: bool) -> i32 {
     );
     shell.close();
     0
+}
+
+#[cfg(test)]
+mod tests {
+    /// A truncated docs/example-oracle.json read as no pages: the gate
+    /// compared nothing and blamed the baseline.
+    #[test]
+    fn unit_unreadable_oracle_pages_are_an_error() {
+        assert!(super::owned_pages("").is_err());
+        assert!(super::owned_pages(r#"[{"name":"a""#).is_err());
+        let pages = super::owned_pages(r#"[{"name":"a","out":"docs/demos/a.html"}]"#).unwrap();
+        assert_eq!(pages[0].out, "docs/demos/a.html");
+    }
 }

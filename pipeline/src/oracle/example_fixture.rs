@@ -43,10 +43,13 @@ pub struct EfDef {
     pub oracle_css: String,
 }
 
-/// A contract def as tools/browser-shell.mjs projects it (every field it
-/// does not set is null — read as the field's default, as contract.rs does).
-fn ef_def_from(v: serde_json::Value) -> Result<EfDef, String> {
-    serde_json::from_value(super::contract::drop_nulls(v)).map_err(|e| e.to_string())
+/// A contract def from tools/browser-shell.mjs's loadContractDef response
+/// (every field the def does not set is null — read as the field's
+/// default, as contract.rs does). A response without a def is an error: an
+/// empty def's empty shadlessPage would skip the target silently.
+fn ef_def_from(res: &serde_json::Value) -> Result<EfDef, String> {
+    let def = res.get("def").cloned().ok_or("the shell returned no def")?;
+    serde_json::from_value(super::contract::drop_nulls(def)).map_err(|e| e.to_string())
 }
 
 pub struct EfTarget {
@@ -295,7 +298,7 @@ fn run_with_shell(
             let res = shell.call(&json!({
                 "op": "loadContractDef", "file": format!("file://{}", abs)
             }))?;
-            let def = ef_def_from(res.get("def").cloned().unwrap_or(json!({})))
+            let def = ef_def_from(&res)
                 .map_err(|e| format!("tools/contracts/components/{}: {}", f, e))?;
             let comp = f
                 .trim_end_matches(".mjs")
@@ -507,10 +510,7 @@ fn build_one_page(
         let res = shell
             .call(&json!({"op": "loadContractDef", "file": format!("file://{}", abs)}))
             .map_err(|e| e.to_string())?;
-        Some(
-            ef_def_from(res.get("def").cloned().unwrap_or(json!({})))
-                .map_err(|e| format!("{}: {}", file, e))?,
-        )
+        Some(ef_def_from(&res).map_err(|e| format!("{}: {}", file, e))?)
     } else {
         None
     };
@@ -881,12 +881,14 @@ mod tests {
     /// regenerated, and "2 interactive pages emitted" read as a pass.
     #[test]
     fn unit_a_contract_def_with_unset_fields_loads() {
-        let def = ef_def_from(json!({
+        let def = ef_def_from(&json!({ "def": {
             "usage": "u", "imports": "i", "open": null,
             "shadlessPage": "src/kernel/dialog.html", "oracleCss": null,
-        }))
+        }}))
         .unwrap();
         assert_eq!(def.shadless_page, "src/kernel/dialog.html");
+        // no def at all is not an empty def
+        assert!(ef_def_from(&json!({ "ok": true })).is_err());
     }
 
     #[test]
