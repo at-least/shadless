@@ -4267,40 +4267,40 @@ globalThis.RadixKernel = RadixKernel;
   // to the template — what the next open clones — and mirrored on the open
   // clone, which the kernel re-adopts when the menu reopens mid-exit. The
   // check (ItemIndicator) lives in the span every item starts with: it moves
-  // within a radio group; a checkbox copies one from a checked item, or
-  // mounts <template data-for="menu-item-indicator"> when none holds one.
+  // within a radio group, and is otherwise mounted from the page's
+  // <template data-for="menu-item-indicator"> — copying one from a checked
+  // item ran out once the last checked item was unchecked.
   var MENU_CHECKABLE = "[role=menuitemcheckbox], [role=menuitemradio]"
   // each open layer's template, recorded by the glue's mountLayer (a context
   // menu's layer root carries no id to find it by)
   var MENU_TEMPLATES = new WeakMap()
   function menuLayer(content, tpl) { MENU_TEMPLATES.set(content, tpl) }
+  // an indeterminate item's check goes too: radix re-renders it as checked
   function setMenuCheck(item, on) {
     item.setAttribute("aria-checked", String(on))
     item.setAttribute("data-state", on ? "checked" : "unchecked")
-    var wrap = item.firstElementChild
-    if (!on) { wrap.textContent = ""; return null }
-    if (wrap.firstElementChild) return null
-    return wrap
+    item.firstElementChild.textContent = ""
   }
   function menuCheck(menu, idx, on) {
     var item = menu.querySelectorAll(MENU_CHECKABLE)[idx]
     var moved = null
     if (item.getAttribute("role") === "menuitemradio") {
-      Array.prototype.forEach.call(item.closest("[role=group]").querySelectorAll("[role=menuitemradio]"), function (r) {
-        if (r === item || r.getAttribute("aria-checked") !== "true") return
+      var group = item.closest("[role=group]")
+      Array.prototype.forEach.call(group.querySelectorAll("[role=menuitemradio]"), function (r) {
+        // a radio group nested in this one keeps its own value
+        if (r === item || r.closest("[role=group]") !== group || r.getAttribute("aria-checked") !== "true") return
         moved = r.firstElementChild.firstElementChild
         setMenuCheck(r, false)
       })
     }
-    var wrap = setMenuCheck(item, on)
-    if (!wrap) return
-    var donor = menu.querySelector("[aria-checked=true] > :first-child > *")
-    var check = moved || (donor && donor.cloneNode(true)) || cloneTemplate(findTemplate(null, "menu-item-indicator"))
+    setMenuCheck(item, on)
+    if (!on) return
+    var check = moved || cloneTemplate(findTemplate(null, "menu-item-indicator"))
     if (!check) {
       console.error("shadless: no check for a menu item to show — add <template data-for=\"menu-item-indicator\">")
       return
     }
-    wrap.appendChild(check)
+    item.firstElementChild.appendChild(check)
   }
   function menuSelect(item, component) {
     var role = item.getAttribute("role")
@@ -4310,7 +4310,9 @@ globalThis.RadixKernel = RadixKernel;
     var idx = Array.prototype.indexOf.call(open.querySelectorAll(MENU_CHECKABLE), item)
     var was = tpl.content.querySelectorAll(MENU_CHECKABLE)[idx].getAttribute("aria-checked") === "true"
     var radio = role === "menuitemradio"
-    if (radio && was) return // already the group's value
+    // already the group's value: nothing changed, so no change event (radix
+    // calls onValueChange again; shadless:change marks a change, as in tabs)
+    if (radio && was) return
     var on = radio || !was
     menuCheck(tpl.content, idx, on)
     menuCheck(open, idx, on)

@@ -936,7 +936,7 @@ window.__esm = { default: shadless, get, theme, init, named: Object.keys(ns).sor
     const state = (doc) => [...doc.querySelectorAll("[role=menu] [role=menuitemcheckbox], [role=menu] [role=menuitemradio]")]
       .map((i) => `${i.textContent}:${i.getAttribute("data-state")}:${i.firstElementChild.querySelector("svg") ? "check" : "-"}`).join(",")
     const pick = (dom, label) =>
-      click(dom, [...dom.window.document.querySelectorAll("[role=menu] [role]")].find((i) => i.textContent === label))
+      click(dom, [...dom.window.document.querySelectorAll("[role=menu] [role^=menuitem]")].find((i) => i.textContent === label))
     const closed = () => new Promise((r) => setTimeout(r, 200)) // the kernel's exit (100ms) has removed the clone
     const changes = (doc) => {
       const log = []
@@ -944,10 +944,12 @@ window.__esm = { default: shadless, get, theme, init, named: Object.keys(ns).sor
       return log
     }
 
+    // every page with checkable items carries the check radix mounts
+    const TPL = `<template data-for="menu-item-indicator">${CHECK}</template>`
     const dom = bootKernel(`<button data-radixuigo-menu-trigger="m0" id="m0-trigger">open</button>${menu("m0", [
       [item("menuitemcheckbox", "A", true), item("menuitemcheckbox", "B", false),
         item("menuitemcheckbox", "C", false, ` data-disabled="" aria-disabled="true"`)],
-      [item("menuitemradio", "X", true), item("menuitemradio", "Y", false)]])}`, ["dropdown-menu"])
+      [item("menuitemradio", "X", true), item("menuitemradio", "Y", false)]])}${TPL}`, ["dropdown-menu"])
     dom.window.shadless.initAll()
     const doc = dom.window.document
     const log = changes(doc)
@@ -1007,6 +1009,65 @@ window.__esm = { default: shadless, get, theme, init, named: Object.keys(ns).sor
     await closed(); click(dom3, b0)
     t.eq("menubar: a radio pick moves the value and the check", state(doc3), "R1:unchecked:-,R2:checked:check")
     t.eq("menubar: change names the menubar", log3, [["menubar", "R2", "R2"]])
+
+    // the check a checkbox shows is the page's template, whatever else in
+    // the menu is checked: copying one from a checked item ran out once the
+    // last checked item was unchecked (dropdown-menu-complex: uncheck "Show
+    // Sidebar", check "Show Status Bar" — no check, two console errors), and
+    // took the bare svg of a checked checkbox nested in a plain item
+    const nested = `<div role="menuitem" tabindex="-1">Sync<button role="checkbox" aria-checked="true" data-state="checked"><span data-state="checked"><svg class="nested"></svg></span></button></div>`
+    const dom4 = bootKernel(`<button data-radixuigo-menu-trigger="n0" id="n0-trigger">open</button><template id="n0-tpl"><div role="menu"><div role="group">${nested}${item("menuitemcheckbox", "S", true)}${item("menuitemcheckbox", "T", false)}</div></div></template>${TPL}`, ["dropdown-menu"])
+    dom4.window.shadless.initAll()
+    const doc4 = dom4.window.document
+    const n0 = dom4.window.shadless.get("#n0-trigger")
+    const checkOf = (label) => [...doc4.querySelectorAll("[role=menu] [role^=menuitem]")].find((i) => i.textContent === label).firstElementChild.innerHTML
+    n0.open(); pick(dom4, "T")
+    await closed(); n0.open()
+    t.eq("menu: a checkbox's check is the template's, not a nested control's", checkOf("T"), CHECK)
+    pick(dom4, "S"); await closed(); n0.open()
+    pick(dom4, "T"); await closed(); n0.open()
+    pick(dom4, "S"); await closed(); n0.open()
+    t.eq("menu: with every item unchecked once, a check still shows", state(doc4), "S:checked:check,T:unchecked:-")
+    n0.close()
+
+    // the template is required: without it a check cannot show, and the
+    // page says so instead of rendering a checked item with no check
+    const dom5 = bootKernel(`<button data-radixuigo-menu-trigger="q0" id="q0-trigger">open</button>${menu("q0", [
+      [item("menuitemcheckbox", "U", true), item("menuitemcheckbox", "V", false)]])}`, ["dropdown-menu"])
+    dom5.window.shadless.initAll()
+    const errs5 = []
+    dom5.window.console.error = (...a) => errs5.push(a.join(" "))
+    const q0 = dom5.window.shadless.get("#q0-trigger")
+    q0.open(); pick(dom5, "V"); await closed(); q0.open()
+    t.eq("menu: no template — the item is checked without a check", state(dom5.window.document), "U:checked:check,V:checked:-")
+    t.ok("menu: no template — the missing template is reported", errs5.some((m) => m.includes("menu-item-indicator")), errs5.join(" | "))
+    q0.close()
+
+    // radix: a radio group nested in another is its own group; an
+    // indeterminate checkbox item (aria-checked="mixed") checks on select
+    // and its check then reads checked
+    const MIXED = `<span data-state="indeterminate"><svg class="lucide lucide-minus"></svg></span>`
+    const dom6 = bootKernel(`<button data-radixuigo-menu-trigger="r0" id="r0-trigger">open</button><template id="r0-tpl"><div role="menu"><div role="group">${item("menuitemradio", "O1", true)}${item("menuitemradio", "O2", false)}<div role="group">${item("menuitemradio", "I1", true)}${item("menuitemradio", "I2", false)}</div></div><div role="group"><div role="menuitemcheckbox" aria-checked="mixed" data-state="indeterminate" tabindex="-1"><span>${MIXED}</span>M</div></div></div></template>${TPL}`, ["dropdown-menu"])
+    dom6.window.shadless.initAll()
+    const doc6 = dom6.window.document
+    const r0 = dom6.window.shadless.get("#r0-trigger")
+    r0.open(); pick(dom6, "O2"); await closed(); r0.open()
+    t.eq("menu: an outer radio pick leaves the nested group's value", state(doc6), "O1:unchecked:-,O2:checked:check,I1:checked:check,I2:unchecked:-,M:indeterminate:check")
+    pick(dom6, "M"); await closed(); r0.open()
+    t.eq("menu: an indeterminate item checks, and its check reads checked", [...doc6.querySelectorAll("[role=menuitemcheckbox]")].map((i) => i.getAttribute("aria-checked") + ":" + i.firstElementChild.innerHTML), ["true:" + CHECK])
+    r0.close()
+
+    // a sub menu is a layer of its own: its pick is written to <k>s0-tpl
+    const dom7 = bootKernel(`<button data-radixuigo-menu-trigger="p0" id="p0-trigger">open</button><template id="p0-tpl"><div role="menu"><div role="menuitem" id="p0s0-trigger" data-radixuigo-menu-subtrigger="p0s0" tabindex="-1">More</div></div></template><template id="p0s0-tpl"><div role="menu"><div role="group">${item("menuitemradio", "Light", true)}${item("menuitemradio", "Dark", false)}</div></div></template>${TPL}`, ["dropdown-menu"])
+    dom7.window.shadless.initAll()
+    const doc7 = dom7.window.document
+    const p0 = dom7.window.shadless.get("#p0-trigger")
+    const openSub = () => click(dom7, doc7.getElementById("p0s0-trigger"))
+    p0.open(); openSub()
+    t.ok("menu: the sub menu opens", doc7.querySelectorAll("[role=menu]").length === 2)
+    pick(dom7, "Dark"); await closed(); p0.open(); openSub()
+    t.eq("menu: a sub menu's pick shows on its next open", state(doc7), "Light:unchecked:-,Dark:checked:check")
+    p0.close()
   }
   // menu family: an EMPTY -tpl must not throw in mountLayer (kernel treats null as no-op)
   {

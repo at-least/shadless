@@ -49,7 +49,7 @@ export interface EventDetail { component: string; api: Handle | null }
 export interface ChangeDetail extends EventDetail {
   checked?: boolean          // checkbox, switch, a menu checkbox item
   pressed?: boolean          // toggle
-  value?: string | string[] | null  // radio-group, toggle-group (single | multiple), select, a menu radio item — the item's value / data-value attr or id (select, menu radio item: else its label)
+  value?: string | string[] | null  // radio-group, toggle-group (single | multiple), select, a menu radio item — the item's value / data-value attr or id (select: else its label; menu radio item: else its whole text, a shortcut included)
   label?: string | null      // select: the option's text
   item?: Element             // radio-group, toggle-group, select
   index?: number             // tabs

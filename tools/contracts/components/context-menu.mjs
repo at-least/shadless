@@ -52,9 +52,11 @@ function Demo() {
   scenarios: ["escape", "outside-click", "click:[role=menuitem]",
     "key:ArrowDown", "key:ArrowDown+key:Enter",
     // pick a checkbox / radio item and reopen: the item flipped, its check
-    // with it. The reopen waits out the close: the kernel ignores the
-    // trigger while the closing layer is still exiting (~116ms), where radix
-    // reopens at once — a separate kernel difference, not this behavior.
+    // with it. The reopen waits out the close: until the closing layer has
+    // exited (~116ms) the kernel keeps the body locked (pointer-events:
+    // none), so a right-click there lands on <html>, not the trigger, where
+    // radix reopens at once — a separate kernel difference, not this
+    // behavior.
     "click:[role=menuitemcheckbox][data-state=unchecked]+wait:200+right-click:[data-slot=context-menu-trigger]",
     "click:[role=menuitemcheckbox][data-state=checked]+wait:200+right-click:[data-slot=context-menu-trigger]",
     "click:[role=menuitemradio][data-state=unchecked]+wait:200+right-click:[data-slot=context-menu-trigger]"],

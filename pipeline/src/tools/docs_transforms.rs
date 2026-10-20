@@ -2156,7 +2156,7 @@ pub fn protocol_mdx(comp: &str) -> String {
             ));
             rows.push((
                 "`<template data-for=\"menu-item-indicator\">`".to_string(),
-                "the check: a `role=\"menuitemcheckbox\"` item toggles on select, a `role=\"menuitemradio\"` item takes its `role=\"group\"`'s value, and the item dispatches `shadless:change` (`detail: { checked }` / `{ value }`); the check sits in a checked item's first child (the empty indicator span every item starts with) — it moves within a radio group, is copied from a checked item, or, with none checked at first, mounts from this template".to_string(),
+                "the check: a `role=\"menuitemcheckbox\"` item toggles on select, a `role=\"menuitemradio\"` item takes its `role=\"group\"`'s value (picking the checked one changes nothing), and the item dispatches `shadless:change` (`detail: { checked }` / `{ value }`); the check sits in a checked item's first child (the empty indicator span every item starts with) — it moves within a radio group and otherwise mounts from this template, which a page with checkbox or radio items carries".to_string(),
             ));
         }
         "select" => {

@@ -25,6 +25,8 @@ pub enum SelfTestAction {
     },
     MenuOrSelect {
         trigger: String,
+        /// a menu whose layer has checkbox / radio items to pick (menus only)
+        pick: Option<String>,
         comp: String,
         contextmenu: bool,
     },
@@ -120,6 +122,7 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
         }
         SelfTestAction::MenuOrSelect {
             trigger,
+            pick,
             comp,
             contextmenu,
         } => {
@@ -149,8 +152,6 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
             )?;
             if comp == "select" {
                 select_check_follows_pick(page, &sel, &content_sel)?;
-            } else {
-                menu_check_follows_pick(page, &sel, *contextmenu, &content_sel)?;
             }
             let n = page.loc_count("", &format!("[data-slot=\"{}-sub-trigger\"]", comp))?;
             if n > 0 {
@@ -185,13 +186,22 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
             }
             page.key_press("Escape").map_err(|e| e.to_string())?;
             let _ = page.wait_for_timeout(500);
-            wait_true(
-                page,
-                &format!(
-                    "!document.querySelector('{}[data-state=open]')",
-                    content_sel
-                ),
-            )?;
+            let closed = format!(
+                "!document.querySelector('{}[data-state=open]')",
+                content_sel
+            );
+            wait_true(page, &closed)?;
+            if let Some(p) = pick {
+                menu_check_follows_pick(
+                    page,
+                    &format!("#{}-trigger", p),
+                    *contextmenu,
+                    &content_sel,
+                )?;
+                page.key_press("Escape").map_err(|e| e.to_string())?;
+                let _ = page.wait_for_timeout(500);
+                wait_true(page, &closed)?;
+            }
             Ok(())
         }
         SelfTestAction::Nav { trigger, content } => {
@@ -797,34 +807,48 @@ fn menu_select(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
             )?)
         ));
     }
-    // the same for a menu whose checkbox / radio items all start unchecked
-    // (context-menu-checkboxes): no item carries a check to copy
+    // the runtime mounts every menu check from the page's template, so every
+    // page with checkbox / radio items carries one: copying the check from a
+    // checked item ran out once the last checked item was unchecked
+    // (dropdown-menu-complex). It is the page's own check where an item
+    // holds one, else the family's
     let checkable =
         |h: &str| h.contains("role=\"menuitemcheckbox\"") || h.contains("role=\"menuitemradio\"");
-    if !is_select
-        && templates_.iter().any(|t| checkable(&t.html))
-        && !templates_
-            .iter()
-            .any(|t| t.html.contains("aria-checked=\"true\""))
-    {
-        if ctx.contracts {
+    if !is_select && templates_.iter().any(|t| checkable(&t.html)) {
+        let own = tpls.join("\n");
+        let check = if own.contains("aria-checked=\"true\"") {
+            menu_indicator_in(&own, "the page's menus")?
+        } else if ctx.contracts {
             return Err(format!(
                 "{}: the contract usage must hold a checked item — it is where the family's check is taken from",
                 comp
             ));
-        }
+        } else {
+            family_menu_indicator(ctx.root, &comp)?
+        };
         tpls.push(format!(
             "<template data-for=\"menu-item-indicator\">\n{}\n</template>",
-            family_menu_indicator(ctx.root, &comp)?
+            check
         ));
     }
     out.templates = tpls.join("\n");
     let comp2 = comp.clone();
     let contextmenu2 = ctx.fam.open == "contextmenu";
     let trigger_id = first_enabled.map(id_of);
+    // the menu the self-test picks in: the first whose own layer has a
+    // checkbox / radio item (menubar-demo's first, File, has none)
+    let pick = (0..count)
+        .filter(|i| enabled[*i] && !is_select)
+        .map(id_of)
+        .find(|id| {
+            templates_
+                .iter()
+                .any(|t| t.layer_id == *id && checkable(&t.html))
+        });
     let fam_attr = ctx.fam.attr.to_string();
     out.self_test = Some(super::fixture_families::SelfTestAction::MenuOrSelect {
         trigger: trigger_id.unwrap_or_default(),
+        pick,
         comp: comp2,
         contextmenu: contextmenu2,
     });
@@ -889,10 +913,11 @@ fn open_menu(page: &BPage, trigger: &str, index: usize, contextmenu: bool) -> Re
     Ok(())
 }
 
-/// On the open menu: pick an enabled checkbox / radio item that is not
-/// checked, reopen, and require it checked — radix flips the item on select
-/// and renders the check (ItemIndicator) in checked items only, so every
-/// item's check must match its state.
+/// Open the menu and pick an enabled checkbox item that is not checked (a
+/// radio item when it has none), reopen, and require it checked; a checkbox
+/// is then picked again and must read unchecked — radix flips the item on
+/// select and renders the check (ItemIndicator) in checked items only, so
+/// every item's check must match its state. Leaves the menu open.
 fn menu_check_follows_pick(
     page: &BPage,
     trigger: &str,
@@ -903,12 +928,17 @@ fn menu_check_follows_pick(
         "{c} [role=menuitemcheckbox], {c} [role=menuitemradio]",
         c = content_sel
     );
-    let pick = format!(
-        "{c} [role=menuitemcheckbox]:not([data-disabled]):not([data-state=checked]), {c} [role=menuitemradio]:not([data-disabled]):not([data-state=checked])",
-        c = content_sel
-    );
-    if page.loc_count("", &pick)? == 0 {
-        return Ok(());
+    let unchecked = |role: &str| {
+        format!(
+            "{} [role={}]:not([data-disabled]):not([data-state=checked])",
+            content_sel, role
+        )
+    };
+    open_menu(page, trigger, 0, contextmenu)?;
+    let mut pick = unchecked("menuitemcheckbox");
+    let checkbox = page.loc_count("", &pick)? > 0;
+    if !checkbox {
+        pick = unchecked("menuitemradio");
     }
     let at = page
         .evaluate_fn_arg(
@@ -916,29 +946,39 @@ fn menu_check_follows_pick(
             json!({ "items": items, "pick": pick }),
         )
         .map_err(|e| e.to_string())?
-        .as_u64()
-        .ok_or("menu: the picked item is not among the menu's items")? as usize;
-    page.loc_click("", &pick, 0, "left")
-        .map_err(|e| e.to_string())?;
-    let _ = page.wait_for_timeout(500);
-    open_menu(page, trigger, 0, contextmenu)?;
-    let v = page
-        .evaluate_fn_arg(
-            r##"(sel) => [...document.querySelectorAll(sel)].map((o) => o.getAttribute("data-state") + ":" + (o.firstElementChild?.childElementCount ?? 0))"##,
-            json!(items),
-        )
-        .map_err(|e| e.to_string())?;
-    let got: Vec<&str> = v
-        .as_array()
-        .map(|a| a.iter().filter_map(|x| x.as_str()).collect())
-        .unwrap_or_default();
-    let ok = got.iter().all(|o| *o == "checked:1" || *o == "unchecked:0");
-    if !ok || got.get(at) != Some(&"checked:1") {
-        return Err(format!(
-            "menu: after picking item #{} the checks do not follow the state (data-state:checks per item = {})",
-            at,
-            got.join(",")
-        ));
+        .as_i64()
+        .ok_or("menu: the item index is not a number")?;
+    let at =
+        usize::try_from(at).map_err(|_| format!("menu {}: no unchecked item to pick", trigger))?;
+    let mut want = "checked:1";
+    for round in 0..if checkbox { 2 } else { 1 } {
+        page.loc_click("", &items, at as i64, "left")
+            .map_err(|e| e.to_string())?;
+        let _ = page.wait_for_timeout(500);
+        open_menu(page, trigger, 0, contextmenu)?;
+        let v = page
+            .evaluate_fn_arg(
+                r##"(sel) => [...document.querySelectorAll(sel)].map((o) => o.getAttribute("data-state") + ":" + (o.firstElementChild?.childElementCount ?? 0))"##,
+                json!(items),
+            )
+            .map_err(|e| e.to_string())?;
+        let got: Vec<&str> = v
+            .as_array()
+            .ok_or("menu: the item states are not a list")?
+            .iter()
+            .map(|x| x.as_str().ok_or("menu: an item state is not a string"))
+            .collect::<Result<_, _>>()?;
+        let ok = got.iter().all(|o| *o == "checked:1" || *o == "unchecked:0");
+        if !ok || got.get(at) != Some(&want) {
+            return Err(format!(
+                "menu {}: after pick {} of item #{} the checks do not follow the state (data-state:checks per item = {})",
+                trigger,
+                round + 1,
+                at,
+                got.join(",")
+            ));
+        }
+        want = "unchecked:0";
     }
     Ok(())
 }
@@ -952,7 +992,12 @@ fn menu_check_follows_pick(
 fn family_menu_indicator(root: &Path, comp: &str) -> Result<String, String> {
     let path = format!("src/kernel/{}.html", comp);
     let html = std::fs::read_to_string(root.join(&path)).map_err(|e| format!("{}: {}", path, e))?;
-    let missing = || format!("{}: no checked menu item to take the check from", path);
+    menu_indicator_in(&html, &path)
+}
+
+/// The check in the first checked menu item of `html` (`from` names it).
+fn menu_indicator_in(html: &str, from: &str) -> Result<String, String> {
+    let missing = || format!("{}: no checked menu item to take the check from", from);
     let rest = &html[html.find("aria-checked=\"true\"").ok_or_else(missing)?..];
     let start = rest
         .find("<span data-state=\"checked\">")

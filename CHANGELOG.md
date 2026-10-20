@@ -141,8 +141,10 @@ upstream is `src/registry/pin.json`; re-pins land through the upstream drill
   toggles and a `menuitemradio` takes its group's value, in the open menu
   and in the template the next open clones; the check moves with the state,
   and the item dispatches `shadless:change` (`detail: { checked }` /
-  `{ value }`). A page whose items all start unchecked carries
-  `<template data-for="menu-item-indicator">`. In React these items toggle
+  `{ value }`; picking the radio item already checked changes nothing). A
+  page with checkbox or radio items carries
+  `<template data-for="menu-item-indicator">`, the check every newly
+  checked item mounts. In React these items toggle
   only when the app holds their state; the runtime holds it, so the static
   React examples (`menubar-checkbox`, `menubar-demo`, `context-menu-demo`,
   `context-menu-checkboxes`, whose `defaultChecked` radix ignores) toggle
