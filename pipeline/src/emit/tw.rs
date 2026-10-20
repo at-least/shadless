@@ -37,16 +37,19 @@ fn is_repo_root(dir: &Path) -> bool {
     dir.join("package.json").exists() && dir.join("pipeline").is_dir()
 }
 
+/// The dev CLI's entry script, the one `TwCli::dev()` runs.
+const DEV_SCRIPT: &str = "node_modules/@tailwindcss/cli/dist/index.mjs";
+
 /// What a dev-CLI compile executes, for the graph's input tables: the entry
-/// script (`TwCli::dev()` runs element 0) and the packages it takes the
-/// compiler from — the root tailwindcss (also what `@import "tailwindcss"`
-/// resolves to), @tailwindcss/node, and @tailwindcss/oxide with its native
-/// binaries — @tailwindcss/cli nests none of them — plus the CLI's own
-/// package.json files it reads. Whole packages: their dist chunk names are
+/// script and the packages it takes the compiler from — the root
+/// tailwindcss (also what `@import "tailwindcss"` resolves to),
+/// @tailwindcss/node, and @tailwindcss/oxide with its native binaries —
+/// @tailwindcss/cli nests none of them — plus the CLI's own package.json
+/// files it reads. Whole packages: their dist chunk names are
 /// content-hashed per release. Not declared: the transitive JS a compile
 /// also runs (lightningcss and its native, enhanced-resolve, jiti, ...).
 pub const DEV_NODE_INPUTS: &[&str] = &[
-    "node_modules/@tailwindcss/cli/dist/index.mjs",
+    DEV_SCRIPT,
     "node_modules/@tailwindcss/cli/**",
     "node_modules/tailwindcss/**",
     "node_modules/@tailwindcss/node/**",
@@ -71,9 +74,7 @@ pub struct TwCli {
 impl TwCli {
     /// The dev toolchain: `@tailwindcss/cli` (the `^4.3.3` devDependency).
     pub const fn dev() -> TwCli {
-        TwCli {
-            script: DEV_NODE_INPUTS[0],
-        }
+        TwCli { script: DEV_SCRIPT }
     }
 
     /// The declared floor: the `@tailwindcss/cli-floor` alias
