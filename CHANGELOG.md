@@ -135,6 +135,19 @@ upstream is `src/registry/pin.json`; re-pins land through the upstream drill
   — and `form.reset()` returns a select that started on its placeholder to
   no value, no check and the placeholder text. The `contracts` gate now
   compares where the check sits after a pick against React.
+- Dropdown menu, context menu, menubar: checkbox and radio items never
+  changed — a pick only closed the menu, and the next open (a fresh clone of
+  the layer's `<template>`) showed the old state. A `menuitemcheckbox` now
+  toggles and a `menuitemradio` takes its group's value, in the open menu
+  and in the template the next open clones; the check moves with the state,
+  and the item dispatches `shadless:change` (`detail: { checked }` /
+  `{ value }`). A page whose items all start unchecked carries
+  `<template data-for="menu-item-indicator">`. In React these items toggle
+  only when the app holds their state; the runtime holds it, so the static
+  React examples (`menubar-checkbox`, `menubar-demo`, `context-menu-demo`,
+  `context-menu-checkboxes`, whose `defaultChecked` radix ignores) toggle
+  here while theirs stay frozen. The `contracts` gate compares a pick
+  against a React menu that holds its state.
 - `shadless-check` reports on the elements a browser builds, where its scan
   used to diverge (Chromium-measured on 78 crafted shapes; the shipped
   checker agreed on 18 of the first 35): inside svg/math it follows the

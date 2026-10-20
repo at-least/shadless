@@ -632,6 +632,7 @@ fn build_one_page(
                 };
                 super::fixture_families::dispatch_family(
                     page,
+                    root,
                     comp,
                     &fam,
                     contracts,

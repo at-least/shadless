@@ -12,6 +12,7 @@ use super::example_fixture::{
 use super::families::FamilyEnt;
 use serde_json::json;
 use std::collections::HashMap;
+use std::path::Path;
 
 pub enum SelfTestAction {
     Dialog {
@@ -148,6 +149,8 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
             )?;
             if comp == "select" {
                 select_check_follows_pick(page, &sel, &content_sel)?;
+            } else {
+                menu_check_follows_pick(page, &sel, *contextmenu, &content_sel)?;
             }
             let n = page.loc_count("", &format!("[data-slot=\"{}-sub-trigger\"]", comp))?;
             if n > 0 {
@@ -343,6 +346,7 @@ pub struct FamilyOut {
 
 struct Ctx<'a> {
     page: &'a BPage<'a>,
+    root: &'a Path,
     comp: String,
     fam: &'a FamilyEnt,
     id_map: &'a mut HashMap<String, String>,
@@ -361,8 +365,11 @@ impl<'a> Ctx<'a> {
 }
 
 /// Dispatches the non-dialog families.
+// one argument per Ctx field: the call site has them all as separate values
+#[allow(clippy::too_many_arguments)]
 pub fn dispatch_family(
     page: &BPage<'_>,
+    root: &Path,
     comp: &str,
     fam: &FamilyEnt,
     contracts: bool,
@@ -372,6 +379,7 @@ pub fn dispatch_family(
 ) -> Result<(), String> {
     let mut ctx = Ctx {
         page,
+        root,
         comp: comp.to_string(),
         fam,
         id_map,
@@ -789,6 +797,27 @@ fn menu_select(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
             )?)
         ));
     }
+    // the same for a menu whose checkbox / radio items all start unchecked
+    // (context-menu-checkboxes): no item carries a check to copy
+    let checkable =
+        |h: &str| h.contains("role=\"menuitemcheckbox\"") || h.contains("role=\"menuitemradio\"");
+    if !is_select
+        && templates_.iter().any(|t| checkable(&t.html))
+        && !templates_
+            .iter()
+            .any(|t| t.html.contains("aria-checked=\"true\""))
+    {
+        if ctx.contracts {
+            return Err(format!(
+                "{}: the contract usage must hold a checked item — it is where the family's check is taken from",
+                comp
+            ));
+        }
+        tpls.push(format!(
+            "<template data-for=\"menu-item-indicator\">\n{}\n</template>",
+            family_menu_indicator(ctx.root, &comp)?
+        ));
+    }
     out.templates = tpls.join("\n");
     let comp2 = comp.clone();
     let contextmenu2 = ctx.fam.open == "contextmenu";
@@ -839,6 +868,98 @@ fn select_check_follows_pick(page: &BPage, trigger: &str, content_sel: &str) -> 
         ));
     }
     Ok(())
+}
+
+/// Open a menu: right-click a context menu's trigger, click any other.
+fn open_menu(page: &BPage, trigger: &str, index: usize, contextmenu: bool) -> Result<(), String> {
+    if contextmenu {
+        let Some(b) = page
+            .loc_box("", trigger, index as i64)
+            .map_err(|e| e.to_string())?
+        else {
+            return Err(format!("no trigger box for {}", trigger));
+        };
+        page.mouse_click_button(b.x + b.width / 2.0, b.y + b.height / 2.0, "right")
+            .map_err(|e| e.to_string())?;
+    } else {
+        page.loc_click("", trigger, index as i64, "left")
+            .map_err(|e| e.to_string())?;
+    }
+    let _ = page.wait_for_timeout(500);
+    Ok(())
+}
+
+/// On the open menu: pick an enabled checkbox / radio item that is not
+/// checked, reopen, and require it checked — radix flips the item on select
+/// and renders the check (ItemIndicator) in checked items only, so every
+/// item's check must match its state.
+fn menu_check_follows_pick(
+    page: &BPage,
+    trigger: &str,
+    contextmenu: bool,
+    content_sel: &str,
+) -> Result<(), String> {
+    let items = format!(
+        "{c} [role=menuitemcheckbox], {c} [role=menuitemradio]",
+        c = content_sel
+    );
+    let pick = format!(
+        "{c} [role=menuitemcheckbox]:not([data-disabled]):not([data-state=checked]), {c} [role=menuitemradio]:not([data-disabled]):not([data-state=checked])",
+        c = content_sel
+    );
+    if page.loc_count("", &pick)? == 0 {
+        return Ok(());
+    }
+    let at = page
+        .evaluate_fn_arg(
+            r##"(a) => [...document.querySelectorAll(a.items)].indexOf(document.querySelector(a.pick))"##,
+            json!({ "items": items, "pick": pick }),
+        )
+        .map_err(|e| e.to_string())?
+        .as_u64()
+        .ok_or("menu: the picked item is not among the menu's items")? as usize;
+    page.loc_click("", &pick, 0, "left")
+        .map_err(|e| e.to_string())?;
+    let _ = page.wait_for_timeout(500);
+    open_menu(page, trigger, 0, contextmenu)?;
+    let v = page
+        .evaluate_fn_arg(
+            r##"(sel) => [...document.querySelectorAll(sel)].map((o) => o.getAttribute("data-state") + ":" + (o.firstElementChild?.childElementCount ?? 0))"##,
+            json!(items),
+        )
+        .map_err(|e| e.to_string())?;
+    let got: Vec<&str> = v
+        .as_array()
+        .map(|a| a.iter().filter_map(|x| x.as_str()).collect())
+        .unwrap_or_default();
+    let ok = got.iter().all(|o| *o == "checked:1" || *o == "unchecked:0");
+    if !ok || got.get(at) != Some(&"checked:1") {
+        return Err(format!(
+            "menu: after picking item #{} the checks do not follow the state (data-state:checks per item = {})",
+            at,
+            got.join(",")
+        ));
+    }
+    Ok(())
+}
+
+/// The check radix mounts in a checked item of this menu family, from the
+/// family's contract fixture — src/kernel/<comp>.html is the contract
+/// usage's own React render, and that usage holds a checked item. A page
+/// whose items all start unchecked has no check to copy, and its React
+/// example may never show one: context-menu-checkboxes passes
+/// `defaultChecked`, which radix's CheckboxItem does not take.
+fn family_menu_indicator(root: &Path, comp: &str) -> Result<String, String> {
+    let path = format!("src/kernel/{}.html", comp);
+    let html = std::fs::read_to_string(root.join(&path)).map_err(|e| format!("{}: {}", path, e))?;
+    let missing = || format!("{}: no checked menu item to take the check from", path);
+    let rest = &html[html.find("aria-checked=\"true\"").ok_or_else(missing)?..];
+    let start = rest
+        .find("<span data-state=\"checked\">")
+        .ok_or_else(missing)?;
+    let end = "</svg></span>";
+    let len = rest[start..].find(end).ok_or_else(missing)? + end.len();
+    Ok(rest[start..start + len].to_string())
 }
 
 /// Select the first enabled item of the `index`th select in the oracle and

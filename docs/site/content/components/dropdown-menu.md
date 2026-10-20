@@ -76,6 +76,82 @@ Displays a menu to the user — such as a set of actions or functions — trigge
     >
       Item 2
     </div>
+    <div
+      role="menuitemcheckbox"
+      aria-checked="true"
+      data-slot="dropdown-menu-checkbox-item"
+      data-state="checked"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      <span data-slot="dropdown-menu-checkbox-item-indicator"
+        ><span data-state="checked"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-check"
+          >
+            <path d="M20 6 9 17l-5-5"></path></svg></span></span
+      >Status Bar
+    </div>
+    <div
+      role="menuitemcheckbox"
+      aria-checked="false"
+      data-slot="dropdown-menu-checkbox-item"
+      data-state="unchecked"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      <span data-slot="dropdown-menu-checkbox-item-indicator"></span>Full URLs
+    </div>
+    <div role="group" data-slot="dropdown-menu-radio-group">
+      <div
+        role="menuitemradio"
+        aria-checked="true"
+        data-slot="dropdown-menu-radio-item"
+        data-state="checked"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <span data-slot="dropdown-menu-radio-item-indicator"
+          ><span data-state="checked"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-check"
+            >
+              <path d="M20 6 9 17l-5-5"></path></svg></span></span
+        >Top
+      </div>
+      <div
+        role="menuitemradio"
+        aria-checked="false"
+        data-slot="dropdown-menu-radio-item"
+        data-state="unchecked"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <span data-slot="dropdown-menu-radio-item-indicator"></span>Bottom
+      </div>
+    </div>
   </div>
 </template>
 ```
@@ -132,6 +208,7 @@ The glue is data-driven: it scans the page for the markup shape below and wires 
 | `<… data-slot="dropdown-menu-trigger" id="<k>-trigger" data-radixuigo-menu-trigger="<k>">` | opens on clicking |
 | `<template id="<k>-tpl">` | holds the `data-slot="dropdown-menu-content"` subtree |
 | `<… data-slot="dropdown-menu-sub-trigger" id="<k>s0-trigger" data-radixuigo-menu-subtrigger="<k>s0">` | a sub menu inside a layer; its own `<template id="<k>s0-tpl">` |
+| `<template data-for="menu-item-indicator">` | the check: a `role="menuitemcheckbox"` item toggles on select, a `role="menuitemradio"` item takes its `role="group"`'s value, and the item dispatches `shadless:change` (`detail: { checked }` / `{ value }`); the check sits in a checked item's first child (the empty indicator span every item starts with) — it moves within a radio group, is copied from a checked item, or, with none checked at first, mounts from this template |
 
 Content that React would render inside the component's portal lives in the `<template>`; the glue clones it into `<body>` while open and removes it on close, exactly as radix mounts and unmounts.
 

@@ -749,11 +749,14 @@ A visually persistent menu common in desktop applications that provides quick ac
         return el.hasAttribute("data-radixuigo-menu-trigger");
       },
       onAllClosed: function () { sync(); },
+      // checkbox / radio items flip before the kernel closes the menu
+      onBeforeSelect: function (item) { shadless.h.menuSelect(item, "menubar"); },
       mountLayer: function (id) {
         var tpl = document.getElementById(id + "-tpl");
         if (!tpl) return null;
         var content = shadless.h.cloneTemplate(tpl);
         if (!content) return null; // empty template: the kernel treats a null layer as a no-op
+        shadless.h.menuLayer(content, tpl);
         var wrapper = document.createElement("div");
         wrapper.setAttribute("data-radix-popper-content-wrapper", "");
         wrapper.appendChild(content);
@@ -929,6 +932,7 @@ The glue is data-driven: it scans the page for the markup shape below and wires 
 | `<… data-slot="menubar-trigger" id="<k>-trigger" data-radixuigo-menu-trigger="<k>">` | opens on clicking |
 | `<template id="<k>-tpl">` | holds the `data-slot="menubar-content"` subtree |
 | `<… data-slot="menubar-sub-trigger" id="<k>s0-trigger" data-radixuigo-menu-subtrigger="<k>s0">` | a sub menu inside a layer; its own `<template id="<k>s0-tpl">` |
+| `<template data-for="menu-item-indicator">` | the check: a `role="menuitemcheckbox"` item toggles on select, a `role="menuitemradio"` item takes its `role="group"`'s value, and the item dispatches `shadless:change` (`detail: { checked }` / `{ value }`); the check sits in a checked item's first child (the empty indicator span every item starts with) — it moves within a radio group, is copied from a checked item, or, with none checked at first, mounts from this template |
 
 Content that React would render inside the component's portal lives in the `<template>`; the glue clones it into `<body>` while open and removes it on close, exactly as radix mounts and unmounts.
 
@@ -1260,11 +1264,14 @@ Use `MenubarCheckboxItem` for toggleable options.
         return el.hasAttribute("data-radixuigo-menu-trigger");
       },
       onAllClosed: function () { sync(); },
+      // checkbox / radio items flip before the kernel closes the menu
+      onBeforeSelect: function (item) { shadless.h.menuSelect(item, "menubar"); },
       mountLayer: function (id) {
         var tpl = document.getElementById(id + "-tpl");
         if (!tpl) return null;
         var content = shadless.h.cloneTemplate(tpl);
         if (!content) return null; // empty template: the kernel treats a null layer as a no-op
+        shadless.h.menuLayer(content, tpl);
         var wrapper = document.createElement("div");
         wrapper.setAttribute("data-radix-popper-content-wrapper", "");
         wrapper.appendChild(content);
@@ -1704,11 +1711,14 @@ Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
         return el.hasAttribute("data-radixuigo-menu-trigger");
       },
       onAllClosed: function () { sync(); },
+      // checkbox / radio items flip before the kernel closes the menu
+      onBeforeSelect: function (item) { shadless.h.menuSelect(item, "menubar"); },
       mountLayer: function (id) {
         var tpl = document.getElementById(id + "-tpl");
         if (!tpl) return null;
         var content = shadless.h.cloneTemplate(tpl);
         if (!content) return null; // empty template: the kernel treats a null layer as a no-op
+        shadless.h.menuLayer(content, tpl);
         var wrapper = document.createElement("div");
         wrapper.setAttribute("data-radix-popper-content-wrapper", "");
         wrapper.appendChild(content);
@@ -2256,11 +2266,14 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
         return el.hasAttribute("data-radixuigo-menu-trigger");
       },
       onAllClosed: function () { sync(); },
+      // checkbox / radio items flip before the kernel closes the menu
+      onBeforeSelect: function (item) { shadless.h.menuSelect(item, "menubar"); },
       mountLayer: function (id) {
         var tpl = document.getElementById(id + "-tpl");
         if (!tpl) return null;
         var content = shadless.h.cloneTemplate(tpl);
         if (!content) return null; // empty template: the kernel treats a null layer as a no-op
+        shadless.h.menuLayer(content, tpl);
         var wrapper = document.createElement("div");
         wrapper.setAttribute("data-radix-popper-content-wrapper", "");
         wrapper.appendChild(content);
@@ -2721,11 +2734,14 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
         return el.hasAttribute("data-radixuigo-menu-trigger");
       },
       onAllClosed: function () { sync(); },
+      // checkbox / radio items flip before the kernel closes the menu
+      onBeforeSelect: function (item) { shadless.h.menuSelect(item, "menubar"); },
       mountLayer: function (id) {
         var tpl = document.getElementById(id + "-tpl");
         if (!tpl) return null;
         var content = shadless.h.cloneTemplate(tpl);
         if (!content) return null; // empty template: the kernel treats a null layer as a no-op
+        shadless.h.menuLayer(content, tpl);
         var wrapper = document.createElement("div");
         wrapper.setAttribute("data-radix-popper-content-wrapper", "");
         wrapper.appendChild(content);
@@ -3712,11 +3728,14 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
         return el.hasAttribute("data-radixuigo-menu-trigger");
       },
       onAllClosed: function () { sync(); },
+      // checkbox / radio items flip before the kernel closes the menu
+      onBeforeSelect: function (item) { shadless.h.menuSelect(item, "menubar"); },
       mountLayer: function (id) {
         var tpl = document.getElementById(id + "-tpl");
         if (!tpl) return null;
         var content = shadless.h.cloneTemplate(tpl);
         if (!content) return null; // empty template: the kernel treats a null layer as a no-op
+        shadless.h.menuLayer(content, tpl);
         var wrapper = document.createElement("div");
         wrapper.setAttribute("data-radix-popper-content-wrapper", "");
         wrapper.appendChild(content);

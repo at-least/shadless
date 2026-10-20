@@ -429,6 +429,12 @@ fn c_step_it(page: &BPage, def: &Cdef, step: &str) -> Result<String, String> {
                 return Err(format!("mouse-click: {} not visible", css));
             };
             page.mouse_click(b.x + b.width / 2.0, b.y + b.height / 2.0)?;
+        } else if let Some(css) = op.strip_prefix("right-click:") {
+            // right button at element center: how a context menu opens
+            let Some(b) = page.loc_box("", css, 0)? else {
+                return Err(format!("right-click: {} not visible", css));
+            };
+            page.mouse_click_button(b.x + b.width / 2.0, b.y + b.height / 2.0, "right")?;
         } else if let Some(rest) = op.strip_prefix("clickAt:") {
             // click at x%,y% inside element box (e.g. track clicks on a
             // slider)
@@ -445,6 +451,10 @@ fn c_step_it(page: &BPage, def: &Cdef, step: &str) -> Result<String, String> {
                 return Err(format!("move: {} not visible", css));
             };
             page.mouse_move(b.x + b.width / 2.0, b.y + b.height / 2.0, 5)?;
+        } else if let Some(ms) = op.strip_prefix("wait:") {
+            // let a closing layer finish its exit first: the kernel ignores
+            // a menu trigger while the layer it opens is still exiting
+            page.wait_for_timeout(ms.parse().map_err(|e| format!("wait:{ms}: {e}"))?)?;
         } else if let Some(xy) = op.strip_prefix("wheel:") {
             let (dx, dy) = xy.split_once(',').unwrap_or((xy, ""));
             page.wheel(parse_f64_go(dx), parse_f64_go(dy))?;

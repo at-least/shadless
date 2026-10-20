@@ -2154,6 +2154,10 @@ pub fn protocol_mdx(comp: &str) -> String {
                 ),
                 "a sub menu inside a layer; its own `<template id=\"<k>s0-tpl\">`".to_string(),
             ));
+            rows.push((
+                "`<template data-for=\"menu-item-indicator\">`".to_string(),
+                "the check: a `role=\"menuitemcheckbox\"` item toggles on select, a `role=\"menuitemradio\"` item takes its `role=\"group\"`'s value, and the item dispatches `shadless:change` (`detail: { checked }` / `{ value }`); the check sits in a checked item's first child (the empty indicator span every item starts with) — it moves within a radio group, is copied from a checked item, or, with none checked at first, mounts from this template".to_string(),
+            ));
         }
         "select" => {
             rows.push((

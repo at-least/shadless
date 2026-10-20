@@ -4165,7 +4165,8 @@ globalThis.RadixKernel = RadixKernel;
 //   shadless:change                  on the element whose value changed —
 //     checkbox / switch { checked }, toggle { pressed }, radio-group and
 //     toggle-group root { value }, tabs root { index }, slider root
-//     { values }, select trigger { value, label, item }
+//     { values }, select trigger { value, label, item }, a menu checkbox
+//     item { checked } / radio item { value }
 //   shadless:commit                  slider root { values }, once per
 //     gesture (radix onValueCommit) — change is the live stream
 //   shadless:themechange             on document, { mode }
@@ -4259,6 +4260,61 @@ globalThis.RadixKernel = RadixKernel;
       var node = cloneTemplate(findTemplate(ctx, "radio-group-indicator"))
       if (node) item.appendChild(node)
     } else if (!on && ind) ind.remove()
+  }
+  // menu checkbox / radio items (radix CheckboxItem toggles, RadioItem takes
+  // its group's value; the menu then closes). The open menu is a clone of
+  // <template id="<layer>-tpl"> made on every open, so the state is written
+  // to the template — what the next open clones — and mirrored on the open
+  // clone, which the kernel re-adopts when the menu reopens mid-exit. The
+  // check (ItemIndicator) lives in the span every item starts with: it moves
+  // within a radio group; a checkbox copies one from a checked item, or
+  // mounts <template data-for="menu-item-indicator"> when none holds one.
+  var MENU_CHECKABLE = "[role=menuitemcheckbox], [role=menuitemradio]"
+  // each open layer's template, recorded by the glue's mountLayer (a context
+  // menu's layer root carries no id to find it by)
+  var MENU_TEMPLATES = new WeakMap()
+  function menuLayer(content, tpl) { MENU_TEMPLATES.set(content, tpl) }
+  function setMenuCheck(item, on) {
+    item.setAttribute("aria-checked", String(on))
+    item.setAttribute("data-state", on ? "checked" : "unchecked")
+    var wrap = item.firstElementChild
+    if (!on) { wrap.textContent = ""; return null }
+    if (wrap.firstElementChild) return null
+    return wrap
+  }
+  function menuCheck(menu, idx, on) {
+    var item = menu.querySelectorAll(MENU_CHECKABLE)[idx]
+    var moved = null
+    if (item.getAttribute("role") === "menuitemradio") {
+      Array.prototype.forEach.call(item.closest("[role=group]").querySelectorAll("[role=menuitemradio]"), function (r) {
+        if (r === item || r.getAttribute("aria-checked") !== "true") return
+        moved = r.firstElementChild.firstElementChild
+        setMenuCheck(r, false)
+      })
+    }
+    var wrap = setMenuCheck(item, on)
+    if (!wrap) return
+    var donor = menu.querySelector("[aria-checked=true] > :first-child > *")
+    var check = moved || (donor && donor.cloneNode(true)) || cloneTemplate(findTemplate(null, "menu-item-indicator"))
+    if (!check) {
+      console.error("shadless: no check for a menu item to show — add <template data-for=\"menu-item-indicator\">")
+      return
+    }
+    wrap.appendChild(check)
+  }
+  function menuSelect(item, component) {
+    var role = item.getAttribute("role")
+    if ((role !== "menuitemcheckbox" && role !== "menuitemradio") || isDisabled(item)) return
+    var open = item.closest("[role=menu]")
+    var tpl = MENU_TEMPLATES.get(open)
+    var idx = Array.prototype.indexOf.call(open.querySelectorAll(MENU_CHECKABLE), item)
+    var was = tpl.content.querySelectorAll(MENU_CHECKABLE)[idx].getAttribute("aria-checked") === "true"
+    var radio = role === "menuitemradio"
+    if (radio && was) return // already the group's value
+    var on = radio || !was
+    menuCheck(tpl.content, idx, on)
+    menuCheck(open, idx, on)
+    emit(item, "change", component, radio ? { value: itemValue(item) || item.textContent.trim() } : { checked: on })
   }
   // collapsible/accordion shared: trigger + content state sync. Malformed
   // markup (missing content) degrades to trigger-only state instead of a
@@ -4503,11 +4559,18 @@ globalThis.RadixKernel = RadixKernel;
         lockBody(false);
         sync();
       },
+      // checkbox / radio items flip before the kernel closes the menu; a
+      // sub menu's item belongs to its root menu's family
+      onBeforeSelect: function (item) {
+        var t = handles.rootLayer().trigger;
+        menuSelect(item, t.hasAttribute("data-radixuigo-context-trigger") ? "context-menu" : "dropdown-menu");
+      },
       mountLayer: function (id) {
         var tpl = document.getElementById(id + "-tpl");
         if (!tpl) return null;
         var content = cloneTemplate(tpl);
         if (!content) return null; // empty template: the kernel treats a null layer as a no-op
+        menuLayer(content, tpl);
         var wrapper = document.createElement("div");
         wrapper.setAttribute("data-radix-popper-content-wrapper", "");
         wrapper.appendChild(content);
@@ -4806,7 +4869,7 @@ globalThis.RadixKernel = RadixKernel;
       setDisclosed: setDisclosed, linkControls: linkControls, emit: emit, itemValue: itemValue, wire: wire,
       isDisabled: isDisabled, isRtl: isRtl, formMirror: formMirror, syncForm: syncForm,
       lockBody: lockBody, mountFromTemplate: mountFromTemplate, bindHandlers: bindHandlers,
-      installMenuFamily: installMenuFamily, wireDialogFamily: wireDialogFamily },
+      installMenuFamily: installMenuFamily, menuLayer: menuLayer, menuSelect: menuSelect, wireDialogFamily: wireDialogFamily },
     theme: {
       get: themeGet,
       set: themeSet,

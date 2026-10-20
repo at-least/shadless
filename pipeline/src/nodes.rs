@@ -1010,9 +1010,12 @@ fn self_host(n: Node) -> Node {
     // Reads the Go table never declared. docs-catalog scans the upstream
     // radix mdx and the guide pages (tools/docs_catalog.rs scan_set,
     // GUIDE_SOURCES), which nothing on its needs-chain declares either;
-    // unit's checker census reads every dist/css stylesheet.
+    // unit's checker census reads every dist/css stylesheet; example-fixture
+    // takes a menu family's check from its contract fixture when a page has
+    // none (fixture_families.rs family_menu_indicator).
     const EXTRA_INPUTS: &[(&str, &[&str])] = &[
         ("example-oracle", &["overlays/**"]),
+        ("example-fixture", &["src/kernel/*.html"]),
         ("docs-catalog", &[UPSTREAM_DOCS_GLOB, "docs/content/**"]),
         ("unit", &["dist/css/**"]),
     ];
@@ -1086,6 +1089,7 @@ fn self_host(n: Node) -> Node {
         ("ledger", &["contract-fixture", "rtl-dict"]),
         ("pack", &["demo-css"]),
         ("coverage", &["example-fixture", "demo-rtl"]),
+        ("example-fixture", &["contract-fixture"]),
         ("overlay", &["example-fixture", "rtl-dict", "demo-rtl"]),
         ("demo-smoke", &["product-css", "product-build"]),
         ("docs-build", &["product-css", "product-build"]),

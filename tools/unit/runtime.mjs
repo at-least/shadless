@@ -920,6 +920,94 @@ window.__esm = { default: shadless, get, theme, init, named: Object.keys(ns).sor
     t.ok("tooltip: the non-template portal is reported", errs.some((m) => m.includes("t11a-portal")), errs.join(" | "))
     t.ok("tooltip: a LATER trigger still wires after a non-template portal", !!dom.window.shadless.get("#t11b-trigger"))
   }
+  // menus: radix CheckboxItem toggles and RadioItem takes the group's value
+  // on select (and the menu closes); the check (ItemIndicator) renders only
+  // in a checked item, inside the span every item starts with. Browser-
+  // reproduced on every menu demo: a pick only closed the menu, and the
+  // next open (a fresh clone of <layer>-tpl) showed the old state.
+  {
+    const CHECK = `<span data-state="checked"><svg class="lucide lucide-check"></svg></span>`
+    const item = (role, label, on, extra = "") =>
+      `<div role="${role}" aria-checked="${on}" data-state="${on ? "checked" : "unchecked"}" tabindex="-1"${extra}><span>${on ? CHECK : ""}</span>${label}</div>`
+    // as shipped: a dropdown's layer root carries the layer id, a context
+    // menu's carries none
+    const menu = (id, groups) => `<template id="${id}-tpl"><div role="menu">${groups.map((g) => `<div role="group">${g.join("")}</div>`).join("")}</div></template>`
+    // the open menu's checkable items: "<label>:<data-state>:<check|->"
+    const state = (doc) => [...doc.querySelectorAll("[role=menu] [role=menuitemcheckbox], [role=menu] [role=menuitemradio]")]
+      .map((i) => `${i.textContent}:${i.getAttribute("data-state")}:${i.firstElementChild.querySelector("svg") ? "check" : "-"}`).join(",")
+    const pick = (dom, label) =>
+      click(dom, [...dom.window.document.querySelectorAll("[role=menu] [role]")].find((i) => i.textContent === label))
+    const closed = () => new Promise((r) => setTimeout(r, 200)) // the kernel's exit (100ms) has removed the clone
+    const changes = (doc) => {
+      const log = []
+      doc.addEventListener("shadless:change", (e) => log.push([e.detail.component, e.target.textContent, e.detail.checked ?? e.detail.value]))
+      return log
+    }
+
+    const dom = bootKernel(`<button data-radixuigo-menu-trigger="m0" id="m0-trigger">open</button>${menu("m0", [
+      [item("menuitemcheckbox", "A", true), item("menuitemcheckbox", "B", false),
+        item("menuitemcheckbox", "C", false, ` data-disabled="" aria-disabled="true"`)],
+      [item("menuitemradio", "X", true), item("menuitemradio", "Y", false)]])}`, ["dropdown-menu"])
+    dom.window.shadless.initAll()
+    const doc = dom.window.document
+    const log = changes(doc)
+    const m0 = dom.window.shadless.get("#m0-trigger")
+    m0.open()
+    pick(dom, "B")
+    t.ok("menu: a checkbox pick closes the menu", !m0.isOpen())
+    t.eq("menu: the open clone shows the flip at once", state(doc), "A:checked:check,B:checked:check,C:unchecked:-,X:checked:check,Y:unchecked:-")
+    await closed()
+    m0.open()
+    t.eq("menu: the next open shows the checked item, with its check", state(doc), "A:checked:check,B:checked:check,C:unchecked:-,X:checked:check,Y:unchecked:-")
+    pick(dom, "A")
+    await closed(); m0.open()
+    t.eq("menu: picking a checked item unchecks it and drops its check", state(doc), "A:unchecked:-,B:checked:check,C:unchecked:-,X:checked:check,Y:unchecked:-")
+    pick(dom, "C")
+    await closed(); if (!m0.isOpen()) m0.open()
+    t.eq("menu: a disabled item never flips", state(doc), "A:unchecked:-,B:checked:check,C:unchecked:-,X:checked:check,Y:unchecked:-")
+    pick(dom, "Y")
+    await closed(); m0.open()
+    t.eq("menu: a radio pick takes the group's value and the check moves", state(doc), "A:unchecked:-,B:checked:check,C:unchecked:-,X:unchecked:-,Y:checked:check")
+    pick(dom, "Y")
+    await closed()
+    t.eq("menu: change on the item — checked / the radio value — and none for a repeat radio pick", log,
+      [["dropdown-menu", "B", true], ["dropdown-menu", "A", false], ["dropdown-menu", "Y", "Y"]])
+    // keyboard: Enter on the highlighted item selects it, as a click does
+    m0.open()
+    const b = [...doc.querySelectorAll("[role=menu] [role]")].find((i) => i.textContent === "B")
+    b.focus()
+    key(dom, b, "Enter")
+    await closed(); m0.open()
+    t.eq("menu: Enter selects like a click", state(doc), "A:unchecked:-,B:unchecked:-,C:unchecked:-,X:unchecked:-,Y:checked:check")
+    m0.close()
+
+    // a context menu whose items all start unchecked: no check to copy, the
+    // page's <template data-for="menu-item-indicator"> supplies it
+    const dom2 = bootKernel(`<div data-radixuigo-context-trigger="c0" id="c0-trigger">area</div>${menu("c0", [
+      [item("menuitemcheckbox", "P", false), item("menuitemcheckbox", "Q", false)]])}<template data-for="menu-item-indicator">${CHECK}</template>`, ["context-menu"])
+    dom2.window.shadless.initAll()
+    const doc2 = dom2.window.document
+    const log2 = changes(doc2)
+    const c0 = dom2.window.shadless.get("#c0-trigger")
+    c0.open()
+    pick(dom2, "Q")
+    await closed(); c0.open()
+    t.eq("context menu: the check mounts from the template when no item holds one", state(doc2), "P:unchecked:-,Q:checked:check")
+    t.eq("context menu: change names the context menu", log2, [["context-menu", "Q", true]])
+
+    // the menubar wires its own kernel menu
+    const dom3 = bootKernel(`<div data-slot="menubar"><button data-radixuigo-menu-trigger="b0" id="b0-trigger">File</button></div>${menu("b0", [
+      [item("menuitemradio", "R1", true), item("menuitemradio", "R2", false)]])}`, ["menubar"])
+    dom3.window.shadless.initAll()
+    const doc3 = dom3.window.document
+    const log3 = changes(doc3)
+    const b0 = doc3.getElementById("b0-trigger")
+    click(dom3, b0)
+    pick(dom3, "R2")
+    await closed(); click(dom3, b0)
+    t.eq("menubar: a radio pick moves the value and the check", state(doc3), "R1:unchecked:-,R2:checked:check")
+    t.eq("menubar: change names the menubar", log3, [["menubar", "R2", "R2"]])
+  }
   // menu family: an EMPTY -tpl must not throw in mountLayer (kernel treats null as no-op)
   {
     const dom = bootKernel(`

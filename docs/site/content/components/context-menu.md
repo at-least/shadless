@@ -70,6 +70,82 @@ Displays a menu of actions triggered by a right click.
     >
       Item 2
     </div>
+    <div
+      role="menuitemcheckbox"
+      aria-checked="true"
+      data-slot="context-menu-checkbox-item"
+      data-state="checked"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      <span class="absolute right-2 pointer-events-none"
+        ><span data-state="checked"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-check"
+          >
+            <path d="M20 6 9 17l-5-5"></path></svg></span></span
+      >Bookmarks Bar
+    </div>
+    <div
+      role="menuitemcheckbox"
+      aria-checked="false"
+      data-slot="context-menu-checkbox-item"
+      data-state="unchecked"
+      tabindex="-1"
+      data-orientation="vertical"
+      data-radix-collection-item=""
+    >
+      <span class="absolute right-2 pointer-events-none"></span>Full URLs
+    </div>
+    <div role="group" data-slot="context-menu-radio-group">
+      <div
+        role="menuitemradio"
+        aria-checked="true"
+        data-slot="context-menu-radio-item"
+        data-state="checked"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <span class="absolute right-2 pointer-events-none"
+          ><span data-state="checked"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-check"
+            >
+              <path d="M20 6 9 17l-5-5"></path></svg></span></span
+        >Pedro
+      </div>
+      <div
+        role="menuitemradio"
+        aria-checked="false"
+        data-slot="context-menu-radio-item"
+        data-state="unchecked"
+        tabindex="-1"
+        data-orientation="vertical"
+        data-radix-collection-item=""
+      >
+        <span class="absolute right-2 pointer-events-none"></span>Colm
+      </div>
+    </div>
   </div>
 </template>
 ```
@@ -126,6 +202,7 @@ The glue is data-driven: it scans the page for the markup shape below and wires 
 | `<… data-slot="context-menu-trigger" id="<k>-trigger" data-radixuigo-context-trigger="<k>">` | opens on right-clicking |
 | `<template id="<k>-tpl">` | holds the `data-slot="context-menu-content"` subtree |
 | `<… data-slot="context-menu-sub-trigger" id="<k>s0-trigger" data-radixuigo-menu-subtrigger="<k>s0">` | a sub menu inside a layer; its own `<template id="<k>s0-tpl">` |
+| `<template data-for="menu-item-indicator">` | the check: a `role="menuitemcheckbox"` item toggles on select, a `role="menuitemradio"` item takes its `role="group"`'s value, and the item dispatches `shadless:change` (`detail: { checked }` / `{ value }`); the check sits in a checked item's first child (the empty indicator span every item starts with) — it moves within a radio group, is copied from a checked item, or, with none checked at first, mounts from this template |
 
 Content that React would render inside the component's portal lives in the `<template>`; the glue clones it into `<body>` while open and removes it on close, exactly as radix mounts and unmounts.
 
@@ -1023,6 +1100,23 @@ Use `ContextMenuCheckboxItem` for toggles.
       </div>
     </div>
   </div>
+</template>
+<template data-for="menu-item-indicator">
+  <span data-state="checked"
+    ><svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-check"
+    >
+      <path d="M20 6 9 17l-5-5"></path></svg
+  ></span>
 </template>
 ```
 

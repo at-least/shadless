@@ -47,9 +47,9 @@ export interface ComponentDef {
 
 export interface EventDetail { component: string; api: Handle | null }
 export interface ChangeDetail extends EventDetail {
-  checked?: boolean          // checkbox, switch
+  checked?: boolean          // checkbox, switch, a menu checkbox item
   pressed?: boolean          // toggle
-  value?: string | string[] | null  // radio-group, toggle-group (single | multiple), select — the item's value / data-value attr or id (select: else its label)
+  value?: string | string[] | null  // radio-group, toggle-group (single | multiple), select, a menu radio item — the item's value / data-value attr or id (select, menu radio item: else its label)
   label?: string | null      // select: the option's text
   item?: Element             // radio-group, toggle-group, select
   index?: number             // tabs
@@ -118,6 +118,10 @@ export interface Helpers {
   bindHandlers(trigger: Element, handlers: Record<string, EventListener>, signal: AbortSignal | undefined): void
   /** shared dropdown-menu/context-menu init body — both files register with this same function */
   installMenuFamily(root: Element): void
+  /** record the template an open menu layer was cloned from (call from mountLayer) */
+  menuLayer(content: Element, tpl: HTMLTemplateElement): void
+  /** a menu item was selected: flip a checkbox item / take a radio item's group value (no-op for other or disabled items), in the open menu and its layer template */
+  menuSelect(item: Element, component: string): void
   /** dialog/alert-dialog/sheet portal-glue factory — pass the slot-name prefix and each family's 1-2 config values to get the component's init(live) */
   wireDialogFamily(component: string, opts: { dismissSelector: string; swallowOverlayClick?: boolean }): (live: Element) => void
 }
