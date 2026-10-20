@@ -44,8 +44,14 @@ SHADLESS_ROOT="${SHADLESS_ROOT:-$RS_ROOT/..}"
 export SHADLESS_GRAPH=go-mirror
 RS_BIN="$(node "$RS_ROOT/../tools/pipeline-bin.mjs")"
 GOLDEN="$RS_ROOT/tests/golden"
-FIXTURE="/tmp/shadless-rs-runner-fixture"
-STUB_BIN="/tmp/shadless-rs-go-stub"
+# The fixture tree, the go stub and its log, and layer 4's captured output
+# share one private scratch dir, removed however the script exits: fixed
+# /tmp names outlived every recording run.
+SCRATCH="$(mktemp -d "${TMPDIR:-/tmp}/shadless-rs-golden-XXXXXX")" || exit 1
+trap 'rm -rf "$SCRATCH"' EXIT
+FIXTURE="$SCRATCH/runner-fixture"
+STUB_BIN="$SCRATCH/go-stub"
+STUB_LOG="$SCRATCH/go-stub.log"
 
 fail=0
 pass=0
@@ -195,7 +201,7 @@ layer4() {
 
   # a) fresh-skip: everything stamped+present -> all skipped, nothing runs
   mk_fixture
-  (cd "$FIXTURE" && env "$J" "$P" "$RS_BIN" run builds) > /tmp/r.rs.out 2> /tmp/r.rs.err
+  (cd "$FIXTURE" && env "$J" "$P" "$RS_BIN" run builds) > "$SCRATCH/r.rs.out" 2> "$SCRATCH/r.rs.err"
   local rs_code=$?
   if [ "$rs_code" = "0" ]; then
     pass=$((pass+1))
@@ -203,8 +209,8 @@ layer4() {
     fail=$((fail+1)); echo "FAIL(j$jobs): fresh-skip exit code: $rs_code (want 0)"
   fi
   # 17 build nodes + pin (pulled in as convert/rtl-dict/docs-upstream-mirror's need)
-  grep -q "ran 0, skipped 18 " /tmp/r.rs.out \
-    && pass=$((pass+1)) || { fail=$((fail+1)); echo "FAIL(j$jobs): fresh-skip summary"; grep "ran " /tmp/r.rs.out; }
+  grep -q "ran 0, skipped 18 " "$SCRATCH/r.rs.out" \
+    && pass=$((pass+1)) || { fail=$((fail+1)); echo "FAIL(j$jobs): fresh-skip summary"; grep "ran " "$SCRATCH/r.rs.out"; }
   # no stamp was rewritten and no stamp removed: status still all fresh
   if [ "$(cd "$FIXTURE" && "$RS_BIN" status builds | grep -c ' fresh$')" = "18" ]; then
     pass=$((pass+1))
@@ -217,7 +223,7 @@ layer4() {
   #    their stamps
   mk_fixture
   local had_stamp=0; [ -f "$FIXTURE/pipeline/stamps/build-js" ] && had_stamp=1
-  (cd "$FIXTURE" && env "$J" "$P" "$RS_BIN" run --force builds) > /tmp/r.rs.out 2> /tmp/r.rs.err
+  (cd "$FIXTURE" && env "$J" "$P" "$RS_BIN" run --force builds) > "$SCRATCH/r.rs.out" 2> "$SCRATCH/r.rs.err"
   rs_code=$?
   if [ "$rs_code" = "1" ]; then
     pass=$((pass+1))
@@ -258,23 +264,23 @@ layer4() {
 
 echo "== layer 4: runner semantics on stamped fixtures (flakiness sweep) =="
 mkdir -p "$STUB_BIN"
-printf '#!/bin/sh\necho "$*" >> /tmp/shadless-rs-go-stub.log\nexit 127\n' > "$STUB_BIN/go"
+printf '#!/bin/sh\necho "$*" >> "%s"\nexit 127\n' "$STUB_LOG" > "$STUB_BIN/go"
 chmod +x "$STUB_BIN/go"
-rm -f /tmp/shadless-rs-go-stub.log
+rm -f "$STUB_LOG"
 for jobs in 1 1 1 1 1 1 1 1 1 1 4 4 4 8; do
   layer4 "$jobs"
 done
-if [ -f /tmp/shadless-rs-go-stub.log ]; then
+if [ -f "$STUB_LOG" ]; then
   # The stub IS expected to be hit — the mirror table's pin node runs
   # `go test` and must fail deterministically. Every invocation must be
   # that shape; anything else means real logic tried to run go.
-  if grep -qv '^test -C pipeline' /tmp/shadless-rs-go-stub.log; then
+  if grep -qv '^test -C pipeline' "$STUB_LOG"; then
     fail=$((fail+1))
     echo "FAIL: unexpected go invocation(s):"
-    grep -v '^test -C pipeline' /tmp/shadless-rs-go-stub.log | head -5
+    grep -v '^test -C pipeline' "$STUB_LOG" | head -5
   else
     pass=$((pass+1))
-    echo "go stub invocations all expected gate shapes: $(wc -l < /tmp/shadless-rs-go-stub.log) (zero real Go)"
+    echo "go stub invocations all expected gate shapes: $(wc -l < "$STUB_LOG") (zero real Go)"
   fi
 else
   fail=$((fail+1)); echo "FAIL: go stub never invoked — pin should have failed through it"

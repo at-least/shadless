@@ -129,15 +129,8 @@ mod tests {
     use super::*;
     use crate::nodes::Node as N;
 
-    fn tmp(tag: &str) -> PathBuf {
-        let t = std::env::temp_dir().join(format!(
-            "shadless-rs-key-{}-{:?}-{}",
-            std::process::id(),
-            std::thread::current().id(),
-            tag
-        ));
-        fs::create_dir_all(&t).unwrap();
-        t
+    fn tmp(tag: &str) -> crate::fsutil::TempRoot {
+        crate::fsutil::temp_root(&format!("rs-key-{tag}"))
     }
 
     fn mnode(
@@ -172,7 +165,6 @@ mod tests {
             hash_file(&t.join("abc")).unwrap(),
             "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
         );
-        let _ = fs::remove_dir_all(&t);
     }
 
     #[test]
@@ -200,7 +192,6 @@ mod tests {
         let g2 = Graph::new(vec![n]).unwrap();
         let k5 = Keyer::new(&t, &g2).key("a").unwrap().unwrap();
         assert_ne!(k3, k5);
-        let _ = fs::remove_dir_all(&t);
     }
 
     #[test]
@@ -231,7 +222,6 @@ mod tests {
         let g4 = Graph::new(vec![parent, child, aaa, zzz]).unwrap();
         let k4 = Keyer::new(&t, &g4).key("parent").unwrap().unwrap();
         assert_eq!(k3, k4);
-        let _ = fs::remove_dir_all(&t);
     }
 
     #[test]
@@ -243,7 +233,6 @@ mod tests {
         let mut k = Keyer::new(&t, &g);
         assert!(k.key("judge").unwrap().is_none());
         assert!(k.key("down").unwrap().is_none());
-        let _ = fs::remove_dir_all(&t);
     }
 
     #[test]
@@ -281,6 +270,5 @@ mod tests {
 
         let key = "deadbeef";
         assert!(stamp_value(&t, &bare, key).starts_with(&format!("{}:", key)));
-        let _ = fs::remove_dir_all(&t);
     }
 }

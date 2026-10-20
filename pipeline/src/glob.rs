@@ -136,15 +136,10 @@ pub fn files(root: &Path, patterns: &[String]) -> Result<Vec<String>, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::path::PathBuf;
 
     /// a.txt, b.md, sub/c.txt, sub/deep/d.txt, .hidden/h.txt
-    fn tree() -> PathBuf {
-        let tmp = std::env::temp_dir().join(format!(
-            "shadless-rs-glob-{}-{:?}",
-            std::process::id(),
-            std::thread::current().id()
-        ));
+    fn tree() -> crate::fsutil::TempRoot {
+        let tmp = crate::fsutil::temp_root("rs-glob");
         for d in ["", "sub", "sub/deep", ".hidden"] {
             fs::create_dir_all(tmp.join(d)).unwrap();
         }
@@ -169,7 +164,6 @@ mod tests {
             expand(&t, "sub").unwrap(),
             s(&["sub/c.txt", "sub/deep/d.txt"])
         );
-        let _ = fs::remove_dir_all(&t);
     }
 
     #[test]
@@ -182,7 +176,6 @@ mod tests {
             s(&["sub/c.txt", "sub/deep/d.txt"])
         );
         assert_eq!(expand(&t, "?.txt").unwrap(), s(&["a.txt"]));
-        let _ = fs::remove_dir_all(&t);
     }
 
     #[test]
@@ -196,7 +189,6 @@ mod tests {
         // order of patterns does not matter
         let pats2 = s(&["!sub/deep/**", "sub/**", ".hidden/**", "*.txt"]);
         assert_eq!(files(&t, &pats).unwrap(), files(&t, &pats2).unwrap());
-        let _ = fs::remove_dir_all(&t);
     }
 
     #[test]

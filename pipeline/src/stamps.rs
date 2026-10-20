@@ -72,8 +72,9 @@ mod tests {
 
     #[test]
     fn load_missing_dir_is_empty_and_roundtrip_works() {
-        let tmp = std::env::temp_dir().join(format!("shadless-rs-stamps-{}", std::process::id()));
-        let _ = fs::remove_dir_all(&tmp);
+        let root = crate::fsutil::temp_root("rs-stamps");
+        // a stamps dir nothing has created yet
+        let tmp = root.join("stamps");
         assert!(load_stamps(&tmp).is_empty());
         write_stamp(&tmp, "pin", "abc").unwrap();
         write_stamp(&tmp, "contracts:dialog", "def").unwrap();
@@ -82,6 +83,5 @@ mod tests {
         assert_eq!(stamps.get("contracts:dialog").map(String::as_str), Some("def"));
         remove_stamp(&tmp, "pin");
         assert!(!load_stamps(&tmp).contains_key("pin"));
-        let _ = fs::remove_dir_all(&tmp);
     }
 }

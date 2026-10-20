@@ -134,4 +134,36 @@ mod tests {
         drop(root);
         assert!(!path.exists(), "{} survived its test", path.display());
     }
+
+    /// A fixture dir named off the temp dir and removed by a trailing
+    /// remove_dir_all leaks whenever an assert before it fails — and under
+    /// nextest every test is its own process, so each failure leaves its
+    /// pid's dir behind for good (shadless-rs-fanout-* from 2026-10-18 were
+    /// still in /tmp). temp_root's guard deletes on unwind too.
+    #[test]
+    fn unit_test_fixtures_take_their_dir_from_temp_root() {
+        let needle = concat!("temp_dir", "().join(");
+        let mut hits: Vec<String> = Vec::new();
+        let mut dirs = vec![std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src")];
+        while let Some(dir) = dirs.pop() {
+            for name in super::sorted_read_dir(&dir).unwrap() {
+                let p = dir.join(&name);
+                if p.is_dir() {
+                    dirs.push(p);
+                } else if name.ends_with(".rs") {
+                    let text = std::fs::read_to_string(&p).unwrap();
+                    for (i, line) in text.lines().enumerate() {
+                        if line.contains(needle) {
+                            hits.push(format!("{}:{}", p.display(), i + 1));
+                        }
+                    }
+                }
+            }
+        }
+        assert!(
+            hits.is_empty(),
+            "fixture dirs outside fsutil::temp_root (removed only if the test passes):\n  {}",
+            hits.join("\n  ")
+        );
+    }
 }

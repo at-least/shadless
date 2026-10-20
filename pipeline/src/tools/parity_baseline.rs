@@ -437,11 +437,7 @@ mod tests {
     /// Mirrors pipeline/parity_baseline_test.go TestUnitLoadParityBaseline.
     #[test]
     fn unit_load_parity_baseline() {
-        let dir = std::env::temp_dir().join(format!(
-            "shadless-rs-parity-baseline-test-{}",
-            std::process::id()
-        ));
-        std::fs::create_dir_all(&dir).unwrap();
+        let dir = crate::fsutil::temp_root("rs-parity-baseline-test");
 
         // absent file: None — the caller records
         let loaded_abs = load_parity_baseline(&dir, "missing.json").unwrap();
@@ -474,8 +470,6 @@ mod tests {
             load_parity_baseline(&dir, "bare.json").is_err(),
             "pre-value baseline should error, not decode silently"
         );
-
-        std::fs::remove_dir_all(&dir).ok();
     }
 
     /// Mirrors pipeline/parity_baseline_test.go TestUnitDiffParityBaseline.

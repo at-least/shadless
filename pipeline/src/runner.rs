@@ -764,11 +764,7 @@ mod tests {
     fn browser_cap_serializes_browser_nodes() {
         // no parens in the path: the lock path is embedded in a `sh -c` script,
         // where parentheses are syntax characters
-        let t = std::env::temp_dir().join(format!(
-            "shadless-rs-browser-{}-ba-bb",
-            std::process::id()
-        ));
-        fs::create_dir_all(&t).unwrap();
+        let t = crate::fsutil::temp_root("rs-browser");
         let lock = t.join("browser.lock");
         let a = browser_node("ba", &lock);
         let mut b = browser_node("bb", &lock);
@@ -776,7 +772,7 @@ mod tests {
         let g = Arc::new(Graph::new(vec![a.clone(), b.clone()]).unwrap());
         assert!(is_browser_node(&a) && is_browser_node(&b));
         let runner = Arc::new(Runner::new(
-            t.clone(),
+            t.to_path_buf(),
             Arc::clone(&g),
             2, // two job slots: only the browser cap (1) can stop the overlap
             1,
@@ -787,7 +783,6 @@ mod tests {
         let counts = runner.run(&[a, b]);
         assert_eq!(counts.ran, 2, "both browser nodes must succeed");
         assert_eq!(counts.failed, 0);
-        let _ = fs::remove_dir_all(&t);
     }
 
     #[test]
@@ -797,8 +792,7 @@ mod tests {
         // IR rewrite at -j4 was the live case). The stamp must say what the
         // verdict actually tested — the pre-run key — so that interleaving
         // costs a spurious rerun, never a stale-green skip.
-        let t = std::env::temp_dir().join(format!("shadless-rs-prestamp-{}", std::process::id()));
-        fs::create_dir_all(&t).unwrap();
+        let t = crate::fsutil::temp_root("rs-prestamp");
         fs::write(t.join("data.txt"), b"old").unwrap();
         let gate = N {
             id: "g".to_string(),
@@ -821,7 +815,7 @@ mod tests {
         let g = Arc::new(Graph::new(vec![gate.clone()]).unwrap());
         let key_before = Keyer::new(&t, &g).key("g").unwrap().unwrap();
         let runner = Arc::new(Runner::new(
-            t.clone(),
+            t.to_path_buf(),
             Arc::clone(&g),
             2, // above -j1 so the write check stays out of the way
             1,
@@ -841,7 +835,6 @@ mod tests {
             Some(stamp_value(&t, &gate, &key_before).as_str()),
             "a gate's stamp must carry the pre-run key — the content its verdict tested"
         );
-        let _ = fs::remove_dir_all(&t);
     }
 
     #[test]
@@ -851,8 +844,7 @@ mod tests {
         // zero — "ran 0, skipped 0" and exit 0, a green verdict over a run
         // that did nothing. It must count as a failure and land in the
         // run report.
-        let t = std::env::temp_dir().join(format!("shadless-rs-keyerr-{}", std::process::id()));
-        fs::create_dir_all(&t).unwrap();
+        let t = crate::fsutil::temp_root("rs-keyerr");
         let a = N {
             id: "a".to_string(),
             kind: "build".to_string(),
@@ -866,7 +858,7 @@ mod tests {
         };
         let g = Arc::new(Graph::new(vec![a.clone()]).unwrap());
         let runner = Arc::new(Runner::new(
-            t.clone(),
+            t.to_path_buf(),
             Arc::clone(&g),
             1,
             1,
@@ -883,7 +875,6 @@ mod tests {
             .expect("key failure reported as a failed node");
         assert_eq!(f.cmd, "(key)");
         assert!(!f.tail.is_empty());
-        let _ = fs::remove_dir_all(&t);
     }
 
     #[test]
@@ -894,7 +885,7 @@ mod tests {
         // while its output was never read — bad_reads was structurally
         // always zero. A node whose node child reads an undeclared file
         // must surface that read.
-        let t = std::env::temp_dir().join(format!("shadless-rs-jsreads-{}", std::process::id()));
+        let t = crate::fsutil::temp_root("rs-jsreads");
         fs::create_dir_all(t.join("tools")).unwrap();
         // the runner injects <root>/tools/fs-record.mjs; give the temp root
         // the real recorder
@@ -922,7 +913,7 @@ mod tests {
         };
         let g = Arc::new(Graph::new(vec![a.clone()]).unwrap());
         let runner = Arc::new(Runner::new(
-            t.clone(),
+            t.to_path_buf(),
             Arc::clone(&g),
             1,
             1,
@@ -936,7 +927,6 @@ mod tests {
             counts.bad_reads, 1,
             "the undeclared read must reach the check"
         );
-        let _ = fs::remove_dir_all(&t);
     }
 
     #[test]

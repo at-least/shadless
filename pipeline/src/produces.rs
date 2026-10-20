@@ -99,12 +99,8 @@ pub fn apply_derived_produces(root: &Path, nodes: Vec<Node>) -> Result<Vec<Node>
 mod tests {
     use super::*;
 
-    fn tmp_tiers(body: &str) -> std::path::PathBuf {
-        let tmp = std::env::temp_dir().join(format!(
-            "shadless-rs-produces-{}-{:?}",
-            std::process::id(),
-            std::thread::current().id()
-        ));
+    fn tmp_tiers(body: &str) -> crate::fsutil::TempRoot {
+        let tmp = crate::fsutil::temp_root("rs-produces");
         fs::create_dir_all(tmp.join("src/registry")).unwrap();
         fs::write(tmp.join(TIERS_PATH), body).unwrap();
         tmp
@@ -134,7 +130,6 @@ mod tests {
                 "build/emit".to_string(),
             ]
         );
-        let _ = fs::remove_dir_all(&tmp);
     }
 
     #[test]
@@ -153,13 +148,12 @@ mod tests {
         assert!(p.contains(&"dist/components/e.html".to_string()));
         assert!(!p.contains(&"dist/components/a.html".to_string()));
         assert!(!p.contains(&"dist/components/f.html".to_string()));
-        let _ = fs::remove_dir_all(&tmp);
     }
 
     #[test]
     fn unreadable_data_fails_loudly() {
-        let tmp = std::env::temp_dir().join(format!("shadless-rs-produces-miss-{}", std::process::id()));
-        let _ = fs::remove_dir_all(&tmp);
+        // an empty tree: no tiers.json to read
+        let tmp = crate::fsutil::temp_root("rs-produces-miss");
         let err = apply_derived_produces(&tmp, vec![emit_node()]).unwrap_err();
         assert!(err.starts_with("produces for emit:"), "{}", err);
     }

@@ -333,7 +333,7 @@ mod tests {
 
     #[test]
     fn testlog_parse_drops_relative_dirs_and_outside() {
-        let t = std::env::temp_dir().join(format!("shadless-rs-verify-{}", std::process::id()));
+        let t = crate::fsutil::temp_root("rs-verify");
         fs::create_dir_all(t.join("sub")).unwrap();
         fs::write(t.join("f.txt"), "x").unwrap();
         let log = t.join("t.log");
@@ -353,12 +353,11 @@ mod tests {
         // the dir, the outside-repo path, the relative line, the duplicate and
         // the absent file are dropped; the one regular file survives, sorted
         assert_eq!(opens, vec!["f.txt".to_string()]);
-        let _ = fs::remove_dir_all(&t);
     }
 
     #[test]
     fn fs_record_parse_excludes_scratch_and_deps() {
-        let t = std::env::temp_dir().join(format!("shadless-rs-verify2-{}", std::process::id()));
+        let t = crate::fsutil::temp_root("rs-verify2");
         fs::create_dir_all(t.join("node_modules/x")).unwrap();
         fs::create_dir_all(t.join("build")).unwrap();
         fs::write(t.join("a.js"), "").unwrap();
@@ -376,13 +375,11 @@ mod tests {
         )
         .unwrap();
         assert_eq!(fs_record_opens(&t, &log).unwrap(), vec!["a.js".to_string()]);
-        let _ = fs::remove_dir_all(&t);
     }
 
     #[test]
     fn undeclared_reads_covers_the_dependency_closure() {
-        let t = std::env::temp_dir().join(format!("shadless-rs-verify3-{}", std::process::id()));
-        fs::create_dir_all(&t).unwrap();
+        let t = crate::fsutil::temp_root("rs-verify3");
         for f in ["mine.txt", "dep-in.txt", "dep-out.txt", "stray.txt"] {
             fs::write(t.join(f), "x").unwrap();
         }
@@ -409,13 +406,11 @@ mod tests {
         )
         .unwrap();
         assert_eq!(reads, vec!["stray.txt".to_string()]);
-        let _ = fs::remove_dir_all(&t);
     }
 
     #[test]
     fn undeclared_writes_needs_a_reader_to_count() {
-        let t = std::env::temp_dir().join(format!("shadless-rs-verify4-{}", std::process::id()));
-        fs::create_dir_all(&t).unwrap();
+        let t = crate::fsutil::temp_root("rs-verify4");
         fs::write(t.join("read.txt"), "v1").unwrap();
         fs::write(t.join("unwatched.txt"), "v1").unwrap();
         let reader = mnode("reader", &[], Some(&["read.txt"]), None);
@@ -433,6 +428,5 @@ mod tests {
         assert_eq!(vs.len(), 1);
         assert_eq!(vs[0].path, "read.txt");
         assert_eq!(vs[0].readers, vec!["reader".to_string()]);
-        let _ = fs::remove_dir_all(&t);
     }
 }

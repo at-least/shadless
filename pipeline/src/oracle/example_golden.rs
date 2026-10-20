@@ -424,8 +424,7 @@ mod tests {
         // A truncated/invalid snapshot used to be skipped with a bare
         // `continue` — the gate compared less and still printed PASS. The
         // loader must surface the damage so the gate can fail loudly.
-        let t = std::env::temp_dir().join(format!("shadless-golden-{}", std::process::id()));
-        fs::create_dir_all(&t).unwrap();
+        let t = crate::fsutil::temp_root("golden");
         fs::write(t.join("ok.json"), r#"{"previews": {"a": "<div></div>"}}"#).unwrap();
         fs::write(t.join("truncated.json"), r#"{"previews": {"a""#).unwrap();
         fs::write(t.join("wrongshape.json"), r#"{"pages": []}"#).unwrap();
@@ -439,7 +438,6 @@ mod tests {
         assert!(err.contains("no previews object"), "{}", err);
         let err = load_snapshot(t.to_str().unwrap(), "missing.json").unwrap_err();
         assert!(err.contains("missing.json"), "{}", err);
-        let _ = fs::remove_dir_all(&t);
     }
 
     /// The two spellings the canon actually produces: oracle_norm emits

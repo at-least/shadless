@@ -86,7 +86,7 @@ mod tests {
 
     #[test]
     fn contracts_fans_out_and_needs_rewire() {
-        let tmp = std::env::temp_dir().join(format!("shadless-rs-fanout-{}", std::process::id()));
+        let tmp = crate::fsutil::temp_root("rs-fanout");
         let comp = tmp.join("tools/contracts/components");
         fs::create_dir_all(&comp).unwrap();
         for name in ["dialog.mjs", "button.mjs", "readme.txt"] {
@@ -136,6 +136,5 @@ mod tests {
                 "build-js".to_string()
             ]
         );
-        let _ = fs::remove_dir_all(&tmp);
     }
 }
