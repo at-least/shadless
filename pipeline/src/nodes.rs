@@ -1051,26 +1051,47 @@ fn self_host(n: Node) -> Node {
         inputs.sort();
         inputs.dedup();
     }
-    // unit is a fast gate over the committed tree, so it cannot NEED the
-    // full-tier nodes that write that tree — but in a full run it was ready
-    // as soon as build-js finished and read the corpus, vocabulary.json and
-    // the IR while those writers rewrote them (a run went red on a
+    // A node runs after every node that writes a file it declares (graph.rs
+    // unit_a_node_reading_another_nodes_output_runs_after_it checks it):
+    // otherwise both are ready at once and the reader reads — and keys —
+    // whatever is on disk mid-rewrite. unit is the case that bit: a fast
+    // gate over the committed tree, it cannot NEED the full-tier nodes that
+    // write that tree, yet in a full run it read the corpus, vocabulary.json
+    // and the IR while they were rewritten (a run went red on a
     // vocabulary.json demo had not rewritten yet). Order-only edges: `run
-    // fast` still never builds them, and a full run checks what it built.
-    const ORDER_AFTER: &[(&str, &[&str])] = &[(
-        "unit",
-        &[
-            "convert",
-            "emit",
-            "contract-fixture",
-            "example-oracle",
-            "example-fixture",
-            "rtl-dict",
-            "demo-rtl",
-            "demo",
-            "docs-build",
-        ],
-    )];
+    // fast` still never builds them. coverage stats docs/demos/<c>-rtl.html
+    // pages example-fixture rewrites; the rest declare more than they open
+    // (src/**, dist/**, docs/demos/**) — over-declared inputs only cost a
+    // rerun, but they are still hashed into the key at dispatch. Writers
+    // that themselves wait for the reader (the fixtures' previous
+    // dist/out.css, example-oracle's docs/catalog.json, demo-css's @source
+    // over tools/contracts/out) are feedback by design and cannot be
+    // ordered.
+    const ORDER_AFTER: &[(&str, &[&str])] = &[
+        (
+            "unit",
+            &[
+                "convert",
+                "emit",
+                "contract-fixture",
+                "example-oracle",
+                "example-fixture",
+                "rtl-dict",
+                "demo-rtl",
+                "demo",
+                "docs-build",
+            ],
+        ),
+        ("typecheck", &["contract-fixture", "rtl-dict"]),
+        ("ledger", &["contract-fixture", "rtl-dict"]),
+        ("pack", &["demo-css"]),
+        ("coverage", &["example-fixture", "demo-rtl"]),
+        ("overlay", &["example-fixture", "rtl-dict", "demo-rtl"]),
+        ("demo-smoke", &["product-css", "product-build"]),
+        ("docs-build", &["product-css", "product-build"]),
+        // fanout copies the edges onto every contracts:<c> shard
+        ("contracts", &["product-css", "product-build"]),
+    ];
     if let Some((_, after)) = ORDER_AFTER.iter().find(|(nid, _)| *nid == id) {
         n.after = after.iter().map(|a| a.to_string()).collect();
     }

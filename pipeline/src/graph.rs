@@ -348,11 +348,14 @@ mod tests {
         assert_eq!(g.effective_tier("unit"), "fast");
     }
 
-    /// A node that reads a file another node writes must not run while that
-    /// node does: the runner starts a node the moment its needs finish, so a
-    /// reader the graph does not order after a writer reads whatever is on
-    /// disk mid-run — unit read dist/css/vocabulary.json before (or while)
-    /// demo rewrote it, and a full run went red on a stale file.
+    /// A node that declares a file another node writes must not run while
+    /// that node does: the runner starts a node the moment its needs finish,
+    /// so a reader the graph does not order after a writer reads (and keys)
+    /// whatever is on disk mid-run — unit read dist/css/vocabulary.json
+    /// before demo rewrote it, and a full run went red on a stale file.
+    /// A writer that itself waits for the reader is a feedback edge (the
+    /// reader takes the previous run's output, by design) and cannot be
+    /// ordered.
     #[test]
     fn unit_a_node_reading_another_nodes_output_runs_after_it() {
         let root = crate::tree_root();
@@ -376,14 +379,14 @@ mod tests {
             })
             .collect();
         let mut unordered: Vec<String> = Vec::new();
-        for id in g.ids().iter().filter(|id| *id == "unit") {
+        for id in g.ids() {
             let Some(inputs) = g.node(id).unwrap().inputs.as_deref() else {
                 continue; // never-fresh: its reads are not declared
             };
             let reads = crate::glob::files(&root, inputs).unwrap();
             let before = g.waits_for(id);
             for (writer, files) in &produced {
-                if writer == id || before.contains(writer) {
+                if writer == id || before.contains(writer) || g.waits_for(writer).contains(id) {
                     continue;
                 }
                 if let Some(f) = reads.iter().find(|f| files.contains(*f)) {
