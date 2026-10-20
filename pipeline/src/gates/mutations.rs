@@ -1767,7 +1767,8 @@ mod tests {
     /// Go TestUnitRunGateDetectsRedAndGreen.
     #[test]
     fn unit_run_gate_detects_red_and_green() {
-        let root = std::env::temp_dir();
+        // the commands write nothing; still not the shared temp dir as cwd
+        let root = crate::fsutil::temp_root("run-gate");
         let node = |cmds: &[&[&str]]| crate::nodes::Node {
             id: "t".into(),
             kind: "gate".into(),

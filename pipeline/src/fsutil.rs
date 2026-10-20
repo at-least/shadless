@@ -140,11 +140,15 @@ mod tests {
     /// nextest every test is its own process, so each failure leaves its
     /// pid's dir behind for good (shadless-rs-fanout-* from 2026-10-18 were
     /// still in /tmp). temp_root's guard deletes on unwind too.
+    /// Any std::env::temp_dir call counts, not only `.join` on it: a
+    /// dir held in a variable and joined later, or the shared temp dir
+    /// itself used as a test's cwd, passed the first version of this guard.
     #[test]
     fn unit_test_fixtures_take_their_dir_from_temp_root() {
-        let needle = concat!("temp_dir", "().join(");
+        let needle = concat!("temp_dir", "()");
         let mut hits: Vec<String> = Vec::new();
-        let mut dirs = vec![std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src")];
+        let crate_dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR"));
+        let mut dirs = vec![crate_dir.join("src"), crate_dir.join("tests")];
         while let Some(dir) = dirs.pop() {
             for name in super::sorted_read_dir(&dir).unwrap() {
                 let p = dir.join(&name);
