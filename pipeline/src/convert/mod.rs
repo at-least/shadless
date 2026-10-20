@@ -561,7 +561,68 @@ fn cv_fn_params(sig: &str) -> Vec<String> {
         .collect()
 }
 
-static CV_STRING_LIT_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r#""([^"]*)""#).unwrap());
+/// The type annotation of a signature: the text after its destructuring
+/// pattern (`{ a, b = x }: Type` -> `: Type`); a type alias body as is.
+fn cv_type_part(sig: &str) -> &str {
+    let t = sig.trim_start();
+    if !t.starts_with('{') {
+        return sig;
+    }
+    let mut depth = 0usize;
+    for (i, c) in t.char_indices() {
+        match c {
+            '{' => depth += 1,
+            '}' => {
+                depth -= 1;
+                if depth == 0 {
+                    return &t[i + 1..];
+                }
+            }
+            _ => {}
+        }
+    }
+    sig
+}
+
+/// One property's annotation text after its `name?:`: up to the first
+/// `,`, `;` or `}`, continuing over line breaks while the union does
+/// (`size?:\n  | "a"\n  | "b"`).
+fn cv_annotation_text(rest: &str) -> &str {
+    let mut end = 0;
+    let mut lines = rest.split_inclusive('\n').peekable();
+    while let Some(line) = lines.next() {
+        end += line.len();
+        let so_far = rest[..end].trim();
+        let continues = so_far.is_empty()
+            || so_far.ends_with('|')
+            || lines
+                .peek()
+                .is_some_and(|n| n.trim_start().starts_with('|'));
+        if !continues {
+            break;
+        }
+    }
+    let t = &rest[..end];
+    t[..t.find([',', ';', '}']).unwrap_or(t.len())].trim()
+}
+
+/// `"a" | "b"` (an optional leading `|` allowed) -> the sorted values; None
+/// when any member is not a string literal.
+fn cv_literal_union(t: &str) -> Option<Vec<String>> {
+    let t = t.trim().trim_start_matches('|');
+    let mut vs: Vec<String> = Vec::new();
+    for part in t.split('|') {
+        let p = part.trim();
+        let v = p.strip_prefix('"')?.strip_suffix('"')?;
+        if v.contains('"') {
+            return None;
+        }
+        vs.push(v.to_string());
+    }
+    vs.sort();
+    vs.dedup();
+    Some(vs)
+}
 
 static CV_VARIANT_PROPS_RE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r#"VariantProps<\s*typeof\s+([A-Za-z_$][A-Za-z0-9_$]*)\s*>"#).unwrap()
@@ -642,26 +703,25 @@ fn cv_axis_values_in_sig(
         ));
     }
     // 1. literal union on the param (same name as the axis in every pinned
-    // data-<axis>={param} render — measured at shadcn@4.19.0)
-    let ann_re = Regex::new(&format!(
-        r#"(?:^|[{{\n,])\s*{}\??:\s*([^,\n}}]+)"#,
-        regex::escape(axis)
-    ))
-    .unwrap();
-    if let Some(m) = ann_re.captures(sig) {
-        let t = m.get(1).unwrap().as_str();
-        let lits: Vec<String> = CV_STRING_LIT_RE
-            .captures_iter(t)
-            .map(|c| c[1].to_string())
-            .collect();
-        if !lits.is_empty() {
-            let mut vs = lits;
-            vs.sort();
-            vs.dedup();
+    // data-<axis>={param} render — measured at shadcn@4.19.0), read from
+    // the type part only: a destructuring default `gap = { size: "lg" }`
+    // is not an annotation
+    let types = cv_type_part(sig);
+    let ann_re = Regex::new(&format!(r#"(?:^|[{{\n,;])\s*{}\??:"#, regex::escape(axis))).unwrap();
+    if let Some(m) = ann_re.find(types) {
+        let t = cv_annotation_text(&types[m.end()..]);
+        if let Some(vs) = cv_literal_union(t) {
             return Ok(Some(vs));
         }
-        if t.trim() == "boolean" || t.trim() == "number" {
+        if t == "boolean" || t == "number" {
             return Ok(None);
+        }
+        if t.contains('"') {
+            // a literal mixed with a type expression: no value set to read
+            return Err(format!(
+                "dataAxes: the {} annotation {:?} mixes literals with a type — classify it",
+                axis, t
+            ));
         }
         if t.contains("ComponentProps") || t.contains("ForwardedRef") {
             return Ok(None); // external (Radix primitive) typing
@@ -680,10 +740,12 @@ fn cv_axis_values_in_sig(
     }
     // 3. Pick<React.ComponentProps<typeof X>, "a" | "b"> — X's signature
     if let Some(c) = CV_PICK_RE.captures(sig) {
-        let picks: Vec<String> = CV_STRING_LIT_RE
-            .captures_iter(&c[2])
-            .map(|m| m[1].to_string())
-            .collect();
+        let Some(picks) = cv_literal_union(&c[2]) else {
+            return Err(format!(
+                "dataAxes: the Pick list {:?} is not a literal union — classify it",
+                c[2].trim()
+            ));
+        };
         if picks.iter().any(|n| n == axis)
             && let Some((ofile, xsig)) = lookups.fn_sigs.get(&c[1])
             && let Some(vs) = cv_axis_values_in_sig(lookups, ofile, xsig, axis, depth + 1)?
@@ -2355,5 +2417,61 @@ fn json_strings(v: &Json) -> Vec<String> {
             })
             .collect(),
         _ => Vec::new(),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn values(sig: &str, axis: &str) -> Result<Option<Vec<String>>, String> {
+        let (fn_sigs, srcs, tables) = (HashMap::new(), HashMap::new(), HashMap::new());
+        let lookups = DataAxesLookups {
+            fn_sigs: &fn_sigs,
+            srcs: &srcs,
+            tables: &tables,
+        };
+        cv_axis_values_in_sig(&lookups, "t.tsx", sig, axis, 0)
+    }
+
+    /// The prop-union reader may answer or fail loudly — never silently
+    /// record a wrong value set (a dropped value turns the checker's
+    /// unknown-value rule on legal markup). None of these shapes is in the
+    /// pinned tree; each is one formatting change away.
+    #[test]
+    fn unit_data_axis_unions_are_read_whole_or_refused() {
+        let v = |xs: &[&str]| Ok(Some(xs.iter().map(|s| s.to_string()).collect()));
+        // a union split over lines keeps every member
+        assert_eq!(
+            values(
+                "{ size = \"default\", ...props }: React.ComponentProps<\"div\"> & {\n  size?:\n    | \"default\"\n    | \"sm\"\n}",
+                "size"
+            ),
+            v(&["default", "sm"])
+        );
+        // a default object in the destructuring is not the annotation
+        assert_eq!(
+            values(
+                "{ gap = { size: \"lg\" }, size = \"sm\", ...props }: P & { size?: \"sm\" | \"md\" }",
+                "size"
+            ),
+            v(&["md", "sm"])
+        );
+        // a union mixing a literal with a type expression is refused
+        assert!(
+            values(
+                "{ size, ...props }: P & { size?: \"custom\" | React.ComponentProps<typeof Button>[\"size\"] }",
+                "size"
+            )
+            .is_err()
+        );
+        // a Pick list this reader cannot see whole is refused
+        assert!(
+            values(
+                "{ size, ...props }: Pick<React.ComponentProps<typeof Button>, \"size\" | Array<\"x\">>",
+                "size"
+            )
+            .is_err()
+        );
     }
 }

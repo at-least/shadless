@@ -23,8 +23,10 @@
 //                               upstream renders from a typed prop (card
 //                               data-size, menu-item data-variant: in-@apply
 //                               hooks in the CSS, the value set from the prop's
-//                               type); runtime state and boolean/numeric props
-//                               are not axes and are not checked.
+//                               type); runtime state, boolean/numeric props and
+//                               props typed only by an external package
+//                               (message-scroller-button data-direction) are
+//                               not axes and are not checked.
 //   error   axis-without-slot   data-variant or data-size on an element with no
 //                               data-slot (data-orientation is runtime state on
 //                               many elements and is exempt).

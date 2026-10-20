@@ -39,8 +39,9 @@ upstream is `src/registry/pin.json`; re-pins land through the upstream drill
   (`card data-size`, `select-trigger data-size`, the menu items'
   `data-variant`, `field-legend data-variant`, `bubble`/`message`
   `data-align`, … — 20 slot-axes that exist in the CSS only as in-`@apply`
-  hooks, so no table names their full value set); runtime state and boolean
-  or numeric props are not axes.
+  hooks, so no table names their full value set); runtime state, boolean
+  or numeric props, and props typed only by an external package
+  (`message-scroller-button data-direction`) are not axes.
 - `docs-code-parity`, a full-tier browser gate: for every built page and
   every ` ```text,name=… ` code tab — RTL tabs included, which keep every
   class and are compared against their `-rtl` demo sources — the committed

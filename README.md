@@ -57,7 +57,8 @@ know, and a missing required class (`group/card` on a card — without it every
 `group-data-[size=…]/card:*` rule dies silently). It checks every axis listed
 in `shadless/vocabulary.json`: the cva tables plus the `data-*` props the
 upstream types as a value union (`card data-size`: `default`, `sm`); runtime
-state such as `data-state` and boolean or numeric props are not axes. A start tag that never closes before end of file
+state such as `data-state`, boolean or numeric props, and props typed only by
+an external package (`message-scroller-button data-direction`) are not axes. A start tag that never closes before end of file
 (a browser drops it whole) is reported once as `truncated` instead of being
 checked. Exit 1 when errors are found (or warnings, with `--strict`), 2 on
 usage errors, 0 otherwise; `--json` prints the findings as JSON.

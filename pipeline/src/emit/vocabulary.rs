@@ -25,8 +25,9 @@
 //! field-legend and dropdown-menu-item `data-variant`, …), whose value union
 //! the converter records as element `dataAxes` — those exist in the shipped
 //! CSS only as in-@apply hooks (`data-[size=sm]`), which never name the full
-//! set. Runtime state (`data-state` set by radix or the kernel) and boolean
-//! or numeric props are not axes.
+//! set. Runtime state (`data-state` set by radix or the kernel), boolean or
+//! numeric props, and props typed only by an external package
+//! (message-scroller-button `data-direction`) are not axes.
 //!
 //! Output is byte-stable: keys inserted sorted, arrays sorted, two-space
 //! indent, trailing newline.
