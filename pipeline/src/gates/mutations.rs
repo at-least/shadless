@@ -1781,6 +1781,7 @@ mod tests {
             produces: None,
             why: String::new(),
             mutations: vec![],
+            after: vec![],
         };
         let (run, _) = run_gate(&root, &node(&[&["false"]]));
         assert_eq!(

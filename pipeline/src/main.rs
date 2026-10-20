@@ -120,11 +120,14 @@ fn print_list(g: &Graph, plan: &[Node]) {
         } else {
             String::new()
         };
-        let needs = if n.needs.is_empty() {
+        let mut needs = if n.needs.is_empty() {
             String::new()
         } else {
             format!("  needs: {}", n.needs.join(", "))
         };
+        if !n.after.is_empty() {
+            needs.push_str(&format!("  after: {}", n.after.join(", ")));
+        }
         println!(
             "{} {:<width$}  [{}{}]{needs}",
             kind,

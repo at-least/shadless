@@ -557,7 +557,7 @@ impl Runner {
         });
     }
 
-/// Dispatches the plan, honouring `needs`, and returns how many nodes ran,
+/// Dispatches the plan, honouring `needs` and `after`, and returns how many nodes ran,
 /// were skipped, and failed, plus the two declaration violations seen:
 /// writes outside `produces` and reads outside `inputs`.
     pub fn run(self: &Arc<Self>, plan: &[Node]) -> Counts {
@@ -565,7 +565,9 @@ impl Runner {
         let mut pending: HashMap<String, usize> = HashMap::new();
         let mut dependents: HashMap<String, Vec<String>> = HashMap::new();
         for n in plan {
-            for d in &n.needs {
+            // after edges order the run like needs, but only toward nodes
+            // already in it
+            for d in n.needs.iter().chain(&n.after) {
                 if in_plan.contains(d.as_str()) {
                     *pending.entry(n.id.clone()).or_default() += 1;
                     dependents
@@ -757,6 +759,7 @@ mod tests {
             produces: None,
             why: String::new(),
             mutations: vec![],
+            after: vec![],
         }
     }
 
@@ -811,6 +814,7 @@ mod tests {
             produces: None,
             why: String::new(),
             mutations: vec![],
+            after: vec![],
         };
         let g = Arc::new(Graph::new(vec![gate.clone()]).unwrap());
         let key_before = Keyer::new(&t, &g).key("g").unwrap().unwrap();
@@ -855,6 +859,7 @@ mod tests {
             produces: None,
             why: String::new(),
             mutations: vec![],
+            after: vec![],
         };
         let g = Arc::new(Graph::new(vec![a.clone()]).unwrap());
         let runner = Arc::new(Runner::new(
@@ -910,6 +915,7 @@ mod tests {
             produces: None,
             why: String::new(),
             mutations: vec![],
+            after: vec![],
         };
         let g = Arc::new(Graph::new(vec![a.clone()]).unwrap());
         let runner = Arc::new(Runner::new(
@@ -926,6 +932,61 @@ mod tests {
         assert_eq!(
             counts.bad_reads, 1,
             "the undeclared read must reach the check"
+        );
+    }
+
+    /// unit read dist/css/vocabulary.json while demo rewrote it: both were
+    /// ready at once and nothing ordered them. An `after` edge holds the
+    /// reader until the writer has finished — and only when the writer is in
+    /// the run at all.
+    #[test]
+    fn an_after_edge_holds_the_reader_until_the_writer_finished() {
+        let t = crate::fsutil::temp_root("rs-after");
+        fs::write(t.join("data.txt"), "old").unwrap();
+        let sh = |id: &str, script: &str| N {
+            id: id.to_string(),
+            kind: "build".to_string(),
+            tier: "fast".to_string(),
+            needs: vec![],
+            run: vec![vec!["sh".to_string(), "-c".to_string(), script.to_string()]],
+            inputs: Some(vec!["data.txt".to_string()]),
+            produces: None,
+            why: String::new(),
+            mutations: vec![],
+            after: vec![],
+        };
+        let writer = sh("writer", "sleep 0.3 && printf new > data.txt");
+        let mut reader = sh("reader", "test \"$(cat data.txt)\" = new");
+        reader.after = vec!["writer".to_string()];
+        let mut alone = sh("alone", "true");
+        alone.after = vec!["writer".to_string()];
+        let g = Arc::new(Graph::new(vec![writer.clone(), reader.clone(), alone.clone()]).unwrap());
+        let runner = |plan: &[N]| {
+            let r = Arc::new(Runner::new(
+                t.to_path_buf(),
+                Arc::clone(&g),
+                2, // both ready at once: only the edge can order them
+                1,
+                false,
+                true,
+                HashMap::new(),
+            ));
+            let counts = r.run(plan);
+            let blocked = r.report.lock().unwrap().blocked.clone();
+            (counts, blocked)
+        };
+        let (counts, _) = runner(&[writer, reader]);
+        assert_eq!(
+            (counts.ran, counts.failed),
+            (2, 0),
+            "the reader ran before the writer finished"
+        );
+        // the writer is not in this run: nothing to wait for
+        let (counts, blocked) = runner(&[alone]);
+        assert_eq!((counts.ran, counts.failed), (1, 0));
+        assert!(
+            blocked.is_empty(),
+            "blocked on a node outside the run: {blocked:?}"
         );
     }
 

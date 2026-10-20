@@ -49,8 +49,42 @@ impl Graph {
                     return Err(format!("node {} needs unknown node {}", n.id, d));
                 }
             }
+            for a in &n.after {
+                if !g.nodes.contains_key(a) {
+                    return Err(format!("node {} runs after unknown node {}", n.id, a));
+                }
+            }
+        }
+        // An after edge to a node that itself waits for this one (through
+        // needs or after edges) can never be released: the runner would idle
+        // and report both as blocked. Pure needs cycles stay plan()'s report.
+        for id in &g.order {
+            for a in &g.nodes[id].after {
+                if a == id || g.waits_for(a).contains(id) {
+                    return Err(format!(
+                        "cycle in graph: {} runs after {}, which waits for it",
+                        id, a
+                    ));
+                }
+            }
         }
         Ok(g)
+    }
+
+    /// Every node a run finishes before `id` starts, through needs and after
+    /// edges, transitively.
+    pub fn waits_for(&self, id: &str) -> HashSet<String> {
+        let mut seen: HashSet<String> = HashSet::new();
+        let mut stack = vec![id.to_string()];
+        while let Some(x) = stack.pop() {
+            let n = &self.nodes[&x];
+            for d in n.needs.iter().chain(&n.after) {
+                if seen.insert(d.clone()) {
+                    stack.push(d.clone());
+                }
+            }
+        }
+        seen
     }
 
     pub fn node(&self, id: &str) -> Option<&Node> {
@@ -217,6 +251,9 @@ mod tests {
         // unit needs build-js; rewire pin->unit and unit->pin to close a cycle
         let unit = list.iter_mut().find(|n| n.id == "unit").unwrap();
         unit.needs.push("pin".to_string());
+        // unit also runs after convert, which needs pin: that edge would
+        // close a second cycle that Graph::new already refuses
+        unit.after.clear();
         let g = Graph::new(list).unwrap();
         let err = g.plan(&["pin".to_string()]).unwrap_err();
         assert_eq!(err, "cycle in graph: [pin unit pin]");
@@ -275,5 +312,93 @@ mod tests {
         assert!(plan.iter().any(|n| n.id == "emit"));
         assert!(plan.iter().any(|n| n.id == "pin"));
         assert!(!plan.iter().any(|n| n.id == "coverage"));
+    }
+
+    /// `after` orders a run without changing what a run is: an unknown id or
+    /// a cycle through needs and after edges is an authoring error (the
+    /// runner would wait forever and report the pair as blocked), and the
+    /// edge neither pulls its node into a plan nor raises the tier.
+    #[test]
+    fn after_edges_are_checked_and_never_widen_a_plan() {
+        let mut list = nodes::all();
+        list.iter_mut().find(|n| n.id == "pin").unwrap().after = vec!["ghost".to_string()];
+        let err = Graph::new(list).err().expect("unknown after id accepted");
+        assert!(err.contains("ghost"), "{err}");
+
+        // convert needs pin; pin after convert would wait forever
+        let mut list = nodes::all();
+        list.iter_mut().find(|n| n.id == "pin").unwrap().after = vec!["convert".to_string()];
+        let err = Graph::new(list).err().expect("needs/after cycle accepted");
+        assert!(err.contains("cycle"), "{err}");
+
+        let g = authored();
+        let unit = g.node("unit").unwrap();
+        assert!(
+            unit.after.iter().any(|a| a == "demo"),
+            "unit runs after demo"
+        );
+        assert_eq!(
+            g.plan(&["unit".to_string()])
+                .unwrap()
+                .iter()
+                .map(|n| n.id.as_str())
+                .collect::<Vec<_>>(),
+            vec!["build-js", "unit"]
+        );
+        assert_eq!(g.effective_tier("unit"), "fast");
+    }
+
+    /// A node that reads a file another node writes must not run while that
+    /// node does: the runner starts a node the moment its needs finish, so a
+    /// reader the graph does not order after a writer reads whatever is on
+    /// disk mid-run — unit read dist/css/vocabulary.json before (or while)
+    /// demo rewrote it, and a full run went red on a stale file.
+    #[test]
+    fn unit_a_node_reading_another_nodes_output_runs_after_it() {
+        let root = crate::tree_root();
+        if !root.join("dist/css").is_dir() {
+            if std::env::var_os("CI").is_some() {
+                panic!("CI: required tree input missing (skip: no shadless tree)");
+            }
+            eprintln!("skip: no shadless tree");
+            return;
+        }
+        let g = load_graph_at(&root).unwrap();
+        let produced: Vec<(String, HashSet<String>)> = g
+            .ids()
+            .iter()
+            .filter_map(|id| {
+                let p = g.node(id).unwrap().produces.as_deref()?;
+                Some((
+                    id.clone(),
+                    crate::glob::files(&root, p).unwrap().into_iter().collect(),
+                ))
+            })
+            .collect();
+        let mut unordered: Vec<String> = Vec::new();
+        for id in g.ids().iter().filter(|id| *id == "unit") {
+            let Some(inputs) = g.node(id).unwrap().inputs.as_deref() else {
+                continue; // never-fresh: its reads are not declared
+            };
+            let reads = crate::glob::files(&root, inputs).unwrap();
+            let before = g.waits_for(id);
+            for (writer, files) in &produced {
+                if writer == id || before.contains(writer) {
+                    continue;
+                }
+                if let Some(f) = reads.iter().find(|f| files.contains(*f)) {
+                    let n = reads.iter().filter(|f| files.contains(*f)).count();
+                    unordered.push(format!(
+                        "{id} reads {f} (+{} more) written by {writer}",
+                        n - 1
+                    ));
+                }
+            }
+        }
+        assert!(
+            unordered.is_empty(),
+            "reads of another node's output with nothing ordering the reader after the writer:\n  {}",
+            unordered.join("\n  ")
+        );
     }
 }

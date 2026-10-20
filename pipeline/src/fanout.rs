@@ -46,8 +46,8 @@ fn fan_contracts(root: &Path, n: &Node) -> std::io::Result<Vec<Node>> {
     Ok(out)
 }
 
-/// expandFanout rewrites the node list, rewiring every `needs` that pointed at
-/// a split node to point at all of its parts.
+/// expandFanout rewrites the node list, rewiring every `needs` (and `after`)
+/// edge that pointed at a split node to point at all of its parts.
 pub fn expand_fanout(root: &Path, nodes: Vec<Node>) -> Result<Vec<Node>, String> {
     let mut replaced: HashMap<String, Vec<String>> = HashMap::new();
     let mut out: Vec<Node> = Vec::new();
@@ -67,15 +67,19 @@ pub fn expand_fanout(root: &Path, nodes: Vec<Node>) -> Result<Vec<Node>, String>
     if replaced.is_empty() {
         return Ok(out);
     }
-    for n in out.iter_mut() {
-        let mut needs = Vec::with_capacity(n.needs.len());
-        for d in &n.needs {
+    let rewire = |edges: &[String]| {
+        let mut out = Vec::with_capacity(edges.len());
+        for d in edges {
             match replaced.get(d) {
-                Some(parts) => needs.extend(parts.iter().cloned()),
-                None => needs.push(d.clone()),
+                Some(parts) => out.extend(parts.iter().cloned()),
+                None => out.push(d.clone()),
             }
         }
-        n.needs = needs;
+        out
+    };
+    for n in out.iter_mut() {
+        n.needs = rewire(&n.needs);
+        n.after = rewire(&n.after);
     }
     Ok(out)
 }

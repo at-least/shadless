@@ -149,6 +149,7 @@ mod tests {
             produces: produces.map(|v| v.iter().map(|s| s.to_string()).collect()),
             why: String::new(),
             mutations: vec![],
+            after: vec![],
         }
     }
 

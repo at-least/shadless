@@ -34,6 +34,10 @@ pub struct Node {
     pub produces: Option<Vec<String>>,
     pub why: String,
     pub mutations: Vec<String>,
+    /// Order-only: when a listed node is in the same run, this node starts
+    /// after it has finished. Unlike `needs` it never pulls the node into a
+    /// plan, never folds into the key and never raises the tier.
+    pub after: Vec<String>,
 }
 
 impl Node {
@@ -67,6 +71,7 @@ fn node(
         produces: produces.map(|v| v.iter().map(|s| s.to_string()).collect()),
         why: why.to_string(),
         mutations: mutations.iter().map(|s| s.to_string()).collect(),
+        after: Vec::new(),
     }
 }
 
@@ -1045,6 +1050,29 @@ fn self_host(n: Node) -> Node {
             }
             None => n.inputs = Some(vec![bin.to_string()]),
         }
+    }
+    // unit is a fast gate over the committed tree, so it cannot NEED the
+    // full-tier nodes that write that tree — but in a full run it was ready
+    // as soon as build-js finished and read the corpus, vocabulary.json and
+    // the IR while those writers rewrote them (a run went red on a
+    // vocabulary.json demo had not rewritten yet). Order-only edges: `run
+    // fast` still never builds them, and a full run checks what it built.
+    const ORDER_AFTER: &[(&str, &[&str])] = &[(
+        "unit",
+        &[
+            "convert",
+            "emit",
+            "contract-fixture",
+            "example-oracle",
+            "example-fixture",
+            "rtl-dict",
+            "demo-rtl",
+            "demo",
+            "docs-build",
+        ],
+    )];
+    if let Some((_, after)) = ORDER_AFTER.iter().find(|(nid, _)| *nid == id) {
+        n.after = after.iter().map(|a| a.to_string()).collect();
     }
     if id == "reproducible" {
         let mut producers: Vec<String> = all_go()
