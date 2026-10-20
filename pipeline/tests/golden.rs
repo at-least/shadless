@@ -10,13 +10,72 @@
 //! `go-parity-final` tag (gate_parity.rs, the old opt-in Go cross-check,
 //! was deleted when the Go engine was removed).
 //!
+//! The replay compares what the committed tree decides. A case or key row
+//! that folds an untracked file — docs/site/public from a local zola build,
+//! build/, tools/contracts/out, node_modules, the nested .upstream checkout
+//! — is local state: `inputs` lists are compared without untracked paths,
+//! and key rows whose node (or a node it needs) declares an untracked input,
+//! or produces an untracked file, are not compared. A zola rebuild reddened
+//! this test with no committed change (0319f1f re-recorded it).
+//!
 //! Layout (flat, one slug per case — see gen_golden.sh):
 //!   <slug>.cmd        the argv, one line, space-separated
 //!   <slug>.rs.out / .rs.err / .rs.code   the recorded verdict
 //!   keys.rs.txt       the __keys dump over the real tree
 
-use std::path::PathBuf;
+use std::collections::HashSet;
+use std::path::{Path, PathBuf};
 use std::process::Command;
+
+/// What a fresh clone of the tree holds.
+fn tracked_paths(root: &Path) -> HashSet<String> {
+    let out = Command::new("git")
+        .arg("-C")
+        .arg(root)
+        .args(["ls-files", "-z"])
+        .output()
+        .expect("git runs");
+    assert!(
+        out.status.success(),
+        "git ls-files in {}: {}",
+        root.display(),
+        String::from_utf8_lossy(&out.stderr)
+    );
+    out.stdout
+        .split(|b| *b == 0)
+        .filter(|p| !p.is_empty())
+        .map(|p| String::from_utf8_lossy(p).into_owned())
+        .collect()
+}
+
+/// Nodes whose `__keys` row folds an untracked file: through its own
+/// declared inputs or those of a node it needs (dependency keys fold up), or
+/// through its produces (the row's outputs digest).
+fn local_state_rows(root: &Path, tracked: &HashSet<String>) -> HashSet<String> {
+    let g = pipeline::graph::load_graph_at(root).expect("graph loads");
+    let untracked = |patterns: Option<&[String]>| {
+        pipeline::glob::files(root, patterns.unwrap_or(&[]))
+            .expect("patterns expand")
+            .iter()
+            .any(|f| !tracked.contains(f))
+    };
+    let key_hit: HashSet<&String> = g
+        .ids()
+        .iter()
+        .filter(|id| untracked(g.node(id).unwrap().inputs.as_deref()))
+        .collect();
+    g.ids()
+        .iter()
+        .filter(|id| {
+            untracked(g.node(id).unwrap().produces.as_deref())
+                || g.plan(&[id.to_string()])
+                    .unwrap()
+                    .iter()
+                    .any(|n| key_hit.contains(&n.id))
+        })
+        .cloned()
+        .collect()
+}
 
 fn shadless_root() -> Option<PathBuf> {
     if let Ok(p) = std::env::var("SHADLESS_ROOT") {
@@ -77,6 +136,15 @@ fn golden_matrix_replays() {
         "expected the full golden matrix (300+ cases), found only {} — run tests/gen_golden.sh",
         slugs.len()
     );
+    let tracked = tracked_paths(&root);
+    // an `inputs` listing without the files a fresh clone does not have
+    let committed = |out: &[u8]| -> Vec<u8> {
+        let text = String::from_utf8_lossy(out);
+        text.lines()
+            .filter(|l| tracked.contains(*l))
+            .flat_map(|l| format!("{l}\n").into_bytes())
+            .collect()
+    };
     let mut fails: Vec<String> = Vec::new();
     for slug in &slugs {
         let cmd = std::fs::read_to_string(golden.join(format!("{}.cmd", slug)))
@@ -99,7 +167,12 @@ fn golden_matrix_replays() {
             .current_dir(&root)
             .output()
             .expect("rust binary runs");
-        if out.stdout != rs_out || out.stderr != rs_err || out.status.code() != Some(rs_code) {
+        let (out_now, out_rec) = if args.first() == Some(&"inputs") {
+            (committed(&out.stdout), committed(&rs_out))
+        } else {
+            (out.stdout, rs_out)
+        };
+        if out_now != out_rec || out.stderr != rs_err || out.status.code() != Some(rs_code) {
             fails.push(format!("pipeline {}", args.join(" ")));
         }
     }
@@ -123,8 +196,33 @@ fn golden_matrix_replays() {
         .current_dir(&root)
         .output()
         .expect("rust binary runs");
+    assert!(keys_now.status.success(), "__keys failed");
+    let local = local_state_rows(&root, &tracked);
+    let committed_rows = |dump: &[u8]| -> Vec<String> {
+        String::from_utf8_lossy(dump)
+            .lines()
+            .filter(|l| !local.contains(l.split('\t').next().unwrap()))
+            .map(str::to_string)
+            .collect()
+    };
+    let (rec, now) = (
+        committed_rows(&keys_golden),
+        committed_rows(&keys_now.stdout),
+    );
+    eprintln!(
+        "keys: {} committed-tree rows compared, {} local-state rows skipped",
+        rec.len(),
+        local.len()
+    );
+    // build-js, ledger, script-refs and typecheck fold only tracked files
+    // (2026-10-20); fewer rows means the layer stopped checking key folding
     assert!(
-        keys_now.stdout == keys_golden && keys_now.status.success(),
-        "__keys output diverges from the recorded keys golden — key folding drifted"
+        rec.len() >= 4,
+        "only {} key rows are a function of the committed tree — re-check local_state_rows",
+        rec.len()
+    );
+    assert!(
+        now == rec,
+        "__keys output diverges from the recorded keys golden on the committed-tree rows — key folding drifted"
     );
 }
