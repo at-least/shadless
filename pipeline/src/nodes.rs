@@ -1000,13 +1000,16 @@ fn self_host(n: Node) -> Node {
     // predates node_modules toolchains and only consumer-sim declared its
     // tailwind path. Keep in sync with the Command::new sites in jsbuild.rs,
     // convert/mod.rs, emit/tw.rs, tools/oracle_css.rs, oracle/oracle_lib.rs
-    // and the npx tsc invocation in the typecheck node.
+    // the npx tsc invocation in the typecheck node and the tsc spawn in
+    // tools/unit/types.mjs.
     // Reads the Go table never declared. docs-catalog scans the upstream
     // radix mdx and the guide pages (tools/docs_catalog.rs scan_set,
-    // GUIDE_SOURCES), which nothing on its needs-chain declares either.
+    // GUIDE_SOURCES), which nothing on its needs-chain declares either;
+    // unit's checker census reads every dist/css stylesheet.
     const EXTRA_INPUTS: &[(&str, &[&str])] = &[
         ("example-oracle", &["overlays/**"]),
         ("docs-catalog", &[UPSTREAM_DOCS_GLOB, "docs/content/**"]),
+        ("unit", &["dist/css/**"]),
     ];
     if let Some((_, extras)) = EXTRA_INPUTS.iter().find(|(nid, _)| *nid == id) {
         let inputs = n.inputs.get_or_insert_with(Vec::new);
@@ -1030,6 +1033,8 @@ fn self_host(n: Node) -> Node {
         ("example-fixture", "node_modules/.bin/esbuild"),
         ("contract-fixture", "node_modules/.bin/esbuild"),
         ("golden-gate", "node_modules/.bin/esbuild"),
+        // tools/unit/types.mjs compiles the shipped .d.ts
+        ("unit", "node_modules/.bin/tsc"),
     ];
     if let Some((_, bin)) = TOOLCHAIN_INPUTS.iter().find(|(nid, _)| *nid == id) {
         match n.inputs.as_mut() {
@@ -1107,6 +1112,8 @@ mod self_host_tests {
             ("example-fixture", "node_modules/.bin/esbuild"),
             ("contract-fixture", "node_modules/.bin/esbuild"),
             ("golden-gate", "node_modules/.bin/esbuild"),
+            // tools/unit/types.mjs compiles the shipped .d.ts
+            ("unit", "node_modules/.bin/tsc"),
         ] {
             let n = g.iter().find(|n| n.id == id).unwrap_or_else(|| panic!("node {id} missing"));
             let inputs = n.inputs.as_deref().unwrap_or(&[]);
@@ -1133,6 +1140,28 @@ mod self_host_tests {
                 .iter()
                 .any(|p| p == crate::emit::tw::TwCli::dev().script()),
             "consumer-sim executes the dev CLI by script path but does not declare it"
+        );
+    }
+
+    /// tools/unit/checker.mjs reads every dist/css stylesheet (the selector
+    /// and hook census against vocabulary.json); unit declared only
+    /// vocabulary.json, so a stylesheet change left the census unrun.
+    #[test]
+    fn unit_unit_inputs_cover_the_stylesheets_it_scans() {
+        let root = crate::tree_root();
+        if !root.join("dist/css").is_dir() {
+            if std::env::var_os("CI").is_some() {
+                panic!("CI: required tree input missing (skip: no shadless tree)");
+            }
+            eprintln!("skip: no shadless tree");
+            return;
+        }
+        let g: Vec<Node> = all_go().into_iter().map(self_host).collect();
+        let n = g.iter().find(|n| n.id == "unit").unwrap();
+        let files = crate::glob::files(&root, n.inputs.as_deref().unwrap_or(&[])).unwrap();
+        assert!(
+            files.iter().any(|e| e == "dist/css/card.css"),
+            "unit reads dist/css/*.css but does not declare them"
         );
     }
 
