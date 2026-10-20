@@ -493,4 +493,90 @@ export async function run(t) {
   const missing = [...vocabPairs].filter((p) => !cssPairs.has(p))
   t.eq("vocabulary values missing from CSS are exactly the measured empty-apply ones",
     missing, ["attachment-media|variant|icon", "marker|variant|default"])
+
+  // ---- 5. tree-construction agreement (Chromium-measured) -----------------
+  // Every shape here was measured against the elements Chromium BUILDS
+  // (DOMParser): the rules must fire exactly on the elements a browser
+  // constructs, never on a start tag it drops, and never miss one it builds.
+  // select content parses under body rules (the current HTML standard;
+  // parse5 8.0.1 still drops it): built, so checked
+  t.eq("div inside select is built and checked",
+    findings(`<select><div data-slot="button" data-variant="outlined"></div></select>`).map((x) => x.rule),
+    ["unknown-value", "missing-marker"])
+  t.eq("div inside option inside select is built and checked",
+    findings(`<select><option><div data-slot="card"></div></option></select>`).map((x) => x.rule),
+    ["missing-marker"])
+  t.eq("td inside select is dropped (no table open)", findings(`<select><td data-slot="card"></td></select>`), [])
+  t.eq("style inside select is raw text",
+    findings(`<select><style><div data-variant="bad"></style></select>`), [])
+  t.eq("textarea inside select is RCDATA",
+    findings(`<select><textarea><div data-variant="bad"></textarea></select>`), [])
+  // table-family drops: a browser builds no element without an open table
+  t.eq("stray td is dropped", findings(`<div><td data-slot="card"></td></div>`), [])
+  t.eq("stray tr is dropped", findings(`<div><tr data-slot="card"></tr></div>`), [])
+  t.eq("stray tbody is dropped", findings(`<div><tbody data-slot="card"></tbody></div>`), [])
+  t.eq("stray caption is dropped", findings(`<caption data-slot="card"></caption>`), [])
+  t.eq("td in a table is built",
+    findings(`<table><tbody><tr><td data-slot="card"></td></tr></tbody></table>`).map((x) => x.rule),
+    ["missing-marker"])
+  t.eq("div in a table is foster-parented, still built",
+    findings(`<table><div data-slot="card"></div></table>`).map((x) => x.rule), ["missing-marker"])
+  t.eq("td in a template is built (body rules)",
+    findings(`<template><td data-slot="card"></td></template>`).map((x) => x.rule), ["missing-marker"])
+  t.eq("table closes at </table>",
+    findings(`<table><tr><td>x</td></tr></table><div data-variant="bad">y</div>`).map((x) => x.rule),
+    ["axis-without-slot"])
+  // HTML integration points: their content parses as HTML again
+  t.eq("style inside svg foreignObject is raw text",
+    findings(`<svg><foreignObject><style><div data-slot="card"></style></svg>`), [])
+  t.eq("script inside svg desc is script data",
+    findings(`<svg><desc><script>var s = "<div data-variant='bad'>";</script></desc></svg>`), [])
+  t.eq("textarea inside svg foreignObject is RCDATA",
+    findings(`<svg><foreignObject><textarea><div data-slot="nope"></textarea></svg>`), [])
+  t.eq("style inside svg title (itself an integration point) is raw text",
+    findings(`<svg><title><style><div data-slot="card"></style></title></svg>`), [])
+  t.eq("style inside math annotation-xml encoding=text/html is raw text",
+    findings(`<math><annotation-xml encoding="text/html"><style><div data-slot="card"></style></annotation-xml></math>`), [])
+  t.eq("annotation-xml with a non-HTML encoding is not an integration point",
+    findings(`<math><annotation-xml encoding="application/mathml+xml"><style><div data-slot="card"></style></annotation-xml></math>`).map((x) => x.rule),
+    ["missing-marker"])
+  t.eq("style inside math mi is raw text (text integration point)",
+    findings(`<math><mi><style><div data-slot="card"></style></mi></math>`), [])
+  t.eq("unterminated style inside svg foreignObject swallows the rest",
+    findings(`<svg><foreignObject><style>never closes <div data-slot="card">`), [])
+  t.eq("plaintext inside math mi runs to EOF",
+    findings(`<math><mi><plaintext><div data-variant="bad">`), [])
+  t.eq("HTML title inside svg foreignObject is RCDATA",
+    findings(`<svg><foreignObject><title><div data-slot="card"></title></svg>`), [])
+  t.eq("integration content without raw text is still checked",
+    findings(`<svg><foreignObject><div data-slot="card"></div></foreignObject></svg>`).map((x) => x.rule),
+    ["missing-marker"])
+  t.eq("CDATA inside svg desc is a bogus comment to the first >",
+    findings(`<svg><desc><![CDATA[x><div data-variant="bad">]]></svg>`).map((x) => x.rule),
+    ["axis-without-slot"])
+  t.eq("CDATA inside math mi stays a CDATA section",
+    findings(`<math><mi><![CDATA[<div data-variant="bad">]]></mi></math>`), [])
+  // foreign-content breakout: an HTML start tag pops the foreign elements
+  t.eq("p breaks out; a later title is HTML raw text",
+    findings(`<svg><p><title><div data-slot="button" data-variant="outlined"></title></svg>`), [])
+  t.eq("p breaks out; CDATA is a bogus comment to the first >",
+    findings(`<svg><p><![CDATA[<div data-slot="card"><span data-variant="nope">]]></svg>`).map((x) => x.rule),
+    ["axis-without-slot"])
+  t.eq("breakout closed by </svg> before the raw text",
+    findings(`<svg><div></svg><title><div data-variant="bad"></title>`), [])
+  t.eq("HTML tag inside an integration point does not pop the svg",
+    findings(`<svg><desc><div data-slot="card"></div></desc></svg>`).map((x) => x.rule),
+    ["missing-marker"])
+  t.eq("mglyph returns to foreign mode inside mi",
+    findings(`<math><mi><mglyph><style><div data-slot="card"></style></mglyph></mi></math>`).map((x) => x.rule),
+    ["missing-marker"])
+  // end-tag pops
+  t.eq("</math> inside an svg is ignored (svg title content is HTML)",
+    findings(`<svg></math><title><div data-variant="bad"></title>`).map((x) => x.rule),
+    ["axis-without-slot"])
+  t.eq("</svg> closes the svg through a foreignObject",
+    findings(`<svg><foreignObject></svg><title><div data-variant="bad"></title>`), [])
+  t.eq("</desc> pops back to foreign svg (svg title content is HTML)",
+    findings(`<svg><desc>x</desc><title><div data-slot="card"></title></svg>`).map((x) => x.rule),
+    ["missing-marker"])
 }

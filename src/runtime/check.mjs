@@ -50,25 +50,28 @@
 //                               nothing of it; reported once instead of
 //                               findings on markup no browser sees.
 //
-// Tokenizer scope: svg/math foreign content is tracked (no raw text there,
-// <![CDATA[ sections run to ]]>), with a known limitation: HTML integration
-// points inside foreign content (svg foreignObject/desc/title, math
-// annotation-xml/mi/mo/mn/ms/mtext — whose contents a browser parses as
-// HTML again) are not modeled: their content is scanned as foreign markup.
-// That finds the elements a browser builds there, but when a raw-text
-// element inside an integration point never closes, a browser's raw text
-// swallows the rest of the document while the checker keeps scanning — such
-// shapes can produce extra findings, not just missed tokenizer quirks.
+// Tokenizer scope: svg/math foreign content is tracked with the parts of
+// tree construction that CHANGE TOKENIZATION (all parse5-measured): the
+// integration points whose content a browser parses as HTML again (svg
+// foreignObject/desc/title, math annotation-xml with a text/html-ish
+// encoding, the MathML text integration points mi/mo/mn/ms/mtext — raw
+// text switches there, and a CDATA section becomes a bogus comment to the
+// first '>' at an HTML integration point while it stays a CDATA section at
+// a text integration point), the WHATWG breakout list (an HTML start tag
+// such as <div>/<p>/<span> inside svg/math pops the foreign elements and
+// is reprocessed under HTML rules), and the end-tag pops (</svg> closes
+// the svg through a desc or foreignObject; an end tag no tracked foreign
+// element carries is ignored).
 //
-// Tree construction is not modeled either: every start tag the tokenizer
-// emits is checked. A browser's tree builder drops some of them (a <div>
-// inside <select>, a <td>/<tr> outside a table), and an HTML start tag such
-// as <div>/<p>/<span> inside svg/math breaks out of foreign content, which
-// the svg/math depth does not follow — raw text after such a breakout is
-// scanned as markup and a later <![CDATA[ runs to ]]>. These shapes are
-// invalid authoring (parse5-measured, absent from the shipped corpus); they
-// can produce findings on elements no browser builds, or miss one after a
-// breakout.
+// Tree construction is modeled no further than tokenization: every start
+// tag the tokenizer emits is checked, except the table family
+// (caption/col/colgroup/frame/head/tbody/td/tfoot/th/thead/tr) with no
+// <table> or <template> open — a browser builds no element for it
+// (Chromium-measured). Content inside a <select> is built and checked: the
+// HTML standard parses it under body rules since the customizable-select
+// change (Chromium 151 builds a <div> there; parse5 8.0.1 still drops it).
+// Foster parenting only MOVES built elements, so it cannot change a
+// per-start-tag rule's result and needs no model.
 //
 // API: checkSource(text, vocabulary, file) returns the findings — the unit
 // suite feeds it fence texts without temp files. The CLI is a thin wrapper.
@@ -108,6 +111,55 @@ import { pathToFileURL } from "node:url"
 const RAW_TEXT_TAGS = new Set([
   "script", "style", "textarea", "title",
   "xmp", "iframe", "noembed", "noframes", "noscript",
+])
+
+/**
+ * The foreign elements that CHANGE HOW THE NEXT TOKENS TOKENIZE
+ * (parse5-measured). Untracked foreign elements (circle, path, ...) tokenize
+ * exactly like their parent, so tracking them would change nothing. `ns` is
+ * the namespace the browser builds them in: foreignObject/desc/title
+ * integrate only in svg, annotation-xml/mi/mo/mn/ms/mtext only in math
+ * (`<svg><desc>` and `<math><foreignObject>` are plain foreign elements).
+ * `htmlIntegration` (svg foreignObject/desc/title; math annotation-xml with
+ * an encoding of text/html or application/xhtml+xml) marks an HTML
+ * integration point: a browser parses its CONTENT as HTML again — raw-text
+ * elements switch there, plaintext runs to EOF, and a `<![CDATA[` section is
+ * a bogus comment running to the first `>`. `textIntegration` (math
+ * mi/mo/mn/ms/mtext) applies HTML rules to start tags too, but a CDATA
+ * section STAYS a CDATA section there (parse5-measured; the WHATWG
+ * tokenizer's CDATA rule only leaves foreign content at HTML integration
+ * points).
+ * @typedef {{
+ *   tag: string,
+ *   ns: "svg" | "math",
+ *   htmlIntegration: boolean,
+ *   textIntegration: boolean,
+ * }} ForeignEntry
+ */
+const FOREIGN_PUSH = new Set([
+  "svg", "math", "foreignobject", "desc", "title", "annotation-xml",
+  "mi", "mo", "mn", "ms", "mtext", "mglyph", "malignmark",
+])
+
+// The WHATWG breakout list: an HTML start tag with one of these names in
+// foreign content pops the foreign elements until the nearest integration
+// point (else all of them) and is reprocessed under HTML rules
+// (parse5-measured — after it, raw text is raw text and CDATA is a bogus
+// comment again). font breaks out only with a color attribute.
+const BREAKOUT_TAGS = new Set([
+  "b", "big", "blockquote", "body", "br", "center", "code", "dd", "div",
+  "dl", "dt", "em", "embed", "h1", "h2", "h3", "h4", "h5", "h6", "head",
+  "hr", "i", "img", "li", "listing", "menu", "meta", "nobr", "ol", "p",
+  "pre", "ruby", "s", "small", "span", "strong", "strike", "sub", "sup",
+  "table", "tt", "u", "ul", "var",
+])
+
+// The table-family start tags a browser builds NO element for while no
+// <table> or <template> is open (Chromium-measured; a template's content
+// builds them — <template><td> keeps the td).
+const TABLE_DROPPED = new Set([
+  "caption", "col", "colgroup", "frame", "head", "tbody", "td", "tfoot",
+  "th", "thead", "tr",
 ])
 
 /**
@@ -293,8 +345,11 @@ function parseAttrs(text, from) {
  * embedded bad tag is never reported. svg/math foreign content has no raw
  * text and no PLAINTEXT state (title/style/script/plaintext there are normal
  * elements — parse5-measured) and allows `<![CDATA[` sections, so the
- * nesting depth is tracked; HTML integration points inside it are not
- * modeled (see the header note).
+ * foreign elements that change tokenization are tracked: integration points
+ * (raw text switches there; a CDATA section is a bogus comment at an HTML
+ * integration point), the WHATWG breakout list and the end-tag pops (see
+ * the header note). The table family outside an open table is skipped
+ * without findings — a browser builds no element for it.
  *
  * @param {string} text
  * @param {Vocabulary} vocabulary
@@ -323,9 +378,42 @@ export function checkSource(text, vocabulary, file) {
 
   const n = text.length
   let i = 0
-  // svg/math nesting depth: > 0 means foreign content (no raw text, CDATA
-  // sections allowed)
-  let foreign = 0
+  // The open foreign elements that change tokenization (see ForeignEntry);
+  // empty means HTML. The open <table>/<template> elements: while none is,
+  // the table family builds nothing (TABLE_DROPPED).
+  /** @type {ForeignEntry[]} */
+  const foreign = []
+  /** @type {("table" | "template")[]} */
+  const tableMarkers = []
+  /** a </table> or </template> closes everything opened inside it; no-op
+   * when none is open
+   * @param {"table" | "template"} kind
+   */
+  const popTable = (kind) => {
+    const k = tableMarkers.lastIndexOf(kind)
+    if (k >= 0) tableMarkers.length = k
+  }
+  /** does a browser tokenize the next tokens under HTML rules (raw-text
+   * elements switch, plaintext runs to EOF, a CDATA section is a bogus
+   * comment, no foreign breakout)? True in HTML, and inside every
+   * integration point */
+  const htmlMode = () => {
+    const top = foreign[foreign.length - 1]
+    return top === undefined || top.htmlIntegration || top.textIntegration
+  }
+  /** is a <![CDATA[ section one token running to ]]>? False at an HTML
+   * integration point, where it is a bogus comment to the first `>` */
+  const cdataMode = () => {
+    const top = foreign[foreign.length - 1]
+    return top !== undefined && !top.htmlIntegration
+  }
+  /** a breakout start tag pops foreign elements until the nearest
+   * integration point (else all of them) — the tag itself is reprocessed
+   * under HTML rules, so the checker checks it like any HTML start tag and
+   * drops the popped foreign state (parse5-measured) */
+  const breakOut = () => {
+    foreign.length = foreign.findLastIndex((e) => e.htmlIntegration || e.textIntegration) + 1
+  }
   while (i < n) {
     const lt = text.indexOf("<", i)
     if (lt < 0) break
@@ -344,9 +432,11 @@ export function checkSource(text, vocabulary, file) {
       i = m ? lt + 4 + m.index + m[0].length : n
       continue
     }
-    if (foreign > 0 && text.startsWith("<![CDATA[", lt)) {
+    if (cdataMode() && text.startsWith("<![CDATA[", lt)) {
       // a CDATA section in foreign content is one token: everything to the
-      // closing ]]>, or to EOF when it never closes (parse5-measured)
+      // closing ]]>, or to EOF when it never closes (parse5-measured). At
+      // an HTML integration point it is a bogus comment instead (the
+      // generic <! branch below) — parse5-measured.
       const close = text.indexOf("]]>", lt + 9)
       i = close >= 0 ? close + 3 : n
       continue
@@ -368,9 +458,14 @@ export function checkSource(text, vocabulary, file) {
         continue
       }
       const lower = m[0].toLowerCase()
-      if (lower === "svg" || lower === "math") {
-        foreign = Math.max(0, foreign - 1)
-      }
+      // A foreign end tag pops through the nearest tracked element with the
+      // same name; untracked foreign elements above it are popped along,
+      // like the browser's walk (parse5-measured: </svg> closes the svg
+      // through a desc or foreignObject, </math> inside an svg is ignored,
+      // and a stray </svg> in HTML is ignored — nothing is popped).
+      const k = foreign.findLastIndex((e) => e.tag === lower)
+      if (k >= 0) foreign.length = k
+      if (lower === "table" || lower === "template") popTable(lower)
       // an end tag's attribute region tokenizes like a start tag's (a quoted
       // '>' is literal); EOF inside it drops the tag and swallows the rest
       // (parse5-measured)
@@ -396,79 +491,137 @@ export function checkSource(text, vocabulary, file) {
       continue
     }
     const lower = tag.toLowerCase()
-    if ((lower === "svg" || lower === "math") && !selfClosed) {
-      // a self-closed <svg/> carries no content, so it is not foreign depth
-      foreign++
-    }
 
-    // rule: duplicate-attribute (case-insensitive; HTML keeps the first)
+    // The start tag's attributes by lowercased name, first occurrence wins
+    // (HTML parsers keep the first) — one map for every rule below.
     /** @type {Map<string, Attr>} */
     const byLower = new Map()
     for (const a of attrs) {
-      const seen = byLower.get(a.lower)
-      if (seen) {
-        push(a.namePos, "error", "duplicate-attribute",
-          `duplicate attribute "${a.name}" — HTML parsers keep only the first one (line ${at(seen.namePos).line}, col ${at(seen.namePos).col})`)
-      } else {
-        byLower.set(a.lower, a)
-      }
+      if (!byLower.has(a.lower)) byLower.set(a.lower, a)
     }
-    const slot = byLower.get("data-slot")
-    // a valueless (boolean) data-slot is present with an empty value, like
-    // every HTML parser sees it — it is an (unknown) slot, never "no slot"
-    const slotName = slot ? decodeEntities(slot.value ?? "") : undefined
-    if (slotName !== undefined) {
-      const entry = vocabulary.slots[slotName]
-      if (entry === undefined) {
-        if (!vocabulary.slotRefs.includes(slotName)) {
-          push(/** @type {number} */ (slot?.namePos), "warning", "unknown-slot",
-            `data-slot="${slotName}" is not in the vocabulary (shadless/vocabulary.json)`)
-        }
+
+    // Mode BEFORE this tag: raw-text/plaintext switching and breakout
+    // suppression follow the OPEN elements, not this tag (an svg <title> is
+    // not raw text — it is an integration point whose content is HTML).
+    let inHtml = htmlMode()
+    if (inHtml && foreign.at(-1)?.textIntegration && (lower === "mglyph" || lower === "malignmark")) {
+      // at a MathML text integration point, mglyph/malignmark go back to
+      // foreign rules (parse5-measured)
+      inHtml = false
+    }
+    if (!inHtml && BREAKOUT_TAGS.has(lower) &&
+        (lower !== "font" || byLower.has("color"))) {
+      // an HTML start tag in the breakout list pops foreign elements until
+      // the nearest integration point (or all of them) and is reprocessed
+      // under HTML rules (parse5-measured)
+      breakOut()
+      inHtml = true
+    }
+
+    // The table family builds nothing while no table or template is open
+    // (Chromium-measured), so the rules must not fire on it.
+    let dropped = false
+    if (inHtml) {
+      if (lower === "table" || lower === "template") tableMarkers.push(lower)
+      else if (TABLE_DROPPED.has(lower) && tableMarkers.length === 0) dropped = true
+    }
+
+    if (!dropped && !selfClosed &&
+        (inHtml ? lower === "svg" || lower === "math" : FOREIGN_PUSH.has(lower))) {
+      // a self-closed foreign element carries no content (the self-closing
+      // flag is acknowledged in foreign content), so it changes no mode
+      /** @type {"svg" | "math"} */
+      let ns
+      if (inHtml) {
+        ns = lower === "svg" ? "svg" : "math"
       } else {
-        // rule: unknown-value (cva axes of this slot only)
-        for (const [axis, info] of Object.entries(entry.axes)) {
-          const a = byLower.get(`data-${axis}`)
-          if (!a) continue
-          const v = a.value !== undefined ? decodeEntities(a.value) : ""
-          if (v === "") {
-            if (info.default === null) {
-              push(/** @type {number} */ (a.namePos), "error", "unknown-value",
-                `data-${axis}="" on data-slot="${slotName}" — the ${axis} axis has no default, so the empty value selects nothing`)
-            }
-            continue
-          }
-          if (!info.values.includes(v)) {
-            push(/** @type {number} */ (a.namePos), "error", "unknown-value",
-              `data-${axis}="${v}" is not a value of ${slotName}'s ${axis} axis (${info.values.join(", ")})`)
-          }
+        const parent = foreign[foreign.length - 1]
+        if (parent === undefined) {
+          // unreachable: !inHtml means a plain foreign element is open
+          // (htmlMode() is false only then)
+          throw new Error("internal: foreign push with no open foreign element")
         }
-        // rule: missing-marker
-        if (entry.markers.length > 0) {
-          const cls = byLower.get("class")
-          const have = new Set(
-            (cls && cls.value !== undefined ? decodeEntities(cls.value) : "").split(/\s+/),
-          )
-          for (const marker of entry.markers) {
-            if (!have.has(marker)) {
-              push(/** @type {number} */ (slot?.namePos), "warning", "missing-marker",
-                `class is missing "${marker}" — every data-slot="${slotName}" element carries it (${entry.component})`)
-            }
-          }
+        ns = parent.ns
+      }
+      foreign.push({
+        tag: lower,
+        ns,
+        htmlIntegration:
+          (ns === "svg" && (lower === "foreignobject" || lower === "desc" || lower === "title")) ||
+          (ns === "math" && lower === "annotation-xml" &&
+            ["text/html", "application/xhtml+xml"].includes(
+              (byLower.get("encoding")?.value ?? "").toLowerCase())),
+        textIntegration: ns === "math" &&
+          (lower === "mi" || lower === "mo" || lower === "mn" || lower === "ms" || lower === "mtext"),
+      })
+    }
+
+    if (!dropped) {
+      // rule: duplicate-attribute (case-insensitive; HTML keeps the first)
+      for (const a of attrs) {
+        const seen = byLower.get(a.lower)
+        if (seen !== undefined && seen !== a) {
+          push(a.namePos, "error", "duplicate-attribute",
+            `duplicate attribute "${a.name}" — HTML parsers keep only the first one (line ${at(seen.namePos).line}, col ${at(seen.namePos).col})`)
         }
       }
-    } else {
-      // rule: axis-without-slot — variant/size name an axis; orientation is
-      // runtime state on many elements and is exempt
-      for (const axis of ["variant", "size"]) {
-        const a = byLower.get(`data-${axis}`)
-        if (a) {
-          push(a.namePos, "error", "axis-without-slot",
-            `data-${axis} without a data-slot — the attribute is an axis of a slot's vocabulary; set data-slot first`)
+      const slot = byLower.get("data-slot")
+      // a valueless (boolean) data-slot is present with an empty value, like
+      // every HTML parser sees it — it is an (unknown) slot, never "no slot"
+      const slotName = slot ? decodeEntities(slot.value ?? "") : undefined
+      if (slotName !== undefined) {
+        const entry = vocabulary.slots[slotName]
+        if (entry === undefined) {
+          if (!vocabulary.slotRefs.includes(slotName)) {
+            push(/** @type {number} */ (slot?.namePos), "warning", "unknown-slot",
+              `data-slot="${slotName}" is not in the vocabulary (shadless/vocabulary.json)`)
+          }
+        } else {
+          // rule: unknown-value (cva axes of this slot only)
+          for (const [axis, info] of Object.entries(entry.axes)) {
+            const a = byLower.get(`data-${axis}`)
+            if (!a) continue
+            const v = a.value !== undefined ? decodeEntities(a.value) : ""
+            if (v === "") {
+              if (info.default === null) {
+                push(/** @type {number} */ (a.namePos), "error", "unknown-value",
+                  `data-${axis}="" on data-slot="${slotName}" — the ${axis} axis has no default, so the empty value selects nothing`)
+              }
+              continue
+            }
+            if (!info.values.includes(v)) {
+              push(/** @type {number} */ (a.namePos), "error", "unknown-value",
+                `data-${axis}="${v}" is not a value of ${slotName}'s ${axis} axis (${info.values.join(", ")})`)
+            }
+          }
+          // rule: missing-marker
+          if (entry.markers.length > 0) {
+            const cls = byLower.get("class")
+            const have = new Set(
+              (cls && cls.value !== undefined ? decodeEntities(cls.value) : "").split(/\s+/),
+            )
+            for (const marker of entry.markers) {
+              if (!have.has(marker)) {
+                push(/** @type {number} */ (slot?.namePos), "warning", "missing-marker",
+                  `class is missing "${marker}" — every data-slot="${slotName}" element carries it (${entry.component})`)
+              }
+            }
+          }
+        }
+      } else {
+        // rule: axis-without-slot — variant/size name an axis; orientation is
+        // runtime state on many elements and is exempt
+        for (const axis of ["variant", "size"]) {
+          const a = byLower.get(`data-${axis}`)
+          if (a) {
+            push(a.namePos, "error", "axis-without-slot",
+              `data-${axis} without a data-slot — the attribute is an axis of a slot's vocabulary; set data-slot first`)
+          }
         }
       }
     }
 
-    if (foreign === 0 && RAW_TEXT_TAGS.has(lower)) {
+    if (inHtml && !dropped && RAW_TEXT_TAGS.has(lower)) {
       // skip the raw text; the end tag is not markup either. The tokenizer
       // ignores the self-closing flag on these elements (<script/> still
       // switches to raw text), and an end tag may carry a '/' or junk after
@@ -488,7 +641,7 @@ export function checkSource(text, vocabulary, file) {
       i = r.truncated ? n : r.end + 1
       continue
     }
-    if (foreign === 0 && lower === "plaintext") {
+    if (inHtml && !dropped && lower === "plaintext") {
       // plaintext's content runs to EOF: the tokenizer never leaves the
       // PLAINTEXT state, so not even </plaintext> closes it
       // (parse5-measured). Foreign content has no PLAINTEXT state — the
