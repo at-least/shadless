@@ -84,40 +84,41 @@ pub fn run_demo_smoke(root: &Path) -> i32 {
     let mut all_slots: std::collections::HashSet<String> = std::collections::HashSet::new();
     let mut slot_counts: std::collections::HashMap<String, usize> =
         std::collections::HashMap::new();
-    if let Ok(ir_ents) = std::fs::read_dir(root.join("generated/ir")) {
-        for e in ir_ents.flatten() {
-            let n = e.file_name().to_string_lossy().into_owned();
-            if !n.ends_with(".json") {
-                continue;
+    let ir_ents = match std::fs::read_dir(root.join("generated/ir")) {
+        Ok(d) => d,
+        Err(e) => {
+            eprintln!("demo-smoke: generated/ir: {}", e);
+            return 1;
+        }
+    };
+    for e in ir_ents.flatten() {
+        let n = e.file_name().to_string_lossy().into_owned();
+        if !n.ends_with(".json") {
+            continue;
+        }
+        let ir = match crate::emit::css::read_ir(&root.join("generated/ir").join(&n)) {
+            Ok(ir) => ir,
+            Err(e) => {
+                eprintln!("demo-smoke: {}", e);
+                return 1;
             }
-            let Ok(b) = std::fs::read_to_string(root.join("generated/ir").join(&n)) else {
-                continue;
-            };
-            let mut v: serde_json::Value = match serde_json::from_str(&b) {
-                Ok(v) => v,
-                Err(_) => continue,
-            };
-            crate::emit::css::drop_nulls(&mut v);
-            let Ok(ir) = serde_json::from_value::<crate::emit::css::CssIrComponent>(v) else {
-                continue;
-            };
-            let mut count = 0;
-            for c in &ir.components {
-                for el in &c.elements {
-                    if !el.slot.is_empty() {
-                        count += 1;
-                    }
+        };
+        let mut count = 0;
+        for c in &ir.components {
+            for el in &c.elements {
+                if !el.slot.is_empty() {
+                    count += 1;
                 }
             }
-            slot_counts.insert(n.trim_end_matches(".json").to_string(), count);
-            if !shipped(&ir.name, &ir.tier) {
-                continue;
-            }
-            for c in &ir.components {
-                for el in &c.elements {
-                    if !el.slot.is_empty() {
-                        all_slots.insert(el.slot.clone());
-                    }
+        }
+        slot_counts.insert(n.trim_end_matches(".json").to_string(), count);
+        if !shipped(&ir.name, &ir.tier) {
+            continue;
+        }
+        for c in &ir.components {
+            for el in &c.elements {
+                if !el.slot.is_empty() {
+                    all_slots.insert(el.slot.clone());
                 }
             }
         }

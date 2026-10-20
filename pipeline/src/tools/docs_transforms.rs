@@ -649,6 +649,11 @@ pub fn load_jsx_tag_index(root: &Path) -> Result<&'static HashMap<String, JsxTag
     if let Some(idx) = IDX.get() {
         return Ok(idx);
     }
+    let idx = build_jsx_tag_index(root)?;
+    Ok(IDX.get_or_init(|| idx))
+}
+
+fn build_jsx_tag_index(root: &Path) -> Result<HashMap<String, JsxTagInfo>, String> {
     let mut fn_slot: HashMap<String, String> = HashMap::new();
     let mut fn_axes: HashMap<String, HashMap<String, Vec<String>>> = HashMap::new();
     let ents = std::fs::read_dir(root.join("generated/ir")).map_err(|e| e.to_string())?;
@@ -657,18 +662,7 @@ pub fn load_jsx_tag_index(root: &Path) -> Result<&'static HashMap<String, JsxTag
         if !n.ends_with(".json") {
             continue;
         }
-        let Ok(b) = std::fs::read_to_string(root.join("generated/ir").join(&n)) else {
-            continue;
-        };
-        // Go json.Unmarshal tolerates `"slot": null`; serde does not.
-        let mut v: serde_json::Value = match serde_json::from_str(&b) {
-            Ok(v) => v,
-            Err(_) => continue,
-        };
-        crate::emit::css::drop_nulls(&mut v);
-        let Ok(ir) = serde_json::from_value::<crate::emit::css::CssIrComponent>(v) else {
-            continue;
-        };
+        let ir = crate::emit::css::read_ir(&root.join("generated/ir").join(&n))?;
         // The axis union of this IR file.
         let mut axes: HashMap<String, Vec<String>> = HashMap::new();
         for key in ir.cva.keys() {
@@ -741,7 +735,7 @@ pub fn load_jsx_tag_index(root: &Path) -> Result<&'static HashMap<String, JsxTag
             },
         );
     }
-    Ok(IDX.get_or_init(|| idx))
+    Ok(idx)
 }
 
 #[derive(Deserialize)]
@@ -2721,9 +2715,26 @@ pub struct DocsMeta {
 #[cfg(test)]
 mod tests {
     use super::{
-        jsx_overrides, load_slot_markers, rewrite_leaked_jsx_fences, shift_highlight_refs,
+        build_jsx_tag_index, jsx_overrides, load_slot_markers, rewrite_leaked_jsx_fences,
+        shift_highlight_refs,
     };
     use regex::Regex;
+
+    /// A generated/ir file that does not parse must fail the docs build: the
+    /// index skipped it, so the components it defines lost their tag/slot
+    /// projection without a word (the coverage gate's rule for the same
+    /// files: a missing or malformed IR must fail, not downgrade).
+    #[test]
+    fn unit_a_malformed_ir_fails_the_jsx_tag_index() {
+        let root = crate::fsutil::temp_root("jsx-tag-index");
+        std::fs::create_dir_all(root.join("generated/ir")).unwrap();
+        std::fs::create_dir_all(root.join("dist/components")).unwrap();
+        std::fs::write(root.join("generated/ir/broken.json"), "{\"components\": [").unwrap();
+        let err = build_jsx_tag_index(&root)
+            .err()
+            .expect("a malformed IR file was skipped");
+        assert!(err.contains("broken.json"), "{err}");
+    }
 
     /// The leaked-JSX projection rendered `<tag data-slot="slot">` with no
     /// class, so the marker classes React's own component renders on every

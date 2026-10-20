@@ -36,6 +36,18 @@ pub fn drop_nulls(v: &mut serde_json::Value) {
     }
 }
 
+/// A generated/ir file, decoded: read, null-normalized as above, and
+/// deserialized; every failure names the file. The IR is required data — a
+/// reader that skips a file it cannot decode drops that component's slots
+/// from whatever it checks or builds.
+pub fn read_ir(path: &std::path::Path) -> Result<CssIrComponent, String> {
+    let at = |e: &dyn std::fmt::Display| format!("{}: {}", path.display(), e);
+    let b = std::fs::read_to_string(path).map_err(|e| at(&e))?;
+    let mut v: serde_json::Value = serde_json::from_str(&b).map_err(|e| at(&e))?;
+    drop_nulls(&mut v);
+    serde_json::from_value(v).map_err(|e| at(&e))
+}
+
 // IR shape as css.mjs (serde preserves the JSON's
 // insertion order for the ordered cva tables via preserve_order).
 #[derive(Deserialize, Clone, Default)]
@@ -1059,6 +1071,30 @@ fn shadows_of(tok: &str) -> Vec<String> {
 
 #[cfg(test)]
 mod tests {
+    /// read_ir: Go-style nulls decode, anything else that does not names
+    /// the file.
+    #[test]
+    fn unit_read_ir_decodes_nulls_and_names_a_broken_file() {
+        let root = crate::fsutil::temp_root("read-ir");
+        let ok = root.join("ok.json");
+        std::fs::write(
+            &ok,
+            r#"{"name":"x","components":[{"fn":"X","elements":[{"slot":null}]}]}"#,
+        )
+        .unwrap();
+        assert_eq!(super::read_ir(&ok).unwrap().name, "x");
+        let broken = root.join("broken.json");
+        std::fs::write(&broken, r#"{"name": 1}"#).unwrap();
+        let err = super::read_ir(&broken)
+            .err()
+            .expect("a mistyped IR decoded");
+        assert!(err.contains("broken.json"), "{err}");
+        let err = super::read_ir(&root.join("gone.json"))
+            .err()
+            .expect("a missing IR read");
+        assert!(err.contains("gone.json"), "{err}");
+    }
+
     use super::*;
 
     /// One apply-signature spanning two tags beside a disjoint one: the

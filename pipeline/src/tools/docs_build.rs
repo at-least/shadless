@@ -361,17 +361,15 @@ struct DocsBuildCtx {
 
 impl DocsBuildCtx {
     /// componentIR reads+parses generated/ir/<name>.json once per name.
-    /// nil (on a missing file or a parse error) is a valid cached result.
+    /// None when the component has no IR file; one that does not decode
+    /// panics, as the projection's reads do — it used to read as None too,
+    /// and the page shipped without its slot table.
     fn component_ir(&mut self, name: &str) -> Option<&crate::emit::css::CssIrComponent> {
         if !self.ir_cache.contains_key(name) {
-            let ir = std::fs::read_to_string(format!("generated/ir/{}.json", name))
-                .ok()
-                .and_then(|b| {
-                    // Go json.Unmarshal tolerates `"slot": null`; serde does not.
-                    let mut v: serde_json::Value = serde_json::from_str(&b).ok()?;
-                    crate::emit::css::drop_nulls(&mut v);
-                    serde_json::from_value(v).ok()
-                });
+            let path = std::path::PathBuf::from(format!("generated/ir/{}.json", name));
+            let ir = path.exists().then(|| {
+                crate::emit::css::read_ir(&path).unwrap_or_else(|e| panic!("docs-build: {e}"))
+            });
             self.ir_cache.insert(name.to_string(), ir);
         }
         self.ir_cache.get(name).and_then(|o| o.as_ref())

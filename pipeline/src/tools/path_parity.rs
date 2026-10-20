@@ -145,32 +145,25 @@ pub fn run_path_parity(root: &Path, record: bool, details: bool) -> i32 {
             out
         };
 
-    let mut files: Vec<String> = Vec::new();
-    if let Ok(ents) = std::fs::read_dir(root.join("generated/ir")) {
-        for e in ents.flatten() {
-            let n = e.file_name().to_string_lossy().into_owned();
-            if n.ends_with(".json") {
-                files.push(n);
-            }
+    let files: Vec<String> = match crate::fsutil::sorted_read_dir(&root.join("generated/ir")) {
+        Ok(names) => names.into_iter().filter(|n| n.ends_with(".json")).collect(),
+        Err(e) => {
+            eprintln!("path-parity: generated/ir: {}", e);
+            return 1;
         }
-    }
-    files.sort();
+    };
 
     for f in &files {
         let name = f.trim_end_matches(".json");
         if !root.join("dist/css").join(format!("{}.css", name)).exists() {
             continue;
         }
-        let Ok(irb) = std::fs::read_to_string(root.join("generated/ir").join(f)) else {
-            continue;
-        };
-        let mut v: serde_json::Value = match serde_json::from_str(&irb) {
-            Ok(v) => v,
-            Err(_) => continue,
-        };
-        crate::emit::css::drop_nulls(&mut v);
-        let Ok(ir) = serde_json::from_value::<crate::emit::css::CssIrComponent>(v) else {
-            continue;
+        let ir = match crate::emit::css::read_ir(&root.join("generated/ir").join(f)) {
+            Ok(ir) => ir,
+            Err(e) => {
+                eprintln!("path-parity: {}", e);
+                return 1;
+            }
         };
         crate::emit::load_skin();
         let cva = crate::emit::css::cva_slot(&ir);
