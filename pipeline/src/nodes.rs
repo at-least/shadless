@@ -1022,34 +1022,34 @@ fn self_host(n: Node) -> Node {
         inputs.sort();
         inputs.dedup();
     }
-    const TOOLCHAIN_INPUTS: &[(&str, &str)] = &[
-        ("build-js", "node_modules/.bin/esbuild"),
-        ("convert", "node_modules/.bin/esbuild"),
-        ("typecheck", "node_modules/.bin/tsc"),
+    const TOOLCHAIN_INPUTS: &[(&str, &[&str])] = &[
+        ("build-js", &["node_modules/.bin/esbuild"]),
+        ("convert", &["node_modules/.bin/esbuild"]),
+        ("typecheck", &["node_modules/.bin/tsc"]),
         // tailwind runs by script path (see emit/tw.rs TwCli): the .bin slot
         // is npm's to hand out, and adding the floor alias demonstrably flips
         // it — whoever owns it must not silently be every build's compiler.
-        // The declared input IS TwCli::dev()'s script, so this table cannot
-        // drift from the Command::new site.
-        ("demo", crate::emit::tw::TwCli::dev().script()),
-        ("product-build", crate::emit::tw::TwCli::dev().script()),
-        ("oracle-css", crate::emit::tw::TwCli::dev().script()),
-        ("example-oracle", "node_modules/.bin/esbuild"),
-        ("example-fixture", "node_modules/.bin/esbuild"),
-        ("contract-fixture", "node_modules/.bin/esbuild"),
-        ("golden-gate", "node_modules/.bin/esbuild"),
+        // DEV_NODE_INPUTS is TwCli::dev()'s script plus the core packages
+        // the compile runs, so this table cannot drift from the Command::new
+        // site. consumer-sim's floor tree is declared in the Go table.
+        ("demo", crate::emit::tw::DEV_NODE_INPUTS),
+        ("demo-css", crate::emit::tw::DEV_NODE_INPUTS),
+        ("product-build", crate::emit::tw::DEV_NODE_INPUTS),
+        ("oracle-css", crate::emit::tw::DEV_NODE_INPUTS),
+        ("consumer-sim", crate::emit::tw::DEV_NODE_INPUTS),
+        ("docs-code-parity", crate::emit::tw::DEV_NODE_INPUTS),
+        ("example-oracle", &["node_modules/.bin/esbuild"]),
+        ("example-fixture", &["node_modules/.bin/esbuild"]),
+        ("contract-fixture", &["node_modules/.bin/esbuild"]),
+        ("golden-gate", &["node_modules/.bin/esbuild"]),
         // tools/unit/types.mjs compiles the shipped .d.ts
-        ("unit", "node_modules/.bin/tsc"),
+        ("unit", &["node_modules/.bin/tsc"]),
     ];
-    if let Some((_, bin)) = TOOLCHAIN_INPUTS.iter().find(|(nid, _)| *nid == id) {
-        match n.inputs.as_mut() {
-            Some(inputs) => {
-                inputs.push(bin.to_string());
-                inputs.sort();
-                inputs.dedup();
-            }
-            None => n.inputs = Some(vec![bin.to_string()]),
-        }
+    if let Some((_, bins)) = TOOLCHAIN_INPUTS.iter().find(|(nid, _)| *nid == id) {
+        let inputs = n.inputs.get_or_insert_with(Vec::new);
+        inputs.extend(bins.iter().map(|b| b.to_string()));
+        inputs.sort();
+        inputs.dedup();
     }
     // unit is a fast gate over the committed tree, so it cannot NEED the
     // full-tier nodes that write that tree — but in a full run it was ready
@@ -1124,8 +1124,8 @@ mod self_host_tests {
     /// upgraded or deleted esbuild/tailwind/tsc would otherwise leave every
     /// consumer falsely fresh (Rust-side read evidence cannot see it, and
     /// node_modules is excluded from the JS read log by design).
-    /// consumer-sim already declared its tailwind path in the Go table; the
-    /// self_host table is the policy for the rest.
+    /// consumer-sim's floor tree is declared in the Go table; the self_host
+    /// table is the policy for the rest.
     #[test]
     fn unit_toolchain_executors_declare_their_binary() {
         let g: Vec<Node> = all_go().into_iter().map(self_host).collect();
@@ -1134,6 +1134,7 @@ mod self_host_tests {
             ("convert", "node_modules/.bin/esbuild"),
             ("typecheck", "node_modules/.bin/tsc"),
             ("demo", crate::emit::tw::TwCli::dev().script()),
+            ("demo-css", crate::emit::tw::TwCli::dev().script()),
             ("product-build", crate::emit::tw::TwCli::dev().script()),
             ("oracle-css", crate::emit::tw::TwCli::dev().script()),
             ("example-oracle", "node_modules/.bin/esbuild"),
@@ -1150,11 +1151,9 @@ mod self_host_tests {
                 "{id} executes {bin} but does not declare it — upgrading the binary stays falsely fresh"
             );
         }
-        // consumer-sim declared its tailwind path in the Go table, so it is
-        // not in the self_host TOOLCHAIN_INPUTS table above — but it now runs
-        // TWO toolchains, and the floor one runs by script path out of the
-        // aliased package (npm gives the .bin slot to whichever CLI it likes),
-        // so the whole alias tree must be declared.
+        // consumer-sim runs TWO toolchains, and the floor one runs by script
+        // path out of the aliased package (npm gives the .bin slot to
+        // whichever CLI it likes), so the whole alias tree must be declared.
         let cs = g.iter().find(|n| n.id == "consumer-sim").unwrap();
         let cs_inputs = cs.inputs.as_deref().unwrap_or(&[]);
         assert!(
@@ -1169,6 +1168,41 @@ mod self_host_tests {
                 .any(|p| p == crate::emit::tw::TwCli::dev().script()),
             "consumer-sim executes the dev CLI by script path but does not declare it"
         );
+    }
+
+    /// The CLI script is only the entry: every compile resolves
+    /// `@import "tailwindcss"` and runs the compiler from the root
+    /// tailwindcss, @tailwindcss/node and @tailwindcss/oxide packages
+    /// (strace of a compile: 57 files, none nested under the CLI). An
+    /// in-range `npm update tailwindcss` changed what every tw node builds
+    /// while all of them stayed fresh.
+    #[test]
+    fn unit_tw_compilers_declare_the_core_engine() {
+        let g: Vec<Node> = all_go().into_iter().map(self_host).collect();
+        for id in [
+            "demo",
+            "demo-css",
+            "product-build",
+            "oracle-css",
+            "consumer-sim",
+            "docs-code-parity",
+        ] {
+            let n = g.iter().find(|n| n.id == id).unwrap();
+            let inputs = n.inputs.as_deref().unwrap_or(&[]);
+            // files the strace saw a compile open
+            for f in [
+                "node_modules/tailwindcss/index.css",
+                "node_modules/tailwindcss/dist/lib.mjs",
+                "node_modules/@tailwindcss/node/dist/index.mjs",
+                "node_modules/@tailwindcss/oxide/index.js",
+                "node_modules/@tailwindcss/oxide-linux-x64-gnu/tailwindcss-oxide.linux-x64-gnu.node",
+            ] {
+                assert!(
+                    crate::glob::names(inputs, f).unwrap(),
+                    "{id} runs a tailwind compile but does not declare {f} — a changed core package stays falsely fresh"
+                );
+            }
+        }
     }
 
     /// tools/unit/checker.mjs reads every dist/css stylesheet (the selector

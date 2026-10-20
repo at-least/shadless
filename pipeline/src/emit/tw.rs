@@ -37,6 +37,20 @@ fn is_repo_root(dir: &Path) -> bool {
     dir.join("package.json").exists() && dir.join("pipeline").is_dir()
 }
 
+/// What a dev-CLI compile executes, for the graph's input tables: the entry
+/// script (`TwCli::dev()` runs element 0) and the packages it takes the
+/// compiler from — the root tailwindcss (also what `@import "tailwindcss"`
+/// resolves to), @tailwindcss/node, and @tailwindcss/oxide with its native
+/// binaries. An strace of a compile reads 57 files there; @tailwindcss/cli
+/// nests none of them. Whole packages: their dist chunk names are
+/// content-hashed per release.
+pub const DEV_NODE_INPUTS: &[&str] = &[
+    "node_modules/@tailwindcss/cli/dist/index.mjs",
+    "node_modules/tailwindcss/**",
+    "node_modules/@tailwindcss/node/**",
+    "node_modules/@tailwindcss/oxide*/**",
+];
+
 /// One tailwind CLI and the way it is spawned. Both of the repo's toolchains
 /// are run by script path (`node <script>`) on purpose: the
 /// `node_modules/.bin/tailwindcss` slot is owned by npm, and adding the floor
@@ -56,7 +70,7 @@ impl TwCli {
     /// The dev toolchain: `@tailwindcss/cli` (the `^4.3.3` devDependency).
     pub const fn dev() -> TwCli {
         TwCli {
-            script: "node_modules/@tailwindcss/cli/dist/index.mjs",
+            script: DEV_NODE_INPUTS[0],
         }
     }
 
