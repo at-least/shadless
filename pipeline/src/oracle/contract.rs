@@ -923,11 +923,10 @@ fn run_contract_inner(name: &str) -> Result<(), ContractError> {
     println!("contracts[{}]: scenarios", name);
     for s in &def.scenarios {
         let (label, o_r, s_r): (String, String, String) = if !scenario_ran.contains(s) {
-            // A genuine array hole (an accidental extra comma in a def's
-            // scenarios list, e.g. toggle-group.mjs): JS's spread/for-of
-            // visits it as literal `undefined` — falsy, so the label and
-            // both values print JS's stringification of undefined rather
-            // than being omitted.
+            // A scenario with no recorded result (an array hole cannot reach
+            // here: a null fails Vec<String> at load): the label and both
+            // values print JS's stringification of undefined rather than
+            // being omitted.
             (
                 "undefined".to_string(),
                 "undefined".to_string(),
@@ -975,7 +974,7 @@ fn run_contract_inner(name: &str) -> Result<(), ContractError> {
     let mut shadless_obj = JsonObj::new();
     for s in &def.scenarios {
         if !scenario_ran.contains(s) {
-            // array hole — JS's oracleS/shadlessS never gained this key
+            // no recorded result for this scenario
             continue;
         }
         oracle_obj = oracle_obj.add(s, Json::Str(oracle_s[s].clone()));

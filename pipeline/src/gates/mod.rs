@@ -91,13 +91,6 @@ pub fn gate_dist_complete(root: &Path) -> Result<usize, String> {
     Ok(selectors)
 }
 
-/// gate_reproducible: the committed generated trees must equal what the
-/// pipeline just produced. `git status --porcelain` over the generated roots.
-///
-/// The parity baselines are covered deliberately: a deleted baseline
-/// re-records itself green on the next run, so the committed file is what
-/// pins the ratchet.
-
 /// Does this libtest output show at least one passing test? libtest exits 0
 /// for a zero-match filter, so the unit gate parses the count — a substring
 /// check for "0 passed" went red whenever the count merely ENDED in 0
@@ -139,6 +132,12 @@ fn reproducible_roots() -> &'static [&'static str] {
     ]
 }
 
+/// gate_reproducible: the committed generated trees must equal what the
+/// pipeline just produced. `git status --porcelain` over the generated roots.
+///
+/// The parity baselines are covered deliberately: a deleted baseline
+/// re-records itself green on the next run, so the committed file is what
+/// pins the ratchet.
 pub fn gate_reproducible(root: &Path) -> Result<usize, String> {
     let mut cmd = std::process::Command::new("git");
     cmd.arg("status")
@@ -333,8 +332,7 @@ fn physical_patterns() -> &'static [Regex] {
     })
 }
 
-/// Utilities that LOOK physical but are sanctioned (a11y semantics). Written
-/// as concatenated pairs so a content scan never sees literal utility syntax.
+/// Utilities that LOOK physical but are sanctioned (a11y semantics).
 fn sanctioned_utilities() -> &'static HashSet<&'static str> {
     static S: OnceLock<HashSet<&'static str>> = OnceLock::new();
     S.get_or_init(|| HashSet::from(["sr-only"]))
@@ -389,8 +387,7 @@ pub fn scan_directions(css: &str) -> Vec<DirEntry> {
     out
 }
 
-/// The recorded physical-utility inventory of the current pin (concatenated
-/// pairs — constant expressions, invisible to a tailwind content scan).
+/// The recorded physical-utility inventory of the current pin.
 fn direction_baseline() -> &'static HashMap<String, usize> {
     static M: OnceLock<HashMap<String, usize>> = OnceLock::new();
     M.get_or_init(|| {

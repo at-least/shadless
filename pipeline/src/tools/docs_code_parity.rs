@@ -653,8 +653,8 @@ pub fn run_docs_code_parity(root: &Path) -> i32 {
         // group by fence + prop: one root cause shows up as one family
         let mut by_family: std::collections::BTreeMap<String, usize> = Default::default();
         for d in &diffs {
-            // "{page}/{file}/{idx}{slot}/{prop}/{env}@{theme}@{dir}" → family
-            // = "{file}/{idx}{slot}/{prop}" (env×theme×dir are states)
+            // "{page}/{file}/{idx}{slot}{prop}/{env}@{theme}@{dir}" → family
+            // = "{page}/{file}/{idx}{slot}{prop}" (env×theme×dir are states)
             let no_state = d.id.split('@').next().unwrap_or(&d.id).to_string();
             let family = no_state
                 .rsplit_once('/')

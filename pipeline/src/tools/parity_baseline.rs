@@ -106,14 +106,11 @@ fn js_number_string(f: f64) -> String {
     out
 }
 
-/// parityNormValue is the shared getComputedStyle() normalizer behind all
-/// three parity gates (style-parity, demo-parity, path-parity): round every
-/// embedded number to 2dp, using reParityNum/reParityOklab declared in
-/// demo_parity.go, and canonicalise axis-only oklab() to oklch() (Chrome
-/// serialises the same colour both ways). style-parity additionally
-/// canonicalizes calc(...) via canonicalizeCalc; demoParityNorm and ppNorm
-/// call this with it off, which demo-parity and path-parity do not do
-/// themselves.
+/// parityNormValue is the shared getComputedStyle() normalizer behind the
+/// parity gates: round every embedded number to 2dp and canonicalise
+/// axis-only oklab() to oklch() (Chrome serialises the same colour both
+/// ways). `canonicalize_calc` also collapses calc(...); only style-parity
+/// passes true.
 pub fn parity_norm_value(v: &str, canonicalize_calc: bool) -> String {
     if v.is_empty() {
         return v.to_string();

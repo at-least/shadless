@@ -457,7 +457,7 @@ mod tests {
         );
     }
 
-    /// é = C3 A9 vs ê = C3 EA: the first differing BYTE sits mid-character
+    /// é vs ê share their first UTF-8 byte: the first differing BYTE sits mid-character
     /// in both strings, and the old byte-index slicing panicked instead of
     /// reporting the diff.
     #[test]

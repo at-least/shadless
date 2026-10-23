@@ -367,7 +367,7 @@ pub fn run_pin(root: &Path, check_only: bool, force: bool) -> i32 {
 }
 
 /// Go time.Now().Format("2006-01-02") — local timezone. std has no local
-/// date; `date +%F` is the same shape the repo's scripts already rely on.
+/// date, so this shells out to `date +%F`.
 fn today() -> String {
     let out = std::process::Command::new("date").arg("+%F").output();
     if let Ok(o) = out {

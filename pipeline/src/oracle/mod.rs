@@ -11,7 +11,8 @@ pub mod families;
 pub mod fixture_families;
 pub mod oracle_lib;
 
-// rolldown-backed oracle bundle, gated by SHADLESS_ORACLE_BUNDLER=oxc at
-// runtime; compiled only under --features oxc (see oxc_bundle.rs).
+// rolldown-backed oracle bundle, compiled only with the `oxc` feature (on by
+// default) and then the default; SHADLESS_ORACLE_BUNDLER=esbuild opts out at
+// runtime.
 #[cfg(feature = "oxc")]
 pub mod oxc_bundle;

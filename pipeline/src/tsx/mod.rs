@@ -339,7 +339,7 @@ impl<'a> Scanner<'a> {
                 return i + 2; // self-close: no depth change
             } else if c == b'>' {
                 self.jsx_depth += 1;
-                return i + 1; // children follow; main loop resumes with JSX-text rules
+                return i + 1; // children follow; main loop resumes (no JSX-text rules: text is scanned as code)
             } else {
                 i += 1;
             }
@@ -478,11 +478,9 @@ fn spans_snapshot_conformance() {
             .collect();
         if got != want {
             // One known divergence is tolerated: inline-code backticks inside
-            // JSXText at the document's LAST open element chain
-            // (message-scroller-streaming's <div> prose). The scanner treats
-            // them as text when jsxDepth>0, which is correct — the residual is
-            // depth accounting for `}`-expressions interleaved with text,
-            // something only a full parser could fix.
+            // JSXText (message-scroller-streaming's <div> prose) are scanned
+            // as a template literal, so the scanner reports one span babel
+            // does not; JSX text is not modelled.
             if name == "aria/message-scroller-streaming.tsx" && got.len() == want.len() + 1 {
                 continue;
             }

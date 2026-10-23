@@ -219,7 +219,6 @@ fn programmatic_patterns() -> &'static [BoundaryPattern] {
                 note: "",
                 owner: "",
             },
-            // J4: server-stack template macros — regenerated from IR
             BoundaryPattern {
                 matches: one_of(&["dist/shadless.js", "dist/shadless.min.js"]),
                 tool: "./build/pipeline build-js",
@@ -1345,6 +1344,11 @@ mod tests {
         for (i, p) in programmatic_patterns().iter().enumerate() {
             assert!(!p.tool.is_empty(), "programmaticPatterns[{}] no label", i);
             assert!(
+                p.note.is_empty() && p.owner.is_empty(),
+                "programmaticPatterns[{}] sets more than tool",
+                i
+            );
+            assert!(
                 !p.source.is_empty(),
                 "programmaticPatterns[{}] ({}) no source",
                 i,
@@ -1353,9 +1357,19 @@ mod tests {
         }
         for (i, p) in tool_source_patterns().iter().enumerate() {
             assert!(!p.note.is_empty(), "toolSourcePatterns[{}] no label", i);
+            assert!(
+                p.tool.is_empty() && p.owner.is_empty(),
+                "toolSourcePatterns[{}] sets more than note",
+                i
+            );
         }
         for (i, p) in hand_authored_patterns().iter().enumerate() {
             assert!(!p.owner.is_empty(), "handAuthoredPatterns[{}] no label", i);
+            assert!(
+                p.tool.is_empty() && p.note.is_empty(),
+                "handAuthoredPatterns[{}] sets more than owner",
+                i
+            );
         }
         for (i, h) in heuristic_hints().iter().enumerate() {
             assert!(!h.kind.is_empty(), "heuristicHints[{}] no kind", i);

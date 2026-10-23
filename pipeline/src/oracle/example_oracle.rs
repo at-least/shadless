@@ -503,11 +503,11 @@ fn run_with_shell(
     // stale non-RTL pages would otherwise survive forever, and WORSE: the
     // catalog derives "authored" from page EXISTENCE, so a page whose
     // upstream example retired re-authorized itself every run and nothing
-    // downstream could tell. This node is the only writer of docs/demos
-    // non-RTL pages (example-fixture overwrites a subset after it), so the
-    // produced set plus the fixture's own targets plus the two known
-    // non-producer exceptions is the truth; anything else is stale by
-    // construction. RTL variants belong to build-rtl and are swept there.
+    // downstream could tell. This node writes docs/demos non-RTL pages
+    // (example-fixture overwrites a subset after it; overlay units are
+    // written by `make overlay`), so the produced set plus the fixture's own
+    // targets, the overlay units and the known non-producer exceptions is
+    // the truth; anything else is stale by construction. RTL variants belong to build-rtl and are swept there.
     let mut legit: HashSet<String> = rendered
         .iter()
         .filter_map(|r| r.t.out.strip_prefix("docs/demos/"))

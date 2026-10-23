@@ -687,7 +687,8 @@ mod tests {
     }
 
     /// diffIr end to end: a component added, a component removed, and a
-    /// component that changed in every way the algorithm tracks.
+    /// component that changed in every way the algorithm tracks except
+    /// cva-base.
     #[test]
     fn diff_ir_end_to_end() {
         let mut before = IrSet::new();

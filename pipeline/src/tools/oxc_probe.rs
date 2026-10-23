@@ -9,8 +9,9 @@
 //! context, and a summary. Findings feed the decide-then-investigate loop in
 //! PLAN.md; nothing here feeds the graph.
 //!
-//! Hidden verb `__oxc-probe`, compiled only under `--features oxc`:
-//!     pipeline __oxc-probe [--minify] [--limit N]
+//! Hidden verb `__oxc-probe`, compiled only with the `oxc` feature (on by
+//! default):
+//!     pipeline __oxc-probe [--normalize] [--limit N]
 
 use std::io::Write as _;
 use std::path::Path;
@@ -112,7 +113,7 @@ fn first_divergence(a: &str, b: &str) -> (usize, String) {
     )
 }
 
-/// Run the A/B probe. `root` is the upstream tree; `rest` the CLI args after
+/// Run the A/B probe. `root` is the repo root; `rest` the CLI args after
 /// the verb.
 pub fn run_oxc_probe(root: &Path, rest: &[String]) -> Result<i32, String> {
     let mut limit: usize = usize::MAX;

@@ -355,7 +355,7 @@ pub fn locate_api_reference_span(_comp: &str, shadow: &str) -> Option<Span> {
 // ---------------------------------------------------------------- import fences
 
 /// dropReactImportFences removes pure React-import fences (content is ONLY
-/// import statements from @/components/ui/*).
+/// import statements from "@…" or "/…" paths).
 pub fn drop_react_import_fences(raw: &str) -> String {
     let lines: Vec<&str> = raw.split('\n').collect();
     let mut out: Vec<&str> = Vec::new();
@@ -1471,7 +1471,7 @@ pub fn without_changelog_section(raw: &str) -> String {
 }
 
 /// mdPageFacts reads the facts the CONTENT transform is responsible for out of
-/// the built markdown (the TOC/pager/breadcrumb are VitePress's now).
+/// the built markdown (the TOC/pager/breadcrumb are the Zola site's now).
 #[derive(Clone, Debug, Default)]
 pub struct MdFacts {
     pub text: String,
@@ -2197,7 +2197,7 @@ pub fn protocol_mdx(comp: &str) -> String {
         }
         _ => {}
     }
-    #[allow(unused_assignments)] // the String::new() init is the fallback branch's value
+    #[allow(unused_assignments)] // every branch below assigns api; the init is overwritten
     let mut api = String::new();
     if f.kind == "inline" {
         api = "`shadless.get(rootEl)` → `activate(i)`, `active()`; the root dispatches `shadless:change` (`detail: { index, trigger }`)".to_string();

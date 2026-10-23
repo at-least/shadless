@@ -87,7 +87,8 @@ fn build_tree(ir: &CssIrComponent, f: &IrFn, o: &mut BuildTreeOpts) -> Result<Tr
                 kids.push(kid);
                 continue;
             }
-            // unresolvable sketch: icon → svg; native → bare; else skip
+            // unresolvable sketch: nothing structural is pushed (a resolving tag is
+            // discarded; the native fallback is unreachable — a native tag always resolves)
             let Some(tag) = normalize_tag(raw_tag, &ir.tag_hints) else {
                 continue_with_fallback(raw_tag, &mut kids, sketch_slot);
                 continue;
@@ -183,8 +184,6 @@ fn render_tree(
     format!("{}{}</{}>", open, inner, node.tag)
 }
 
-/// Stray table-parts get dropped by HTML parsers at body level — wrap
-/// ancestors.
 /// Component names become output paths (dist/components/{name}.html,
 /// docs/demos/{name}.html) and CSS comment headers — a name carrying path
 /// separators or dots escapes the output tree. Every registry name is a
@@ -202,6 +201,8 @@ pub fn valid_component_name(name: &str) -> bool {
             .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == '-')
 }
 
+/// Stray table-parts get dropped by HTML parsers at body level — wrap
+/// ancestors.
 fn table_wrap(tag: &str) -> Option<&'static str> {
     match tag {
         "thead" | "tbody" | "tfoot" | "caption" | "colgroup" | "tr" | "th" | "td" => Some("table"),
@@ -323,8 +324,9 @@ pub fn skin_data() -> &'static SkinData {
 
 const SKIN_PATH: &str = ".upstream/shadcn-ui/apps/v4/registry/styles/style-nova.css";
 
-/// Parses style-nova.css into skinData: a plain flat-block scan identical to
-/// skin.mjs's parseSkinMap; anything other than flat pure-@apply blocks fails
+/// Parses style-nova.css into skinData: a plain flat-block scan mirroring
+/// skin.mjs's parseSkinMap (this regex also tolerates extra whitespace around
+/// @apply); anything other than flat pure-@apply blocks fails
 /// loudly.
 pub fn load_skin() {
     let _ = skin_data();
@@ -943,7 +945,7 @@ mod tests {
     }
 
     /// A quoted token in the pinned upstream must not break out of the
-    /// attribute: merge_root_attrs already escaped its values (mod.rs:238);
+    /// attribute: merge_root_attrs already escaped its values;
     /// render_tree's own slot/class interpolation didn't. The JS twin
     /// (src/emitter/index.mjs renderTree) is pinned to the same bytes by
     /// tools/unit/emitter.mjs.

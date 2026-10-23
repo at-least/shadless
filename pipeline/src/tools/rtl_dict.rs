@@ -713,9 +713,9 @@ fn go_fs_err(path: &str, e: &std::io::Error) -> String {
     crate::fsutil::go_path_err("open", path, e)
 }
 
-/// go_quote mirrors Go's %q on a string: printable runes pass through,
-/// quote/backslash and the C0 controls are escaped, other non-printables
-/// become \xNN. (Only reachable through error messages; the corpus is ASCII.)
+/// go_quote mirrors Go's %q on a string for ASCII: quote/backslash and the
+/// C0 controls are escaped, DEL becomes \x7f, everything else passes
+/// through. (Only reachable through error messages; the corpus is ASCII.)
 fn go_quote(s: &str) -> String {
     let mut out = String::with_capacity(s.len() + 2);
     out.push('"');
@@ -917,7 +917,7 @@ mod tests {
                 "{",
                 "unterminated translations object",
             ),
-            // padded well past the error's own (unguarded) src[i:i+20] slice
+            // padded well past the error's own src[i:i+20] window
             ("missing key", &padded, "expected identifier key"),
             (
                 "missing colon after key",
@@ -945,7 +945,7 @@ mod tests {
     }
 
     /// parseValues: happy path (insertion order, quoted keys, duplicate key
-    /// keeps its first position but takes the last value) plus its two error
+    /// keeps its first position but takes the last value) plus its error
     /// branches.
     #[test]
     fn parse_values_cases() {

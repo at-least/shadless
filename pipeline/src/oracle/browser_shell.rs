@@ -76,8 +76,8 @@ impl BrowserShell {
         self.call(req).map(|_| ())
     }
 
-    /// call, but returns the "value" field's raw bytes instead of decoding
-    /// through a map — which would lose the browser's own key order.
+    /// call, but returns only the "value" field (key order kept by serde_json's
+    /// preserve_order feature).
     pub fn call_raw_value(&self, req: &Value) -> Result<Value, String> {
         let top = self.round_trip(req)?;
         Ok(top.get("value").cloned().unwrap_or(Value::Null))
@@ -134,7 +134,7 @@ impl<'a> BPage<'a> {
         Ok(res.get("value").cloned().unwrap_or(Value::Null))
     }
 
-    /// evaluate but preserves the result's own JSON key order.
+    /// evaluate via call_raw_value.
     pub fn evaluate_ordered(&self, expr: &str) -> Result<Value, String> {
         self.s
             .call_raw_value(&json!({"op": "evaluate", "pageId": self.id, "expr": expr}))

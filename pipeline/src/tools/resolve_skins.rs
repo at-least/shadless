@@ -214,8 +214,7 @@ pub fn variant_prefixed(variant: &Option<String>, value: &str, rtl: bool) -> Str
     }
 }
 
-/// applyRtlMapping mirrors applyRtlMapping in tools/resolve-skins.mjs branch
-/// for branch.
+/// applyRtlMapping mirrors upstream transform-rtl.ts branch for branch.
 pub fn apply_rtl_mapping(input: &str) -> String {
     let mut out: Vec<String> = Vec::new();
     for cls in input.split_whitespace() {

@@ -194,7 +194,7 @@ pub fn run_docs_fidelity(root: &Path) -> i32 {
             });
         }
 
-        // disk-existence checks: VitePress follows page links itself; the
+        // disk-existence checks: Zola follows page links itself; the
         // demo iframes are raw html it does not check
         for src in &h.iframes {
             let base_name = std::path::Path::new(src)

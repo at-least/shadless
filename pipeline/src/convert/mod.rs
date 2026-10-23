@@ -205,7 +205,6 @@ pub struct CvComponent {
     pub elements: Vec<Vec<(String, Json)>>,
 }
 
-/// resolve context (fileCtx + extractFn's ctx in one)
 /// The pinned-source lookups the author-set data-* axes (dataAxes) read:
 /// every `function X(` signature (file, balanced-paren signature text incl.
 /// its type annotation — dataAxes reads OTHER files' signatures through it,
@@ -219,6 +218,7 @@ pub struct DataAxesLookups<'a> {
     pub tables: &'a HashMap<String, cva::CvTable>,
 }
 
+/// resolve context (fileCtx + extractFn's ctx in one)
 pub struct CvCtx<'a> {
     pub file: &'a mut CvFile,
     pub reg: &'a CvReg,
@@ -640,7 +640,7 @@ static CV_EXTERNAL_PROPS_RE: LazyLock<Regex> =
 
 /// Top-level `type X = ...` declarations of one pinned file: the body runs
 /// from the declaration line to the next top-level item (`type`/`function`/
-/// `const`/`export` at column 0) or EOF — the regex crate has no lookahead
+/// `const`/`export` at line start, indentation ignored) or EOF — the regex crate has no lookahead
 /// and the declarations do not all end in `;`.
 fn cv_alias_bodies(src: &str) -> Vec<(String, String)> {
     let lines: Vec<&str> = src.lines().collect();
@@ -957,8 +957,8 @@ fn cv_process_element(
         .add("spread", Json::Bool(spread))
         .add("children", Json::Arr(children));
     if !attrs.is_empty() {
-        // additive and omitted when empty, so 60 of the 61 IR files are
-        // unchanged
+        // additive and omitted when empty, so files without identity attrs
+        // are unchanged
         o = o.add("attrs", Json::from_obj(attrs));
     }
     if !data_axes.is_empty() {
@@ -1071,8 +1071,8 @@ fn resolve_cva_args(
         }
     };
     // resolveCvaArgs may append to the table's defaults (fromParam && !defOk
-    // && !cross); the table handed in here is the caller's clone, mirrored
-    // back by the caller where Go mutates through the shared pointer
+    // && !cross); `table` is a clone, so the append goes to
+    // c.file.cva[local_name] directly
     for axis in &table.axes {
         let raw = args.get(&axis.axis);
         let mut val = String::new();
@@ -1250,7 +1250,7 @@ fn class_strings(c: &mut CvCtx<'_>, text: &str, acc: &mut Vec<String>, el: Optio
     }
 }
 
-/// lookup_cva: (table, cross, local name) — the local name lets the !cross
+/// lookup_cva_named: (table, cross, local name) — the local name lets the !cross
 /// default-mutation land on the file's own table (Go mutates the shared ptr).
 fn lookup_cva_named(c: &CvCtx<'_>, local: &str) -> Option<(CvTable, bool, String)> {
     if let Some(imp) = c.file.meta_import.get(local) {

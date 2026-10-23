@@ -6,8 +6,7 @@
 //! #root is itself an error.
 //!
 //! Bundle cache: node_modules/.cache/shadless/oracle. The key hashes the
-//! process-invariant inputs (pin commit, lockfile, skin.mjs, every stub)
-//! plus the per-example tsx. Until the Go engine's removal (2026-09) the two
+//! process-invariant inputs (oracle_invariant_once) plus the per-example tsx. Until the Go engine's removal (2026-09) the two
 //! .go implementation files were hashed too, byte-identically to Go's key so
 //! both engines could share one cache; the Rust implementation files are now
 //! covered by the engine fingerprint instead, so the invariant no longer
@@ -295,12 +294,8 @@ try {{
 "##
     );
     std::fs::write(&entry, &entry_src).map_err(|e| e.to_string())?;
-    // The oracle cache is shared between the Go and Rust engines ("one cache
-    // without ever reusing a bundle the other side would reject"), so the
-    // cache key must stay byte-identical with Go's. The experiment-only
-    // rolldown path therefore keeps its OWN outfile and key file (prefixed
-    // `oxc-`, so no `bundle-*.js` glob can ever sweep them up) and never
-    // touches the shared ones.
+    // The rolldown path keeps its OWN outfile and key file (prefixed `oxc-`,
+    // so no `bundle-*.js` glob can ever sweep them up) apart from esbuild's.
     let use_oxc = oracle_bundler_use_oxc()?;
     let (outfile, key_file) = if use_oxc {
         (

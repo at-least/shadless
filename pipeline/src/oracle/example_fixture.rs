@@ -400,14 +400,14 @@ fn run_with_shell(
             "../js/".to_string(),
         );
         let def = if contracts {
-            // contracts mode reads the def again from the target list built above
+            // contracts mode: build_one_page re-loads the def from its .mjs
             None::<EfDef>
         } else {
             None
         };
         let _ = def;
         if contracts {
-            // out_path/jsdir come from the def at build time below
+            // out_path comes from the def's shadlessPage at build time below
             css = "../../dist/out.css".to_string();
             base = "../../dist/shadless.js".to_string();
             jsdir = "../../dist/js/".to_string();

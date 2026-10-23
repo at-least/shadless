@@ -42,7 +42,8 @@ use std::collections::BTreeMap;
 #[derive(Debug)]
 pub struct SlotVocabulary {
     pub component: String,
-    /// axis -> (sorted values, default). Empty when the slot has no cva table.
+    /// axis -> (sorted values, default). Empty when the slot has no cva table and
+    /// no IR dataAxes.
     pub axes: BTreeMap<String, (Vec<String>, Option<String>)>,
     /// The marker tokens EVERY IR element of the slot carries — the
     /// intersection, so a requirement is only emitted when no render path of

@@ -1,5 +1,6 @@
 //! Port of pipeline/demo_smoke.go — every dist/components/*.html renders with
-//! zero real console errors and every IR slot name appears in the page source.
+//! zero real console errors, every data-slot in the page source is a shipped
+//! IR slot name, and a page whose IR has slots renders at least one.
 
 use regex::Regex;
 use serde::Deserialize;

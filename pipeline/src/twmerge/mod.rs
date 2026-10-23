@@ -625,8 +625,7 @@ pub fn merge(class_list: &str) -> String {
 mod tests {
     use super::*;
 
-    /// Hand-checked against `twMerge` (tailwind-merge v3.6.0) outputs — the
-    /// same cases pipeline/internal/twmerge/twmerge_test.go pins.
+    /// Hand-checked against `twMerge` (tailwind-merge v3.6.0) outputs.
     #[test]
     fn hand_checked_basics() {
         let cases = [
