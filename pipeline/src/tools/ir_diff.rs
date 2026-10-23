@@ -687,8 +687,7 @@ mod tests {
     }
 
     /// diffIr end to end: a component added, a component removed, and a
-    /// component that changed in every way the algorithm tracks except
-    /// cva-base.
+    /// component that changed in every way the algorithm tracks.
     #[test]
     fn diff_ir_end_to_end() {
         let mut before = IrSet::new();
@@ -731,7 +730,7 @@ mod tests {
                 ]}],
                 "cva": {
                     "variant": {
-                        "base": "inline-flex",
+                        "base": "inline-flex items-center",
                         "variants": {
                             "size": {"sm": "h-9", "lg": "h-10", "xl": "h-12"},
                             "state": {"active": "opacity-100"}
@@ -879,6 +878,17 @@ mod tests {
                 value: "",
                 from: "sm",
                 to: "lg",
+                added: None,
+                removed: None,
+            },
+            WantChange {
+                what: "cva-base",
+                slot: "",
+                table: "variant",
+                axis: "",
+                value: "",
+                from: "",
+                to: "",
                 added: None,
                 removed: None,
             },

@@ -84,6 +84,15 @@ struct PpItem {
     variant: bool,
 }
 
+/// A child's stdout then stderr, as text.
+fn captured_output(o: &std::process::Output) -> String {
+    format!(
+        "{}{}",
+        String::from_utf8_lossy(&o.stdout),
+        String::from_utf8_lossy(&o.stderr)
+    )
+}
+
 pub fn run_path_parity(root: &Path, record: bool, details: bool) -> i32 {
     let sim = root.join(PP_SIM);
     let _ = std::fs::remove_dir_all(&sim);
@@ -409,9 +418,9 @@ pub fn run_path_parity(root: &Path, record: bool, details: bool) -> i32 {
             ),
         )
         .ok();
-        // Go runs `./build/pipeline tw <in> <out> --cwd <sim>` and captures
-        // CombinedOutput — the tailwind banner goes into the buffer, not the
-        // terminal, and the error path prints it.
+        // output is captured so the tailwind banner stays off the terminal;
+        // `tw` reports its failure on stderr, so the error path prints both
+        // streams.
         let self_exe = std::env::current_exe().unwrap_or_else(|_| "pipeline".into());
         let tw_out = std::process::Command::new(&self_exe)
             .args([
@@ -428,7 +437,7 @@ pub fn run_path_parity(root: &Path, record: bool, details: bool) -> i32 {
                 eprintln!(
                     "FAIL  path-parity: shadless/{}.css does not compile alone\n{}",
                     name,
-                    String::from_utf8_lossy(&o.stdout)
+                    captured_output(&o)
                 );
                 return 1;
             }
@@ -635,4 +644,20 @@ pub fn run_path_parity(root: &Path, record: bool, details: bool) -> i32 {
     );
     shell.close();
     0
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn unit_tw_failure_report_carries_stderr() {
+        let o = std::process::Command::new("sh")
+            .args(["-c", "echo out; echo tw-error >&2; exit 1"])
+            .output()
+            .unwrap();
+        let text = captured_output(&o);
+        assert!(text.contains("out"), "got: {text}");
+        assert!(text.contains("tw-error"), "got: {text}");
+    }
 }

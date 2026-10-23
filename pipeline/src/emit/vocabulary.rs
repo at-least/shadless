@@ -79,7 +79,7 @@ fn table_axes(
     table: &super::css::CvaTable,
     ref_defaults: Option<&std::collections::HashMap<String, String>>,
     out: &mut BTreeMap<String, (Vec<String>, Option<String>)>,
-) {
+) -> Result<(), String> {
     for axis in table.axis_order() {
         let mut values: Vec<String> = table.values(&axis).keys().cloned().collect();
         values.sort();
@@ -87,17 +87,19 @@ fn table_axes(
             .and_then(|d| d.get(&axis))
             .cloned()
             .or_else(|| table.defaults.get(&axis).cloned());
-        merge_axis(out, axis, values, def);
+        merge_axis(out, axis, values, def)?;
     }
+    Ok(())
 }
 
-/// One axis into a slot's axes: values unioned (sorted), first default wins.
+/// One axis into a slot's axes: values unioned (sorted); a default is taken
+/// from whichever source names one, and two different defaults are an error.
 fn merge_axis(
     out: &mut BTreeMap<String, (Vec<String>, Option<String>)>,
     axis: String,
     values: Vec<String>,
     def: Option<String>,
-) {
+) -> Result<(), String> {
     match out.get_mut(&axis) {
         Some((seen, def_slot)) => {
             for v in values {
@@ -106,19 +108,27 @@ fn merge_axis(
                 }
             }
             seen.sort();
-            if def_slot.is_none() {
-                *def_slot = def;
+            match (def_slot.as_ref(), def) {
+                (Some(a), Some(b)) if *a != b => {
+                    return Err(format!(
+                        "vocabulary: axis {:?} has two defaults, {:?} and {:?}",
+                        axis, a, b
+                    ));
+                }
+                (None, d) => *def_slot = d,
+                _ => {}
             }
         }
         None => {
             out.insert(axis, (values, def));
         }
     }
+    Ok(())
 }
 
 /// Builds the vocabulary from the SHIPPED IRs, in the given (sorted) order.
-/// A slot name in two IRs, or two tables disagreeing on an axis default for
-/// one slot, is a hard error: the artifact must not encode an ambiguity.
+/// A slot name in two IRs, or two different defaults for one slot axis, is a
+/// hard error: the artifact must not encode an ambiguity.
 pub fn build_vocabulary(irs: &[(&str, &CssIrComponent)]) -> Result<Vocabulary, String> {
     static HOOK_SLOT_RE: std::sync::OnceLock<regex::Regex> = std::sync::OnceLock::new();
     let hook_slot_re =
@@ -164,7 +174,8 @@ pub fn build_vocabulary(irs: &[(&str, &CssIrComponent)]) -> Result<Vocabulary, S
                     axis_attributes.insert(axis.clone());
                     let mut values = info.values.clone();
                     values.sort();
-                    merge_axis(&mut entry.axes, axis.clone(), values, info.default.clone());
+                    merge_axis(&mut entry.axes, axis.clone(), values, info.default.clone())
+                        .map_err(|e| format!("{e} (slot {slot:?} of {name:?})"))?;
                 }
             }
             // markers = intersection of split_markers over EVERY element,
@@ -216,7 +227,8 @@ pub fn build_vocabulary(irs: &[(&str, &CssIrComponent)]) -> Result<Vocabulary, S
                 )
             })?;
             for t in tables {
-                table_axes(t, None, &mut entry.axes);
+                table_axes(t, None, &mut entry.axes)
+                    .map_err(|e| format!("{e} (slot {slot:?} of {name:?})"))?;
             }
         }
         // cross-file cva refs (table copy rides the ref; ref defaults win)
@@ -237,7 +249,8 @@ pub fn build_vocabulary(irs: &[(&str, &CssIrComponent)]) -> Result<Vocabulary, S
                     r.slot, entry.component, name
                 ));
             }
-            table_axes(&r.table, Some(&r.defaults), &mut entry.axes);
+            table_axes(&r.table, Some(&r.defaults), &mut entry.axes)
+                .map_err(|e| format!("{e} (slot {:?} of {name:?})", r.slot))?;
         }
         for t in cva_by_slot.values().flatten() {
             for axis in t.axis_order() {
@@ -354,6 +367,24 @@ mod tests {
             Ok(_) => panic!("a slot carried by two shipped IRs must be refused"),
         };
         assert!(err.contains("ambiguous"), "got: {err}");
+    }
+
+    #[test]
+    fn unit_two_defaults_for_one_slot_axis_are_refused() {
+        let card = ir(
+            "card",
+            serde_json::json!({"name": "card", "tier": "static", "components": [
+                {"fn": "A", "export": true, "elements": [{"tag": "div", "slot": "card",
+                    "dataAxes": {"size": {"default": "default", "values": ["default", "sm"]}}}]},
+                {"fn": "B", "export": true, "elements": [{"tag": "div", "slot": "card",
+                    "dataAxes": {"size": {"default": "sm", "values": ["default", "sm"]}}}]}
+            ]}),
+        );
+        let err = match build_vocabulary(&[(card.0, &card.1)]) {
+            Err(e) => e,
+            Ok(_) => panic!("two defaults for one slot axis must be refused"),
+        };
+        assert!(err.contains("two defaults"), "got: {err}");
     }
 
     #[test]

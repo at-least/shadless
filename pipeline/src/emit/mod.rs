@@ -233,10 +233,7 @@ fn resolve_default(
     let content = default_content::default_content();
     let comp = content.get(ir.name.as_str())?;
     let entry = comp.get(f.fn_.as_str())?;
-    if !entry.set && entry.inner.is_empty() && entry.attrs.is_empty() && entry.children.is_empty() {
-        // present-and-null → explicitly no default
-        return None;
-    }
+    // a null entry (explicitly no default) is all-empty
     let has = !entry.inner.is_empty() || !entry.attrs.is_empty() || !entry.children.is_empty();
     if !has {
         return None;

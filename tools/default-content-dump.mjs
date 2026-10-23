@@ -1,7 +1,7 @@
 // Emit pipeline/src/emit/default_content.rs from src/emitter/index.mjs's
 // DEFAULT_CONTENT. Shape per entry: string | null | { html } | { attrs } |
-// { children } | mix. Entry.set marks the key present-and-null (the Rust
-// equivalent of JS undefined-vs-null). The file is the committed artifact;
+// { children } | mix; null becomes an all-empty Entry. The file is the
+// committed artifact;
 // re-run this script after editing DEFAULT_CONTENT and commit the diff.
 import { fileURLToPath, pathToFileURL } from "node:url"
 import { join } from "node:path"
@@ -27,8 +27,7 @@ const vec = (pairs) =>
   `vec![${pairs.map(([k, v]) => `(${JSON.stringify(k)}.to_string(), ${JSON.stringify(v)}.to_string())`).join(", ")}]`
 
 let out = `//! Code generated from src/emitter/index.mjs DEFAULT_CONTENT. DO NOT EDIT;
-//! regenerate with tools/default-content-dump.mjs. Entry.set marks the key
-//! present-and-null (the Rust equivalent of JS undefined-vs-null).
+//! regenerate with tools/default-content-dump.mjs.
 
 use std::collections::HashMap;
 use std::sync::OnceLock;
@@ -38,7 +37,6 @@ pub struct Entry {
     pub inner: String,
     pub attrs: Vec<(String, String)>,
     pub children: Vec<(String, String)>,
-    pub set: bool,
 }
 
 pub fn default_content() -> &'static HashMap<&'static str, HashMap<&'static str, Entry>> {
@@ -59,7 +57,6 @@ for (const [comp, fns] of Object.entries(DEFAULT_CONTENT)) {
     out += `            inner: ${raw(e.html ?? "")}.to_string(),\n`
     out += `            attrs: ${attrs.length ? vec(attrs) : "vec![]"},\n`
     out += `            children: ${children.length ? vec(children) : "vec![]"},\n`
-    out += `            set: true,\n`
     out += `        };\n`
     out += `        ${cv}.insert(${raw(fn)}, ${ev});\n`
   }
