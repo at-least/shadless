@@ -59,8 +59,7 @@ pub fn run_interactivity_sweep(root: &Path) -> i32 {
             return 1;
         }
     };
-    let tiers: std::collections::HashMap<String, TierEntry> = match serde_json::from_str(&tiers_b)
-    {
+    let tiers: std::collections::HashMap<String, TierEntry> = match serde_json::from_str(&tiers_b) {
         Ok(t) => t,
         Err(e) => {
             eprintln!("interactivity-sweep: tiers: {}", e);
@@ -91,9 +90,10 @@ pub fn run_interactivity_sweep(root: &Path) -> i32 {
         }
         pages.push(n.clone());
         if let Ok(b) = std::fs::read_to_string(root.join(site).join(&n))
-            && RE_SWEEP_CAND.is_match(&b) {
-                candidates.push(n);
-            }
+            && RE_SWEEP_CAND.is_match(&b)
+        {
+            candidates.push(n);
+        }
     }
 
     let shell = match crate::oracle::browser_shell::BrowserShell::start() {
@@ -176,9 +176,11 @@ pub fn run_interactivity_sweep(root: &Path) -> i32 {
         let mut usable_idx: Vec<usize> = Vec::new();
         for i in 0..n_cand {
             if let Some(arr) = usable_v.as_array()
-                && i < arr.len() && arr[i] == serde_json::Value::Bool(true) {
-                    usable_idx.push(i);
-                }
+                && i < arr.len()
+                && arr[i] == serde_json::Value::Bool(true)
+            {
+                usable_idx.push(i);
+            }
             if usable_idx.len() == 3 {
                 break;
             }
@@ -190,9 +192,10 @@ pub fn run_interactivity_sweep(root: &Path) -> i32 {
         // the element's OWN family decides deadness
         let mut own_fam = String::new();
         if let Some(arr) = own_v.as_array()
-            && usable_idx[0] < arr.len() {
-                own_fam = arr[usable_idx[0]].as_str().unwrap_or("").to_string();
-            }
+            && usable_idx[0] < arr.len()
+        {
+            own_fam = arr[usable_idx[0]].as_str().unwrap_or("").to_string();
+        }
         if !own_fam.is_empty() && SWEEP_KNOWN_DEAD.contains(&own_fam.as_str()) && own_fam != fam {
             *dead_count.entry(own_fam).or_insert(0) += 1;
             continue;
@@ -205,14 +208,16 @@ pub fn run_interactivity_sweep(root: &Path) -> i32 {
             let before = before_v.as_str().unwrap_or("").to_string();
             let mut hover_el = false;
             if let Some(arr) = hover_v.as_array()
-                && *idx < arr.len() {
-                    hover_el = arr[*idx] == serde_json::Value::Bool(true);
-                }
+                && *idx < arr.len()
+            {
+                hover_el = arr[*idx] == serde_json::Value::Bool(true);
+            }
             let mut is_ctx = false;
             if let Some(arr) = ctx_v.as_array()
-                && *idx < arr.len() {
-                    is_ctx = arr[*idx] == serde_json::Value::Bool(true);
-                }
+                && *idx < arr.len()
+            {
+                is_ctx = arr[*idx] == serde_json::Value::Bool(true);
+            }
             if hover_families.contains(&fam.as_str()) || hover_el {
                 if let Ok(Some(b)) = page.loc_box("", SWEEP_CANDIDATES_SEL, *idx as i64) {
                     let _ = page.mouse_move(b.x + b.width / 2.0, b.y + b.height / 2.0, 5);
@@ -277,4 +282,3 @@ fn first_line(s: &str) -> String {
         None => s.to_string(),
     }
 }
-

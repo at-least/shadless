@@ -263,13 +263,12 @@ pub fn undeclared_reads(
         return Ok(Vec::new()); // it can never be skipped, so nothing can go stale-green
     }
     let mut covered: HashSet<String> = HashSet::new();
-    let add =
-        |patterns: &[String], covered: &mut HashSet<String>| -> Result<(), String> {
-            for f in files(root, patterns)? {
-                covered.insert(f);
-            }
-            Ok(())
-        };
+    let add = |patterns: &[String], covered: &mut HashSet<String>| -> Result<(), String> {
+        for f in files(root, patterns)? {
+            covered.insert(f);
+        }
+        Ok(())
+    };
     add(n.inputs.as_deref().unwrap_or(&[]), &mut covered)?;
 
     // everything the closure declares, in either direction
@@ -317,7 +316,9 @@ pub fn report_undeclared_reads(id: &str, paths: &[String]) {
     for p in paths {
         println!("      {}", p);
     }
-    println!("      a file it READS belongs in `inputs` (it is not in the node's key, so a\n      change to it leaves the node falsely fresh); a file it WRITES belongs in `produces`");
+    println!(
+        "      a file it READS belongs in `inputs` (it is not in the node's key, so a\n      change to it leaves the node falsely fresh); a file it WRITES belongs in `produces`"
+    );
 }
 
 #[cfg(test)]
@@ -394,12 +395,7 @@ mod tests {
         }
         // dep: inputs [dep-in], produces [dep-out]; emit: inputs [mine], produces [] —
         // emit reads dep-out and dep-in through the closure; stray.txt is naked.
-        let dep = mnode(
-            "dep",
-            &[],
-            Some(&["dep-in.txt"]),
-            Some(&["dep-out.txt"]),
-        );
+        let dep = mnode("dep", &[], Some(&["dep-in.txt"]), Some(&["dep-out.txt"]));
         let emit = mnode("emit", &["dep"], Some(&["mine.txt", "dep-out.txt"]), None);
         let g = Graph::new(vec![dep, emit.clone()]).unwrap();
         let reads = undeclared_reads(

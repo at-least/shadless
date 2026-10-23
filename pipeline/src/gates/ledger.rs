@@ -352,8 +352,8 @@ pub fn collect_source_ids(root: &Path) -> Result<Vec<SourceId>, String> {
     // src/emitter/css.mjs and skin.mjs build their exported Sets from it,
     // so no JS-source scraping is needed here
     let ex_path = "src/registry/emitter-exemptions.json";
-    let ex_b = std::fs::read_to_string(root.join(ex_path))
-        .map_err(|e| format!("{}: {}", ex_path, e))?;
+    let ex_b =
+        std::fs::read_to_string(root.join(ex_path)).map_err(|e| format!("{}: {}", ex_path, e))?;
     #[derive(serde::Deserialize)]
     struct EmitterExemptions {
         #[serde(rename = "deadUtilities")]
@@ -713,10 +713,12 @@ pub fn ledger_record(root: &Path) -> Result<(), String> {
     for name in &l.budget_order {
         let b = l.budgets.get_mut(name).unwrap();
         if let Some(v) = values.get(name)
-            && *v >= 0 && *v != b.max {
-                println!("  budget {}: {} -> {}", name, b.max, v);
-                b.max = *v;
-            }
+            && *v >= 0
+            && *v != b.max
+        {
+            println!("  budget {}: {} -> {}", name, b.max, v);
+            b.max = *v;
+        }
     }
     l.write(root)?;
     let mut todo = 0;

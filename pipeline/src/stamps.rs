@@ -32,7 +32,10 @@ pub fn load_stamps(root: &Path) -> HashMap<String, String> {
         }
         let name = e.file_name().to_string_lossy().into_owned();
         if let Ok(b) = fs::read(e.path()) {
-            s.insert(stamp_id(&name), String::from_utf8_lossy(&b).trim().to_string());
+            s.insert(
+                stamp_id(&name),
+                String::from_utf8_lossy(&b).trim().to_string(),
+            );
         }
     }
     s
@@ -40,7 +43,10 @@ pub fn load_stamps(root: &Path) -> HashMap<String, String> {
 
 pub fn write_stamp(root: &Path, id: &str, key: &str) -> std::io::Result<()> {
     fs::create_dir_all(root.join(STAMP_DIR))?;
-    fs::write(root.join(STAMP_DIR).join(stamp_file(id)), format!("{}\n", key))
+    fs::write(
+        root.join(STAMP_DIR).join(stamp_file(id)),
+        format!("{}\n", key),
+    )
 }
 
 pub fn remove_stamp(root: &Path, id: &str) {
@@ -64,10 +70,20 @@ mod tests {
     /// forever), and '%' must be escaped too for the inverse to be exact
     #[test]
     fn stamp_filename_is_injective_and_round_trips() {
-        for id in ["pin", "contracts:dialog", "under_score", "a__b", "100%:weird"] {
+        for id in [
+            "pin",
+            "contracts:dialog",
+            "under_score",
+            "a__b",
+            "100%:weird",
+        ] {
             assert_eq!(stamp_id(&stamp_file(id)), id, "round trip: {}", id);
         }
-        assert_ne!(stamp_file("a:b"), stamp_file("a__b"), "the old map collided here");
+        assert_ne!(
+            stamp_file("a:b"),
+            stamp_file("a__b"),
+            "the old map collided here"
+        );
     }
 
     #[test]
@@ -80,7 +96,10 @@ mod tests {
         write_stamp(&tmp, "contracts:dialog", "def").unwrap();
         let stamps = load_stamps(&tmp);
         assert_eq!(stamps.get("pin").map(String::as_str), Some("abc"));
-        assert_eq!(stamps.get("contracts:dialog").map(String::as_str), Some("def"));
+        assert_eq!(
+            stamps.get("contracts:dialog").map(String::as_str),
+            Some("def")
+        );
         remove_stamp(&tmp, "pin");
         assert!(!load_stamps(&tmp).contains_key("pin"));
     }

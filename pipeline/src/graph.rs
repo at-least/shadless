@@ -174,7 +174,9 @@ fn visit(
         p.push(id.to_string());
         return Err(format!("cycle in graph: [{}]", p.join(" ")));
     }
-    let n = g.node(id).ok_or_else(|| format!("unknown node id: {}", id))?;
+    let n = g
+        .node(id)
+        .ok_or_else(|| format!("unknown node id: {}", id))?;
     visiting.insert(id.to_string());
     let mut child_path = path.to_vec();
     child_path.push(id.to_string());

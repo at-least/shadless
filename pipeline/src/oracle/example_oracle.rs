@@ -56,8 +56,8 @@ pub(crate) struct TierEntry {
 /// an empty map used to silently make is_kernel_demo always-false and drop
 /// every trivial-js script (the vacuous-verdict shape the sweep fixed).
 fn tiers_map() -> Result<HashMap<String, TierEntry>, String> {
-    let tiers_b = std::fs::read_to_string("src/registry/tiers.json")
-        .map_err(|e| format!("tiers: {}", e))?;
+    let tiers_b =
+        std::fs::read_to_string("src/registry/tiers.json").map_err(|e| format!("tiers: {}", e))?;
     serde_json::from_str(&tiers_b).map_err(|e| format!("tiers: {}", e))
 }
 
@@ -97,8 +97,8 @@ struct OraInputs {
 
 fn ora_inputs(check: bool) -> Result<OraInputs, String> {
     let tiers = tiers_map()?;
-    let catalog_b = std::fs::read_to_string("docs/catalog.json")
-        .map_err(|e| format!("catalog: {}", e))?;
+    let catalog_b =
+        std::fs::read_to_string("docs/catalog.json").map_err(|e| format!("catalog: {}", e))?;
     let catalog: Catalog =
         serde_json::from_str(&catalog_b).map_err(|e| format!("catalog: {}", e))?;
     let om_b = std::fs::read_to_string("overlays/manifest.json")
@@ -107,12 +107,15 @@ fn ora_inputs(check: bool) -> Result<OraInputs, String> {
         serde_json::from_str(&om_b).map_err(|e| format!("overlays manifest: {}", e))?;
     // a manifest that parses but lacks a units object silently empties the
     // sweep's legit set — the mass-deletion shape preflight exists to stop
-    if overlay_manifest.get("units").and_then(|u| u.as_object()).is_none() {
+    if overlay_manifest
+        .get("units")
+        .and_then(|u| u.as_object())
+        .is_none()
+    {
         return Err("overlays manifest: no units object".to_string());
     }
     let owned = if check {
-        let owned_b = std::fs::read_to_string(ORA_MANIFEST)
-            .map_err(|e| format!("owned: {}", e))?;
+        let owned_b = std::fs::read_to_string(ORA_MANIFEST).map_err(|e| format!("owned: {}", e))?;
         serde_json::from_str(&owned_b).map_err(|e| format!("owned: {}", e))?
     } else {
         Vec::new()
@@ -239,9 +242,7 @@ pub fn run_example_oracle(check: bool) -> i32 {
 fn run_inner(check: bool) -> Result<(), String> {
     // NO_ORACLE: examples whose golden exemption reason starts "external dep"
     let mut no_oracle: HashSet<String> = HashSet::new();
-    if let Ok(eb) =
-        std::fs::read_to_string("src/registry/upstream-snapshot/exemptions.json")
-    {
+    if let Ok(eb) = std::fs::read_to_string("src/registry/upstream-snapshot/exemptions.json") {
         #[derive(Deserialize)]
         struct ExEntry {
             #[serde(default)]
@@ -274,9 +275,12 @@ fn run_with_shell(
     no_oracle: &HashSet<String>,
     inputs: &OraInputs,
 ) -> Result<(), String> {
-    shell.launch().map_err(|e| format!("example-oracle: {}", e))?;
-    let page =
-        shell.new_page(false).map_err(|e| format!("example-oracle: new page: {}", e))?;
+    shell
+        .launch()
+        .map_err(|e| format!("example-oracle: {}", e))?;
+    let page = shell
+        .new_page(false)
+        .map_err(|e| format!("example-oracle: new page: {}", e))?;
 
     let (targets, skipped) = ora_load_targets(&inputs.tiers, &inputs.catalog);
     if !skipped.is_empty() {
@@ -291,16 +295,25 @@ fn run_with_shell(
         let owned = &inputs.owned;
         let mut drift = 0;
         for t in owned {
-            let html_file = match build_oracle(Path::new("."), &t.name, Path::new("build/example-oracle")) {
-                Ok(h) => h,
-                Err(e) => {
-                    eprintln!("DRIFT [{}]: oracle render failed ({})", t.name, first_line(&e));
-                    drift += 1;
-                    continue;
-                }
-            };
+            let html_file =
+                match build_oracle(Path::new("."), &t.name, Path::new("build/example-oracle")) {
+                    Ok(h) => h,
+                    Err(e) => {
+                        eprintln!(
+                            "DRIFT [{}]: oracle render failed ({})",
+                            t.name,
+                            first_line(&e)
+                        );
+                        drift += 1;
+                        continue;
+                    }
+                };
             if let Err(e) = await_oracle(&page, &html_file) {
-                eprintln!("DRIFT [{}]: oracle render failed ({})", t.name, first_line(&e));
+                eprintln!(
+                    "DRIFT [{}]: oracle render failed ({})",
+                    t.name,
+                    first_line(&e)
+                );
                 drift += 1;
                 let _ = std::fs::remove_file(&html_file);
                 continue;
@@ -336,10 +349,17 @@ fn run_with_shell(
             }
         }
         if drift > 0 {
-            eprintln!("FAIL  example-oracle check ({}/{} drifted)", drift, owned.len());
+            eprintln!(
+                "FAIL  example-oracle check ({}/{} drifted)",
+                drift,
+                owned.len()
+            );
             return Err("example-oracle check drifted".to_string());
         }
-        println!("PASS  example-oracle check ({} pages == oracle render)", owned.len());
+        println!(
+            "PASS  example-oracle check ({} pages == oracle render)",
+            owned.len()
+        );
         return Ok(());
     }
 
@@ -350,7 +370,12 @@ fn run_with_shell(
     for e in rt_ents.flatten() {
         let c = e.file_name().to_string_lossy().into_owned();
         let c = c.trim_end_matches(".js").to_string();
-        if inputs.tiers.get(&c).map(|t| t.tier == "trivial-js").unwrap_or(false) {
+        if inputs
+            .tiers
+            .get(&c)
+            .map(|t| t.tier == "trivial-js")
+            .unwrap_or(false)
+        {
             trivial_js.push(c);
         }
     }
@@ -382,24 +407,33 @@ fn run_with_shell(
             failures.push(format!("{}: {} missing", t.name, tsx));
             continue;
         }
-        let html_file = match build_oracle(Path::new("."), &t.name, Path::new("build/example-oracle")) {
-            Ok(h) => h,
-            Err(e) => {
-                if no_oracle.contains(&t.name) {
-                    exempt.push(t.name.clone());
+        let html_file =
+            match build_oracle(Path::new("."), &t.name, Path::new("build/example-oracle")) {
+                Ok(h) => h,
+                Err(e) => {
+                    if no_oracle.contains(&t.name) {
+                        exempt.push(t.name.clone());
+                        continue;
+                    }
+                    failures.push(format!(
+                        "{}: oracle render failed ({})",
+                        t.name,
+                        first_line(&e)
+                    ));
                     continue;
                 }
-                failures.push(format!("{}: oracle render failed ({})", t.name, first_line(&e)));
-                continue;
-            }
-        };
+            };
         if let Err(e) = await_oracle(&page, &html_file) {
             let _ = std::fs::remove_file(&html_file);
             if no_oracle.contains(&t.name) {
                 exempt.push(t.name.clone());
                 continue;
             }
-            failures.push(format!("{}: oracle render failed ({})", t.name, first_line(&e)));
+            failures.push(format!(
+                "{}: oracle render failed ({})",
+                t.name,
+                first_line(&e)
+            ));
             continue;
         }
         let mut dom = match oracle_root_html(&page) {
@@ -517,15 +551,19 @@ fn run_with_shell(
     legit.extend(fixture_targets.iter().map(|f| f.name.clone()));
     // overlay-authored demo pages (e.g. the message-scroller units) are
     // written by `make overlay`, not by this node — they are legit
-    if let Some(units) = inputs.overlay_manifest.get("units").and_then(|u| u.as_object()) {
+    if let Some(units) = inputs
+        .overlay_manifest
+        .get("units")
+        .and_then(|u| u.as_object())
+    {
         for (uid, u) in units {
             if let Some(file) = u.get("file").and_then(|f| f.as_str())
                 && let Some(stem) = file
                     .strip_prefix("docs/demos/")
                     .and_then(|f| f.strip_suffix(".html"))
-                {
-                    legit.insert(stem.to_string());
-                }
+            {
+                legit.insert(stem.to_string());
+            }
             let _ = uid;
         }
     }

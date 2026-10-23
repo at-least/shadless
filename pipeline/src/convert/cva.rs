@@ -241,16 +241,17 @@ pub fn cv_val_of_string(text: &str) -> String {
     }
     let t = text.trim();
     if t.starts_with('[')
-        && let Some(e) = cv_match_bracket(t, 0, b'[', b']') {
-            let mut parts: Vec<String> = Vec::new();
-            for el in cv_split_top(&t[1..e]) {
-                let n2 = cv_parse_expr(&el);
-                if n2.kind == "str" && !n2.str.is_empty() {
-                    parts.push(n2.str);
-                }
+        && let Some(e) = cv_match_bracket(t, 0, b'[', b']')
+    {
+        let mut parts: Vec<String> = Vec::new();
+        for el in cv_split_top(&t[1..e]) {
+            let n2 = cv_parse_expr(&el);
+            if n2.kind == "str" && !n2.str.is_empty() {
+                parts.push(n2.str);
             }
-            return parts.join(" ");
         }
+        return parts.join(" ");
+    }
     String::new()
 }
 

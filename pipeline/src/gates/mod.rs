@@ -103,9 +103,10 @@ pub fn libtest_has_passing_tests(stdout: &str) -> bool {
         };
         // "ok. 173 passed; 0 failed; ..." — the count is field 1
         if let Some(count) = rest.split_whitespace().nth(1)
-            && count.parse::<usize>().map(|n| n > 0).unwrap_or(false) {
-                return true;
-            }
+            && count.parse::<usize>().map(|n| n > 0).unwrap_or(false)
+        {
+            return true;
+        }
     }
     false
 }
@@ -273,7 +274,10 @@ mod tests {
         ] {
             if !root.join(p).exists() {
                 if std::env::var_os("CI").is_some() {
-                    panic!("CI: required tree input missing (skip: {} missing — run the demo chain first)", p);
+                    panic!(
+                        "CI: required tree input missing (skip: {} missing — run the demo chain first)",
+                        p
+                    );
                 }
                 eprintln!("skip: {} missing (run the demo chain first)", p);
                 return;
@@ -550,13 +554,14 @@ pub fn gate_script_refs(root: &Path) -> Result<(usize, usize), String> {
             }
             if v == "__meta" {
                 if let Some(g) = m.get(2)
-                    && !crate::nodes::GATE_IDS.contains(&g.as_str()) {
-                        fail.push(format!(
-                            "{}: `pipeline __meta {}` — not a gate id this engine dispatches",
-                            label,
-                            g.as_str()
-                        ));
-                    }
+                    && !crate::nodes::GATE_IDS.contains(&g.as_str())
+                {
+                    fail.push(format!(
+                        "{}: `pipeline __meta {}` — not a gate id this engine dispatches",
+                        label,
+                        g.as_str()
+                    ));
+                }
                 continue;
             }
             if !verbs.contains(v) {

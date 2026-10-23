@@ -163,13 +163,14 @@ pub fn truncate(s: &str, n: usize) -> String {
 /// --force re-records at the checkout's HEAD despite drift (the re-pin drill).
 pub fn run_pin(root: &Path, check_only: bool, force: bool) -> i32 {
     if !root.join(SHADCN_DIR).exists()
-        && let Err(e) = clone_upstream(root) {
-            eprintln!(
-                "PIN FAIL: {} not found and auto-clone failed: {}",
-                SHADCN_DIR, e
-            );
-            return 1;
-        }
+        && let Err(e) = clone_upstream(root)
+    {
+        eprintln!(
+            "PIN FAIL: {} not found and auto-clone failed: {}",
+            SHADCN_DIR, e
+        );
+        return 1;
+    }
     let head = match git(root, &["-C", SHADCN_DIR, "rev-parse", "HEAD"]) {
         Ok(h) => h,
         Err(e) => {
@@ -370,9 +371,10 @@ pub fn run_pin(root: &Path, check_only: bool, force: bool) -> i32 {
 fn today() -> String {
     let out = std::process::Command::new("date").arg("+%F").output();
     if let Ok(o) = out
-        && o.status.success() {
-            return String::from_utf8_lossy(&o.stdout).trim().to_string();
-        }
+        && o.status.success()
+    {
+        return String::from_utf8_lossy(&o.stdout).trim().to_string();
+    }
     String::new()
 }
 

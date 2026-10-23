@@ -147,9 +147,10 @@ fn render_tree(
     let mut classes: Vec<String> = Vec::new();
     if !node.slot.is_empty()
         && let Some(ms) = markers.get(&node.slot)
-            && !ms.is_empty() {
-                classes.extend(dedup(ms));
-            }
+        && !ms.is_empty()
+    {
+        classes.extend(dedup(ms));
+    }
     if !node.anchor.is_empty() {
         classes.push(node.anchor.clone());
     }

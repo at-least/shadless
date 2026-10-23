@@ -70,8 +70,8 @@ pub fn registry_exemptions() -> &'static (Vec<String>, Vec<String>) {
         }
         for c in &candidates {
             if let Ok(b) = std::fs::read_to_string(c) {
-                let ex: Ex = serde_json::from_str(&b)
-                    .unwrap_or_else(|e| panic!("{}: {}", c.display(), e));
+                let ex: Ex =
+                    serde_json::from_str(&b).unwrap_or_else(|e| panic!("{}: {}", c.display(), e));
                 return (ex.dead_utilities, ex.skin_allowlist);
             }
         }

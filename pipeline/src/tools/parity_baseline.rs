@@ -160,10 +160,7 @@ pub type LoadedBaseline = (RawBaseline, HashMap<String, ParityCell>);
 
 /// loadParityBaseline errors on the pre-value format (bare cell ids).
 /// Absent file → Ok(None), the caller records.
-pub fn load_parity_baseline(
-    root: &Path,
-    path: &str,
-) -> Result<Option<LoadedBaseline>, String> {
+pub fn load_parity_baseline(root: &Path, path: &str) -> Result<Option<LoadedBaseline>, String> {
     let b = match std::fs::read(root.join(path)) {
         Ok(b) => b,
         Err(_) => return Ok(None), // absent → None, caller records

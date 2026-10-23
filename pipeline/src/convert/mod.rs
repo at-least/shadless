@@ -871,37 +871,39 @@ fn cv_process_element(
     // component-wrap: an imported component (e.g. Button) renders with the
     // wrapped table's classes. ORDER is React's: the wrapped component
     // composes cn(itsVariants(...), className) — its own classes FIRST.
-    if occ.tag_ok && CV_IDENT_RE.is_match(&occ.tag)
+    if occ.tag_ok
+        && CV_IDENT_RE.is_match(&occ.tag)
         && let Some(imp) = ctx.file.meta_import.get(&occ.tag).cloned()
-            && let Some(comp) = ctx.reg.comp_cva.get(&imp) {
-                let table = comp.table.clone();
-                let comp_file = comp.file.clone();
-                let comp_cva_name = comp.cva_name.clone();
-                let mut args: HashMap<String, String> = HashMap::new();
-                for p in &props {
-                    if p.spread {
-                        continue;
-                    }
-                    if table.has_axis(&p.key) {
-                        args.insert(p.key.clone(), p.val.clone());
-                    }
-                }
-                let mut wrapped: Vec<String> = Vec::new();
-                let ref_name = format!("{}:{}", comp_file, comp_cva_name);
-                resolve_cva_args(
-                    ctx,
-                    Some(&el),
-                    &table,
-                    None,
-                    &args,
-                    &mut wrapped,
-                    &ref_name,
-                    true,
-                )?;
-                let mut merged = wrapped;
-                merged.extend(classes);
-                classes = merged;
+        && let Some(comp) = ctx.reg.comp_cva.get(&imp)
+    {
+        let table = comp.table.clone();
+        let comp_file = comp.file.clone();
+        let comp_cva_name = comp.cva_name.clone();
+        let mut args: HashMap<String, String> = HashMap::new();
+        for p in &props {
+            if p.spread {
+                continue;
             }
+            if table.has_axis(&p.key) {
+                args.insert(p.key.clone(), p.val.clone());
+            }
+        }
+        let mut wrapped: Vec<String> = Vec::new();
+        let ref_name = format!("{}:{}", comp_file, comp_cva_name);
+        resolve_cva_args(
+            ctx,
+            Some(&el),
+            &table,
+            None,
+            &args,
+            &mut wrapped,
+            &ref_name,
+            true,
+        )?;
+        let mut merged = wrapped;
+        merged.extend(classes);
+        classes = merged;
+    }
     let classes_clean: Vec<String> = classes.iter().filter(|c| !c.is_empty()).cloned().collect();
     // children from the ORIGINAL side's kind list; element kinds consume the
     // direct element-call args of THIS call in order
@@ -1037,9 +1039,10 @@ static IDENTITY_ATTR: LazyLock<Regex> = LazyLock::new(|| {
 #[allow(dead_code)] // Go-port surface; the rust converter resolves cva through lookup_cva_named
 fn lookup_cva(c: &CvCtx<'_>, local: &str) -> Option<(CvTable, bool)> {
     if let Some(imp) = c.file.meta_import.get(local)
-        && let Some(e) = c.reg.cva_by_export.get(imp) {
-            return Some((e.table.clone(), true));
-        }
+        && let Some(e) = c.reg.cva_by_export.get(imp)
+    {
+        return Some((e.table.clone(), true));
+    }
     if let Some(t) = c.file.cva.get(local) {
         return Some((t.clone(), false));
     }
@@ -1126,11 +1129,14 @@ fn resolve_cva_args(
                         }
                         None => false,
                     };
-                    if from_param && def.is_none() && !cross
+                    if from_param
+                        && def.is_none()
+                        && !cross
                         && let Some(local) = local_name
-                            && let Some(t) = c.file.cva.get_mut(local) {
-                                t.set_default(&axis.axis, &val);
-                            }
+                        && let Some(t) = c.file.cva.get_mut(local)
+                    {
+                        t.set_default(&axis.axis, &val);
+                    }
                     continue;
                 }
                 None => {
@@ -1144,53 +1150,57 @@ fn resolve_cva_args(
             }
         }
         if let Some(vv) = &v
-            && vv.kind == "cond" {
-                let cons = cv_parse_expr(&vv.cons);
-                let alt = cv_parse_expr(&vv.alt);
-                if cons.kind == "str" && alt.kind == "str" {
-                    if let Some(cls) = table.value_for(&axis.axis, &alt.str)
-                        && !cls.is_empty() {
-                            acc.push(cls); // falsy state = base
-                        }
-                    let mut test = String::new();
-                    let tv = cv_parse_expr(&vv.test);
-                    if tv.kind == "ident" {
-                        test = tv.ident.clone();
-                    }
-                    // attr scan: the element itself, then (asChild pattern)
-                    // the whole fn
-                    let mut attr = String::new();
-                    if !test.is_empty() {
-                        attr = find_data_attr(c, el, &test);
-                    }
-                    // attr-driven consequent: without the matching data-* attr
-                    // the "then" classes would be silently lost — fail loudly
-                    if attr.is_empty() {
-                        let show = if test.is_empty() { "null" } else { &test };
-                        return Err(format!(
-                            "cva ident-ternary without data-* attr binding: {} (ref {})",
-                            show, ref_name
-                        ));
-                    }
-                    if let Some(cls) = table.value_for(&axis.axis, &cons.str)
-                        && !cls.is_empty() {
-                            dyn_.push(
-                                JsonObj::new()
-                                    .add("attr", Json::Str(attr))
-                                    .add("when", Json::Str("true".into()))
-                                    .add("classes", Json::Str(cls))
-                                    .into_pairs(),
-                            );
-                        }
-                    continue;
+            && vv.kind == "cond"
+        {
+            let cons = cv_parse_expr(&vv.cons);
+            let alt = cv_parse_expr(&vv.alt);
+            if cons.kind == "str" && alt.kind == "str" {
+                if let Some(cls) = table.value_for(&axis.axis, &alt.str)
+                    && !cls.is_empty()
+                {
+                    acc.push(cls); // falsy state = base
                 }
+                let mut test = String::new();
+                let tv = cv_parse_expr(&vv.test);
+                if tv.kind == "ident" {
+                    test = tv.ident.clone();
+                }
+                // attr scan: the element itself, then (asChild pattern)
+                // the whole fn
+                let mut attr = String::new();
+                if !test.is_empty() {
+                    attr = find_data_attr(c, el, &test);
+                }
+                // attr-driven consequent: without the matching data-* attr
+                // the "then" classes would be silently lost — fail loudly
+                if attr.is_empty() {
+                    let show = if test.is_empty() { "null" } else { &test };
+                    return Err(format!(
+                        "cva ident-ternary without data-* attr binding: {} (ref {})",
+                        show, ref_name
+                    ));
+                }
+                if let Some(cls) = table.value_for(&axis.axis, &cons.str)
+                    && !cls.is_empty()
+                {
+                    dyn_.push(
+                        JsonObj::new()
+                            .add("attr", Json::Str(attr))
+                            .add("when", Json::Str("true".into()))
+                            .add("classes", Json::Str(cls))
+                            .into_pairs(),
+                    );
+                }
+                continue;
             }
+        }
         // dynamic axis: merge default into base, emit all values
         if let Some(def) = &def
             && let Some(cls) = table.value_for(&axis.axis, def)
-                && !cls.is_empty() {
-                    acc.push(cls);
-                }
+            && !cls.is_empty()
+        {
+            acc.push(cls);
+        }
         dyn_axes.push(axis.axis.clone());
     }
     if cross && el.is_some() && (!dyn_.is_empty() || !dyn_axes.is_empty()) {
@@ -1246,9 +1256,10 @@ fn class_strings(c: &mut CvCtx<'_>, text: &str, acc: &mut Vec<String>, el: Optio
 /// default-mutation land on the file's own table (Go mutates the shared ptr).
 fn lookup_cva_named(c: &CvCtx<'_>, local: &str) -> Option<(CvTable, bool, String)> {
     if let Some(imp) = c.file.meta_import.get(local)
-        && let Some(e) = c.reg.cva_by_export.get(imp) {
-            return Some((e.table.clone(), true, local.to_string()));
-        }
+        && let Some(e) = c.reg.cva_by_export.get(imp)
+    {
+        return Some((e.table.clone(), true, local.to_string()));
+    }
     if c.file.cva.get(local).is_some() {
         let t = c.file.cva.get(local).cloned();
         return t.map(|t| (t, false, local.to_string()));
@@ -1528,11 +1539,10 @@ fn cv_tag_vars_of(js: &str, body: [usize; 2]) -> Result<HashMap<String, String>,
             match sb[i] {
                 b'(' | b'[' | b'{' => depth += 1,
                 b')' | b']' | b'}' => depth -= 1,
-                b',' | b';'
-                    if depth == 0 => {
-                        init_end = i;
-                        break;
-                    }
+                b',' | b';' if depth == 0 => {
+                    init_end = i;
+                    break;
+                }
                 _ => {}
             }
             if init_end != seg.len() {
@@ -1557,9 +1567,10 @@ fn cv_tag_vars_of(js: &str, body: [usize; 2]) -> Result<HashMap<String, String>,
             continue;
         }
         if let Some(old) = out.get(&name)
-            && *old != t {
-                return Err(format!("conflicting tag var {}: {} vs {}", name, old, t));
-            }
+            && *old != t
+        {
+            return Err(format!("conflicting tag var {}: {} vs {}", name, old, t));
+        }
         out.insert(name, t);
     }
     Ok(out)
@@ -1638,14 +1649,13 @@ fn cv_assign_pattern_default(p: &str) -> Option<(String, String)> {
         match b[i] {
             b'(' | b'[' | b'{' => depth += 1,
             b')' | b']' | b'}' => depth -= 1,
-            b'='
-                if depth == 0 => {
-                    if i + 1 < b.len() && (b[i + 1] == b'=' || b[i + 1] == b'>') {
-                        i += 1;
-                        continue;
-                    }
-                    eq = i as isize;
+            b'=' if depth == 0 => {
+                if i + 1 < b.len() && (b[i + 1] == b'=' || b[i + 1] == b'>') {
+                    i += 1;
+                    continue;
                 }
+                eq = i as isize;
+            }
             _ => {}
         }
         if eq >= 0 {
@@ -1710,10 +1720,11 @@ fn cv_same_file_wrap(f: &mut CvFile) {
         }
         let root = &c.elements[0];
         if let Some(slot) = elem_slot(root)
-            && !slot.is_empty() {
-                // slotted base case: classes live here
-                return json_strings(&root[2].1);
-            }
+            && !slot.is_empty()
+        {
+            // slotted base case: classes live here
+            return json_strings(&root[2].1);
+        }
         stack.insert(fn_name.to_string());
         let tag = match &root[0].1 {
             Json::Str(s) => s.clone(),
@@ -1791,9 +1802,10 @@ fn build_tag_hints(irs: &mut [CvFile]) -> Result<(), String> {
     for ir in irs.iter() {
         for c in &ir.components {
             if !c.elements.is_empty()
-                && let Json::Str(t) = &c.elements[0][0].1 {
-                    fn_root.insert(format!("{}:{}", ir.name, c.fn_name), t.clone());
-                }
+                && let Json::Str(t) = &c.elements[0][0].1
+            {
+                fn_root.insert(format!("{}:{}", ir.name, c.fn_name), t.clone());
+            }
         }
     }
 
@@ -1857,9 +1869,10 @@ fn build_tag_hints(irs: &mut [CvFile]) -> Result<(), String> {
         }
         // app-side icon helper (@/app/... import, renders an svg placeholder)
         if let Some(mod_) = ir.meta_module_of.get(tag)
-            && mod_.starts_with("@/app/") {
-                return "svg".to_string();
-            }
+            && mod_.starts_with("@/app/")
+        {
+            return "svg".to_string();
+        }
         if let Some(tv) = ir.meta_tag_vars.get(tag) {
             return tv.clone();
         }
@@ -1870,32 +1883,33 @@ fn build_tag_hints(irs: &mut [CvFile]) -> Result<(), String> {
         }
         let mod_opt = ir.meta_module_of.get(tag).cloned();
         if let Some(mod_) = mod_opt
-            && !mod_.is_empty() {
-                static EXT_RE: OnceLock<Regex> = OnceLock::new();
-                let ext = EXT_RE.get_or_init(|| Regex::new(r"\.[tj]sx?$").unwrap());
-                let stem = ext
-                    .replace_all(&mod_[mod_.rfind('/').map(|i| i + 1).unwrap_or(0)..], "")
-                    .into_owned();
-                if let Some(di) = by_name.get(stem.as_str()).copied() {
-                    // registry files export the component under the imported name
-                    let mut imported_name = tag.to_string();
-                    if let Some(im) = ir.meta_import.get(tag) {
-                        imported_name = im.clone();
-                    }
-                    let found = irs[di]
-                        .components
-                        .iter()
-                        .any(|c| c.fn_name == imported_name);
-                    if !found {
-                        return String::new();
-                    }
-                    return resolve_root(irs, by_name, fn_root, &stem, &imported_name, seen);
+            && !mod_.is_empty()
+        {
+            static EXT_RE: OnceLock<Regex> = OnceLock::new();
+            let ext = EXT_RE.get_or_init(|| Regex::new(r"\.[tj]sx?$").unwrap());
+            let stem = ext
+                .replace_all(&mod_[mod_.rfind('/').map(|i| i + 1).unwrap_or(0)..], "")
+                .into_owned();
+            if let Some(di) = by_name.get(stem.as_str()).copied() {
+                // registry files export the component under the imported name
+                let mut imported_name = tag.to_string();
+                if let Some(im) = ir.meta_import.get(tag) {
+                    imported_name = im.clone();
                 }
-                if tag.contains('.') {
-                    return external_member_tag(tag);
+                let found = irs[di]
+                    .components
+                    .iter()
+                    .any(|c| c.fn_name == imported_name);
+                if !found {
+                    return String::new();
                 }
-                return String::new();
+                return resolve_root(irs, by_name, fn_root, &stem, &imported_name, seen);
             }
+            if tag.contains('.') {
+                return external_member_tag(tag);
+            }
+            return String::new();
+        }
         if tag.contains('.') {
             return external_member_tag(tag);
         }
@@ -2032,9 +2046,10 @@ fn cv_parse_tiers(raw: &str) -> Result<(Vec<String>, HashMap<String, String>), S
     for (k, v) in &top {
         order.push(k.clone());
         if let Some(inner) = v.as_object()
-            && let Some(Value::String(tier)) = inner.get("tier") {
-                out.insert(k.clone(), tier.clone());
-            }
+            && let Some(Value::String(tier)) = inner.get("tier")
+        {
+            out.insert(k.clone(), tier.clone());
+        }
     }
     Ok((order, out))
 }
@@ -2179,8 +2194,10 @@ pub fn run_convert() -> Result<(), String> {
     static BLOCK_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(?s)/\*[\s\S]*?\*/").unwrap());
     static LINE_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(^|[^:])//[^\n]*").unwrap());
     static RAWQ_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r#""(?:[^"\\]|\\.)*""#).unwrap());
-    static STR_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r#""((?:[^"\\]|\\.)*)""#).unwrap());
-    static CMPLIT_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r#"[=!]==?\s*"((?:[^"\\]|\\.)*)""#).unwrap());
+    static STR_RE: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r#""((?:[^"\\]|\\.)*)""#).unwrap());
+    static CMPLIT_RE: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r#"[=!]==?\s*"((?:[^"\\]|\\.)*)""#).unwrap());
     static CN_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\bcn\s*\(").unwrap());
 
     let mut dist_pairs: Vec<(String, Json)> = Vec::new();
@@ -2244,9 +2261,10 @@ pub fn run_convert() -> Result<(), String> {
             for ax in &t.axes {
                 for kv in &ax.values {
                     if let Json::Str(s) = &kv.v
-                        && !s.is_empty() {
-                            all_classes.push(s.clone());
-                        }
+                        && !s.is_empty()
+                    {
+                        all_classes.push(s.clone());
+                    }
                 }
             }
         }

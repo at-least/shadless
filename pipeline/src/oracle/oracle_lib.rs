@@ -371,9 +371,10 @@ pub fn await_oracle(p: &BPage<'_>, html_file: &Path) -> Result<(), String> {
     p.wait_for_function("window.__done === true || window.__err !== undefined", 5000)?;
     let err_v = p.evaluate("window.__err")?;
     if let Some(s) = err_v.as_str()
-        && !s.is_empty() {
-            return Err(s.to_string());
-        }
+        && !s.is_empty()
+    {
+        return Err(s.to_string());
+    }
     Ok(())
 }
 

@@ -158,31 +158,31 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
                 && let Some(b) = page
                     .loc_box("", &format!("[data-slot=\"{}-sub-trigger\"]", comp), 0)
                     .map_err(|e| e.to_string())?
-                {
-                    page.mouse_move(b.x + 4.0, b.y + b.height / 2.0, 3)
-                        .map_err(|e| e.to_string())?;
-                    page.mouse_move(b.x + b.width / 2.0, b.y + b.height / 2.0, 6)
-                        .map_err(|e| e.to_string())?;
-                    let _ = page.wait_for_timeout(600);
-                    if std::env::var("EF_DEBUG").is_ok() {
-                        let v = page.evaluate(&format!(
+            {
+                page.mouse_move(b.x + 4.0, b.y + b.height / 2.0, 3)
+                    .map_err(|e| e.to_string())?;
+                page.mouse_move(b.x + b.width / 2.0, b.y + b.height / 2.0, 6)
+                    .map_err(|e| e.to_string())?;
+                let _ = page.wait_for_timeout(600);
+                if std::env::var("EF_DEBUG").is_ok() {
+                    let v = page.evaluate(&format!(
                             "(() => {{ const el = document.querySelector('[data-slot=\"{}-sub-content\"]'); const fp = document.elementFromPoint({}, {}); return JSON.stringify({{ subMounted: !!el, onTop: fp ? fp.tagName + '[' + (fp.getAttribute('data-slot') || fp.id || '') + ']' : 'none' }}) }})()",
                             comp, b.x + b.width / 2.0, b.y + b.height / 2.0
                         ))
                         .unwrap_or(serde_json::Value::Null);
-                        eprintln!("[dbg] submenu probe: {}", v);
-                    }
-                    wait_true(
-                        page,
-                        &format!(
-                            "!!document.querySelector(\"[data-slot='{}-sub-content']\")",
-                            comp
-                        ),
-                    )
-                    .map_err(|_| "sub menu did not open".to_string())?;
-                    page.key_press("Escape").map_err(|e| e.to_string())?;
-                    let _ = page.wait_for_timeout(300);
+                    eprintln!("[dbg] submenu probe: {}", v);
                 }
+                wait_true(
+                    page,
+                    &format!(
+                        "!!document.querySelector(\"[data-slot='{}-sub-content']\")",
+                        comp
+                    ),
+                )
+                .map_err(|_| "sub menu did not open".to_string())?;
+                page.key_press("Escape").map_err(|e| e.to_string())?;
+                let _ = page.wait_for_timeout(300);
+            }
             page.key_press("Escape").map_err(|e| e.to_string())?;
             let _ = page.wait_for_timeout(500);
             let closed = format!(
@@ -1164,10 +1164,11 @@ fn inline(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
 fn none(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
     if ctx.contracts
         && let Some(def) = ctx.def
-            && !def.open.is_empty() {
-                ctx.page.driver(&def.open).map_err(|e| e.to_string())?;
-                let _ = ctx.page.wait_for_timeout(500);
-            }
+        && !def.open.is_empty()
+    {
+        ctx.page.driver(&def.open).map_err(|e| e.to_string())?;
+        let _ = ctx.page.wait_for_timeout(500);
+    }
     let rh = ctx.root_html()?;
     out.body_html = ef_strip_radix_ids(&rh);
     out.self_test = Some(SelfTestAction::None {

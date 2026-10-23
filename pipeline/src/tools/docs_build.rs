@@ -2168,9 +2168,10 @@ pub fn run_docs_build(root: &Path) -> i32 {
     };
     let mut rtl_langs: HashMap<String, Vec<String>> = HashMap::new();
     if let Ok(rb) = std::fs::read_to_string(root.join("build/rtl-langs.json"))
-        && let Ok(m) = serde_json::from_str::<HashMap<String, Vec<String>>>(&rb) {
-            rtl_langs = m;
-        }
+        && let Ok(m) = serde_json::from_str::<HashMap<String, Vec<String>>>(&rb)
+    {
+        rtl_langs = m;
+    }
 
     let mut component_pages: Vec<(String, String)> = Vec::new();
     for s in &catalog.sources {
@@ -2667,12 +2668,13 @@ fn write_content_map(
             ),
         ];
         if let Some(sec) = sections.get(name)
-            && !sec.is_empty() {
-                e.push((
-                    "sections".to_string(),
-                    Json::Arr(sec.iter().map(|x| Json::Str(x.clone())).collect()),
-                ));
-            }
+            && !sec.is_empty()
+        {
+            e.push((
+                "sections".to_string(),
+                Json::Arr(sec.iter().map(|x| Json::Str(x.clone())).collect()),
+            ));
+        }
         pages_kv.push((name.clone(), Json::Obj(e)));
     }
     for g in guides() {
@@ -2685,12 +2687,13 @@ fn write_content_map(
             ("notes".to_string(), Json::Str(g.notes.to_string())),
         ];
         if let Some(sec) = sections.get(g.slug)
-            && !sec.is_empty() {
-                e.push((
-                    "sections".to_string(),
-                    Json::Arr(sec.iter().map(|x| Json::Str(x.clone())).collect()),
-                ));
-            }
+            && !sec.is_empty()
+        {
+            e.push((
+                "sections".to_string(),
+                Json::Arr(sec.iter().map(|x| Json::Str(x.clone())).collect()),
+            ));
+        }
         pages_kv.push((g.slug.to_string(), Json::Obj(e)));
     }
     pages_kv.push((

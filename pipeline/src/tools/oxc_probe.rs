@@ -28,8 +28,7 @@ fn oxc_tsx(path: &Path, src: &str) -> Result<String, String> {
     use oxc_span::SourceType;
     use oxc_transformer::{JsxOptions, JsxRuntime, TransformOptions, Transformer};
 
-    let source_type = SourceType::from_path(path)
-        .map_err(|e| format!("source type: {e}"))?;
+    let source_type = SourceType::from_path(path).map_err(|e| format!("source type: {e}"))?;
     let allocator = Allocator::default();
 
     let parser_ret = Parser::new(&allocator, src, source_type).parse();
@@ -136,7 +135,7 @@ pub fn run_oxc_probe(root: &Path, rest: &[String]) -> Result<i32, String> {
             other => {
                 return Err(format!(
                     "unknown flag {other} (supported: --limit N, --normalize)"
-                ))
+                ));
             }
         }
         i += 1;
@@ -146,10 +145,7 @@ pub fn run_oxc_probe(root: &Path, rest: &[String]) -> Result<i32, String> {
     let mut inputs: Vec<std::path::PathBuf> = walkdir::WalkDir::new(&ui)
         .into_iter()
         .filter_map(|e| e.ok())
-        .filter(|e| {
-            e.file_type().is_file()
-                && e.path().extension().is_some_and(|x| x == "tsx")
-        })
+        .filter(|e| e.file_type().is_file() && e.path().extension().is_some_and(|x| x == "tsx"))
         .map(|e| e.path().to_path_buf())
         .collect();
     inputs.sort();
@@ -173,9 +169,12 @@ pub fn run_oxc_probe(root: &Path, rest: &[String]) -> Result<i32, String> {
     let mut size_delta: Vec<i64> = Vec::new();
 
     for path in &inputs {
-        let name = path.strip_prefix(root).unwrap_or(path).display().to_string();
-        let src = std::fs::read_to_string(path)
-            .map_err(|e| format!("{}: {e}", path.display()))?;
+        let name = path
+            .strip_prefix(root)
+            .unwrap_or(path)
+            .display()
+            .to_string();
+        let src = std::fs::read_to_string(path).map_err(|e| format!("{}: {e}", path.display()))?;
         let a = crate::convert::esbuild_tsx(root, &src)?;
         let b = oxc_tsx(path, &src);
         match b {
@@ -242,5 +241,9 @@ pub fn run_oxc_probe(root: &Path, rest: &[String]) -> Result<i32, String> {
         .ok();
     }
     out.flush().ok();
-    Ok(if identical == inputs.len() && failures == 0 { 0 } else { 1 })
+    Ok(if identical == inputs.len() && failures == 0 {
+        0
+    } else {
+        1
+    })
 }

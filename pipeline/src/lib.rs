@@ -4,12 +4,12 @@
 //! (tests/gen_golden.sh). See PORT.md.
 
 pub mod convert;
+pub mod emit;
 pub mod engine;
 pub mod fanout;
 pub mod fsutil;
-pub mod glob;
-pub mod emit;
 pub mod gates;
+pub mod glob;
 pub mod graph;
 pub mod jsbuild;
 pub mod jsonorder;

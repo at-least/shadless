@@ -26,7 +26,10 @@ fn quote_meta_byte(byte: u8) -> Result<String, String> {
     } else {
         // Go compiles the pattern as UTF-8 and fails on a lone high byte; the
         // repo's patterns are all ASCII, so mirror the failure.
-        Err(format!("invalid glob pattern: non-ASCII byte 0x{:02x}", byte))
+        Err(format!(
+            "invalid glob pattern: non-ASCII byte 0x{:02x}",
+            byte
+        ))
     }
 }
 
@@ -166,7 +169,13 @@ mod tests {
         for d in ["", "sub", "sub/deep", ".hidden"] {
             fs::create_dir_all(tmp.join(d)).unwrap();
         }
-        for f in ["a.txt", "b.md", "sub/c.txt", "sub/deep/d.txt", ".hidden/h.txt"] {
+        for f in [
+            "a.txt",
+            "b.md",
+            "sub/c.txt",
+            "sub/deep/d.txt",
+            ".hidden/h.txt",
+        ] {
             fs::write(tmp.join(f), f).unwrap();
         }
         tmp
@@ -241,7 +250,10 @@ mod tests {
     #[test]
     fn literal_prefix_stops_at_first_meta_segment() {
         assert_eq!(literal_prefix("vendor/**"), "vendor");
-        assert_eq!(literal_prefix("src/registry/pin.json"), "src/registry/pin.json");
+        assert_eq!(
+            literal_prefix("src/registry/pin.json"),
+            "src/registry/pin.json"
+        );
         assert_eq!(literal_prefix("dist/components/*.html"), "dist/components");
         assert_eq!(literal_prefix("gates/*-baseline.json"), "gates");
         assert_eq!(literal_prefix("pipeline/*.go"), "pipeline");
@@ -257,8 +269,10 @@ mod tests {
         assert!(!re("*.go").is_match("sub/a.go"));
         assert!(re("dist/components/*.html").is_match("dist/components/button.html"));
         assert!(!re("dist/components/*.html").is_match("dist/components/x/button.html"));
-        assert!(re("!dist/components/*-rtl-*.html".trim_start_matches('!'))
-            .is_match("dist/components/table-rtl-he.html"));
+        assert!(
+            re("!dist/components/*-rtl-*.html".trim_start_matches('!'))
+                .is_match("dist/components/table-rtl-he.html")
+        );
         assert!(re("^TestPin$").is_match("^TestPin$")); // quoting is literal
     }
 }

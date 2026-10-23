@@ -44,8 +44,7 @@ mod tests {
     #[test]
     fn unit_prepaint_constants_match_the_mjs_source_of_truth() {
         let mjs = std::fs::read_to_string(
-            std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-                .join("../src/docs/theme-prepaint.mjs"),
+            std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../src/docs/theme-prepaint.mjs"),
         )
         .expect("read theme-prepaint.mjs");
         let script = regex::Regex::new("export const THEME_PREPAINT_SCRIPT = `([^`]*)`")

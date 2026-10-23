@@ -161,12 +161,11 @@ impl<'a> CvTopScan<'a> {
                     match tb[k] {
                         b'(' | b'[' | b'{' => depth += 1,
                         b')' | b']' | b'}' => depth -= 1,
-                        b'='
-                            if depth == 0
-                                && !(k + 1 < tb.len() && (tb[k + 1] == b'=' || tb[k + 1] == b'>'))
-                            => {
-                                eq = k as isize;
-                            }
+                        b'=' if depth == 0
+                            && !(k + 1 < tb.len() && (tb[k + 1] == b'=' || tb[k + 1] == b'>')) =>
+                        {
+                            eq = k as isize;
+                        }
                         _ => {}
                     }
                     if eq >= 0 {
@@ -217,8 +216,7 @@ impl<'a> CvTopScan<'a> {
         };
         for sp in cv_split_top(&js[i + 1..e]) {
             let fields: Vec<&str> = sp.split_whitespace().collect();
-            
-            
+
             let (local, exported) = if fields.len() >= 3 && fields[1] == "as" {
                 (fields[0].to_string(), fields[2].to_string())
             } else if !fields.is_empty() {
@@ -237,9 +235,10 @@ impl<'a> CvTopScan<'a> {
                 } else {
                     self.exported_names.insert("default".to_string());
                     if let Some(d) = di
-                        && self.decls[d].is_arrow {
-                            self.default_arrow = d as isize;
-                        }
+                        && self.decls[d].is_arrow
+                    {
+                        self.default_arrow = d as isize;
+                    }
                 }
                 continue;
             }
@@ -268,14 +267,13 @@ pub fn cv_split_top_indexed(s: &str) -> Vec<CvSplitPart> {
         match b[i] {
             b'(' | b'[' | b'{' => depth += 1,
             b')' | b']' | b'}' => depth -= 1,
-            b','
-                if depth == 0 => {
-                    out.push(CvSplitPart {
-                        text: s[start..i].to_string(),
-                        off: start,
-                    });
-                    start = i + 1;
-                }
+            b',' if depth == 0 => {
+                out.push(CvSplitPart {
+                    text: s[start..i].to_string(),
+                    off: start,
+                });
+                start = i + 1;
+            }
             _ => {}
         }
         i += 1;
@@ -452,29 +450,30 @@ fn cv_parse_import(stmt: &str) -> (String, Vec<CvImpSpec>, String) {
     let mut list: Vec<CvImpSpec> = Vec::new();
     let mut head = stmt;
     if let (Some(ob), Some(eb)) = (ob, eb)
-        && eb > 0 {
-            head = &stmt[..ob];
-            for f in cv_split_top(&stmt[ob + 1..eb]) {
-                let fields: Vec<&str> = f.split_whitespace().collect();
-                let mut k = 0;
-                if k < fields.len() && fields[k] == "type" {
-                    k += 1;
-                }
-                if k >= fields.len() {
-                    continue;
-                }
-                let imported = fields[k].to_string();
-                let mut local = imported.clone();
-                if k + 2 < fields.len() && fields[k + 1] == "as" {
-                    local = fields[k + 2].to_string();
-                }
-                list.push(CvImpSpec {
-                    local,
-                    imported,
-                    ns: false,
-                });
+        && eb > 0
+    {
+        head = &stmt[..ob];
+        for f in cv_split_top(&stmt[ob + 1..eb]) {
+            let fields: Vec<&str> = f.split_whitespace().collect();
+            let mut k = 0;
+            if k < fields.len() && fields[k] == "type" {
+                k += 1;
             }
+            if k >= fields.len() {
+                continue;
+            }
+            let imported = fields[k].to_string();
+            let mut local = imported.clone();
+            if k + 2 < fields.len() && fields[k + 1] == "as" {
+                local = fields[k + 2].to_string();
+            }
+            list.push(CvImpSpec {
+                local,
+                imported,
+                ns: false,
+            });
         }
+    }
     static NS_RE: std::sync::OnceLock<Regex> = std::sync::OnceLock::new();
     static DEF_RE: std::sync::OnceLock<Regex> = std::sync::OnceLock::new();
     let ns_re =
