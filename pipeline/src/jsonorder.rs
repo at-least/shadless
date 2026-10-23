@@ -210,14 +210,29 @@ mod tests {
                     ("null", Json::Null),
                 ]),
             ),
-            ("empty", Json::Raw(format!("{}\n{}", marshal_js(&Json::Obj(vec![])), marshal_js(&Json::Arr(vec![]))))),
+            (
+                "empty",
+                Json::Raw(format!(
+                    "{}\n{}",
+                    marshal_js(&Json::Obj(vec![])),
+                    marshal_js(&Json::Arr(vec![]))
+                )),
+            ),
             (
                 "nested",
                 obj(vec![
                     (
                         "obj",
                         obj(vec![
-                            ("list", arr(vec![Json::Str("a".into()), Json::Int(1), Json::Bool(true), Json::Null])),
+                            (
+                                "list",
+                                arr(vec![
+                                    Json::Str("a".into()),
+                                    Json::Int(1),
+                                    Json::Bool(true),
+                                    Json::Null,
+                                ]),
+                            ),
                             ("e", Json::Obj(vec![])),
                         ]),
                     ),
@@ -226,7 +241,10 @@ mod tests {
             ),
             (
                 "arrays-of-strings",
-                obj(vec![("ss", arr(vec![Json::Str("x".into()), Json::Str("y\"z".into())]))]),
+                obj(vec![(
+                    "ss",
+                    arr(vec![Json::Str("x".into()), Json::Str("y\"z".into())]),
+                )]),
             ),
             (
                 "step-indent-1",
@@ -236,7 +254,14 @@ mod tests {
                     " ",
                 )),
             ),
-            ("top-indent", Json::Raw(marshal_js_step(&obj(vec![("k", Json::Str("v".into()))]), "  ", "  "))),
+            (
+                "top-indent",
+                Json::Raw(marshal_js_step(
+                    &obj(vec![("k", Json::Str("v".into()))]),
+                    "  ",
+                    "  ",
+                )),
+            ),
             (
                 "colon-slash",
                 Json::Raw(json_string("hover:before:bg-[url('a:b')][/&]")),

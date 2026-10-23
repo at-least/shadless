@@ -17,12 +17,12 @@
 //! note, rather than silently reporting another node's writes.
 
 use crate::graph::Graph;
-use crate::key::{outputs_digest, outputs_present, stamp_value, Keyer};
+use crate::key::{Keyer, outputs_digest, outputs_present, stamp_value};
 use crate::nodes::Node;
 use crate::stamps::{remove_stamp, stamp_file, write_stamp};
 use crate::verify::{
-    input_universe, opens_from_logs, report_undeclared_reads, report_violations,
-    undeclared_reads, undeclared_writes, Violation,
+    Violation, input_universe, opens_from_logs, report_undeclared_reads, report_violations,
+    undeclared_reads, undeclared_writes,
 };
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, HashMap, HashSet, VecDeque};
@@ -106,10 +106,7 @@ pub fn is_browser_node(n: &Node) -> bool {
 /// attribute a failure to a component, short enough to paste into a report.
 pub fn tail_of(out: &[u8]) -> String {
     let text = String::from_utf8_lossy(out);
-    let lines: Vec<&str> = text
-        .split('\n')
-        .filter(|l| !l.trim().is_empty())
-        .collect();
+    let lines: Vec<&str> = text.split('\n').filter(|l| !l.trim().is_empty()).collect();
     let start = lines.len().saturating_sub(25);
     lines[start..].join("\n")
 }
@@ -198,12 +195,18 @@ impl Runner {
     }
 
     fn record(&self, id: &str, key: String) {
-        self.stamps.lock().unwrap().insert(id.to_string(), key.clone());
+        self.stamps
+            .lock()
+            .unwrap()
+            .insert(id.to_string(), key.clone());
         // one file per node: parallel nodes do not contend. A failed write
         // must be visible — silent would be safe (the node just re-runs) but
         // inexplicable.
         if let Err(e) = write_stamp(&self.root, id, &key) {
-            eprintln!("pipeline: stamp write failed for {} (it will re-run next time): {}", id, e);
+            eprintln!(
+                "pipeline: stamp write failed for {} (it will re-run next time): {}",
+                id, e
+            );
         }
     }
 
@@ -239,7 +242,15 @@ impl Runner {
     ///
     /// Cosmetics note: Go interleaves both streams into one
     /// buffer; Rust appends stdout-then-stderr per command.
-    fn exec(&self, n: &Node) -> (Vec<u8>, Vec<PathBuf>, Option<String>, Option<tempfile::TempDir>) {
+    fn exec(
+        &self,
+        n: &Node,
+    ) -> (
+        Vec<u8>,
+        Vec<PathBuf>,
+        Option<String>,
+        Option<tempfile::TempDir>,
+    ) {
         let mut buf: Vec<u8> = Vec::new();
         let mut logs: Vec<PathBuf> = Vec::new();
         // the scratch dir holding the access logs is returned to the caller:
@@ -267,22 +278,22 @@ impl Runner {
             }
         };
         // collected with the logs at every return, mirroring the Go exec
-        let with_js_log =
-            |mut logs: Vec<PathBuf>, js_log: &Option<PathBuf>| -> Vec<PathBuf> {
-                if let Some(jl) = js_log {
-                    logs.push(jl.clone());
-                }
-                logs
-            };
+        let with_js_log = |mut logs: Vec<PathBuf>, js_log: &Option<PathBuf>| -> Vec<PathBuf> {
+            if let Some(jl) = js_log {
+                logs.push(jl.clone());
+            }
+            logs
+        };
         let js_log = dir.as_ref().map(|d| d.path().join("js.log"));
         for (i, argv) in n.run.iter().enumerate() {
             let mut cmd = argv.clone();
             if let Some(d) = &dir
-                && is_go_test(argv) {
-                    let log = d.path().join(format!("{}-{}.log", stamp_file(&n.id), i));
-                    cmd.push(format!("-test.testlogfile={}", log.display()));
-                    logs.push(log);
-                }
+                && is_go_test(argv)
+            {
+                let log = d.path().join(format!("{}-{}.log", stamp_file(&n.id), i));
+                cmd.push(format!("-test.testlogfile={}", log.display()));
+                logs.push(log);
+            }
             let exe = match crate::engine::resolve_argv0(&cmd[0]) {
                 Ok(p) => p,
                 Err(e) => {
@@ -383,10 +394,8 @@ impl Runner {
             // both universe snapshots are load-bearing: one that cannot be
             // taken must fail the node, not silently skip the write check
             let verdict = match (before, input_universe(&self.root, &self.graph)) {
-                (Some(Ok(b)), Ok(a)) => {
-                    undeclared_writes(&self.root, &self.graph, n, &b, &a)
-                        .map_err(|e| format!("undeclared-write check: {}", e))
-                }
+                (Some(Ok(b)), Ok(a)) => undeclared_writes(&self.root, &self.graph, n, &b, &a)
+                    .map_err(|e| format!("undeclared-write check: {}", e)),
                 (_, Err(e)) => Err(format!("undeclared-write check: {}", e)),
                 (Some(Err(_)) | None, Ok(_)) => {
                     Err("undeclared-write check: before-universe unavailable".to_string())
@@ -437,11 +446,7 @@ impl Runner {
         }
     }
 
-    fn dispatch(
-        self: &Arc<Self>,
-        st: &mut RunState<'_>,
-        id: &str,
-    ) {
+    fn dispatch(self: &Arc<Self>, st: &mut RunState<'_>, id: &str) {
         let n = st.by_id[id].clone();
         // the key must be computed here: every dependency has finished, so
         // their stamps are final
@@ -481,11 +486,13 @@ impl Runner {
             },
             None => false,
         };
-        if fresh
-            && let Err(missing) = outputs_present(&self.root, &n) {
-                println!("  {}: key matches but {} is missing — rebuilding", id, missing);
-                fresh = false;
-            }
+        if fresh && let Err(missing) = outputs_present(&self.root, &n) {
+            println!(
+                "  {}: key matches but {} is missing — rebuilding",
+                id, missing
+            );
+            fresh = false;
+        }
         if fresh {
             st.skipped += 1;
             st.done.insert(id.to_string());
@@ -554,9 +561,9 @@ impl Runner {
         });
     }
 
-/// Dispatches the plan, honouring `needs` and `after`, and returns how many nodes ran,
-/// were skipped, and failed, plus the two declaration violations seen:
-/// writes outside `produces` and reads outside `inputs`.
+    /// Dispatches the plan, honouring `needs` and `after`, and returns how many nodes ran,
+    /// were skipped, and failed, plus the two declaration violations seen:
+    /// writes outside `produces` and reads outside `inputs`.
     pub fn run(self: &Arc<Self>, plan: &[Node]) -> Counts {
         let in_plan: HashSet<&str> = plan.iter().map(|n| n.id.as_str()).collect();
         let mut pending: HashMap<String, usize> = HashMap::new();
@@ -567,15 +574,11 @@ impl Runner {
             for d in n.needs.iter().chain(&n.after) {
                 if in_plan.contains(d.as_str()) {
                     *pending.entry(n.id.clone()).or_default() += 1;
-                    dependents
-                        .entry(d.clone())
-                        .or_default()
-                        .push(n.id.clone());
+                    dependents.entry(d.clone()).or_default().push(n.id.clone());
                 }
             }
         }
-        let by_id: HashMap<String, &Node> =
-            plan.iter().map(|n| (n.id.clone(), n)).collect();
+        let by_id: HashMap<String, &Node> = plan.iter().map(|n| (n.id.clone(), n)).collect();
         let ready: VecDeque<String> = plan
             .iter()
             .filter(|n| pending.get(&n.id).copied().unwrap_or(0) == 0)
@@ -618,7 +621,12 @@ impl Runner {
             let id = res.node.id.clone();
             let status = if res.err.is_some() { "✗" } else { "✔" };
             println!("{} {} ({:.1}s)", status, id, res.elapsed);
-            if !res.output.is_empty() && (res.err.is_some() || std::env::var("PIPELINE_VERBOSE").map(|v| !v.is_empty()).unwrap_or(false)) {
+            if !res.output.is_empty()
+                && (res.err.is_some()
+                    || std::env::var("PIPELINE_VERBOSE")
+                        .map(|v| !v.is_empty())
+                        .unwrap_or(false))
+            {
                 let mut so = std::io::stdout().lock();
                 let _ = so.write_all(&res.output);
                 let _ = so.flush();
@@ -629,12 +637,7 @@ impl Runner {
             bad_reads += res.reads.len();
             if let Some(e) = &res.err {
                 failed += 1;
-                let cmd = res
-                    .node
-                    .run
-                    .last()
-                    .map(|c| c.join(" "))
-                    .unwrap_or_default();
+                let cmd = res.node.run.last().map(|c| c.join(" ")).unwrap_or_default();
                 self.report.lock().unwrap().failed.insert(
                     id.clone(),
                     FailedNode {
@@ -662,11 +665,7 @@ impl Runner {
             }
             ran += 1;
             st.done.insert(id.clone());
-            self.report
-                .lock()
-                .unwrap()
-                .passed
-                .push(id.clone());
+            self.report.lock().unwrap().passed.push(id.clone());
             if let Some(ds) = st.dependents.get(&id).cloned() {
                 for d in ds {
                     if let Some(e) = st.pending.get_mut(&d) {
@@ -717,7 +716,10 @@ impl Runner {
         let dir = self.root.join("build").join("gates");
         std::fs::create_dir_all(&dir).map_err(|e| e.to_string())?;
         let mut b = serde_json::to_string_pretty(&*report).map_err(|e| e.to_string())?;
-        b = b.replace('<', "\\u003c").replace('>', "\\u003e").replace('&', "\\u0026");
+        b = b
+            .replace('<', "\\u003c")
+            .replace('>', "\\u003e")
+            .replace('&', "\\u0026");
         b.push('\n');
         std::fs::write(dir.join("run-report.json"), b).map_err(|e| e.to_string())
     }
@@ -746,11 +748,7 @@ mod tests {
             kind: "build".to_string(),
             tier: "fast".to_string(),
             needs: vec![],
-            run: vec![vec![
-                "sh".to_string(),
-                "-c".to_string(),
-                script,
-            ]],
+            run: vec![vec!["sh".to_string(), "-c".to_string(), script]],
             // the shell-input declaration is what makes it a browser node
             inputs: Some(vec![SHELL_INPUT.to_string()]),
             produces: None,
@@ -1025,11 +1023,23 @@ mod tests {
             " --import \"/a b/r/tools/fs-record.mjs\""
         );
         assert_eq!(
-            super::node_options("--expose-gc", std::path::Path::new("/r/tools/fs-record.mjs")).unwrap(),
+            super::node_options(
+                "--expose-gc",
+                std::path::Path::new("/r/tools/fs-record.mjs")
+            )
+            .unwrap(),
             "--expose-gc --import \"/r/tools/fs-record.mjs\""
         );
-        assert!(super::node_options("", std::path::Path::new("/a\"b/r/tools/fs-record.mjs")).is_err());
+        assert!(
+            super::node_options("", std::path::Path::new("/a\"b/r/tools/fs-record.mjs")).is_err()
+        );
         // an unbalanced quote in the inherited value swallows --import
-        assert!(super::node_options("--expose-\"gc", std::path::Path::new("/r/tools/fs-record.mjs")).is_err());
+        assert!(
+            super::node_options(
+                "--expose-\"gc",
+                std::path::Path::new("/r/tools/fs-record.mjs")
+            )
+            .is_err()
+        );
     }
 }

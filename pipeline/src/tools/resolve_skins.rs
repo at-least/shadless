@@ -151,11 +151,10 @@ pub fn split_class_name(cls: &str) -> (Option<String>, Option<String>, Option<St
         match c {
             ']' => depth += 1,
             '[' => depth -= 1,
-            ':'
-                if depth == 0 => {
-                    last_colon = i as isize;
-                    break;
-                }
+            ':' if depth == 0 => {
+                last_colon = i as isize;
+                break;
+            }
             _ => {}
         }
     }
@@ -173,11 +172,10 @@ pub fn split_class_name(cls: &str) -> (Option<String>, Option<String>, Option<St
         match c {
             '[' => depth += 1,
             ']' => depth -= 1,
-            '/'
-                if depth == 0 => {
-                    slash = i as isize;
-                    break;
-                }
+            '/' if depth == 0 => {
+                slash = i as isize;
+                break;
+            }
             _ => {}
         }
     }
@@ -269,12 +267,14 @@ pub fn apply_rtl_mapping(input: &str) -> String {
         if !done {
             for p in RTL_LOGICAL_SLIDE {
                 if let Some(v) = &variant
-                    && v.contains(p.0) && value.starts_with(p.1) {
-                        let mapped = value.replacen(p.1, p.2, 1);
-                        out.push(variant_prefixed(&variant, &m(&mapped), false));
-                        done = true;
-                        break;
-                    }
+                    && v.contains(p.0)
+                    && value.starts_with(p.1)
+                {
+                    let mapped = value.replacen(p.1, p.2, 1);
+                    out.push(variant_prefixed(&variant, &m(&mapped), false));
+                    done = true;
+                    break;
+                }
             }
         }
         if done {
@@ -418,13 +418,14 @@ pub fn run_resolve_skins(root: &Path, args: &[String]) -> i32 {
             }
             let src = std::fs::read_to_string(e.path()).map_err(|e| e.to_string())?;
             if let Some(transform) = transform
-                && e.path().extension().map(|x| x == "tsx").unwrap_or(false) {
-                    let (out, n) = transform(&src);
-                    *files += 1;
-                    *edits += n;
-                    std::fs::write(&o, out).map_err(|e| e.to_string())?;
-                    continue;
-                }
+                && e.path().extension().map(|x| x == "tsx").unwrap_or(false)
+            {
+                let (out, n) = transform(&src);
+                *files += 1;
+                *edits += n;
+                std::fs::write(&o, out).map_err(|e| e.to_string())?;
+                continue;
+            }
             std::fs::write(&o, src).map_err(|e| e.to_string())?;
         }
         Ok(())
@@ -677,7 +678,13 @@ mod tests {
     /// Go TestUnitSplitClassName.
     #[test]
     fn unit_split_class_name() {
-        type Case<'a> = (&'a str, &'a str, Option<&'a str>, Option<&'a str>, Option<&'a str>);
+        type Case<'a> = (
+            &'a str,
+            &'a str,
+            Option<&'a str>,
+            Option<&'a str>,
+            Option<&'a str>,
+        );
         let cases: [Case; 7] = [
             (
                 "bare utility, no variant, no alpha",

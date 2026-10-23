@@ -346,11 +346,7 @@ impl<'a> Scanner<'a> {
         while i < len && self.bytes[i] != b'>' {
             i += 1;
         }
-        if i < len {
-            i + 1
-        } else {
-            i
-        }
+        if i < len { i + 1 } else { i }
     }
 }
 
@@ -477,12 +473,7 @@ fn spans_snapshot_conformance() {
             if name == "aria/message-scroller-streaming.tsx" && got.len() == want.len() + 1 {
                 continue;
             }
-            let mut detail = format!(
-                "{}: got {} spans vs babel {}",
-                name,
-                got.len(),
-                want.len()
-            );
+            let mut detail = format!("{}: got {} spans vs babel {}", name, got.len(), want.len());
             for (g, w) in got.iter().zip(want.iter()) {
                 if g != w {
                     detail.push_str(&format!(

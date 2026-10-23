@@ -998,9 +998,10 @@ impl Snapshot {
                 continue;
             }
             if let Err(e) = std::fs::remove_file(&full)
-                && e.kind() != std::io::ErrorKind::NotFound {
-                    errs.push(format!("{}: {}", p, e));
-                }
+                && e.kind() != std::io::ErrorKind::NotFound
+            {
+                errs.push(format!("{}: {}", p, e));
+            }
         }
         if !errs.is_empty() {
             return Err(format!(
@@ -1252,8 +1253,7 @@ pub fn run_mutation(
                 // a surviving mutation used to print with no gate output at
                 // all — carry the log's last lines so the operator sees what
                 // the gate said while green
-                let mut lines: Vec<&str> =
-                    log.lines().filter(|l| !l.trim().is_empty()).collect();
+                let mut lines: Vec<&str> = log.lines().filter(|l| !l.trim().is_empty()).collect();
                 if lines.len() > 3 {
                     lines = lines.split_off(lines.len() - 3);
                 }

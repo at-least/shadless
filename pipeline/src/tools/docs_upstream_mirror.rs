@@ -97,13 +97,14 @@ pub fn run_docs_upstream_mirror() -> i32 {
         };
         let dst = Path::new(DOCS_UPSTREAM_MIRROR).join(rel);
         if let Some(dir) = dst.parent()
-            && let Err(e) = fs::create_dir_all(dir) {
-                eprintln!(
-                    "docs-upstream-mirror: {}",
-                    crate::fsutil::go_path_err("mkdir", dir, &e)
-                );
-                return 1;
-            }
+            && let Err(e) = fs::create_dir_all(dir)
+        {
+            eprintln!(
+                "docs-upstream-mirror: {}",
+                crate::fsutil::go_path_err("mkdir", dir, &e)
+            );
+            return 1;
+        }
         if let Err(e) = fs::write(&dst, &b) {
             eprintln!(
                 "docs-upstream-mirror: {}",

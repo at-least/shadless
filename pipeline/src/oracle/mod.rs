@@ -4,8 +4,8 @@
 
 pub mod browser_shell;
 pub mod contract;
-pub mod example_golden;
 pub mod example_fixture;
+pub mod example_golden;
 pub mod example_oracle;
 pub mod families;
 pub mod fixture_families;

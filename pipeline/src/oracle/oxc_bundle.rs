@@ -20,8 +20,7 @@ pub fn bundle_oracle_oxc(
     aliases: &HashMap<String, String>,
     outfile: &Path,
 ) -> Result<(), String> {
-    let rt = tokio::runtime::Runtime::new()
-        .map_err(|e| format!("rolldown: tokio runtime: {e}"))?;
+    let rt = tokio::runtime::Runtime::new().map_err(|e| format!("rolldown: tokio runtime: {e}"))?;
     rt.block_on(bundle_async(root, entry, aliases, outfile))
 }
 
@@ -31,7 +30,9 @@ async fn bundle_async(
     aliases: &HashMap<String, String>,
     outfile: &Path,
 ) -> Result<(), String> {
-    use rolldown::{BundlerBuilder, BundlerOptions, InputItem, OutputFormat, ResolveOptions, TsConfig};
+    use rolldown::{
+        BundlerBuilder, BundlerOptions, InputItem, OutputFormat, ResolveOptions, TsConfig,
+    };
 
     // Canonicalize the entry. A relative entry (example_oracle passes root =
     // ".") reached rolldown as "./node_modules/…": react imported from that
@@ -110,7 +111,7 @@ async fn bundle_async(
             return Err(format!(
                 "rolldown: produced {n} JS chunks of {total} outputs, expected 1 \
                  (code splitting is not wanted here)"
-            ))
+            ));
         }
     };
     std::fs::write(outfile, bytes).map_err(|e| format!("{}: {e}", outfile.display()))?;

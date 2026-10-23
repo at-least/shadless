@@ -184,11 +184,10 @@ pub fn cv_split_top(s: &str) -> Vec<String> {
         match b[i] {
             b'(' | b'[' | b'{' => depth += 1,
             b')' | b']' | b'}' => depth -= 1,
-            b','
-                if depth == 0 => {
-                    out.push(s[start..i].to_string());
-                    start = i + 1;
-                }
+            b',' if depth == 0 => {
+                out.push(s[start..i].to_string());
+                start = i + 1;
+            }
             _ => {}
         }
         i += 1;
@@ -297,9 +296,10 @@ pub fn cv_first_top(s: &str, ops: CvTopOps) -> isize {
             }
         } else if c == b')' {
             if let Some(top) = paren_stack.pop()
-                && top {
-                    depth -= 1;
-                }
+                && top
+            {
+                depth -= 1;
+            }
             if arrow_depth >= 0 && depth < arrow_depth {
                 arrow_depth = -1;
             }
@@ -411,10 +411,11 @@ pub fn cv_parse_expr(text: &str) -> ExprNode {
     // babel has no paren nodes — a fully-wrapping paren group is transparent
     while t.starts_with('(') {
         if let Some(e) = cv_match_bracket(t, 0, b'(', b')')
-            && e == t.len() - 1 {
-                t = t[1..e].trim();
-                continue;
-            }
+            && e == t.len() - 1
+        {
+            t = t[1..e].trim();
+            continue;
+        }
         break;
     }
     if t.is_empty() {
@@ -449,11 +450,12 @@ pub fn cv_parse_expr(text: &str) -> ExprNode {
         return n;
     }
     if let Some(m) = CV_NUM_RE.find(t)
-        && m.as_str() == t {
-            n.kind = "num".to_string();
-            n.str = m.as_str().to_string();
-            return n;
-        }
+        && m.as_str() == t
+    {
+        n.kind = "num".to_string();
+        n.str = m.as_str().to_string();
+        return n;
+    }
     // conditional before call/logical: `f(x) ? a : b` is a cond (call parens
     // are masked, so its '?' is top-level); `f(a ? b : c)` is a call (its '?'
     // hides inside the masked invocation).
@@ -490,20 +492,22 @@ pub fn cv_parse_expr(text: &str) -> ExprNode {
     if !name.is_empty() {
         let nlen = name.len();
         if let Some(e) = cv_match_bracket(t, nlen, b'(', b')')
-            && t[e + 1..].trim().is_empty() {
-                n.kind = "call".to_string();
-                n.ident = name;
-                n.args = cv_split_top(&t[nlen + 1..e]);
-                return n;
-            }
+            && t[e + 1..].trim().is_empty()
+        {
+            n.kind = "call".to_string();
+            n.ident = name;
+            n.args = cv_split_top(&t[nlen + 1..e]);
+            return n;
+        }
     }
     if b[0] == b'{'
         && let Some(e) = cv_match_bracket(t, 0, b'{', b'}')
-            && e == t.len() - 1 {
-                n.kind = "obj".to_string();
-                n.obj = cv_parse_obj_props(&t[1..e]);
-                return n;
-            }
+        && e == t.len() - 1
+    {
+        n.kind = "obj".to_string();
+        n.obj = cv_parse_obj_props(&t[1..e]);
+        return n;
+    }
     n
 }
 
@@ -615,10 +619,9 @@ pub fn cv_prop_colon(p: &str) -> isize {
         match b[i] {
             b'(' | b'[' | b'{' => depth += 1,
             b')' | b']' | b'}' => depth -= 1,
-            b':'
-                if depth == 0 => {
-                    return i as isize;
-                }
+            b':' if depth == 0 => {
+                return i as isize;
+            }
             _ => {}
         }
         i += 1;
@@ -840,10 +843,9 @@ pub fn cv_skip_stmt(s: &str, i: usize) -> usize {
         match b[i] {
             b'(' | b'[' | b'{' => depth += 1,
             b')' | b']' | b'}' => depth -= 1,
-            b';' | b'\n'
-                if depth <= 0 => {
-                    return i + 1;
-                }
+            b';' | b'\n' if depth <= 0 => {
+                return i + 1;
+            }
             _ => {}
         }
         i += 1;

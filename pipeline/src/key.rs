@@ -133,12 +133,7 @@ mod tests {
         crate::fsutil::temp_root(&format!("rs-key-{tag}"))
     }
 
-    fn mnode(
-        id: &str,
-        needs: &[&str],
-        inputs: Option<&[&str]>,
-        produces: Option<&[&str]>,
-    ) -> N {
+    fn mnode(id: &str, needs: &[&str], inputs: Option<&[&str]>, produces: Option<&[&str]>) -> N {
         N {
             id: id.to_string(),
             kind: "build".to_string(),
@@ -220,7 +215,13 @@ mod tests {
         aaa.inputs = Some(vec![]);
         let mut zzz = aaa.clone();
         zzz.id = "zzz".to_string();
-        let g3 = Graph::new(vec![parent.clone(), child.clone(), aaa.clone(), zzz.clone()]).unwrap();
+        let g3 = Graph::new(vec![
+            parent.clone(),
+            child.clone(),
+            aaa.clone(),
+            zzz.clone(),
+        ])
+        .unwrap();
         let k3 = Keyer::new(&t, &g3).key("parent").unwrap().unwrap();
         parent.needs = vec!["zzz".to_string(), "child".to_string(), "aaa".to_string()];
         let g4 = Graph::new(vec![parent, child, aaa, zzz]).unwrap();

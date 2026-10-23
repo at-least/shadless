@@ -3,7 +3,7 @@
 //! (go-parity-final tag).
 
 use crate::emit::tw::find_repo_root;
-use crate::jsonorder::{marshal_js, Json, JsonObj};
+use crate::jsonorder::{Json, JsonObj, marshal_js};
 use serde::Deserialize;
 use serde_json::Value;
 use std::collections::{HashMap, HashSet};
@@ -423,15 +423,16 @@ fn diff_ir(before: &IrSet, after: &IrSet) -> (Vec<String>, HashMap<String, IrEnt
                 }
                 for v in sorted_keys(va) {
                     if let Some(bv) = vb.get(&v)
-                        && js_string(&va[&v]) != js_string(bv) {
-                            d.changes.push(IrChange {
-                                what: "cva-value-classes".to_string(),
-                                table: tbl.clone(),
-                                axis: ax.clone(),
-                                value: v.clone(),
-                                ..Default::default()
-                            });
-                        }
+                        && js_string(&va[&v]) != js_string(bv)
+                    {
+                        d.changes.push(IrChange {
+                            what: "cva-value-classes".to_string(),
+                            table: tbl.clone(),
+                            axis: ax.clone(),
+                            value: v.clone(),
+                            ..Default::default()
+                        });
+                    }
                 }
             }
             let mut axes: HashSet<String> = ca.defaults.keys().cloned().collect();

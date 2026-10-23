@@ -39,10 +39,7 @@ fn shipped(t: &ComponentTier) -> bool {
     matches!(t.tier.as_str(), "static" | "kernel" | "trivial-js") || t.emit
 }
 
-fn pages(
-    root: &Path,
-    want: impl Fn(&ComponentTier) -> bool,
-) -> Result<Vec<String>, String> {
+fn pages(root: &Path, want: impl Fn(&ComponentTier) -> bool) -> Result<Vec<String>, String> {
     let m = component_tiers(root)?;
     let mut out: Vec<String> = m
         .iter()

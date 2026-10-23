@@ -53,12 +53,9 @@ pub fn expand_fanout(root: &Path, nodes: Vec<Node>) -> Result<Vec<Node>, String>
     let mut out: Vec<Node> = Vec::new();
     for n in nodes {
         if n.id == "contracts" {
-            let parts =
-                fan_contracts(root, &n).map_err(|e| format!("tools/contracts/components: {}", e))?;
-            replaced.insert(
-                n.id.clone(),
-                parts.iter().map(|p| p.id.clone()).collect(),
-            );
+            let parts = fan_contracts(root, &n)
+                .map_err(|e| format!("tools/contracts/components: {}", e))?;
+            replaced.insert(n.id.clone(), parts.iter().map(|p| p.id.clone()).collect());
             out.extend(parts);
             continue;
         }
@@ -106,7 +103,10 @@ mod tests {
         let list = expand_fanout(&tmp, nodes).unwrap();
         // 41 authored nodes + 2 shards replacing contracts
         assert_eq!(list.len(), 43);
-        let shards: Vec<&Node> = list.iter().filter(|n| n.id.starts_with("contracts:")).collect();
+        let shards: Vec<&Node> = list
+            .iter()
+            .filter(|n| n.id.starts_with("contracts:"))
+            .collect();
         assert_eq!(
             shards.iter().map(|n| n.id.as_str()).collect::<Vec<_>>(),
             vec!["contracts:button", "contracts:dialog"]
@@ -131,14 +131,19 @@ mod tests {
             Some(&"tools/contracts/components/button.mjs".to_string())
         );
         // the broad def-glob is narrowed out of the shared inputs
-        assert!(!shards[0]
-            .inputs
-            .as_deref()
-            .unwrap()
-            .contains(&"tools/contracts/components/**".to_string()));
+        assert!(
+            !shards[0]
+                .inputs
+                .as_deref()
+                .unwrap()
+                .contains(&"tools/contracts/components/**".to_string())
+        );
         assert_eq!(
             list.iter().find(|n| n.id == "reproducible").unwrap().after,
-            vec!["contracts:button".to_string(), "contracts:dialog".to_string()]
+            vec![
+                "contracts:button".to_string(),
+                "contracts:dialog".to_string()
+            ]
         );
         // style-parity's needs rewired to every shard, in sorted order
         let sp = list.iter().find(|n| n.id == "style-parity").unwrap();

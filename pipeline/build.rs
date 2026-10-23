@@ -29,7 +29,9 @@ use std::path::PathBuf;
 /// Same list as nodes.rs::ENGINE_GROUPS (order-free: the env string is
 /// "name=hex" pairs; keep both tables side-by-side identical so a group
 /// added in one place fails the pairing test here).
-const GROUPS: &[&str] = &["convert", "emit", "gates", "oracle", "tools", "twmerge", "tsx"];
+const GROUPS: &[&str] = &[
+    "convert", "emit", "gates", "oracle", "tools", "twmerge", "tsx",
+];
 
 /// src root files — everything NOT under a group directory and not jsbuild.rs.
 /// nodes.rs::HULL_FILES must match; a root file missing here silently leaves
@@ -83,7 +85,10 @@ fn walk_files(dir: &str) -> Vec<PathBuf> {
 }
 
 fn main() {
-    let mut out = format!("hull={}", hash_files(&mut HULL_FILES.iter().map(PathBuf::from).collect::<Vec<_>>()));
+    let mut out = format!(
+        "hull={}",
+        hash_files(&mut HULL_FILES.iter().map(PathBuf::from).collect::<Vec<_>>())
+    );
 
     for g in GROUPS {
         out.push_str(&format!(
@@ -108,11 +113,7 @@ fn main() {
              stems and would alias two files into one hash"
         );
         tool_stems.push(stem.clone());
-        out.push_str(&format!(
-            ";tools:{}={}",
-            stem,
-            hash_files(&mut [f])
-        ));
+        out.push_str(&format!(";tools:{}={}", stem, hash_files(&mut [f])));
     }
     out.push_str(&format!(
         ";jsbuild={}",

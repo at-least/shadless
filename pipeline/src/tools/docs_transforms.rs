@@ -1146,21 +1146,23 @@ pub fn parse_frontmatter(src: &str) -> Frontmatter {
             continue;
         }
         if let Some(top) = RE_TOP_KEY.captures(line)
-            && !line.starts_with([' ', '\t']) {
-                if top[2].is_empty() {
-                    let inner = HashMap::new();
-                    out.insert(top[1].to_string(), serde_json::json!(inner));
-                    cur = Some(inner);
-                } else {
-                    out.insert(top[1].to_string(), coerce_scalar(&top[2]));
-                    cur = None;
-                }
-                continue;
+            && !line.starts_with([' ', '\t'])
+        {
+            if top[2].is_empty() {
+                let inner = HashMap::new();
+                out.insert(top[1].to_string(), serde_json::json!(inner));
+                cur = Some(inner);
+            } else {
+                out.insert(top[1].to_string(), coerce_scalar(&top[2]));
+                cur = None;
             }
+            continue;
+        }
         if let Some(sub) = RE_SUB_KEY.captures(line)
-            && let Some(cur) = cur.as_mut() {
-                cur.insert(sub[1].to_string(), coerce_scalar(&sub[2]));
-            }
+            && let Some(cur) = cur.as_mut()
+        {
+            cur.insert(sub[1].to_string(), coerce_scalar(&sub[2]));
+        }
     }
     out
 }
@@ -1224,12 +1226,13 @@ pub fn scan_fences(src: &str) -> Vec<FenceInfo> {
     for line in src.split('\n') {
         if open < 0 {
             if let Some(m) = RE_FENCE_LINE.captures(line)
-                && line.trim_start().starts_with("```") {
-                    open = 3;
-                    lang = m[1].split(' ').next().unwrap_or("").to_string();
-                    content = String::new();
-                    continue;
-                }
+                && line.trim_start().starts_with("```")
+            {
+                open = 3;
+                lang = m[1].split(' ').next().unwrap_or("").to_string();
+                content = String::new();
+                continue;
+            }
         } else {
             if line.trim_start().starts_with("```") {
                 out.push(FenceInfo {

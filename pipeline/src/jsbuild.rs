@@ -18,7 +18,16 @@ use std::path::Path;
 /// The members of window.shadless re-exported by name; tools/unit/runtime.mjs
 /// asserts the set against the live global.
 const NAMED_EXPORTS: &[&str] = &[
-    "init", "initAll", "destroy", "refresh", "start", "stop", "register", "get", "instances", "h",
+    "init",
+    "initAll",
+    "destroy",
+    "refresh",
+    "start",
+    "stop",
+    "register",
+    "get",
+    "instances",
+    "h",
     "theme",
 ];
 

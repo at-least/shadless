@@ -851,10 +851,11 @@ fn run_discover_mode(root: &Path, all: &[String], by_path: &HashMap<String, Clas
     let mut unmatched: Vec<String> = Vec::new();
     for p in &new_files {
         if let Some(c) = by_path.get(p)
-            && c.kind != "unknown" {
-                matched.push(c.clone());
-                continue;
-            }
+            && c.kind != "unknown"
+        {
+            matched.push(c.clone());
+            continue;
+        }
         unmatched.push(p.clone());
     }
     if !matched.is_empty() {

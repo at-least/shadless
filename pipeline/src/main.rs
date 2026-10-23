@@ -9,8 +9,8 @@
 //! engine's own bytes.
 
 use pipeline::glob::files;
-use pipeline::graph::{load_graph_at, Graph};
-use pipeline::key::{outputs_present, stamp_value, Keyer};
+use pipeline::graph::{Graph, load_graph_at};
+use pipeline::key::{Keyer, outputs_present, stamp_value};
 use pipeline::nodes::Node;
 use pipeline::runner::Runner;
 use pipeline::stamps::{load_stamps, write_stamp};
@@ -60,8 +60,7 @@ fn resolve_targets(g: &Graph, targets: &[String]) -> Result<Vec<Node>, String> {
 /// Shared flag parsing: --force / --gates-only / --builds-only / --keep-going
 /// are flags, everything else is a target.
 fn parse_view_args(args: &[String]) -> (bool, bool, bool, bool, Vec<String>) {
-    let (mut force, mut gates_only, mut builds_only, mut keep_going) =
-        (false, false, false, false);
+    let (mut force, mut gates_only, mut builds_only, mut keep_going) = (false, false, false, false);
     let mut targets: Vec<String> = Vec::new();
     for a in args {
         match a.as_str() {
@@ -108,7 +107,11 @@ fn print_list(g: &Graph, plan: &[Node]) {
     let width = plan.iter().map(|n| n.id.len()).max().unwrap_or(0);
     let mut ngates = 0;
     for n in plan {
-        let (kind, is_gate) = if n.kind == "gate" { ("GATE ", true) } else { ("build", false) };
+        let (kind, is_gate) = if n.kind == "gate" {
+            ("GATE ", true)
+        } else {
+            ("build", false)
+        };
         if is_gate {
             ngates += 1;
         }
@@ -197,7 +200,11 @@ fn run_inputs(args: &[String]) -> i32 {
         eprintln!("unknown node: {}", id);
         return 2;
     };
-    let Some(patterns) = (if produces { n.produces.as_ref() } else { n.inputs.as_ref() }) else {
+    let Some(patterns) = (if produces {
+        n.produces.as_ref()
+    } else {
+        n.inputs.as_ref()
+    }) else {
         return 0; // never-fresh or no declared set at all
     };
     let list = match files(&root, patterns) {
@@ -234,18 +241,20 @@ fn run_command(args: &[String]) -> Result<(), String> {
         .unwrap_or(1);
     if let Ok(v) = std::env::var("PIPELINE_PARALLEL")
         && let Ok(n) = v.parse::<usize>()
-            && n > 0 {
-                jobs = n;
-            }
+        && n > 0
+    {
+        jobs = n;
+    }
     // Each browser node runs its own Chromium (~0.5–1 GB, bursty CPU during
     // render). A small cap keeps them off the contention cliff; the main
     // semaphore bounds everything, so a browser cap above -j is a lie.
     let mut browser_jobs = jobs.min(4);
     if let Ok(v) = std::env::var("PIPELINE_BROWSER_JOBS")
         && let Ok(n) = v.parse::<usize>()
-            && n > 0 {
-                browser_jobs = n;
-            }
+        && n > 0
+    {
+        browser_jobs = n;
+    }
     browser_jobs = browser_jobs.min(jobs);
     let runner = Arc::new(Runner::new(
         root.clone(),
@@ -253,7 +262,10 @@ fn run_command(args: &[String]) -> Result<(), String> {
         jobs,
         browser_jobs,
         force,
-        keep_going || std::env::var("PIPELINE_FAILURES").map(|v| v == "continue").unwrap_or(false),
+        keep_going
+            || std::env::var("PIPELINE_FAILURES")
+                .map(|v| v == "continue")
+                .unwrap_or(false),
         load_stamps(&root),
     ));
     let start = std::time::Instant::now();
@@ -321,7 +333,10 @@ fn adopt_command(args: &[String]) -> Result<(), String> {
         write_stamp(&root, &n.id, &stamp_value(&root, n, &key)).map_err(|e| e.to_string())?;
         n0 += 1;
     }
-    println!("adopted {} nodes as fresh (assumes the tree is a green full run)", n0);
+    println!(
+        "adopted {} nodes as fresh (assumes the tree is a green full run)",
+        n0
+    );
     Ok(())
 }
 
@@ -341,7 +356,6 @@ fn run_keys() -> Result<(), String> {
     }
     Ok(())
 }
-
 
 fn has_flag(args: &[String], flag: &str) -> bool {
     args.iter().any(|a| a == flag)
@@ -378,9 +392,9 @@ fn main() {
         "build-rtl" => std::process::exit(pipeline::emit::build_rtl::run_build_rtl()),
         "product-css" => std::process::exit(pipeline::emit::product_css::run_product_css()),
         "tw" => std::process::exit(pipeline::emit::tw::run_tw(&rest)),
-        "example-oracle" => std::process::exit(pipeline::oracle::example_oracle::run_example_oracle(
-            has_flag(&rest, "--check"),
-        )),
+        "example-oracle" => std::process::exit(
+            pipeline::oracle::example_oracle::run_example_oracle(has_flag(&rest, "--check")),
+        ),
         "demo" => {
             if let Err(e) = pipeline::emit::demo::run_demo() {
                 die(e);
@@ -407,9 +421,8 @@ fn main() {
             }
         }
         "pin" => {
-            let cwd = std::env::current_dir().unwrap_or_else(|e| {
-                die(format!("cannot determine the working directory: {}", e))
-            });
+            let cwd = std::env::current_dir()
+                .unwrap_or_else(|e| die(format!("cannot determine the working directory: {}", e)));
             std::process::exit(pipeline::gates::pin::run_pin(
                 &cwd,
                 has_flag(&rest, "--check-only"),
@@ -444,9 +457,9 @@ fn main() {
         "docs-catalog" => std::process::exit(pipeline::tools::docs_catalog::run_docs_catalog(
             &std::env::current_dir().unwrap_or_default(),
         )),
-        "docs-upstream-mirror" => std::process::exit(
-            pipeline::tools::docs_upstream_mirror::run_docs_upstream_mirror(),
-        ),
+        "docs-upstream-mirror" => {
+            std::process::exit(pipeline::tools::docs_upstream_mirror::run_docs_upstream_mirror())
+        }
         "ir-diff" => std::process::exit(pipeline::tools::ir_diff::run_ir_diff(&rest)),
         "css-direction" => {
             if !has_flag(&rest, "--update") {
@@ -455,9 +468,11 @@ fn main() {
                 );
                 std::process::exit(2);
             }
-            std::process::exit(pipeline::tools::css_direction_update::run_css_direction_update(
-                &std::env::current_dir().unwrap_or_default(),
-            ));
+            std::process::exit(
+                pipeline::tools::css_direction_update::run_css_direction_update(
+                    &std::env::current_dir().unwrap_or_default(),
+                ),
+            );
         }
         "upstream" => std::process::exit(pipeline::tools::upstream::run_upstream(
             &std::env::current_dir().unwrap_or_default(),
@@ -468,22 +483,28 @@ fn main() {
             &rest,
         )),
         "rtl-dict" => std::process::exit(pipeline::tools::rtl_dict::run_rtl_dict()),
-        "docs-consistency" => std::process::exit(
-            pipeline::tools::docs_consistency::run_docs_consistency(
+        "docs-consistency" => {
+            std::process::exit(pipeline::tools::docs_consistency::run_docs_consistency(
                 &std::env::current_dir().unwrap_or_default(),
-            ),
-        ),
-        "docs-code-parity" => std::process::exit(pipeline::tools::docs_code_parity::run_docs_code_parity(
-            &std::env::current_dir().unwrap_or_default(),
-        )),
+            ))
+        }
+        "docs-code-parity" => {
+            std::process::exit(pipeline::tools::docs_code_parity::run_docs_code_parity(
+                &std::env::current_dir().unwrap_or_default(),
+            ))
+        }
         "docs-build" => std::process::exit(pipeline::tools::docs_build::run_docs_build(
             &std::env::current_dir().unwrap_or_default(),
         )),
         "docs-fidelity" => std::process::exit(pipeline::tools::docs_fidelity::run_docs_fidelity(
             &std::env::current_dir().unwrap_or_default(),
         )),
-        "example-fixture" => std::process::exit(pipeline::oracle::example_fixture::run_example_fixture(&rest)),
-        "example-golden" => std::process::exit(pipeline::oracle::example_golden::run_example_golden(&rest)),
+        "example-fixture" => std::process::exit(
+            pipeline::oracle::example_fixture::run_example_fixture(&rest),
+        ),
+        "example-golden" => {
+            std::process::exit(pipeline::oracle::example_golden::run_example_golden(&rest))
+        }
         "contract" => {
             if rest.is_empty() {
                 die("contract: need a component name".to_string());
@@ -570,21 +591,20 @@ fn run_hidden_meta(rest: &[String]) -> i32 {
             return 1;
         }
     };
-    let selected: Vec<&pipeline::gates::mutations::Mutation> =
-        match rest.first() {
-            Some(gate) => {
-                let hits: Vec<_> = pipeline::gates::mutations::MUTATIONS
-                    .iter()
-                    .filter(|m| m.gate == gate.as_str())
-                    .collect();
-                if hits.is_empty() {
-                    eprintln!("pipeline __meta: no mutations for gate: {}", gate);
-                    return 2;
-                }
-                hits
+    let selected: Vec<&pipeline::gates::mutations::Mutation> = match rest.first() {
+        Some(gate) => {
+            let hits: Vec<_> = pipeline::gates::mutations::MUTATIONS
+                .iter()
+                .filter(|m| m.gate == gate.as_str())
+                .collect();
+            if hits.is_empty() {
+                eprintln!("pipeline __meta: no mutations for gate: {}", gate);
+                return 2;
             }
-            None => pipeline::gates::mutations::MUTATIONS.iter().collect(),
-        };
+            hits
+        }
+        None => pipeline::gates::mutations::MUTATIONS.iter().collect(),
+    };
     println!("meta: {} mutations", selected.len());
     let mut failures: Vec<String> = Vec::new();
     for m in &selected {
@@ -607,10 +627,7 @@ fn run_hidden_meta(rest: &[String]) -> i32 {
                     } else {
                         format!(" ({})", res.note)
                     };
-                    println!(
-                        "  {:<34} -> {:<20} NOT CAUGHT{}",
-                        res.id, res.gate, note
-                    );
+                    println!("  {:<34} -> {:<20} NOT CAUGHT{}", res.id, res.gate, note);
                     failures.push(format!(
                         "{}: {} stayed green under \"{}\"{}",
                         res.id, res.gate, m.why, note
@@ -658,10 +675,7 @@ const DISPATCHED_GATES: &[&str] = &[
 
 fn run_hidden_gate(rest: &[String]) -> i32 {
     let Some(gate) = rest.first() else {
-        eprintln!(
-            "usage: pipeline __gate <{}>",
-            DISPATCHED_GATES.join("|")
-        );
+        eprintln!("usage: pipeline __gate <{}>", DISPATCHED_GATES.join("|"));
         return 2;
     };
     let root = std::env::current_dir().unwrap_or_default();
@@ -672,9 +686,7 @@ fn run_hidden_gate(rest: &[String]) -> i32 {
         }
         "pack" => pipeline::gates::pack::gate_pack(&root),
         "consumer-sim" => pipeline::gates::consumer_sim::gate_consumer_sim(&root),
-        "coverage" => {
-            pipeline::gates::coverage::gate_coverage(&root, &["--check".to_string()])
-        }
+        "coverage" => pipeline::gates::coverage::gate_coverage(&root, &["--check".to_string()]),
         "ledger" => pipeline::gates::ledger::gate_ledger(&root),
         "script-refs" => pipeline::gates::gate_script_refs(&root).map(|_| ()),
         "dist-complete" => pipeline::gates::gate_dist_complete(&root).map(|_| ()),
@@ -753,8 +765,6 @@ fn run_hidden_gate(rest: &[String]) -> i32 {
     }
 }
 
-
-
 #[cfg(test)]
 mod verb_surface {
     /// The public dispatch arms of run()'s match — kept adjacent so a new
@@ -763,15 +773,47 @@ mod verb_surface {
     /// reachable from the build files but not dispatchable (or vice versa)
     /// fails here.
     const ARMS: &[&str] = &[
-        "plan", "list", "status", "inputs", "run", "adopt", "build-js",
-        "build-rtl", "product-css", "tw", "example-oracle", "demo", "emit",
-        "convert", "pin", "coverage", "ledger", "audit-boundary", "oracle-css",
-        "docs-catalog", "docs-upstream-mirror", "ir-diff", "css-direction",
-        "upstream", "resolve-skins", "rtl-dict", "docs-consistency",
-        "docs-build", "docs-fidelity", "docs-code-parity", "example-fixture",
+        "plan",
+        "list",
+        "status",
+        "inputs",
+        "run",
+        "adopt",
+        "build-js",
+        "build-rtl",
+        "product-css",
+        "tw",
+        "example-oracle",
+        "demo",
+        "emit",
+        "convert",
+        "pin",
+        "coverage",
+        "ledger",
+        "audit-boundary",
+        "oracle-css",
+        "docs-catalog",
+        "docs-upstream-mirror",
+        "ir-diff",
+        "css-direction",
+        "upstream",
+        "resolve-skins",
+        "rtl-dict",
+        "docs-consistency",
+        "docs-build",
+        "docs-fidelity",
+        "docs-code-parity",
+        "example-fixture",
         "example-golden",
-        "contract", "contracts", "upstream-snapshot", "demo-smoke", "docs-smoke",
-        "overlay", "interactivity-sweep", "demo-parity", "style-parity",
+        "contract",
+        "contracts",
+        "upstream-snapshot",
+        "demo-smoke",
+        "docs-smoke",
+        "overlay",
+        "interactivity-sweep",
+        "demo-parity",
+        "style-parity",
         "path-parity",
     ];
 

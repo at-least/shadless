@@ -5,8 +5,8 @@
 //! probes/t8; menubar/navigation-menu from src/kernel; field is inlined.
 
 use super::css::{CssIrComponent, component_css, wrap_component_css};
-use super::{htmlutil, valid_component_name};
 use super::prepaint::{SHADLESS_CSS_FIXES, inject_pre_paint};
+use super::{htmlutil, valid_component_name};
 use super::{load_skin, skin_data};
 use regex::Regex;
 use serde::Deserialize;
@@ -56,7 +56,6 @@ fn ensure_link(html: &str) -> String {
         1,
     )
 }
-
 
 /// out.css's content scan is EXPLICIT (source(none)); this list mirrors the
 /// dist-facing inputs of the `demo-css` node in the authored nodes table
@@ -120,7 +119,6 @@ pub(crate) struct RegTier {
     #[serde(default)]
     fixture: Option<String>,
 }
-
 
 /// `shipped_irs`'s return: the shipped IR set in sorted-filename order plus
 /// the tiers table (run_demo reads each component's fixture from it).
@@ -273,7 +271,7 @@ pub fn run_demo() -> Result<(), String> {
     let read_fixture = |p: &str| -> Option<String> { std::fs::read_to_string(root.join(p)).ok() };
     for name in &names {
         let ir = &ir_all[name];
-        
+
         if ir.tier == "static" {
             if !root.join(format!("dist/components/{}.html", name)).exists() {
                 eprintln!(
@@ -289,9 +287,7 @@ pub fn run_demo() -> Result<(), String> {
         // ensure_link is idempotent, so kernel fixtures that already carry
         // the stylesheet link pass through unchanged
         let html: String = match reg_tiers.get(name).and_then(|t| t.fixture.as_deref()) {
-            Some("inline:field") if name == "field" => {
-                field_demo_html().to_string()
-            }
+            Some("inline:field") if name == "field" => field_demo_html().to_string(),
             Some(path) => {
                 let Some(src) = read_fixture(path) else {
                     eprintln!("demo: no fixture {} for {}", path, name);

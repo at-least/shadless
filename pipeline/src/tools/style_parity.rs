@@ -7,25 +7,59 @@ use serde::Deserialize;
 use std::path::Path;
 
 use super::parity_baseline::{
-    cell_map, diff_parity_baseline, load_parity_baseline, ParityCell, parity_norm_value,
-    show_cell, show_change, write_parity_baseline,
+    ParityCell, cell_map, diff_parity_baseline, load_parity_baseline, parity_norm_value, show_cell,
+    show_change, write_parity_baseline,
 };
 
 const STYLE_PARITY_DIR: &str = "tools/contracts/out";
 const STYLE_PARITY_BASELINE: &str = "gates/style-parity-baseline.json";
 
 const STYLE_PARITY_PROPS: [&str; 36] = [
-    "color", "background-color", "border-color", "border-top-width", "border-radius",
-    "display", "position", "flex-direction", "align-items", "justify-content",
-    "gap", "padding-top", "padding-right", "padding-bottom", "padding-left",
-    "margin-top", "margin-right", "margin-bottom", "margin-left",
-    "width", "height", "min-width", "max-width", "font-size", "font-weight",
-    "line-height", "text-align", "opacity", "z-index", "overflow", "visibility",
-    "box-shadow", "transform", "inset", "flex-wrap", "grid-template-columns",
+    "color",
+    "background-color",
+    "border-color",
+    "border-top-width",
+    "border-radius",
+    "display",
+    "position",
+    "flex-direction",
+    "align-items",
+    "justify-content",
+    "gap",
+    "padding-top",
+    "padding-right",
+    "padding-bottom",
+    "padding-left",
+    "margin-top",
+    "margin-right",
+    "margin-bottom",
+    "margin-left",
+    "width",
+    "height",
+    "min-width",
+    "max-width",
+    "font-size",
+    "font-weight",
+    "line-height",
+    "text-align",
+    "opacity",
+    "z-index",
+    "overflow",
+    "visibility",
+    "box-shadow",
+    "transform",
+    "inset",
+    "flex-wrap",
+    "grid-template-columns",
 ];
 
 // runtime-measured / animation noise both sides carry differently
-const STYLE_PARITY_SKIP: [&str; 4] = ["transform", "transition", "transition-duration", "animation"];
+const STYLE_PARITY_SKIP: [&str; 4] = [
+    "transform",
+    "transition",
+    "transition-duration",
+    "animation",
+];
 
 // Measurements were being taken MID-ANIMATION: freeze both sides first.
 const STYLE_PARITY_FREEZE: &str = r#"*, *::before, *::after {
@@ -34,7 +68,8 @@ const STYLE_PARITY_FREEZE: &str = r#"*, *::before, *::after {
 }"#;
 
 // Harness shell, identical on both sides (neither convention is the component).
-const STYLE_PARITY_SHELL: &str = "padding:0;margin:0;color:var(--foreground);background:var(--background)";
+const STYLE_PARITY_SHELL: &str =
+    "padding:0;margin:0;color:var(--foreground);background:var(--background)";
 
 const STYLE_PARITY_COLLECT: &str = r#"(props) => {
   const out = []
@@ -125,7 +160,10 @@ pub fn run_style_parity(root: &Path, strict: bool, record: bool) -> i32 {
                 serde_json::json!({"dark": v.1, "dir": v.2}),
             );
             let _ = page.wait_for_timeout(60);
-            let Ok(res) = page.evaluate_fn_arg(STYLE_PARITY_COLLECT, serde_json::json!(STYLE_PARITY_PROPS.to_vec())) else {
+            let Ok(res) = page.evaluate_fn_arg(
+                STYLE_PARITY_COLLECT,
+                serde_json::json!(STYLE_PARITY_PROPS.to_vec()),
+            ) else {
                 return out;
             };
             if let Some(arr) = res.as_array() {
@@ -143,9 +181,8 @@ pub fn run_style_parity(root: &Path, strict: bool, record: bool) -> i32 {
             serde_json::json!(STYLE_PARITY_SHELL),
         );
         let _ = page.add_style_tag(STYLE_PARITY_FREEZE);
-        let _ = page.evaluate(
-            r#"(function(){ document.getAnimations?.().forEach((a) => a.finish()) })()"#,
-        );
+        let _ = page
+            .evaluate(r#"(function(){ document.getAnimations?.().forEach((a) => a.finish()) })()"#);
         let _ = page.wait_for_timeout(120);
     };
 
@@ -169,12 +206,19 @@ pub fn run_style_parity(root: &Path, strict: bool, record: bool) -> i32 {
                 continue;
             }
         };
-        let mut def_v = def_res.get("def").cloned().unwrap_or(serde_json::Value::Null);
+        let mut def_v = def_res
+            .get("def")
+            .cloned()
+            .unwrap_or(serde_json::Value::Null);
         crate::emit::css::drop_nulls(&mut def_v);
         let def: SpDef = match serde_json::from_value(def_v) {
             Ok(d) => d,
             Err(e) => {
-                harness_errors.push(format!("{}: harness error — {}", name, first_line(&e.to_string())));
+                harness_errors.push(format!(
+                    "{}: harness error — {}",
+                    name,
+                    first_line(&e.to_string())
+                ));
                 continue;
             }
         };
@@ -238,8 +282,10 @@ pub fn run_style_parity(root: &Path, strict: bool, record: bool) -> i32 {
                     *n += 1;
                     format!("{}#{}", slot, n)
                 };
-                let mut map_a: std::collections::HashMap<String, std::collections::HashMap<String, String>> =
-                    std::collections::HashMap::new();
+                let mut map_a: std::collections::HashMap<
+                    String,
+                    std::collections::HashMap<String, String>,
+                > = std::collections::HashMap::new();
                 let mut order_a: Vec<String> = Vec::new();
                 for e in oracle_sides.get(variant.0).into_iter().flatten() {
                     let k = key_of(&slot_of(e), &mut seen_a);
@@ -254,8 +300,10 @@ pub fn run_style_parity(root: &Path, strict: bool, record: bool) -> i32 {
                     map_a.insert(k.clone(), sm);
                     order_a.push(k);
                 }
-                let mut map_b: std::collections::HashMap<String, std::collections::HashMap<String, String>> =
-                    std::collections::HashMap::new();
+                let mut map_b: std::collections::HashMap<
+                    String,
+                    std::collections::HashMap<String, String>,
+                > = std::collections::HashMap::new();
                 let mut order_b: Vec<String> = Vec::new();
                 for e in shadless_sides.get(variant.0).into_iter().flatten() {
                     let k = key_of(&slot_of(e), &mut seen_b);
@@ -290,8 +338,14 @@ pub fn run_style_parity(root: &Path, strict: bool, record: bool) -> i32 {
                         None => push(k, "<presence>", "present", "missing"),
                         Some(b) => {
                             for p in &props {
-                                let va = parity_norm_value(a.get(*p).map(String::as_str).unwrap_or(""), true);
-                                let vb = parity_norm_value(b.get(*p).map(String::as_str).unwrap_or(""), true);
+                                let va = parity_norm_value(
+                                    a.get(*p).map(String::as_str).unwrap_or(""),
+                                    true,
+                                );
+                                let vb = parity_norm_value(
+                                    b.get(*p).map(String::as_str).unwrap_or(""),
+                                    true,
+                                );
                                 if va != vb {
                                     push(k, p, &va, &vb);
                                 }
@@ -315,7 +369,10 @@ pub fn run_style_parity(root: &Path, strict: bool, record: bool) -> i32 {
     }
 
     if !harness_errors.is_empty() {
-        eprintln!("FAIL  style-parity (harness)\n  {}\n", harness_errors.join("\n  "));
+        eprintln!(
+            "FAIL  style-parity (harness)\n  {}\n",
+            harness_errors.join("\n  ")
+        );
         return 1;
     }
 

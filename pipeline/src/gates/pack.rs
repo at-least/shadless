@@ -118,18 +118,19 @@ pub fn gate_pack(root: &Path) -> Result<(), String> {
 
     // 1. dependencies
     if let Some(deps) = dependencies.as_object()
-        && !deps.is_empty() {
-            let mut names: Vec<&String> = deps.keys().collect();
-            names.sort();
-            fail.push(format!(
-                "dependencies must be empty (React-free means installing nothing): {}",
-                names
-                    .iter()
-                    .map(|s| s.as_str())
-                    .collect::<Vec<_>>()
-                    .join(", ")
-            ));
-        }
+        && !deps.is_empty()
+    {
+        let mut names: Vec<&String> = deps.keys().collect();
+        names.sort();
+        fail.push(format!(
+            "dependencies must be empty (React-free means installing nothing): {}",
+            names
+                .iter()
+                .map(|s| s.as_str())
+                .collect::<Vec<_>>()
+                .join(", ")
+        ));
+    }
 
     // 2. exports -> files
     let mut targets: BTreeMap<String, Vec<String>> = BTreeMap::new();
@@ -312,7 +313,10 @@ pub fn gate_pack(root: &Path) -> Result<(), String> {
             }
         }
     } else {
-        fail.push("README has no \"## Not included\" section to cross-check against grey_components()".to_string());
+        fail.push(
+            "README has no \"## Not included\" section to cross-check against grey_components()"
+                .to_string(),
+        );
     }
 
     // 4. nothing outside the product surface

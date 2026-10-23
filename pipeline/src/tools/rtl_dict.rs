@@ -153,34 +153,35 @@ fn run_rtl_dict_to(root: &Path, out_path: &Path) -> i32 {
     if let Ok(committed) = std::fs::read_to_string(out_path)
         && let Ok(prev) = serde_json::from_str::<
             HashMap<String, serde_json::Map<String, serde_json::Value>>,
-        >(&committed) {
-            for (name, langs) in dicts.iter_mut() {
-                let Some(comp) = prev.get(name) else { continue };
-                for (lang, entry) in comp.iter() {
-                    if langs.names.iter().any(|l| l == lang) {
-                        continue;
-                    }
-                    let (Some(dir), Some(values)) = (
-                        entry.get("dir").and_then(|d| d.as_str()),
-                        entry.get("values").and_then(|v| v.as_object()),
-                    ) else {
-                        continue;
-                    };
-                    let mut rv = RtlValues {
-                        keys: Vec::new(),
-                        vals: HashMap::new(),
-                    };
-                    for (k, v) in values {
-                        let Some(vs) = v.as_str() else { continue };
-                        rv.keys.push(k.clone());
-                        rv.vals.insert(k.clone(), vs.to_string());
-                    }
-                    langs.names.push(lang.clone());
-                    langs.dir.insert(lang.clone(), dir.to_string());
-                    langs.values.insert(lang.clone(), rv);
+        >(&committed)
+    {
+        for (name, langs) in dicts.iter_mut() {
+            let Some(comp) = prev.get(name) else { continue };
+            for (lang, entry) in comp.iter() {
+                if langs.names.iter().any(|l| l == lang) {
+                    continue;
                 }
+                let (Some(dir), Some(values)) = (
+                    entry.get("dir").and_then(|d| d.as_str()),
+                    entry.get("values").and_then(|v| v.as_object()),
+                ) else {
+                    continue;
+                };
+                let mut rv = RtlValues {
+                    keys: Vec::new(),
+                    vals: HashMap::new(),
+                };
+                for (k, v) in values {
+                    let Some(vs) = v.as_str() else { continue };
+                    rv.keys.push(k.clone());
+                    rv.vals.insert(k.clone(), vs.to_string());
+                }
+                langs.names.push(lang.clone());
+                langs.dir.insert(lang.clone(), dir.to_string());
+                langs.values.insert(lang.clone(), rv);
             }
         }
+    }
 
     if !failures.is_empty() {
         for f in &failures {
@@ -594,11 +595,7 @@ fn skip_ws(s: &str, mut i: usize) -> usize {
 }
 
 fn is_ident(c: u8) -> bool {
-    c.is_ascii_lowercase()
-        || c.is_ascii_uppercase()
-        || c == b'_'
-        || c == b'$'
-        || c.is_ascii_digit()
+    c.is_ascii_lowercase() || c.is_ascii_uppercase() || c == b'_' || c == b'$' || c.is_ascii_digit()
 }
 
 /// decodeJSString decodes the escape sequences that appear in this corpus.

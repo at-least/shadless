@@ -213,13 +213,14 @@ impl OrderedCva {
             let mut t: CvaTable = serde_json::from_value(v.clone()).ok()?;
             t.defaults = HashMap::new();
             if let Some(obj) = v.as_object()
-                && let Some(d) = obj.get("defaults").and_then(|d| d.as_object()) {
-                    for (k, val) in d {
-                        if let Some(s) = val.as_str() {
-                            t.defaults.insert(k.clone(), s.to_string());
-                        }
+                && let Some(d) = obj.get("defaults").and_then(|d| d.as_object())
+            {
+                for (k, val) in d {
+                    if let Some(s) = val.as_str() {
+                        t.defaults.insert(k.clone(), s.to_string());
                     }
                 }
+            }
             Some(t)
         })
     }
@@ -431,12 +432,15 @@ fn check_selector_values(ir: &CssIrComponent) -> Result<(), String> {
     // quoted positions ([data-slot="{slot}"], [data-{axis}="{val}"]): a
     // quote, backslash or raw newline ends the string early and breaks into
     // rule space
-    let value_ok = |v: &str| !v.contains('"') && !v.contains('\\') && !v.contains('\n') && !v.contains('\r');
+    let value_ok =
+        |v: &str| !v.contains('"') && !v.contains('\\') && !v.contains('\n') && !v.contains('\r');
     // unquoted positions (the attribute NAME [data-{axis}=…], [{attr}=…]):
     // no quote is needed to break out — ], {, }, whitespace all do — so
     // these are whitelisted to identifiers
     let ident_ok = |v: &str| {
-        !v.is_empty() && v.chars().all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '-')
+        !v.is_empty()
+            && v.chars()
+                .all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '-')
     };
     let bad = |kind: &str, v: &str| -> String {
         format!(
@@ -1119,10 +1123,7 @@ mod tests {
             Err(e) => e,
             Ok(_) => panic!("a slot carrying a quote must be refused at entry"),
         };
-        assert!(
-            err.contains("refuses selector value"),
-            "got: {err}"
-        );
+        assert!(err.contains("refuses selector value"), "got: {err}");
     }
 
     /// The axis sits in an UNQUOTED attribute-name position — it needs an

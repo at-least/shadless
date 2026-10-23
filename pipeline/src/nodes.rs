@@ -85,24 +85,71 @@ fn node(
 pub fn all_go() -> Vec<Node> {
     vec![
         node(
-            "pin", "gate", "fast",
+            "pin",
+            "gate",
+            "fast",
             &[],
-            &[&["go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestPin$", "."]],
-            Some(&["pipeline/gate_pin.go", "pipeline/gates_test.go", "src/registry/pin.json", "vendor/**", ".upstream/shadcn-ui/.git/HEAD"]),
+            &[&[
+                "go",
+                "test",
+                "-C",
+                "pipeline",
+                "-count=1",
+                "-v",
+                "-run",
+                "^TestPin$",
+                ".",
+            ]],
+            Some(&[
+                "pipeline/gate_pin.go",
+                "pipeline/gates_test.go",
+                "src/registry/pin.json",
+                "vendor/**",
+                ".upstream/shadcn-ui/.git/HEAD",
+            ]),
             None,
             "the .upstream checkout must sit exactly at the pinned release tag; upgrade tools write pin.json directly and nothing else checks the result",
             &["pin-commit-drift", "pin-base-drift"],
         ),
         node(
-            "unit", "gate", "fast",
+            "unit",
+            "gate",
+            "fast",
             &["build-js"],
-            &[&["node", "tools/unit-check.mjs"], &["go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestUnit", "./..."]],
+            &[
+                &["node", "tools/unit-check.mjs"],
+                &[
+                    "go",
+                    "test",
+                    "-C",
+                    "pipeline",
+                    "-count=1",
+                    "-v",
+                    "-run",
+                    "^TestUnit",
+                    "./...",
+                ],
+            ],
             Some(&[
-                "tools/unit-check.mjs", "tools/unit/**", "src/**", "generated/ir/**", "tools/**/*.mjs",
-                "vendor/**", "package.json", "dist/esm/**", "dist/shadless.js", "probes/h4/globals.css",
-                ".upstream/shadcn-ui/apps/v4/registry/styles/style-nova.css", "pipeline/*.go",
-                "pipeline/internal/**", "docs/example-oracle.json", "docs/example-fixture-targets.json",
-                "dist/bin/**", "dist/css/vocabulary.json", "docs/demos/**", "dist/components/**",
+                "tools/unit-check.mjs",
+                "tools/unit/**",
+                "src/**",
+                "generated/ir/**",
+                "tools/**/*.mjs",
+                "vendor/**",
+                "package.json",
+                "dist/esm/**",
+                "dist/shadless.js",
+                "probes/h4/globals.css",
+                ".upstream/shadcn-ui/apps/v4/registry/styles/style-nova.css",
+                "pipeline/*.go",
+                "pipeline/internal/**",
+                "docs/example-oracle.json",
+                "docs/example-fixture-targets.json",
+                "dist/bin/**",
+                "dist/css/vocabulary.json",
+                "docs/demos/**",
+                "dist/components/**",
                 "docs/site/content/**",
             ]),
             None,
@@ -114,51 +161,131 @@ pub fn all_go() -> Vec<Node> {
             ],
         ),
         node(
-            "typecheck", "gate", "fast",
+            "typecheck",
+            "gate",
+            "fast",
             &[],
             &[&["npx", "tsc", "-p", "tsconfig.json"]],
-            Some(&["src/**", "tsconfig.json", "package.json", "package-lock.json"]),
+            Some(&[
+                "src/**",
+                "tsconfig.json",
+                "package.json",
+                "package-lock.json",
+            ]),
             None,
             "the JSDoc types are the IR/emit contract — checkJs keeps them machine-checked; npm run verify alone would not enforce it for direct pipeline runs",
             &["typecheck-break-ir-contract"],
         ),
         node(
-            "ledger", "gate", "fast",
+            "ledger",
+            "gate",
+            "fast",
             &[],
-            &[&["go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestLedger$", "."]],
+            &[&[
+                "go",
+                "test",
+                "-C",
+                "pipeline",
+                "-count=1",
+                "-v",
+                "-run",
+                "^TestLedger$",
+                ".",
+            ]],
             Some(&[
-                "pipeline/ledger.go", "pipeline/jssource.go", "pipeline/interactivity_sweep.go",
-                "pipeline/gates_test.go", "gates/ledger.json", "gates/*-baseline.json",
-                "src/registry/pin.json", "src/registry/upstream-snapshot/exemptions.json",
-                "tools/contracts/components/**", "src/**", "EXEMPTIONS.md",
+                "pipeline/ledger.go",
+                "pipeline/jssource.go",
+                "pipeline/interactivity_sweep.go",
+                "pipeline/gates_test.go",
+                "gates/ledger.json",
+                "gates/*-baseline.json",
+                "src/registry/pin.json",
+                "src/registry/upstream-snapshot/exemptions.json",
+                "tools/contracts/components/**",
+                "src/**",
+                "EXEMPTIONS.md",
             ]),
             None,
             "every recorded exemption must be schema-valid, still present in its source, and inside its budget — scattered flags rot silently",
             &["ledger-undocumented-exemption", "ledger-budget-exceeded"],
         ),
         node(
-            "script-refs", "gate", "fast",
+            "script-refs",
+            "gate",
+            "fast",
             &[],
-            &[&["go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestScriptRefs$", "."]],
-            Some(&["pipeline/gate_script_refs.go", "pipeline/gates_test.go", "pipeline/main.go", "pipeline/*_test.go", "package.json", "Makefile"]),
+            &[&[
+                "go",
+                "test",
+                "-C",
+                "pipeline",
+                "-count=1",
+                "-v",
+                "-run",
+                "^TestScriptRefs$",
+                ".",
+            ]],
+            Some(&[
+                "pipeline/gate_script_refs.go",
+                "pipeline/gates_test.go",
+                "pipeline/main.go",
+                "pipeline/*_test.go",
+                "package.json",
+                "Makefile",
+            ]),
             None,
             "a node/pipeline call in Makefile or package.json scripts must resolve to a real file, a real pipeline subcommand, or a real go test — the Go port deleted gates/overlay.mjs, gates/path-parity.mjs, tools/example-oracle.mjs, tools/example-fixture.mjs and tools/css-direction-gate.mjs while three Makefile targets and four npm scripts kept calling them, silent until run",
             &["script-refs-dead-node-call"],
         ),
         node(
-            "dist-complete", "gate", "fast",
+            "dist-complete",
+            "gate",
+            "fast",
             &["demo-css", "product-css"],
-            &[&["go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestDistComplete$", "."]],
-            Some(&["pipeline/gate_dist_complete.go", "pipeline/gates_test.go", "dist/css/**", "dist/out.css"]),
+            &[&[
+                "go",
+                "test",
+                "-C",
+                "pipeline",
+                "-count=1",
+                "-v",
+                "-run",
+                "^TestDistComplete$",
+                ".",
+            ]],
+            Some(&[
+                "pipeline/gate_dist_complete.go",
+                "pipeline/gates_test.go",
+                "dist/css/**",
+                "dist/out.css",
+            ]),
             None,
             "the tracked no-build dist/out.css must carry every slot selector its per-component sources declare — a partial-build out.css (static pages only) got committed once and no gate asked whether the file was whole",
             &["dist-complete-drop-component"],
         ),
         node(
-            "pack", "gate", "fast",
+            "pack",
+            "gate",
+            "fast",
             &["build-js", "product-build"],
-            &[&["go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestPack$", "."]],
-            Some(&["pipeline/gate_pack.go", "pipeline/gates_test.go", "package.json", "README.md", "dist/**"]),
+            &[&[
+                "go",
+                "test",
+                "-C",
+                "pipeline",
+                "-count=1",
+                "-v",
+                "-run",
+                "^TestPack$",
+                ".",
+            ]],
+            Some(&[
+                "pipeline/gate_pack.go",
+                "pipeline/gates_test.go",
+                "package.json",
+                "README.md",
+                "dist/**",
+            ]),
             None,
             "the npm surface — exports map, bin targets, tarball contents, README specifiers, an empty dependencies — must agree: a bare-string ./runtime.min export served an IIFE to `import`, README documented a specifier that does not resolve, and a React-free package installed React through dependencies",
             &[
@@ -168,44 +295,91 @@ pub fn all_go() -> Vec<Node> {
             ],
         ),
         node(
-            "coverage", "gate", "fast",
+            "coverage",
+            "gate",
+            "fast",
             &["convert", "example-oracle"],
-            &[&["go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestCoverage$", "."]],
+            &[&[
+                "go",
+                "test",
+                "-C",
+                "pipeline",
+                "-count=1",
+                "-v",
+                "-run",
+                "^TestCoverage$",
+                ".",
+            ]],
             Some(&[
-                "pipeline/gate_coverage.go", "pipeline/gate_coverage_budget.go", "pipeline/gates_test.go",
-                "gates/ledger.json", "src/registry/tiers.json", "generated/ir/**", "docs/example-oracle.json",
-                "docs/demos/**", "tools/contracts/components/**",
+                "pipeline/gate_coverage.go",
+                "pipeline/gate_coverage_budget.go",
+                "pipeline/gates_test.go",
+                "gates/ledger.json",
+                "src/registry/tiers.json",
+                "generated/ir/**",
+                "docs/example-oracle.json",
+                "docs/demos/**",
+                "tools/contracts/components/**",
             ]),
             Some(&["build/gates/coverage.json"]),
             "the product surface (component x path x theme x dir x state) as a matrix with the gate covering each cell; the UNCOVERED count is budgeted and may only shrink — every historical bug sat in a cell no gate had been written for",
             &["coverage-drop-contract"],
         ),
         node(
-            "overlay", "gate", "fast",
+            "overlay",
+            "gate",
+            "fast",
             &["convert", "example-oracle"],
             &[&["./build/pipeline", "overlay", "--audit"]],
             Some(&[
-                "pipeline/overlay.go", "pipeline/default_content.go", "pipeline/docs_transforms.go",
-                "pipeline/emitter_css.go", "pipeline/resolve_skins.go", "pipeline/jssource.go",
-                "pipeline/browser_shell.go", "pipeline/build_rtl.go", "pipeline/main.go",
-                "tools/browser-shell.mjs", "tools/contracts/components/**", "src/emitter/skin.mjs", "src/registry/emitter-exemptions.json",
-                "src/registry/rtl-translations.json", "generated/ir/**", "src/registry/pin.json",
-                "src/runtime/components/**", "src/runtime/core.js", "overlays/**", "docs/example-oracle.json",
-                "docs/example-fixture-targets.json", "docs/demos/**",
-                UPSTREAM_EXAMPLES_GLOB, UPSTREAM_DOCS_GLOB,
+                "pipeline/overlay.go",
+                "pipeline/default_content.go",
+                "pipeline/docs_transforms.go",
+                "pipeline/emitter_css.go",
+                "pipeline/resolve_skins.go",
+                "pipeline/jssource.go",
+                "pipeline/browser_shell.go",
+                "pipeline/build_rtl.go",
+                "pipeline/main.go",
+                "tools/browser-shell.mjs",
+                "tools/contracts/components/**",
+                "src/emitter/skin.mjs",
+                "src/registry/emitter-exemptions.json",
+                "src/registry/rtl-translations.json",
+                "generated/ir/**",
+                "src/registry/pin.json",
+                "src/runtime/components/**",
+                "src/runtime/core.js",
+                "overlays/**",
+                "docs/example-oracle.json",
+                "docs/example-fixture-targets.json",
+                "docs/demos/**",
+                UPSTREAM_EXAMPLES_GLOB,
+                UPSTREAM_DOCS_GLOB,
             ]),
             None,
             "every manual intervention on top of the mechanical conversion (rule tables, hand-written fixtures/glue/runtime, upstream patches) must still apply to the pinned upstream — orphaned rules and stale authored files fail here, with task packets, instead of silently no-op'ing like the old find/replace overlay",
             &["overlay-stale-authored", "overlay-orphaned-rule"],
         ),
         node(
-            "convert", "build", "full",
+            "convert",
+            "build",
+            "full",
             &["pin", "build-js"],
-            &[&["./build/pipeline", "resolve-skins"], &["./build/pipeline", "convert"]],
+            &[
+                &["./build/pipeline", "resolve-skins"],
+                &["./build/pipeline", "convert"],
+            ],
             Some(&[
-                "pipeline/convert.go", "pipeline/resolve_skins.go", "pipeline/internal/twmerge/**",
-                "pipeline/internal/tsx/**", "src/registry/tiers.json", "src/registry/emitter-exemptions.json", "src/registry/pin.json",
-                "src/kernel/**", ".upstream/shadcn-ui/apps/v4/registry/bases/radix/**",
+                "pipeline/convert.go",
+                "pipeline/resolve_skins.go",
+                "pipeline/internal/twmerge/**",
+                "pipeline/internal/tsx/**",
+                "src/registry/tiers.json",
+                "src/registry/emitter-exemptions.json",
+                "src/registry/pin.json",
+                "src/kernel/**",
+                ".upstream/shadcn-ui/apps/v4/registry/bases/radix/**",
                 ".upstream/shadcn-ui/apps/v4/registry/styles/style-nova.css",
             ]),
             Some(&["generated/ir", "build/resolved-ui"]),
@@ -213,167 +387,347 @@ pub fn all_go() -> Vec<Node> {
             &[],
         ),
         node(
-            "emit", "build", "full",
+            "emit",
+            "build",
+            "full",
             &["convert", "build-js"],
             &[&["./build/pipeline", "emit"]],
             Some(&[
                 "src/registry/emitter-exemptions.json",
-                "pipeline/emit.go", "pipeline/emitter_css.go", "pipeline/emitter_html.go",
-                "pipeline/default_content.go", "pipeline/prepaint.go", "pipeline/tags.go",
-                "pipeline/resolve_skins.go", "src/registry/tiers.json", "generated/ir/**",
+                "pipeline/emit.go",
+                "pipeline/emitter_css.go",
+                "pipeline/emitter_html.go",
+                "pipeline/default_content.go",
+                "pipeline/prepaint.go",
+                "pipeline/tags.go",
+                "pipeline/resolve_skins.go",
+                "src/registry/tiers.json",
+                "generated/ir/**",
                 "probes/h4/globals.css",
             ]),
-            Some(&["dist/components/*.html", "!dist/components/*-rtl-*.html", "dist/shadless.css", "build/emit"]),
+            Some(&[
+                "dist/components/*.html",
+                "!dist/components/*-rtl-*.html",
+                "dist/shadless.css",
+                "build/emit",
+            ]),
             "static-tier emit: IR -> component html + per-slot css",
             &[],
         ),
         node(
-            "build-js", "build", "fast",
+            "build-js",
+            "build",
+            "fast",
             &[],
             &[&["./build/pipeline", "build-js"]],
             Some(&["pipeline/jsbuild.go", "src/runtime/**", "vendor/**"]),
-            Some(&["dist/shadless.js", "dist/js", "dist/shadless.min.js", "dist/esm", "dist/bin"]),
+            Some(&[
+                "dist/shadless.js",
+                "dist/js",
+                "dist/shadless.min.js",
+                "dist/esm",
+                "dist/bin",
+            ]),
             "the JS surface: dist/shadless.js (kernel + base), dist/js/<name>.js per component, and dist/bin/shadless-check.mjs (the authored markup checker, copied verbatim)",
             &[],
         ),
         node(
-            "contract-fixture", "build", "full",
+            "contract-fixture",
+            "build",
+            "full",
             &["convert", "build-js"],
             &[&["./build/pipeline", "example-fixture", "--contracts"]],
             Some(&[
-                "pipeline/example_fixture.go", "pipeline/ef_harvest_layer.js", "pipeline/ef_menu_ids.js",
-                "pipeline/ef_nav_ids.js", "pipeline/ef_tabs.js", "pipeline/ef_api.js",
-                "pipeline/oracle_lib.go", "pipeline/browser_shell.go", "tools/browser-shell.mjs",
-                "pipeline/prepaint.go", "pipeline/docs_families.go", "pipeline/resolve_skins.go",
-                "src/emitter/skin.mjs", "src/registry/emitter-exemptions.json", "tools/contracts/components/**", "tools/contracts/stubs/**",
-                "src/registry/pin.json", "package-lock.json", "dist/out.css",
+                "pipeline/example_fixture.go",
+                "pipeline/ef_harvest_layer.js",
+                "pipeline/ef_menu_ids.js",
+                "pipeline/ef_nav_ids.js",
+                "pipeline/ef_tabs.js",
+                "pipeline/ef_api.js",
+                "pipeline/oracle_lib.go",
+                "pipeline/browser_shell.go",
+                "tools/browser-shell.mjs",
+                "pipeline/prepaint.go",
+                "pipeline/docs_families.go",
+                "pipeline/resolve_skins.go",
+                "src/emitter/skin.mjs",
+                "src/registry/emitter-exemptions.json",
+                "tools/contracts/components/**",
+                "tools/contracts/stubs/**",
+                "src/registry/pin.json",
+                "package-lock.json",
+                "dist/out.css",
             ]),
             Some(&["src/kernel/*.html"]),
             "the kernel contract fixtures (src/kernel/*.html) are harvested from the contract defs' own React render — hand-mirrored fixtures drifted in content and classes (the bulk of style-parity's recorded cells)",
             &[],
         ),
         node(
-            "example-oracle", "build", "full",
+            "example-oracle",
+            "build",
+            "full",
             &["emit", "build-js"],
             &[&["./build/pipeline", "example-oracle"]],
             Some(&[
-                "pipeline/example_oracle.go", "pipeline/oracle_lib.go", "pipeline/resolve_skins.go",
-                "pipeline/oracle_canon.js", "pipeline/browser_shell.go", "tools/browser-shell.mjs",
-                "pipeline/prepaint.go", "src/registry/tiers.json", "src/runtime/components/**",
-                "docs/catalog.json", "tools/contracts/stubs/**", "src/emitter/skin.mjs", "src/registry/emitter-exemptions.json",
-                "src/registry/pin.json", "src/registry/upstream-snapshot/exemptions.json",
-                "package-lock.json", UPSTREAM_EXAMPLES_GLOB,
+                "pipeline/example_oracle.go",
+                "pipeline/oracle_lib.go",
+                "pipeline/resolve_skins.go",
+                "pipeline/oracle_canon.js",
+                "pipeline/browser_shell.go",
+                "tools/browser-shell.mjs",
+                "pipeline/prepaint.go",
+                "src/registry/tiers.json",
+                "src/runtime/components/**",
+                "docs/catalog.json",
+                "tools/contracts/stubs/**",
+                "src/emitter/skin.mjs",
+                "src/registry/emitter-exemptions.json",
+                "src/registry/pin.json",
+                "src/registry/upstream-snapshot/exemptions.json",
+                "package-lock.json",
+                UPSTREAM_EXAMPLES_GLOB,
             ]),
             Some(&[
-                "docs/demos/*.html", "!docs/demos/*-rtl-*.html", "docs/example-oracle.json",
-                "docs/example-fixture-targets.json", "dist/components/alert-demo.html",
+                "docs/demos/*.html",
+                "!docs/demos/*-rtl-*.html",
+                "docs/example-oracle.json",
+                "docs/example-fixture-targets.json",
+                "dist/components/alert-demo.html",
             ]),
             "upstream examples rendered by real React+chromium BECOME the demo pages — 1:1 with upstream by construction, not by hand-mirroring",
             &["example-oracle-render-failure"],
         ),
         node(
-            "example-fixture", "build", "full",
+            "example-fixture",
+            "build",
+            "full",
             &["example-oracle"],
             &[&["./build/pipeline", "example-fixture"]],
             Some(&[
-                "pipeline/example_fixture.go", "pipeline/ef_harvest_layer.js", "pipeline/ef_menu_ids.js",
-                "pipeline/ef_nav_ids.js", "pipeline/ef_tabs.js", "pipeline/ef_api.js",
-                "pipeline/oracle_lib.go", "pipeline/browser_shell.go", "tools/browser-shell.mjs",
-                "pipeline/prepaint.go", "pipeline/docs_families.go", "pipeline/resolve_skins.go",
-                "src/emitter/skin.mjs", "src/registry/emitter-exemptions.json", "docs/example-fixture-targets.json", "dist/js/**",
-                "tools/contracts/stubs/**", "src/registry/pin.json", "package-lock.json",
-                "dist/out.css", UPSTREAM_EXAMPLES_GLOB,
+                "pipeline/example_fixture.go",
+                "pipeline/ef_harvest_layer.js",
+                "pipeline/ef_menu_ids.js",
+                "pipeline/ef_nav_ids.js",
+                "pipeline/ef_tabs.js",
+                "pipeline/ef_api.js",
+                "pipeline/oracle_lib.go",
+                "pipeline/browser_shell.go",
+                "tools/browser-shell.mjs",
+                "pipeline/prepaint.go",
+                "pipeline/docs_families.go",
+                "pipeline/resolve_skins.go",
+                "src/emitter/skin.mjs",
+                "src/registry/emitter-exemptions.json",
+                "docs/example-fixture-targets.json",
+                "dist/js/**",
+                "tools/contracts/stubs/**",
+                "src/registry/pin.json",
+                "package-lock.json",
+                "dist/out.css",
+                UPSTREAM_EXAMPLES_GLOB,
             ]),
             Some(&["docs/demos/*.html", "!docs/demos/*-rtl-*.html"]),
             "kernel-tier examples as INTERACTIVE fixtures harvested from the oracle; the oracle alone emits static snapshots with dead buttons",
             &[],
         ),
         node(
-            "rtl-dict", "build", "fast",
+            "rtl-dict",
+            "build",
+            "fast",
             &["pin", "build-js"],
             &[&["./build/pipeline", "rtl-dict"]],
-            Some(&["pipeline/rtl_dict.go", "src/registry/tiers.json", ".upstream/shadcn-ui/apps/v4/examples/aria/**"]),
+            Some(&[
+                "pipeline/rtl_dict.go",
+                "src/registry/tiers.json",
+                ".upstream/shadcn-ui/apps/v4/examples/aria/**",
+            ]),
             Some(&["src/registry/rtl-translations.json"]),
             "the RTL translation dictionaries, lifted out of upstream's aria registry into a file this repo owns — so exactly one declared edge reaches a registry we do not build from, and `reproducible` catches it drifting",
             &["rtl-dict-missing-dictionary"],
         ),
         node(
-            "demo-rtl", "build", "full",
+            "demo-rtl",
+            "build",
+            "full",
             &["example-oracle", "example-fixture", "rtl-dict", "build-js"],
             &[&["./build/pipeline", "build-rtl"]],
-            Some(&["pipeline/build_rtl.go", "pipeline/rtl_dict.go", "src/registry/tiers.json"]),
-            Some(&["dist/components/*-rtl-*.html", "docs/demos/*-rtl-*.html", "build/rtl-langs.json"]),
+            Some(&[
+                "pipeline/build_rtl.go",
+                "pipeline/rtl_dict.go",
+                "src/registry/tiers.json",
+            ]),
+            Some(&[
+                "dist/components/*-rtl-*.html",
+                "docs/demos/*-rtl-*.html",
+                "build/rtl-langs.json",
+            ]),
             "AR/HE/EN/FA variants derived from the Arabic oracle page + upstream dictionaries",
             &[],
         ),
         node(
-            "demo", "build", "full",
-            &["demo-rtl", "example-fixture", "contract-fixture", "build-js"],
+            "demo",
+            "build",
+            "full",
+            &[
+                "demo-rtl",
+                "example-fixture",
+                "contract-fixture",
+                "build-js",
+            ],
             &[&["./build/pipeline", "demo"]],
             Some(&[
-                "pipeline/demo.go", "pipeline/emitter_css.go", "pipeline/default_content.go",
-                "pipeline/prepaint.go", "pipeline/tags.go", "pipeline/resolve_skins.go",
-                "src/registry/tiers.json", "src/registry/emitter-exemptions.json",
-                "generated/ir/**", "src/kernel/**", "probes/h4/globals.css",
-                "probes/t7/**", "probes/t8/**",
+                "pipeline/demo.go",
+                "pipeline/emitter_css.go",
+                "pipeline/default_content.go",
+                "pipeline/prepaint.go",
+                "pipeline/tags.go",
+                "pipeline/resolve_skins.go",
+                "src/registry/tiers.json",
+                "src/registry/emitter-exemptions.json",
+                "generated/ir/**",
+                "src/kernel/**",
+                "probes/h4/globals.css",
+                "probes/t7/**",
+                "probes/t8/**",
             ]),
             Some(&[
-                "dist/globals.css", "dist/demo-index.html", "dist/css",
-                "dist/components/*.html", "!dist/components/*-rtl-*.html",
+                "dist/globals.css",
+                "dist/demo-index.html",
+                "dist/css",
+                "dist/components/*.html",
+                "!dist/components/*-rtl-*.html",
             ]),
             "unified globals.css (slot rules folded in) + the demo index + the per-component @apply sources the npm surface exports",
             &[],
         ),
         node(
-            "product-css", "build", "full",
+            "product-css",
+            "build",
+            "full",
             &["demo"],
             &[&["./build/pipeline", "product-css"]],
-            Some(&["pipeline/product_css.go", "pipeline/main.go", "src/docs/theme-prepaint.mjs", "probes/h4/globals.css", "package-lock.json"]),
+            Some(&[
+                "pipeline/product_css.go",
+                "pipeline/main.go",
+                "src/docs/theme-prepaint.mjs",
+                "probes/h4/globals.css",
+                "package-lock.json",
+            ]),
             Some(&["dist/shadless-core.css", "dist/shadless.product.css"]),
             "token extraction + the product entry — the consumer-facing surface",
             &[],
         ),
         node(
-            "demo-css", "build", "full",
+            "demo-css",
+            "build",
+            "full",
             &["demo"],
-            &[&["./build/pipeline", "tw", "dist/globals.css", "dist/out.css", "--cwd", "."]],
+            &[&[
+                "./build/pipeline",
+                "tw",
+                "dist/globals.css",
+                "dist/out.css",
+                "--cwd",
+                ".",
+            ]],
             Some(&[
-                "pipeline/tw.go", "pipeline/main.go", "dist/globals.css", "dist/components/**",
-                "dist/js/**", "docs/demos/**", "docs/content/**", "src/kernel/**",
-                "tools/contracts/out/**", "generated/ir/**", "probes/t7/**", "probes/t8/**", "package.json",
+                "pipeline/tw.go",
+                "pipeline/main.go",
+                "dist/globals.css",
+                "dist/components/**",
+                "dist/js/**",
+                "docs/demos/**",
+                "docs/content/**",
+                "src/kernel/**",
+                "tools/contracts/out/**",
+                "generated/ir/**",
+                "probes/t7/**",
+                "probes/t8/**",
+                "package.json",
             ]),
             Some(&["dist/out.css"]),
             "the stylesheet every demo page and contract fixture actually loads",
             &[],
         ),
         node(
-            "product-build", "build", "full",
+            "product-build",
+            "build",
+            "full",
             &["product-css"],
             &[
-                &["./build/pipeline", "tw", "dist/shadless.product.css", "dist/shadless.full.css"],
-                &["./build/pipeline", "tw", "dist/shadless.product.css", "dist/shadless.full.min.css", "--minify"],
+                &[
+                    "./build/pipeline",
+                    "tw",
+                    "dist/shadless.product.css",
+                    "dist/shadless.full.css",
+                ],
+                &[
+                    "./build/pipeline",
+                    "tw",
+                    "dist/shadless.product.css",
+                    "dist/shadless.full.min.css",
+                    "--minify",
+                ],
             ],
-            Some(&["pipeline/tw.go", "pipeline/main.go", "dist/shadless.product.css", "package.json"]),
+            Some(&[
+                "pipeline/tw.go",
+                "pipeline/main.go",
+                "dist/shadless.product.css",
+                "package.json",
+            ]),
             Some(&["dist/shadless.full.css", "dist/shadless.full.min.css"]),
             "the no-build distribution artifact",
             &[],
         ),
         node(
-            "product-verify", "gate", "full",
+            "product-verify",
+            "gate",
+            "full",
             &["product-build", "demo-css"],
-            &[&["go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestProductVerify$", "."]],
-            Some(&["pipeline/product_css.go", "pipeline/gates_test.go", "dist/**"]),
+            &[&[
+                "go",
+                "test",
+                "-C",
+                "pipeline",
+                "-count=1",
+                "-v",
+                "-run",
+                "^TestProductVerify$",
+                ".",
+            ]],
+            Some(&[
+                "pipeline/product_css.go",
+                "pipeline/gates_test.go",
+                "dist/**",
+            ]),
             None,
             "slot rules survive the product compile and docs chrome stays out of it",
             &["product-drop-slot-rule"],
         ),
         node(
-            "consumer-sim", "gate", "full",
+            "consumer-sim",
+            "gate",
+            "full",
             &["product-css"],
-            &[&["go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestConsumerSim$", "."]],
+            &[&[
+                "go",
+                "test",
+                "-C",
+                "pipeline",
+                "-count=1",
+                "-v",
+                "-run",
+                "^TestConsumerSim$",
+                ".",
+            ]],
             Some(&[
-                "pipeline/gate_consumer_sim.go", "pipeline/tw.go", "pipeline/gates_test.go",
-                "dist/css/**", "dist/shadless-core.css", "package.json", "package-lock.json",
+                "pipeline/gate_consumer_sim.go",
+                "pipeline/tw.go",
+                "pipeline/gates_test.go",
+                "dist/css/**",
+                "dist/shadless-core.css",
+                "package.json",
+                "package-lock.json",
                 "node_modules/@tailwindcss/cli/dist/index.mjs",
                 "node_modules/@tailwindcss/cli-floor/**",
             ]),
@@ -386,28 +740,50 @@ pub fn all_go() -> Vec<Node> {
             ],
         ),
         node(
-            "path-parity", "gate", "full",
+            "path-parity",
+            "gate",
+            "full",
             &["product-build", "oracle-css", "build-js"],
             &[&["./build/pipeline", "path-parity"]],
             Some(&[
-                "pipeline/path_parity.go", "pipeline/pp_readall.js", "pipeline/parity_baseline.go",
-                "pipeline/emitter_css.go", "pipeline/tags.go", "pipeline/browser_shell.go",
-                "tools/browser-shell.mjs", "gates/path-parity-baseline.json", "gates/ledger.json",
-                "src/emitter/skin.mjs", "src/registry/emitter-exemptions.json", "generated/ir/**", "dist/css/**", "dist/shadless.full.css",
-                "build/gates/oracle.css", "src/registry/pin.json",
+                "pipeline/path_parity.go",
+                "pipeline/pp_readall.js",
+                "pipeline/parity_baseline.go",
+                "pipeline/emitter_css.go",
+                "pipeline/tags.go",
+                "pipeline/browser_shell.go",
+                "tools/browser-shell.mjs",
+                "gates/path-parity-baseline.json",
+                "gates/ledger.json",
+                "src/emitter/skin.mjs",
+                "src/registry/emitter-exemptions.json",
+                "generated/ir/**",
+                "dist/css/**",
+                "dist/shadless.full.css",
+                "build/gates/oracle.css",
+                "src/registry/pin.json",
             ]),
             None,
             "for EVERY slot, slot-only markup via css-import and via full.css must compute what React's inline classes compute under upstream's own stylesheet, in both themes and directions, at rest, per cva variant value and per attribute-driven state, with referenced child slots rendered on both sides — subsumes the retired variant-parity; found cva defaults living in fn params (attachment, marker), toggle's pressed state losing to the (0,2,0) variant qualifier, and twMerge residue (text-sm line-height)",
             &["path-parity-drop-utility", "variant-merge-defaults"],
         ),
         node(
-            "demo-parity", "gate", "full",
+            "demo-parity",
+            "gate",
+            "full",
             &["demo-css", "oracle-css", "example-oracle", "build-js"],
             &[&["./build/pipeline", "demo-parity"]],
             Some(&[
-                "pipeline/demo_parity.go", "pipeline/demo_parity_collect.js", "pipeline/parity_baseline.go",
-                "pipeline/browser_shell.go", "tools/browser-shell.mjs", "gates/demo-parity-baseline.json",
-                "gates/ledger.json", "build/gates/oracle.css", "dist/out.css", "docs/demos/**",
+                "pipeline/demo_parity.go",
+                "pipeline/demo_parity_collect.js",
+                "pipeline/parity_baseline.go",
+                "pipeline/browser_shell.go",
+                "tools/browser-shell.mjs",
+                "gates/demo-parity-baseline.json",
+                "gates/ledger.json",
+                "build/gates/oracle.css",
+                "dist/out.css",
+                "docs/demos/**",
                 "docs/example-oracle.json",
             ]),
             None,
@@ -415,123 +791,224 @@ pub fn all_go() -> Vec<Node> {
             &["demo-parity-token-drift"],
         ),
         node(
-            "css-direction", "gate", "fast",
+            "css-direction",
+            "gate",
+            "fast",
             &["demo-css"],
-            &[&["go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestCssDirection", "."]],
-            Some(&["pipeline/gate_css_direction.go", "pipeline/gate_css_direction_test.go", "pipeline/gates_test.go", "dist/shadless.css"]),
+            &[&[
+                "go",
+                "test",
+                "-C",
+                "pipeline",
+                "-count=1",
+                "-v",
+                "-run",
+                "^TestCssDirection",
+                ".",
+            ]],
+            Some(&[
+                "pipeline/gate_css_direction.go",
+                "pipeline/gate_css_direction_test.go",
+                "pipeline/gates_test.go",
+                "dist/shadless.css",
+            ]),
             None,
             "emitted physical reading-direction utilities must match the recorded set — new/gone entries mean upstream moved the RTL story",
             &["css-direction-new-physical"],
         ),
         node(
-            "contracts", "gate", "full",
+            "contracts",
+            "gate",
+            "full",
             &["demo-css"],
             &[&["./build/pipeline", "contracts"]],
             Some(&[
-                "pipeline/contract.go", "pipeline/oracle_lib.go", "pipeline/resolve_skins.go",
-                "pipeline/browser_shell.go", "tools/browser-shell.mjs", "tools/contracts/stubs/**",
-                "tools/contracts/components/**", "dist/**", "src/kernel/**", "src/registry/pin.json",
-                "package-lock.json", "gates/ledger.json",
+                "pipeline/contract.go",
+                "pipeline/oracle_lib.go",
+                "pipeline/resolve_skins.go",
+                "pipeline/browser_shell.go",
+                "tools/browser-shell.mjs",
+                "tools/contracts/stubs/**",
+                "tools/contracts/components/**",
+                "dist/**",
+                "src/kernel/**",
+                "src/registry/pin.json",
+                "package-lock.json",
+                "gates/ledger.json",
             ]),
             Some(&["tools/contracts/out"]),
             "THE oracle: the pinned registry bundled with real React+radix, replayed against the shipped pages with real mouse/keyboard, incl. mounted-DOM structure",
             &["contracts-strip-glue"],
         ),
         node(
-            "oracle-css", "build", "full",
+            "oracle-css",
+            "build",
+            "full",
             &["convert"],
             &[&["./build/pipeline", "oracle-css"]],
             Some(&[
-                "pipeline/oracle_css.go", "pipeline/tw.go", "pipeline/main.go", "src/registry/pin.json",
-                "build/resolved-ui/**", ".upstream/shadcn-ui/apps/v4/app/legacy-themes.css",
-                ".upstream/shadcn-ui/apps/v4/package.json", "package.json",
+                "pipeline/oracle_css.go",
+                "pipeline/tw.go",
+                "pipeline/main.go",
+                "src/registry/pin.json",
+                "build/resolved-ui/**",
+                ".upstream/shadcn-ui/apps/v4/app/legacy-themes.css",
+                ".upstream/shadcn-ui/apps/v4/package.json",
+                "package.json",
             ]),
             Some(&["build/gates/oracle.css"]),
             "a stylesheet for the React oracle built from upstream's own globals/skin and the resolved registry — reads nothing under src/, so style-parity is no longer circular",
             &[],
         ),
         node(
-            "style-parity", "gate", "full",
+            "style-parity",
+            "gate",
+            "full",
             &["contracts", "oracle-css", "build-js"],
             &[&["./build/pipeline", "style-parity"]],
             Some(&[
-                "pipeline/style_parity.go", "pipeline/parity_baseline.go", "pipeline/browser_shell.go",
-                "tools/browser-shell.mjs", "gates/style-parity-baseline.json", "gates/ledger.json",
-                "tools/contracts/out/**", "tools/contracts/components/**", "build/gates/oracle.css",
+                "pipeline/style_parity.go",
+                "pipeline/parity_baseline.go",
+                "pipeline/browser_shell.go",
+                "tools/browser-shell.mjs",
+                "gates/style-parity-baseline.json",
+                "gates/ledger.json",
+                "tools/contracts/out/**",
+                "tools/contracts/components/**",
+                "build/gates/oracle.css",
                 "src/registry/pin.json",
             ]),
             None,
             "computed STYLE parity vs the React oracle — 'same DOM + same css => same styles' was an inference no gate ever tested",
-            &["style-parity-perturb-padding", "style-parity-recorded-value-drift"],
+            &[
+                "style-parity-perturb-padding",
+                "style-parity-recorded-value-drift",
+            ],
         ),
         node(
-            "demo-smoke", "gate", "full",
+            "demo-smoke",
+            "gate",
+            "full",
             &["demo-css", "build-js"],
             &[&["./build/pipeline", "demo-smoke"]],
             Some(&[
-                "pipeline/demo_smoke.go", "pipeline/browser_shell.go", "tools/browser-shell.mjs",
-                "dist/**", "generated/ir/**", "src/registry/tiers.json",
+                "pipeline/demo_smoke.go",
+                "pipeline/browser_shell.go",
+                "tools/browser-shell.mjs",
+                "dist/**",
+                "generated/ir/**",
+                "src/registry/tiers.json",
             ]),
             None,
             "every dist demo page loads with zero console errors",
             &["demo-smoke-console-error"],
         ),
         node(
-            "docs-catalog", "build", "full",
+            "docs-catalog",
+            "build",
+            "full",
             &["demo"],
             &[&["./build/pipeline", "docs-catalog"]],
             Some(&[
-                "pipeline/docs_catalog.go", "pipeline/jsonorder.go", "pipeline/main.go",
-                "src/registry/pin.json", "src/registry/tiers.json", "dist/components/**", "docs/demos/**",
+                "pipeline/docs_catalog.go",
+                "pipeline/jsonorder.go",
+                "pipeline/main.go",
+                "src/registry/pin.json",
+                "src/registry/tiers.json",
+                "dist/components/**",
+                "docs/demos/**",
             ]),
             Some(&["docs/catalog.json"]),
             "the preview catalog the site is generated from",
             &[],
         ),
         node(
-            "docs-upstream-mirror", "build", "fast",
+            "docs-upstream-mirror",
+            "build",
+            "fast",
             &["pin"],
             &[&["./build/pipeline", "docs-upstream-mirror"]],
-            Some(&["pipeline/docs_upstream_mirror.go", "src/registry/pin.json", UPSTREAM_DOCS_GLOB]),
+            Some(&[
+                "pipeline/docs_upstream_mirror.go",
+                "src/registry/pin.json",
+                UPSTREAM_DOCS_GLOB,
+            ]),
             Some(&[DOCS_UPSTREAM_MIRROR]),
             "a tracked, git-diffable copy of the upstream docs .mdx docs-build/docs-fidelity read and docs_overrides.go hand-patches — the analogue of generated/ir for the docs pipeline (pipeline/convert.go's registry .tsx -> versioned IR), so a re-pin's content change shows up as a normal git diff in this repo instead of only a build-time anchor failure",
             &[],
         ),
         node(
-            "docs-build", "build", "full",
-            &["docs-catalog", "docs-upstream-mirror", "demo-css", "build-js"],
+            "docs-build",
+            "build",
+            "full",
+            &[
+                "docs-catalog",
+                "docs-upstream-mirror",
+                "demo-css",
+                "build-js",
+            ],
             &[&["./build/pipeline", "docs-build"]],
             Some(&[
-                "pipeline/docs_build.go", "pipeline/docs_guides.go", "pipeline/docs_transforms.go",
-                "pipeline/docs_overrides.go", "pipeline/docs_frontmatter.go", "pipeline/docs_scripts.go",
-                "pipeline/docs_families.go", "pipeline/docs_fidelity.go", "tools/prettier-batch.mjs",
-                "docs/catalog.json", "docs/content/**", "dist/**", "docs/demos/**",
-                "build/rtl-langs.json", "generated/ir/**", "src/registry/pin.json", "package.json",
-                "package-lock.json", "generated/docs-upstream/**",
+                "pipeline/docs_build.go",
+                "pipeline/docs_guides.go",
+                "pipeline/docs_transforms.go",
+                "pipeline/docs_overrides.go",
+                "pipeline/docs_frontmatter.go",
+                "pipeline/docs_scripts.go",
+                "pipeline/docs_families.go",
+                "pipeline/docs_fidelity.go",
+                "tools/prettier-batch.mjs",
+                "docs/catalog.json",
+                "docs/content/**",
+                "dist/**",
+                "docs/demos/**",
+                "build/rtl-langs.json",
+                "generated/ir/**",
+                "src/registry/pin.json",
+                "package.json",
+                "package-lock.json",
+                "generated/docs-upstream/**",
             ]),
-            Some(&["docs/site/content", "docs/site/static", "docs/content-map.json"]),
+            Some(&[
+                "docs/site/content",
+                "docs/site/static",
+                "docs/content-map.json",
+            ]),
             "mdx -> the mirrored site, with the dist demos copied in under the site skin",
             &[],
         ),
         node(
-            "docs-site", "build", "full",
+            "docs-site",
+            "build",
+            "full",
             &["docs-build"],
             &[&["zola", "--root", "docs/site", "build"]],
             Some(&[
-                "docs/site/content/**", "docs/site/static/**", "docs/site/config.toml",
-                "docs/site/templates/**", "docs/site/sass/**", "docs/site/themes/**",
+                "docs/site/content/**",
+                "docs/site/static/**",
+                "docs/site/config.toml",
+                "docs/site/templates/**",
+                "docs/site/sass/**",
+                "docs/site/themes/**",
             ]),
             Some(&["docs/site/public"]),
             "the markdown becomes a site, and a link to a page this mirror does not carry stops the build",
             &[],
         ),
         node(
-            "docs-consistency", "gate", "fast",
+            "docs-consistency",
+            "gate",
+            "fast",
             &["docs-build", "build-js"],
             &[&["./build/pipeline", "docs-consistency"]],
             Some(&[
-                "pipeline/docs_consistency.go", "pipeline/resolve_skins.go", "docs/site/content/**",
-                "dist/components/**", "dist/css/**", "docs/demos/**", "package.json",
+                "pipeline/docs_consistency.go",
+                "pipeline/resolve_skins.go",
+                "docs/site/content/**",
+                "dist/components/**",
+                "dist/css/**",
+                "docs/demos/**",
+                "package.json",
                 "src/registry/emitter-exemptions.json",
             ]),
             None,
@@ -570,14 +1047,23 @@ pub fn all_go() -> Vec<Node> {
             ],
         ),
         node(
-            "docs-fidelity", "gate", "fast",
+            "docs-fidelity",
+            "gate",
+            "fast",
             &["docs-build", "build-js"],
             &[&["./build/pipeline", "docs-fidelity"]],
             Some(&[
-                "pipeline/docs_fidelity_driver.go", "pipeline/docs_fidelity.go",
-                "pipeline/docs_transforms.go", "pipeline/docs_overrides.go", "pipeline/docs_guides.go",
-                "pipeline/docs_frontmatter.go", "docs/site/content/**", "docs/site/static/demos/**",
-                "docs/content-map.json", "docs/content/**", "src/registry/pin.json",
+                "pipeline/docs_fidelity_driver.go",
+                "pipeline/docs_fidelity.go",
+                "pipeline/docs_transforms.go",
+                "pipeline/docs_overrides.go",
+                "pipeline/docs_guides.go",
+                "pipeline/docs_frontmatter.go",
+                "docs/site/content/**",
+                "docs/site/static/demos/**",
+                "docs/content-map.json",
+                "docs/content/**",
+                "src/registry/pin.json",
                 "generated/docs-upstream/**",
             ]),
             None,
@@ -585,44 +1071,80 @@ pub fn all_go() -> Vec<Node> {
             &["docs-fidelity-drop-heading"],
         ),
         node(
-            "docs-smoke", "gate", "full",
+            "docs-smoke",
+            "gate",
+            "full",
             &["docs-site", "build-js"],
             &[&["./build/pipeline", "docs-smoke", "--all"]],
-            Some(&["pipeline/docs_smoke.go", "pipeline/browser_shell.go", "tools/browser-shell.mjs", "docs/site/public/**"]),
+            Some(&[
+                "pipeline/docs_smoke.go",
+                "pipeline/browser_shell.go",
+                "tools/browser-shell.mjs",
+                "docs/site/public/**",
+            ]),
             None,
             "every page and every iframe loads with zero console/page errors",
             &["docs-smoke-broken-iframe"],
         ),
         node(
-            "interactivity-sweep", "gate", "full",
+            "interactivity-sweep",
+            "gate",
+            "full",
             &["docs-build", "build-js"],
             &[&["./build/pipeline", "interactivity-sweep"]],
             Some(&[
-                "pipeline/interactivity_sweep.go", "pipeline/browser_shell.go", "tools/browser-shell.mjs",
-                "docs/site/static/demos/**", "src/registry/tiers.json", "gates/ledger.json",
+                "pipeline/interactivity_sweep.go",
+                "pipeline/browser_shell.go",
+                "tools/browser-shell.mjs",
+                "docs/site/static/demos/**",
+                "src/registry/tiers.json",
+                "gates/ledger.json",
             ]),
             None,
             "every page that OFFERS an interaction must RESPOND — contracts click fixtures, golden compares snapshots, smoke listens to the console; the dead-button bug lived in exactly that responsibility gap",
             &["interactivity-strip-script"],
         ),
         node(
-            "reproducible", "gate", "full",
+            "reproducible",
+            "gate",
+            "full",
             &["docs-build", "product-build", "demo-rtl", "example-fixture"],
-            &[&["go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestReproducible$", "."]],
+            &[&[
+                "go",
+                "test",
+                "-C",
+                "pipeline",
+                "-count=1",
+                "-v",
+                "-run",
+                "^TestReproducible$",
+                ".",
+            ]],
             None, // judges state outside the tree: never fresh
             None,
             "the committed generated trees must equal a fresh pipeline run — the only authority on hand-edited outputs, replacing the pre-commit hook's guesswork",
             &["reproducible-hand-edit"],
         ),
         node(
-            "golden-gate", "gate", "full",
+            "golden-gate",
+            "gate",
+            "full",
             &["example-oracle", "build-js"],
             &[&["./build/pipeline", "example-golden"]],
             Some(&[
-                "pipeline/example_golden.go", "pipeline/oracle_lib.go", "pipeline/resolve_skins.go",
-                "pipeline/oracle_canon.js", "pipeline/browser_shell.go", "tools/browser-shell.mjs",
-                "src/registry/upstream-snapshot/**", "gates/ledger.json", "tools/contracts/stubs/**",
-                "src/emitter/skin.mjs", "src/registry/emitter-exemptions.json", "src/registry/pin.json", "package-lock.json",
+                "pipeline/example_golden.go",
+                "pipeline/oracle_lib.go",
+                "pipeline/resolve_skins.go",
+                "pipeline/oracle_canon.js",
+                "pipeline/browser_shell.go",
+                "tools/browser-shell.mjs",
+                "src/registry/upstream-snapshot/**",
+                "gates/ledger.json",
+                "tools/contracts/stubs/**",
+                "src/emitter/skin.mjs",
+                "src/registry/emitter-exemptions.json",
+                "src/registry/pin.json",
+                "package-lock.json",
                 UPSTREAM_EXAMPLES_GLOB,
             ]),
             None,
@@ -630,14 +1152,25 @@ pub fn all_go() -> Vec<Node> {
             &["golden-perturb-oracle"],
         ),
         node(
-            "example-gate", "gate", "full",
+            "example-gate",
+            "gate",
+            "full",
             &["docs-build", "build-js"],
             &[&["./build/pipeline", "example-oracle", "--check"]],
             Some(&[
-                "pipeline/example_oracle.go", "pipeline/oracle_lib.go", "pipeline/oracle_canon.js",
-                "pipeline/browser_shell.go", "tools/browser-shell.mjs", "docs/demos/**",
-                "docs/example-oracle.json", "src/registry/tiers.json", "tools/contracts/stubs/**",
-                "src/emitter/skin.mjs", "src/registry/emitter-exemptions.json", "src/registry/pin.json", "package-lock.json",
+                "pipeline/example_oracle.go",
+                "pipeline/oracle_lib.go",
+                "pipeline/oracle_canon.js",
+                "pipeline/browser_shell.go",
+                "tools/browser-shell.mjs",
+                "docs/demos/**",
+                "docs/example-oracle.json",
+                "src/registry/tiers.json",
+                "tools/contracts/stubs/**",
+                "src/emitter/skin.mjs",
+                "src/registry/emitter-exemptions.json",
+                "src/registry/pin.json",
+                "package-lock.json",
                 UPSTREAM_EXAMPLES_GLOB,
             ]),
             None,
@@ -804,9 +1337,9 @@ fn engine_fps() -> &'static std::collections::HashMap<String, String> {
         env!("ENGINE_FPS")
             .split(';')
             .map(|pair| {
-                let (k, v) = pair.split_once('=').unwrap_or_else(|| {
-                    panic!("ENGINE_FPS: malformed pair {pair:?}")
-                });
+                let (k, v) = pair
+                    .split_once('=')
+                    .unwrap_or_else(|| panic!("ENGINE_FPS: malformed pair {pair:?}"));
                 (k.to_string(), v.to_string())
             })
             .collect()
@@ -889,7 +1422,9 @@ pub fn node_fp(id: &str) -> String {
     let mut h = Sha256::new();
     h.update(format!("hull={}", fps["hull"]));
     for g in &groups {
-        let hash = fps.get(*g).unwrap_or_else(|| panic!("ENGINE_FPS: no hash for group {g}"));
+        let hash = fps
+            .get(*g)
+            .unwrap_or_else(|| panic!("ENGINE_FPS: no hash for group {g}"));
         h.update(format!(";{g}={hash}"));
     }
     for t in &tool_files {
@@ -939,8 +1474,16 @@ const GO_TEST_GATES: &[&str] = &[
 /// The script-refs gate validates Makefile/package.json `__gate <id>`
 /// references against this table.
 pub const GATE_IDS: &[&str] = &[
-    "pin", "unit", "ledger", "script-refs", "dist-complete", "pack",
-    "coverage", "product-verify", "consumer-sim", "css-direction",
+    "pin",
+    "unit",
+    "ledger",
+    "script-refs",
+    "dist-complete",
+    "pack",
+    "coverage",
+    "product-verify",
+    "consumer-sim",
+    "css-direction",
     "reproducible",
 ];
 
@@ -951,15 +1494,48 @@ pub const GATE_IDS: &[&str] = &[
 /// references against this table — main.rs carries a two-way test pinning
 /// its dispatch arms to it.
 pub const VERBS: &[&str] = &[
-    "plan", "list", "status", "inputs", "run", "adopt", "build-js", "build-rtl",
-    "product-css", "tw", "example-oracle", "demo", "emit", "convert", "pin",
-    "coverage", "ledger", "audit-boundary", "oracle-css", "docs-catalog",
-    "docs-upstream-mirror", "ir-diff", "css-direction", "upstream",
-    "resolve-skins", "rtl-dict", "docs-consistency", "docs-build",
-    "docs-fidelity", "docs-code-parity", "example-fixture", "example-golden",
+    "plan",
+    "list",
+    "status",
+    "inputs",
+    "run",
+    "adopt",
+    "build-js",
+    "build-rtl",
+    "product-css",
+    "tw",
+    "example-oracle",
+    "demo",
+    "emit",
+    "convert",
+    "pin",
+    "coverage",
+    "ledger",
+    "audit-boundary",
+    "oracle-css",
+    "docs-catalog",
+    "docs-upstream-mirror",
+    "ir-diff",
+    "css-direction",
+    "upstream",
+    "resolve-skins",
+    "rtl-dict",
+    "docs-consistency",
+    "docs-build",
+    "docs-fidelity",
+    "docs-code-parity",
+    "example-fixture",
+    "example-golden",
     "contract",
-    "contracts", "upstream-snapshot", "demo-smoke", "docs-smoke", "overlay",
-    "interactivity-sweep", "demo-parity", "style-parity", "path-parity",
+    "contracts",
+    "upstream-snapshot",
+    "demo-smoke",
+    "docs-smoke",
+    "overlay",
+    "interactivity-sweep",
+    "demo-parity",
+    "style-parity",
+    "path-parity",
 ];
 
 /// Rewrite one Go-verbatim node into the self-hosted shape.
@@ -968,20 +1544,12 @@ fn self_host(n: Node) -> Node {
     let id = id.as_str();
     let mut n = n;
     if GO_TEST_GATES.contains(&id) {
-        n.run = vec![vec![
-            engine_argv0(id),
-            "__gate".to_string(),
-            n.id.clone(),
-        ]];
+        n.run = vec![vec![engine_argv0(id), "__gate".to_string(), n.id.clone()]];
     } else if id == "unit" {
         // cmd[0] (node tools/unit-check.mjs) tests the product's JS surface
         // and stays; only the go-test half becomes this engine's own tests.
         if let Some(second) = n.run.get_mut(1) {
-            *second = vec![
-                engine_argv0(id),
-                "__gate".to_string(),
-                "unit".to_string(),
-            ];
+            *second = vec![engine_argv0(id), "__gate".to_string(), "unit".to_string()];
         }
     } else {
         for cmd in n.run.iter_mut() {
@@ -1170,7 +1738,10 @@ mod self_host_tests {
             // tools/unit/types.mjs compiles the shipped .d.ts
             ("unit", "node_modules/.bin/tsc"),
         ] {
-            let n = g.iter().find(|n| n.id == id).unwrap_or_else(|| panic!("node {id} missing"));
+            let n = g
+                .iter()
+                .find(|n| n.id == id)
+                .unwrap_or_else(|| panic!("node {id} missing"));
             let inputs = n.inputs.as_deref().unwrap_or(&[]);
             assert!(
                 inputs.iter().any(|p| p == bin),
@@ -1296,7 +1867,15 @@ mod self_host_tests {
         assert_eq!(
             pin.run,
             vec![vec![
-                "go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestPin$", "."
+                "go",
+                "test",
+                "-C",
+                "pipeline",
+                "-count=1",
+                "-v",
+                "-run",
+                "^TestPin$",
+                "."
             ]]
         );
         let unit = g.iter().find(|n| n.id == "unit").unwrap();
@@ -1305,14 +1884,23 @@ mod self_host_tests {
         assert_eq!(
             unit.run[1],
             vec![
-                "go", "test", "-C", "pipeline", "-count=1", "-v", "-run", "^TestUnit", "./..."
+                "go",
+                "test",
+                "-C",
+                "pipeline",
+                "-count=1",
+                "-v",
+                "-run",
+                "^TestUnit",
+                "./..."
             ]
         );
-        assert!(unit
-            .inputs
-            .as_ref()
-            .unwrap()
-            .contains(&"pipeline/*.go".to_string()));
+        assert!(
+            unit.inputs
+                .as_ref()
+                .unwrap()
+                .contains(&"pipeline/*.go".to_string())
+        );
         let convert = g.iter().find(|n| n.id == "convert").unwrap();
         assert_eq!(
             convert.run,
@@ -1344,7 +1932,9 @@ mod self_host_tests {
                 // unit's JS checker, typecheck's tsc, docs-site's zola.
                 let product_side = matches!(
                     (n.id.as_str(), cmd.first().map(String::as_str)),
-                    ("unit", Some("node")) | ("typecheck", Some("npx")) | ("docs-site", Some("zola"))
+                    ("unit", Some("node"))
+                        | ("typecheck", Some("npx"))
+                        | ("docs-site", Some("zola"))
                 );
                 if !product_side {
                     let argv0 = cmd.first().map(String::as_str).unwrap_or("");
@@ -1474,17 +2064,18 @@ mod self_host_tests {
     #[test]
     fn build_rs_tables_pair_with_nodes_rs_tables() {
         let build_src = include_str!("../build.rs");
-        let groups_line = build_src
-            .lines()
-            .find(|l| l.starts_with("const GROUPS"))
-            .expect("build.rs GROUPS");
+        let groups_start = build_src.find("const GROUPS").expect("build.rs GROUPS");
+        let groups_end = build_src[groups_start..].find("];").unwrap() + groups_start;
+        let groups_block = &build_src[groups_start..groups_end];
         for g in ENGINE_GROUPS {
             assert!(
-                groups_line.contains(&format!("\"{g}\"")),
+                groups_block.contains(&format!("\"{g}\"")),
                 "group {g} missing from build.rs GROUPS"
             );
         }
-        let hull_start = build_src.find("const HULL_FILES").expect("build.rs HULL_FILES");
+        let hull_start = build_src
+            .find("const HULL_FILES")
+            .expect("build.rs HULL_FILES");
         let hull_end = build_src[hull_start..].find("];").unwrap() + hull_start;
         let hull_block = &build_src[hull_start..hull_end];
         let build_hull: Vec<&str> = hull_block
@@ -1556,12 +2147,12 @@ mod self_host_tests {
         // CLI-only verbs: main.rs (hull) dispatches them, no node runs them.
         // `mod` is the tools module root, folded into every tools fp.
         let exempt: Vec<&str> = vec![
-            "mod",                   // tools module root, always folded
-            "css_direction_update",  // verb css-direction --update
-            "ir_diff",               // verb ir-diff
-            "oxc_probe",             // verb __oxc-probe
-            "upstream",              // verb upstream (the re-pin drill)
-            "upstream_snapshot",     // verb upstream-snapshot
+            "mod",                  // tools module root, always folded
+            "css_direction_update", // verb css-direction --update
+            "ir_diff",              // verb ir-diff
+            "oxc_probe",            // verb __oxc-probe
+            "upstream",             // verb upstream (the re-pin drill)
+            "upstream_snapshot",    // verb upstream-snapshot
         ];
         let mut covered: Vec<&str> = Vec::new();
         for (_, entries) in NODE_ENTRIES {
@@ -1571,9 +2162,7 @@ mod self_host_tests {
                 .collect();
             let mut i = 0;
             while i < files.len() {
-                if let Some((_, sibs)) =
-                    TOOLS_FILE_INTRA.iter().find(|(n, _)| *n == files[i])
-                {
+                if let Some((_, sibs)) = TOOLS_FILE_INTRA.iter().find(|(n, _)| *n == files[i]) {
                     for s in *sibs {
                         if !files.contains(s) {
                             files.push(s);
@@ -1624,13 +2213,14 @@ mod self_host_tests {
         let self_hosted: Vec<String> = go
             .iter()
             .map(|n| self_host(n.clone()))
-            .filter(|n| n.run.iter().any(|cmd| cmd.first().is_some_and(|a| a.starts_with("__self__@"))))
+            .filter(|n| {
+                n.run
+                    .iter()
+                    .any(|cmd| cmd.first().is_some_and(|a| a.starts_with("__self__@")))
+            })
             .map(|n| n.id)
             .collect();
-        let listed: Vec<String> = NODE_ENTRIES
-            .iter()
-            .map(|(id, _)| id.to_string())
-            .collect();
+        let listed: Vec<String> = NODE_ENTRIES.iter().map(|(id, _)| id.to_string()).collect();
         for id in &listed {
             assert!(
                 go.iter().any(|n| &n.id == id),
@@ -1678,7 +2268,11 @@ mod self_host_tests {
         let hull_modules: Vec<String> = HULL_FILES
             .iter()
             .filter(|f| f.starts_with("src/") && f.ends_with(".rs"))
-            .map(|f| f.trim_start_matches("src/").trim_end_matches(".rs").to_string())
+            .map(|f| {
+                f.trim_start_matches("src/")
+                    .trim_end_matches(".rs")
+                    .to_string()
+            })
             .collect();
         // Crate-root FUNCTIONS in lib.rs: lib.rs is a hull file, so its bytes
         // are folded into every group's fp — a reference to one of these can
@@ -1725,7 +2319,8 @@ mod self_host_tests {
         let super_mod_rs_re = regex::Regex::new(r"\bsuper::([a-z_][a-z0-9_]*)").unwrap();
         let crate_tools_re = regex::Regex::new(r"\bcrate::tools::([a-z_][a-z0-9_]*)").unwrap();
         let banned_brace = regex::Regex::new(r"crate::\{").unwrap();
-        let banned_alias = regex::Regex::new(r"use (?:crate|pipeline)::[a-z_][a-z0-9_]* as ").unwrap();
+        let banned_alias =
+            regex::Regex::new(r"use (?:crate|pipeline)::[a-z_][a-z0-9_]* as ").unwrap();
 
         for (group, path) in &targets {
             let is_tools_file = group.starts_with("tools:");
@@ -1733,7 +2328,9 @@ mod self_host_tests {
                 walkdir::WalkDir::new(path)
                     .into_iter()
                     .filter_map(|e| e.ok())
-                    .filter(|e| e.file_type().is_file() && e.path().extension().is_some_and(|x| x == "rs"))
+                    .filter(|e| {
+                        e.file_type().is_file() && e.path().extension().is_some_and(|x| x == "rs")
+                    })
                     .map(|e| e.path().to_path_buf())
                     .collect()
             } else {
@@ -1742,8 +2339,8 @@ mod self_host_tests {
             let mut found: Vec<String> = Vec::new();
             let mut siblings: Vec<String> = Vec::new();
             for f in &files {
-                let text = std::fs::read_to_string(f)
-                    .unwrap_or_else(|e| panic!("{}: {}", f.display(), e));
+                let text =
+                    std::fs::read_to_string(f).unwrap_or_else(|e| panic!("{}: {}", f.display(), e));
                 assert!(
                     banned_brace.find(&text).is_none(),
                     "{}: `crate::{{...}}` brace imports are invisible to the dependency \
@@ -1757,8 +2354,7 @@ mod self_host_tests {
                     f.display()
                 );
                 let is_top_mod_rs = f.file_name().is_some_and(|n| n == "mod.rs")
-                    && f
-                        .parent()
+                    && f.parent()
                         .and_then(|p| p.parent())
                         .is_some_and(|p| p == src);
                 for caps in head_re.captures_iter(&text) {
@@ -1778,9 +2374,10 @@ mod self_host_tests {
                     // sibling FILE (needs TOOLS_FILE_INTRA) or an item of
                     // tools/mod.rs (covered by tools:mod, folded into every
                     // tools fp)
-                    for caps in super_mod_rs_re.captures_iter(&text).chain(
-                        crate_tools_re.captures_iter(&text),
-                    ) {
+                    for caps in super_mod_rs_re
+                        .captures_iter(&text)
+                        .chain(crate_tools_re.captures_iter(&text))
+                    {
                         let head = &caps[1];
                         if head == "super" {
                             continue; // super::super, handled above
@@ -1899,8 +2496,7 @@ mod self_host_tests {
     fn product_includes_stay_inside_src() {
         let src = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src");
         let src_real = std::fs::canonicalize(&src).unwrap();
-        let include_re =
-            regex::Regex::new(r#"include(?:_str|_bytes)?!\(\s*"([^"]+)""#).unwrap();
+        let include_re = regex::Regex::new(r#"include(?:_str|_bytes)?!\(\s*"([^"]+)""#).unwrap();
         for entry in walkdir::WalkDir::new(&src)
             .into_iter()
             .filter_map(|e| e.ok())
@@ -1917,7 +2513,10 @@ mod self_host_tests {
                 // component-wise starts_with. Unresolvable = fail closed.
                 let resolved = std::fs::canonicalize(&target);
                 assert!(
-                    resolved.as_ref().map(|p| p.starts_with(&src_real)).unwrap_or(false),
+                    resolved
+                        .as_ref()
+                        .map(|p| p.starts_with(&src_real))
+                        .unwrap_or(false),
                     "{}: `{found}` escapes src/ and compiles into the binary while being \
                      hashed by no fingerprint group — move it under src/ (hashed by \
                      its group) or into HULL_FILES",
@@ -1937,7 +2536,11 @@ mod self_host_tests {
         // helpers propagate (docs-smoke folds docs_transforms via its own
         // imports? no — docs-smoke imports nothing; it differs from
         // docs-fidelity which folds the helper)
-        assert_ne!(node_fp("docs-smoke"), node_fp("demo-smoke"), "per-file tools fps");
+        assert_ne!(
+            node_fp("docs-smoke"),
+            node_fp("demo-smoke"),
+            "per-file tools fps"
+        );
         assert_ne!(node_fp("docs-smoke"), node_fp("docs-fidelity"));
         assert_ne!(node_fp("docs-smoke"), node_fp("contracts:tooltip"));
         assert_ne!(node_fp("pin"), node_fp("unit"));
