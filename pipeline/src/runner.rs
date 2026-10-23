@@ -120,8 +120,7 @@ pub struct FailedNode {
     pub tail: String,
 }
 
-/// Mirrors the shape gates/run.mjs wrote, because gates/upstream.mjs reads it
-/// as data. BTreeMap keeps keys sorted, as Go's json.Marshal does for maps.
+/// Read as data by the re-pin drill (tools/upstream.rs). BTreeMap keeps keys sorted, as Go's json.Marshal does for maps.
 #[derive(Serialize, Deserialize, Default)]
 pub struct RunReport {
     pub failed: BTreeMap<String, FailedNode>,
@@ -233,9 +232,9 @@ impl Runner {
     /// touches the log on load, so an absent file means "no node child ran"
     /// (normal for engine-run commands) while a present one always parses.
     ///
-    /// Known gap, documented rather than fixed: engine-run nodes execute in
-    /// this process (`__self__@fp __gate <id>`) — no child, no recorder, so a
-    /// gate's own data reads are unchecked by the read half. The undeclared
+    /// Known gap, documented rather than fixed: engine-run nodes spawn this
+    /// binary (`__self__@fp __gate <id>`), which ignores the NODE_OPTIONS
+    /// recorder, so a gate's own data reads are unchecked by the read half. The undeclared
     /// WRITE half covers them at -j1.
     ///
     /// Cosmetics note: Go interleaves both streams into one
@@ -337,8 +336,8 @@ impl Runner {
         (buf, with_js_log(logs, &js_log), None, dir)
     }
 
-    /// Collects the undeclared reads across a node's testlogs, then removes the
-    /// temp directory holding them (dropped TempDir does that).
+    /// Collects the undeclared reads across a node's logs; the caller drops the
+    /// TempDir holding them afterwards.
     fn reads_from(&self, n: &Node, logs: &[PathBuf]) -> Result<Vec<String>, String> {
         if logs.is_empty() {
             return Ok(Vec::new());

@@ -4,7 +4,8 @@ version = "0.1.0"
 edition = "2024"
 
 # shadless-rs — Rust port of shadless/pipeline (the graph runner + converters).
-# Byte-identity with the Go binary is the acceptance bar; see PLAN.md.
+# The acceptance bar was byte-identity with the Go binary (go-parity-final
+# tag); today it is the self-recorded golden harness (tests/gen_golden.sh).
 
 [dependencies]
 sha2 = "0.10"
@@ -21,9 +22,8 @@ ureq = "2"
 ryu = "1"
 markup5ever_rcdom = "0.39.0"
 html5ever = "0.39.0"
-# Oxc experiment (PLAN.md「為什麼不是 Rolldown/Oxc」) — compiled only under
-# `--features oxc`; the shipped binary and every graph key are identical
-# without it. Subcrates must stay on ONE oxc release line: they are
+# Oxc (PLAN.md「為什麼不是 Rolldown/Oxc」) — the `oxc` feature, on by
+# default; `--no-default-features` builds without it. Subcrates must stay on ONE oxc release line: they are
 # version-locked together (AST types move between minors).
 oxc_allocator = { version = "0.149.0", optional = true }
 oxc_ast = { version = "0.149.0", optional = true }

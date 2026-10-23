@@ -907,8 +907,9 @@ pub fn node_fp(id: &str) -> String {
 /// into the node key without any subcommand's parser seeing it; the runner
 /// splits on '@' and spawns the running executable.
 ///
-/// Under `go-mirror` the Go-verbatim shape is mandatory (shard keys are
-/// byte-compared against the Go keyer), so the Go binary path goes back in.
+/// Under `go-mirror` the authored table is presented verbatim (the
+/// self-recorded goldens run it, fingerprint-free), so the authored
+/// `./build/pipeline` path goes back in.
 pub fn engine_argv0(id: &str) -> String {
     if mirror_mode() {
         "./build/pipeline".to_string()
@@ -1004,7 +1005,8 @@ fn self_host(n: Node) -> Node {
     // unit_toolchain_executors_declare_their_binary test): the Go table
     // predates node_modules toolchains and only consumer-sim declared its
     // tailwind path. Keep in sync with the Command::new sites in jsbuild.rs,
-    // convert/mod.rs, emit/tw.rs, tools/oracle_css.rs, oracle/oracle_lib.rs
+    // convert/mod.rs, emit/tw.rs (tw_compile, also behind tools/oracle_css.rs),
+    // oracle/oracle_lib.rs, oracle/example_fixture.rs
     // the npx tsc invocation in the typecheck node and the tsc spawn in
     // tools/unit/types.mjs.
     // Reads the Go table never declared. docs-catalog scans the upstream
@@ -1127,7 +1129,7 @@ fn self_host(n: Node) -> Node {
 }
 
 /// The graph the engine runs: self-hosted by default, `SHADLESS_GRAPH=go-mirror`
-/// for the Go-parity acceptance harness.
+/// for the authored table verbatim (tests/gen_golden.sh).
 pub fn all() -> Vec<Node> {
     if mirror_mode() {
         return all_go();

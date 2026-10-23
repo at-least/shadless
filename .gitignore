@@ -2,7 +2,7 @@
 node_modules/
 # every cross-node intermediate: resolved registry, oracle render harnesses,
 # gate logs/reports/task packets, scratch sims. Deterministic paths (the
-# gate runner is multi-process and --only=<id> reads what earlier nodes
+# gate runner is multi-process and `run <id>` reads what earlier nodes
 # left here), never tracked. esbuild bundles go to node_modules/.cache.
 build/
 probes/scratch/
@@ -11,8 +11,8 @@ probes/scratch/
 /build/pipeline
 
 # Freshness bookkeeping and oracle scratch: intermediate products, not source.
-# stamps/ was tracked so a fresh clone was warm; that trade is off now — the
-# Dagger cache is content-addressed and does not live in git.
+# stamps/ is not tracked: a fresh clone holds the committed outputs but no
+# record of which inputs produced them, so it starts cold.
 /pipeline/stamps/
 /tools/contracts/out/
 
@@ -20,7 +20,7 @@ probes/scratch/
 # the served root (static/) are RENDERINGS of trees already reviewed in this
 # repo (dist/, docs/demos/). The generated MARKDOWN (docs/site/content) IS
 # tracked — that is the re-pin review surface: what the transform made of
-# upstream's mdx. The theme (docs/site/themes/vitezola), the site shell
+# upstream's mdx. The theme (docs/site/themes/shadcn), the site shell
 # (config.toml, templates/, sass/) are tracked sources too.
 /docs/site/public/
 /docs/site/static/

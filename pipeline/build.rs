@@ -10,10 +10,11 @@
 //!   so a hull edit invalidates every fp: coarser is never falsely fresh.
 //! - GROUPS — the tier directories (convert/emit/gates/oracle/twmerge/tsx)
 //!   and the lone jsbuild.rs, hashed per directory. A node's fp covers its
-//!   entry group plus the groups its group depends on (the hand-written DAG
-//!   in nodes.rs GROUP_DEPS, enforced by a raw-text grep test).
+//!   entry group plus the groups its group depends on (the hand-written,
+//!   possibly cyclic relation in nodes.rs GROUP_DEPS, enforced by a raw-text
+//!   grep test).
 //! - tools/ — hashed per FILE (`tools:<stem>`; plus `tools:mod` for the
-//!   module root, folded into every tools node). The 20 tools are
+//!   module root, folded into every tools node). The tools are
 //!   independent commands: editing docs_smoke.rs must not stale demo-parity.
 //!   Per-file deps live in nodes.rs TOOLS_FILE_DEPS/TOOLS_FILE_INTRA,
 //!   enforced by the same raw-text grep test.
@@ -25,9 +26,9 @@
 use sha2::{Digest, Sha256};
 use std::path::PathBuf;
 
-/// Same list as nodes.rs::ENGINE_GROUPS (order matters: the env string is
-/// positional-free "name=hex" pairs, but keep both tables side-by-side
-/// identical so a group added in one place fails the pairing test here).
+/// Same list as nodes.rs::ENGINE_GROUPS (order-free: the env string is
+/// "name=hex" pairs; keep both tables side-by-side identical so a group
+/// added in one place fails the pairing test here).
 const GROUPS: &[&str] = &["convert", "emit", "gates", "oracle", "tools", "twmerge", "tsx"];
 
 /// src root files — everything NOT under a group directory and not jsbuild.rs.
@@ -91,10 +92,11 @@ fn main() {
             hash_files(&mut walk_files(&format!("src/{g}")))
         ));
     }
-    // tools/ hashes per FILE (plus its module root): the 20 tools are
+    // tools/ hashes per FILE (plus its module root): the tools are
     // independent commands, so editing docs_smoke.rs must not stale
-    // demo-parity. The dir-level `tools` hash stays emitted but unused —
-    // nodes.rs composes tools nodes from the per-file entries. Stems must be
+    // demo-parity. The dir-level `tools` hash is folded only through
+    // GROUP_DEPS (gates → tools); tools nodes compose from the per-file
+    // entries. Stems must be
     // unique: a subdir with a colliding stem would silently alias an
     // existing file's hash (walk is recursive, coverage test is not).
     let mut tool_stems: Vec<String> = Vec::new();
