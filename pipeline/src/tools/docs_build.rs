@@ -2137,10 +2137,6 @@ fn set_mirror_set_cache(v: Vec<String>) {
 
 // ---- the build --------------------------------------------------------------------
 
-#[derive(Deserialize, Default)]
-#[allow(dead_code)] // unused: run_docs_build parses rtl-langs.json as a bare HashMap
-struct RtlLangsFile(HashMap<String, Vec<String>>);
-
 pub fn run_docs_build(root: &Path) -> i32 {
     let catalog_b = match std::fs::read_to_string(root.join("docs/catalog.json")) {
         Ok(b) => b,

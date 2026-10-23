@@ -24,7 +24,7 @@ fn fan_contracts(root: &Path, n: &Node) -> std::io::Result<Vec<Node>> {
         .as_deref()
         .unwrap_or(&[])
         .iter()
-        .filter(|p| *p != "tools/contracts/**/*.mjs" && *p != "tools/contracts/components/**")
+        .filter(|p| *p != "tools/contracts/components/**")
         .cloned()
         .collect();
 

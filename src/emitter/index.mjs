@@ -228,7 +228,7 @@ export const DEFAULT_CONTENT = {
     BubbleReactions: null,
   },
   card: {
-    Card: { html: '<div data-slot="card-header"><div data-slot="card-title" style="font-weight:600">Create project</div><div data-slot="card-description" style="font-size:0.875rem;color:var(--muted-foreground)">Deploy your new project in one-click.</div></div><div data-slot="card-content" style="margin-top:1rem"><p>Set up your project with our intuitive wizard.</p></div><div data-slot="card-footer" style="display:flex;justify-content:space-between;align-items:center;margin-top:1rem"><button>Cancel</button><button style="background:var(--primary);color:var(--primary-foreground);padding:0.375rem 0.75rem;border-radius:0.375rem">Deploy</button></div>' },
+    Card: { html: '<div data-slot="card-header" class="group/card-header"><div data-slot="card-title" style="font-weight:600">Create project</div><div data-slot="card-description" style="font-size:0.875rem;color:var(--muted-foreground)">Deploy your new project in one-click.</div></div><div data-slot="card-content" style="margin-top:1rem"><p>Set up your project with our intuitive wizard.</p></div><div data-slot="card-footer" style="display:flex;justify-content:space-between;align-items:center;margin-top:1rem"><button>Cancel</button><button style="background:var(--primary);color:var(--primary-foreground);padding:0.375rem 0.75rem;border-radius:0.375rem">Deploy</button></div>' },
     CardHeader: { html: '<div data-slot="card-title" style="font-weight:600">Title</div><div data-slot="card-description" style="font-size:0.875rem;color:var(--muted-foreground)">Description</div>' },
     CardTitle: "Title",
     CardDescription: "Description",

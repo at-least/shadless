@@ -2197,23 +2197,23 @@ pub fn protocol_mdx(comp: &str) -> String {
         }
         _ => {}
     }
-    #[allow(unused_assignments)] // every branch below assigns api; the init is overwritten
-    let mut api = String::new();
-    if f.kind == "inline" {
-        api = "`shadless.get(rootEl)` → `activate(i)`, `active()`; the root dispatches `shadless:change` (`detail: { index, trigger }`)".to_string();
+    let api = if f.kind == "inline" {
+        "`shadless.get(rootEl)` → `activate(i)`, `active()`; the root dispatches `shadless:change` (`detail: { index, trigger }`)".to_string()
     } else if f.kind == "none" && comp == "slider" {
-        api = "`shadless.get(rootEl)` → `values()`, `setValue(value, index)`; the root dispatches `shadless:change` (`detail: { values }`, live) and `shadless:commit` (once per gesture)".to_string();
+        "`shadless.get(rootEl)` → `values()`, `setValue(value, index)`; the root dispatches `shadless:change` (`detail: { values }`, live) and `shadless:commit` (once per gesture)".to_string()
     } else if f.kind == "none" && comp == "carousel" {
-        api = "`shadless.get(rootEl)` → the embla api (`scrollNext()`, `scrollTo(i)`, `on(\"select\", …)`)".to_string();
+        "`shadless.get(rootEl)` → the embla api (`scrollNext()`, `scrollTo(i)`, `on(\"select\", …)`)".to_string()
     } else if f.kind == "none" {
-        api = String::new();
+        String::new()
     } else {
-        api = "`shadless.get(\"#<k>-trigger\")` → `open()`, `close()`, `toggle()`, `isOpen()`"
-            .to_string();
+        let mut a =
+            "`shadless.get(\"#<k>-trigger\")` → `open()`, `close()`, `toggle()`, `isOpen()`"
+                .to_string();
         if f.kind == "select" {
-            api += ", `select(optionEl)`, `value()`, `label()`, `selected()`; the trigger also dispatches `shadless:change` (`detail: { value, label, item }`). An option's value is its `value` / `data-value` attribute or id — React's value prop never reaches the DOM, so add `data-value` to options whose value differs from their label";
+            a += ", `select(optionEl)`, `value()`, `label()`, `selected()`; the trigger also dispatches `shadless:change` (`detail: { value, label, item }`). An option's value is its `value` / `data-value` attribute or id — React's value prop never reaches the DOM, so add `data-value` to options whose value differs from their label";
         }
-    }
+        a
+    };
     let mut b = String::new();
     b.push_str("\n**Behavior protocol**\n\n");
     b.push_str("The glue is data-driven: it scans the page for the markup shape below and wires every instance it finds — several per page, any ids you like. The demos on this page were generated from the React original by the same rules.\n\n");

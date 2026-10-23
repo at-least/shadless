@@ -325,6 +325,37 @@ fn scan_proof_token(
     ))
 }
 
+/// "{page}/{file}/{idx}{slot}/{prop}/{env}@{theme}@{dir}"; slot is
+/// " [data-slot=x]" or empty.
+#[allow(clippy::too_many_arguments)] // one id field per argument
+fn diff_id(
+    page: &str,
+    file: &str,
+    idx: usize,
+    slot: &str,
+    prop: &str,
+    env: &str,
+    theme: &str,
+    dir: &str,
+) -> String {
+    let slot_s = if slot.is_empty() {
+        String::new()
+    } else {
+        format!(" [data-slot={slot}]")
+    };
+    format!("{page}/{file}/{idx}{slot_s}/{prop}/{env}@{theme}@{dir}")
+}
+
+/// diff_id → family
+/// "{page}/{file}/{idx}{slot}/{prop}" (env×theme×dir are states).
+fn diff_family(id: &str) -> String {
+    let no_state = id.split('@').next().unwrap_or(id);
+    no_state
+        .rsplit_once('/')
+        .map(|(f, _)| f.to_string())
+        .unwrap_or_else(|| no_state.to_string())
+}
+
 pub fn run_docs_code_parity(root: &Path) -> i32 {
     let fences = match collect_fences(root) {
         Ok(f) => f,
@@ -615,16 +646,8 @@ pub fn run_docs_code_parity(root: &Path) -> i32 {
                             compared += 1;
                             if rn != tn {
                                 let slot = slots.get(i).map(|s| s.as_str()).unwrap_or("");
-                                let slot_s = if slot.is_empty() {
-                                    String::new()
-                                } else {
-                                    format!(" [data-slot={slot}]")
-                                };
                                 diffs.push(Diff {
-                                    id: format!(
-                                        "{}/{}/{}{}{}/{}@{}@{}",
-                                        job.page, job.file, i, slot_s, p, env, theme, dir
-                                    ),
+                                    id: diff_id(&job.page, &job.file, i, slot, p, env, theme, dir),
                                     r: rn,
                                     t: tn,
                                 });
@@ -653,13 +676,7 @@ pub fn run_docs_code_parity(root: &Path) -> i32 {
         // group by fence + prop: one root cause shows up as one family
         let mut by_family: std::collections::BTreeMap<String, usize> = Default::default();
         for d in &diffs {
-            // "{page}/{file}/{idx}{slot}{prop}/{env}@{theme}@{dir}" → family
-            // = "{page}/{file}/{idx}{slot}{prop}" (env×theme×dir are states)
-            let no_state = d.id.split('@').next().unwrap_or(&d.id).to_string();
-            let family = no_state
-                .rsplit_once('/')
-                .map(|(f, _)| f.to_string())
-                .unwrap_or_else(|| no_state.clone());
+            let family = diff_family(&d.id);
             *by_family.entry(family).or_default() += 1;
         }
         let mut fams: Vec<(String, usize)> = by_family.into_iter().collect();
@@ -708,4 +725,21 @@ pub fn run_docs_code_parity(root: &Path) -> i32 {
     drop(sim_r);
     drop(sim_t);
     0
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn unit_diff_family_keeps_slot_and_prop_apart() {
+        let id = diff_id(
+            "button", "demo", 3, "button", "color", "preview", "dark", "rtl",
+        );
+        assert_eq!(
+            id,
+            "button/demo/3 [data-slot=button]/color/preview@dark@rtl"
+        );
+        assert_eq!(diff_family(&id), "button/demo/3 [data-slot=button]/color");
+    }
 }

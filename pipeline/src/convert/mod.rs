@@ -1211,7 +1211,6 @@ fn class_strings(c: &mut CvCtx<'_>, text: &str, acc: &mut Vec<String>, el: Optio
     let n = cv_parse_expr(text);
     match n.kind.as_str() {
         "str" => acc.push(n.str),
-        "tpl" => acc.push(n.str),
         // tplMulti: interpolated template skipped (documented limit)
         "call" => {
             if n.ident == "cn" {
@@ -1270,7 +1269,6 @@ fn cv_class_strings_nil(text: &str, acc: &mut Vec<String>) {
     let n = cv_parse_expr(text);
     match n.kind.as_str() {
         "str" => acc.push(n.str),
-        "tpl" => acc.push(n.str),
         "call" => {
             if n.ident == "cn" {
                 for a in &n.args {

@@ -1,7 +1,8 @@
 //! Shared filesystem helpers. The invariant that matters anywhere a walk
 //! reaches committed bytes or a cache key: readdir order is
-//! filesystem-dependent (btrfs hashes, ext4/tmpfs insert), so a directory
-//! walk must be sorted before it is consumed.
+//! filesystem-dependent (ext4: hash order; tmpfs: newest first; btrfs:
+//! insertion order), so a directory walk must be sorted before it is
+//! consumed.
 
 /// Directory entry file names, sorted. IO errors surface as strings, like
 /// the rest of the port.
