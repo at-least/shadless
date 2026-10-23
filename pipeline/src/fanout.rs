@@ -17,7 +17,7 @@ fn fan_contracts(root: &Path, n: &Node) -> std::io::Result<Vec<Node>> {
         .collect();
     names.sort();
 
-    // the two broad patterns cover every def, which is what we are narrowing;
+    // the broad def-glob covers every def, which is what we are narrowing;
     // the harness files they also matched are named explicitly
     let shared: Vec<String> = n
         .inputs

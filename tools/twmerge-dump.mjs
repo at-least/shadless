@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Regenerate pipeline/internal/twmerge/config.json and snapshot.json after a
+// Regenerate pipeline/src/twmerge/config.json and snapshot.json after a
 // deliberate tailwind-merge version bump:
 //
 //   node tools/twmerge-dump.mjs
@@ -11,7 +11,7 @@
 //
 // snapshot.json — twMerge(input) for every class list the repo actually
 // feeds it (upstream ui/*.tsx string literals + dist/components html class
-// attributes). pipeline/internal/twmerge/conformance_test.go must agree
+// attributes). pipeline/src/twmerge/mod.rs snapshot_conformance must agree
 // 100% with this file after a bump.
 import { getDefaultConfig, validators, twMerge } from "tailwind-merge"
 import { writeFileSync, readFileSync, readdirSync } from "node:fs"
@@ -40,7 +40,7 @@ function enc(v) {
   return v
 }
 
-writeFileSync("pipeline/internal/twmerge/config.json", JSON.stringify({
+writeFileSync("pipeline/src/twmerge/config.json", JSON.stringify({
   theme: enc(cfg.theme),
   classGroups: enc(cfg.classGroups),
   classGroupOrder: Object.keys(cfg.classGroups),
@@ -74,6 +74,6 @@ for (const f of readdirSync("dist/components").filter((x) => x.endsWith(".html")
   for (const m of html.matchAll(/class="([^"]+)"/g)) inputs.add(m[1])
 }
 const clean = [...inputs].filter((s) => !s.includes("&") && !s.includes("<") && s.length < 2000)
-writeFileSync("pipeline/internal/twmerge/snapshot.json",
+writeFileSync("pipeline/src/twmerge/snapshot.json",
   JSON.stringify(clean.map((s) => [s, twMerge(s)])))
 console.log(`twmerge-dump: config + ${clean.length} snapshot cases`)

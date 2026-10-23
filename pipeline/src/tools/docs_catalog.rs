@@ -5,8 +5,8 @@
 //! Status rules:
 //!
 //!   docs/demos/<name>.html exists -> authored; else preview "X-demo" (or "X")
-//!   + dist/components/X.html exists -> existing-dist (primary demos reuse
-//!   dist/, per scope decision v2); guide-only base-* styleName ->
+//!   with dist/components/X.html existing -> existing-dist (primary demos
+//!   reuse dist/, per scope decision v2); guide-only base-* styleName ->
 //!   unavailable; every other name -> to-author (docs/demos/<name>.html).
 //!   ComponentSource name=X -> dist/components/X.html (existing-dist | no-dist).
 //!   Previews whose component is tombstoned (no implementation in shadless) get

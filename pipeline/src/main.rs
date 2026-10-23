@@ -689,8 +689,8 @@ fn run_hidden_gate(rest: &[String]) -> i32 {
         "css-direction" => pipeline::gates::gate_css_direction(&root).map(|_| ()),
         // Go's `-run '^TestUnit ./...'` runs the pipeline's own TestUnit*
         // functions; the port named their Rust twins with the same `unit_`
-        // prefix (57 of them — Go's 188 includes internal/ subpackage tests
-        // the port consolidated). The WHOLE lib suite would sweep in other
+        // prefix (Go's count included internal/ subpackage tests the port
+        // consolidated). The WHOLE lib suite would sweep in other
         // gates' real-tree tests — gate_parity round 2 caught exactly that:
         // a stale committed artifact reds the reproducible test, and unit
         // must not care, because reproducible is its own gate on both
@@ -782,7 +782,8 @@ mod verb_surface {
     ];
 
     // unit_-prefixed and --bins-covered: these are bin-target tests, and
-    // the unit gate runs `cargo test --lib --bins -- unit_` — a plain name
+    // the unit gate runs `cargo test --release --lib -- unit_` and
+    // `cargo test --release --bins -- unit_` — a plain name
     // here silently never executed anywhere (found 2026-09-18: both tests
     // below had never run in any gate).
     #[test]
