@@ -4,9 +4,9 @@
 // pipeline/src/emit/mod.rs) — this file is its aligned JS twin, kept for
 // `tools/unit/emitter.mjs` and ad-hoc inspection; the tree must stay
 // byte-identical after running it.
-// Gates: static file count, no non-anchor class= in HTML, jsdom slot-tree vs
-// IR (exact tags + nesting edges), no literal PascalCase tags, no escaped
-// markup artifacts.
+// Gates: static file count, DEFAULT_CONTENT keys, CSS token completeness, no
+// non-anchor class= in HTML, jsdom slot-tree vs IR (exact tags + nesting
+// edges), no literal PascalCase tags.
 //
 // Pure helpers are exported for unit tests (tools/unit/emitter.mjs); the
 // pipeline + gates run under the main guard only.
@@ -504,7 +504,7 @@ ${body}
   const g = readFileSync("probes/h4/globals.css", "utf8").replace('@source "./demo.html";\n', "")
   writeFileSync("build/emit/globals.css", g + "\n" + SHADLESS_CSS_FIXES + "\n" + cssParts.join("\n\n"))
 
-  // static-only demo index (the shipped dist/demo-index.html is tools/demo.mjs's)
+  // static-only demo index (the shipped dist/demo-index.html is pipeline/src/emit/demo.rs's)
   writeFileSync("build/emit/demo-index.html", `<!doctype html><html><head><meta charset="utf-8">
 <link rel="stylesheet" href="out.css"></head><body>
 <ul>${statics.map((ir) => `<li><a href="components/${escHtml(ir.name)}.html">${escHtml(ir.name)}</a></li>`).join("")}</ul>

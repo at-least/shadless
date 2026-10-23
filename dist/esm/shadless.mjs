@@ -4174,8 +4174,8 @@ globalThis.RadixKernel = RadixKernel;
 // radio-group, select trigger, slider) gets hidden inputs mirroring its
 // value beside it, like radix's BubbleInput — a plain <form> submits it and
 // form reset restores the initial state.
-// Behaviors mirror radix semantics as recorded from the shadcn oracle
-// (probes/t7/probe-facts.mjs); zero classes are added or required.
+// Behaviors mirror radix semantics as recorded from the shadcn oracle;
+// zero classes are added or required.
 (function (global) {
   "use strict"
 
@@ -4218,8 +4218,7 @@ globalThis.RadixKernel = RadixKernel;
       // delegated live root the listener is attached to, so isRtl walked up
       // from there and never saw a dir="rtl" sitting on a wrapper INSIDE it —
       // which is exactly where the shipped radio-group-rtl-he and
-      // toggle-group-rtl-he demos put it. dist/js/tabs.js already asks the
-      // list element for this reason.
+      // toggle-group-rtl-he demos put it.
       if (isRtl(enabled[idx] || ev.currentTarget) && (ev.key === "ArrowRight" || ev.key === "ArrowLeft")) fwd = !fwd
       pick = (idx + (fwd ? 1 : -1) + enabled.length) % enabled.length
     }
@@ -4440,7 +4439,7 @@ globalThis.RadixKernel = RadixKernel;
     for (var k in extra) detail[k] = extra[k]
     el.dispatchEvent(new CustomEvent("shadless:" + type, { bubbles: true, detail: detail }))
   }
-  // the value a radio / toggle-group item stands for: value attr, else id
+  // the value a radio / toggle-group item stands for: value attr, data-value, else id
   function itemValue(item) {
     return item.getAttribute("value") || item.getAttribute("data-value") || item.id || null
   }

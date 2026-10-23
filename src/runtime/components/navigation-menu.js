@@ -1,5 +1,5 @@
-// generated: shadless navigation-menu behavior — shared-viewport menu on the
-// kernel. Measured radix semantics (oracle-driven):
+// shadless navigation-menu behavior — shared-viewport menu, hand-rolled (no
+// kernel). Measured radix semantics (oracle-driven):
 //   - the viewport lives INSIDE the nav root (in flow, below the list) and
 //     is fully unmounted when closed (no empty container in the DOM);
 //   - content mounts into the viewport from the item's template, carries
@@ -9,8 +9,8 @@
 //     (no auto-switch, no roving tabindex — triggers keep natural focus);
 //   - Escape / outside click close; size reaches CSS through the
 //     --radix-navigation-menu-viewport-{width,height} vars.
-// Document-level: wireMenu owns every trigger on the page through its
-// data-radixuigo-* protocol, so the behavior installs ONCE per page and
+// Document-level: the listeners own every [data-radixuigo-nav-trigger] on the
+// page, so the behavior installs ONCE per page and
 // ignores the root it is initialised with (a later shadless.init(subtree)
 // finds the listeners already there).
 (function () {
@@ -150,9 +150,7 @@
       e.preventDefault()
       var ts = kn.triggers()
       // nextIndex also skips disabled triggers and swaps the horizontal
-      // arrows under dir=rtl — the shipped oracle-navigation-menu-rtl
-      // fixture exercises exactly this, which the old hand-rolled formula
-      // never did
+      // arrows under dir=rtl, which the old hand-rolled formula never did
       var n = shadless.h.nextIndex(e, ts)
       if (n < 0) return
       ts[n].focus()

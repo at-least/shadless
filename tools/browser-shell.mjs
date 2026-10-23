@@ -1,9 +1,10 @@
 #!/usr/bin/env node
-// browser-shell — the chromium thin shell for the Go pipeline's browser
-// nodes (Wave 3). One long-lived process: the Go driver writes JSON request
-// lines to stdin, this shell writes one JSON response line per request to
-// stdout. All state (assertions, comparisons, reports) lives in Go; this
-// file only speaks browser primitives.
+// browser-shell — the chromium thin shell for the pipeline's browser
+// nodes (Wave 3). One long-lived process: the Rust driver
+// (pipeline/src/oracle/browser_shell.rs) writes JSON request lines to stdin,
+// this shell writes one JSON response line per request to stdout. All state
+// (assertions, comparisons, reports) lives in the pipeline; this file only
+// speaks browser primitives.
 //
 // Pages carry optional event capture (console errors / pageerror /
 // requestfailed). Locators are addressed by selector with an optional
@@ -14,11 +15,17 @@
 // Ops:
 //   launch / newPage {capture} / goto {waitUntil} / close {pageId?}
 //   evaluate {expr, arg}              — arg becomes the expression's param
+//   evaluateFn {expr, arg}            — expr is a function source, called with arg
+//   setContent {html}
+//   addStyleTag {path | content}
+//   driver {code}                     — async JS run with `page` in scope
+//   loadContractDef {file}            — JSON-safe projection of a contract def
+//   routeAbortExternal                — abort every remote (http/https/protocol-relative) request
 //   waitForFunction {expr, timeout}
 //   events                            — drain captured errors
 //   waitForLoadState {state, timeout} — "load"|"networkidle"|…
 //   waitForTimeout {ms}
-//   mouseClick {x, y} / keyPress {key} / wheel {dx, dy}
+//   mouseClick {x, y} / mouseMove {x, y, steps?} / keyPress {key} / wheel {dx, dy}
 //   focus      {selector, timeout?}      — page.focus
 //   addScriptTag {content}
 //   frameExists {frame}               — iframe selector present (bool)
@@ -29,6 +36,7 @@
 //   locBox     {frame?, selector, index?} → {x,y,width,height}
 //   locEval    {frame?, selector, expr, index?} — expr(el) on the nth match
 //   locEvalAll {frame?, selector, expr}   — expr(el) per match → [values]
+//   locClick   {frame?, selector, index?, timeout?, button?}
 import readline from "node:readline"
 import { chromium } from "playwright"
 
@@ -145,7 +153,7 @@ async function handle(req) {
     case "loadContractDef": {
       const mod = await import(req.file)
       const d = mod.default
-      // JSON-safe projection of the fields the Go gates consume
+      // JSON-safe projection of the fields the pipeline gates consume
       return { def: {
         usage: d.usage ?? null, imports: d.imports ?? null,
         slots: d.slots ?? [], open: d.open ?? null, openShadless: d.openShadless ?? null,
