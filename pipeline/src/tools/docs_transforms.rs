@@ -1,5 +1,5 @@
-//! Port of pipeline/docs_transforms.go + docs_frontmatter.go + docs_guides.go
-//! + docs_families.go + docs_scripts.go + docs_overrides.go + the pure half of
+//! Port of pipeline/docs_transforms.go, docs_frontmatter.go, docs_guides.go,
+//! docs_families.go, docs_scripts.go, docs_overrides.go and the pure half of
 //! docs_fidelity.go — the SINGLE SOURCE for where each mdx section transform
 //! touches the raw source. Two consumers must agree on the span: the builder
 //! (docs-build replaces it) and the gate (docs-fidelity drops it).
@@ -203,10 +203,7 @@ pub fn replace_span(raw: &str, s: Span, replacement: &str) -> String {
 pub fn locate_code_tabs_spans(shadow: &str) -> Vec<Span> {
     let mut spans = Vec::new();
     let mut off = 0usize;
-    loop {
-        let Some(i) = shadow[off..].find("<CodeTabs>") else {
-            break;
-        };
+    while let Some(i) = shadow[off..].find("<CodeTabs>") {
         let start = off + i;
         let Some(close) = shadow[start..].find("</CodeTabs>") else {
             break;
@@ -805,9 +802,10 @@ pub fn rewrite_jsx_attrs(fn_: &str, attrs: &str, info: &JsxTagInfo) -> Result<St
         } else {
             (name.clone(), lower, m[0].to_string())
         };
-        if lower.starts_with("data-") || lower.starts_with("aria-") {
-            out.push(whole);
-        } else if html_attrs().contains(lower.as_str()) {
+        if lower.starts_with("data-")
+            || lower.starts_with("aria-")
+            || html_attrs().contains(lower.as_str())
+        {
             out.push(whole);
         } else if info.axes.contains_key(&name) {
             if !has_val {
@@ -1147,8 +1145,8 @@ pub fn parse_frontmatter(src: &str) -> Frontmatter {
         if line.trim().is_empty() || line.trim_start().starts_with('#') {
             continue;
         }
-        if let Some(top) = RE_TOP_KEY.captures(line) {
-            if !line.starts_with([' ', '\t']) {
+        if let Some(top) = RE_TOP_KEY.captures(line)
+            && !line.starts_with([' ', '\t']) {
                 if top[2].is_empty() {
                     let inner = HashMap::new();
                     out.insert(top[1].to_string(), serde_json::json!(inner));
@@ -1159,12 +1157,10 @@ pub fn parse_frontmatter(src: &str) -> Frontmatter {
                 }
                 continue;
             }
-        }
-        if let Some(sub) = RE_SUB_KEY.captures(line) {
-            if let Some(cur) = cur.as_mut() {
+        if let Some(sub) = RE_SUB_KEY.captures(line)
+            && let Some(cur) = cur.as_mut() {
                 cur.insert(sub[1].to_string(), coerce_scalar(&sub[2]));
             }
-        }
     }
     out
 }
@@ -1227,14 +1223,13 @@ pub fn scan_fences(src: &str) -> Vec<FenceInfo> {
     let mut content = String::new();
     for line in src.split('\n') {
         if open < 0 {
-            if let Some(m) = RE_FENCE_LINE.captures(line) {
-                if line.trim_start().starts_with("```") {
+            if let Some(m) = RE_FENCE_LINE.captures(line)
+                && line.trim_start().starts_with("```") {
                     open = 3;
-                    lang = m[1].splitn(2, ' ').next().unwrap_or("").to_string();
+                    lang = m[1].split(' ').next().unwrap_or("").to_string();
                     content = String::new();
                     continue;
                 }
-            }
         } else {
             if line.trim_start().starts_with("```") {
                 out.push(FenceInfo {
@@ -1796,10 +1791,7 @@ pub struct RawHeading {
 pub fn find_all_raw_headings(s: &str) -> Vec<RawHeading> {
     let mut out: Vec<RawHeading> = Vec::new();
     let mut off = 0usize;
-    loop {
-        let Some(i) = RE_H_OPEN.find(&s[off..]) else {
-            break;
-        };
+    while let Some(i) = RE_H_OPEN.find(&s[off..]) {
         let depth = (s.as_bytes()[off + i.start() + 2] - b'0') as usize;
         let open = off + i.end();
         let close = format!("</h{}>", depth);
@@ -2122,7 +2114,7 @@ pub fn protocol_mdx(comp: &str) -> String {
                 format!("opens on {}; `<k>` names the instance", gesture),
             ));
             rows.push((
-                format!("`<template id=\"<k>-portal\">`"),
+                "`<template id=\"<k>-portal\">`".to_string(),
                 format!(
                     "holds the overlay/content subtree (`data-slot=\"{}\"` …) that the glue mounts into `<body>` while open",
                     c

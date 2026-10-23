@@ -12,7 +12,7 @@ use regex::Regex;
 use serde::Deserialize;
 use std::collections::{HashMap, HashSet};
 use std::path::Path;
-use std::sync::OnceLock;
+use std::sync::{LazyLock, OnceLock};
 
 const ORA_EXAMPLES_DIR: &str = ".upstream/shadcn-ui/apps/v4/examples/radix";
 const ORA_MANIFEST: &str = "docs/example-oracle.json";
@@ -70,7 +70,7 @@ struct Preview {
 }
 
 #[derive(Deserialize, Default)]
-struct Catalog {
+pub(crate) struct Catalog {
     #[serde(default)]
     previews: Vec<Preview>,
 }
@@ -323,8 +323,9 @@ fn run_with_shell(
             };
             let _ = std::fs::remove_file(&html_file);
             let current = std::fs::read_to_string(&t.out).unwrap_or_default();
-            static BODY_RE: OnceLock<Regex> = OnceLock::new();
-            let body_re = BODY_RE.get_or_init(|| Regex::new(r"(?s)<body[^>]*>\n(.*)\n</body>").unwrap());
+            static BODY_RE: LazyLock<Regex> =
+                LazyLock::new(|| Regex::new(r"(?s)<body[^>]*>\n(.*)\n</body>").unwrap());
+            let body_re = &*BODY_RE;
             let body = body_re
                 .captures(&current)
                 .map(|m| m[1].to_string())
@@ -518,14 +519,13 @@ fn run_with_shell(
     // written by `make overlay`, not by this node — they are legit
     if let Some(units) = inputs.overlay_manifest.get("units").and_then(|u| u.as_object()) {
         for (uid, u) in units {
-            if let Some(file) = u.get("file").and_then(|f| f.as_str()) {
-                if let Some(stem) = file
+            if let Some(file) = u.get("file").and_then(|f| f.as_str())
+                && let Some(stem) = file
                     .strip_prefix("docs/demos/")
                     .and_then(|f| f.strip_suffix(".html"))
                 {
                     legit.insert(stem.to_string());
                 }
-            }
             let _ = uid;
         }
     }

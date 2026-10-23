@@ -712,12 +712,11 @@ pub fn ledger_record(root: &Path) -> Result<(), String> {
     let values = collect_budget_values(root)?;
     for name in &l.budget_order {
         let b = l.budgets.get_mut(name).unwrap();
-        if let Some(v) = values.get(name) {
-            if *v >= 0 && *v != b.max {
+        if let Some(v) = values.get(name)
+            && *v >= 0 && *v != b.max {
                 println!("  budget {}: {} -> {}", name, b.max, v);
                 b.max = *v;
             }
-        }
     }
     l.write(root)?;
     let mut todo = 0;

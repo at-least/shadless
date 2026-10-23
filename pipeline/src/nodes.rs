@@ -843,7 +843,7 @@ pub fn node_fp(id: &str) -> String {
             if !tool_files.contains(&stem) {
                 tool_files.push(stem);
             }
-        } else if !groups.contains(&e) {
+        } else if !groups.contains(e) {
             groups.push(e);
         }
     }
@@ -853,7 +853,7 @@ pub fn node_fp(id: &str) -> String {
         let stem = tool_files[i];
         if let Some((_, dirs)) = TOOLS_FILE_DEPS.iter().find(|(n, _)| *n == stem) {
             for d in *dirs {
-                if !groups.contains(&d) {
+                if !groups.contains(d) {
                     groups.push(d);
                 }
             }
@@ -905,7 +905,9 @@ pub fn node_fp(id: &str) -> String {
 /// argv[0] for an engine-run node command: this binary, tagged with the
 /// node's own fingerprint (see `node_fp`). The tag rides argv[0] so it folds
 /// into the node key without any subcommand's parser seeing it; the runner
-/// splits on '@' and spawns the running executable.
+/// splits on '@' and spawns the running executable. Fanout shards pass
+/// their own `contracts:<name>` id, so the shard key carries the oracle
+/// group's fingerprint, not the parent's.
 ///
 /// Under `go-mirror` the authored table is presented verbatim (the
 /// self-recorded goldens run it, fingerprint-free), so the authored
@@ -1140,10 +1142,6 @@ pub fn all() -> Vec<Node> {
 pub fn mirror_mode() -> bool {
     std::env::var("SHADLESS_GRAPH").as_deref() == Ok("go-mirror")
 }
-
-/// (Per-node fingerprints — see `engine_argv0(id)`; fanout shards pass
-/// their own `contracts:<name>` id so the shard key carries the oracle
-/// group's fingerprint, not the parent's.)
 
 #[cfg(test)]
 mod self_host_tests {
@@ -1435,7 +1433,7 @@ mod self_host_tests {
         // validates Makefile/package.json against).
         for n in all() {
             for cmd in &n.run {
-                if cmd.first().map_or(false, |c| c.starts_with("__self__")) {
+                if cmd.first().is_some_and(|c| c.starts_with("__self__")) {
                     let verb = cmd.get(1).expect("engine command carries a verb");
                     if verb == "__gate" {
                         continue; // the hidden gate dispatcher: id, not a verb
@@ -1522,7 +1520,7 @@ mod self_host_tests {
         let mut non_rs: Vec<String> = std::fs::read_dir(&src)
             .unwrap()
             .filter_map(|e| e.ok())
-            .filter(|e| e.file_type().map_or(false, |t| t.is_file()))
+            .filter(|e| e.file_type().is_ok_and(|t| t.is_file()))
             .map(|e| e.file_name().to_string_lossy().to_string())
             .filter(|n| !n.ends_with(".rs"))
             .collect();
@@ -1536,7 +1534,7 @@ mod self_host_tests {
         let mut dirs: Vec<String> = std::fs::read_dir(&src)
             .unwrap()
             .filter_map(|e| e.ok())
-            .filter(|e| e.file_type().map_or(false, |t| t.is_dir()))
+            .filter(|e| e.file_type().is_ok_and(|t| t.is_dir()))
             .map(|e| e.file_name().to_string_lossy().to_string())
             .collect();
         dirs.sort();
@@ -1577,7 +1575,7 @@ mod self_host_tests {
                     TOOLS_FILE_INTRA.iter().find(|(n, _)| *n == files[i])
                 {
                     for s in *sibs {
-                        if !files.contains(&s) {
+                        if !files.contains(s) {
                             files.push(s);
                         }
                     }
@@ -1626,7 +1624,7 @@ mod self_host_tests {
         let self_hosted: Vec<String> = go
             .iter()
             .map(|n| self_host(n.clone()))
-            .filter(|n| n.run.iter().any(|cmd| cmd.first().map_or(false, |a| a.starts_with("__self__@"))))
+            .filter(|n| n.run.iter().any(|cmd| cmd.first().is_some_and(|a| a.starts_with("__self__@"))))
             .map(|n| n.id)
             .collect();
         let listed: Vec<String> = NODE_ENTRIES
@@ -1735,7 +1733,7 @@ mod self_host_tests {
                 walkdir::WalkDir::new(path)
                     .into_iter()
                     .filter_map(|e| e.ok())
-                    .filter(|e| e.file_type().is_file() && e.path().extension().map_or(false, |x| x == "rs"))
+                    .filter(|e| e.file_type().is_file() && e.path().extension().is_some_and(|x| x == "rs"))
                     .map(|e| e.path().to_path_buf())
                     .collect()
             } else {
@@ -1758,11 +1756,11 @@ mod self_host_tests {
                      dependency audit — import through the full path instead",
                     f.display()
                 );
-                let is_top_mod_rs = f.file_name().map_or(false, |n| n == "mod.rs")
+                let is_top_mod_rs = f.file_name().is_some_and(|n| n == "mod.rs")
                     && f
                         .parent()
                         .and_then(|p| p.parent())
-                        .map_or(false, |p| p == src);
+                        .is_some_and(|p| p == src);
                 for caps in head_re.captures_iter(&text) {
                     found.push(caps[1].to_string());
                 }
@@ -1906,7 +1904,7 @@ mod self_host_tests {
         for entry in walkdir::WalkDir::new(&src)
             .into_iter()
             .filter_map(|e| e.ok())
-            .filter(|e| e.file_type().is_file() && e.path().extension().map_or(false, |x| x == "rs"))
+            .filter(|e| e.file_type().is_file() && e.path().extension().is_some_and(|x| x == "rs"))
         {
             let path = entry.path();
             let text = std::fs::read_to_string(path)

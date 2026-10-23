@@ -613,9 +613,9 @@ impl DocsBuildCtx {
         }
         if let Some(s) = s {
             return format!(
-                "{}{}{}",
+                "{}## API Reference\n\n{}\n{}",
                 &raw[..s.start],
-                format!("## API Reference\n\n{}\n", extra),
+                extra,
                 &raw[s.end..]
             );
         }
@@ -2167,11 +2167,10 @@ pub fn run_docs_build(root: &Path) -> i32 {
         }
     };
     let mut rtl_langs: HashMap<String, Vec<String>> = HashMap::new();
-    if let Ok(rb) = std::fs::read_to_string(root.join("build/rtl-langs.json")) {
-        if let Ok(m) = serde_json::from_str::<HashMap<String, Vec<String>>>(&rb) {
+    if let Ok(rb) = std::fs::read_to_string(root.join("build/rtl-langs.json"))
+        && let Ok(m) = serde_json::from_str::<HashMap<String, Vec<String>>>(&rb) {
             rtl_langs = m;
         }
-    }
 
     let mut component_pages: Vec<(String, String)> = Vec::new();
     for s in &catalog.sources {
@@ -2667,14 +2666,13 @@ fn write_content_map(
                 Json::Str("radix mirror; installation Manual tab rewritten to the vanilla copy-files path (build-time transform over dist/ artifacts)".to_string()),
             ),
         ];
-        if let Some(sec) = sections.get(name) {
-            if !sec.is_empty() {
+        if let Some(sec) = sections.get(name)
+            && !sec.is_empty() {
                 e.push((
                     "sections".to_string(),
                     Json::Arr(sec.iter().map(|x| Json::Str(x.clone())).collect()),
                 ));
             }
-        }
         pages_kv.push((name.clone(), Json::Obj(e)));
     }
     for g in guides() {
@@ -2686,14 +2684,13 @@ fn write_content_map(
             ),
             ("notes".to_string(), Json::Str(g.notes.to_string())),
         ];
-        if let Some(sec) = sections.get(g.slug) {
-            if !sec.is_empty() {
+        if let Some(sec) = sections.get(g.slug)
+            && !sec.is_empty() {
                 e.push((
                     "sections".to_string(),
                     Json::Arr(sec.iter().map(|x| Json::Str(x.clone())).collect()),
                 ));
             }
-        }
         pages_kv.push((g.slug.to_string(), Json::Obj(e)));
     }
     pages_kv.push((

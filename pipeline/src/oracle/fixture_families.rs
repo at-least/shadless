@@ -154,8 +154,8 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
                 select_check_follows_pick(page, &sel, &content_sel)?;
             }
             let n = page.loc_count("", &format!("[data-slot=\"{}-sub-trigger\"]", comp))?;
-            if n > 0 {
-                if let Some(b) = page
+            if n > 0
+                && let Some(b) = page
                     .loc_box("", &format!("[data-slot=\"{}-sub-trigger\"]", comp), 0)
                     .map_err(|e| e.to_string())?
                 {
@@ -183,7 +183,6 @@ pub fn run_self_test(action: &SelfTestAction, page: &BPage<'_>) -> Result<(), St
                     page.key_press("Escape").map_err(|e| e.to_string())?;
                     let _ = page.wait_for_timeout(300);
                 }
-            }
             page.key_press("Escape").map_err(|e| e.to_string())?;
             let _ = page.wait_for_timeout(500);
             let closed = format!(
@@ -724,8 +723,8 @@ fn menu_select(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
                 .insert(o.clone(), format!("{}-trigger", id_of(i)));
         }
     }
-    for i in 0..count {
-        if !enabled[i] {
+    for (i, &on) in enabled.iter().enumerate() {
+        if !on {
             continue;
         }
         if ctx.fam.open == "contextmenu" {
@@ -1079,6 +1078,9 @@ fn nav(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
         }
         format!("n{}", i)
     };
+    // count is the live trigger count; nav_orig[i] must panic if the
+    // separately read id list is shorter
+    #[allow(clippy::needless_range_loop)]
     for i in 0..count {
         ctx.page
             .loc_click("", &format!("#root {}", trigger_sel), i as i64, "left")
@@ -1160,14 +1162,12 @@ fn inline(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
 }
 
 fn none(ctx: &mut Ctx<'_>, out: &mut FamilyOut) -> Result<(), String> {
-    if ctx.contracts {
-        if let Some(def) = ctx.def {
-            if !def.open.is_empty() {
+    if ctx.contracts
+        && let Some(def) = ctx.def
+            && !def.open.is_empty() {
                 ctx.page.driver(&def.open).map_err(|e| e.to_string())?;
                 let _ = ctx.page.wait_for_timeout(500);
             }
-        }
-    }
     let rh = ctx.root_html()?;
     out.body_html = ef_strip_radix_ids(&rh);
     out.self_test = Some(SelfTestAction::None {

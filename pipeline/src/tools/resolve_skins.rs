@@ -151,12 +151,11 @@ pub fn split_class_name(cls: &str) -> (Option<String>, Option<String>, Option<St
         match c {
             ']' => depth += 1,
             '[' => depth -= 1,
-            ':' => {
-                if depth == 0 {
+            ':'
+                if depth == 0 => {
                     last_colon = i as isize;
                     break;
                 }
-            }
             _ => {}
         }
     }
@@ -174,12 +173,11 @@ pub fn split_class_name(cls: &str) -> (Option<String>, Option<String>, Option<St
         match c {
             '[' => depth += 1,
             ']' => depth -= 1,
-            '/' => {
-                if depth == 0 {
+            '/'
+                if depth == 0 => {
                     slash = i as isize;
                     break;
                 }
-            }
             _ => {}
         }
     }
@@ -270,14 +268,13 @@ pub fn apply_rtl_mapping(input: &str) -> String {
         }
         if !done {
             for p in RTL_LOGICAL_SLIDE {
-                if let Some(v) = &variant {
-                    if v.contains(p.0) && value.starts_with(p.1) {
+                if let Some(v) = &variant
+                    && v.contains(p.0) && value.starts_with(p.1) {
                         let mapped = value.replacen(p.1, p.2, 1);
                         out.push(variant_prefixed(&variant, &m(&mapped), false));
                         done = true;
                         break;
                     }
-                }
             }
         }
         if done {
@@ -327,13 +324,13 @@ pub fn resolve_source(src: &str, rtl: bool) -> (String, usize) {
         let content = sp.content(src);
         #[allow(unused_assignments)] // the String::new() init is the no-mapping path's value
         let mut next = String::new();
-        if CN_TOKEN_RE.is_match(&content) {
-            next = expand_class_string(&content);
+        if CN_TOKEN_RE.is_match(content) {
+            next = expand_class_string(content);
             if rtl {
                 next = apply_rtl_mapping(&next);
             }
-        } else if rtl && RTL_MAPPABLE.is_match(&content) {
-            next = apply_rtl_mapping(&content);
+        } else if rtl && RTL_MAPPABLE.is_match(content) {
+            next = apply_rtl_mapping(content);
         } else {
             continue;
         }
@@ -349,7 +346,7 @@ pub fn resolve_source(src: &str, rtl: bool) -> (String, usize) {
     }
     let n = edits.len();
     let mut out = src.to_string();
-    edits.sort_by(|a, b| b.start.cmp(&a.start));
+    edits.sort_by_key(|e| std::cmp::Reverse(e.start));
     for e in edits {
         out = format!("{}{}{}", &out[..e.start - 1], e.value, &out[e.end + 1..]);
     }
@@ -397,10 +394,11 @@ pub fn run_resolve_skins(root: &Path, args: &[String]) -> i32 {
         eprintln!("resolve-skins: {}", e);
         return 1;
     }
+    type SkinTransform = fn(&str) -> (String, usize);
     let (mut files, mut edits) = (0usize, 0usize);
     let copy_tree = |dir: &str,
                      out_dir: &str,
-                     transform: Option<fn(&str) -> (String, usize)>,
+                     transform: Option<SkinTransform>,
                      files: &mut usize,
                      edits: &mut usize|
      -> Result<(), String> {
@@ -419,15 +417,14 @@ pub fn run_resolve_skins(root: &Path, args: &[String]) -> i32 {
                 continue;
             }
             let src = std::fs::read_to_string(e.path()).map_err(|e| e.to_string())?;
-            if let Some(transform) = transform {
-                if e.path().extension().map(|x| x == "tsx").unwrap_or(false) {
+            if let Some(transform) = transform
+                && e.path().extension().map(|x| x == "tsx").unwrap_or(false) {
                     let (out, n) = transform(&src);
                     *files += 1;
                     *edits += n;
                     std::fs::write(&o, out).map_err(|e| e.to_string())?;
                     continue;
                 }
-            }
             std::fs::write(&o, src).map_err(|e| e.to_string())?;
         }
         Ok(())
@@ -680,7 +677,8 @@ mod tests {
     /// Go TestUnitSplitClassName.
     #[test]
     fn unit_split_class_name() {
-        let cases: [(&str, &str, Option<&str>, Option<&str>, Option<&str>); 7] = [
+        type Case<'a> = (&'a str, &'a str, Option<&'a str>, Option<&'a str>, Option<&'a str>);
+        let cases: [Case; 7] = [
             (
                 "bare utility, no variant, no alpha",
                 "ml-2",

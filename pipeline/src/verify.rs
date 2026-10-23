@@ -274,7 +274,7 @@ pub fn undeclared_reads(
 
     // everything the closure declares, in either direction
     let mut produce_patterns: Vec<String> = n.produces.as_deref().unwrap_or(&[]).to_vec();
-    if let Ok(closure) = g.plan(&[n.id.clone()]) {
+    if let Ok(closure) = g.plan(std::slice::from_ref(&n.id)) {
         for d in &closure {
             if d.id == n.id {
                 continue;

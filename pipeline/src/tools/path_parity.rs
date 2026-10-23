@@ -178,7 +178,7 @@ pub fn run_path_parity(root: &Path, record: bool, details: bool) -> i32 {
         let cva = crate::emit::css::cva_slot(&ir);
         let mut cva_slots: std::collections::HashMap<String, crate::emit::css::CvaTable> =
             std::collections::HashMap::new();
-        for (_, (table, slot)) in &cva {
+        for (table, slot) in cva.values() {
             if !slot.is_empty() {
                 cva_slots.insert(slot.clone(), table.clone());
             }
@@ -199,6 +199,7 @@ pub fn run_path_parity(root: &Path, record: bool, details: bool) -> i32 {
                 format!("<{} {}>{}</{}>", tag, attrs, inner, tag)
             }
         }
+        #[allow(clippy::too_many_arguments)] // recursive walk: the shared state rides every call
         fn build(
             ir: &crate::emit::css::CssIrComponent,
             cva_slots: &std::collections::HashMap<String, crate::emit::css::CvaTable>,

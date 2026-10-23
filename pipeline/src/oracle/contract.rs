@@ -260,19 +260,17 @@ pub fn c_build_fact(raw: &Value, slots: &[String]) -> Result<CFact, String> {
             f.slots.insert(s.clone(), el);
         }
     }
-    if let Some(r) = raw.get("activeElement") {
-        if !r.is_null() {
+    if let Some(r) = raw.get("activeElement")
+        && !r.is_null() {
             let s = r.as_str().ok_or("activeElement not a string")?;
             f.active_element = Some(s.to_string());
         }
-    }
     if let Some(sl) = raw.get("scrollLock") {
-        if let Some(attr) = sl.get("attr") {
-            if !attr.is_null() {
+        if let Some(attr) = sl.get("attr")
+            && !attr.is_null() {
                 let s = attr.as_str().ok_or("scrollLock.attr not a string")?;
                 f.scroll_lock_attr = Some(s.to_string());
             }
-        }
         // Go ignores the unmarshal error here (json.Unmarshal(pr, &pe))
         if let Some(pe) = sl.get("pointerEvents").and_then(|v| v.as_str()) {
             f.scroll_lock_pe = pe.to_string();
@@ -597,11 +595,10 @@ fn c_oracle_run_page(
     // crashing React def must fail the scenario outright, not surface as
     // null-fact diffs that read like a behavioral difference
     let err_v = page.evaluate("window.__err")?;
-    if let Some(s) = err_v.as_str() {
-        if !s.is_empty() {
+    if let Some(s) = err_v.as_str()
+        && !s.is_empty() {
             return Err(format!("oracle page threw: {}", s));
         }
-    }
     let mut mounted: Vec<String> = Vec::new();
     let mut mounted_ok = false;
     if !def.open.is_empty() && !c_closed_start(step) {
@@ -720,7 +717,7 @@ fn run_contract_inner(name: &str) -> Result<(), ContractError> {
     let root = std::env::current_dir().map_err(|e| ContractError::Msg(e.to_string()))?;
     let out = root.join(format!("tools/contracts/out/{}", name));
 
-    let shell = BrowserShell::start().map_err(|e| ContractError::Msg(format!("{}", e)))?;
+    let shell = BrowserShell::start().map_err(|e| ContractError::Msg(e.to_string()))?;
 
     let def = c_load_def(&shell, &root, name)?;
     let recorder = c_recorder_src(&def.slots);

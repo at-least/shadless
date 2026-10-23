@@ -4,6 +4,7 @@
 //!   1. dialog.html: real-mouse open inside the iframe + Escape close
 //!   2. avatar.html: preview over http, 0 console errors, images settled
 //!   3. dialog page preview wiring counts
+//!
 //!   --all: every built page — render, no raw mdx leak, 0 errors
 
 use std::path::Path;
@@ -47,11 +48,10 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
             for m in RE_IFRAME_SRC.captures_iter(&b) {
                 seen += 1;
                 let src = &m[1];
-                if src.starts_with('/') && !src.contains("//") {
-                    if !site_dir.join(src.trim_start_matches('/')).exists() {
+                if src.starts_with('/') && !src.contains("//")
+                    && !site_dir.join(src.trim_start_matches('/')).exists() {
                         dead.push(format!("{}: {}", rel.display(), src));
                     }
-                }
             }
         }
         dead.sort();
@@ -343,11 +343,10 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
         let mut page_files: Vec<String> = Vec::new();
         for e in walkdir::WalkDir::new(&site_dir) {
             let Ok(e) = e else { continue };
-            if !e.file_type().is_dir() && e.file_name() == "index.html" {
-                if let Ok(rel) = e.path().strip_prefix(&site_dir) {
+            if !e.file_type().is_dir() && e.file_name() == "index.html"
+                && let Ok(rel) = e.path().strip_prefix(&site_dir) {
                     page_files.push(rel.to_string_lossy().into_owned());
                 }
-            }
         }
         page_files.sort();
         let (mut render_fail, mut leak_fail) = (0usize, 0usize);
@@ -387,8 +386,8 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
             }
             let mut rendered = false;
             let mut leaks: Vec<String> = Vec::new();
-            if let Ok(m) = res {
-                if let Some(obj) = m.as_object() {
+            if let Ok(m) = res
+                && let Some(obj) = m.as_object() {
                     rendered = obj.get("rendered") == Some(&serde_json::Value::Bool(true));
                     if let Some(raw) = obj.get("leaks").and_then(|v| v.as_array()) {
                         for l in raw {
@@ -398,7 +397,6 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
                         }
                     }
                 }
-            }
             if !rendered {
                 render_fail += 1;
                 eprintln!("FAIL  render: {} — article missing/empty", f);

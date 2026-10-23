@@ -117,8 +117,8 @@ pub fn gate_pack(root: &Path) -> Result<(), String> {
     let mut fail: Vec<String> = Vec::new();
 
     // 1. dependencies
-    if let Some(deps) = dependencies.as_object() {
-        if !deps.is_empty() {
+    if let Some(deps) = dependencies.as_object()
+        && !deps.is_empty() {
             let mut names: Vec<&String> = deps.keys().collect();
             names.sort();
             fail.push(format!(
@@ -130,7 +130,6 @@ pub fn gate_pack(root: &Path) -> Result<(), String> {
                     .join(", ")
             ));
         }
-    }
 
     // 2. exports -> files
     let mut targets: BTreeMap<String, Vec<String>> = BTreeMap::new();
