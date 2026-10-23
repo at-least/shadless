@@ -579,7 +579,7 @@ pub fn run_docs_consistency(root: &Path) -> i32 {
 
 /// resolveImport mirrors the JS gate's check, which reads package.json's
 /// exports the way node resolution does: exact keys first, then the "./*"
-/// wildcard (./* → ./dist/css/*.css per the exports map).
+/// wildcard (./* → ./dist/css/* per the exports map).
 fn resolve_import(exports: &Value, spec: &str) -> String {
     if spec == "shadless" || spec == "shadless/" {
         if let Some(s) = exports.get(".").and_then(|v| v.as_str()) {
@@ -603,8 +603,8 @@ fn resolve_import(exports: &Value, spec: &str) -> String {
             _ => {}
         }
     }
-    // wildcard: "./*" → "./dist/css/*.css"; the wildcard already supplies the
-    // ".css" suffix — do not add one.
+    // wildcard: "./*" → "./dist/css/*"; the spec already carries the ".css"
+    // suffix — do not add one.
     if let Some(w) = exports.get("./*").and_then(|v| v.as_str()) {
         return w
             .replacen('*', sub.strip_prefix("./").unwrap_or(&sub), 1)

@@ -1,5 +1,5 @@
 //! Port of pipeline/gate_consumer_sim.go — machine-proof of the PRIMARY
-//! distribution path (tools/consumer-sim.mjs).
+//! distribution path.
 //!
 //! A consumer with only tailwindcss installed @imports shadless tokens + the
 //! per-component css files they use, pastes markup carrying inline utilities,
@@ -461,9 +461,8 @@ pub fn gate_consumer_sim(root: &Path) -> Result<(), String> {
 mod tests {
     use super::*;
 
-    /// Go TestConsumerSim: gate(t, gateConsumerSim). Spawns one tailwindcss
-    /// subprocess per dist/css/*.css — slow, but that is what the Go test
-    /// does too.
+    /// Go TestConsumerSim: gate(t, gateConsumerSim). Spawns a tailwindcss
+    /// subprocess per dist/css/*.css on each toolchain (dev, then floor) — slow.
     #[test]
     fn consumer_sim_on_real_tree() {
         let root = crate::tree_root();

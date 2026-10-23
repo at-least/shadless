@@ -46,10 +46,10 @@ fn inherit(root: &Path, name: &str, args: &[&str]) -> bool {
         .unwrap_or(false)
 }
 
-/// The engine binary the drill drives: the Go binary path under
-/// `SHADLESS_GRAPH=go-mirror` (the drill is itself a parity harness there),
-/// otherwise this running binary — by definition already built. Resolving
-/// the latter is not allowed to fall back to the Go path.
+/// The engine binary the drill drives: ./build/pipeline under
+/// `SHADLESS_GRAPH=go-mirror`, otherwise this running binary — by definition
+/// already built. Resolving the latter is not allowed to fall back to
+/// ./build/pipeline.
 fn pipeline_exe() -> String {
     if crate::nodes::mirror_mode() {
         return "./build/pipeline".to_string();

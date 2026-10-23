@@ -2,11 +2,12 @@
 //! ComponentSource name referenced by the docs mirror set and write
 //! docs/catalog.json.
 //!
-//! Status rules (recorded in PLAN §Wave F):
+//! Status rules:
 //!
-//!   preview "X-demo" + dist/components/X.html exists -> existing-dist (primary
-//!   demos reuse dist/, per scope decision v2); every other name -> to-author
-//!   (docs/demos/<name>.html, authored in FT7 waves).
+//!   docs/demos/<name>.html exists -> authored; else preview "X-demo" (or "X")
+//!   + dist/components/X.html exists -> existing-dist (primary demos reuse
+//!   dist/, per scope decision v2); guide-only base-* styleName ->
+//!   unavailable; every other name -> to-author (docs/demos/<name>.html).
 //!   ComponentSource name=X -> dist/components/X.html (existing-dist | no-dist).
 //!   Previews whose component is tombstoned (no implementation in shadless) get
 //!   status="tombstoned" instead of "to-author" — they can never be authored.

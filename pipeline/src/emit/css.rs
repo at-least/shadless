@@ -1097,10 +1097,6 @@ mod tests {
 
     use super::*;
 
-    /// One apply-signature spanning two tags beside a disjoint one: the
-    /// `:is(tag)` selector used to come from a HashSet pick — per-process
-    /// random. The same IR must emit one stable selector, the way the JS
-    /// twin (first tag seen) does.
     /// Slot names and variant values land verbatim inside quoted attribute
     /// selectors — a quote or backslash breaks out of the selector into
     /// rule space. Identifiers by construction; refused at entry.
@@ -1174,6 +1170,10 @@ mod tests {
         assert!(err.contains("refuses selector value"), "got: {err}");
     }
 
+    /// One apply-signature spanning two tags beside a disjoint one: the
+    /// `:is(tag)` selector used to come from a HashSet pick — per-process
+    /// random. The same IR must emit one stable selector, the way the JS
+    /// twin (first tag seen) does.
     #[test]
     fn unit_cva_sig_tag_pick_is_deterministic() {
         let ir = CssIrComponent {

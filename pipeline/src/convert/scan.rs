@@ -374,8 +374,8 @@ pub fn cv_find_ternary_colon(s: &str, q: usize) -> isize {
 
 #[derive(Clone, Debug, Default)]
 pub struct ExprNode {
-    pub kind: String, // str tpl tplMulti ident bool nul num obj call cond logical other
-    pub str: String,  // str: value; tpl: cooked; num: raw literal text
+    pub kind: String, // str tplMulti ident bool nul num obj call cond logical other
+    pub str: String,  // str: value (substitution-free templates cooked); num: raw literal text
     pub ident: String,
     pub args: Vec<String>,
     pub obj: Vec<CvProp>,

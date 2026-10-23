@@ -102,7 +102,7 @@ pub fn js_unescape(s: &str) -> String {
 }
 
 /// jsBalanced returns the text between the opening delimiter at src[open] and
-/// its match, exclusive. Delegates to convert.go's cvMatchBracket, so it
+/// its match, exclusive. Delegates to [crate::convert::scan::cv_match_bracket], so it
 /// skips strings, template-literal interpolation, and comments.
 fn js_balanced(src: &str, open: usize, oc: u8, cc: u8) -> Result<&str, String> {
     let end = crate::convert::scan::cv_match_bracket(src, open, oc, cc)
@@ -457,8 +457,8 @@ pub fn golden_reasons(root: &Path) -> Result<Vec<String>, String> {
 /// one is how a ratchet silently stops ratcheting.
 ///
 /// A value of -1 means "could not read", which fails. Absence from the map
-/// means "not checked here" — the coverage.* budgets need the IR, so the
-/// coverage gate owns them.
+/// fails too, except for the one budget the coverage gate checks itself
+/// (it needs the IR).
 pub fn collect_budget_values(root: &Path) -> Result<HashMap<String, i64>, String> {
     let mut v: HashMap<String, i64> = HashMap::new();
 

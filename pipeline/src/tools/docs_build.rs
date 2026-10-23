@@ -1,5 +1,5 @@
 //! Port of pipeline/docs_build.go: upstream mdx → Zola markdown (built by the
-//! vitezola theme — see docs/site/). The text transform chain, the four MDX
+//! shadcn theme — see docs/site/). The text transform chain, the four MDX
 //! shapes, the grey-list cross-check, content-map emission, index + section
 //! pages. The ONE node dependency left is prettier's html printer for the
 //! demo markup shown under each preview (tools/prettier-batch.mjs — one
@@ -194,7 +194,7 @@ fn convert_callouts(text: &str, page: &str) -> Result<String, String> {
         let body = &out[open_e..close];
         let ls: Vec<String> = body.split('\n').map(strip_up_to_3_spaces).collect();
         let trimmed = ls.join("\n").trim().to_string();
-        // vitezola's tip component; `title` must be listed on a block call
+        // the theme's tip component; `title` must be listed on a block call
         // (empty falls back to the kind's default title).
         let title = attrs.get("title").cloned().unwrap_or_default();
         if title.contains('"') || title.contains('\\') {
@@ -232,7 +232,7 @@ fn strip_up_to_3_spaces(l: &str) -> String {
 }
 
 /// convertDetails rewrites the VitePress `::: details <summary>` container
-/// into vitezola's details component.
+/// into the theme's details component.
 fn convert_details(text: &str, page: &str) -> Result<String, String> {
     let mut out: Vec<String> = Vec::new();
     let mut in_fence = false;
@@ -775,7 +775,7 @@ fn preview_markdown(
     } else {
         format!(" · {}", others.join(" · "))
     };
-    // vitezola's demo component (docs/site/templates/demo.html): the card
+    // the site's demo component (docs/site/templates/components.html): the card
     // wrapping the preview iframe and the demo's source. Block calls list
     // every parameter.
     Ok(format!(
@@ -922,7 +922,7 @@ impl SlotIndex {
                         continue;
                     }
                     if cva_slots.contains_key(&el.slot) {
-                        continue; // Supply::All
+                        continue; // cva slot: everything supplied (absent from the supply map)
                     }
                     let applied: std::collections::HashSet<String> =
                         crate::emit::css::split_markers(&el.classes.join(" "))
@@ -1308,7 +1308,7 @@ fn project_element(
         m.collision_ties += 1;
     }
     // What the CSS actually supplies to the projected markup: the slot-rule
-    // intersection, not the full composed set (Supply above).
+    // intersection, not the full composed set (SlotIndex::supply).
     let supplied = index.supply[entry.ir].get(slot);
     let a: std::collections::HashSet<&String> = a_toks
         .iter()
@@ -1998,7 +1998,7 @@ fn demo_source(ctx: &DocsBuildCtx, file: &str) -> String {
     }
     js.extend(scripts.inline_scripts.clone());
     let js_text = js.join("\n\n").trim().to_string();
-    // vitezola's codegroup: one fenced block per tab, the tab label from the
+    // the theme's codegroup: one fenced block per tab, the tab label from the
     // name= annotation. Markup rides the `text` language (highlighting off —
     // it is code a reader copies verbatim out of the shipped demo page).
     if js_text.is_empty() {
@@ -2138,7 +2138,7 @@ fn set_mirror_set_cache(v: Vec<String>) {
 // ---- the build --------------------------------------------------------------------
 
 #[derive(Deserialize, Default)]
-#[allow(dead_code)] // parsed shape of rtl-langs.json; only part is consumed today
+#[allow(dead_code)] // unused: run_docs_build parses rtl-langs.json as a bare HashMap
 struct RtlLangsFile(HashMap<String, Vec<String>>);
 
 pub fn run_docs_build(root: &Path) -> i32 {
@@ -2259,7 +2259,7 @@ pub fn run_docs_build(root: &Path) -> i32 {
         }
     }
     // docs/site's content/ and static/ are generated in full; only the theme
-    // (themes/vitezola), the site shell (config.toml, templates/, sass/) and
+    // (themes/shadcn), the site shell (config.toml, templates/, sass/) and
     // this pipeline's own inputs are tracked
     for d in [
         format!("{}/components", CONTENT_ROOT),
@@ -2594,8 +2594,8 @@ pub fn run_docs_build(root: &Path) -> i32 {
         eprintln!("docs-build: {}", e);
         return 1;
     }
-    // the hero home — the theme's index.html renders vitepress_home and
-    // nothing else, so the component listing lives on /components/ above
+    // the hero home — the theme's index.html renders vitepress_home (plus a
+    // non-placeholder body), so the component listing lives on /components/ above
     // TOML frontmatter: the vitepress_home tables are TOML, and a YAML block
     // cannot carry them (the pages keep YAML — Zola accepts either per file)
     let home = format!(
@@ -3245,12 +3245,12 @@ mod tests {
 
     #[test]
     fn unit_closure_cross_element_keeps_descendant_targeted_token() {
-        // The spinner shape: the trigger's kept-side token
-        // `[&_svg]:size-4` targets descendants; the icon's own `size-3`
-        // stays inline. In the original both sat inline (specificity gave
-        // the trigger's token the icon); after the projection the icon's
-        // size-3 would come from @layer components and the layer order
-        // flips the winner — so the closure moves the trigger's token back.
+        // The spinner shape: the trigger's supplied token `[&_svg]:size-4`
+        // targets descendants; the icon's own `size-3` stays inline. In the
+        // original both sat inline (specificity gave the trigger's token the
+        // icon); after the projection the trigger's token would come from
+        // @layer components, which the icon's inline size-3 beats — so the
+        // closure moves the trigger's token back.
         // Deleting the cross-element settle makes this test fail.
         use crate::emit::css::{CssIrComponent, IrEl, IrFn};
         use std::collections::{HashMap, HashSet};

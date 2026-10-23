@@ -605,7 +605,7 @@ fn apply_variant_merge_defaults(root: &Path, f: &[String]) -> Result<(), String>
     )
 }
 
-/// The whole set, in id order. TestMeta cross-checks it against the graph in
+/// The whole set. unit_meta_wiring cross-checks it against the graph in
 /// both directions: every gate must be named by at least one mutation, and
 /// every mutation must name a gate that lists it.
 pub static MUTATIONS: &[Mutation] = &[
