@@ -65,9 +65,9 @@
 //
 // Tree construction is modeled no further than tokenization: every start
 // tag the tokenizer emits is checked, except the table family
-// (caption/col/colgroup/frame/head/tbody/td/tfoot/th/thead/tr) with no
-// <table> or <template> open — a browser builds no element for it
-// (Chromium-measured). Content inside a <select> is built and checked: the
+// (caption/col/colgroup/tbody/td/tfoot/th/thead/tr) with no <table> or
+// <template> open, and frame/head anywhere — a browser builds no element
+// for them (Chromium-measured). Content inside a <select> is built and checked: the
 // HTML standard parses it under body rules since the customizable-select
 // change (Chromium 151 builds a <div> there; parse5 8.0.1 still drops it).
 // Foster parenting only MOVES built elements, so it cannot change a

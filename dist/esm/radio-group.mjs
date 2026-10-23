@@ -19,7 +19,7 @@ import "./shadless.mjs"
       },
     },
     // radio-group arrows: move focus; with NO item checked they also check the
-    // target (measured radix quirk, probes/t7/probe-keys3.mjs),
+    // target (measured radix quirk),
     "radio-group": {
       init: function (group) {
         var checked = function () { return group.querySelector("[data-slot=radio-group-item][aria-checked=true]") }

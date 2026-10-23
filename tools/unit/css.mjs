@@ -1,6 +1,6 @@
 // css.mjs (src/emitter/css.mjs) — migrated assertions + Wave H cases:
 // anchors for slotless elements, :is(tag) slot-conflict disambiguation,
-// loud failure on same-tag conflicts.
+// same-tag conflicts split into slot rule + remainder anchors.
 import { MARKER, splitMarkers, componentCss, residueResets, cssEscape } from "../../src/emitter/css.mjs"
 
 export function run(t) {
@@ -22,7 +22,7 @@ export function run(t) {
   }
 
   // twMerge residue: a value that drops a multi-property base utility must
-  // reset the properties it does not set itself (gates/path-parity.mjs)
+  // reset the properties it does not set itself
   t.eq("residue: text-sm dropped by text-[0.8rem] resets line-height",
     residueResets("text-sm h-8", "h-7 text-[0.8rem]"), ["leading-[inherit]"])
   t.eq("residue: text-xs sets line-height itself", residueResets("text-sm", "text-xs"), [])

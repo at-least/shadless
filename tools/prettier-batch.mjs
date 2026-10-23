@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// prettier-batch — the docs build's ONE node dependency. The Go builder
-// (pipeline docs-build) sends a JSON array of {file, body} pairs on stdin
+// prettier-batch — the docs build's ONE node dependency. The Rust builder
+// (pipeline docs-build, pipeline/src/tools/docs_build.rs) sends a JSON array of {file, body} pairs on stdin
 // (body = the demo page's <body> content, scripts already stripped) and
 // reads a JSON map {file: formatted} from stdout. prettier's html printer is
 // whitespace-sensitivity aware; no Go formatter matches it byte-for-byte,

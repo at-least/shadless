@@ -1,6 +1,6 @@
 import "./shadless.mjs"
 ;
-// generated: shadless menubar behavior — wireMenu + the menubar-specific layer
+// shadless menubar behavior — wireMenu + the menubar-specific layer
 // (roving cursor between triggers, horizontal arrows switching between open
 // menus, Enter/Space opening). wireMenu already covers click toggling,
 // vertical item navigation, submenus, Escape/outside-close and trigger

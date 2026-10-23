@@ -29,7 +29,6 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
   // open the shadless-side page (oracle renders already-open)
   openShadless: `await page.click("#d1-trigger")`,
 
-  // shadless page (until T5/T6 emit real output): h4 spike demo
   // fixture is slot-keyed: mounted content has no inline classes by
   // design (styles ride out.css [data-slot] rules) — class compare off
   mountedClasses: false,
