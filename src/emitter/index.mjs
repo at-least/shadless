@@ -4,9 +4,9 @@
 // pipeline/src/emit/mod.rs) — this file is its aligned JS twin, kept for
 // `tools/unit/emitter.mjs` and ad-hoc inspection; the tree must stay
 // byte-identical after running it.
-// Gates: static file count, no non-anchor class= in HTML, jsdom slot-tree vs
-// IR (exact tags + nesting edges), no literal PascalCase tags, no escaped
-// markup artifacts.
+// Gates: static file count, DEFAULT_CONTENT keys, CSS token completeness, no
+// non-anchor class= in HTML, jsdom slot-tree vs IR (exact tags + nesting
+// edges), no literal PascalCase tags.
 //
 // Pure helpers are exported for unit tests (tools/unit/emitter.mjs); the
 // pipeline + gates run under the main guard only.
@@ -228,7 +228,7 @@ export const DEFAULT_CONTENT = {
     BubbleReactions: null,
   },
   card: {
-    Card: { html: '<div data-slot="card-header"><div data-slot="card-title" style="font-weight:600">Create project</div><div data-slot="card-description" style="font-size:0.875rem;color:var(--muted-foreground)">Deploy your new project in one-click.</div></div><div data-slot="card-content" style="margin-top:1rem"><p>Set up your project with our intuitive wizard.</p></div><div data-slot="card-footer" style="display:flex;justify-content:space-between;align-items:center;margin-top:1rem"><button>Cancel</button><button style="background:var(--primary);color:var(--primary-foreground);padding:0.375rem 0.75rem;border-radius:0.375rem">Deploy</button></div>' },
+    Card: { html: '<div data-slot="card-header" class="group/card-header"><div data-slot="card-title" style="font-weight:600">Create project</div><div data-slot="card-description" style="font-size:0.875rem;color:var(--muted-foreground)">Deploy your new project in one-click.</div></div><div data-slot="card-content" style="margin-top:1rem"><p>Set up your project with our intuitive wizard.</p></div><div data-slot="card-footer" style="display:flex;justify-content:space-between;align-items:center;margin-top:1rem"><button>Cancel</button><button style="background:var(--primary);color:var(--primary-foreground);padding:0.375rem 0.75rem;border-radius:0.375rem">Deploy</button></div>' },
     CardHeader: { html: '<div data-slot="card-title" style="font-weight:600">Title</div><div data-slot="card-description" style="font-size:0.875rem;color:var(--muted-foreground)">Description</div>' },
     CardTitle: "Title",
     CardDescription: "Description",
@@ -504,7 +504,7 @@ ${body}
   const g = readFileSync("probes/h4/globals.css", "utf8").replace('@source "./demo.html";\n', "")
   writeFileSync("build/emit/globals.css", g + "\n" + SHADLESS_CSS_FIXES + "\n" + cssParts.join("\n\n"))
 
-  // static-only demo index (the shipped dist/demo-index.html is tools/demo.mjs's)
+  // static-only demo index (the shipped dist/demo-index.html is pipeline/src/emit/demo.rs's)
   writeFileSync("build/emit/demo-index.html", `<!doctype html><html><head><meta charset="utf-8">
 <link rel="stylesheet" href="out.css"></head><body>
 <ul>${statics.map((ir) => `<li><a href="components/${escHtml(ir.name)}.html">${escHtml(ir.name)}</a></li>`).join("")}</ul>

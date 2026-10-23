@@ -4,7 +4,7 @@
 # The Rust convert must reproduce the committed generated/ir byte-for-byte.
 # Go's convert was verified deterministic (two runs + committed tree all
 # identical, 2026-09-07), so the committed tree IS the oracle. Safety: the
-# pre-run state is snapshotted and restored on any mismatch.
+# pre-run state is snapshotted and restored on exit (unless --keep).
 #
 # Stages: during the staged port, `pipeline convert` runs whatever is ported
 # and this harness reports per-file pass/fail with first-divergence context —

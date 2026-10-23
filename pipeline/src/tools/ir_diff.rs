@@ -3,7 +3,7 @@
 //! (go-parity-final tag).
 
 use crate::emit::tw::find_repo_root;
-use crate::jsonorder::{marshal_js, Json, JsonObj};
+use crate::jsonorder::{Json, JsonObj, marshal_js};
 use serde::Deserialize;
 use serde_json::Value;
 use std::collections::{HashMap, HashSet};
@@ -184,7 +184,7 @@ fn js_string(v: &Value) -> String {
             // numbers and Some for integer literals > 2^53), so route
             // everything through f64.
             let f = n.as_f64().unwrap_or(0.0);
-            if f.fract() == 0.0 && f >= -9223372036854775808.0 && f < 9223372036854775808.0 {
+            if f.fract() == 0.0 && (-9223372036854775808.0..9223372036854775808.0).contains(&f) {
                 format!("{}", f as i64)
             } else {
                 go_g_shortest(f)
@@ -212,7 +212,7 @@ fn go_g_shortest(x: f64) -> String {
     };
     let digits: String = digits.chars().filter(|c| *c != '.').collect();
     let exp: i32 = exp.parse().expect("exponent is an integer");
-    if exp < -4 || exp >= 6 {
+    if !(-4..6).contains(&exp) {
         // %e form: d.ddde±XX — sign always present, exponent zero-padded to
         // at least two digits
         let (d0, rest) = digits.split_at(1);
@@ -422,16 +422,16 @@ fn diff_ir(before: &IrSet, after: &IrSet) -> (Vec<String>, HashMap<String, IrEnt
                     });
                 }
                 for v in sorted_keys(va) {
-                    if let Some(bv) = vb.get(&v) {
-                        if js_string(&va[&v]) != js_string(bv) {
-                            d.changes.push(IrChange {
-                                what: "cva-value-classes".to_string(),
-                                table: tbl.clone(),
-                                axis: ax.clone(),
-                                value: v.clone(),
-                                ..Default::default()
-                            });
-                        }
+                    if let Some(bv) = vb.get(&v)
+                        && js_string(&va[&v]) != js_string(bv)
+                    {
+                        d.changes.push(IrChange {
+                            what: "cva-value-classes".to_string(),
+                            table: tbl.clone(),
+                            axis: ax.clone(),
+                            value: v.clone(),
+                            ..Default::default()
+                        });
                     }
                 }
             }
@@ -730,7 +730,7 @@ mod tests {
                 ]}],
                 "cva": {
                     "variant": {
-                        "base": "inline-flex",
+                        "base": "inline-flex items-center",
                         "variants": {
                             "size": {"sm": "h-9", "lg": "h-10", "xl": "h-12"},
                             "state": {"active": "opacity-100"}
@@ -878,6 +878,17 @@ mod tests {
                 value: "",
                 from: "sm",
                 to: "lg",
+                added: None,
+                removed: None,
+            },
+            WantChange {
+                what: "cva-base",
+                slot: "",
+                table: "variant",
+                axis: "",
+                value: "",
+                from: "",
+                to: "",
                 added: None,
                 removed: None,
             },

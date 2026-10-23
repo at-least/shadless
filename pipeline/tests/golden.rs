@@ -156,8 +156,7 @@ fn golden_matrix_replays() {
     };
     let mut fails: Vec<String> = Vec::new();
     for slug in &slugs {
-        let cmd = std::fs::read_to_string(golden.join(format!("{}.cmd", slug)))
-            .unwrap_or_default();
+        let cmd = std::fs::read_to_string(golden.join(format!("{}.cmd", slug))).unwrap_or_default();
         let line = cmd.trim_end_matches('\n');
         let args: Vec<&str> = if line.is_empty() {
             Vec::new()

@@ -2,9 +2,9 @@
 //!
 //! PLAN.md「Oxc 替換」的開放支線:oracle 的 bundle 是瀏覽器執行的暫存產物,
 //! 驗收標準是渲染出來的 DOM(`example-oracle --check`),不是位元組。本檔
-//! 用 rolldown(oxc 家族的 bundler)取代該點的 esbuild spawn,由
-//! `SHADLESS_ORACLE_BUNDLER=oxc` 在 oracle 群組內閘——預設路徑(與 Go
-//! 位元組契約綁定的 esbuild)一個字都不動。
+//! 用 rolldown(oxc 家族的 bundler)取代該點的 esbuild spawn;`oxc`
+//! feature(預設開)下即為預設路徑,`SHADLESS_ORACLE_BUNDLER=esbuild`
+//! 逐次退回 esbuild。
 //!
 //! 與 esbuild 行為對齊的點:alias 語意(精確匹配或 `key/` 前綴)、
 //! platform=Browser 時自動定義 `process.env.NODE_ENV=development`
@@ -20,8 +20,7 @@ pub fn bundle_oracle_oxc(
     aliases: &HashMap<String, String>,
     outfile: &Path,
 ) -> Result<(), String> {
-    let rt = tokio::runtime::Runtime::new()
-        .map_err(|e| format!("rolldown: tokio runtime: {e}"))?;
+    let rt = tokio::runtime::Runtime::new().map_err(|e| format!("rolldown: tokio runtime: {e}"))?;
     rt.block_on(bundle_async(root, entry, aliases, outfile))
 }
 
@@ -31,7 +30,9 @@ async fn bundle_async(
     aliases: &HashMap<String, String>,
     outfile: &Path,
 ) -> Result<(), String> {
-    use rolldown::{BundlerBuilder, BundlerOptions, InputItem, OutputFormat, ResolveOptions, TsConfig};
+    use rolldown::{
+        BundlerBuilder, BundlerOptions, InputItem, OutputFormat, ResolveOptions, TsConfig,
+    };
 
     // Canonicalize the entry. A relative entry (example_oracle passes root =
     // ".") reached rolldown as "./node_modules/…": react imported from that
@@ -110,7 +111,7 @@ async fn bundle_async(
             return Err(format!(
                 "rolldown: produced {n} JS chunks of {total} outputs, expected 1 \
                  (code splitting is not wanted here)"
-            ))
+            ));
         }
     };
     std::fs::write(outfile, bytes).map_err(|e| format!("{}: {e}", outfile.display()))?;

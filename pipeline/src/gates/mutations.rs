@@ -165,6 +165,8 @@ pub static RE_FIRST_SHADLESS_CELL: LazyLock<Regex> =
 
 // ------------------------------------------------------------- the set
 
+pub type ResolveFn = fn(&Path) -> Result<Vec<String>, String>;
+
 /// One break, its target gate, and the bug class it proves.
 ///
 /// `files` is the snapshot set: the harness saves these before apply and
@@ -177,7 +179,7 @@ pub struct Mutation {
     pub gate: &'static str,
     pub why: &'static str,
     pub files: &'static [&'static str],
-    pub resolve: Option<fn(&Path) -> Result<Vec<String>, String>>,
+    pub resolve: Option<ResolveFn>,
     pub apply: fn(&Path, &[String]) -> Result<(), String>,
 }
 
@@ -605,7 +607,7 @@ fn apply_variant_merge_defaults(root: &Path, f: &[String]) -> Result<(), String>
     )
 }
 
-/// The whole set, in id order. TestMeta cross-checks it against the graph in
+/// The whole set. unit_meta_wiring cross-checks it against the graph in
 /// both directions: every gate must be named by at least one mutation, and
 /// every mutation must name a gate that lists it.
 pub static MUTATIONS: &[Mutation] = &[
@@ -995,10 +997,10 @@ impl Snapshot {
                 }
                 continue;
             }
-            if let Err(e) = std::fs::remove_file(&full) {
-                if e.kind() != std::io::ErrorKind::NotFound {
-                    errs.push(format!("{}: {}", p, e));
-                }
+            if let Err(e) = std::fs::remove_file(&full)
+                && e.kind() != std::io::ErrorKind::NotFound
+            {
+                errs.push(format!("{}: {}", p, e));
             }
         }
         if !errs.is_empty() {
@@ -1015,8 +1017,8 @@ impl Snapshot {
 /// interrupt between apply and restore can still put the tree back (the
 /// __meta SIGINT/SIGTERM watcher below and run_mutation's unwind guard both
 /// drain it).
-static ACTIVE_RESTORE: Mutex<Option<Box<dyn FnOnce() -> Result<(), String> + Send>>> =
-    Mutex::new(None);
+type RestoreFn = Box<dyn FnOnce() -> Result<(), String> + Send>;
+static ACTIVE_RESTORE: Mutex<Option<RestoreFn>> = Mutex::new(None);
 
 pub fn set_active_restore(f: impl FnOnce() -> Result<(), String> + Send + 'static) {
     // poison-tolerant: an interrupted (panicking) mutation must not take the
@@ -1251,8 +1253,7 @@ pub fn run_mutation(
                 // a surviving mutation used to print with no gate output at
                 // all — carry the log's last lines so the operator sees what
                 // the gate said while green
-                let mut lines: Vec<&str> =
-                    log.lines().filter(|l| !l.trim().is_empty()).collect();
+                let mut lines: Vec<&str> = log.lines().filter(|l| !l.trim().is_empty()).collect();
                 if lines.len() > 3 {
                     lines = lines.split_off(lines.len() - 3);
                 }
@@ -1264,10 +1265,7 @@ pub fn run_mutation(
         };
         Ok((res, None))
     })();
-    let restore_err = match restore_active_mutation() {
-        Ok(()) => None,
-        Err(e) => Some(e),
-    };
+    let restore_err = restore_active_mutation().err();
     match out {
         Ok((res, _)) => Ok((res, restore_err)),
         Err(e) => Err(e),

@@ -1,4 +1,4 @@
-// Tag normalization shared by converter / emitter / css.mjs.
+// Tag normalization shared by the JS emitter twin (index.mjs / css.mjs).
 // Single source of truth for "what native tag does this IR tag render as".
 //
 // Resolution order for a raw IR tag:

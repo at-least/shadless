@@ -102,7 +102,7 @@ pub fn js_unescape(s: &str) -> String {
 }
 
 /// jsBalanced returns the text between the opening delimiter at src[open] and
-/// its match, exclusive. Delegates to convert.go's cvMatchBracket, so it
+/// its match, exclusive. Delegates to [crate::convert::scan::cv_match_bracket], so it
 /// skips strings, template-literal interpolation, and comments.
 fn js_balanced(src: &str, open: usize, oc: u8, cc: u8) -> Result<&str, String> {
     let end = crate::convert::scan::cv_match_bracket(src, open, oc, cc)
@@ -352,8 +352,8 @@ pub fn collect_source_ids(root: &Path) -> Result<Vec<SourceId>, String> {
     // src/emitter/css.mjs and skin.mjs build their exported Sets from it,
     // so no JS-source scraping is needed here
     let ex_path = "src/registry/emitter-exemptions.json";
-    let ex_b = std::fs::read_to_string(root.join(ex_path))
-        .map_err(|e| format!("{}: {}", ex_path, e))?;
+    let ex_b =
+        std::fs::read_to_string(root.join(ex_path)).map_err(|e| format!("{}: {}", ex_path, e))?;
     #[derive(serde::Deserialize)]
     struct EmitterExemptions {
         #[serde(rename = "deadUtilities")]
@@ -457,8 +457,8 @@ pub fn golden_reasons(root: &Path) -> Result<Vec<String>, String> {
 /// one is how a ratchet silently stops ratcheting.
 ///
 /// A value of -1 means "could not read", which fails. Absence from the map
-/// means "not checked here" — the coverage.* budgets need the IR, so the
-/// coverage gate owns them.
+/// fails too, except for the one budget the coverage gate checks itself
+/// (it needs the IR).
 pub fn collect_budget_values(root: &Path) -> Result<HashMap<String, i64>, String> {
     let mut v: HashMap<String, i64> = HashMap::new();
 
@@ -712,11 +712,12 @@ pub fn ledger_record(root: &Path) -> Result<(), String> {
     let values = collect_budget_values(root)?;
     for name in &l.budget_order {
         let b = l.budgets.get_mut(name).unwrap();
-        if let Some(v) = values.get(name) {
-            if *v >= 0 && *v != b.max {
-                println!("  budget {}: {} -> {}", name, b.max, v);
-                b.max = *v;
-            }
+        if let Some(v) = values.get(name)
+            && *v >= 0
+            && *v != b.max
+        {
+            println!("  budget {}: {} -> {}", name, b.max, v);
+            b.max = *v;
         }
     }
     l.write(root)?;

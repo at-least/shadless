@@ -402,7 +402,7 @@ mod tests {
 
     #[test]
     fn unit_writer_template_contents_serialize() {
-        // rcdom keeps template children as regular children; the projection
+        // rcdom keeps template children in template_contents, not children; the projection
         // relies on portal templates landing in the tab
         let out = ser(
             r#"<div><template id="d1-portal"><div data-slot="dialog-overlay" class="fixed"></div></template></div>"#,

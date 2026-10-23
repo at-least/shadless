@@ -213,7 +213,7 @@ pub fn gate_coverage(root: &Path, argv: &[String]) -> Result<(), String> {
     let no_state_axis: &[&str] = &["avatar", "progress"];
 
     // The known-dead families, read from the sweep gate itself.
-    let known_dead: &[&str] = &["message-scroller"];
+    let known_dead: &[&str] = &crate::tools::interactivity_sweep::SWEEP_KNOWN_DEAD;
 
     let paths = ["demo-inline", "css-import", "full-css"];
     let themes = ["light", "dark"];

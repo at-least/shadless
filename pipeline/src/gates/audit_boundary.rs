@@ -35,7 +35,7 @@ impl BoundaryPattern {
 fn re_cache(pat: &'static str) -> &'static Regex {
     static CACHE: OnceLock<Mutex<HashMap<&'static str, &'static Regex>>> = OnceLock::new();
     let mut g = CACHE.get_or_init(Default::default).lock().unwrap();
-    *g.entry(pat)
+    g.entry(pat)
         .or_insert_with(|| Box::leak(Box::new(Regex::new(pat).unwrap())))
 }
 
@@ -98,7 +98,7 @@ fn tool_source_patterns() -> &'static [BoundaryPattern] {
                 matches: Box::new(|p: &str| re_cache(r"^src/docs/.*\.mjs$").is_match(p)),
                 tool: "",
                 source: "",
-                note: "src/docs/*.mjs — JSX/runtime used by the MDX compile step (ComponentPreview, code-copy/view-code/rtl handlers, theme pre-paint, etc.)",
+                note: "src/docs/*.mjs — theme pre-paint script and CSS-fix constants (the JS emitter twin imports them; product_css.rs lifts SHADLESS_CSS_FIXES)",
                 owner: "",
             },
             BoundaryPattern {
@@ -112,7 +112,7 @@ fn tool_source_patterns() -> &'static [BoundaryPattern] {
                 matches: one_of(&["src/tags.mjs"]),
                 tool: "",
                 source: "",
-                note: "src/tags.mjs — tag normalization shared by converter/emitter/css",
+                note: "src/tags.mjs — tag normalization for the JS emitter twin",
                 owner: "",
             },
         ]
@@ -219,7 +219,6 @@ fn programmatic_patterns() -> &'static [BoundaryPattern] {
                 note: "",
                 owner: "",
             },
-            // J4: server-stack template macros — regenerated from IR
             BoundaryPattern {
                 matches: one_of(&["dist/shadless.js", "dist/shadless.min.js"]),
                 tool: "./build/pipeline build-js",
@@ -240,13 +239,12 @@ fn programmatic_patterns() -> &'static [BoundaryPattern] {
             BoundaryPattern {
                 matches: one_of(&["dist/demo-index.html"]),
                 tool: "pipeline/src/emit/demo.rs",
-                source: "per-tier IR list (built into demo.mjs)",
+                source: "the shipped IR list (demo.rs shipped_irs)",
                 note: "",
                 owner: "",
             },
             // docs/site — the Zola site. content/ + static/ are docs-build
-            // output; public/ is zola build output; themes/vitezola is
-            // vendored.
+            // output; public/ is zola build output.
             BoundaryPattern {
                 matches: Box::new(|p: &str| {
                     p.starts_with("docs/site/content/") || p.starts_with("docs/site/static/")
@@ -259,14 +257,7 @@ fn programmatic_patterns() -> &'static [BoundaryPattern] {
             BoundaryPattern {
                 matches: Box::new(|p: &str| p.starts_with("docs/site/public/")),
                 tool: "zola build --root docs/site",
-                source: "docs/site/content/** + docs/site/static/** + docs/site/themes/vitezola",
-                note: "",
-                owner: "",
-            },
-            BoundaryPattern {
-                matches: Box::new(|p: &str| p.starts_with("docs/site/themes/vitezola/")),
-                tool: "vendored (github.com/newlix/vitezola — see docs/site/themes/vitezola/ORIGIN.txt)",
-                source: "the vitezola release tree, stripped of its demo content",
+                source: "docs/site/content/** + docs/site/static/** + docs/site/themes/shadcn",
                 note: "",
                 owner: "",
             },
@@ -321,8 +312,7 @@ fn hand_authored_patterns() -> &'static [BoundaryPattern] {
                 note: "",
                 owner: "human (guide source — compiled by docs-build into docs/site/)",
             },
-            // The Zola site shell — hand-authored sources around the vendored
-            // theme
+            // The Zola site shell and its theme — hand-authored
             BoundaryPattern {
                 matches: one_of(&["docs/site/config.toml"]),
                 tool: "",
@@ -343,6 +333,13 @@ fn hand_authored_patterns() -> &'static [BoundaryPattern] {
                 source: "",
                 note: "",
                 owner: "human (site CSS — demo cards, demo-missing, linked-card)",
+            },
+            BoundaryPattern {
+                matches: Box::new(|p: &str| p.starts_with("docs/site/themes/shadcn/")),
+                tool: "",
+                source: "",
+                note: "",
+                owner: "human (site theme — templates, sass, fonts, scripts)",
             },
             BoundaryPattern {
                 matches: one_of(&["docs/content-map.json"]),
@@ -391,25 +388,27 @@ fn hand_authored_patterns() -> &'static [BoundaryPattern] {
 /// intervene. Not regenerated — the seam between script and human.
 struct LlmPatchPoint {
     file: &'static str,
-    lines: &'static str,
+    /// Text the file must contain (empty for a directory); held by
+    /// unit_llm_patch_points_resolve.
+    anchor: &'static str,
     what: &'static str,
 }
 
 static LLM_PATCH_POINTS: &[LlmPatchPoint] = &[
     LlmPatchPoint {
-        file: "pipeline/src/emit/build_rtl.rs",
-        lines: "32-37",
-        what: "PERSIAN translations dict — 4 keys × 2 alerts for alert-rtl only. Upstream ships en/ar/he; Persian isn't in upstream so hand-coded. When upstream adds a new language, add it here (or generalize to read from upstream).",
+        file: "src/registry/rtl-translations.json",
+        anchor: "\"fa\"",
+        what: "Persian (fa) translations for alert-rtl. Upstream ships none, so they are hand-written here and preserved by rtl_dict; build_rtl emits alert-rtl-fa from them.",
     },
     LlmPatchPoint {
         file: "pipeline/src/emit/demo.rs",
-        lines: "~127-230",
-        what: "Per-tier HTML fixtures (dialogDemoHtml, fieldDemoHtml, etc.) — kernel/trivial-js components get static HTML hand-written here; consumed by pipeline/src/emit/demo.rs.",
+        anchor: "fn field_demo_html",
+        what: "The field demo fixture is hand-written inline here. Every other non-static component's fixture is a file named by its `fixture` in src/registry/tiers.json (src/kernel/*.html, probes/t7, probes/t8).",
     },
     LlmPatchPoint {
         file: "docs/demos/",
-        lines: "(directory)",
-        what: "Almost all of this is generated: example-oracle writes 226 pages from the React render, example-fixture 105 more with kernel-family JS wired in, build-rtl the *-rtl-{he,en,fa} variants. What is left hand-authored is the message-scroller family, whose examples the oracle cannot bundle (external deps) and which is recorded in the golden exemptions and in interactivity-sweep's KNOWN_DEAD.",
+        anchor: "",
+        what: "Almost all of this is generated: example-oracle writes the pages from the React render, example-fixture the ones with kernel-family JS wired in, build-rtl the *-rtl-{he,en,fa} variants. What is left hand-authored is the message-scroller family, whose examples the oracle cannot bundle (external deps) and which is recorded in the golden exemptions and in interactivity_sweep's SWEEP_KNOWN_DEAD.",
     },
 ];
 
@@ -632,14 +631,6 @@ fn heuristic_hints() -> &'static [HeuristicHint] {
                 note: "",
                 owner: "",
             },
-            HeuristicHint {
-                re: r"^dist/glue/",
-                kind: "programmatic",
-                tool: "pipeline/src/emit/demo.rs",
-                source: "src/kernel/*-glue.js",
-                note: "",
-                owner: "",
-            },
             // Catch-all: any HTML under dist/ is a build artifact. The
             // specific rules above catch the known subdirs; this handles a
             // new one that nobody has added a rule for yet.
@@ -696,7 +687,7 @@ fn heuristic_hints() -> &'static [HeuristicHint] {
                 kind: "tool-source",
                 tool: "",
                 source: "",
-                note: "src/docs — JSX runtime used by MDX compile",
+                note: "src/docs — theme pre-paint + CSS-fix constants",
                 owner: "",
             },
             HeuristicHint {
@@ -859,11 +850,11 @@ fn run_discover_mode(root: &Path, all: &[String], by_path: &HashMap<String, Clas
     let mut matched: Vec<Classification> = Vec::new();
     let mut unmatched: Vec<String> = Vec::new();
     for p in &new_files {
-        if let Some(c) = by_path.get(p) {
-            if c.kind != "unknown" {
-                matched.push(c.clone());
-                continue;
-            }
+        if let Some(c) = by_path.get(p)
+            && c.kind != "unknown"
+        {
+            matched.push(c.clone());
+            continue;
         }
         unmatched.push(p.clone());
     }
@@ -1105,8 +1096,8 @@ pub fn run_audit_boundary(args: &[String]) -> i32 {
     for p in LLM_PATCH_POINTS {
         println!();
         let mut loc = p.file.to_string();
-        if !p.lines.is_empty() {
-            loc += &format!(":{}", p.lines);
+        if !p.anchor.is_empty() {
+            loc += &format!(" ({})", p.anchor);
         }
         println!("[{}]", loc);
         println!("  {}", p.what);
@@ -1345,6 +1336,11 @@ mod tests {
         for (i, p) in programmatic_patterns().iter().enumerate() {
             assert!(!p.tool.is_empty(), "programmaticPatterns[{}] no label", i);
             assert!(
+                p.note.is_empty() && p.owner.is_empty(),
+                "programmaticPatterns[{}] sets more than tool",
+                i
+            );
+            assert!(
                 !p.source.is_empty(),
                 "programmaticPatterns[{}] ({}) no source",
                 i,
@@ -1353,9 +1349,19 @@ mod tests {
         }
         for (i, p) in tool_source_patterns().iter().enumerate() {
             assert!(!p.note.is_empty(), "toolSourcePatterns[{}] no label", i);
+            assert!(
+                p.tool.is_empty() && p.owner.is_empty(),
+                "toolSourcePatterns[{}] sets more than note",
+                i
+            );
         }
         for (i, p) in hand_authored_patterns().iter().enumerate() {
             assert!(!p.owner.is_empty(), "handAuthoredPatterns[{}] no label", i);
+            assert!(
+                p.tool.is_empty() && p.note.is_empty(),
+                "handAuthoredPatterns[{}] sets more than owner",
+                i
+            );
         }
         for (i, h) in heuristic_hints().iter().enumerate() {
             assert!(!h.kind.is_empty(), "heuristicHints[{}] no kind", i);
@@ -1374,6 +1380,26 @@ mod tests {
         }
     }
 
+    /// Every patch point names a path that exists and, for a file, text it
+    /// still contains.
+    #[test]
+    fn unit_llm_patch_points_resolve() {
+        let root = crate::tree_root();
+        for p in LLM_PATCH_POINTS {
+            let path = root.join(p.file);
+            assert!(path.exists(), "patch point {} does not exist", p.file);
+            if !p.anchor.is_empty() {
+                let text = std::fs::read_to_string(&path).unwrap();
+                assert!(
+                    text.contains(p.anchor),
+                    "{} no longer contains {:?}",
+                    p.file,
+                    p.anchor
+                );
+            }
+        }
+    }
+
     /// The specific heuristics must win over the dist/ catch-all.
     #[test]
     fn unit_audit_heuristic_order() {
@@ -1386,7 +1412,6 @@ mod tests {
                 "docs/demos/thing-demo.html",
                 "pipeline/src/oracle/example_oracle.rs",
             ),
-            ("dist/glue/dialog-glue.js", "pipeline/src/emit/demo.rs"),
             // only the catch-all matches this one
             (
                 "dist/widgets/new.html",

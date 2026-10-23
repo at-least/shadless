@@ -1,8 +1,8 @@
 //! Self-hosting plumbing: how a node command refers to "this engine".
 //!
-//! Nodes authored in the Go-verbatim table execute the Go binary
-//! (`./build/pipeline`) or `go test`; the self-hosted shape (nodes::self_host)
-//! rewrites those argv[0]s to `__self__@<node fingerprint>` — a per-node hash
+//! Nodes authored in the Go-verbatim table name `./build/pipeline` or
+//! `go test` as argv[0]; the self-hosted shape (nodes::self_host) rewrites
+//! those argv[0]s to `__self__@<node fingerprint>` — a per-node hash
 //! over the engine hull plus the implementation groups that node executes
 //! (nodes::node_fp). The runner, the meta harness and the upstream drill
 //! resolve that token here.

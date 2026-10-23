@@ -164,7 +164,9 @@ JSON
   (cd "$FIXTURE" && "$RS_BIN" __keys) | while IFS=$'\t' read -r id ok value; do
     [ "$ok" = "1" ] || continue
     mkdir -p "$FIXTURE/pipeline/stamps"
-    printf '%s\n' "$value" > "$FIXTURE/pipeline/stamps/${id//:/__}"
+    # stamps.rs stamp_file: % -> %25, then : -> %3A
+    stamp="${id//\%/%25}"
+    printf '%s\n' "$value" > "$FIXTURE/pipeline/stamps/${stamp//:/%3A}"
   done
   for _ in 1 2 3 4 5 6; do
     (cd "$FIXTURE" && "$RS_BIN" status all) | grep 'output missing' | sed -E 's/.*output missing: (.*)\)/\1/' | while read -r p; do

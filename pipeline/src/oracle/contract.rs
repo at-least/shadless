@@ -260,18 +260,18 @@ pub fn c_build_fact(raw: &Value, slots: &[String]) -> Result<CFact, String> {
             f.slots.insert(s.clone(), el);
         }
     }
-    if let Some(r) = raw.get("activeElement") {
-        if !r.is_null() {
-            let s = r.as_str().ok_or("activeElement not a string")?;
-            f.active_element = Some(s.to_string());
-        }
+    if let Some(r) = raw.get("activeElement")
+        && !r.is_null()
+    {
+        let s = r.as_str().ok_or("activeElement not a string")?;
+        f.active_element = Some(s.to_string());
     }
     if let Some(sl) = raw.get("scrollLock") {
-        if let Some(attr) = sl.get("attr") {
-            if !attr.is_null() {
-                let s = attr.as_str().ok_or("scrollLock.attr not a string")?;
-                f.scroll_lock_attr = Some(s.to_string());
-            }
+        if let Some(attr) = sl.get("attr")
+            && !attr.is_null()
+        {
+            let s = attr.as_str().ok_or("scrollLock.attr not a string")?;
+            f.scroll_lock_attr = Some(s.to_string());
         }
         // Go ignores the unmarshal error here (json.Unmarshal(pr, &pe))
         if let Some(pe) = sl.get("pointerEvents").and_then(|v| v.as_str()) {
@@ -597,10 +597,10 @@ fn c_oracle_run_page(
     // crashing React def must fail the scenario outright, not surface as
     // null-fact diffs that read like a behavioral difference
     let err_v = page.evaluate("window.__err")?;
-    if let Some(s) = err_v.as_str() {
-        if !s.is_empty() {
-            return Err(format!("oracle page threw: {}", s));
-        }
+    if let Some(s) = err_v.as_str()
+        && !s.is_empty()
+    {
+        return Err(format!("oracle page threw: {}", s));
     }
     let mut mounted: Vec<String> = Vec::new();
     let mut mounted_ok = false;
@@ -720,7 +720,7 @@ fn run_contract_inner(name: &str) -> Result<(), ContractError> {
     let root = std::env::current_dir().map_err(|e| ContractError::Msg(e.to_string()))?;
     let out = root.join(format!("tools/contracts/out/{}", name));
 
-    let shell = BrowserShell::start().map_err(|e| ContractError::Msg(format!("{}", e)))?;
+    let shell = BrowserShell::start().map_err(|e| ContractError::Msg(e.to_string()))?;
 
     let def = c_load_def(&shell, &root, name)?;
     let recorder = c_recorder_src(&def.slots);
@@ -923,11 +923,10 @@ fn run_contract_inner(name: &str) -> Result<(), ContractError> {
     println!("contracts[{}]: scenarios", name);
     for s in &def.scenarios {
         let (label, o_r, s_r): (String, String, String) = if !scenario_ran.contains(s) {
-            // A genuine array hole (an accidental extra comma in a def's
-            // scenarios list, e.g. toggle-group.mjs): JS's spread/for-of
-            // visits it as literal `undefined` — falsy, so the label and
-            // both values print JS's stringification of undefined rather
-            // than being omitted.
+            // A scenario with no recorded result (an array hole cannot reach
+            // here: a null fails Vec<String> at load): the label and both
+            // values print JS's stringification of undefined rather than
+            // being omitted.
             (
                 "undefined".to_string(),
                 "undefined".to_string(),
@@ -975,7 +974,7 @@ fn run_contract_inner(name: &str) -> Result<(), ContractError> {
     let mut shadless_obj = JsonObj::new();
     for s in &def.scenarios {
         if !scenario_ran.contains(s) {
-            // array hole — JS's oracleS/shadlessS never gained this key
+            // no recorded result for this scenario
             continue;
         }
         oracle_obj = oracle_obj.add(s, Json::Str(oracle_s[s].clone()));

@@ -46,10 +46,10 @@ fn inherit(root: &Path, name: &str, args: &[&str]) -> bool {
         .unwrap_or(false)
 }
 
-/// The engine binary the drill drives: the Go binary path under
-/// `SHADLESS_GRAPH=go-mirror` (the drill is itself a parity harness there),
-/// otherwise this running binary — by definition already built. Resolving
-/// the latter is not allowed to fall back to the Go path.
+/// The engine binary the drill drives: ./build/pipeline under
+/// `SHADLESS_GRAPH=go-mirror`, otherwise this running binary — by definition
+/// already built. Resolving the latter is not allowed to fall back to
+/// ./build/pipeline.
 fn pipeline_exe() -> String {
     if crate::nodes::mirror_mode() {
         return "./build/pipeline".to_string();
@@ -297,10 +297,10 @@ fn drill_repin(
         return 2;
     }
     upstream_step(&format!("checkout {}", to));
-    if args.iter().any(|a| a == "--fetch") {
-        if let Err(e) = up_git(root, &["fetch", "--tags", "--quiet"]) {
-            eprintln!("fetch failed (offline?): {}", e);
-        }
+    if args.iter().any(|a| a == "--fetch")
+        && let Err(e) = up_git(root, &["fetch", "--tags", "--quiet"])
+    {
+        eprintln!("fetch failed (offline?): {}", e);
     }
     let dirty = up_git(root, &["status", "--porcelain"]).unwrap_or_default();
     if !dirty.is_empty() {
@@ -376,14 +376,14 @@ fn drill_repin(
             .arg(root.join("overlays/upstream").join(f))
             .current_dir(root)
             .output();
-        if let Ok(out) = out {
-            if !out.status.success() {
-                conflicts.push(PatchConflict {
-                    f: f.clone(),
-                    out: String::from_utf8_lossy(&out.stdout).trim().to_string()
-                        + &String::from_utf8_lossy(&out.stderr).trim(),
-                });
-            }
+        if let Ok(out) = out
+            && !out.status.success()
+        {
+            conflicts.push(PatchConflict {
+                f: f.clone(),
+                out: String::from_utf8_lossy(&out.stdout).trim().to_string()
+                    + String::from_utf8_lossy(&out.stderr).trim(),
+            });
         }
     }
     let msg = if conflicts.is_empty() {
@@ -456,10 +456,8 @@ fn component_of(p: &str) -> String {
 fn component_of_example(name: &str, registry_names: &[String]) -> String {
     let mut best = String::new();
     for r in registry_names {
-        if name == r || name.starts_with(&format!("{}-", r)) {
-            if r.len() > best.len() {
-                best = r.clone();
-            }
+        if (name == r || name.starts_with(&format!("{}-", r))) && r.len() > best.len() {
+            best = r.clone();
         }
     }
     if best.is_empty() {
@@ -650,7 +648,6 @@ mod tests {
             "no bytes may be read through the link"
         );
     }
-
 
     /// Go TestUnitClassifyFailures.
     #[test]

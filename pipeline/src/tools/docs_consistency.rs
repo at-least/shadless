@@ -24,6 +24,8 @@ use std::sync::LazyLock;
 
 use super::docs_transforms::{RE_DATA_SLOT_ATTR, RE_DATA_SLOT_SET, fence_shadow};
 
+static RE_IMPORT_KEY_NOISE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r#"@import[ \t]+|"|&quot;"#).unwrap());
 static RE_CN: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\bcn-[a-z0-9-]+").unwrap());
 static RE_IMPORT_TEACH: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r#"@import[ \t]+(?:"|&quot;)shadless[^"&]*"#).unwrap());
@@ -168,10 +170,7 @@ pub fn run_docs_consistency(root: &Path) -> i32 {
         };
         for spec in RE_IMPORT_TEACH.find_iter(&b) {
             let spec = spec.as_str();
-            let key = Regex::new(r#"@import[ \t]+|"|&quot;"#)
-                .unwrap()
-                .replace_all(spec, "")
-                .into_owned();
+            let key = RE_IMPORT_KEY_NOISE.replace_all(spec, "").into_owned();
             if !seen_import.insert(key.clone()) {
                 continue;
             }
@@ -396,7 +395,7 @@ pub fn run_docs_consistency(root: &Path) -> i32 {
             // names is gone the claim is stale and the gate says so
             let mut ex_ids: Vec<&str> = dup_exempt
                 .get(page)
-                .map(|m| m.keys().map(|s| *s).collect())
+                .map(|m| m.keys().copied().collect())
                 .unwrap_or_default();
             ex_ids.sort();
             for id in ex_ids {
@@ -579,7 +578,7 @@ pub fn run_docs_consistency(root: &Path) -> i32 {
 
 /// resolveImport mirrors the JS gate's check, which reads package.json's
 /// exports the way node resolution does: exact keys first, then the "./*"
-/// wildcard (./* → ./dist/css/*.css per the exports map).
+/// wildcard (./* → ./dist/css/* per the exports map).
 fn resolve_import(exports: &Value, spec: &str) -> String {
     if spec == "shadless" || spec == "shadless/" {
         if let Some(s) = exports.get(".").and_then(|v| v.as_str()) {
@@ -603,8 +602,8 @@ fn resolve_import(exports: &Value, spec: &str) -> String {
             _ => {}
         }
     }
-    // wildcard: "./*" → "./dist/css/*.css"; the wildcard already supplies the
-    // ".css" suffix — do not add one.
+    // wildcard: "./*" → "./dist/css/*"; the spec already carries the ".css"
+    // suffix — do not add one.
     if let Some(w) = exports.get("./*").and_then(|v| v.as_str()) {
         return w
             .replacen('*', sub.strip_prefix("./").unwrap_or(&sub), 1)

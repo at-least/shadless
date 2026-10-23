@@ -117,18 +117,17 @@ pub fn ef_learn(html: &str, slot_to_stable: &[EfSlotStable], id_map: &mut HashMa
         static TAG_RE: OnceLock<HashMap<String, Regex>> = OnceLock::new();
         let re_map = TAG_RE.get_or_init(HashMap::new);
         let re = re_map.get(&e.slot).cloned().unwrap_or_else(|| {
-            let r = Regex::new(&format!(
+            Regex::new(&format!(
                 r##"<[^>]*data-slot="{}"[^>]*>"##,
                 regex_quote(&e.slot)
             ))
-            .unwrap();
-            r
+            .unwrap()
         });
         let tag = re.find(html).map(|m| m.as_str()).unwrap_or("");
-        if !tag.is_empty() {
-            if let Some(m) = RE_ID_IN_TAG.captures(tag) {
-                id_map.insert(m[1].to_string(), e.stable.clone());
-            }
+        if !tag.is_empty()
+            && let Some(m) = RE_ID_IN_TAG.captures(tag)
+        {
+            id_map.insert(m[1].to_string(), e.stable.clone());
         }
         if base.is_empty() {
             base = e.stable.clone();
@@ -400,14 +399,14 @@ fn run_with_shell(
             "../js/".to_string(),
         );
         let def = if contracts {
-            // contracts mode reads the def again from the target list built above
+            // contracts mode: build_one_page re-loads the def from its .mjs
             None::<EfDef>
         } else {
             None
         };
         let _ = def;
         if contracts {
-            // out_path/jsdir come from the def at build time below
+            // out_path comes from the def's shadlessPage at build time below
             css = "../../dist/out.css".to_string();
             base = "../../dist/shadless.js".to_string();
             jsdir = "../../dist/js/".to_string();
@@ -477,7 +476,7 @@ fn stable_sort_dialogs_last(known: &mut [String]) {
     // stable insertion sort by key (false before true)
     for i in 1..known.len() {
         let mut j = i;
-        while j > 0 && key(&known[j]) < key(&known[j - 1]) {
+        while j > 0 && !key(&known[j]) & key(&known[j - 1]) {
             known.swap(j, j - 1);
             j -= 1;
         }
@@ -514,10 +513,8 @@ fn build_one_page(
     } else {
         None
     };
-    if contracts {
-        if let Some(def) = &contract_def {
-            *out_path = root.join(&def.shadless_page);
-        }
+    if contracts && let Some(def) = &contract_def {
+        *out_path = root.join(&def.shadless_page);
     }
 
     let mut id_map: HashMap<String, String> = HashMap::new();
@@ -606,10 +603,10 @@ fn build_one_page(
                         json!(format!("[data-slot=\"{}-trigger\"]", comp)),
                     )
                     .map_err(|e| e.to_string())?;
-                if let Some(trig_orig) = trig_v.as_str() {
-                    if trig_orig.starts_with("radix-") {
-                        id_map_ref.insert(trig_orig.to_string(), "d1-trigger".to_string());
-                    }
+                if let Some(trig_orig) = trig_v.as_str()
+                    && trig_orig.starts_with("radix-")
+                {
+                    id_map_ref.insert(trig_orig.to_string(), "d1-trigger".to_string());
                 }
                 let fixed = ef_strip_radix_ids(&ef_remap(&portal_html, &id_map));
                 body_html = ef_trigger_with_id(
@@ -724,18 +721,18 @@ fn build_one_page(
     // shadless.get(trigger) too
     let mut fams: Vec<String> = Vec::new();
     for f in &target.families {
-        if let Some(fam) = super::families::family(f) {
-            if matches!(fam.kind, "dialog" | "portal" | "menu" | "select" | "nav") {
-                fams.push(f.clone());
-            }
+        if let Some(fam) = super::families::family(f)
+            && matches!(fam.kind, "dialog" | "portal" | "menu" | "select" | "nav")
+        {
+            fams.push(f.clone());
         }
     }
     if !fams.is_empty() {
         let api_v = page.evaluate_fn_arg(EF_API_DRIVER, json!(fams))?;
-        if let Some(s) = api_v.as_str() {
-            if !s.is_empty() {
-                return Err(format!("self-test (api): {}", s));
-            }
+        if let Some(s) = api_v.as_str()
+            && !s.is_empty()
+        {
+            return Err(format!("self-test (api): {}", s));
         }
     }
     let ev1 = page.events().unwrap_or_default();

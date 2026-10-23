@@ -354,11 +354,7 @@ fn process_definition(
 ) {
     match def {
         Value::String(d) => {
-            let target = if d.is_empty() {
-                parent
-            } else {
-                parent.part(d)
-            };
+            let target = if d.is_empty() { parent } else { parent.part(d) };
             target.group_id = group_id.to_string();
         }
         Value::Object(map) => {
@@ -605,12 +601,11 @@ pub fn merge(class_list: &str) -> String {
             .get(&group_id)
             .cloned()
             .unwrap_or_default();
-        if has_postfix {
-            if let Some(mods) = b.conflicting_group_modifiers.get(&group_id) {
-                if !mods.is_empty() {
-                    conflicting.extend(mods.iter().cloned());
-                }
-            }
+        if has_postfix
+            && let Some(mods) = b.conflicting_group_modifiers.get(&group_id)
+            && !mods.is_empty()
+        {
+            conflicting.extend(mods.iter().cloned());
         }
         for g in &conflicting {
             conflict_ids.push(format!("{}{}", modifier, g));
@@ -625,12 +620,14 @@ pub fn merge(class_list: &str) -> String {
 mod tests {
     use super::*;
 
-    /// Hand-checked against `twMerge` (tailwind-merge v3.6.0) outputs — the
-    /// same cases pipeline/internal/twmerge/twmerge_test.go pins.
+    /// Hand-checked against `twMerge` (tailwind-merge v3.6.0) outputs.
     #[test]
     fn hand_checked_basics() {
         let cases = [
-            ("absolute inset-0 z-10 outline-none absolute inset-0 z-10 outline-none", "absolute inset-0 z-10 outline-none"),
+            (
+                "absolute inset-0 z-10 outline-none absolute inset-0 z-10 outline-none",
+                "absolute inset-0 z-10 outline-none",
+            ),
             ("text-sm text-lg", "text-lg"),
             ("w-full w-1/2", "w-1/2"),
             ("max-h-(--available-height) max-h-72", "max-h-72"),
@@ -638,7 +635,10 @@ mod tests {
             ("flex flex-col", "flex flex-col"),
             ("ml-auto ms-auto", "ml-auto ms-auto"),
             ("bg-red-500 hover:bg-red-600", "bg-red-500 hover:bg-red-600"),
-            ("data-horizontal:w-full data-vertical:h-full data-horizontal:w-full", "data-vertical:h-full data-horizontal:w-full"),
+            (
+                "data-horizontal:w-full data-vertical:h-full data-horizontal:w-full",
+                "data-vertical:h-full data-horizontal:w-full",
+            ),
             ("text-lg leading-snug", "text-lg leading-snug"),
             ("text-sm/7 text-lg", "text-lg"),
             ("p-1 text-sm leading-none text-md/5", "p-1 text-md/5"),
@@ -650,7 +650,10 @@ mod tests {
             ("!p-4 p-2 !p-1", "p-2 !p-1"),
             // order-sensitive modifier weights: "before" keeps its relative
             // position instead of sorting alphabetically
-            ("hover:before:p-2 before:hover:p-4", "hover:before:p-2 before:hover:p-4"),
+            (
+                "hover:before:p-2 before:hover:p-4",
+                "hover:before:p-2 before:hover:p-4",
+            ),
         ];
         for (input, want) in cases {
             assert_eq!(merge(input), want, "Merge({:?})", input);

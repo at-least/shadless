@@ -4,10 +4,10 @@
 // Every other production consumer — docs-build, demo, RTL/example-oracle —
 // went through this module's injectPrePaint()/injectSiteSkin() until the
 // VitePress/Go pipeline port; those callers (tools/demo.mjs,
-// tools/docs-build.mjs) no longer exist, and the port's single source of
-// truth for injection is now pipeline/prepaint.go, which mirrors
-// THEME_PREPAINT_SCRIPT verbatim (SHADLESS_CSS_FIXES the same way, via
-// pipeline/product_css.go). This file carries no injection logic any more.
+// tools/docs-build.mjs) no longer exist, and injection now lives in
+// pipeline/src/emit/prepaint.rs, which mirrors THEME_PREPAINT_SCRIPT
+// verbatim; pipeline/src/emit/product_css.rs lifts SHADLESS_CSS_FIXES from
+// this file by regex. This file carries no injection logic any more.
 
 // FT9 root-cause: shared pre-paint + live-toggle script. Two responsibilities:
 //   1. FOUC avoidance: before first paint, read shadless-docs-theme from
@@ -27,8 +27,8 @@ export const THEME_PREPAINT_SCRIPT = `<script>(function(){try{var k="shadless-do
 // — the css emitter merged default-variant utilities into the bare slot
 // rule, and CSS has no un-apply. Fixed in src/emitter/css.mjs (twin
 // :not([data-<axis>]) / [data-<axis>="<default>"] blocks modeling
-// defaultVariants on the attribute API; regression-gated by
-// gates/path-parity.mjs). Variant-less resting colors now inherit from
+// defaultVariants on the attribute API; regression-gated by the
+// path-parity node). Variant-less resting colors now inherit from
 // the page — upstream's own model; the demo globals' body rule provides
 // --foreground. The export stays (pipeline/src/emit/product_css.rs lifts it
 // by regex) for gaps that are genuinely upstream's.

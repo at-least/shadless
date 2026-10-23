@@ -3,7 +3,7 @@
 //! requests in, one JSON line response out. The driver owns every judgement.
 //! Errors from the shell surface as Rust errors; a shell crash fails the node.
 
-use serde_json::{json, Value};
+use serde_json::{Value, json};
 use std::io::{BufRead, BufReader, Write};
 use std::process::{Child, ChildStdin, Command, Stdio};
 use std::sync::Mutex;
@@ -76,8 +76,8 @@ impl BrowserShell {
         self.call(req).map(|_| ())
     }
 
-    /// call, but returns the "value" field's raw bytes instead of decoding
-    /// through a map — which would lose the browser's own key order.
+    /// call, but returns only the "value" field (key order kept by serde_json's
+    /// preserve_order feature).
     pub fn call_raw_value(&self, req: &Value) -> Result<Value, String> {
         let top = self.round_trip(req)?;
         Ok(top.get("value").cloned().unwrap_or(Value::Null))
@@ -94,15 +94,22 @@ impl BrowserShell {
     pub fn new_page_origin(&self, capture: bool, origin: &str) -> Result<BPage<'_>, String> {
         let res = self.call(&json!({"op": "newPage", "capture": capture, "origin": origin}))?;
         let id = res.get("pageId").and_then(|v| v.as_i64()).unwrap_or(0);
-        Ok(BPage { s: self, id: id as i32 })
+        Ok(BPage {
+            s: self,
+            id: id as i32,
+        })
     }
 
     /// capture pageerror events only (example-fixture pins itself to uncaught
     /// errors, not the console/requestfailed net).
     pub fn new_page_errors_only(&self) -> Result<BPage<'_>, String> {
-        let res = self.call(&json!({"op": "newPage", "capture": true, "captureOnly": "pageerror"}))?;
+        let res =
+            self.call(&json!({"op": "newPage", "capture": true, "captureOnly": "pageerror"}))?;
         let id = res.get("pageId").and_then(|v| v.as_i64()).unwrap_or(0);
-        Ok(BPage { s: self, id: id as i32 })
+        Ok(BPage {
+            s: self,
+            id: id as i32,
+        })
     }
 
     pub fn close(&self) {
@@ -123,7 +130,8 @@ pub struct BPage<'a> {
 
 impl<'a> BPage<'a> {
     pub fn goto_url(&self, url: &str) -> Result<(), String> {
-        self.s.call_err(&json!({"op": "goto", "pageId": self.id, "url": url}))
+        self.s
+            .call_err(&json!({"op": "goto", "pageId": self.id, "url": url}))
     }
 
     /// Runs expr, a plain (non-function-shaped) expression, in the page.
@@ -134,7 +142,7 @@ impl<'a> BPage<'a> {
         Ok(res.get("value").cloned().unwrap_or(Value::Null))
     }
 
-    /// evaluate but preserves the result's own JSON key order.
+    /// evaluate via call_raw_value.
     pub fn evaluate_ordered(&self, expr: &str) -> Result<Value, String> {
         self.s
             .call_raw_value(&json!({"op": "evaluate", "pageId": self.id, "expr": expr}))
@@ -225,7 +233,13 @@ impl<'a> BPage<'a> {
         Ok(res.get("value").and_then(|v| v.as_i64()).unwrap_or(0))
     }
 
-    pub fn loc_wait(&self, frame: &str, selector: &str, state: &str, timeout_ms: i64) -> Result<(), String> {
+    pub fn loc_wait(
+        &self,
+        frame: &str,
+        selector: &str,
+        state: &str,
+        timeout_ms: i64,
+    ) -> Result<(), String> {
         self.s.call_err(&json!({
             "op": "locWait", "pageId": self.id, "frame": frame,
             "selector": selector, "state": state, "timeout": timeout_ms
@@ -240,7 +254,12 @@ impl<'a> BPage<'a> {
     }
 
     /// Returns (value, present).
-    pub fn loc_attr(&self, frame: &str, selector: &str, attr: &str) -> Result<(String, bool), String> {
+    pub fn loc_attr(
+        &self,
+        frame: &str,
+        selector: &str,
+        attr: &str,
+    ) -> Result<(String, bool), String> {
         let res = self.s.call(&json!({
             "op": "locAttr", "pageId": self.id, "frame": frame, "selector": selector, "attr": attr
         }))?;
@@ -259,7 +278,12 @@ impl<'a> BPage<'a> {
             return Ok(None);
         };
         let g = |k: &str| m.get(k).and_then(|v| v.as_f64()).unwrap_or(0.0);
-        Ok(Some(BBox { x: g("x"), y: g("y"), width: g("width"), height: g("height") }))
+        Ok(Some(BBox {
+            x: g("x"),
+            y: g("y"),
+            width: g("width"),
+            height: g("height"),
+        }))
     }
 
     /// Evaluates expr over every match (playwright evaluateAll).
@@ -267,7 +291,13 @@ impl<'a> BPage<'a> {
         self.loc_eval_all_arg(frame, selector, expr, Value::Null)
     }
 
-    pub fn loc_eval_all_arg(&self, frame: &str, selector: &str, expr: &str, arg: Value) -> Result<Value, String> {
+    pub fn loc_eval_all_arg(
+        &self,
+        frame: &str,
+        selector: &str,
+        expr: &str,
+        arg: Value,
+    ) -> Result<Value, String> {
         let res = self.s.call(&json!({
             "op": "locEvalAll", "pageId": self.id, "frame": frame,
             "selector": selector, "expr": expr, "arg": arg
@@ -276,14 +306,27 @@ impl<'a> BPage<'a> {
     }
 
     /// Clicks the nth match; button "right" for context-menu triggers.
-    pub fn loc_click(&self, frame: &str, selector: &str, index: i64, button: &str) -> Result<(), String> {
+    pub fn loc_click(
+        &self,
+        frame: &str,
+        selector: &str,
+        index: i64,
+        button: &str,
+    ) -> Result<(), String> {
         self.loc_click_timeout(frame, selector, index, button, 15000)
     }
 
     /// locClick with an explicit actionability timeout (15000ms shared
     /// default: example-fixture overran the 5000ms locator default twice
     /// under 16-way browser load).
-    pub fn loc_click_timeout(&self, frame: &str, selector: &str, index: i64, button: &str, timeout_ms: i64) -> Result<(), String> {
+    pub fn loc_click_timeout(
+        &self,
+        frame: &str,
+        selector: &str,
+        index: i64,
+        button: &str,
+        timeout_ms: i64,
+    ) -> Result<(), String> {
         self.s.call_err(&json!({
             "op": "locClick", "pageId": self.id, "frame": frame, "selector": selector,
             "index": index, "button": button, "timeout": timeout_ms
@@ -291,7 +334,13 @@ impl<'a> BPage<'a> {
     }
 
     /// Evaluates expr on the nth match only (playwright $eval semantics).
-    pub fn loc_eval(&self, frame: &str, selector: &str, expr: &str, index: i64) -> Result<Value, String> {
+    pub fn loc_eval(
+        &self,
+        frame: &str,
+        selector: &str,
+        expr: &str,
+        index: i64,
+    ) -> Result<Value, String> {
         let res = self.s.call(&json!({
             "op": "locEval", "pageId": self.id, "frame": frame,
             "selector": selector, "expr": expr, "index": index
@@ -367,4 +416,3 @@ impl Drop for BrowserShell {
         }
     }
 }
-

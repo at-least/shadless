@@ -79,10 +79,10 @@ pub fn snapshot_slice_previews(html: &str) -> Vec<String> {
             }
         }
         let end = html[..i.saturating_sub(6)].rfind("</div>");
-        if let Some(end) = end {
-            if end >= start {
-                out.push(html[start..end].to_string());
-            }
+        if let Some(end) = end
+            && end >= start
+        {
+            out.push(html[start..end].to_string());
         }
     }
     out
@@ -124,17 +124,17 @@ fn go_http_err(url: &str, e: ureq::Error) -> String {
                         url
                     );
                 }
-                if let Some(ioe) = src.downcast_ref::<std::io::Error>() {
-                    if let Some(code) = ioe.raw_os_error() {
-                        match crate::fsutil::go_strerror(code) {
-                            Some(msg) => {
-                                return format!(
-                                    "Get \"{}\": dial tcp {}: connect: {}",
-                                    url, host_port, msg
-                                );
-                            }
-                            None => return disp,
+                if let Some(ioe) = src.downcast_ref::<std::io::Error>()
+                    && let Some(code) = ioe.raw_os_error()
+                {
+                    match crate::fsutil::go_strerror(code) {
+                        Some(msg) => {
+                            return format!(
+                                "Get \"{}\": dial tcp {}: connect: {}",
+                                url, host_port, msg
+                            );
                         }
+                        None => return disp,
                     }
                 }
             }

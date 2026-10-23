@@ -26,7 +26,7 @@ pub struct Translation {
     pub values: HashMap<String, String>,
 }
 
-/// Mirrors tools/rtl-lib.mjs. Order of the two phases is load-bearing:
+/// Order of the two phases is load-bearing:
 /// ar→X substitution first (longest-value ordering avoids a "Loading" /
 /// "Loading…" prefix collision), then the lang/dir attribute patch.
 pub fn substitute_and_patch(

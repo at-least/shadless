@@ -1,4 +1,4 @@
-// Shared slot-keyed CSS generation for the emitter and the demo builder.
+// Slot-keyed CSS generation for the JS emitter twin (src/emitter/index.mjs).
 // plain-class slots + cva tables → `[data-slot=…]{ @apply … }` rules; marker
 // tokens (group/peer) stay in HTML and are returned for the emitter to inject.
 //
@@ -387,8 +387,8 @@ export function componentCss(ir) {
   // shape) leaked default-only utility groups into variants that don't
   // restate them — CSS has no un-apply, so ghost/outline/link inherited
   // the default look's colors and rendered invisible in one theme or the
-  // other (2026-08-28 css-import cascade finding; regression-gated by
-  // gates/path-parity.mjs, which subsumed the original variant-parity).
+  // other (2026-08-28 css-import cascade finding; regression-gated by the
+  // path-parity node, which subsumed the original variant-parity).
   rules.push(...lateAnchorRules)
   for (const { table, slot } of Object.values(cvaMap)) {
     if (!slot) continue
@@ -489,7 +489,7 @@ export function componentCss(ir) {
 
 /** Wrap one component's rule set exactly the way every writer must: the slot
  * and anchor rules in @layer components, the skin-marker rules after it,
- * unlayered. One definition, used by the static emitter and the demo builder.
+ * unlayered. One definition, used by the static emitter.
  * @param {string} name
  * @param {{ rules: string[], unlayered?: string[] }} param1
  * @returns {string}

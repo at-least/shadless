@@ -103,7 +103,6 @@ fn run_inner(args: &[String]) -> Result<i32, String> {
     let shell = BrowserShell::start()?;
     let result = run_inner_shell(
         &shell,
-        args,
         mode,
         &diff_name,
         &diff_page,
@@ -133,7 +132,6 @@ fn load_snapshot(
 
 fn run_inner_shell(
     shell: &BrowserShell,
-    _args: &[String],
     mode: &str,
     diff_name: &str,
     diff_page: &str,
@@ -164,7 +162,7 @@ fn run_inner_shell(
     if mode == "diff" {
         let mut page_name = diff_page.to_string();
         if page_name.is_empty() {
-            page_name = diff_name.splitn(2, '-').next().unwrap_or("").to_string();
+            page_name = diff_name.split('-').next().unwrap_or("").to_string();
         }
         let snap_b =
             std::fs::read_to_string(Path::new(snapshot_dir).join(format!("{}.json", page_name)))
@@ -294,7 +292,7 @@ fn run_inner_shell(
                         exempt += 1;
                         continue;
                     }
-                    let msg = e.splitn(2, '\n').next().unwrap_or("").to_string();
+                    let msg = e.split('\n').next().unwrap_or("").to_string();
                     if mode == "classify" {
                         bucket_of(&format!("RENDER-FAIL {}", msg), name, &mut buckets);
                         failures.push(FailureRec {
@@ -457,7 +455,7 @@ mod tests {
         );
     }
 
-    /// é = C3 A9 vs ê = C3 EA: the first differing BYTE sits mid-character
+    /// é vs ê share their first UTF-8 byte: the first differing BYTE sits mid-character
     /// in both strings, and the old byte-index slicing panicked instead of
     /// reporting the diff.
     #[test]

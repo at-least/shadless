@@ -34,7 +34,6 @@ impl Span {
 struct Scanner<'a> {
     bytes: &'a [u8],
     s: &'a str,
-    jsx_depth: i32,
     out: Vec<Span>,
     directives: Vec<Span>,
 }
@@ -44,7 +43,6 @@ pub fn string_literals(src: &str) -> Vec<Span> {
     let mut sc = Scanner {
         bytes: src.as_bytes(),
         s: src,
-        jsx_depth: 0,
         out: Vec::new(),
         directives: Vec::new(),
     };
@@ -57,7 +55,6 @@ pub fn directive_spans(src: &str) -> Vec<Span> {
     let mut sc = Scanner {
         bytes: src.as_bytes(),
         s: src,
-        jsx_depth: 0,
         out: Vec::new(),
         directives: Vec::new(),
     };
@@ -77,9 +74,6 @@ impl<'a> Scanner<'a> {
                 // attribute strings inside a <Tag> are recorded by jsx_tag
                 i = self.jsx_tag(i);
             } else if c == b'<' && self.is_closing_jsx_tag(i) {
-                if self.jsx_depth > 0 {
-                    self.jsx_depth -= 1;
-                }
                 i = self.jsx_closing_tag(i);
             } else if c == b'"' || c == b'\'' {
                 let start = i;
@@ -322,7 +316,7 @@ impl<'a> Scanner<'a> {
     /// Consumes `<Ident attr=…>` through its '>'. Strings in attribute values
     /// ARE StringLiterals in babel, so recording is on. After '>': if the
     /// previous byte was '/', the element self-closes; otherwise we are INSIDE
-    /// its children and jsx_depth rises.
+    /// its children.
     fn jsx_tag(&mut self, i: usize) -> usize {
         let mut i = i + 1; // past '<'
         let len = self.bytes.len();
@@ -336,10 +330,9 @@ impl<'a> Scanner<'a> {
             } else if c == b'{' {
                 i = self.skip_code(i + 1);
             } else if c == b'/' && i + 1 < len && self.bytes[i + 1] == b'>' {
-                return i + 2; // self-close: no depth change
+                return i + 2; // self-close
             } else if c == b'>' {
-                self.jsx_depth += 1;
-                return i + 1; // children follow; main loop resumes with JSX-text rules
+                return i + 1; // children follow; main loop resumes (no JSX-text rules: text is scanned as code)
             } else {
                 i += 1;
             }
@@ -353,11 +346,7 @@ impl<'a> Scanner<'a> {
         while i < len && self.bytes[i] != b'>' {
             i += 1;
         }
-        if i < len {
-            i + 1
-        } else {
-            i
-        }
+        if i < len { i + 1 } else { i }
     }
 }
 
@@ -478,20 +467,13 @@ fn spans_snapshot_conformance() {
             .collect();
         if got != want {
             // One known divergence is tolerated: inline-code backticks inside
-            // JSXText at the document's LAST open element chain
-            // (message-scroller-streaming's <div> prose). The scanner treats
-            // them as text when jsxDepth>0, which is correct — the residual is
-            // depth accounting for `}`-expressions interleaved with text,
-            // something only a full parser could fix.
+            // JSXText (message-scroller-streaming's <div> prose) are scanned
+            // as a template literal, so the scanner reports one span babel
+            // does not; JSX text is not modelled.
             if name == "aria/message-scroller-streaming.tsx" && got.len() == want.len() + 1 {
                 continue;
             }
-            let mut detail = format!(
-                "{}: got {} spans vs babel {}",
-                name,
-                got.len(),
-                want.len()
-            );
+            let mut detail = format!("{}: got {} spans vs babel {}", name, got.len(), want.len());
             for (g, w) in got.iter().zip(want.iter()) {
                 if g != w {
                     detail.push_str(&format!(

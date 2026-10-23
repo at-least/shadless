@@ -29,9 +29,7 @@ fn run_tool_in(dir: &std::path::Path, verb: &str) -> (i32, String, String) {
 
 fn run_tool_args_in(dir: &std::path::Path, verb: &str, args: &[&str]) -> (i32, String, String) {
     let mut cmd = Command::new(env!("CARGO_BIN_EXE_pipeline"));
-    cmd.arg(verb)
-        .args(args)
-        .current_dir(dir);
+    cmd.arg(verb).args(args).current_dir(dir);
     let out = cmd.output().expect("spawn pipeline");
     (
         out.status.code().unwrap_or(-1),
@@ -57,7 +55,9 @@ fn adjacent_tree_is_pinned() -> bool {
 #[test]
 fn missing_skin_is_go_shaped_stderr_exit_1() {
     if adjacent_tree_is_pinned() {
-        eprintln!("skip: the adjacent tree is pinned (.upstream present) — no missing-skin scenario here");
+        eprintln!(
+            "skip: the adjacent tree is pinned (.upstream present) — no missing-skin scenario here"
+        );
         return;
     }
     let tmp = tempfile::tempdir().unwrap();
@@ -75,7 +75,9 @@ fn missing_skin_is_go_shaped_stderr_exit_1() {
 #[test]
 fn skin_path_directory_reports_read_eisdir() {
     if adjacent_tree_is_pinned() {
-        eprintln!("skip: the adjacent tree is pinned (.upstream present) — no missing-skin scenario here");
+        eprintln!(
+            "skip: the adjacent tree is pinned (.upstream present) — no missing-skin scenario here"
+        );
         return;
     }
     // Go os.ReadFile opens the directory fine on Linux and fails in read:
@@ -122,7 +124,9 @@ fn corrupt_tiers_json_fails_emit_naming_tiers() {
     // crate-adjacent tree needs THAT tree pinned, or the run dies on the
     // missing skin before it ever reaches the corrupt file
     if !adjacent_tree_is_pinned() {
-        eprintln!("skip: the adjacent tree is unpinned — emit dies on the missing skin before tiers");
+        eprintln!(
+            "skip: the adjacent tree is unpinned — emit dies on the missing skin before tiers"
+        );
         return;
     }
     let tmp = tempfile::tempdir().unwrap();
@@ -163,7 +167,11 @@ fn docs_smoke_without_iframes_fails_not_vacuously_passes() {
     let tmp = tempfile::tempdir().unwrap();
     let public = tmp.path().join("docs/site/public");
     std::fs::create_dir_all(&public).unwrap();
-    std::fs::write(public.join("index.html"), "<html><body><article>x</article></body></html>").unwrap();
+    std::fs::write(
+        public.join("index.html"),
+        "<html><body><article>x</article></body></html>",
+    )
+    .unwrap();
     let (code, _stdout, stderr) = run_tool_in(tmp.path(), "docs-smoke");
     assert_eq!(code, 1, "stderr: {}", stderr);
     assert!(
@@ -239,14 +247,15 @@ fn corrupt_owned_manifest_fails_example_oracle_check() {
 #[test]
 fn traversal_ir_name_fails_emit() {
     if !adjacent_tree_is_pinned() {
-        eprintln!("skip: the adjacent tree is unpinned — emit dies on the missing skin before the IR");
+        eprintln!(
+            "skip: the adjacent tree is unpinned — emit dies on the missing skin before the IR"
+        );
         return;
     }
     let tmp = tempfile::tempdir().unwrap();
     // a real IR file, only the name mutated
     let ir_src = std::fs::read_to_string(
-        std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("../generated/ir/button.json"),
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../generated/ir/button.json"),
     )
     .unwrap();
     let mut ir: serde_json::Value = serde_json::from_str(&ir_src).unwrap();

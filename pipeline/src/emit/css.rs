@@ -212,12 +212,12 @@ impl OrderedCva {
         self.map.get(k).and_then(|v| {
             let mut t: CvaTable = serde_json::from_value(v.clone()).ok()?;
             t.defaults = HashMap::new();
-            if let Some(obj) = v.as_object() {
-                if let Some(d) = obj.get("defaults").and_then(|d| d.as_object()) {
-                    for (k, val) in d {
-                        if let Some(s) = val.as_str() {
-                            t.defaults.insert(k.clone(), s.to_string());
-                        }
+            if let Some(obj) = v.as_object()
+                && let Some(d) = obj.get("defaults").and_then(|d| d.as_object())
+            {
+                for (k, val) in d {
+                    if let Some(s) = val.as_str() {
+                        t.defaults.insert(k.clone(), s.to_string());
                     }
                 }
             }
@@ -432,12 +432,15 @@ fn check_selector_values(ir: &CssIrComponent) -> Result<(), String> {
     // quoted positions ([data-slot="{slot}"], [data-{axis}="{val}"]): a
     // quote, backslash or raw newline ends the string early and breaks into
     // rule space
-    let value_ok = |v: &str| !v.contains('"') && !v.contains('\\') && !v.contains('\n') && !v.contains('\r');
+    let value_ok =
+        |v: &str| !v.contains('"') && !v.contains('\\') && !v.contains('\n') && !v.contains('\r');
     // unquoted positions (the attribute NAME [data-{axis}=…], [{attr}=…]):
     // no quote is needed to break out — ], {, }, whitespace all do — so
     // these are whitelisted to identifiers
     let ident_ok = |v: &str| {
-        !v.is_empty() && v.chars().all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '-')
+        !v.is_empty()
+            && v.chars()
+                .all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '-')
     };
     let bad = |kind: &str, v: &str| -> String {
         format!(
@@ -445,7 +448,7 @@ fn check_selector_values(ir: &CssIrComponent) -> Result<(), String> {
             kind, v
         )
     };
-    let mut check_value = |kind: &str, v: &str| -> Result<(), String> {
+    let check_value = |kind: &str, v: &str| -> Result<(), String> {
         if value_ok(v) {
             Ok(())
         } else {
@@ -504,7 +507,7 @@ pub fn component_css(ir: &CssIrComponent) -> Result<ComponentCssOut, String> {
     let mut rules: Vec<String> = Vec::new();
     let cva_map = cva_slot(ir);
     let mut cva_slots: HashSet<String> = HashSet::new();
-    for (_, (_, slot)) in cva_map.iter() {
+    for (_, slot) in cva_map.values() {
         if !slot.is_empty() {
             cva_slots.insert(slot.clone());
         }
@@ -1097,10 +1100,6 @@ mod tests {
 
     use super::*;
 
-    /// One apply-signature spanning two tags beside a disjoint one: the
-    /// `:is(tag)` selector used to come from a HashSet pick — per-process
-    /// random. The same IR must emit one stable selector, the way the JS
-    /// twin (first tag seen) does.
     /// Slot names and variant values land verbatim inside quoted attribute
     /// selectors — a quote or backslash breaks out of the selector into
     /// rule space. Identifiers by construction; refused at entry.
@@ -1124,10 +1123,7 @@ mod tests {
             Err(e) => e,
             Ok(_) => panic!("a slot carrying a quote must be refused at entry"),
         };
-        assert!(
-            err.contains("refuses selector value"),
-            "got: {err}"
-        );
+        assert!(err.contains("refuses selector value"), "got: {err}");
     }
 
     /// The axis sits in an UNQUOTED attribute-name position — it needs an
@@ -1174,6 +1170,10 @@ mod tests {
         assert!(err.contains("refuses selector value"), "got: {err}");
     }
 
+    /// One apply-signature spanning two tags beside a disjoint one: the
+    /// `:is(tag)` selector used to come from a HashSet pick — per-process
+    /// random. The same IR must emit one stable selector, the way the JS
+    /// twin (first tag seen) does.
     #[test]
     fn unit_cva_sig_tag_pick_is_deterministic() {
         let ir = CssIrComponent {

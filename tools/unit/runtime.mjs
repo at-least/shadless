@@ -614,7 +614,7 @@ window.__esm = { default: shadless, get, theme, init, named: Object.keys(ns).sor
     // Ground truth is the LIVE global the bundle just built (evaluated
     // above), not another derivation of the same shipped export line: a
     // member added to core.js's global.shadless without updating
-    // jsbuild.go's namedExports list would be missing from the shipped
+    // jsbuild.rs's NAMED_EXPORTS list would be missing from the shipped
     // line on both sides of a same-source comparison and still pass.
     t.eq("esm: named exports = the base's public members",
       esm.named.filter((n) => n !== "default").sort(), Object.keys(dom.window.shadless).sort())

@@ -11,7 +11,7 @@
       if (node.nodeType !== 1) return null
       const attrs = {}
       const ownRole = [...(node.attributes || [])].find((x) => x.name === "role")?.value ?? null
-      // roving-focus containers (radiogroup/toolbar/tablist/menubar): radix
+      // roving-focus containers (the role list below): radix
       // rotates tabindex across the subtree at runtime; the SSR initial
       // state and CSR settled state differ by design — tabindex inside such
       // subtrees is focus state, not structure

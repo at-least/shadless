@@ -184,11 +184,9 @@ pub fn cv_split_top(s: &str) -> Vec<String> {
         match b[i] {
             b'(' | b'[' | b'{' => depth += 1,
             b')' | b']' | b'}' => depth -= 1,
-            b',' => {
-                if depth == 0 {
-                    out.push(s[start..i].to_string());
-                    start = i + 1;
-                }
+            b',' if depth == 0 => {
+                out.push(s[start..i].to_string());
+                start = i + 1;
             }
             _ => {}
         }
@@ -297,10 +295,10 @@ pub fn cv_first_top(s: &str, ops: CvTopOps) -> isize {
                 depth += 1;
             }
         } else if c == b')' {
-            if let Some(top) = paren_stack.pop() {
-                if top {
-                    depth -= 1;
-                }
+            if let Some(top) = paren_stack.pop()
+                && top
+            {
+                depth -= 1;
             }
             if arrow_depth >= 0 && depth < arrow_depth {
                 arrow_depth = -1;
@@ -374,8 +372,8 @@ pub fn cv_find_ternary_colon(s: &str, q: usize) -> isize {
 
 #[derive(Clone, Debug, Default)]
 pub struct ExprNode {
-    pub kind: String, // str tpl tplMulti ident bool nul num obj call cond logical other
-    pub str: String,  // str: value; tpl: cooked; num: raw literal text
+    pub kind: String, // str tplMulti ident bool nul num obj call cond logical other
+    pub str: String,  // str: value (substitution-free templates cooked); num: raw literal text
     pub ident: String,
     pub args: Vec<String>,
     pub obj: Vec<CvProp>,
@@ -412,11 +410,11 @@ pub fn cv_parse_expr(text: &str) -> ExprNode {
     };
     // babel has no paren nodes — a fully-wrapping paren group is transparent
     while t.starts_with('(') {
-        if let Some(e) = cv_match_bracket(t, 0, b'(', b')') {
-            if e == t.len() - 1 {
-                t = t[1..e].trim();
-                continue;
-            }
+        if let Some(e) = cv_match_bracket(t, 0, b'(', b')')
+            && e == t.len() - 1
+        {
+            t = t[1..e].trim();
+            continue;
         }
         break;
     }
@@ -451,12 +449,12 @@ pub fn cv_parse_expr(text: &str) -> ExprNode {
         n.ident = t.to_string();
         return n;
     }
-    if let Some(m) = CV_NUM_RE.find(t) {
-        if m.as_str() == t {
-            n.kind = "num".to_string();
-            n.str = m.as_str().to_string();
-            return n;
-        }
+    if let Some(m) = CV_NUM_RE.find(t)
+        && m.as_str() == t
+    {
+        n.kind = "num".to_string();
+        n.str = m.as_str().to_string();
+        return n;
     }
     // conditional before call/logical: `f(x) ? a : b` is a cond (call parens
     // are masked, so its '?' is top-level); `f(a ? b : c)` is a call (its '?'
@@ -493,23 +491,22 @@ pub fn cv_parse_expr(text: &str) -> ExprNode {
     let name = cv_callee_name(t);
     if !name.is_empty() {
         let nlen = name.len();
-        if let Some(e) = cv_match_bracket(t, nlen, b'(', b')') {
-            if t[e + 1..].trim().is_empty() {
-                n.kind = "call".to_string();
-                n.ident = name;
-                n.args = cv_split_top(&t[nlen + 1..e]);
-                return n;
-            }
+        if let Some(e) = cv_match_bracket(t, nlen, b'(', b')')
+            && t[e + 1..].trim().is_empty()
+        {
+            n.kind = "call".to_string();
+            n.ident = name;
+            n.args = cv_split_top(&t[nlen + 1..e]);
+            return n;
         }
     }
-    if b[0] == b'{' {
-        if let Some(e) = cv_match_bracket(t, 0, b'{', b'}') {
-            if e == t.len() - 1 {
-                n.kind = "obj".to_string();
-                n.obj = cv_parse_obj_props(&t[1..e]);
-                return n;
-            }
-        }
+    if b[0] == b'{'
+        && let Some(e) = cv_match_bracket(t, 0, b'{', b'}')
+        && e == t.len() - 1
+    {
+        n.kind = "obj".to_string();
+        n.obj = cv_parse_obj_props(&t[1..e]);
+        return n;
     }
     n
 }
@@ -622,10 +619,8 @@ pub fn cv_prop_colon(p: &str) -> isize {
         match b[i] {
             b'(' | b'[' | b'{' => depth += 1,
             b')' | b']' | b'}' => depth -= 1,
-            b':' => {
-                if depth == 0 {
-                    return i as isize;
-                }
+            b':' if depth == 0 => {
+                return i as isize;
             }
             _ => {}
         }
@@ -848,10 +843,8 @@ pub fn cv_skip_stmt(s: &str, i: usize) -> usize {
         match b[i] {
             b'(' | b'[' | b'{' => depth += 1,
             b')' | b']' | b'}' => depth -= 1,
-            b';' | b'\n' => {
-                if depth <= 0 {
-                    return i + 1;
-                }
+            b';' | b'\n' if depth <= 0 => {
+                return i + 1;
             }
             _ => {}
         }

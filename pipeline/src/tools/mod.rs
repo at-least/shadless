@@ -6,7 +6,6 @@
 
 pub mod css_direction_update;
 pub mod demo_parity;
-pub mod docs_transforms;
 pub mod demo_smoke;
 pub mod docs_build;
 pub mod docs_catalog;
@@ -14,6 +13,7 @@ pub mod docs_code_parity;
 pub mod docs_consistency;
 pub mod docs_fidelity;
 pub mod docs_smoke;
+pub mod docs_transforms;
 pub mod docs_upstream_mirror;
 pub mod interactivity_sweep;
 pub mod ir_diff;
@@ -28,6 +28,6 @@ pub mod upstream;
 pub mod upstream_snapshot;
 
 // The Oxc A/B experiment (PLAN.md「為什麼不是 Rolldown/Oxc」) is compiled
-// only under `--features oxc`; the default build never sees this module.
+// only with the `oxc` feature (on by default; `--no-default-features` drops it).
 #[cfg(feature = "oxc")]
 pub mod oxc_probe;

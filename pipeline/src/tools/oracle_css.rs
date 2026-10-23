@@ -132,7 +132,7 @@ pub fn run_oracle_css() -> i32 {
     if let Err(e) = fs::create_dir_all(abs(ORACLE_OUT_DIR)) {
         eprintln!(
             "oracle-css: {}",
-            crate::fsutil::go_path_err("mkdir", &abs(ORACLE_OUT_DIR), &e)
+            crate::fsutil::go_path_err("mkdir", abs(ORACLE_OUT_DIR), &e)
         );
         return 1;
     }
@@ -140,7 +140,7 @@ pub fn run_oracle_css() -> i32 {
     if let Err(e) = fs::write(abs(&entry), entry_css.as_bytes()) {
         eprintln!(
             "oracle-css: {}",
-            crate::fsutil::go_path_err("open", &abs(&entry), &e)
+            crate::fsutil::go_path_err("open", abs(&entry), &e)
         );
         return 1;
     }

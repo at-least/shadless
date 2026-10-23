@@ -4,6 +4,7 @@
 //!   1. dialog.html: real-mouse open inside the iframe + Escape close
 //!   2. avatar.html: preview over http, 0 console errors, images settled
 //!   3. dialog page preview wiring counts
+//!
 //!   --all: every built page — render, no raw mdx leak, 0 errors
 
 use std::path::Path;
@@ -33,9 +34,7 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
         let mut seen = 0usize;
         for e in walkdir::WalkDir::new(&site_dir) {
             let Ok(e) = e else { continue };
-            if e.file_type().is_dir()
-                || e.path().extension().map(|x| x != "html").unwrap_or(true)
-            {
+            if e.file_type().is_dir() || e.path().extension().map(|x| x != "html").unwrap_or(true) {
                 continue;
             }
             let Ok(rel) = e.path().strip_prefix(&site_dir) else {
@@ -47,10 +46,11 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
             for m in RE_IFRAME_SRC.captures_iter(&b) {
                 seen += 1;
                 let src = &m[1];
-                if src.starts_with('/') && !src.contains("//") {
-                    if !site_dir.join(src.trim_start_matches('/')).exists() {
-                        dead.push(format!("{}: {}", rel.display(), src));
-                    }
+                if src.starts_with('/')
+                    && !src.contains("//")
+                    && !site_dir.join(src.trim_start_matches('/')).exists()
+                {
+                    dead.push(format!("{}: {}", rel.display(), src));
                 }
             }
         }
@@ -66,12 +66,13 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
             if seen == 0 {
                 // a template drift that stops emitting preview iframes would
                 // otherwise turn this check into a vacuous pass
-                eprintln!("FAIL  iframe targets: no preview iframes found in the built pages — the preview template changed?");
+                eprintln!(
+                    "FAIL  iframe targets: no preview iframes found in the built pages — the preview template changed?"
+                );
             }
             failures.push("iframe targets".to_string());
         }
     }
-
 
     // ephemeral-port static server (python3 http.server, same as the JS gate).
     // The listener is dropped before python binds the port (a TOCTOU window:
@@ -219,7 +220,10 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
         .is_ok()
     {
         let open_count = page
-            .loc_count(dialog_frame, r#"[data-slot="dialog-content"][data-state="open"]"#)
+            .loc_count(
+                dialog_frame,
+                r#"[data-slot="dialog-content"][data-state="open"]"#,
+            )
             .unwrap_or(0);
         let (expanded, _) = page
             .loc_attr(dialog_frame, trigger_sel, "aria-expanded")
@@ -246,7 +250,12 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
     }
     let _ = page.key_press("Escape");
 
-    let _ = page.loc_wait(dialog_frame, r#"[data-slot="dialog-content"]"#, "detached", 3000);
+    let _ = page.loc_wait(
+        dialog_frame,
+        r#"[data-slot="dialog-content"]"#,
+        "detached",
+        3000,
+    );
     let live_portal_nodes = page
         .loc_count(
             dialog_frame,
@@ -294,7 +303,11 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
         ) {
             settled = images
                 .as_array()
-                .map(|a| a.iter().map(|v| v == &serde_json::Value::Bool(true)).collect())
+                .map(|a| {
+                    a.iter()
+                        .map(|v| v == &serde_json::Value::Bool(true))
+                        .collect()
+                })
                 .unwrap_or_default();
         }
         all_settled = !settled.is_empty() && settled.iter().all(|s| *s);
@@ -332,7 +345,10 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
     check(
         "dialog page wiring: every preview is an iframe or an unavailable note",
         previews > 0 && iframes >= 1,
-        &format!("previews={} iframes={} unavailable={}", previews, iframes, unavailable),
+        &format!(
+            "previews={} iframes={} unavailable={}",
+            previews, iframes, unavailable
+        ),
         &mut failures,
     );
 
@@ -343,10 +359,11 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
         let mut page_files: Vec<String> = Vec::new();
         for e in walkdir::WalkDir::new(&site_dir) {
             let Ok(e) = e else { continue };
-            if !e.file_type().is_dir() && e.file_name() == "index.html" {
-                if let Ok(rel) = e.path().strip_prefix(&site_dir) {
-                    page_files.push(rel.to_string_lossy().into_owned());
-                }
+            if !e.file_type().is_dir()
+                && e.file_name() == "index.html"
+                && let Ok(rel) = e.path().strip_prefix(&site_dir)
+            {
+                page_files.push(rel.to_string_lossy().into_owned());
             }
         }
         page_files.sort();
@@ -387,14 +404,14 @@ pub fn run_docs_smoke(root: &Path, all: bool) -> i32 {
             }
             let mut rendered = false;
             let mut leaks: Vec<String> = Vec::new();
-            if let Ok(m) = res {
-                if let Some(obj) = m.as_object() {
-                    rendered = obj.get("rendered") == Some(&serde_json::Value::Bool(true));
-                    if let Some(raw) = obj.get("leaks").and_then(|v| v.as_array()) {
-                        for l in raw {
-                            if let Some(s) = l.as_str() {
-                                leaks.push(s.to_string());
-                            }
+            if let Ok(m) = res
+                && let Some(obj) = m.as_object()
+            {
+                rendered = obj.get("rendered") == Some(&serde_json::Value::Bool(true));
+                if let Some(raw) = obj.get("leaks").and_then(|v| v.as_array()) {
+                    for l in raw {
+                        if let Some(s) = l.as_str() {
+                            leaks.push(s.to_string());
                         }
                     }
                 }

@@ -122,23 +122,17 @@ fn run_rtl_dict_to(root: &Path, out_path: &Path) -> i32 {
                 None
             }
         };
-        let bad = if langs.is_none() || name == "drawer-rtl" {
+        let bad = match &langs {
             // drawer's upstream translations carry `locale:` hints the
             // shadless dictionary has no slot for — upstream treats it as
             // non-translation-bearing for our purposes, same as the
             // tombstoned calendar/shimmer
-            Some("no `translations` object literal")
-        } else if langs
-            .as_ref()
-            .expect("some")
-            .dir
-            .get("ar")
-            .map_or("", |s| s.as_str())
-            .is_empty()
-        {
-            Some("no Arabic dictionary")
-        } else {
-            None
+            _ if name == "drawer-rtl" => Some("no `translations` object literal"),
+            None => Some("no `translations` object literal"),
+            Some(l) if l.dir.get("ar").map_or("", |s| s.as_str()).is_empty() => {
+                Some("no Arabic dictionary")
+            }
+            Some(_) => None,
         };
         if let Some(bad) = bad {
             if shipped(&name) {
@@ -156,35 +150,35 @@ fn run_rtl_dict_to(root: &Path, out_path: &Path) -> i32 {
     // upstream ships (en/ar/he); engine-owned dictionaries (fa) live in the
     // committed file and are preserved verbatim through regeneration. The
     // parity test on the real tree proves the round-trip byte-stable.
-    if let Ok(committed) = std::fs::read_to_string(out_path) {
-        if let Ok(prev) = serde_json::from_str::<
+    if let Ok(committed) = std::fs::read_to_string(out_path)
+        && let Ok(prev) = serde_json::from_str::<
             HashMap<String, serde_json::Map<String, serde_json::Value>>,
-        >(&committed) {
-            for (name, langs) in dicts.iter_mut() {
-                let Some(comp) = prev.get(name) else { continue };
-                for (lang, entry) in comp.iter() {
-                    if langs.names.iter().any(|l| l == lang) {
-                        continue;
-                    }
-                    let (Some(dir), Some(values)) = (
-                        entry.get("dir").and_then(|d| d.as_str()),
-                        entry.get("values").and_then(|v| v.as_object()),
-                    ) else {
-                        continue;
-                    };
-                    let mut rv = RtlValues {
-                        keys: Vec::new(),
-                        vals: HashMap::new(),
-                    };
-                    for (k, v) in values {
-                        let Some(vs) = v.as_str() else { continue };
-                        rv.keys.push(k.clone());
-                        rv.vals.insert(k.clone(), vs.to_string());
-                    }
-                    langs.names.push(lang.clone());
-                    langs.dir.insert(lang.clone(), dir.to_string());
-                    langs.values.insert(lang.clone(), rv);
+        >(&committed)
+    {
+        for (name, langs) in dicts.iter_mut() {
+            let Some(comp) = prev.get(name) else { continue };
+            for (lang, entry) in comp.iter() {
+                if langs.names.iter().any(|l| l == lang) {
+                    continue;
                 }
+                let (Some(dir), Some(values)) = (
+                    entry.get("dir").and_then(|d| d.as_str()),
+                    entry.get("values").and_then(|v| v.as_object()),
+                ) else {
+                    continue;
+                };
+                let mut rv = RtlValues {
+                    keys: Vec::new(),
+                    vals: HashMap::new(),
+                };
+                for (k, v) in values {
+                    let Some(vs) = v.as_str() else { continue };
+                    rv.keys.push(k.clone());
+                    rv.vals.insert(k.clone(), vs.to_string());
+                }
+                langs.names.push(lang.clone());
+                langs.dir.insert(lang.clone(), dir.to_string());
+                langs.values.insert(lang.clone(), rv);
             }
         }
     }
@@ -601,11 +595,7 @@ fn skip_ws(s: &str, mut i: usize) -> usize {
 }
 
 fn is_ident(c: u8) -> bool {
-    (b'a'..=b'z').contains(&c)
-        || (b'A'..=b'Z').contains(&c)
-        || c == b'_'
-        || c == b'$'
-        || (b'0'..=b'9').contains(&c)
+    c.is_ascii_lowercase() || c.is_ascii_uppercase() || c == b'_' || c == b'$' || c.is_ascii_digit()
 }
 
 /// decodeJSString decodes the escape sequences that appear in this corpus.
@@ -713,9 +703,9 @@ fn go_fs_err(path: &str, e: &std::io::Error) -> String {
     crate::fsutil::go_path_err("open", path, e)
 }
 
-/// go_quote mirrors Go's %q on a string: printable runes pass through,
-/// quote/backslash and the C0 controls are escaped, other non-printables
-/// become \xNN. (Only reachable through error messages; the corpus is ASCII.)
+/// go_quote mirrors Go's %q on a string for ASCII: quote/backslash and the
+/// C0 controls are escaped, DEL becomes \x7f, everything else passes
+/// through. (Only reachable through error messages; the corpus is ASCII.)
 fn go_quote(s: &str) -> String {
     let mut out = String::with_capacity(s.len() + 2);
     out.push('"');
@@ -917,7 +907,7 @@ mod tests {
                 "{",
                 "unterminated translations object",
             ),
-            // padded well past the error's own (unguarded) src[i:i+20] slice
+            // padded well past the error's own src[i:i+20] window
             ("missing key", &padded, "expected identifier key"),
             (
                 "missing colon after key",
@@ -945,7 +935,7 @@ mod tests {
     }
 
     /// parseValues: happy path (insertion order, quoted keys, duplicate key
-    /// keeps its first position but takes the last value) plus its two error
+    /// keeps its first position but takes the last value) plus its error
     /// branches.
     #[test]
     fn parse_values_cases() {

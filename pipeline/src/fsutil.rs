@@ -1,7 +1,8 @@
 //! Shared filesystem helpers. The invariant that matters anywhere a walk
 //! reaches committed bytes or a cache key: readdir order is
-//! filesystem-dependent (btrfs hashes, ext4/tmpfs insert), so a directory
-//! walk must be sorted before it is consumed.
+//! filesystem-dependent (ext4: hash order; tmpfs: newest first; btrfs:
+//! insertion order), so a directory walk must be sorted before it is
+//! consumed.
 
 /// Directory entry file names, sorted. IO errors surface as strings, like
 /// the rest of the port.
@@ -69,8 +70,8 @@ pub fn registry_exemptions() -> &'static (Vec<String>, Vec<String>) {
         }
         for c in &candidates {
             if let Ok(b) = std::fs::read_to_string(c) {
-                let ex: Ex = serde_json::from_str(&b)
-                    .unwrap_or_else(|e| panic!("{}: {}", c.display(), e));
+                let ex: Ex =
+                    serde_json::from_str(&b).unwrap_or_else(|e| panic!("{}: {}", c.display(), e));
                 return (ex.dead_utilities, ex.skin_allowlist);
             }
         }
