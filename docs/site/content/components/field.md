@@ -1960,7 +1960,7 @@ See the Form documentation for building forms with the `Field` component and Rea
       },
     },
     // radio-group arrows: move focus; with NO item checked they also check the
-    // target (measured radix quirk, probes/t7/probe-keys3.mjs),
+    // target (measured radix quirk),
     "radio-group": {
       init: function (group) {
         var checked = function () { return group.querySelector("[data-slot=radio-group-item][aria-checked=true]") }
@@ -2197,7 +2197,7 @@ Wrap `Field` components inside `FieldLabel` to create selectable field groups. T
       },
     },
     // radio-group arrows: move focus; with NO item checked they also check the
-    // target (measured radix quirk, probes/t7/probe-keys3.mjs),
+    // target (measured radix quirk),
     "radio-group": {
       init: function (group) {
         var checked = function () { return group.querySelector("[data-slot=radio-group-item][aria-checked=true]") }

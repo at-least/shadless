@@ -153,7 +153,7 @@ A set of two-state buttons that can be toggled on or off.
     },
     // arrows/home/end move focus only (radix roving focus); selection happens
     // via Space/Enter (= click). From non-item focus, arrows land on the LAST
-    // item (measured radix quirk, probes/t7/probe-keys.mjs), Home on the first.,
+    // item (measured radix quirk), Home on the first.,
     "toggle-group": {
       onKeydown: function (group, ctx, ev) {
         if (h.NAV_KEYS.indexOf(ev.key) < 0) return
@@ -313,7 +313,7 @@ Use `variant="outline"` for an outline style.
     },
     // arrows/home/end move focus only (radix roving focus); selection happens
     // via Space/Enter (= click). From non-item focus, arrows land on the LAST
-    // item (measured radix quirk, probes/t7/probe-keys.mjs), Home on the first.,
+    // item (measured radix quirk), Home on the first.,
     "toggle-group": {
       onKeydown: function (group, ctx, ev) {
         if (h.NAV_KEYS.indexOf(ev.key) < 0) return
@@ -534,7 +534,7 @@ Use the `size` prop to change the size of the toggle group.
     },
     // arrows/home/end move focus only (radix roving focus); selection happens
     // via Space/Enter (= click). From non-item focus, arrows land on the LAST
-    // item (measured radix quirk, probes/t7/probe-keys.mjs), Home on the first.,
+    // item (measured radix quirk), Home on the first.,
     "toggle-group": {
       onKeydown: function (group, ctx, ev) {
         if (h.NAV_KEYS.indexOf(ev.key) < 0) return
@@ -680,7 +680,7 @@ Use `spacing` to add spacing between toggle group items.
     },
     // arrows/home/end move focus only (radix roving focus); selection happens
     // via Space/Enter (= click). From non-item focus, arrows land on the LAST
-    // item (measured radix quirk, probes/t7/probe-keys.mjs), Home on the first.,
+    // item (measured radix quirk), Home on the first.,
     "toggle-group": {
       onKeydown: function (group, ctx, ev) {
         if (h.NAV_KEYS.indexOf(ev.key) < 0) return
@@ -848,7 +848,7 @@ Use `orientation="vertical"` for vertical toggle groups.
     },
     // arrows/home/end move focus only (radix roving focus); selection happens
     // via Space/Enter (= click). From non-item focus, arrows land on the LAST
-    // item (measured radix quirk, probes/t7/probe-keys.mjs), Home on the first.,
+    // item (measured radix quirk), Home on the first.,
     "toggle-group": {
       onKeydown: function (group, ctx, ev) {
         if (h.NAV_KEYS.indexOf(ev.key) < 0) return
@@ -1020,7 +1020,7 @@ Use `orientation="vertical"` for vertical toggle groups.
     },
     // arrows/home/end move focus only (radix roving focus); selection happens
     // via Space/Enter (= click). From non-item focus, arrows land on the LAST
-    // item (measured radix quirk, probes/t7/probe-keys.mjs), Home on the first.,
+    // item (measured radix quirk), Home on the first.,
     "toggle-group": {
       onKeydown: function (group, ctx, ev) {
         if (h.NAV_KEYS.indexOf(ev.key) < 0) return
@@ -1186,7 +1186,7 @@ A custom toggle group example.
     },
     // arrows/home/end move focus only (radix roving focus); selection happens
     // via Space/Enter (= click). From non-item focus, arrows land on the LAST
-    // item (measured radix quirk, probes/t7/probe-keys.mjs), Home on the first.,
+    // item (measured radix quirk), Home on the first.,
     "toggle-group": {
       onKeydown: function (group, ctx, ev) {
         if (h.NAV_KEYS.indexOf(ev.key) < 0) return
@@ -1316,7 +1316,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
     },
     // arrows/home/end move focus only (radix roving focus); selection happens
     // via Space/Enter (= click). From non-item focus, arrows land on the LAST
-    // item (measured radix quirk, probes/t7/probe-keys.mjs), Home on the first.,
+    // item (measured radix quirk), Home on the first.,
     "toggle-group": {
       onKeydown: function (group, ctx, ev) {
         if (h.NAV_KEYS.indexOf(ev.key) < 0) return
