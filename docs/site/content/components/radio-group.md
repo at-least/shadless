@@ -100,7 +100,7 @@ A set of checkable buttons—known as radio buttons—where no more than one of 
       },
     },
     // radio-group arrows: move focus; with NO item checked they also check the
-    // target (measured radix quirk, probes/t7/probe-keys3.mjs),
+    // target (measured radix quirk),
     "radio-group": {
       init: function (group) {
         var checked = function () { return group.querySelector("[data-slot=radio-group-item][aria-checked=true]") }
@@ -335,7 +335,7 @@ Radio group items with a description using the `Field` component.
       },
     },
     // radio-group arrows: move focus; with NO item checked they also check the
-    // target (measured radix quirk, probes/t7/probe-keys3.mjs),
+    // target (measured radix quirk),
     "radio-group": {
       init: function (group) {
         var checked = function () { return group.querySelector("[data-slot=radio-group-item][aria-checked=true]") }
@@ -518,7 +518,7 @@ Use `FieldLabel` to wrap the entire `Field` for a clickable card-style selection
       },
     },
     // radio-group arrows: move focus; with NO item checked they also check the
-    // target (measured radix quirk, probes/t7/probe-keys3.mjs),
+    // target (measured radix quirk),
     "radio-group": {
       init: function (group) {
         var checked = function () { return group.querySelector("[data-slot=radio-group-item][aria-checked=true]") }
@@ -684,7 +684,7 @@ Use `FieldSet` and `FieldLegend` to group radio items with a label and descripti
       },
     },
     // radio-group arrows: move focus; with NO item checked they also check the
-    // target (measured radix quirk, probes/t7/probe-keys3.mjs),
+    // target (measured radix quirk),
     "radio-group": {
       init: function (group) {
         var checked = function () { return group.querySelector("[data-slot=radio-group-item][aria-checked=true]") }
@@ -850,7 +850,7 @@ Use the `disabled` prop on `RadioGroupItem` to disable individual items.
       },
     },
     // radio-group arrows: move focus; with NO item checked they also check the
-    // target (measured radix quirk, probes/t7/probe-keys3.mjs),
+    // target (measured radix quirk),
     "radio-group": {
       init: function (group) {
         var checked = function () { return group.querySelector("[data-slot=radio-group-item][aria-checked=true]") }
@@ -1022,7 +1022,7 @@ Use `aria-invalid` on `RadioGroupItem` and `data-invalid` on `Field` to show val
       },
     },
     // radio-group arrows: move focus; with NO item checked they also check the
-    // target (measured radix quirk, probes/t7/probe-keys3.mjs),
+    // target (measured radix quirk),
     "radio-group": {
       init: function (group) {
         var checked = function () { return group.querySelector("[data-slot=radio-group-item][aria-checked=true]") }
@@ -1231,7 +1231,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
       },
     },
     // radio-group arrows: move focus; with NO item checked they also check the
-    // target (measured radix quirk, probes/t7/probe-keys3.mjs),
+    // target (measured radix quirk),
     "radio-group": {
       init: function (group) {
         var checked = function () { return group.querySelector("[data-slot=radio-group-item][aria-checked=true]") }

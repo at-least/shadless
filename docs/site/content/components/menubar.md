@@ -715,7 +715,7 @@ A visually persistent menu common in desktop applications that provides quick ac
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/menubar.js
-// generated: shadless menubar behavior — wireMenu + the menubar-specific layer
+// shadless menubar behavior — wireMenu + the menubar-specific layer
 // (roving cursor between triggers, horizontal arrows switching between open
 // menus, Enter/Space opening). wireMenu already covers click toggling,
 // vertical item navigation, submenus, Escape/outside-close and trigger
@@ -1247,7 +1247,7 @@ Use `MenubarCheckboxItem` for toggleable options.
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/menubar.js
-// generated: shadless menubar behavior — wireMenu + the menubar-specific layer
+// shadless menubar behavior — wireMenu + the menubar-specific layer
 // (roving cursor between triggers, horizontal arrows switching between open
 // menus, Enter/Space opening). wireMenu already covers click toggling,
 // vertical item navigation, submenus, Escape/outside-close and trigger
@@ -1711,7 +1711,7 @@ Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/menubar.js
-// generated: shadless menubar behavior — wireMenu + the menubar-specific layer
+// shadless menubar behavior — wireMenu + the menubar-specific layer
 // (roving cursor between triggers, horizontal arrows switching between open
 // menus, Enter/Space opening). wireMenu already covers click toggling,
 // vertical item navigation, submenus, Escape/outside-close and trigger
@@ -2266,7 +2266,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/menubar.js
-// generated: shadless menubar behavior — wireMenu + the menubar-specific layer
+// shadless menubar behavior — wireMenu + the menubar-specific layer
 // (roving cursor between triggers, horizontal arrows switching between open
 // menus, Enter/Space opening). wireMenu already covers click toggling,
 // vertical item navigation, submenus, Escape/outside-close and trigger
@@ -2734,7 +2734,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/menubar.js
-// generated: shadless menubar behavior — wireMenu + the menubar-specific layer
+// shadless menubar behavior — wireMenu + the menubar-specific layer
 // (roving cursor between triggers, horizontal arrows switching between open
 // menus, Enter/Space opening). wireMenu already covers click toggling,
 // vertical item navigation, submenus, Escape/outside-close and trigger
@@ -3745,7 +3745,7 @@ To enable RTL support in shadcn/ui, see the [RTL configuration guide](/guides/rt
 // <script src="shadless.js"></script>  — the shared runtime (see Installation)
 
 // js/menubar.js
-// generated: shadless menubar behavior — wireMenu + the menubar-specific layer
+// shadless menubar behavior — wireMenu + the menubar-specific layer
 // (roving cursor between triggers, horizontal arrows switching between open
 // menus, Enter/Space opening). wireMenu already covers click toggling,
 // vertical item navigation, submenus, Escape/outside-close and trigger

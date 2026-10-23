@@ -354,7 +354,7 @@ In addition to the `size` prop, you can use the `--card-spacing` CSS variable to
     },
     // arrows/home/end move focus only (radix roving focus); selection happens
     // via Space/Enter (= click). From non-item focus, arrows land on the LAST
-    // item (measured radix quirk, probes/t7/probe-keys.mjs), Home on the first.,
+    // item (measured radix quirk), Home on the first.,
     "toggle-group": {
       onKeydown: function (group, ctx, ev) {
         if (h.NAV_KEYS.indexOf(ev.key) < 0) return
