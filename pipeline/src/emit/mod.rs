@@ -145,13 +145,11 @@ fn render_tree(
     is_root: bool,
 ) -> String {
     let mut classes: Vec<String> = Vec::new();
-    if !node.slot.is_empty() {
-        if let Some(ms) = markers.get(&node.slot) {
-            if !ms.is_empty() {
+    if !node.slot.is_empty()
+        && let Some(ms) = markers.get(&node.slot)
+            && !ms.is_empty() {
                 classes.extend(dedup(ms));
             }
-        }
-    }
     if !node.anchor.is_empty() {
         classes.push(node.anchor.clone());
     }
@@ -225,11 +223,11 @@ fn render_fn(
     h
 }
 
+/// (inner, attrs, children) of one default-content entry.
+type DefaultParts = (String, Vec<(String, String)>, HashMap<String, String>);
+
 /// string → escaped text; {Inner,Attrs,Children} composed.
-fn resolve_default(
-    ir: &CssIrComponent,
-    f: &IrFn,
-) -> Option<(String, Vec<(String, String)>, HashMap<String, String>)> {
+fn resolve_default(ir: &CssIrComponent, f: &IrFn) -> Option<DefaultParts> {
     let content = default_content::default_content();
     let comp = content.get(ir.name.as_str())?;
     let entry = comp.get(f.fn_.as_str())?;

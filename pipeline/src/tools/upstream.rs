@@ -297,11 +297,10 @@ fn drill_repin(
         return 2;
     }
     upstream_step(&format!("checkout {}", to));
-    if args.iter().any(|a| a == "--fetch") {
-        if let Err(e) = up_git(root, &["fetch", "--tags", "--quiet"]) {
+    if args.iter().any(|a| a == "--fetch")
+        && let Err(e) = up_git(root, &["fetch", "--tags", "--quiet"]) {
             eprintln!("fetch failed (offline?): {}", e);
         }
-    }
     let dirty = up_git(root, &["status", "--porcelain"]).unwrap_or_default();
     if !dirty.is_empty() {
         // an applied overlay series leaves the tree dirty by design; anything
@@ -376,15 +375,14 @@ fn drill_repin(
             .arg(root.join("overlays/upstream").join(f))
             .current_dir(root)
             .output();
-        if let Ok(out) = out {
-            if !out.status.success() {
+        if let Ok(out) = out
+            && !out.status.success() {
                 conflicts.push(PatchConflict {
                     f: f.clone(),
                     out: String::from_utf8_lossy(&out.stdout).trim().to_string()
-                        + &String::from_utf8_lossy(&out.stderr).trim(),
+                        + String::from_utf8_lossy(&out.stderr).trim(),
                 });
             }
-        }
     }
     let msg = if conflicts.is_empty() {
         String::new()
@@ -456,11 +454,10 @@ fn component_of(p: &str) -> String {
 fn component_of_example(name: &str, registry_names: &[String]) -> String {
     let mut best = String::new();
     for r in registry_names {
-        if name == r || name.starts_with(&format!("{}-", r)) {
-            if r.len() > best.len() {
+        if (name == r || name.starts_with(&format!("{}-", r)))
+            && r.len() > best.len() {
                 best = r.clone();
             }
-        }
     }
     if best.is_empty() {
         name.to_string()

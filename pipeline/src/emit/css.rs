@@ -212,15 +212,14 @@ impl OrderedCva {
         self.map.get(k).and_then(|v| {
             let mut t: CvaTable = serde_json::from_value(v.clone()).ok()?;
             t.defaults = HashMap::new();
-            if let Some(obj) = v.as_object() {
-                if let Some(d) = obj.get("defaults").and_then(|d| d.as_object()) {
+            if let Some(obj) = v.as_object()
+                && let Some(d) = obj.get("defaults").and_then(|d| d.as_object()) {
                     for (k, val) in d {
                         if let Some(s) = val.as_str() {
                             t.defaults.insert(k.clone(), s.to_string());
                         }
                     }
                 }
-            }
             Some(t)
         })
     }
@@ -445,7 +444,7 @@ fn check_selector_values(ir: &CssIrComponent) -> Result<(), String> {
             kind, v
         )
     };
-    let mut check_value = |kind: &str, v: &str| -> Result<(), String> {
+    let check_value = |kind: &str, v: &str| -> Result<(), String> {
         if value_ok(v) {
             Ok(())
         } else {
@@ -504,7 +503,7 @@ pub fn component_css(ir: &CssIrComponent) -> Result<ComponentCssOut, String> {
     let mut rules: Vec<String> = Vec::new();
     let cva_map = cva_slot(ir);
     let mut cva_slots: HashSet<String> = HashSet::new();
-    for (_, (_, slot)) in cva_map.iter() {
+    for (_, slot) in cva_map.values() {
         if !slot.is_empty() {
             cva_slots.insert(slot.clone());
         }

@@ -273,7 +273,7 @@ pub fn run_demo() -> Result<(), String> {
     let read_fixture = |p: &str| -> Option<String> { std::fs::read_to_string(root.join(p)).ok() };
     for name in &names {
         let ir = &ir_all[name];
-        let html: String;
+        
         if ir.tier == "static" {
             if !root.join(format!("dist/components/{}.html", name)).exists() {
                 eprintln!(
@@ -288,16 +288,16 @@ pub fn run_demo() -> Result<(), String> {
         // the registry declares each component's fixture next to its tier;
         // ensure_link is idempotent, so kernel fixtures that already carry
         // the stylesheet link pass through unchanged
-        match reg_tiers.get(name).and_then(|t| t.fixture.as_deref()) {
+        let html: String = match reg_tiers.get(name).and_then(|t| t.fixture.as_deref()) {
             Some("inline:field") if name == "field" => {
-                html = field_demo_html().to_string();
+                field_demo_html().to_string()
             }
             Some(path) => {
                 let Some(src) = read_fixture(path) else {
                     eprintln!("demo: no fixture {} for {}", path, name);
                     return Err(format!("no fixture: {}", path));
                 };
-                html = ensure_link(&rewrite_paths(&src));
+                ensure_link(&rewrite_paths(&src))
             }
             _ => {
                 eprintln!(
@@ -306,7 +306,7 @@ pub fn run_demo() -> Result<(), String> {
                 );
                 return Err("no fixture configured".to_string());
             }
-        }
+        };
         std::fs::write(
             root.join(format!("dist/components/{}.html", name)),
             inject_pre_paint(&html),

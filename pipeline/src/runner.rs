@@ -277,13 +277,12 @@ impl Runner {
         let js_log = dir.as_ref().map(|d| d.path().join("js.log"));
         for (i, argv) in n.run.iter().enumerate() {
             let mut cmd = argv.clone();
-            if let Some(d) = &dir {
-                if is_go_test(argv) {
+            if let Some(d) = &dir
+                && is_go_test(argv) {
                     let log = d.path().join(format!("{}-{}.log", stamp_file(&n.id), i));
                     cmd.push(format!("-test.testlogfile={}", log.display()));
                     logs.push(log);
                 }
-            }
             let exe = match crate::engine::resolve_argv0(&cmd[0]) {
                 Ok(p) => p,
                 Err(e) => {
@@ -482,12 +481,11 @@ impl Runner {
             },
             None => false,
         };
-        if fresh {
-            if let Err(missing) = outputs_present(&self.root, &n) {
+        if fresh
+            && let Err(missing) = outputs_present(&self.root, &n) {
                 println!("  {}: key matches but {} is missing — rebuilding", id, missing);
                 fresh = false;
             }
-        }
         if fresh {
             st.skipped += 1;
             st.done.insert(id.to_string());
@@ -826,7 +824,7 @@ mod tests {
             false,
             HashMap::new(),
         ));
-        let counts = runner.run(&[gate.clone()]);
+        let counts = runner.run(std::slice::from_ref(&gate));
         assert_eq!(counts.failed, 0);
         let key_after = Keyer::new(&t, &g).key("g").unwrap().unwrap();
         assert_ne!(

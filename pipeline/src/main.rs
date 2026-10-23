@@ -232,24 +232,20 @@ fn run_command(args: &[String]) -> Result<(), String> {
     let mut jobs = std::thread::available_parallelism()
         .map(|n| n.get())
         .unwrap_or(1);
-    if let Ok(v) = std::env::var("PIPELINE_PARALLEL") {
-        if let Ok(n) = v.parse::<usize>() {
-            if n > 0 {
+    if let Ok(v) = std::env::var("PIPELINE_PARALLEL")
+        && let Ok(n) = v.parse::<usize>()
+            && n > 0 {
                 jobs = n;
             }
-        }
-    }
     // Each browser node runs its own Chromium (~0.5–1 GB, bursty CPU during
     // render). A small cap keeps them off the contention cliff; the main
     // semaphore bounds everything, so a browser cap above -j is a lie.
     let mut browser_jobs = jobs.min(4);
-    if let Ok(v) = std::env::var("PIPELINE_BROWSER_JOBS") {
-        if let Ok(n) = v.parse::<usize>() {
-            if n > 0 {
+    if let Ok(v) = std::env::var("PIPELINE_BROWSER_JOBS")
+        && let Ok(n) = v.parse::<usize>()
+            && n > 0 {
                 browser_jobs = n;
             }
-        }
-    }
     browser_jobs = browser_jobs.min(jobs);
     let runner = Arc::new(Runner::new(
         root.clone(),
@@ -281,18 +277,16 @@ fn run_command(args: &[String]) -> Result<(), String> {
     }
     if counts.violations > 0 {
         eprintln!(
-            "\n{} undeclared write(s): a node is driving the graph's freshness {}",
-            counts.violations,
-            "through a file it does not admit to producing. Fix `produces`, or stop writing or deleting there."
+            "\n{} undeclared write(s): a node is driving the graph's freshness through a file it does not admit to producing. Fix `produces`, or stop writing or deleting there.",
+            counts.violations
         );
     }
     if counts.bad_reads > 0 {
         eprintln!(
-            "\n{} undeclared file access(es): a node opened a file it declares in {}",
-            counts.bad_reads,
-            "neither `inputs` nor `produces`. If it reads the file, it is not in the node's key and a \
+            "\n{} undeclared file access(es): a node opened a file it declares in neither `inputs` nor `produces`. If it reads the file, it is not in the node's key and a \
              change to it leaves the node falsely fresh — add it to `inputs`, and if the file is another \
-             node's output add that node to `needs` too. If it writes the file, add it to `produces`."
+             node's output add that node to `needs` too. If it writes the file, add it to `produces`.",
+            counts.bad_reads
         );
     }
     if counts.violations > 0 || counts.bad_reads > 0 {

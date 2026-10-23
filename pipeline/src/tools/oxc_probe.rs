@@ -148,7 +148,7 @@ pub fn run_oxc_probe(root: &Path, rest: &[String]) -> Result<i32, String> {
         .filter_map(|e| e.ok())
         .filter(|e| {
             e.file_type().is_file()
-                && e.path().extension().map_or(false, |x| x == "tsx")
+                && e.path().extension().is_some_and(|x| x == "tsx")
         })
         .map(|e| e.path().to_path_buf())
         .collect();

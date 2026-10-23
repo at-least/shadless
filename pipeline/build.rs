@@ -55,7 +55,7 @@ const HULL_FILES: &[&str] = &[
     "src/verify.rs",
 ];
 
-fn hash_files(files: &mut Vec<PathBuf>) -> String {
+fn hash_files(files: &mut [PathBuf]) -> String {
     files.sort();
     let mut h = Sha256::new();
     for f in files.iter() {
@@ -83,7 +83,7 @@ fn walk_files(dir: &str) -> Vec<PathBuf> {
 }
 
 fn main() {
-    let mut out = format!("hull={}", hash_files(&mut HULL_FILES.iter().map(PathBuf::from).collect()));
+    let mut out = format!("hull={}", hash_files(&mut HULL_FILES.iter().map(PathBuf::from).collect::<Vec<_>>()));
 
     for g in GROUPS {
         out.push_str(&format!(
@@ -111,12 +111,12 @@ fn main() {
         out.push_str(&format!(
             ";tools:{}={}",
             stem,
-            hash_files(&mut vec![f])
+            hash_files(&mut [f])
         ));
     }
     out.push_str(&format!(
         ";jsbuild={}",
-        hash_files(&mut vec![PathBuf::from("src/jsbuild.rs")])
+        hash_files(&mut [PathBuf::from("src/jsbuild.rs")])
     ));
 
     // walk_files("src") already includes jsbuild.rs and every group dir

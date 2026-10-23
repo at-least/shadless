@@ -41,7 +41,7 @@ fn parse_float_2dp(s: &str) -> f64 {
 /// Go amd64's float64→int64 conversion (CVTTSD2SI): values outside
 /// [-2^63, 2^63) and NaN become i64::MIN.
 fn go_f64_to_i64(x: f64) -> i64 {
-    if x.is_nan() || x >= 9.223372036854775808e18 || x < -9.223372036854775808e18 {
+    if x.is_nan() || x >= 9.223_372_036_854_776e18 || x < -9.223_372_036_854_776e18 {
         i64::MIN
     } else {
         x as i64
@@ -156,12 +156,14 @@ pub struct RawBaseline {
     pub flaky: Vec<String>,
 }
 
+pub type LoadedBaseline = (RawBaseline, HashMap<String, ParityCell>);
+
 /// loadParityBaseline errors on the pre-value format (bare cell ids).
 /// Absent file → Ok(None), the caller records.
 pub fn load_parity_baseline(
     root: &Path,
     path: &str,
-) -> Result<Option<(RawBaseline, HashMap<String, ParityCell>)>, String> {
+) -> Result<Option<LoadedBaseline>, String> {
     let b = match std::fs::read(root.join(path)) {
         Ok(b) => b,
         Err(_) => return Ok(None), // absent → None, caller records
@@ -197,9 +199,7 @@ pub fn load_parity_baseline(
             },
         );
     }
-    if let Err(e) = detect_prevalue(&b) {
-        return Err(e);
-    }
+    detect_prevalue(&b)?;
     Ok(Some((
         RawBaseline {
             pin: raw.pin,

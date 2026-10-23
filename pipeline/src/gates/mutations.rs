@@ -165,6 +165,8 @@ pub static RE_FIRST_SHADLESS_CELL: LazyLock<Regex> =
 
 // ------------------------------------------------------------- the set
 
+pub type ResolveFn = fn(&Path) -> Result<Vec<String>, String>;
+
 /// One break, its target gate, and the bug class it proves.
 ///
 /// `files` is the snapshot set: the harness saves these before apply and
@@ -177,7 +179,7 @@ pub struct Mutation {
     pub gate: &'static str,
     pub why: &'static str,
     pub files: &'static [&'static str],
-    pub resolve: Option<fn(&Path) -> Result<Vec<String>, String>>,
+    pub resolve: Option<ResolveFn>,
     pub apply: fn(&Path, &[String]) -> Result<(), String>,
 }
 
@@ -995,11 +997,10 @@ impl Snapshot {
                 }
                 continue;
             }
-            if let Err(e) = std::fs::remove_file(&full) {
-                if e.kind() != std::io::ErrorKind::NotFound {
+            if let Err(e) = std::fs::remove_file(&full)
+                && e.kind() != std::io::ErrorKind::NotFound {
                     errs.push(format!("{}: {}", p, e));
                 }
-            }
         }
         if !errs.is_empty() {
             return Err(format!(
@@ -1015,8 +1016,8 @@ impl Snapshot {
 /// interrupt between apply and restore can still put the tree back (the
 /// __meta SIGINT/SIGTERM watcher below and run_mutation's unwind guard both
 /// drain it).
-static ACTIVE_RESTORE: Mutex<Option<Box<dyn FnOnce() -> Result<(), String> + Send>>> =
-    Mutex::new(None);
+type RestoreFn = Box<dyn FnOnce() -> Result<(), String> + Send>;
+static ACTIVE_RESTORE: Mutex<Option<RestoreFn>> = Mutex::new(None);
 
 pub fn set_active_restore(f: impl FnOnce() -> Result<(), String> + Send + 'static) {
     // poison-tolerant: an interrupted (panicking) mutation must not take the
@@ -1264,10 +1265,7 @@ pub fn run_mutation(
         };
         Ok((res, None))
     })();
-    let restore_err = match restore_active_mutation() {
-        Ok(()) => None,
-        Err(e) => Some(e),
-    };
+    let restore_err = restore_active_mutation().err();
     match out {
         Ok((res, _)) => Ok((res, restore_err)),
         Err(e) => Err(e),

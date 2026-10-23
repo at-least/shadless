@@ -59,7 +59,7 @@ pub fn gate_dist_complete(root: &Path) -> Result<usize, String> {
     if !missing.is_empty() {
         let mut comps: Vec<String> = Vec::new();
         for m in &missing {
-            let c = m.splitn(2, ':').next().unwrap_or("").to_string();
+            let c = m.split(':').next().unwrap_or("").to_string();
             if !comps.contains(&c) {
                 comps.push(c);
             }
@@ -102,11 +102,10 @@ pub fn libtest_has_passing_tests(stdout: &str) -> bool {
             continue;
         };
         // "ok. 173 passed; 0 failed; ..." — the count is field 1
-        if let Some(count) = rest.split_whitespace().nth(1) {
-            if count.parse::<usize>().map(|n| n > 0).unwrap_or(false) {
+        if let Some(count) = rest.split_whitespace().nth(1)
+            && count.parse::<usize>().map(|n| n > 0).unwrap_or(false) {
                 return true;
             }
-        }
     }
     false
 }
@@ -550,15 +549,14 @@ pub fn gate_script_refs(root: &Path) -> Result<(usize, usize), String> {
                 continue;
             }
             if v == "__meta" {
-                if let Some(g) = m.get(2) {
-                    if !crate::nodes::GATE_IDS.contains(&g.as_str()) {
+                if let Some(g) = m.get(2)
+                    && !crate::nodes::GATE_IDS.contains(&g.as_str()) {
                         fail.push(format!(
                             "{}: `pipeline __meta {}` — not a gate id this engine dispatches",
                             label,
                             g.as_str()
                         ));
                     }
-                }
                 continue;
             }
             if !verbs.contains(v) {

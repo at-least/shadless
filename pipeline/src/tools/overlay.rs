@@ -19,8 +19,12 @@ use regex::Regex;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::path::Path;
+use std::sync::LazyLock;
 
 use super::docs_transforms::{fence_shadow, text_adjustments};
+
+static RE_UNSAFE_FILENAME: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"[^0-9A-Za-z_.-]+").unwrap());
 
 const OV_UP: &str = ".upstream/shadcn-ui";
 const OV_REG: &str = "apps/v4/registry/bases/radix/ui";
@@ -31,6 +35,8 @@ const OV_MANIFEST: &str = "overlays/manifest.json";
 const OV_PATCHES: &str = "overlays/upstream";
 const OV_TASKS_DIR: &str = "build/gates/tasks";
 
+type OvCheck = std::sync::Arc<dyn Fn(&Path) -> String + Send + Sync>;
+
 #[derive(Clone)]
 struct OvUnit {
     id: String,
@@ -40,8 +46,8 @@ struct OvUnit {
     file: String,
     inputs: Vec<String>,
     extra: Vec<String>,
-    requires: Option<std::sync::Arc<dyn Fn(&Path) -> String + Send + Sync>>,
-    dissolved: Option<std::sync::Arc<dyn Fn(&Path) -> String + Send + Sync>>,
+    requires: Option<OvCheck>,
+    dissolved: Option<OvCheck>,
     reason: String,
     hash: String,
     recorded: Option<OvUnitRec>,
@@ -542,11 +548,10 @@ fn ov_ignore_attr_units(
                     let mut slots_set: HashMap<String, bool> = HashMap::new();
                     for c in &i.components {
                         for e in &c.elements {
-                            if let Some(slot) = &e.slot {
-                                if !slot.is_empty() {
+                            if let Some(slot) = &e.slot
+                                && !slot.is_empty() {
                                     slots_set.insert(slot.clone(), true);
                                 }
-                            }
                         }
                     }
                     if slots_set.contains_key(&slot) {
@@ -815,9 +820,7 @@ fn ov_audit(
     pin: &OvPinFile,
     strict: bool,
 ) -> OvBuckets {
-    let (tier_sets, icons) = match ov_load_tier_sets() {
-        (s, i) => (s, i),
-    };
+    let (tier_sets, icons) = ov_load_tier_sets();
     let trivial: Vec<String> = tier_sets
         .iter()
         .filter(|(t, _)| t == "trivial")
@@ -1169,11 +1172,10 @@ fn ov_run_tasks(
                 diff_line = format!("## Upstream diff ({} → {})\n\n```diff\n{}```", from, to, diff);
             }
             let mut cur_line = String::new();
-            if !u.file.is_empty() {
-                if let Ok(b) = std::fs::read_to_string(root.join(&u.file)) {
+            if !u.file.is_empty()
+                && let Ok(b) = std::fs::read_to_string(root.join(&u.file)) {
                     cur_line = format!("## Current file\n\n```\n{}```", b);
                 }
-            }
             let md = [
                 format!("# {}", u.id),
                 String::new(),
@@ -1195,10 +1197,7 @@ fn ov_run_tasks(
                 cur_line,
             ]
             .join("\n");
-            let safe = Regex::new(r"[^0-9A-Za-z_.-]+")
-                .unwrap()
-                .replace_all(&u.id, "_")
-                .into_owned();
+            let safe = RE_UNSAFE_FILENAME.replace_all(&u.id, "_").into_owned();
             let _ = std::fs::write(root.join(OV_TASKS_DIR).join(format!("{}.md", safe)), md);
             n += 1;
         }

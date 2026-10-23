@@ -240,8 +240,8 @@ pub fn cv_val_of_string(text: &str) -> String {
         return n.str;
     }
     let t = text.trim();
-    if t.starts_with('[') {
-        if let Some(e) = cv_match_bracket(t, 0, b'[', b']') {
+    if t.starts_with('[')
+        && let Some(e) = cv_match_bracket(t, 0, b'[', b']') {
             let mut parts: Vec<String> = Vec::new();
             for el in cv_split_top(&t[1..e]) {
                 let n2 = cv_parse_expr(&el);
@@ -251,7 +251,6 @@ pub fn cv_val_of_string(text: &str) -> String {
             }
             return parts.join(" ");
         }
-    }
     String::new()
 }
 

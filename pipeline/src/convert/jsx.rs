@@ -272,12 +272,11 @@ impl<'a> JsxScanner<'a> {
                 continue;
             }
             let c = self.s.as_bytes()[i];
-            if c == b'<' && self.open_at(i) {
-                if let Ok(n) = self.parse_element(i) {
+            if c == b'<' && self.open_at(i)
+                && let Ok(n) = self.parse_element(i) {
                     i = n;
                     continue;
                 }
-            }
             match c {
                 b'{' => depth += 1,
                 b'}' => depth -= 1,

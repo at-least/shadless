@@ -35,7 +35,7 @@ impl BoundaryPattern {
 fn re_cache(pat: &'static str) -> &'static Regex {
     static CACHE: OnceLock<Mutex<HashMap<&'static str, &'static Regex>>> = OnceLock::new();
     let mut g = CACHE.get_or_init(Default::default).lock().unwrap();
-    *g.entry(pat)
+    g.entry(pat)
         .or_insert_with(|| Box::leak(Box::new(Regex::new(pat).unwrap())))
 }
 
@@ -850,12 +850,11 @@ fn run_discover_mode(root: &Path, all: &[String], by_path: &HashMap<String, Clas
     let mut matched: Vec<Classification> = Vec::new();
     let mut unmatched: Vec<String> = Vec::new();
     for p in &new_files {
-        if let Some(c) = by_path.get(p) {
-            if c.kind != "unknown" {
+        if let Some(c) = by_path.get(p)
+            && c.kind != "unknown" {
                 matched.push(c.clone());
                 continue;
             }
-        }
         unmatched.push(p.clone());
     }
     if !matched.is_empty() {

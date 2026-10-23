@@ -605,13 +605,11 @@ pub fn merge(class_list: &str) -> String {
             .get(&group_id)
             .cloned()
             .unwrap_or_default();
-        if has_postfix {
-            if let Some(mods) = b.conflicting_group_modifiers.get(&group_id) {
-                if !mods.is_empty() {
+        if has_postfix
+            && let Some(mods) = b.conflicting_group_modifiers.get(&group_id)
+                && !mods.is_empty() {
                     conflicting.extend(mods.iter().cloned());
                 }
-            }
-        }
         for g in &conflicting {
             conflict_ids.push(format!("{}{}", modifier, g));
         }

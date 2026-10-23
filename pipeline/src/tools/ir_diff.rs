@@ -184,7 +184,7 @@ fn js_string(v: &Value) -> String {
             // numbers and Some for integer literals > 2^53), so route
             // everything through f64.
             let f = n.as_f64().unwrap_or(0.0);
-            if f.fract() == 0.0 && f >= -9223372036854775808.0 && f < 9223372036854775808.0 {
+            if f.fract() == 0.0 && (-9223372036854775808.0..9223372036854775808.0).contains(&f) {
                 format!("{}", f as i64)
             } else {
                 go_g_shortest(f)
@@ -212,7 +212,7 @@ fn go_g_shortest(x: f64) -> String {
     };
     let digits: String = digits.chars().filter(|c| *c != '.').collect();
     let exp: i32 = exp.parse().expect("exponent is an integer");
-    if exp < -4 || exp >= 6 {
+    if !(-4..6).contains(&exp) {
         // %e form: d.ddde±XX — sign always present, exponent zero-padded to
         // at least two digits
         let (d0, rest) = digits.split_at(1);
@@ -422,8 +422,8 @@ fn diff_ir(before: &IrSet, after: &IrSet) -> (Vec<String>, HashMap<String, IrEnt
                     });
                 }
                 for v in sorted_keys(va) {
-                    if let Some(bv) = vb.get(&v) {
-                        if js_string(&va[&v]) != js_string(bv) {
+                    if let Some(bv) = vb.get(&v)
+                        && js_string(&va[&v]) != js_string(bv) {
                             d.changes.push(IrChange {
                                 what: "cva-value-classes".to_string(),
                                 table: tbl.clone(),
@@ -432,7 +432,6 @@ fn diff_ir(before: &IrSet, after: &IrSet) -> (Vec<String>, HashMap<String, IrEnt
                                 ..Default::default()
                             });
                         }
-                    }
                 }
             }
             let mut axes: HashSet<String> = ca.defaults.keys().cloned().collect();
